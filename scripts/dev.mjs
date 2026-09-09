@@ -30,6 +30,40 @@ function sleep(milliseconds) {
   });
 }
 
+/** npm 스크립트를 실행한다(cmd 셸을 거치지 않는다 — 인수가 그대로 전달되도록). */
+function runNpmScript(script, options) {
+  const npmCli = process.env.npm_execpath;
+
+  if (typeof npmCli === "string" && npmCli.endsWith(".js")) {
+    return spawnSync(process.execPath, [npmCli, "run", script], { cwd: root, ...options });
+  }
+
+  return spawnSync("npm", ["run", script], { cwd: root, shell: true, ...options });
+}
+
+/** 자식이 스스로 끝나기를 기다린다(Ctrl+C 는 같은 콘솔의 자식에게도 함께 간다). */
+function waitForChildExit(child, timeoutMs) {
+  return new Promise((resolve) => {
+    if (child.exitCode !== null || child.signalCode !== null) {
+      resolve(true);
+
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      child.off("exit", onExit);
+      resolve(false);
+    }, timeoutMs);
+
+    function onExit() {
+      clearTimeout(timer);
+      resolve(true);
+    }
+
+    child.once("exit", onExit);
+  });
+}
+
 /** 포트가 아직 열려 있는지(연결이 되면 열려 있는 것) */
 function isPortOpen() {
   return new Promise((resolve) => {
@@ -92,8 +126,13 @@ async function shutdown(code, reason) {
   shuttingDown = true;
   process.stdout.write(`종료합니다 — ${reason}\n`);
 
-  if (serverChild !== null && serverChild.exitCode === null && serverChild.signalCode === null) {
-    serverChild.kill();
+  if (serverChild !== null) {
+    // 서버가 스스로 정리하고 끝날 시간을 준 뒤에도 살아 있으면 그때 끊는다.
+    const exited = await waitForChildExit(serverChild, 3_000);
+
+    if (!exited) {
+      serverChild.kill();
+    }
   }
 
   const released = await waitForPortRelease();
@@ -108,7 +147,7 @@ async function shutdown(code, reason) {
 // 1) 빌드
 process.stdout.write("빌드 중…\n");
 
-const build = spawnSync("npm", ["run", "build"], { cwd: root, stdio: "inherit", shell: true });
+const build = runNpmScript("build", { stdio: "inherit" });
 
 if (build.status !== 0) {
   process.stderr.write("빌드에 실패했습니다. 위 오류를 먼저 고쳐 주세요.\n");

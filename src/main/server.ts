@@ -253,6 +253,8 @@ export function startServer(options: StartServerOptions = {}): Server {
     server.close(() => {
       process.exit(0);
     });
+    // 크롬이 열어 둔 연결(keep-alive)까지 끊어야 포트가 곧바로 풀린다.
+    server.closeAllConnections();
   };
 
   process.on("SIGINT", () => {

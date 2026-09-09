@@ -21,8 +21,13 @@ function git(args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
 }
 
+/** npm 스크립트를 실행한다(cmd 셸을 거치지 않는다 — 인수가 그대로 전달되도록). */
 function runNpmScript(script) {
-  const result = spawnSync("npm", ["run", script], { cwd: root, encoding: "utf8", shell: true });
+  const npmCli = process.env.npm_execpath;
+  const result =
+    typeof npmCli === "string" && npmCli.endsWith(".js")
+      ? spawnSync(process.execPath, [npmCli, "run", script], { cwd: root, encoding: "utf8" })
+      : spawnSync("npm", ["run", script], { cwd: root, encoding: "utf8", shell: true });
 
   return { ok: result.status === 0, output: `${result.stdout ?? ""}${result.stderr ?? ""}`.trim() };
 }
