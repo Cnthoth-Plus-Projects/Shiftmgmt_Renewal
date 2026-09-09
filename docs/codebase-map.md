@@ -9,8 +9,8 @@
 |---|---|
 | `package.json` | 실행·빌드·검사 명령(스크립트)과 개발 도구 목록. 실행 의존성은 없다(프로그램은 Node만으로 돈다) |
 | `package-lock.json` | 개발 도구의 정확한 판 번호 고정(`npm ci` 가 이 파일을 본다) |
-| VERSION | 이 프로그램의 판 번호 한 줄. 「적용」 스크립트와 `npm run release:check` 가 이 값을 본다 |
-| .gitignore | 저장소에 담지 않을 것(설치 폴더·빌드 결과·데이터·캡처) |
+| `./VERSION` | 이 프로그램의 판 번호 한 줄. 「적용」 스크립트와 `npm run release:check` 가 이 값을 본다 |
+| `./.gitignore` | 저장소에 담지 않을 것(설치 폴더·빌드 결과·데이터·캡처) |
 | `README.md` | 처음 여는 사람이 3줄로 실행하는 법 |
 | `tsconfig.server.json` | 서버 쪽 컴파일 조건(원본 0.5.4의 electron 설정과 같은 조건 — 1-2에서 서비스를 그대로 복사하기 위해) |
 | `tsconfig.browser.json` | 화면 쪽 **타입 검사 전용** 설정(파일을 만들지 않는다. 실제 묶기는 esbuild가 한다) |

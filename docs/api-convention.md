@@ -55,7 +55,9 @@
   `recordSuccessfulActivity`(`main.ts:126-170`)를 **같은 이름·같은 판정**으로 서버 한 곳(`src/main/http/session.ts`)에 옮긴다.
 - 채널별 가드는 부록 계약표의 열이 정본이다: withAdmin 40 · withSession 35 · withActionPermission 22 · withAccessHistory 1 · 없음 13.
 - 활동 기록은 계약표 「활동 기록」 열 **63채널**(핸들러가 직접 부르는 12 + `activity: trackSuccess(` 경유 51).
-- 원본 `src/main/ipc/ipc-handler-helpers.ts` 는 electron 의존이 없고 그 테스트 15개가 1-4 이관 대상이므로 **그대로 복사**해서 쓴다.
+- 원본 `src/main/ipc/ipc-handler-helpers.ts` 는 electron 의존이 없고(import 가 shared 타입 3개뿐) 그 테스트 15개가 1-4 이관 대상이므로 **그대로 복사**해서 쓴다.
+  복사 대상 헬퍼 6개와 원본 줄 번호: `runIpcAction`(:89) · `runIpcResultAction`(:108) · `runIpcActionWithCleanup`(:121) ·
+  `runIpcSaveDialogAction`(:160) · `runIpcSaveDialogResultAction`(:186) · `runIpcOpenPathAction`(:210). 어느 채널이 어느 헬퍼를 쓰는지는 **1-3a 지시서에서 확정**한다.
 
 ## 6. 대화상자 채널 8개 (S12)
 
@@ -74,7 +76,9 @@
 - `buttonLabel` 인수는 Windows 창이 지원하지 않아 **받되 무시**한다. `title`·`defaultPath`·`filters` 는 대응한다.
 - **시험 방법**: 테스트에서는 대화상자 함수를 **주입**한다(원본 `runIpcOpenPathAction` 의 `openPath` 주입과 같은 방식).
   실제로 창이 뜨는 모습은 검토 단계(⑤)에서 사람이 **1회** 눈으로 확인한다.
-- **아직 안 정한 것**: 폴더 선택 창의 모양(PowerShell 5.1 의 구형 트리 창 vs 7 의 신형 창)은 **1-3c 에서 실측해 고정**한다.
+- **아직 안 정한 것**(둘 다 1-3c 지시서에서 확정):
+  ① 채널 8개 각각의 창 옵션(`title`·`filters`·`defaultPath`) 값 — **원본 핸들러의 줄 번호로 못박는다**.
+  ② 폴더 선택 창의 모양(PowerShell 5.1 의 구형 트리 창 vs 7 의 신형 창) — **실측해 고정**한다.
 - 1-3c 구현 필수 조건: 경로·옵션을 명령 문자열에 끼워 넣지 말고 **JSON 표준입력**으로 넘긴다 · 표준출력 UTF-8 명시 · 표준오류 분리 ·
   비정상 종료는 채널별 `BridgeFailure` 로 변환 · 서버 종료·요청 중단 시 창 프로세스 정리 · 대기열 1개 · `FolderBrowserDialog` 의 `title` 은 `Description` 으로 · `Start-Process` 도 변수의 `-FilePath` 로.
 
