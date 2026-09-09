@@ -1,0 +1,40 @@
+/* 준비 화면의 최소 스타일. 디자인 시스템 토큰(색·간격·글자 크기)은 Phase 3-1에서 들어온다. */
+@import url("/web/assets/pretendard.css");
+@import url("/web/assets/outlined.css");
+
+:root {
+  --ground: #f6f7f9;
+  --ink: #1f2430;
+  --muted: #5b6472;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: Pretendard, "Malgun Gothic", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+main.ready {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+p.subtitle {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+
+#health {
+  margin: 0;
+  font-weight: 600;
+}
