@@ -118,7 +118,12 @@ async function waitForPortRelease() {
   return false;
 }
 
-async function shutdown(code, reason) {
+/**
+ * @param {number} code 종료 코드
+ * @param {string} reason 사람이 읽을 이유
+ * @param {boolean} childAlreadySignalled 콘솔 Ctrl+C 처럼 서버 자식도 이미 같은 신호를 받았는가
+ */
+async function shutdown(code, reason, childAlreadySignalled = false) {
   if (shuttingDown) {
     return;
   }
@@ -127,7 +132,12 @@ async function shutdown(code, reason) {
   process.stdout.write(`종료합니다 — ${reason}\n`);
 
   if (serverChild !== null) {
-    // 서버가 스스로 정리하고 끝날 시간을 준 뒤에도 살아 있으면 그때 끊는다.
+    // 서버 자식에 종료 신호를 보낸다.
+    // 콘솔 Ctrl+C 는 같은 콘솔의 자식에게도 이미 전달되므로(윈도우), 그때는 스스로 정리할 시간을 먼저 준다.
+    if (!childAlreadySignalled) {
+      serverChild.kill();
+    }
+
     const exited = await waitForChildExit(serverChild, 3_000);
 
     if (!exited) {
@@ -173,7 +183,8 @@ serverChild.on("error", (error) => {
 });
 
 process.on("SIGINT", () => {
-  void shutdown(0, "Ctrl+C");
+  // 콘솔 Ctrl+C 는 같은 콘솔에 붙은 서버 자식에게도 함께 간다.
+  void shutdown(0, "Ctrl+C", true);
 });
 
 process.on("SIGTERM", () => {

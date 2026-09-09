@@ -20,9 +20,6 @@ export type BridgeResult<T> = BridgeSuccess<T> | BridgeFailure;
 /** 요청 본문 상한 1 MB(초과 = 413) */
 export const MAX_JSON_BODY_BYTES = 1024 * 1024;
 
-/** 상한을 넘긴 본문을 흘려보내는 한도. 이보다 크면 연결을 끊는다. */
-const DRAIN_LIMIT_BYTES = 8 * 1024 * 1024;
-
 export type ErrorStatus = 400 | 401 | 403 | 404 | 413 | 415 | 500;
 
 /** HTTP 상태 → 오류 코드·한국어 문구 표(docs/api-convention.md §3) */
@@ -90,7 +87,9 @@ export type ReadJsonBodyResult =
 
 /**
  * 요청 본문을 JSON으로 읽는다.
- * - 1 MB 초과 → 413(본문은 끝까지 흘려보낸 뒤 응답해서 보낸 쪽이 상태 코드를 받을 수 있게 한다)
+ * - 1 MB 초과 → 413. 상한을 넘은 뒤로는 **모아 두지 않고 흘려보내며**(메모리는 1 MB 를 넘지 않는다),
+ *   끝까지 받은 뒤 413을 돌려준다 — 그래야 보낸 쪽이 상태 코드와 BridgeFailure 본문을 받는다.
+ *   끝없이 보내는 요청은 Node 의 requestTimeout 이 끊는다.
  * - JSON이 아니면 → 400
  */
 export function readJsonBody(
@@ -117,11 +116,6 @@ export function readJsonBody(
       if (total > limit) {
         tooLarge = true;
         chunks.length = 0;
-
-        if (total > DRAIN_LIMIT_BYTES) {
-          req.destroy();
-          settle({ ok: false, status: 413, sendable: false });
-        }
 
         return;
       }

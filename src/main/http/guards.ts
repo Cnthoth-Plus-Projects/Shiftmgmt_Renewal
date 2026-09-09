@@ -12,13 +12,16 @@ export function allowedOrigins(port: number): string[] {
   return [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
 }
 
-/** S4 ⓑ — Host 헤더가 허용 목록과 정확히 일치해야 한다(아니면 400) */
+/**
+ * S4 ⓑ — Host 헤더가 허용 목록과 **정확히** 일치해야 한다(아니면 400).
+ * 대소문자를 접어 비교하지 않는다 — 「정확 일치」가 규칙이고, 크롬은 언제나 소문자로 보낸다.
+ */
 export function isAllowedHost(hostHeader: string | undefined, port: number): boolean {
   if (typeof hostHeader !== "string") {
     return false;
   }
 
-  return allowedHosts(port).includes(hostHeader.trim().toLowerCase());
+  return allowedHosts(port).includes(hostHeader.trim());
 }
 
 /**
@@ -29,13 +32,14 @@ export function isAllowedHost(hostHeader: string | undefined, port: number): boo
 export function isTrustedRequestSource(headers: IncomingHttpHeaders, port: number): boolean {
   const origin = typeof headers.origin === "string" ? headers.origin.trim() : undefined;
   const fetchSiteRaw = headers["sec-fetch-site"];
-  const fetchSite = typeof fetchSiteRaw === "string" ? fetchSiteRaw.trim().toLowerCase() : undefined;
+  const fetchSite = typeof fetchSiteRaw === "string" ? fetchSiteRaw.trim() : undefined;
 
   if (origin === undefined && fetchSite === undefined) {
     return false;
   }
 
-  if (origin !== undefined && !allowedOrigins(port).includes(origin.toLowerCase())) {
+  // 대소문자를 접지 않는다(「정확 일치」 규칙). 크롬은 언제나 소문자로 보낸다.
+  if (origin !== undefined && !allowedOrigins(port).includes(origin)) {
     return false;
   }
 

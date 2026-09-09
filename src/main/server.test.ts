@@ -68,7 +68,7 @@ function jsonHeaders(extra: Record<string, string> = {}): Record<string, string>
 
 beforeAll(async () => {
   server = createServer({
-    version: versionText,
+    // version 은 일부러 넘기지 않는다 — 서버가 VERSION 파일을 스스로 읽는지를 시험 2가 확인한다.
     dataDir: path.join(repoRoot, "data"),
     // 빌드하지 않아도 시험할 수 있게 원본 화면 폴더를 정적 루트로 쓴다(빌드본은 이 파일을 그대로 복사한 것).
     staticRoot: path.join(repoRoot, "src"),

@@ -51,6 +51,8 @@ beforeAll(async () => {
 
   mkdirSync(path.join(staticRoot, "web", "assets", "woff2"), { recursive: true });
   writeFileSync(path.join(temporaryRoot, "OUTSIDE.txt"), MARKER, "utf8");
+  // 형식 표에 있는 확장자로도 하나 둔다(시험 11이 경로 검사만 남겨 두고 확인하기 위해).
+  writeFileSync(path.join(temporaryRoot, "OUTSIDE.css"), `/* ${MARKER} */`, "utf8");
   writeFileSync(path.join(staticRoot, "web", "styles.css"), "body { margin: 0; }", "utf8");
   writeFileSync(path.join(staticRoot, "web", "app.js"), "", "utf8");
   writeFileSync(path.join(staticRoot, "web", "app.js.map"), "", "utf8");
@@ -86,7 +88,10 @@ describe("정적 파일", () => {
       "/..%5cOUTSIDE.txt",
       "/%252e%252e/OUTSIDE.txt",
       "/web/%zz.css",
-      "/web/a%00.css"
+      "/web/a%00.css",
+      // 위 7개가 지시서 §6-9 목록이고, 아래는 「형식을 아는 확장자」로도 막히는지 함께 본다.
+      "/../OUTSIDE.css",
+      "/web/styles.css?q=%2f"
     ];
 
     for (const target of targets) {
@@ -111,7 +116,9 @@ describe("정적 파일", () => {
     const stat = vi.fn(async () => ({ isFile: () => true }));
     const files = createStaticFiles({ root: staticRoot, readFile, stat });
 
-    for (const target of ["/../OUTSIDE.txt", "/%2e%2e/OUTSIDE.txt", "/..%5cOUTSIDE.txt"]) {
+    // 확장자를 **내줄 수 있는 것**(.css)으로 둔다 — 그래야 404 의 이유가 「형식을 모른다」가 아니라
+    // 「루트 밖이라 경로 검사에서 걸렸다」임이 분명해진다(.txt 는 형식 표에 없어 어차피 404다).
+    for (const target of ["/../OUTSIDE.css", "/%2e%2e/OUTSIDE.css", "/../OUTSIDE.txt", "/..%5cOUTSIDE.txt"]) {
       const result = await files.serve(target);
 
       expect(result.status, target).toBe(404);

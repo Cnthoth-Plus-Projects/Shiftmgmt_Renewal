@@ -67,9 +67,14 @@
   - 열기(파일) 3 · 열기(폴더) 1 → 취소 = `{ ok: true, data: null }`
   - `dashboard:export-chart-data` · `dashboard:export-report` → 취소 = `{ ok: false, errorCode: "EXPORT_CANCELLED" }`
   - `operations:preview-document-template` → 취소 = `{ ok: true, data: null }`
-- 실행기(1-3c에서 구현): `powershell.exe -NoProfile -STA`(Windows PowerShell 5.1)로 `OpenFileDialog`·`FolderBrowserDialog`·`SaveFileDialog` 를 띄우고 고른 경로를 받는다. 경로 열기는 `Start-Process`.
+- 실행기(1-3c에서 구현): 서버가 `powershell.exe -NoProfile -STA`(Windows PowerShell 5.1)로 `System.Windows.Forms` 의
+  `OpenFileDialog`·`FolderBrowserDialog`·`SaveFileDialog` 를 띄우고(TopMost 소유 창으로 사용자 앞에 보이게), 고른 경로를 **표준출력 1줄**로 받는다.
+  경로 열기는 `Start-Process <경로>`(OS 기본 연결 프로그램).
 - 한 번에 창 하나(동시 호출은 앞의 것이 끝날 때까지 **차례로 하나씩**).
 - `buttonLabel` 인수는 Windows 창이 지원하지 않아 **받되 무시**한다. `title`·`defaultPath`·`filters` 는 대응한다.
+- **시험 방법**: 테스트에서는 대화상자 함수를 **주입**한다(원본 `runIpcOpenPathAction` 의 `openPath` 주입과 같은 방식).
+  실제로 창이 뜨는 모습은 검토 단계(⑤)에서 사람이 **1회** 눈으로 확인한다.
+- **아직 안 정한 것**: 폴더 선택 창의 모양(PowerShell 5.1 의 구형 트리 창 vs 7 의 신형 창)은 **1-3c 에서 실측해 고정**한다.
 - 1-3c 구현 필수 조건: 경로·옵션을 명령 문자열에 끼워 넣지 말고 **JSON 표준입력**으로 넘긴다 · 표준출력 UTF-8 명시 · 표준오류 분리 ·
   비정상 종료는 채널별 `BridgeFailure` 로 변환 · 서버 종료·요청 중단 시 창 프로세스 정리 · 대기열 1개 · `FolderBrowserDialog` 의 `title` 은 `Description` 으로 · `Start-Process` 도 변수의 `-FilePath` 로.
 

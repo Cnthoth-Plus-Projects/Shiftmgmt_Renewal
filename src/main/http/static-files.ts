@@ -45,14 +45,14 @@ const BAD_PERCENT = /%(?![0-9a-fA-F]{2})/;
  * 루트 밖이거나 형식이 수상하면 null(= 404). 파일 시스템은 건드리지 않는다.
  */
 export function resolveStaticPath(root: string, rawTarget: string): string | null {
-  const rawPath = rawTarget.split("?")[0].split("#")[0];
-
-  if (rawPath.length === 0 || !rawPath.startsWith("/")) {
+  // 검사 대상은 **요청 줄에 적힌 그대로**(질의 문자열 포함)다 — 뒤를 잘라내고 보면 검사에 구멍이 생긴다.
+  if (ENCODED_SEPARATORS.test(rawTarget) || rawTarget.includes("\\") || BAD_PERCENT.test(rawTarget)) {
     return null;
   }
 
-  // 인코딩된 경로 구분자·널 문자·역슬래시·잘못된 퍼센트 인코딩은 그 자리에서 거부한다.
-  if (ENCODED_SEPARATORS.test(rawPath) || rawPath.includes("\\") || BAD_PERCENT.test(rawPath)) {
+  const rawPath = rawTarget.split("?")[0].split("#")[0];
+
+  if (rawPath.length === 0 || !rawPath.startsWith("/")) {
     return null;
   }
 

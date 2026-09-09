@@ -67,6 +67,22 @@ page.on("response", (response) => {
   }
 });
 
+/** 기다리는 일마다 상한을 씌운다(멈춘 채로 영원히 기다리지 않게). */
+function withTimeout(promise, milliseconds, what) {
+  let timer;
+
+  return Promise.race([
+    promise,
+    new Promise((_resolve, reject) => {
+      timer = setTimeout(() => {
+        reject(new Error(`${what} 을(를) ${milliseconds / 1000}초 안에 마치지 못했습니다.`));
+      }, milliseconds);
+    })
+  ]).finally(() => {
+    clearTimeout(timer);
+  });
+}
+
 let failure = null;
 
 try {
@@ -74,6 +90,10 @@ try {
     (response) => response.url().includes("/api/health") && response.status() === 200,
     { timeout: WAIT_TIMEOUT_MS }
   );
+
+  // 페이지 열기가 먼저 실패해도 이 기다림이 「아무도 안 받은 거절」이 되지 않게 미리 받아 둔다
+  // (그래야 아래 catch 로 내려가 한국어 안내 + 종료 코드 2 로 끝난다).
+  healthResponse.catch(() => undefined);
 
   await page.goto(url, { waitUntil: "load", timeout: WAIT_TIMEOUT_MS });
   await healthResponse;
@@ -84,14 +104,22 @@ try {
     { timeout: WAIT_TIMEOUT_MS }
   );
 
-  await page.evaluate(() => document.fonts.ready);
+  await withTimeout(
+    page.evaluate(() => document.fonts.ready.then(() => true)),
+    WAIT_TIMEOUT_MS,
+    "글꼴 준비"
+  );
   await page.screenshot({ path: outPath });
 } catch (error) {
   failure = error;
 }
 
-await context.close();
-await browser.close();
+try {
+  await context.close();
+  await browser.close();
+} catch {
+  // 크롬이 이미 닫혔으면 그만이다 — 아래 판정에는 영향이 없다.
+}
 
 if (failure !== null) {
   process.stderr.write(`화면을 찍지 못했습니다: ${failure.message}\n`);
