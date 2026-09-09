@@ -7,6 +7,7 @@
 // 요청 검문·보안 헤더·정적 파일 규칙은 http/ 아래 파일들이 갖고 있다.
 import { createServer as createHttpServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import type { Socket } from "node:net";
 import os from "node:os";
 import path from "node:path";
 
@@ -240,6 +241,16 @@ export function startServer(options: StartServerOptions = {}): Server {
 
   const server = createServer({ ...options, version, dataDir });
 
+  // 크롬은 연결을 열어 둔 채(keep-alive) 기다린다. 끝낼 때 이 연결들을 끊어야 포트가 곧바로 정리된다.
+  const openSockets = new Set<Socket>();
+
+  server.on("connection", (socket) => {
+    openSockets.add(socket);
+    socket.on("close", () => {
+      openSockets.delete(socket);
+    });
+  });
+
   server.listen(port, "127.0.0.1", () => {
     const actual = currentPort(server);
 
@@ -253,7 +264,12 @@ export function startServer(options: StartServerOptions = {}): Server {
     server.close(() => {
       process.exit(0);
     });
-    // 크롬이 열어 둔 연결(keep-alive)까지 끊어야 포트가 곧바로 풀린다.
+
+    // 남은 연결을 즉시 끊는다(끊긴 연결이 OS 목록에 남아 8734 가 오래 보이는 것을 막는다).
+    for (const socket of openSockets) {
+      socket.resetAndDestroy();
+    }
+
     server.closeAllConnections();
   };
 
