@@ -241,7 +241,11 @@ export function startServer(options: StartServerOptions = {}): Server {
 
   const server = createServer({ ...options, version, dataDir });
 
-  // 크롬은 연결을 열어 둔 채(keep-alive) 기다린다. 끝낼 때 이 연결들을 끊어야 포트가 곧바로 정리된다.
+  // 크롬은 연결을 열어 둔 채(keep-alive) 기다린다.
+  // 놀고 있는 연결을 서버가 먼저 끊으면 상대(크롬)가 응답하지 않는 한 OS 목록에 오래 남으므로,
+  // 끊지 않고 갖고 있다가 종료할 때 한꺼번에 정리한다(같은 PC 안, 사용자 한 명이라 연결 수가 적다).
+  server.keepAliveTimeout = 0;
+
   const openSockets = new Set<Socket>();
 
   server.on("connection", (socket) => {
@@ -261,16 +265,18 @@ export function startServer(options: StartServerOptions = {}): Server {
 
   const shutdown = (signal: string): void => {
     process.stdout.write(`서버를 종료합니다(${signal}).\n`);
-    server.close(() => {
-      process.exit(0);
-    });
-
-    // 남은 연결을 즉시 끊는다(끊긴 연결이 OS 목록에 남아 8734 가 오래 보이는 것을 막는다).
+    // 남은 연결을 먼저 끊는다(끊긴 연결이 OS 목록에 남아 8734 가 오래 보이는 것을 막는다).
     for (const socket of openSockets) {
       socket.resetAndDestroy();
     }
 
     server.closeAllConnections();
+    server.close(() => {
+      // 연결을 끊는 신호가 실제로 나갈 짬을 준 뒤 끝낸다.
+      setTimeout(() => {
+        process.exit(0);
+      }, 150);
+    });
   };
 
   process.on("SIGINT", () => {
