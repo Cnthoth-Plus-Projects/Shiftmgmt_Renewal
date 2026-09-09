@@ -8,7 +8,7 @@ import type { AddressInfo } from "node:net";
 import type { Server } from "node:http";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { createServer } from "./server";
+import { createServer, startServer } from "./server";
 
 const repoRoot = process.cwd();
 const versionText = readFileSync(path.join(repoRoot, "VERSION"), "utf8").trim();
@@ -111,10 +111,49 @@ afterAll(async () => {
 });
 
 describe("창구 서버", () => {
-  it("1. 127.0.0.1 에만 귀를 연다", () => {
-    const address = server.address() as AddressInfo;
+  it("1. 127.0.0.1 에만 귀를 연다(운영 경로 startServer 를 실제로 태운다)", async () => {
+    // 위쪽 시험용 서버는 이 파일이 직접 listen 한 것이라 **운영 바인딩을 보증하지 못한다**
+    // (server.ts 의 listen 을 0.0.0.0 으로 바꿔도 빨간불이 되지 않았다 — Codex ⑥ 지적).
+    // 그래서 운영 진입점 startServer 를 port 0 으로 직접 띄워 그 서버의 주소를 본다.
+    const sigintBefore = new Set<unknown>(process.listeners("SIGINT"));
+    const sigtermBefore = new Set<unknown>(process.listeners("SIGTERM"));
 
-    expect(address.address).toBe("127.0.0.1");
+    const production = startServer({
+      port: 0,
+      version: versionText,
+      dataDir: path.join(repoRoot, "data"),
+      staticRoot: path.join(repoRoot, "src"),
+      log: () => {}
+    });
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        production.once("listening", resolve);
+        production.once("error", reject);
+      });
+
+      expect((production.address() as AddressInfo).address).toBe("127.0.0.1");
+    } finally {
+      await new Promise<void>((resolve) => {
+        production.close(() => resolve());
+      });
+
+      // startServer 가 이 프로세스에 달아 둔 종료 신호 처리기를 걷어낸다(시험 뒤에 남기지 않는다).
+      for (const listener of process.listeners("SIGINT")) {
+        if (!sigintBefore.has(listener)) {
+          process.off("SIGINT", listener);
+        }
+      }
+
+      for (const listener of process.listeners("SIGTERM")) {
+        if (!sigtermBefore.has(listener)) {
+          process.off("SIGTERM", listener);
+        }
+      }
+    }
+
+    // 이 파일의 나머지 시험이 쓰는 서버도 같은 주소다.
+    expect((server.address() as AddressInfo).address).toBe("127.0.0.1");
   });
 
   it("2. GET /api/health 는 판 번호와 보안 헤더를 함께 돌려준다", async () => {
@@ -133,7 +172,7 @@ describe("창구 서버", () => {
     expect(response.headers["cache-control"]).toBe("no-store");
   });
 
-  it("3. Host 를 위조하면 400", async () => {
+  it("3. Host 를 위조하면 400(대소문자·허용 목록 표본 포함)", async () => {
     const response = await request({ path: "/api/health", headers: { Host: "evil.example" } });
 
     expect(response.status).toBe(400);
@@ -142,6 +181,19 @@ describe("창구 서버", () => {
 
     expect(payload.ok).toBe(false);
     expect(payload.errorCode).toBe("BAD_REQUEST");
+
+    // 「정확 일치」 규칙 — 대소문자를 접어 비교하지 않는다(대문자 LOCALHOST 는 허용 목록이 아니다).
+    const upperHost = await request({ path: "/api/health", headers: { Host: `LOCALHOST:${port}` } });
+
+    expect(upperHost.status, `Host: LOCALHOST:${port}`).toBe(400);
+    expect((JSON.parse(upperHost.body) as { errorCode: string }).errorCode).toBe("BAD_REQUEST");
+
+    // 허용 목록의 나머지 한 줄(소문자 localhost)은 실제로 통과해야 한다
+    // — 목록에서 지워도 빨간불이 되지 않던 자리다(Codex ⑥ 지적).
+    const lowerHost = await request({ path: "/api/health", headers: { Host: `localhost:${port}` } });
+
+    expect(lowerHost.status, `Host: localhost:${port}`).toBe(200);
+    expect((JSON.parse(lowerHost.body) as { ok: boolean }).ok).toBe(true);
 
     // Host 를 두 번 보내면(뒤엣것이 가려진다) 순서와 상관없이 거절한다.
     const first = await rawRequest([
@@ -185,7 +237,9 @@ describe("창구 서버", () => {
       { "Sec-Fetch-Site": "cross-site" },
       {},
       { Origin: "http://evil.example", "Sec-Fetch-Site": "same-origin" },
-      { Origin: good, "Sec-Fetch-Site": "cross-site" }
+      { Origin: good, "Sec-Fetch-Site": "cross-site" },
+      // 「정확 일치」 규칙 — 대소문자를 접어 비교하지 않는다(크롬은 언제나 소문자로 보낸다).
+      { Origin: `HTTP://127.0.0.1:${port}` }
     ];
 
     for (const headers of blocked) {
@@ -200,7 +254,13 @@ describe("창구 서버", () => {
       expect((JSON.parse(response.body) as { errorCode: string }).errorCode).toBe("FORBIDDEN");
     }
 
-    const allowed = [{ Origin: good }, { "Sec-Fetch-Site": "same-origin" }];
+    // 허용 목록의 나머지 한 줄(http://localhost)도 실제로 통과해야 한다
+    // — 목록에서 지워도 빨간불이 되지 않던 자리다(Codex ⑥ 지적).
+    const allowed = [
+      { Origin: good },
+      { "Sec-Fetch-Site": "same-origin" },
+      { Origin: `http://localhost:${port}` }
+    ];
 
     for (const headers of allowed) {
       const response = await request({

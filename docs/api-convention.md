@@ -16,10 +16,22 @@
 - `Content-Type: application/json`(`; charset=utf-8` 허용). **다른 형식은 받지 않는다** — 대화상자 채널도 JSON이다(§6).
 - 본문 = **인수 JSON 배열**. 선택 인수(`query?`)를 안 넘길 때는 **배열에서 생략**한다(`[]`).
   화면 껍데기는 뒤쪽 `undefined` 를 잘라내고 보낸다(JSON `null` 로 바뀌어 원본과 달라지는 것을 막는다).
+- **본문이 비었거나 최상위가 배열이 아니면 400 `BAD_REQUEST`** 다. 인수 0개도 반드시 `[]` 로 보낸다.
+  - 거절 대상: 빈 본문(0바이트) · JSON 문법 오류 · 문법은 맞지만 최상위가 **객체 `{}` · 문자열 `"x"` · 숫자 `1` · `null` · `true`/`false`** 인 것.
+  - **빈 본문을 `[]`(인수 0개)로 봐주지 않는다.** 봐주면 인수를 빠뜨린 호출이 조용히 「인수 없음」으로 실행돼 원본과 다른 결과가 나온다.
+  - 1-3a 테스트에 **빈 본문 · `{}` · `"x"` · `1` · `null` 5개 표본**을 두어 못박는다.
 - 본문 상한 **1 MB**(초과 = 413).
 - 요청은 이 프로그램 화면에서 온 것만 받는다: `Origin` 헤더가 있으면 `http://127.0.0.1:<포트>`·`http://localhost:<포트>` 와 정확히 같아야 하고,
   `Sec-Fetch-Site` 헤더가 있으면 `same-origin`·`none` 이어야 한다. 각 헤더는 있으면 독립으로 검사하고(하나라도 불신 값이면 403), 둘 다 없으면 403이다.
 - `Host` 헤더가 `127.0.0.1:<포트>`·`localhost:<포트>` 와 정확히 같지 않으면 400이다.
+- **「정확 일치」는 글자 그대로다 — 대소문자를 접어 비교하지 않는다.** `LOCALHOST:<포트>` · `HTTP://127.0.0.1:<포트>` 는 거절이다
+  (크롬은 언제나 소문자로 보내므로 실제 화면 요청은 막히지 않는다).
+- **같은 헤더가 두 번 이상 오면 거절한다** — `Host` 2개 이상 = 400, `Content-Type` 2개 이상 = 415. **순서와 무관**하다.
+  Node 는 같은 헤더가 여럿이면 첫 값만 남기므로, 이 검사가 없으면 `Host: 정확` + `Host: evil.example` 이 통과한다(실측: 보강 전 200).
+  검사는 합쳐진 값이 아니라 **`req.rawHeaders` 에서 이름 등장 횟수**로 센다.
+
+> ⚠️ 위 세 줄(정확 일치 · 중복 헤더 · 빈/비배열 본문)은 1-1 구현에서 실제 사고로 확인해 넣은 것이다(⑥ Codex 승인 항목 L · 지적 ⑥).
+> **1-3 구현에서 지우거나 느슨하게 바꾸지 않는다.**
 
 ## 3. 응답과 오류 코드
 
@@ -31,12 +43,12 @@
 
 | HTTP | errorCode | 언제 |
 |---|---|---|
-| 400 | `BAD_REQUEST` | Host 위조 · 본문이 JSON이 아님 |
+| 400 | `BAD_REQUEST` | Host 위조 · `Host` 헤더 2개 이상 · 본문이 JSON이 아님 · **빈 본문 · 최상위가 배열이 아닌 JSON** |
 | 401 | `UNAUTHORIZED` | 세션 없음 · 만료(1-3) |
 | 403 | `FORBIDDEN` | Origin·Sec-Fetch-Site 검사 실패 |
 | 404 | `NOT_FOUND` | 없는 채널 · 없는 파일 |
 | 413 | `PAYLOAD_TOO_LARGE` | 본문 1 MB 초과 |
-| 415 | `UNSUPPORTED_MEDIA_TYPE` | `application/json` 이 아님 |
+| 415 | `UNSUPPORTED_MEDIA_TYPE` | `application/json` 이 아님 · `Content-Type` 헤더 2개 이상 |
 | 500 | `INTERNAL_ERROR` | 처리 중 예외(원본 `getErrorMessage`) |
 
 - 모든 응답에는 보안 헤더 4종이 붙는다: `Content-Security-Policy`(인라인 스크립트·스타일 금지) · `X-Content-Type-Options: nosniff` · `Referrer-Policy: no-referrer` · `Cache-Control: no-store`. CORS 헤더는 두지 않는다.
