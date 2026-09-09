@@ -97,7 +97,11 @@ if (bundleExists) {
 
 const sharedOut = path.join(root, "dist", "browser", "shared");
 
-record("dist/browser/shared 없음", !existsSync(sharedOut), path.relative(root, sharedOut));
+record(
+  "dist/browser/shared 없음",
+  !existsSync(sharedOut),
+  existsSync(sharedOut) ? `있으면 안 되는 폴더가 있습니다: ${path.relative(root, sharedOut)}` : "없음 확인"
+);
 
 // 결과 표
 const width = Math.max(...results.map((item) => item.name.length));
