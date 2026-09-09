@@ -11,7 +11,12 @@ import type { Socket } from "node:net";
 import os from "node:os";
 import path from "node:path";
 
-import { isAllowedHost, isJsonContentType, isTrustedRequestSource } from "./http/guards";
+import {
+  countHeaderOccurrences,
+  isAllowedHost,
+  isJsonContentType,
+  isTrustedRequestSource
+} from "./http/guards";
 import { readJsonBody, sendFailure, sendJson } from "./http/json";
 import { applySecurityHeaders } from "./http/security-headers";
 import { createStaticFiles } from "./http/static-files";
@@ -129,8 +134,8 @@ export function createServer(options: CreateServerOptions = {}): Server {
 
     const port = currentPort(server);
 
-    // S4 ⓑ — Host 위조 차단
-    if (!isAllowedHost(req.headers.host, port)) {
+    // S4 ⓑ — Host 위조 차단(Host 가 두 번 이상 오면 뒤엣것이 가려지므로 그것도 거절한다)
+    if (countHeaderOccurrences(req.rawHeaders, "host") !== 1 || !isAllowedHost(req.headers.host, port)) {
       sendFailure(res, 400);
       return;
     }
@@ -190,8 +195,11 @@ export function createServer(options: CreateServerOptions = {}): Server {
       return;
     }
 
-    // S4 ⓒ — JSON 만 받는다(예외 없음)
-    if (!isJsonContentType(req.headers["content-type"])) {
+    // S4 ⓒ — JSON 만 받는다(예외 없음. Content-Type 이 두 번 이상 와도 거절한다)
+    if (
+      countHeaderOccurrences(req.rawHeaders, "content-type") !== 1 ||
+      !isJsonContentType(req.headers["content-type"])
+    ) {
       sendFailure(res, 415);
       return;
     }

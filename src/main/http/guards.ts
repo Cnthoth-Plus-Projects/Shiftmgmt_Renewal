@@ -2,6 +2,24 @@
 // 서버는 같은 PC(127.0.0.1)에서만 쓰이므로, 다른 곳에서 온 요청은 전부 막는다.
 import type { IncomingHttpHeaders } from "node:http";
 
+/**
+ * 같은 이름의 헤더가 몇 번 왔는지 센다.
+ * Node 는 `Host`·`Content-Type` 이 여러 번 오면 **첫 값만** 남기므로,
+ * 뒤에 붙은 값을 못 보고 통과시키지 않으려면 원본 헤더 목록을 직접 세야 한다.
+ */
+export function countHeaderOccurrences(rawHeaders: readonly string[], name: string): number {
+  const target = name.toLowerCase();
+  let count = 0;
+
+  for (let index = 0; index < rawHeaders.length; index += 2) {
+    if (rawHeaders[index].toLowerCase() === target) {
+      count += 1;
+    }
+  }
+
+  return count;
+}
+
 /** 실제로 배정된 포트를 기준으로 만든 허용 Host 목록 */
 export function allowedHosts(port: number): string[] {
   return [`127.0.0.1:${port}`, `localhost:${port}`];

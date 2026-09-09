@@ -1,6 +1,7 @@
 // 서버 검문 규칙 시험(지시서 §6 1~8).
 // 서버는 port 0 으로 띄우고, Host 허용 목록은 실제로 배정된 포트를 기준으로 만들어진다.
 import http from "node:http";
+import { createConnection } from "node:net";
 import path from "node:path";
 import { readFileSync } from "node:fs";
 import type { AddressInfo } from "node:net";
@@ -66,6 +67,27 @@ function jsonHeaders(extra: Record<string, string> = {}): Record<string, string>
   return { "Content-Type": "application/json", ...extra };
 }
 
+/**
+ * 헤더를 **요청 줄에 적힌 그대로** 보낸다.
+ * 같은 헤더를 두 번 보내는 시험은 http.request 로는 못 한다(Node 가 하나로 합친다).
+ */
+function rawRequest(requestLines: string[], body = ""): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const socket = createConnection({ host: "127.0.0.1", port }, () => {
+      socket.write(`${requestLines.join("\r\n")}\r\n\r\n${body}`);
+    });
+
+    let received = "";
+
+    socket.setEncoding("utf8");
+    socket.on("data", (chunk: string) => {
+      received += chunk;
+    });
+    socket.on("end", () => resolve(received));
+    socket.on("error", reject);
+  });
+}
+
 beforeAll(async () => {
   server = createServer({
     // version 은 일부러 넘기지 않는다 — 서버가 VERSION 파일을 스스로 읽는지를 시험 2가 확인한다.
@@ -120,6 +142,23 @@ describe("창구 서버", () => {
 
     expect(payload.ok).toBe(false);
     expect(payload.errorCode).toBe("BAD_REQUEST");
+
+    // Host 를 두 번 보내면(뒤엣것이 가려진다) 순서와 상관없이 거절한다.
+    const first = await rawRequest([
+      "GET /api/health HTTP/1.1",
+      `Host: 127.0.0.1:${port}`,
+      "Host: evil.example",
+      "Connection: close"
+    ]);
+    const second = await rawRequest([
+      "GET /api/health HTTP/1.1",
+      "Host: evil.example",
+      `Host: 127.0.0.1:${port}`,
+      "Connection: close"
+    ]);
+
+    expect(first.startsWith("HTTP/1.1 400"), first.split("\r\n")[0]).toBe(true);
+    expect(second.startsWith("HTTP/1.1 400"), second.split("\r\n")[0]).toBe(true);
   });
 
   it("4. 없는 POST 창구는 404(BridgeFailure)", async () => {
@@ -186,6 +225,26 @@ describe("창구 서버", () => {
 
       expect(response.status, contentType).toBe(415);
       expect((JSON.parse(response.body) as { errorCode: string }).errorCode).toBe("UNSUPPORTED_MEDIA_TYPE");
+    }
+
+    // Content-Type 을 두 번 보내면(뒤엣것이 가려진다) 순서와 상관없이 거절한다.
+    for (const pair of [
+      ["Content-Type: application/json", "Content-Type: text/plain"],
+      ["Content-Type: text/plain", "Content-Type: application/json"]
+    ]) {
+      const raw = await rawRequest(
+        [
+          "POST /api/x HTTP/1.1",
+          `Host: 127.0.0.1:${port}`,
+          `Origin: http://127.0.0.1:${port}`,
+          ...pair,
+          "Content-Length: 2",
+          "Connection: close"
+        ],
+        "[]"
+      );
+
+      expect(raw.startsWith("HTTP/1.1 415"), raw.split("\r\n")[0]).toBe(true);
     }
   });
 
