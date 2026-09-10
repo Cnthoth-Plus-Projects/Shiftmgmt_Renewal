@@ -17,7 +17,8 @@
     "test": "vitest run --maxWorkers=1 --minWorkers=1",
     "validate:map": "node scripts/validate-codebase-map.mjs",
     "release:check": "node scripts/release-check.mjs",
-    "capture": "node scripts/capture-screen.mjs"
+    "capture": "node scripts/capture-screen.mjs",
+    "smoke": "node scripts/smoke-require.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9",
@@ -31,5 +32,10 @@
     "typescript": "^5.9",
     "typescript-eslint": "^8",
     "vitest": "^3.2"
+  },
+  "dependencies": {
+    "chokidar": "^5.0.0",
+    "electron": "file:./vendor/electron-compat",
+    "exceljs": "^4.4.0"
   }
 }

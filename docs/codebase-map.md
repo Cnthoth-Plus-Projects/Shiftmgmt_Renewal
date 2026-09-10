@@ -1,7 +1,7 @@
 # 코드 지도 (무슨 파일이 무슨 일을 하는가)
 
 > 파일을 옮기거나 지우면 `npm run validate:map` 이 이 문서를 먼저 잡는다(없는 경로를 가리키면 실패).
-> 1-1 시점의 저장소에는 아래 파일이 전부다. 업무 로직(src/shared, src/main/services)은 1-2에서 원본 0.5.4에서 복사해 들어온다.
+> 업무 로직(src/shared, src/main/services, src/main/ipc)은 1-2에서 원본 0.5.4에서 **복사해 들어왔다** — 아래 「업무 로직」 절. 그 파일들은 고치지 않는다.
 
 ## 뿌리
 
@@ -48,6 +48,18 @@
 | `src/main/http/health.ts` | 화면이 「서버 연결됨」을 확인하는 창구 |
 | `src/main/server.test.ts` | 검문 규칙 시험 8건 |
 | `src/main/http/static-files.test.ts` | 경로 탈출·형식 시험 5건 |
+
+## 업무 로직 (1-2에서 원본 0.5.4에서 복사해 왔다 — 고치지 않는다)
+
+| 폴더 | 하는 일 |
+|---|---|
+| `src/shared/domain` | 계산·판정 규칙 32개(수당 요율·근무표·권한 등). 화면과 서버가 함께 보는 순수 계산 코드다 |
+| `src/shared/lib` | 작은 공용 도구 3개(엑셀 열 글자·금액 표기·날짜 계산) |
+| `src/shared/config` | 고정 설정 4개(제품 이름·비밀번호 규칙·로그인 유지 규칙·주소 목록). 위 규칙 파일들이 불러 쓴다 |
+| `src/shared/bridge` | 화면과 서버가 주고받는 창구 111개의 계약표 1개(`src/shared/bridge/contracts.ts`). 이름·입출력은 바꾸지 않는다 |
+| `src/main/services` | 실제 업무를 처리하는 서비스 72개(엑셀 회수·승인·수당 계산·품의서 출력). 1-3에서 창구가 여기에 연결된다 |
+| `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개(`src/main/ipc/ipc-handler-helpers.ts`) |
+| `vendor/electron-compat` | PDF 자리 패키지 3개 — 복사본이 부르는 `electron` 이름만 풀어 준다. Phase 2.5-5 에서 실제 방식으로 대체된다 |
 
 ## 화면 (`src/web`)
 
