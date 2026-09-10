@@ -7,8 +7,8 @@
 
 | 파일 | 하는 일 |
 |---|---|
-| `package.json` | 실행·빌드·검사 명령(스크립트)과 개발 도구 목록. 실행 의존성은 없다(프로그램은 Node만으로 돈다) |
-| `package-lock.json` | 개발 도구의 정확한 판 번호 고정(`npm ci` 가 이 파일을 본다) |
+| `package.json` | 실행·빌드·검사 명령(스크립트)과 도구 목록. 실행 의존성은 3개뿐이다 — 엑셀 읽기·쓰기, 폴더 감시, 그리고 PDF 자리 패키지(`vendor/electron-compat`) |
+| `package-lock.json` | 실행 의존성과 개발 도구의 정확한 판 번호 고정(`npm ci` 가 이 파일을 본다) |
 | `./VERSION` | 이 프로그램의 판 번호 한 줄. 「적용」 스크립트와 `npm run release:check` 가 이 값을 본다 |
 | `./.gitignore` | 저장소에 담지 않을 것(설치 폴더·빌드 결과·데이터·캡처) |
 | `README.md` | 처음 여는 사람이 3줄로 실행하는 법 |
@@ -34,6 +34,7 @@
 | `scripts/capture-screen.mjs` | 실제 크롬으로 화면을 열어 PNG로 찍는다. 콘솔 오류나 400 이상 응답이 있으면 실패로 끝난다 |
 | `scripts/validate-codebase-map.mjs` | 이 지도가 가리키는 파일이 실제로 있는지 확인한다(원본 0.5.4 복사본, 수정 없음) |
 | `scripts/release-check.mjs` | 내보내기 전 점검: 판 번호 일치·작업 트리 깨끗·같은 판 태그 없음·검사 3종 통과·빌드 산출물 확인 |
+| `scripts/smoke-require.mjs` | 빌드 결과의 서비스가 정확히 72개이고 전부 불러와지는지 확인한다(`npm run smoke`) |
 
 ## 서버 (`src/main`)
 
@@ -59,6 +60,7 @@
 | `src/shared/bridge` | 화면과 서버가 주고받는 창구 111개의 계약표 1개(`src/shared/bridge/contracts.ts`). 이름·입출력은 바꾸지 않는다 |
 | `src/main/services` | 실제 업무를 처리하는 서비스 72개(엑셀 회수·승인·수당 계산·품의서 출력). 1-3에서 창구가 여기에 연결된다 |
 | `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개(`src/main/ipc/ipc-handler-helpers.ts`) |
+| `양식샘플` | 원본에서 가져온 엑셀 양식·실제 산출물 견본 9개(근무표 템플릿·샘플, 품의서, 별첨1·2). 출력 모양을 맞출 때 대조용으로 쓴다 |
 | `vendor/electron-compat` | PDF 자리 패키지 3개 — 복사본이 부르는 `electron` 이름만 풀어 준다. Phase 2.5-5 에서 실제 방식으로 대체된다 |
 
 ## 화면 (`src/web`)
