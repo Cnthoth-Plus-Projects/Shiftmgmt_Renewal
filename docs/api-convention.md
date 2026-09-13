@@ -1,7 +1,7 @@
 # 창구 규약 (화면 ↔ 서버)
 
-> 이 문서가 1-3(창구 구현)의 기준이다. 1-1에서는 이 문서와 헬퍼 뼈대만 만든다.
-> 근거: Phase 1-1 셋업 지시서 v1.3 §5 · S12 · 별첨 계약표 111행 v0.2(아래 부록 = 원본 파일 사본).
+> 이 문서가 1-3(창구 구현)의 기준이다. Phase 1-3 S1에서 공통 통신 기반, 세션 관리, 다이얼로그 브리지, 브라우저 브리지, Core 17개 라우트가 확정·구현되었다.
+> 근거: Phase 1-1 셋업 지시서 v1.3 §5 · S12 · Phase 1-3 S1 지시서 · 별첨 계약표 111행 v0.2(아래 부록 = 원본 파일 사본).
 > 화면 코드가 바뀌지 않도록 **채널 이름·인수·반환형(계약 111개)은 원본 0.5.4 그대로** 둔다.
 
 ## 1. 주소
@@ -10,16 +10,17 @@
   - 111 = 원본 `src/preload/index.ts` 의 `ipcRenderer.invoke` 111개 = `src/main/ipc/register-*.ts` 의 `ipcMain.handle` 111개.
 - `GET /api/health` 하나만 GET을 허용한다(주소창으로 서버가 살아 있는지 확인하는 용도).
 - 그 밖의 `GET /api/*` 는 404다.
+- **S1 상태**: S1 단계에서는 **core 17개 채널만 서버에 등록**되어 있으며, 나머지 94개 채널은 성공 스텁 없이 404 `NOT_FOUND`로 유지된다.
 
 ## 2. 요청
 
 - `Content-Type: application/json`(`; charset=utf-8` 허용). **다른 형식은 받지 않는다** — 대화상자 채널도 JSON이다(§6).
 - 본문 = **인수 JSON 배열**. 선택 인수(`query?`)를 안 넘길 때는 **배열에서 생략**한다(`[]`).
-  화면 껍데기는 뒤쪽 `undefined` 를 잘라내고 보낸다(JSON `null` 로 바뀌어 원본과 달라지는 것을 막는다).
+  화면 껍데기(`src/web/bridge/app-bridge.ts`)는 뒤쪽 `undefined` 를 잘라내고 보낸다(JSON `null` 로 바뀌어 원본과 달라지는 것을 막는다).
 - **본문이 비었거나 최상위가 배열이 아니면 400 `BAD_REQUEST`** 다. 인수 0개도 반드시 `[]` 로 보낸다.
   - 거절 대상: 빈 본문(0바이트) · JSON 문법 오류 · 문법은 맞지만 최상위가 **객체 `{}` · 문자열 `"x"` · 숫자 `1` · `null` · `true`/`false`** 인 것.
   - **빈 본문을 `[]`(인수 0개)로 봐주지 않는다.** 봐주면 인수를 빠뜨린 호출이 조용히 「인수 없음」으로 실행돼 원본과 다른 결과가 나온다.
-  - 1-3a 테스트에 **빈 본문 · `{}` · `"x"` · `1` · `null` 5개 표본**을 두어 못박는다.
+  - 1-3 S1 테스트에 **빈 본문 · `{}` · `"x"` · `1` · `null` · 불리언 표본**을 두어 못박았다.
 - 본문 상한 **1 MB**(초과 = 413).
 - 요청은 이 프로그램 화면에서 온 것만 받는다: `Origin` 헤더가 있으면 `http://127.0.0.1:<포트>`·`http://localhost:<포트>` 와 정확히 같아야 하고,
   `Sec-Fetch-Site` 헤더가 있으면 `same-origin`·`none` 이어야 한다. 각 헤더는 있으면 독립으로 검사하고(하나라도 불신 값이면 403), 둘 다 없으면 403이다.
@@ -27,11 +28,11 @@
 - **「정확 일치」는 글자 그대로다 — 대소문자를 접어 비교하지 않는다.** `LOCALHOST:<포트>` · `HTTP://127.0.0.1:<포트>` 는 거절이다
   (크롬은 언제나 소문자로 보내므로 실제 화면 요청은 막히지 않는다).
 - **같은 헤더가 두 번 이상 오면 거절한다** — `Host` 2개 이상 = 400, `Content-Type` 2개 이상 = 415. **순서와 무관**하다.
-  Node 는 같은 헤더가 여럿이면 첫 값만 남기므로, 이 검사가 없으면 `Host: 정확` + `Host: evil.example` 이 통과한다(실측: 보강 전 200).
+  Node 는 같은 헤더가 여럿이면 첫 값만 남기므로, 이 검사가 없으면 `Host: 정확` + `Host: evil.example` 이 통과한다.
   검사는 합쳐진 값이 아니라 **`req.rawHeaders` 에서 이름 등장 횟수**로 센다.
 
-> ⚠️ 위 세 줄(정확 일치 · 중복 헤더 · 빈/비배열 본문)은 1-1 구현에서 실제 사고로 확인해 넣은 것이다(⑥ Codex 승인 항목 L · 지적 ⑥).
-> **1-3 구현에서 지우거나 느슨하게 바꾸지 않는다.**
+> ⚠️ 위 세 줄(정확 일치 · 중복 헤더 · 빈/비배열 본문)은 1-1 및 1-3 S1 구현에서 실제 사고로 확인해 넣은 것이다.
+> **지우거나 느슨하게 바꾸지 않는다.**
 
 ## 3. 응답과 오류 코드
 
@@ -39,68 +40,58 @@
   - 110개 = `BridgeResult<T>` — `{ ok: true, data }` 또는 `{ ok: false, errorCode, message }`(원본 `src/shared/bridge/contracts.ts:869-880`).
   - **예외 1개 = `app:get-version`** → JSON 문자열(`"0.1.0"`, 원본 `contracts.ts:883`).
 - 계약이 만든 결과는 실패 결과라도 **HTTP 200** 으로 보낸다(업무 실패 ≠ 통신 실패).
+  - 단, **D3 결정**: `auth:change-password`는 세션 없이 호출된 경우 가드 수준 거절이므로 HTTP 401 `AUTH_PASSWORD_CHANGE_SESSION_REQUIRED`를 반환하고, 세션이 있는 상태에서 비밀번호 틀림 등 업무 실패는 HTTP 200 `{ ok: false, errorCode: "AUTH_PASSWORD_CHANGE_FAILED", ... }`를 반환한다.
 - 통신·검문 단계의 오류는 아래 상태로 보내되 **본문은 항상 `BridgeFailure`** 다.
 
 | HTTP | errorCode | 언제 |
 |---|---|---|
 | 400 | `BAD_REQUEST` | Host 위조 · `Host` 헤더 2개 이상 · 본문이 JSON이 아님 · **빈 본문 · 최상위가 배열이 아닌 JSON** |
-| 401 | `UNAUTHORIZED` | 세션 없음 · 만료(1-3) |
-| 403 | `FORBIDDEN` | Origin·Sec-Fetch-Site 검사 실패 |
-| 404 | `NOT_FOUND` | 없는 채널 · 없는 파일 |
+| 401 | `AUTH_SESSION_REQUIRED` / `AUTH_PASSWORD_CHANGE_SESSION_REQUIRED` | 세션 가드 채널에 세션 쿠키 없음 · 만료 · 위조 세션 |
+| 403 | `FORBIDDEN` / `AUTH_ACTION_FORBIDDEN` / `AUTH_ADMIN_REQUIRED` / `AUTH_ACCESS_HISTORY_REQUIRED` | Origin·Sec-Fetch-Site 검사 실패 또는 권한 가드 불충족 |
+| 404 | `NOT_FOUND` | 없는 채널 · 미구현 채널(94개) · 없는 파일 |
 | 413 | `PAYLOAD_TOO_LARGE` | 본문 1 MB 초과 |
 | 415 | `UNSUPPORTED_MEDIA_TYPE` | `application/json` 이 아님 · `Content-Type` 헤더 2개 이상 |
 | 500 | `INTERNAL_ERROR` | 처리 중 예외(원본 `getErrorMessage`) |
 
 - 모든 응답에는 보안 헤더 4종이 붙는다: `Content-Security-Policy`(인라인 스크립트·스타일 금지) · `X-Content-Type-Options: nosniff` · `Referrer-Policy: no-referrer` · `Cache-Control: no-store`. CORS 헤더는 두지 않는다.
 
-## 4. 세션 (1-3a)
+## 4. 세션 (1-3a / S1)
 
-- `auth:sign-in` 이 성공하면 서버가 `crypto.randomBytes(32).toString("hex")` 로 세션 id를 새로 발급하고
+- `auth:sign-in` 이 성공하면 서버가 `crypto.randomBytes(32).toString("hex")` 로 64자리 hex 세션 id를 새로 발급하고
   `Set-Cookie: sm_session=<id>; HttpOnly; SameSite=Strict; Path=/` 로 내려 준다(로그인마다 새로).
-- 서버 메모리에 `Map<id, { session, issuedAt, lastSeenAt }>` 로 보관한다.
-- 만료·갱신·로그아웃 판정은 원본 `auth-service.ts`·`ipc-auth-guard-service.ts` 의 규칙을 **그대로** 옮긴다(1-3a 지시서에서 줄 번호로 고정).
-- `auth:sign-out` 이 지운다. 프로그램을 다시 켜면 전부 로그아웃이다(원본과 같은 단일 프로세스 의미).
+- 서버 메모리에 단일 세션 인스턴스(`activeSession`)로 보관한다(단일 사용자 원칙).
+- 만료(30분 무활동)·갱신(세션 접근 시마다 `lastSeenAt` 갱신)·로그아웃 판정은 원본 `auth-service.ts`·`ipc-auth-guard-service.ts` 의 규칙을 **그대로** 옮겼다.
+- `auth:sign-out` 이 세션을 파기하고 만료 쿠키(`Max-Age=0`)를 발행한다. 프로그램을 다시 켜면 전부 로그아웃이다(단일 프로세스 메모리 수명).
 
-## 5. 가드와 활동 기록 (1-3a)
+## 5. 가드와 활동 기록 (1-3a / S1)
 
-- 원본 `withSession` · `withActionPermission` · `withAdmin` · `withAccessHistory`(`main.ts:78-119`)와
-  `recordSuccessfulActivity`(`main.ts:126-170`)를 **같은 이름·같은 판정**으로 서버 한 곳(`src/main/http/session.ts`)에 옮긴다.
-- 채널별 가드는 부록 계약표의 열이 정본이다: withAdmin 40 · withSession 35 · withActionPermission 22 · withAccessHistory 1 · 없음 13.
-- 활동 기록은 계약표 「활동 기록」 열 **63채널**(핸들러가 직접 부르는 12 + `activity: trackSuccess(` 경유 51).
-- 원본 `src/main/ipc/ipc-handler-helpers.ts` 는 electron 의존이 없고(import 가 shared 타입 3개뿐) 그 테스트 15개가 1-4 이관 대상이므로 **그대로 복사**해서 쓴다.
-  복사 대상 헬퍼 6개와 원본 줄 번호: `runIpcAction`(:89) · `runIpcResultAction`(:108) · `runIpcActionWithCleanup`(:121) ·
-  `runIpcSaveDialogAction`(:160) · `runIpcSaveDialogResultAction`(:186) · `runIpcOpenPathAction`(:210). 어느 채널이 어느 헬퍼를 쓰는지는 **1-3a 지시서에서 확정**한다.
+- 원본 `withSession` · `withActionPermission` · `withAdmin` · `withAccessHistory` 와 `recordSuccessfulActivity` 를 `src/main/http/session.ts`에 완전 구현.
+- `src/main/http/route-registry.ts`에서 111 메타계약(`CHANNEL_CONTRACTS`)을 참조하여 각 채널의 가드를 자동 강제한다.
+- 활동 기록은 계약표 「활동 기록」 열 63채널 대상. 세션이 유효할 때 `recordAccessLog`를 호출하여 안전하게 기록한다.
+- 원본 `src/main/ipc/ipc-handler-helpers.ts`의 `runIpcAction`, `createIpcSuccess`, `createIpcFailure` 등을 안전하게 재사용한다.
 
-## 6. 대화상자 채널 8개 (S12)
+## 6. 대화상자 채널 8개 (S12 / S1)
 
 파일·폴더를 고르는 창은 **서버가 같은 PC의 Windows 창으로 띄운다**(0.5.4에서 보던 그 창이다).
 브라우저 업로드·다운로드로 바꾸지 않는다 — 고른 경로를 서버가 계속 쓰기 때문이다.
 
-- 요청·응답 형식은 다른 채널과 같다(`POST /api/<채널>` · `application/json` · 계약 반환형 JSON). 별도 endpoint 없음.
-- 계약 인수·반환형·**취소했을 때의 값**·활동 기록은 원본 그대로다.
-  - 열기(파일) 3 · 열기(폴더) 1 → 취소 = `{ ok: true, data: null }`
-  - `dashboard:export-chart-data` · `dashboard:export-report` → 취소 = `{ ok: false, errorCode: "EXPORT_CANCELLED" }`
-  - `operations:preview-document-template` → 취소 = `{ ok: true, data: null }`
-- 실행기(1-3c에서 구현): 서버가 `powershell.exe -NoProfile -STA`(Windows PowerShell 5.1)로 `System.Windows.Forms` 의
-  `OpenFileDialog`·`FolderBrowserDialog`·`SaveFileDialog` 를 띄우고(TopMost 소유 창으로 사용자 앞에 보이게), 고른 경로를 **표준출력 1줄**로 받는다.
-  경로 열기는 `Start-Process <경로>`(OS 기본 연결 프로그램).
-- 한 번에 창 하나(동시 호출은 앞의 것이 끝날 때까지 **차례로 하나씩**).
-- `buttonLabel` 인수는 Windows 창이 지원하지 않아 **받되 무시**한다. `title`·`defaultPath`·`filters` 는 대응한다.
-- **시험 방법**: 테스트에서는 대화상자 함수를 **주입**한다(원본 `runIpcOpenPathAction` 의 `openPath` 주입과 같은 방식).
-  실제로 창이 뜨는 모습은 검토 단계(⑤)에서 사람이 **1회** 눈으로 확인한다.
-- **아직 안 정한 것**(둘 다 1-3c 지시서에서 확정):
-  ① 채널 8개 각각의 창 옵션(`title`·`filters`·`defaultPath`) 값 — **원본 핸들러의 줄 번호로 못박는다**.
-  ② 폴더 선택 창의 모양(PowerShell 5.1 의 구형 트리 창 vs 7 의 신형 창) — **실측해 고정**한다.
-- 1-3c 구현 필수 조건: 경로·옵션을 명령 문자열에 끼워 넣지 말고 **JSON 표준입력**으로 넘긴다 · 표준출력 UTF-8 명시 · 표준오류 분리 ·
-  비정상 종료는 채널별 `BridgeFailure` 로 변환 · 서버 종료·요청 중단 시 창 프로세스 정리 · 대기열 1개 · `FolderBrowserDialog` 의 `title` 은 `Description` 으로 · `Start-Process` 도 변수의 `-FilePath` 로.
+- 실행기(`scripts/windows-dialog.ps1` 및 `src/main/http/dialog-bridge.ts`):
+  - `powershell.exe -NoProfile -STA` (Windows PowerShell 5.1) 프로세스를 단일 FIFO 큐로 실행.
+  - 대화상자 요청 명세를 UTF-8 JSON 표준입력(stdin)으로 넘기고, 결과 JSON 1줄을 표준출력(stdout)으로 받는다.
+  - 지원 operation: `openFile`, `openFolder`, `saveFile`, `openPath`.
+  - 취소 시: `{ cancelled: true, path: null }`.
+  - 프로세스 비정상 종료, 타임아웃, AbortSignal 발생 시 자식 프로세스를 즉시 강제 종료(kill)하고 리소스를 안전하게 해제.
+- **D6 결정**: S1의 `dashboard:export-chart-data` 및 `dashboard:export-report`는 다이얼로그 브리지를 통해 실제 파일 저장 창을 띄운다. 사용자가 취소하면 `{ ok: false, errorCode: "EXPORT_CANCELLED", message: "차트/대시보드 내보내기를 취소했습니다." }`를 반환하고, 경로를 선택하면 현재 단계에서는 기능 미지원 실패(`DASHBOARD_CHART_EXPORT_FAILED` / `DASHBOARD_REPORT_EXPORT_FAILED`)를 HTTP 200 본문으로 반환한다.
+- **D5 결정**: `app:get-update-state`, `app:check-for-update`, `app:download-update`, `app:install-update`, `app:dismiss-update-notice`는 일관되게 `enabled: false`, `status: "idle"`, `currentVersion: version`, `availableManifest: null`, `releaseNotesToShow: null`의 비활성화 스냅샷을 반환한다.
 
-## 7. 화면 껍데기 (1-3b)
+## 7. 브라우저 브리지 (1-3b / S1)
 
 `src/web/bridge/app-bridge.ts` 가 `window.appBridge` 에 111개 메서드를 **같은 이름·같은 반환형**으로 올린다.
 
-- 네트워크 실패 → `{ ok: false, errorCode: "NETWORK_ERROR", message: "서버에 연결할 수 없습니다. 프로그램이 켜져 있는지 확인하세요." }`
-- 응답이 JSON이 아니거나 형태가 어긋남 → `{ ok: false, errorCode: "INVALID_RESPONSE", message: "서버 응답을 읽을 수 없습니다." }`
-- `getAppVersion` 은 문자열을 그대로 돌려준다(실패하면 빈 문자열이 아니라 **거부**한다 — 원본과 같은 형태).
+- 메타 계약 111개 배열을 기반으로 자동 합성되며, 호출 시 인자의 후행 `undefined`를 제거하여 `POST /api/<channel>`로 JSON 배열을 전송한다.
+- `credentials: "same-origin"`으로 쿠키를 자동 동봉한다.
+- 네트워크 오류 시 `NETWORK_ERROR`, 응답 형식 이상 시 `INVALID_RESPONSE`를 일관되게 반환한다.
+- `getAppVersion` 은 순수 문자열(`string`)을 반환하며 비정상 시 reject한다.
 
 ---
 

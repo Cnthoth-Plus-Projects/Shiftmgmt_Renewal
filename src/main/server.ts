@@ -6,7 +6,7 @@
 //
 // 요청 검문·보안 헤더·정적 파일 규칙은 http/ 아래 파일들이 갖고 있다.
 import { createServer as createHttpServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import type { Socket } from "node:net";
 import os from "node:os";
 import path from "node:path";
@@ -17,10 +17,14 @@ import {
   isJsonContentType,
   isTrustedRequestSource
 } from "./http/guards";
-import { readJsonBody, sendFailure, sendJson } from "./http/json";
+import { readJsonArrayBody, sendFailure, sendJson } from "./http/json";
 import { applySecurityHeaders } from "./http/security-headers";
 import { createStaticFiles } from "./http/static-files";
 import { isApiPath, resolveGetRoute, resolvePostRoute, type ApiContext } from "./http/router";
+import type { RouteRegistry } from "./http/route-registry";
+import type { SessionManager } from "./http/session";
+import type { DialogBridge } from "./http/api-types";
+import { AppRuntime } from "./runtime";
 
 /** 기본 포트(환경변수 SHIFTMGMT_PORT 로 바꿀 수 있다) */
 export const DEFAULT_PORT = 8734;
@@ -91,6 +95,16 @@ export interface CreateServerOptions {
   staticRoot?: string;
   /** 요청 기록 1줄(기본값 = 표준 출력) */
   log?: (line: string) => void;
+  /** 라우트 레지스트리 */
+  routeRegistry?: RouteRegistry;
+  /** 세션 관리자 */
+  sessionManager?: SessionManager;
+  /** 다이얼로그 브리지 */
+  dialogBridge?: DialogBridge;
+  /** 런타임 */
+  runtime?: AppRuntime;
+  /** PowerShell 대화상자 스크립트 경로 */
+  scriptPath?: string;
 }
 
 /** 실제로 배정된 포트(port 0 으로 띄운 테스트에서도 이 값이 검문 기준이 된다) */
@@ -114,8 +128,26 @@ export function createServer(options: CreateServerOptions = {}): Server {
       process.stdout.write(`${line}\n`);
     });
 
+  const runtime =
+    options.runtime ??
+    new AppRuntime({
+      dataDir,
+      version,
+      scriptPath: options.scriptPath,
+      sessionManager: options.sessionManager,
+      dialogBridge: options.dialogBridge,
+      registry: options.routeRegistry,
+    });
+
+  if (!options.runtime) {
+    runtime.initialize();
+  }
+
+  const dialogBridge = options.dialogBridge ?? runtime.dialogBridge;
+  const routeRegistry = options.routeRegistry ?? runtime.registry;
+
   const staticFiles = createStaticFiles({ root: staticRoot });
-  const context: ApiContext = { version, dataDir };
+  const context: ApiContext = { version, dataDir, routeRegistry };
 
   const server = createHttpServer((req, res) => {
     void handleRequest(req, res);
@@ -204,14 +236,60 @@ export function createServer(options: CreateServerOptions = {}): Server {
       return;
     }
 
-    // S4 ⓖ — 1 MB 초과 413
-    const body = await readJsonBody(req);
+    // S4 ⓖ & R2 — 1 MB 초과 413, 비배열 400
+    const body = await readJsonArrayBody(req);
 
     if (!body.ok) {
       if (body.sendable) {
         sendFailure(res, body.status);
       }
 
+      return;
+    }
+
+    const channel = pathname.startsWith("/api/") ? pathname.slice(5) : "";
+
+    const abortController = new AbortController();
+    req.on("aborted", () => abortController.abort());
+    res.on("close", () => {
+      if (!res.writableEnded) {
+        abortController.abort();
+      }
+    });
+
+    if (routeRegistry) {
+      try {
+        const dispatchResult = await routeRegistry.dispatch(
+          channel,
+          body.value,
+          {
+            headers: req.headers,
+            cookie: req.headers.cookie,
+            signal: abortController.signal,
+            version,
+            dataDir,
+            dialogBridge,
+          },
+        );
+
+        if (dispatchResult === null) {
+          const fallback = resolvePostRoute(pathname);
+          if (fallback !== undefined) {
+            sendJson(res, 200, await fallback(body.value, context));
+            return;
+          }
+          sendFailure(res, 404);
+          return;
+        }
+
+        if (dispatchResult.setCookie) {
+          res.setHeader("Set-Cookie", dispatchResult.setCookie);
+        }
+
+        sendJson(res, dispatchResult.status, dispatchResult.body);
+      } catch {
+        sendFailure(res, 500);
+      }
       return;
     }
 
@@ -222,10 +300,8 @@ export function createServer(options: CreateServerOptions = {}): Server {
       return;
     }
 
-    const args = Array.isArray(body.value) ? body.value : [];
-
     try {
-      sendJson(res, 200, await handler(args, context));
+      sendJson(res, 200, await handler(body.value, context));
     } catch {
       sendFailure(res, 500);
     }
@@ -236,6 +312,7 @@ export function createServer(options: CreateServerOptions = {}): Server {
 
 export interface StartServerOptions extends CreateServerOptions {
   port?: number;
+  exit?: (code?: number) => void;
 }
 
 /** 데이터 폴더를 만들고 127.0.0.1 에만 듣기 시작한다. */
@@ -245,9 +322,28 @@ export function startServer(options: StartServerOptions = {}): Server {
   const dataDir = options.dataDir ?? resolveDataDir();
   const port = options.port ?? resolvePort();
 
-  mkdirSync(dataDir, { recursive: true });
+  const runtime =
+    options.runtime ??
+    new AppRuntime({
+      dataDir,
+      version,
+      scriptPath: options.scriptPath,
+      sessionManager: options.sessionManager,
+      dialogBridge: options.dialogBridge,
+      registry: options.routeRegistry,
+    });
 
-  const server = createServer({ ...options, version, dataDir });
+  runtime.initialize();
+
+  const server = createServer({
+    ...options,
+    version,
+    dataDir,
+    runtime,
+    routeRegistry: runtime.registry,
+    sessionManager: runtime.sessionManager,
+    dialogBridge: runtime.dialogBridge,
+  });
 
   // 크롬은 연결을 열어 둔 채(keep-alive) 기다린다.
   // 놀고 있는 연결을 서버가 먼저 끊으면 상대(크롬)가 응답하지 않는 한 OS 목록에 오래 남으므로,
@@ -266,32 +362,55 @@ export function startServer(options: StartServerOptions = {}): Server {
   server.listen(port, "127.0.0.1", () => {
     const actual = currentPort(server);
 
+    runtime.startBackground();
+
     process.stdout.write(
       `서버 실행 중 — http://127.0.0.1:${actual} · 판 ${version} · Node ${process.version} · 데이터 폴더: ${dataDir}\n`
     );
   });
 
-  const shutdown = (signal: string): void => {
-    process.stdout.write(`서버를 종료합니다(${signal}).\n`);
-    // 남은 연결을 먼저 끊는다(끊긴 연결이 OS 목록에 남아 8734 가 오래 보이는 것을 막는다).
-    for (const socket of openSockets) {
-      socket.resetAndDestroy();
+  let shutdownCoordinatorPromise: Promise<void> | null = null;
+
+  const shutdown = (signal: string): Promise<void> => {
+    if (shutdownCoordinatorPromise) {
+      return shutdownCoordinatorPromise;
     }
 
-    server.closeAllConnections();
-    server.close(() => {
-      // 연결을 끊는 신호가 실제로 나갈 짬을 준 뒤 끝낸다.
-      setTimeout(() => {
-        process.exit(0);
-      }, 150);
-    });
+    shutdownCoordinatorPromise = (async () => {
+      process.stdout.write(`서버를 종료합니다(${signal}).\n`);
+
+      for (const socket of openSockets) {
+        socket.resetAndDestroy();
+      }
+
+      server.closeAllConnections();
+
+      await new Promise<void>((resolve) => {
+        server.close(() => resolve());
+      });
+
+      await runtime.shutdownOnce();
+
+      const exitFn = options.exit ?? process.exit;
+      exitFn(0);
+    })();
+
+    return shutdownCoordinatorPromise;
   };
 
-  process.on("SIGINT", () => {
-    shutdown("SIGINT");
-  });
-  process.on("SIGTERM", () => {
-    shutdown("SIGTERM");
+  const sigintListener = () => {
+    void shutdown("SIGINT");
+  };
+  const sigtermListener = () => {
+    void shutdown("SIGTERM");
+  };
+
+  process.on("SIGINT", sigintListener);
+  process.on("SIGTERM", sigtermListener);
+
+  server.on("close", () => {
+    process.removeListener("SIGINT", sigintListener);
+    process.removeListener("SIGTERM", sigtermListener);
   });
 
   return server;

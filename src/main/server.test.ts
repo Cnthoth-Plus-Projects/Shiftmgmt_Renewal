@@ -339,4 +339,72 @@ describe("창구 서버", () => {
     expect(response.body).not.toMatch(/<style[\s>]/);
     expect(response.body).not.toMatch(/\sstyle=/);
   });
+
+  it("9. POST 본문이 JSON 배열이 아니면 400 BAD_REQUEST (N1)", async () => {
+    const invalidBodies = [
+      "",
+      "{}",
+      '{"a":1}',
+      '"hello"',
+      "42",
+      "null",
+      "true",
+      "false"
+    ];
+
+    for (const body of invalidBodies) {
+      const response = await request({
+        method: "POST",
+        path: "/api/app:get-version",
+        headers: jsonHeaders({ Origin: `http://127.0.0.1:${port}` }),
+        body
+      });
+
+      expect(response.status, `body: ${body}`).toBe(400);
+      const payload = JSON.parse(response.body) as { ok: boolean; errorCode: string };
+      expect(payload.ok).toBe(false);
+      expect(payload.errorCode).toBe("BAD_REQUEST");
+    }
+  });
+
+  it("10. 세션 가드 채널에 세션 쿠키 없이 요청하면 401 AUTH_SESSION_REQUIRED (N2)", async () => {
+    const response = await request({
+      method: "POST",
+      path: "/api/access-logs:list",
+      headers: jsonHeaders({ Origin: `http://127.0.0.1:${port}` }),
+      body: "[]"
+    });
+
+    expect(response.status).toBe(401);
+    const payload = JSON.parse(response.body) as { ok: boolean; errorCode: string };
+    expect(payload.ok).toBe(false);
+    expect(payload.errorCode).toBe("AUTH_SESSION_REQUIRED");
+  });
+
+  it("11. S1 구현 범위 밖의 채널은 404 NOT_FOUND 유지 (N12)", async () => {
+    const response = await request({
+      method: "POST",
+      path: "/api/operations:list-runs",
+      headers: jsonHeaders({ Origin: `http://127.0.0.1:${port}` }),
+      body: "[]"
+    });
+
+    expect(response.status).toBe(404);
+    const payload = JSON.parse(response.body) as { ok: boolean; errorCode: string };
+    expect(payload.ok).toBe(false);
+    expect(payload.errorCode).toBe("NOT_FOUND");
+  });
+
+  it("12. core 채널(app:get-version)은 200 및 올바른 버전 데이터 반환", async () => {
+    const response = await request({
+      method: "POST",
+      path: "/api/app:get-version",
+      headers: jsonHeaders({ Origin: `http://127.0.0.1:${port}` }),
+      body: "[]"
+    });
+
+    expect(response.status).toBe(200);
+    const payload = JSON.parse(response.body) as string;
+    expect(payload).toBe(versionText);
+  });
 });

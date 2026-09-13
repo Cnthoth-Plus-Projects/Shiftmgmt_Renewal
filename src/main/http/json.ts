@@ -142,9 +142,27 @@ export function readJsonBody(
         settle({ ok: false, status: 400, sendable: true });
       }
     });
-
-    req.on("error", () => {
-      settle({ ok: false, status: 400, sendable: false });
-    });
   });
+}
+
+export type ReadJsonArrayBodyResult =
+  | { ok: true; value: unknown[] }
+  | { ok: false; status: 400 | 413; sendable: boolean };
+
+/**
+ * 요청 본문을 JSON 배열로 읽는다.
+ * 빈 본문, JSON 파싱 실패, 객체, 문자열, 숫자, 불리언, null 등 비배열은 400 BAD_REQUEST.
+ */
+export async function readJsonArrayBody(
+  req: IncomingMessage,
+  limit: number = MAX_JSON_BODY_BYTES,
+): Promise<ReadJsonArrayBodyResult> {
+  const result = await readJsonBody(req, limit);
+  if (!result.ok) {
+    return result;
+  }
+  if (!Array.isArray(result.value)) {
+    return { ok: false, status: 400, sendable: true };
+  }
+  return { ok: true, value: result.value };
 }

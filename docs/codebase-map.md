@@ -35,20 +35,33 @@
 | `scripts/validate-codebase-map.mjs` | 이 지도가 가리키는 파일이 실제로 있는지 확인한다(원본 0.5.4 복사본, 수정 없음) |
 | `scripts/release-check.mjs` | 내보내기 전 점검: 판 번호 일치·작업 트리 깨끗·같은 판 태그 없음·검사 3종 통과·빌드 산출물 확인 |
 | `scripts/smoke-require.mjs` | 빌드 결과의 서비스가 정확히 72개이고 전부 불러와지는지 확인한다(`npm run smoke`) |
+| `scripts/windows-dialog.ps1` | Windows Forms 기반 파일·폴더 선택 및 경로 열기 PowerShell 스크립트 (UTF-8 JSON stdin/stdout) |
 
 ## 서버 (`src/main`)
 
 | 파일 | 하는 일 |
 |---|---|
 | `src/main/server.ts` | 서버 진입점. 데이터 폴더를 만들고 127.0.0.1 에만 귀를 연다. 요청마다 기록 한 줄을 남긴다 |
+| `src/main/runtime.ts` | 앱 수명주기 및 런타임 백그라운드 서비스 관리 |
 | `src/main/http/router.ts` | 어떤 주소를 누가 처리할지 정하는 표(창구 111개는 1-3에서 여기에 등록된다) |
 | `src/main/http/guards.ts` | 요청 검문 — 주소(Host) 위조·다른 곳에서 온 요청·JSON이 아닌 형식을 막는다 |
 | `src/main/http/security-headers.ts` | 모든 응답에 붙는 보안 헤더(인라인 스크립트·스타일 금지 규칙 포함) |
 | `src/main/http/static-files.ts` | 화면 파일 내주기. 폴더 밖으로 나가려는 요청을 파일에 손대기 전에 막는다 |
-| `src/main/http/json.ts` | 요청 본문 읽기(1 MB 상한)와 JSON 응답 보내기, 오류 코드 표 |
+| `src/main/http/json.ts` | 요청 본문 읽기(1 MB 상한, JSON 배열 강제)와 JSON 응답 보내기, 오류 코드 표 |
 | `src/main/http/health.ts` | 화면이 「서버 연결됨」을 확인하는 창구 |
-| `src/main/server.test.ts` | 검문 규칙 시험 8건 |
+| `src/main/http/api-types.ts` | HTTP 요청 컨텍스트, 라우트 핸들러 및 다이얼로그 브리지 타입 정의 |
+| `src/main/http/session.ts` | 단일 세션 수명주기, 무활동 만료, 권한 가드 검사 및 활동 기록 관리 |
+| `src/main/http/route-registry.ts` | 메타계약 기반 가드 자동 강제 및 채널 라우트 등록/디스패치 |
+| `src/main/http/dialog-bridge.ts` | PowerShell 단일 FIFO 큐 기반 Windows 대화상자 브리지 |
+| `src/main/http/routes/core-routes.ts` | Core 그룹 17개 창구 라우트 핸들러 구현 |
+| `src/main/http/routes/index.ts` | 라우트 레지스트리 조립 및 17개 core 라우트 등록 검증 |
+| `src/main/server.test.ts` | 검문 규칙 시험 12건 |
+| `src/main/runtime.test.ts` | 런타임 수명주기 시험 |
 | `src/main/http/static-files.test.ts` | 경로 탈출·형식 시험 5건 |
+| `src/main/http/session.test.ts` | 세션 발급·만료·권한 가드 시험 |
+| `src/main/http/route-registry.test.ts` | 라우트 레지스트리 디스패치 및 가드 검증 시험 |
+| `src/main/http/dialog-bridge.test.ts` | 대화상자 브리지 FIFO 큐 및 취소/타임아웃 시험 |
+| `src/main/http/routes/core-routes.test.ts` | Core 17개 라우트 동작 및 D5/D6 정책 시험 |
 
 ## 업무 로직 (1-2에서 원본 0.5.4에서 복사해 왔다 — 고치지 않는다)
 
@@ -57,7 +70,8 @@
 | `src/shared/domain` | 계산·판정 규칙 32개(수당 요율·근무표·권한 등). 화면과 서버가 함께 보는 순수 계산 코드다 |
 | `src/shared/lib` | 작은 공용 도구 3개(엑셀 열 글자·금액 표기·날짜 계산) |
 | `src/shared/config` | 고정 설정 4개(제품 이름·비밀번호 규칙·로그인 유지 규칙·주소 목록). 위 규칙 파일들이 불러 쓴다 |
-| `src/shared/bridge` | 화면과 서버가 주고받는 창구 111개의 계약표 1개(`src/shared/bridge/contracts.ts`). 이름·입출력은 바꾸지 않는다 |
+| `src/shared/bridge` | 창구 111개의 계약표 1개(`src/shared/bridge/contracts.ts`) 및 111 메타 계약(`src/shared/bridge/channel-contracts.ts`) |
+| `src/shared/bridge/channel-contracts.test.ts` | 111 메타 계약 불변조건 및 정합성 시험 |
 | `src/main/services` | 실제 업무를 처리하는 서비스 72개(엑셀 회수·승인·수당 계산·품의서 출력). 1-3에서 창구가 여기에 연결된다 |
 | `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개(`src/main/ipc/ipc-handler-helpers.ts`) |
 | `양식샘플` | 원본에서 가져온 엑셀 양식·실제 산출물 견본 9개(근무표 템플릿·샘플, 품의서, 별첨1·2). 출력 모양을 맞출 때 대조용으로 쓴다 |
@@ -68,8 +82,10 @@
 | 파일 | 하는 일 |
 |---|---|
 | `src/web/index.html` | 준비 화면(제목·부제·상태 줄). 버튼이나 메뉴는 없다 — 눌러서 일어나는 일이 아직 없기 때문이다 |
-| `src/web/app.ts` | 서버가 살아 있는지 물어보고 상태 줄을 바꾼다. 실패하면 2초 간격으로 열 번까지 다시 물어본다 |
+| `src/web/app.ts` | 서버가 살아 있는지 물어보고 상태 줄을 바꾼다. 브라우저 브리지(`src/web/bridge/app-bridge.ts`)를 전역 바인딩한다 |
 | `src/web/styles.css` | 준비 화면의 최소 스타일(글꼴·색 3개). 디자인 시스템은 Phase 3-1에서 들어온다 |
+| `src/web/bridge/app-bridge.ts` | `window.appBridge` 에 111개 메서드를 계약 그대로 합성하여 노출하는 브라우저 브리지 |
+| `src/web/bridge/app-bridge.test.ts` | 브라우저 브리지 메서드 합성, 후행 undefined 제거 및 통신 검증 시험 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 
