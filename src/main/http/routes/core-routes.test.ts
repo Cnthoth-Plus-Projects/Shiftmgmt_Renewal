@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from "vitest";
 import { CORE_CHANNELS } from "../../../shared/bridge/channel-contracts";
 import type { AuthSession } from "../../../shared/domain/model";
 import type { DialogBridge } from "../api-types";
+import { RouteRegistry } from "../route-registry";
+import { registerCoreRoutes } from "./core-routes";
 import { assembleRoutes } from "./index";
 import { SessionManager } from "../session";
 
@@ -18,18 +20,21 @@ interface BridgeResponseShape {
 }
 
 describe("core-routes", () => {
-  it("registers exactly the 17 core channels in S1", () => {
+  it("registerCoreRoutes registers exactly the 17 core channels independently", () => {
     const sessionManager = new SessionManager();
-    const registry = assembleRoutes(sessionManager);
+    const registry = new RouteRegistry(sessionManager);
+    registerCoreRoutes(registry, sessionManager);
 
+    expect(CORE_CHANNELS).toHaveLength(17);
     const registered = registry.getRegisteredChannels();
-    expect(registered).toHaveLength(17);
-    expect(new Set(registered).size).toBe(17);
+    expect(registered).toHaveLength(CORE_CHANNELS.length);
+    expect(new Set(registered).size).toBe(CORE_CHANNELS.length);
 
     for (const coreChannel of CORE_CHANNELS) {
       expect(registry.has(coreChannel)).toBe(true);
     }
   });
+
 
   it("handles D5 update state channels and records activity only for check-for-update (R5, N6)", async () => {
     const mockSession: AuthSession = {

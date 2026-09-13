@@ -54,14 +54,16 @@
 | `src/main/http/route-registry.ts` | 메타계약 기반 가드 자동 강제 및 채널 라우트 등록/디스패치 |
 | `src/main/http/dialog-bridge.ts` | PowerShell 단일 FIFO 큐 기반 Windows 대화상자 브리지 |
 | `src/main/http/routes/core-routes.ts` | Core 그룹 17개 창구 라우트 핸들러 구현 |
-| `src/main/http/routes/index.ts` | 라우트 레지스트리 조립 및 17개 core 라우트 등록 검증 |
+| `src/main/http/routes/operations-routes.ts` | Operations 그룹 40개 창구 라우트 핸들러 구현 |
+| `src/main/http/routes/index.ts` | 라우트 레지스트리 조립 및 57개(core 17 + operations 40) 라우트 등록 검증 |
 | `src/main/server.test.ts` | 검문 규칙 시험 12건 |
 | `src/main/runtime.test.ts` | 런타임 수명주기 시험 |
 | `src/main/http/static-files.test.ts` | 경로 탈출·형식 시험 5건 |
-| `src/main/http/session.test.ts` | 세션 발급·만료·권한 가드 시험 |
-| `src/main/http/route-registry.test.ts` | 라우트 레지스트리 디스패치 및 가드 검증 시험 |
-| `src/main/http/dialog-bridge.test.ts` | 대화상자 브리지 FIFO 큐 및 취소/타임아웃 시험 |
-| `src/main/http/routes/core-routes.test.ts` | Core 17개 라우트 동작 및 D5/D6 정책 시험 |
+| `src/main/http/session.test.ts` | 세션 수명주기 및 권한 가드 시험 |
+| `src/main/http/route-registry.test.ts` | 라우트 레지스트리 가드 및 등록 시험 |
+| `src/main/http/dialog-bridge.test.ts` | 다이얼로그 브리지 단일 큐 및 실패 격리 시험 |
+| `src/main/http/routes/core-routes.test.ts` | Core 라우트 17개 및 비활성 업데이트·내보내기 시험 |
+| `src/main/http/routes/operations-routes.test.ts` | Operations 라우트 40개 및 권한·대화상자 시험 |
 
 ## 업무 로직 (1-2에서 원본 0.5.4에서 복사해 왔다 — 고치지 않는다)
 
