@@ -392,7 +392,7 @@ describe("창구 서버", () => {
     expect(payload.errorCode).toBe("AUTH_SESSION_REQUIRED");
   });
 
-  it("11. S2 구현 범위 밖의 실제 계약 채널은 404 NOT_FOUND 유지 (N12, C6)", async () => {
+  it("11. S3 실제 계약 채널은 등록되고 세션 가드를 강제한다 (N12, C6)", async () => {
     const response = await request({
       method: "POST",
       path: "/api/allowance:list-history",
@@ -400,10 +400,10 @@ describe("창구 서버", () => {
       body: "[]"
     });
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(401);
     const payload = JSON.parse(response.body) as { ok: boolean; errorCode: string };
     expect(payload.ok).toBe(false);
-    expect(payload.errorCode).toBe("NOT_FOUND");
+    expect(payload.errorCode).toBe("AUTH_SESSION_REQUIRED");
   });
 
 

@@ -55,7 +55,10 @@
 | `src/main/http/dialog-bridge.ts` | PowerShell 단일 FIFO 큐 기반 Windows 대화상자 브리지 |
 | `src/main/http/routes/core-routes.ts` | Core 그룹 17개 창구 라우트 핸들러 구현 |
 | `src/main/http/routes/operations-routes.ts` | Operations 그룹 40개 창구 라우트 핸들러 구현 |
-| `src/main/http/routes/index.ts` | 라우트 레지스트리 조립 및 57개(core 17 + operations 40) 라우트 등록 검증 |
+| `src/main/http/routes/workforce-routes.ts` | Workforce 그룹 25개 창구 라우트 핸들러 구현 |
+| `src/main/http/routes/performance-routes.ts` | Performance 그룹 16개 창구와 Windows 원본 파일 열기 구현 |
+| `src/main/http/routes/allowance-routes.ts` | Allowance 그룹 13개 창구 라우트 핸들러 구현 |
+| `src/main/http/routes/index.ts` | 라우트 레지스트리 조립 및 111개 전체 라우트 등록 검증 |
 | `src/main/server.test.ts` | 검문 규칙 시험 12건 |
 | `src/main/runtime.test.ts` | 런타임 수명주기 시험 |
 | `src/main/http/static-files.test.ts` | 경로 탈출·형식 시험 5건 |
@@ -64,6 +67,9 @@
 | `src/main/http/dialog-bridge.test.ts` | 다이얼로그 브리지 단일 큐 및 실패 격리 시험 |
 | `src/main/http/routes/core-routes.test.ts` | Core 라우트 17개 및 비활성 업데이트·내보내기 시험 |
 | `src/main/http/routes/operations-routes.test.ts` | Operations 라우트 40개 및 권한·대화상자 시험 |
+| `src/main/http/routes/workforce-routes.test.ts` | Workforce 25개 서비스 호출·권한·활동·데이터 폴더 시험 |
+| `src/main/http/routes/performance-routes.test.ts` | Performance 16개 승인·복구·원본 파일 열기·실패 시험 |
+| `src/main/http/routes/allowance-routes.test.ts` | Allowance 13개 계산·승인·문서 출력·권한·활동 시험 |
 
 ## 업무 로직 (1-2에서 원본 0.5.4에서 복사해 왔다 — 고치지 않는다)
 

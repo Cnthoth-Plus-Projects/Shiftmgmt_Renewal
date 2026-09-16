@@ -708,7 +708,7 @@ describe("operations-routes", () => {
   });
 
   describe("C2 & RN1/RN2 contract counts (CN1, CN2)", () => {
-    it("verifies manifest counts and aggregate registrations accurately", () => {
+    it("verifies the final 111-contract aggregate registration accurately", () => {
       const { sessionManager } = setupTestEnv();
       const registry = assembleRoutes(sessionManager);
 
@@ -717,8 +717,8 @@ describe("operations-routes", () => {
       expect(OPERATIONS_CHANNELS).toHaveLength(40);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(57);
-      expect(new Set(registered).size).toBe(57);
+      expect(registered).toHaveLength(111);
+      expect(new Set(registered).size).toBe(111);
 
       for (const channel of CORE_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
@@ -727,13 +727,8 @@ describe("operations-routes", () => {
         expect(registry.has(channel)).toBe(true);
       }
 
-      const unimplementedContracts = CHANNEL_CONTRACTS.filter(
-        (c) => c.group === "workforce" || c.group === "performance" || c.group === "allowance",
-      );
-      expect(unimplementedContracts).toHaveLength(54);
-
-      for (const contract of unimplementedContracts) {
-        expect(registry.has(contract.channel)).toBe(false);
+      for (const contract of CHANNEL_CONTRACTS) {
+        expect(registry.has(contract.channel)).toBe(true);
       }
     });
 
