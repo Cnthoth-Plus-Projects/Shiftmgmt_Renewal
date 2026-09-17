@@ -4,4 +4,5 @@ data/
 *.db
 *.db-journal
 artifacts/captures/
+artifacts/tests/
 .DS_Store

@@ -15,7 +15,8 @@
 | `tsconfig.server.json` | 서버 쪽 컴파일 조건(원본 0.5.4의 electron 설정과 같은 조건 — 1-2에서 서비스를 그대로 복사하기 위해) |
 | `tsconfig.browser.json` | 화면 쪽 **타입 검사 전용** 설정(파일을 만들지 않는다. 실제 묶기는 esbuild가 한다) |
 | `eslint.config.mjs` | 코드 규칙 검사 설정(원본 0.5.4 복사본 — 검사 대상 범위만 바꿨다) |
-| `vitest.config.ts` | 테스트 실행 설정(1-1은 서버 테스트뿐이라 node 환경) |
+| `vitest.config.ts` | 테스트 실행 설정(node 환경)과 테스트 전용 resource 경로 초기화 연결 |
+| `vitest.setup.ts` | 원본 릴리스 이력 시험이 격리 fixture만 읽도록 `process.resourcesPath`를 테스트 안에서 지정 |
 
 ## 문서
 
@@ -36,6 +37,9 @@
 | `scripts/release-check.mjs` | 내보내기 전 점검: 판 번호 일치·작업 트리 깨끗·같은 판 태그 없음·검사 3종 통과·빌드 산출물 확인 |
 | `scripts/smoke-require.mjs` | 빌드 결과의 서비스가 정확히 72개이고 전부 불러와지는지 확인한다(`npm run smoke`) |
 | `scripts/windows-dialog.ps1` | Windows Forms 기반 파일·폴더 선택 및 경로 열기 PowerShell 스크립트 (UTF-8 JSON stdin/stdout) |
+| `scripts/issue-account-recovery-key.mjs` | 원본 계정 복구 유지보수 시험이 실행하는 바이트 동일 스크립트(제품 자동 실행 없음) |
+| `scripts/lib/release-publish-helpers.cjs` | 원본 릴리스 게시 helper 시험 전용 바이트 동일 모듈(제품 게시 흐름에는 연결하지 않음) |
+| `build/installer-update-data.ps1` | 원본 설치 데이터 백업·복원 시험 전용 바이트 동일 스크립트(새 패치 방식에는 연결하지 않음) |
 
 ## 서버 (`src/main`)
 
@@ -81,9 +85,14 @@
 | `src/shared/bridge` | 창구 111개의 계약표 1개(`src/shared/bridge/contracts.ts`) 및 111 메타 계약(`src/shared/bridge/channel-contracts.ts`) |
 | `src/shared/bridge/channel-contracts.test.ts` | 111 메타 계약 불변조건 및 정합성 시험 |
 | `src/main/services` | 실제 업무를 처리하는 서비스 72개(엑셀 회수·승인·수당 계산·품의서 출력). 1-3에서 창구가 여기에 연결된다 |
-| `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개(`src/main/ipc/ipc-handler-helpers.ts`) |
+| `src/main/services/*.test.ts` | 원본 서비스 로직 시험 81파일·447개. 제외 서비스 2개의 시험은 이관하지 않는다 |
+| `src/shared/domain/*.test.ts` | 원본 순수 계산·판정 시험 26파일·177개 |
+| `src/shared/lib/*.test.ts` | 원본 공용 도구 시험 2파일·7개 |
+| `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개와 원본 시험 1파일·15개 |
+| `src/renderer/assets/brand-logo-clean.png` | 문서 출력 로직과 원본 시험이 읽는 로고 원본(옛 화면 코드는 이관하지 않음) |
 | `양식샘플` | 원본에서 가져온 엑셀 양식·실제 산출물 견본 9개(근무표 템플릿·샘플, 품의서, 별첨1·2). 출력 모양을 맞출 때 대조용으로 쓴다 |
 | `vendor/electron-compat` | PDF 자리 패키지 3개 — 복사본이 부르는 `electron` 이름만 풀어 준다. Phase 2.5-5 에서 실제 방식으로 대체된다 |
+| `test-fixtures/legacy-resources/release-history` | 원본 릴리스 이력 시험 3개만을 위한 v0.4.5·v0.4.6 manifest 격리본. 빌드·제품 릴리스 이력에는 포함하지 않는다 |
 
 ## 화면 (`src/web`)
 
