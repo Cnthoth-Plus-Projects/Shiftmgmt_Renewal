@@ -251,6 +251,164 @@ describe("database-migration-service", () => {
         "검토자"
       );
 
+    // 네 표·세 컬럼 sentinel 시드
+    database
+      .prepare(
+        `INSERT INTO sites (id, site_code, name, status, timezone, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "site-sentinel-1",
+        "S-SENTINEL",
+        "센티널근무지",
+        "active",
+        "Asia/Seoul",
+        "2026-06-14T01:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO employees (id, employee_code, name, employment_type, status, hire_date, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "emp-sentinel-1",
+        "E-SENTINEL",
+        "센티널직원",
+        "regular",
+        "active",
+        "2024-01-01",
+        "2024-01-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO employee_employment_periods
+          (id, employee_id, start_date, end_date, closure_provenance_complete, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "period-sentinel-1",
+        "emp-sentinel-1",
+        "2024-01-01",
+        "2024-12-31",
+        1,
+        "2024-01-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO employee_retirement_history_closures
+          (id, employment_period_id, history_kind, history_id, previous_status, previous_end_date, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "closure-sentinel-1",
+        "period-sentinel-1",
+        "assignment",
+        "asgn-sentinel-1",
+        "active",
+        "2024-06-30",
+        "2024-07-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO employee_employment_period_events
+          (id, employee_id, employment_period_id, event_type, event_date, reason, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "event-sentinel-1",
+        "emp-sentinel-1",
+        "period-sentinel-1",
+        "hire",
+        "2024-01-01",
+        "입사",
+        "2024-01-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO employee_site_assignments
+          (id, employee_id, employment_period_id, site_id, start_date, status, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "asgn-sentinel-1",
+        "emp-sentinel-1",
+        "period-sentinel-1",
+        "site-sentinel-1",
+        "2024-01-01",
+        "active",
+        "2024-01-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO wage_rates
+          (id, employee_id, employment_period_id, hourly_rate, effective_from, reason, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "wage-sentinel-1",
+        "emp-sentinel-1",
+        "period-sentinel-1",
+        12500,
+        "2024-01-01",
+        "초임",
+        "2024-01-01T00:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO wage_rate_history
+          (id, wage_rate_id, employee_id, employment_period_id, employee_code, employee_name, action_type, hourly_rate, effective_from, wage_reason, change_reason, actor_user_id, actor_login_id, actor_display_name, actor_role, occurred_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "wrh-sentinel-1",
+        "wage-sentinel-1",
+        "emp-sentinel-1",
+        "period-sentinel-1",
+        "E-SENTINEL",
+        "센티널직원",
+        "create",
+        12500,
+        "2024-01-01",
+        "초임",
+        "신규",
+        "user-1",
+        "reviewer1",
+        "검토자",
+        "reviewer",
+        "2024-01-01T09:00:00.000Z"
+      );
+
+    database
+      .prepare(
+        `INSERT INTO performance_files
+          (id, file_name, file_path, directory_type, template_kind, sheet_name, row_count, column_count, file_size, modified_time_ms, duplicate_key, received_at, status, preview_json, reparse_marker_snapshot_json)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+      .run(
+        "file-sentinel-1",
+        "test.xlsx",
+        "c:/test.xlsx",
+        "approved",
+        "normal",
+        "Sheet1",
+        1,
+        1,
+        100,
+        1000,
+        "dup-sentinel-1",
+        "2024-01-01T00:00:00.000Z",
+        "approved",
+        "[]",
+        '{"marker":"sentinel-snapshot"}'
+      );
+
     // 실제 백업을 만들고(그 백업이 4개 표를 담아야 함) 그 백업으로 복원한다.
     const backupSummary = await runDatabaseBackupNow({ userDataPath, env });
     const migrationFilePath = path.resolve(testRoot, "restore-source.json");
@@ -262,12 +420,35 @@ describe("database-migration-service", () => {
     expect(persistedBackup.tables.allowance_approvals).toHaveLength(1);
     expect(persistedBackup.tables.allowance_proposal_approvals).toHaveLength(1);
     expect(persistedBackup.tables.hidden_approved_performance_rows).toHaveLength(1);
+    expect(persistedBackup.tables.employee_employment_periods).toHaveLength(1);
+    expect(persistedBackup.tables.employee_retirement_history_closures).toHaveLength(1);
+    expect(persistedBackup.tables.employee_employment_period_events).toHaveLength(1);
+    expect(persistedBackup.tables.wage_rate_history).toHaveLength(1);
 
-    await runDatabaseMigrationUpdate({
+    const preview = previewDatabaseMigrationUpdate({
       userDataPath,
       migrationFilePath,
       env
     });
+    const isExcludedSchemaWarning = (msg: string) =>
+      msg.includes("employee_employment_periods") ||
+      msg.includes("employee_retirement_history_closures") ||
+      msg.includes("employee_employment_period_events") ||
+      msg.includes("wage_rate_history") ||
+      msg.includes("employment_period_id") ||
+      msg.includes("reparse_marker_snapshot_json");
+
+    // N4: preview에서 네 표·세 컬럼에 대한 schema exclusion 경고가 없어야 함
+    expect(preview.warningMessages.filter(isExcludedSchemaWarning)).toEqual([]);
+
+    const summary = await runDatabaseMigrationUpdate({
+      userDataPath,
+      migrationFilePath,
+      env
+    });
+
+    // N4: 복원 실행에서도 네 표·세 컬럼에 대한 schema exclusion 경고가 없어야 함
+    expect(summary.warningMessages.filter(isExcludedSchemaWarning)).toEqual([]);
 
     const restoredDatabase = getSqliteDatabase()!;
     const hasId = (tableName: string, id: string) =>
@@ -282,6 +463,28 @@ describe("database-migration-service", () => {
     expect(hasId("allowance_proposal_approvals", "prop-1")).toBe(1);
     expect(hasId("hidden_approved_performance_rows", "hidden-1")).toBe(1);
     expect(hasId("access_logs", "access-1")).toBe(1);
+
+    // N4: 네 표 sentinel 보존 확인
+    expect(hasId("employee_employment_periods", "period-sentinel-1")).toBe(1);
+    expect(hasId("employee_retirement_history_closures", "closure-sentinel-1")).toBe(1);
+    expect(hasId("employee_employment_period_events", "event-sentinel-1")).toBe(1);
+    expect(hasId("wage_rate_history", "wrh-sentinel-1")).toBe(1);
+
+    // N4: 세 컬럼 sentinel 보존 확인
+    const asgnRow = restoredDatabase
+      .prepare(`SELECT employment_period_id FROM employee_site_assignments WHERE id = ?`)
+      .get("asgn-sentinel-1") as { employment_period_id: string | null };
+    expect(asgnRow.employment_period_id).toBe("period-sentinel-1");
+
+    const wageRow = restoredDatabase
+      .prepare(`SELECT employment_period_id FROM wage_rates WHERE id = ?`)
+      .get("wage-sentinel-1") as { employment_period_id: string | null };
+    expect(wageRow.employment_period_id).toBe("period-sentinel-1");
+
+    const fileRow = restoredDatabase
+      .prepare(`SELECT reparse_marker_snapshot_json FROM performance_files WHERE id = ?`)
+      .get("file-sentinel-1") as { reparse_marker_snapshot_json: string | null };
+    expect(fileRow.reparse_marker_snapshot_json).toBe('{"marker":"sentinel-snapshot"}');
   });
 
   it("should skip unknown backup columns instead of aborting the whole restore", async () => {
