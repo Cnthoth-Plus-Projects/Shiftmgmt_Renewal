@@ -15,6 +15,20 @@ const {
   closeSqliteStorage
 } = require("../dist/server/main/services/sqlite-storage-service.js");
 
+const EXPECTED_SETTINGS_WARNING =
+  "백업 JSON의 경로 설정은 무시하고 현재 환경 경로를 유지했습니다.";
+
+class VerificationError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "VerificationError";
+  }
+}
+
+function fail(message) {
+  throw new VerificationError(message);
+}
+
 function parseArgs(args) {
   const options = {};
   for (let i = 0; i < args.length; i++) {
@@ -53,23 +67,36 @@ function canonicalTableHash(rows) {
   return hash.digest("hex");
 }
 
+function assertSettingsWarning(warnings, context) {
+  if (!Array.isArray(warnings)) {
+    fail(`오류: ${context} warningMessages가 배열이 아닙니다.`);
+  }
+  if (warnings.length !== 1) {
+    fail(
+      `오류: ${context} 설정 경고 개수 불일치 (기대: 1개, 실제: ${warnings.length}개 - [${warnings.join("; ")}])`
+    );
+  }
+  if (warnings[0] !== EXPECTED_SETTINGS_WARNING) {
+    fail(
+      `오류: ${context} 설정 경고 문구 불일치\n  기대: "${EXPECTED_SETTINGS_WARNING}"\n  실제: "${warnings[0]}"`
+    );
+  }
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
 
   if (!options.input || !options.expectedSha || isNaN(options.expectedTables) || isNaN(options.expectedRows)) {
-    console.error("오류: 필수 인자가 누락되었습니다. (--input, --expected-sha, --expected-tables, --expected-rows)");
-    process.exit(1);
+    fail("오류: 필수 인자가 누락되었습니다. (--input, --expected-sha, --expected-tables, --expected-rows)");
   }
 
   if (!fs.existsSync(options.input)) {
-    console.error(`오류: 입력 파일이 존재하지 않습니다: ${options.input}`);
-    process.exit(1);
+    fail(`오류: 입력 파일이 존재하지 않습니다: ${options.input}`);
   }
 
   const initialSha = computeFileSha256(options.input);
   if (initialSha.toLowerCase() !== options.expectedSha.toLowerCase()) {
-    console.error(`오류: SHA-256 불일치 (기대: ${options.expectedSha}, 실제: ${initialSha})`);
-    process.exit(1);
+    fail(`오류: SHA-256 불일치 (기대: ${options.expectedSha}, 실제: ${initialSha})`);
   }
 
   let rawJsonText;
@@ -78,19 +105,16 @@ async function main() {
     rawJsonText = fs.readFileSync(options.input, "utf8");
     parsedJson = JSON.parse(rawJsonText);
   } catch (err) {
-    console.error(`오류: JSON 파싱 실패: ${err.message}`);
-    process.exit(1);
+    fail(`오류: JSON 파싱 실패: ${err.message}`);
   }
 
   if (parsedJson.schemaVersion !== 1) {
-    console.error(`오류: schemaVersion 불일치 (기대: 1, 실제: ${parsedJson.schemaVersion})`);
-    process.exit(1);
+    fail(`오류: schemaVersion 불일치 (기대: 1, 실제: ${parsedJson.schemaVersion})`);
   }
 
   const sourceTableNames = Object.keys(parsedJson.tables || {});
   if (sourceTableNames.length !== options.expectedTables) {
-    console.error(`오류: 표 수 불일치 (기대: ${options.expectedTables}, 실제: ${sourceTableNames.length})`);
-    process.exit(1);
+    fail(`오류: 표 수 불일치 (기대: ${options.expectedTables}, 실제: ${sourceTableNames.length})`);
   }
 
   let sourceTotalRows = 0;
@@ -101,8 +125,7 @@ async function main() {
   }
 
   if (sourceTotalRows !== options.expectedRows) {
-    console.error(`오류: 총 행 수 불일치 (기대: ${options.expectedRows}, 실제: ${sourceTotalRows})`);
-    process.exit(1);
+    fail(`오류: 총 행 수 불일치 (기대: ${options.expectedRows}, 실제: ${sourceTotalRows})`);
   }
 
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "shiftmgmt-verify-v3-"));
@@ -113,6 +136,8 @@ async function main() {
   const env = { DATA_DIR: dataDir };
 
   let db = null;
+  let cleanedUp = false;
+  let cleanupError = null;
 
   try {
     // 1. Preview
@@ -134,6 +159,9 @@ async function main() {
       console.warn = origWarn;
     }
 
+    // P22-D2: preview 설정 경고 정확히 1개 검증
+    assertSettingsWarning(previewResult.warningMessages, "preview");
+
     const isExcludedSchemaWarning = (msg) =>
       msg.includes("employee_employment_periods") ||
       msg.includes("employee_retirement_history_closures") ||
@@ -148,13 +176,11 @@ async function main() {
     ];
 
     if (previewExclusions.length > 0) {
-      console.error(`오류: preview에서 스키마 제외 경고 감지: ${previewExclusions.join("; ")}`);
-      process.exit(1);
+      fail(`오류: preview에서 스키마 제외 경고 감지: ${previewExclusions.join("; ")}`);
     }
 
     if (previewResult.restoredTableCount !== 32) {
-      console.error(`오류: preview restoredTableCount 불일치 (기대: 32, 실제: ${previewResult.restoredTableCount})`);
-      process.exit(1);
+      fail(`오류: preview restoredTableCount 불일치 (기대: 32, 실제: ${previewResult.restoredTableCount})`);
     }
 
     // 2. Real restore
@@ -175,19 +201,20 @@ async function main() {
       console.warn = origWarn;
     }
 
+    // P22-D2: 실복원 설정 경고 정확히 1개 검증
+    assertSettingsWarning(restoreResult.warningMessages, "복원 실행");
+
     const restoreExclusions = [
       ...restoreResult.warningMessages.filter(isExcludedSchemaWarning),
       ...restoreWarnLogs.filter(isExcludedSchemaWarning)
     ];
 
     if (restoreExclusions.length > 0) {
-      console.error(`오류: 복원 실행에서 스키마 제외 경고 감지: ${restoreExclusions.join("; ")}`);
-      process.exit(1);
+      fail(`오류: 복원 실행에서 스키마 제외 경고 감지: ${restoreExclusions.join("; ")}`);
     }
 
     if (restoreResult.restoredTableCount !== 32) {
-      console.error(`오류: 복원 restoredTableCount 불일치 (기대: 32, 실제: ${restoreResult.restoredTableCount})`);
-      process.exit(1);
+      fail(`오류: 복원 restoredTableCount 불일치 (기대: 32, 실제: ${restoreResult.restoredTableCount})`);
     }
 
     // 3. Open restored database directly
@@ -197,14 +224,12 @@ async function main() {
     // 4. Quick check & Integrity check
     const qc = db.prepare("PRAGMA quick_check;").all();
     if (qc.length === 0 || qc[0].quick_check !== "ok") {
-      console.error(`오류: PRAGMA quick_check 실패: ${JSON.stringify(qc)}`);
-      process.exit(1);
+      fail(`오류: PRAGMA quick_check 실패: ${JSON.stringify(qc)}`);
     }
 
     const ic = db.prepare("PRAGMA integrity_check;").all();
     if (ic.length === 0 || ic[0].integrity_check !== "ok") {
-      console.error(`오류: PRAGMA integrity_check 실패: ${JSON.stringify(ic)}`);
-      process.exit(1);
+      fail(`오류: PRAGMA integrity_check 실패: ${JSON.stringify(ic)}`);
     }
 
     // 5. Target schema table set check
@@ -214,20 +239,17 @@ async function main() {
       .map((r) => r.name);
 
     if (targetTables.length !== 40) {
-      console.error(`오류: target DB 표 수 불일치 (기대: 40, 실제: ${targetTables.length})`);
-      process.exit(1);
+      fail(`오류: target DB 표 수 불일치 (기대: 40, 실제: ${targetTables.length})`);
     }
 
     const targetTableSet = new Set(targetTables);
     for (const t of sourceTableNames) {
       if (!targetTableSet.has(t)) {
-        console.error(`오류: target DB에 표 '${t}' 누락`);
-        process.exit(1);
+        fail(`오류: target DB에 표 '${t}' 누락`);
       }
     }
     if (!targetTableSet.has("shift_pattern_duty_types")) {
-      console.error("오류: target DB에 'shift_pattern_duty_types' 표 누락");
-      process.exit(1);
+      fail("오류: target DB에 'shift_pattern_duty_types' 표 누락");
     }
 
     // 6. Target total rows check
@@ -238,16 +260,14 @@ async function main() {
     }
 
     if (targetTotalRows !== 3598) {
-      console.error(`오류: target DB 총 행 수 불일치 (기대: 3598, 실제: ${targetTotalRows})`);
-      process.exit(1);
+      fail(`오류: target DB 총 행 수 불일치 (기대: 3598, 실제: ${targetTotalRows})`);
     }
 
     // 7. app_setting_entries check
     const sourceSettingsCount = parsedJson.tables.app_setting_entries?.length ?? 0;
     const targetSettingsCount = db.prepare("SELECT COUNT(*) AS cnt FROM app_setting_entries").get().cnt;
     if (sourceSettingsCount !== 18 || targetSettingsCount !== 17) {
-      console.error(`오류: app_setting_entries 행 수 불일치 (source: ${sourceSettingsCount}, target: ${targetSettingsCount})`);
-      process.exit(1);
+      fail(`오류: app_setting_entries 행 수 불일치 (source: ${sourceSettingsCount}, target: ${targetSettingsCount})`);
     }
 
     // 8. 39 tables canonical comparison
@@ -257,16 +277,14 @@ async function main() {
       const tRows = db.prepare(`SELECT * FROM ${t}`).all();
 
       if (sRows.length !== tRows.length) {
-        console.error(`오류: 표 '${t}' 행 수 불일치 (source: ${sRows.length}, target: ${tRows.length})`);
-        process.exit(1);
+        fail(`오류: 표 '${t}' 행 수 불일치 (source: ${sRows.length}, target: ${tRows.length})`);
       }
 
       const sHash = canonicalTableHash(sRows);
       const tHash = canonicalTableHash(tRows);
 
       if (sHash !== tHash) {
-        console.error(`오류: 표 '${t}' canonical hash 불일치 (source: ${sHash}, target: ${tHash})`);
-        process.exit(1);
+        fail(`오류: 표 '${t}' canonical hash 불일치 (source: ${sHash}, target: ${tHash})`);
       }
     }
 
@@ -277,8 +295,7 @@ async function main() {
     const wageHistCount = db.prepare("SELECT COUNT(*) AS cnt FROM wage_rate_history").get().cnt;
 
     if (periodsCount !== 87 || closuresCount !== 0 || eventsCount !== 0 || wageHistCount !== 0) {
-      console.error(`오류: 신규 표 행 수 불일치 (기대: 87/0/0/0, 실제: ${periodsCount}/${closuresCount}/${eventsCount}/${wageHistCount})`);
-      process.exit(1);
+      fail(`오류: 신규 표 행 수 불일치 (기대: 87/0/0/0, 실제: ${periodsCount}/${closuresCount}/${eventsCount}/${wageHistCount})`);
     }
 
     // 10. New columns non-null count check
@@ -287,16 +304,25 @@ async function main() {
     const perfNonNull = db.prepare("SELECT COUNT(*) AS cnt FROM performance_files WHERE reparse_marker_snapshot_json IS NOT NULL").get().cnt;
 
     if (asgnNonNull !== 87 || wageNonNull !== 84 || perfNonNull !== 0) {
-      console.error(`오류: 신규 컬럼 non-null 수 불일치 (기대: 87/84/0, 실제: ${asgnNonNull}/${wageNonNull}/${perfNonNull})`);
-      process.exit(1);
+      fail(`오류: 신규 컬럼 non-null 수 불일치 (기대: 87/84/0, 실제: ${asgnNonNull}/${wageNonNull}/${perfNonNull})`);
     }
 
     // 11. Verify input file SHA afterwards
     const finalSha = computeFileSha256(options.input);
     if (finalSha.toLowerCase() !== initialSha.toLowerCase()) {
-      console.error(`오류: 검증 후 입력 파일 SHA 변조 감지! (전: ${initialSha}, 후: ${finalSha})`);
-      process.exit(1);
+      fail(`오류: 검증 후 입력 파일 SHA 변조 감지! (전: ${initialSha}, 후: ${finalSha})`);
     }
+
+    // 정상 완료 시 자원 정리 및 확인 후 성공 출력
+    db.close();
+    db = null;
+    closeSqliteStorage();
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    if (fs.existsSync(tempDir)) {
+      fail(`오류: 임시 디렉터리 삭제 실패: ${tempDir}`);
+    }
+    cleanedUp = true;
 
     console.log("================================================================");
     console.log("V3 운영 JSON 마이그레이션 무손실 복원 검증 완료 (RC 0)");
@@ -304,6 +330,7 @@ async function main() {
     console.log(`- 입력 JSON SHA-256 (전/후 동일): ${finalSha.toUpperCase()}`);
     console.log(`- 입력 표/행: ${sourceTableNames.length}개 표, ${sourceTotalRows}개 행`);
     console.log(`- preview/실복원 스키마 제외 경고: 0건`);
+    console.log(`- preview/실복원 경로 설정 유지 경고: 각각 정확히 1건 확인 ("${EXPECTED_SETTINGS_WARNING}")`);
     console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
     console.log(`- restoredTableCount: ${restoreResult.restoredTableCount}`);
     console.log(`- target 총 행 수: ${targetTotalRows} (app_setting_entries: source 18 -> target 17, 정책 경고 1건)`);
@@ -314,22 +341,45 @@ async function main() {
     console.log(`- 격리 임시 DB: ${tempDir} (정상 정리 완료)`);
     console.log("================================================================");
 
-    db.close();
-    db = null;
   } finally {
-    if (db) {
+    if (!cleanedUp) {
+      if (db) {
+        try {
+          db.close();
+        } catch (e) {
+          if (!cleanupError) cleanupError = e;
+        }
+        db = null;
+      }
       try {
-        db.close();
-      } catch {}
+        closeSqliteStorage();
+      } catch (e) {
+        if (!cleanupError) cleanupError = e;
+      }
+      try {
+        if (fs.existsSync(tempDir)) {
+          fs.rmSync(tempDir, { recursive: true, force: true });
+        }
+        if (fs.existsSync(tempDir)) {
+          const remErr = new Error(`정리 실패: 임시 디렉터리가 여전히 존재합니다: ${tempDir}`);
+          if (!cleanupError) cleanupError = remErr;
+        }
+      } catch (e) {
+        if (!cleanupError) cleanupError = e;
+      }
     }
-    closeSqliteStorage();
-    try {
-      fs.rmSync(tempDir, { recursive: true, force: true });
-    } catch {}
+  }
+
+  if (cleanupError) {
+    throw cleanupError;
   }
 }
 
 main().catch((err) => {
-  console.error("검증 스크립트 예외 발생:", err);
-  process.exit(1);
+  if (err instanceof VerificationError) {
+    console.error(err.message);
+  } else {
+    console.error("검증 스크립트 예외 발생:", err?.message || err);
+  }
+  process.exitCode = 1;
 });
