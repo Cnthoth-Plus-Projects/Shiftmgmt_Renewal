@@ -136,8 +136,9 @@ async function main() {
   const env = { DATA_DIR: dataDir };
 
   let db = null;
-  let cleanedUp = false;
-  let cleanupError = null;
+  let primaryError = null;
+  const cleanupErrors = [];
+  let successSummary = null;
 
   try {
     // 1. Preview
@@ -313,66 +314,94 @@ async function main() {
       fail(`오류: 검증 후 입력 파일 SHA 변조 감지! (전: ${initialSha}, 후: ${finalSha})`);
     }
 
-    // 정상 완료 시 자원 정리 및 확인 후 성공 출력
-    db.close();
-    db = null;
-    closeSqliteStorage();
-
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    if (fs.existsSync(tempDir)) {
-      fail(`오류: 임시 디렉터리 삭제 실패: ${tempDir}`);
-    }
-    cleanedUp = true;
-
-    console.log("================================================================");
-    console.log("V3 운영 JSON 마이그레이션 무손실 복원 검증 완료 (RC 0)");
-    console.log("================================================================");
-    console.log(`- 입력 JSON SHA-256 (전/후 동일): ${finalSha.toUpperCase()}`);
-    console.log(`- 입력 표/행: ${sourceTableNames.length}개 표, ${sourceTotalRows}개 행`);
-    console.log(`- preview/실복원 스키마 제외 경고: 0건`);
-    console.log(`- preview/실복원 경로 설정 유지 경고: 각각 정확히 1건 확인 ("${EXPECTED_SETTINGS_WARNING}")`);
-    console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
-    console.log(`- restoredTableCount: ${restoreResult.restoredTableCount}`);
-    console.log(`- target 총 행 수: ${targetTotalRows} (app_setting_entries: source 18 -> target 17, 정책 경고 1건)`);
-    console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치`);
-    console.log(`- 신규 4표 행 수: periods=${periodsCount}, closures=${closuresCount}, events=${eventsCount}, wage_rate_history=${wageHistCount}`);
-    console.log(`- 신규 3컬럼 비NULL 수: assignments=${asgnNonNull}/89, wages=${wageNonNull}/87, performance_snapshot=${perfNonNull}/37`);
-    console.log(`- SQLite 무결성: quick_check=ok, integrity_check=ok`);
-    console.log(`- 격리 임시 DB: ${tempDir} (정상 정리 완료)`);
-    console.log("================================================================");
-
+    // 성공 요약 데이터 보존 (출력은 자원 및 디렉터리 정리 완료 뒤에 실행)
+    successSummary = {
+      finalSha,
+      sourceTableCount: sourceTableNames.length,
+      sourceTotalRows,
+      restoreResult,
+      targetTotalRows,
+      periodsCount,
+      closuresCount,
+      eventsCount,
+      wageHistCount,
+      asgnNonNull,
+      wageNonNull,
+      perfNonNull,
+      tempDir
+    };
+  } catch (err) {
+    primaryError = err;
   } finally {
-    if (!cleanedUp) {
-      if (db) {
-        try {
-          db.close();
-        } catch (e) {
-          if (!cleanupError) cleanupError = e;
-        }
-        db = null;
-      }
+    // 각 정리 단계를 독립 try/catch로 실행하여 어느 한 단계가 실패해도 나머지 정리 계속 시도
+    if (db) {
       try {
-        closeSqliteStorage();
+        db.close();
       } catch (e) {
-        if (!cleanupError) cleanupError = e;
+        cleanupErrors.push(new Error(`[DB close] ${e?.message || e}`));
       }
-      try {
-        if (fs.existsSync(tempDir)) {
-          fs.rmSync(tempDir, { recursive: true, force: true });
-        }
-        if (fs.existsSync(tempDir)) {
-          const remErr = new Error(`정리 실패: 임시 디렉터리가 여전히 존재합니다: ${tempDir}`);
-          if (!cleanupError) cleanupError = remErr;
-        }
-      } catch (e) {
-        if (!cleanupError) cleanupError = e;
+      db = null;
+    }
+
+    try {
+      closeSqliteStorage();
+    } catch (e) {
+      cleanupErrors.push(new Error(`[SqliteStorage close] ${e?.message || e}`));
+    }
+
+    try {
+      if (fs.existsSync(tempDir)) {
+        fs.rmSync(tempDir, { recursive: true, force: true });
       }
+    } catch (e) {
+      cleanupErrors.push(new Error(`[임시 디렉터리 삭제] ${e?.message || e}`));
+    }
+
+    try {
+      if (fs.existsSync(tempDir)) {
+        cleanupErrors.push(
+          new Error(`[임시 디렉터리 잔존] 임시 디렉터리가 여전히 존재합니다: ${tempDir}`)
+        );
+      }
+    } catch (e) {
+      cleanupErrors.push(new Error(`[임시 디렉터리 잔존 확인 실패] ${e?.message || e}`));
     }
   }
 
-  if (cleanupError) {
-    throw cleanupError;
+  // 주 오류 또는 정리 오류가 있는 경우 병합하여 처리
+  if (primaryError || cleanupErrors.length > 0) {
+    if (primaryError && cleanupErrors.length > 0) {
+      const primaryMsg =
+        primaryError instanceof VerificationError
+          ? primaryError.message
+          : primaryError.message || String(primaryError);
+      const cleanupMsgs = cleanupErrors.map((e) => e.message || String(e)).join("\n  - ");
+      fail(`${primaryMsg}\n[정리 실패]\n  - ${cleanupMsgs}`);
+    } else if (primaryError) {
+      throw primaryError;
+    } else {
+      const cleanupMsgs = cleanupErrors.map((e) => e.message || String(e)).join("\n  - ");
+      fail(`[정리 실패]\n  - ${cleanupMsgs}`);
+    }
   }
+
+  // 오류 없이 모든 정리가 검증된 후에만 성공 요약 출력
+  console.log("================================================================");
+  console.log("V3 운영 JSON 마이그레이션 무손실 복원 검증 완료 (RC 0)");
+  console.log("================================================================");
+  console.log(`- 입력 JSON SHA-256 (전/후 동일): ${successSummary.finalSha.toUpperCase()}`);
+  console.log(`- 입력 표/행: ${successSummary.sourceTableCount}개 표, ${successSummary.sourceTotalRows}개 행`);
+  console.log(`- preview/실복원 스키마 제외 경고: 0건`);
+  console.log(`- preview/실복원 경로 설정 유지 경고: 각각 정확히 1건 확인 ("${EXPECTED_SETTINGS_WARNING}")`);
+  console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
+  console.log(`- restoredTableCount: ${successSummary.restoreResult.restoredTableCount}`);
+  console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries: source 18 -> target 17, 정책 경고 1건)`);
+  console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치`);
+  console.log(`- 신규 4표 행 수: periods=${successSummary.periodsCount}, closures=${successSummary.closuresCount}, events=${successSummary.eventsCount}, wage_rate_history=${successSummary.wageHistCount}`);
+  console.log(`- 신규 3컬럼 비NULL 수: assignments=${successSummary.asgnNonNull}/89, wages=${successSummary.wageNonNull}/87, performance_snapshot=${successSummary.perfNonNull}/37`);
+  console.log(`- SQLite 무결성: quick_check=ok, integrity_check=ok`);
+  console.log(`- 격리 임시 DB: ${successSummary.tempDir} (정상 정리 완료)`);
+  console.log("================================================================");
 }
 
 main().catch((err) => {
