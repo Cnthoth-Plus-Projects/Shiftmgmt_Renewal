@@ -26,8 +26,8 @@ import {
 //      취소해 직접 근무한 자리는 살아남아야 한다(이름만으로 두 자리 모두 취소되면 수당 누락).
 //  (B) 본표 정규칸이 None인데 변경후 근무자가 같은 날 대체표 대체자로도 인정되면, 휴일+대체
 //      이중지급이 아니라 단건만 남아야 한다.
-//  (C) 동명이인(같은 이름·다른 사번)이 같은 휴일에 함께 있으면, 대체표 한 행이 한 자리만 취소해
-//      실제로 근무한 다른 동명이인은 수당을 받아야 한다.
+//  (C) 동명이인(같은 이름·다른 사번)이 같은 휴일에 함께 있으면, 사번을 확정할 수 없는 비-BP 행은
+//      DEC-001에 따라 제거되고, 대체자 실적은 정상 반영된다.
 
 const SCHEDULE_MONTH = "2026-03";
 const SUBSTITUTE_DATE = "2026-03-01";
@@ -273,7 +273,7 @@ describe("휴일 대체/크레딧 결함 회귀 가드 (적대검증 2026-06-15)
     ).toBe(false);
   });
 
-  it("(C) 동명이인이 같은 휴일에 함께 있으면, 대체된 한 자리만 취소되고 직접 근무한 동명이인은 수당을 받는다", async () => {
+  it("(C) 동명이인이 같은 휴일에 함께 있어 사번을 확정할 수 없으면 휴일 실적은 제거되고 대체 실적만 반영된다", async () => {
     const { worksheet, parse } = await prepareReturnedWorkbook([
       { employeeCode: "EMP-MS1", name: "김민수", shiftGroup: "A조" },
       { employeeCode: "EMP-MS2", name: "김민수", shiftGroup: "B조" },
@@ -297,9 +297,9 @@ describe("휴일 대체/크레딧 결함 회귀 가드 (적대검증 2026-06-15)
     const holiday = entries.filter((e) => e.section === "legal-holiday");
     const substitute = entries.filter((e) => e.section === "substitute");
 
-    // 김민수 휴일 실적은 정확히 1건(직접 근무한 동명이인) — 둘 다 취소되어 0이 되면 안 됨.
+    // DEC-001: 사번을 확정할 수 없는 비-BP 동명이인 김민수의 휴일 실적은 0건으로 제외된다.
     const ms = holiday.filter((e) => e.workDate === SUBSTITUTE_DATE && e.employeeName === "김민수");
-    expect(ms).toHaveLength(1);
+    expect(ms).toHaveLength(0);
 
     // 대체자 이대체는 대체 실적 1건.
     const dc = substitute.filter(

@@ -195,4 +195,72 @@ describe("performance-file-storage-service", () => {
       sampleDetail.id
     ]);
   });
+
+  it("should not count approved pool entries in approvedEntryCount while preserving entries and approval history", () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "performance-files.test.sqlite")
+    });
+
+    const fileId = "pool-test.xlsx";
+    const detailWithPool: PerformanceFileDetail = {
+      ...sampleDetail,
+      id: fileId,
+      fileName: fileId,
+      filePath: `C:\\ShiftMgmt\\승인완료\\2026년\\7월\\${fileId}`,
+      directoryType: "approved",
+      status: "approved",
+      entryCount: 2,
+      approvedEntryCount: 1,
+      entries: [
+        {
+          ...sampleDetail.entries[0]!,
+          id: "entry-payable",
+          performanceFileId: fileId,
+          employeeCode: "2014015",
+          employeeName: "박경훈",
+          workType: "overtime",
+          isPoolWorker: false
+        },
+        {
+          ...sampleDetail.entries[0]!,
+          id: "entry-pool",
+          performanceFileId: fileId,
+          employeeCode: "2014099",
+          employeeName: "이풀풀",
+          workType: "substitute",
+          isPoolWorker: true,
+          substituteAllowanceEligible: false,
+          substituteAllowanceReasonCode: "POOL_SUBSTITUTE_EXCLUDED"
+        }
+      ]
+    };
+
+    upsertPerformanceFileDetail(detailWithPool);
+
+    createPerformanceApprovalRecord({
+      fileId,
+      entryId: "entry-payable",
+      logicalKey: "key-payable",
+      fileName: fileId,
+      decision: "approved",
+      processedBy: "admin",
+      processedByName: "관리자"
+    });
+
+    createPerformanceApprovalRecord({
+      fileId,
+      entryId: "entry-pool",
+      logicalKey: "key-pool",
+      fileName: fileId,
+      decision: "approved",
+      processedBy: "admin",
+      processedByName: "관리자"
+    });
+
+    const stored = getStoredPerformanceFileDetail(fileId);
+    expect(stored).toBeDefined();
+    expect(stored?.entries).toHaveLength(2);
+    expect(stored?.approvalHistory).toHaveLength(2);
+    expect(stored?.approvedEntryCount).toBe(1);
+  });
 });

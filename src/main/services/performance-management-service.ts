@@ -10,7 +10,10 @@ import type {
   PerformanceOverviewSiteGroup,
   PerformanceOverviewSnapshot
 } from "../../shared/domain/performance-file";
-import { isPoolSubstitutePerformanceEntry } from "../../shared/domain/performance-file";
+import {
+  isNonPayablePerformanceEntry,
+  isPayablePerformanceEntry
+} from "../../shared/domain/performance-file";
 import type {
   EmployeeRecord,
   EmployeeSiteAssignment,
@@ -335,7 +338,7 @@ const isChangeLockedApproval = (
 ) => getLatestAllowanceCalculationForApproval(latestApproval)?.status === "proposal-approved";
 
 const getPayrollRelevantPerformanceEntries = (detail: Pick<PerformanceFileDetail, "entries">) =>
-  detail.entries.filter((entry) => !isPoolSubstitutePerformanceEntry(entry));
+  detail.entries.filter((entry) => isPayablePerformanceEntry(entry));
 
 const hasPriorApprovedHistoryFromAnotherFile = (
   detail: Pick<PerformanceFileDetail, "id" | "entries">
@@ -450,13 +453,13 @@ const buildOverviewRow = (
   const isChangeLocked = latestAllowanceCalculation?.status === "proposal-approved";
   const latestApprovalManualHourlyRate = parseManualHourlyRate(latestApproval?.comment);
   const latestApprovalUsedManualRate = Boolean(latestApprovalManualHourlyRate);
-  const isNonPayablePoolSubstitute = isPoolSubstitutePerformanceEntry(entry);
+  const isNonPayable = isNonPayablePerformanceEntry(entry);
   const resolvedApproval = resolvePerformanceEntryApprovalState({
     entry,
     latestApproval
   });
   const approvalStatus =
-    isNonPayablePoolSubstitute
+    isNonPayable
       ? "non-payable"
       : latestAllowanceCalculation?.status === "rejected"
       ? "rejected"
@@ -490,19 +493,19 @@ const buildOverviewRow = (
     entry: displayEntry,
     approvalStatus,
     canApprove:
-      !isNonPayablePoolSubstitute &&
+      !isNonPayable &&
       !isChangeLocked &&
       detail.directoryType === "pending" &&
       resolvedApproval.approvalStatus === "pending" &&
       !resolvedApproval.needsReapproval &&
       !hasBlockingApprovalIssue(entry),
     needsReapproval:
-      !isNonPayablePoolSubstitute &&
+      !isNonPayable &&
       !isChangeLocked &&
       detail.directoryType === "pending" &&
       resolvedApproval.needsReapproval,
     reapprovalStatus:
-      !isNonPayablePoolSubstitute && detail.directoryType === "pending" && options?.isReapprovalFile
+      !isNonPayable && detail.directoryType === "pending" && options?.isReapprovalFile
         ? isChangeLocked
           ? "locked"
           : isCompletedInCurrentReapprovalCycle(detail, latestApproval)
@@ -789,7 +792,7 @@ export const getPerformanceComparison = (
   const detail = getStoredPerformanceFileDetail(query.fileId);
   const currentEntry = detail?.entries.find((entry) => entry.id === query.entryId);
 
-  if (!detail || !currentEntry || isPoolSubstitutePerformanceEntry(currentEntry)) {
+  if (!detail || !currentEntry || isNonPayablePerformanceEntry(currentEntry)) {
     return null;
   }
 

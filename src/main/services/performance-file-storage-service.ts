@@ -8,7 +8,7 @@ import type {
   PerformanceQueueItem
 } from "../../shared/domain/performance-file";
 import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
-import { isPoolSubstitutePerformanceEntry } from "../../shared/domain/performance-file";
+import { isPayablePerformanceEntry } from "../../shared/domain/performance-file";
 import {
   getApprovedEntryIdsByFileId,
   getLatestPerformanceApprovalByFileId,
@@ -271,16 +271,26 @@ const toDetail = (
       resolveApprovalStatus: resolveEntryApprovalStatus
     })
   );
+  const approvalHistory = resolveApprovalFields
+    ? getPerformanceApprovalHistoryByFileId(stableFileId)
+    : [];
+  const hasApprovalHistory = approvalHistory.length > 0;
   const approvedEntryIds = resolveApprovalFields
     ? getApprovedEntryIdsByFileId(stableFileId)
     : new Set<string>();
+  const payableEntryIds = new Set(
+    entries.filter((entry) => isPayablePerformanceEntry(entry)).map((entry) => entry.id)
+  );
+  const payableApprovedCount = [...approvedEntryIds].filter((id) =>
+    payableEntryIds.has(id)
+  ).length;
   const resolvedApprovedEntryCount =
-    resolveApprovalFields && (approvedEntryIds.size > 0 || fileStatus !== "approved")
-      ? approvedEntryIds.size
+    resolveApprovalFields && (hasApprovalHistory || fileStatus !== "approved")
+      ? payableApprovedCount
       : Number(
           row.approved_entry_count ??
             row.entry_count ??
-            entries.filter((entry) => !isPoolSubstitutePerformanceEntry(entry)).length
+            payableEntryIds.size
         );
   const metadata: PerformanceFileMetadataRecord = {
     id: stableFileId,
@@ -302,7 +312,7 @@ const toDetail = (
     siteName: String(row.site_name ?? ""),
     scheduleKey: String(row.schedule_key ?? ""),
     entryCount: Number(
-      row.entry_count ?? entries.filter((entry) => !isPoolSubstitutePerformanceEntry(entry)).length
+      row.entry_count ?? entries.filter((entry) => isPayablePerformanceEntry(entry)).length
     ),
     approvedEntryCount: resolvedApprovedEntryCount,
     warningCount: 0,
@@ -316,16 +326,13 @@ const toDetail = (
       : []),
     ...(database && isSqliteStorageReady() ? resolveDuplicateAlerts(database, metadata) : [])
   ];
-  const approvalHistory = resolveApprovalFields
-    ? getPerformanceApprovalHistoryByFileId(stableFileId)
-    : [];
 
   return {
     ...metadata,
     warningCount:
       alerts.length +
       entries
-        .filter((entry) => !isPoolSubstitutePerformanceEntry(entry))
+        .filter((entry) => isPayablePerformanceEntry(entry))
         .reduce((sum, entry) => sum + entry.alerts.length, 0),
     alerts,
     previewRows: JSON.parse(String(row.preview_json ?? "[]")) as PerformanceFileDetail["previewRows"],

@@ -13,8 +13,9 @@ import type {
   PerformanceRejectionInput
 } from "../../shared/domain/performance-file";
 import {
-  getNonPayableSubstituteReasonText,
-  isPoolSubstitutePerformanceEntry
+  getNonPayablePerformanceReasonText,
+  isNonPayablePerformanceEntry,
+  isPayablePerformanceEntry
 } from "../../shared/domain/performance-file";
 import {
   createPerformanceApprovalRecord,
@@ -138,18 +139,13 @@ const buildApprovalComment = (input: {
   return notes.join(" / ") || undefined;
 };
 
-// 미지급 대체근무 차단 문구. 판정 사유가 있으면 그 사유를 그대로 보여준다(Pool/주간고정조 구분).
-const buildNonPayableSubstituteMessage = (entry: PerformanceEntryRecord) => {
-  const reasonText = getNonPayableSubstituteReasonText(entry);
-
-  return reasonText && entry.substituteAllowanceReasonCode
-    ? `${reasonText} 승인 및 수당 처리 대상이 아닙니다.`
-    : "Pool 대체근무는 승인 및 수당 처리 대상이 아닙니다.";
+const buildNonPayablePerformanceMessage = (entry: PerformanceEntryRecord) => {
+  return getNonPayablePerformanceReasonText(entry) ?? "수당 미지급 대상 실적입니다.";
 };
 
 const validateApprovalEntry = (entry: PerformanceEntryRecord): string | null => {
-  if (isPoolSubstitutePerformanceEntry(entry)) {
-    return buildNonPayableSubstituteMessage(entry);
+  if (isNonPayablePerformanceEntry(entry)) {
+    return buildNonPayablePerformanceMessage(entry);
   }
 
   if (!entry.hourlyRate || entry.hourlyRate <= 0) {
@@ -236,7 +232,7 @@ const getResolvedApprovedEntryCount = (
   detail: NonNullable<Awaited<ReturnType<typeof getPendingPerformanceFileDetail>>>
 ) =>
   detail.entries.filter((entry) => {
-    if (isPoolSubstitutePerformanceEntry(entry)) {
+    if (isNonPayablePerformanceEntry(entry)) {
       return false;
     }
 
@@ -263,7 +259,7 @@ const getResolvedApprovedEntryCount = (
 
 const getEligibleApprovalEntries = (
   detail: Pick<PerformanceFileDetail, "entries">
-) => detail.entries.filter((entry) => !isPoolSubstitutePerformanceEntry(entry));
+) => detail.entries.filter((entry) => isPayablePerformanceEntry(entry));
 
 const isChangeLockedApproval = (
   latestApproval: ReturnType<typeof getLatestPerformanceApprovalByLogicalKey>
@@ -387,8 +383,8 @@ export const approvePerformanceFile = async (
     return buildMissingEntryResult();
   }
 
-  if (isPoolSubstitutePerformanceEntry(entry)) {
-    return buildApprovalBlockedResult(buildNonPayableSubstituteMessage(entry));
+  if (isNonPayablePerformanceEntry(entry)) {
+    return buildApprovalBlockedResult(buildNonPayablePerformanceMessage(entry));
   }
 
   const latestApproval = getLatestPerformanceApprovalByLogicalKey(entry.logicalKey);

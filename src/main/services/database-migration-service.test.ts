@@ -990,7 +990,7 @@ describe("database-migration-service", () => {
       performanceRows: [
         {
           근무지: "",
-          사원번호: "",
+          사원번호: "EMP-001",
           직원명: "",
           직급명: "사원",
           근무사유: "긴급지원",
@@ -1366,5 +1366,828 @@ describe("database-migration-service", () => {
       pattern_string: "석*5휴"
     });
     expect(rows.cycleSteps.slice(0, 5).every((step) => step.duty_code === "B")).toBe(true);
+  });
+  it("N1: should fail Access migration when performance row has no employee code but has allowance amount", () => {
+    expect(() =>
+      buildAccessPerformanceRows({
+        performanceRows: [
+          {
+            근무지: "SK증권",
+            직원명: "홍길동1",
+            사원번호: "",
+            근무날짜: "2024-08-15",
+            수당지급유형: "법정휴일",
+            승인구분: true,
+            총근로시간: 8,
+            총근로수당: 100000
+          }
+        ],
+        migrationFilePath: "C:\\test\\test.accdb",
+        modifiedTimeMs: Date.now(),
+        createdAt: "2026-03-24T00:00:00.000Z",
+        activeWageMap: new Map()
+      })
+    ).toThrow("사번이 없으나 수당 금액이 존재하여");
+  });
+
+  it("N2: should skip Access performance row when has no employee code and 0 allowance amount", () => {
+    const rows = buildAccessPerformanceRows({
+      performanceRows: [
+        {
+          근무지: "SK증권",
+          직원명: "홍길동1",
+          사원번호: "",
+          근무날짜: "2024-08-15",
+          수당지급유형: "법정휴일",
+          승인구분: true,
+          총근로시간: 8,
+          총근로수당: 0
+        }
+      ],
+      migrationFilePath: "C:\\test\\test.accdb",
+      modifiedTimeMs: Date.now(),
+      createdAt: "2026-03-24T00:00:00.000Z",
+      activeWageMap: new Map()
+    });
+
+    expect(rows.importedEntryCount).toBe(0);
+    expect(rows.skippedRowCount).toBe(1);
+    expect(rows.warningMessages.some((msg) => msg.includes("사번이 없어 실적 복원 대상에서 제외했습니다"))).toBe(true);
+  });
+
+  it("N3: should fail and rollback JSON restore if unassigned non-BP entry has linked performance_approvals", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n3.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-1",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 5,
+              column_count: 10,
+              file_size: 5,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-1",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              preview_json: JSON.stringify([{ 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-nocode",
+              performance_file_id: "file-1",
+              logical_key: "key-1",
+              employee_name: "홍길동1",
+              employee_code: "",
+              work_date: "2024-08-15",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            }
+          ],
+          performance_approvals: [
+            {
+              id: "approval-1",
+              file_id: "file-1",
+              entry_id: "entry-nocode",
+              file_name: "test.xlsx",
+              logical_key: "key-1",
+              decision: "approved",
+              processed_at: "2024-08-16T00:00:00.000Z",
+              processed_by: "tester",
+              processed_by_name: "테스터"
+            }
+          ]
+        }
+      })
+    );
+
+    await expect(
+      runDatabaseMigrationUpdate({
+        userDataPath,
+        migrationFilePath: backupPath,
+        env
+      })
+    ).rejects.toThrow("승인/숨김/수당 계산 이력이 연결되어 있어");
+  });
+
+  it("N4: should fail and rollback JSON restore if unassigned non-BP entry has linked allowance_calculations", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n4.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-1",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 5,
+              column_count: 10,
+              file_size: 5,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-1",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              preview_json: JSON.stringify([{ 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-nocode",
+              performance_file_id: "file-1",
+              logical_key: "key-1",
+              employee_name: "홍길동1",
+              employee_code: "",
+              work_date: "2024-08-15",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            }
+          ],
+          allowance_calculations: [
+            {
+              id: "calc-1",
+              performance_approval_id: "app-1",
+              performance_entry_id: "entry-nocode",
+              calculation_version: 1,
+              status: "pending",
+              file_id: "file-1",
+              file_name: "test.xlsx",
+              site_name: "SK증권",
+              employee_code: "",
+              employee_name: "홍길동1",
+              work_date: "2024-08-15",
+              work_type: "holiday",
+              hourly_rate: 10000,
+              rate_version_id: "rate-1",
+              rate_version_label: "2024",
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              holiday_minutes: 480,
+              substitute_minutes: 0,
+              total_allowance_amount: 120000,
+              signature: "sig",
+              snapshot_json: "{}",
+              created_at: "2024-08-16T00:00:00.000Z"
+            }
+          ]
+        }
+      })
+    );
+
+    await expect(
+      runDatabaseMigrationUpdate({
+        userDataPath,
+        migrationFilePath: backupPath,
+        env
+      })
+    ).rejects.toThrow("승인/숨김/수당 계산 이력이 연결되어 있어");
+  });
+
+  it("N5: should fail and rollback JSON restore if unassigned non-BP entry has linked performance_approved_row_visibility", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n5.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-1",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 5,
+              column_count: 10,
+              file_size: 5,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-1",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              preview_json: JSON.stringify([{ 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-nocode",
+              performance_file_id: "file-1",
+              logical_key: "key-1",
+              employee_name: "홍길동1",
+              employee_code: "",
+              work_date: "2024-08-15",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            }
+          ],
+          hidden_approved_performance_rows: [
+            {
+              id: "vis-1",
+              approval_id: "app-1",
+              file_id: "file-1",
+              entry_id: "entry-nocode",
+              logical_key: "key-1",
+              hidden_at: "2024-08-16T00:00:00.000Z",
+              hidden_by: "tester",
+              hidden_by_name: "테스터"
+            }
+          ]
+        }
+      })
+    );
+
+    await expect(
+      runDatabaseMigrationUpdate({
+        userDataPath,
+        migrationFilePath: backupPath,
+        env
+      })
+    ).rejects.toThrow("승인/숨김/수당 계산 이력이 연결되어 있어");
+  });
+
+  it("N6: should remove safe unassigned non-BP entry from target DB and update performance_files metadata", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n6.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-1",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 5,
+              column_count: 10,
+              file_size: 5,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-1",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              entry_count: 2,
+              approved_entry_count: 2,
+              warning_count: 1,
+              preview_json: JSON.stringify([
+                { 근무지: "SK증권", 직원명: "오영빈", 근무날짜: "2024-08-16" },
+                { 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }
+              ])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-valid",
+              performance_file_id: "file-1",
+              logical_key: "key-valid",
+              employee_name: "오영빈",
+              employee_code: "EMP-001",
+              work_date: "2024-08-16",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "substitute",
+              section: "substitute",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            },
+            {
+              id: "entry-nocode",
+              performance_file_id: "file-1",
+              logical_key: "key-nocode",
+              employee_name: "홍길동1",
+              employee_code: "",
+              work_date: "2024-08-15",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 2,
+              sort_order: 2,
+              alert_json: JSON.stringify([{ severity: "warning", message: "Access 원본에서 시급을 복원하지 못했습니다." }]),
+              is_pool_worker: 0
+            }
+          ]
+        }
+      })
+    );
+
+    const summary = await runDatabaseMigrationUpdate({
+      userDataPath,
+      migrationFilePath: backupPath,
+      env
+    });
+
+    expect(summary.importedPerformanceEntryCount).toBe(1);
+    expect(
+      summary.warningMessages.some((msg) =>
+        msg.includes("백업 JSON의 사번 없는 실적 1건을 V4 복원 대상에서 제거했습니다")
+      )
+    ).toBe(true);
+
+    const db = getSqliteDatabase()!;
+    const remainingEntries = db.prepare("SELECT * FROM performance_entries").all() as Array<{ id: string }>;
+    expect(remainingEntries).toHaveLength(1);
+    expect(remainingEntries[0]?.id).toBe("entry-valid");
+
+    const updatedFile = db.prepare("SELECT * FROM performance_files WHERE id = ?").get("file-1") as {
+      entry_count: number;
+      approved_entry_count: number;
+      warning_count: number;
+      row_count: number;
+      file_size: number;
+      preview_json: string;
+    } | undefined;
+    expect(updatedFile).toBeDefined();
+    expect(updatedFile?.entry_count).toBe(1);
+    expect(updatedFile?.approved_entry_count).toBe(1);
+    expect(updatedFile?.warning_count).toBe(0);
+    expect(updatedFile?.row_count).toBe(5);
+    expect(updatedFile?.file_size).toBe(5);
+
+    const preview = JSON.parse(updatedFile?.preview_json ?? "[]") as Array<{ 직원명: string }>;
+    expect(preview).toHaveLength(1);
+    expect(preview[0]?.직원명).toBe("오영빈");
+  });
+
+  it("N7: should abort and rollback JSON restore when unassigned entry has multiple matching preview rows (ambiguity)", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    // Current DB sentinel
+    const currentDb = getSqliteDatabase()!;
+    currentDb.prepare("INSERT OR REPLACE INTO sites (id, site_code, name, customer_name, status, timezone, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)").run(
+      "sentinel-site", "SITE-SENTINEL", "기존근무지", "기존고객", "active", "Asia/Seoul", "2026-01-01T00:00:00.000Z"
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n7-ambiguous.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-ambiguous",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 5,
+              column_count: 10,
+              file_size: 5,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-amb",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              entry_count: 2,
+              approved_entry_count: 0,
+              warning_count: 0,
+              preview_json: JSON.stringify([
+                { 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" },
+                { 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }
+              ])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-nocode-1",
+              performance_file_id: "file-ambiguous",
+              logical_key: "key-nocode-1",
+              employee_name: "홍길동1",
+              employee_code: "",
+              work_date: "2024-08-15",
+              work_hours: 8,
+              schedule_month: "2024-08",
+              schedule_key: "sk",
+              site_name: "SK증권",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            }
+          ]
+        }
+      })
+    );
+
+    await expect(
+      runDatabaseMigrationUpdate({
+        userDataPath,
+        migrationFilePath: backupPath,
+        env
+      })
+    ).rejects.toThrow("preview 행이 2개로 모호하여 복원을 중단했습니다");
+
+    // Sentinel check: current DB remains intact
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    const currentDbAfter = getSqliteDatabase()!;
+    const sentinel = currentDbAfter.prepare("SELECT * FROM sites WHERE id = 'sentinel-site'").get();
+    expect(sentinel).toBeDefined();
+  });
+
+  it("N8: should accurately recalculate metadata preserving unrelated approved count, non-payable entry count, and unrelated warnings", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    initializeSqliteStorage({ dbPath, userDataPath, env });
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(dataDir, "pending"),
+        approvedDir: path.resolve(dataDir, "approved"),
+        scheduleExportDir: path.resolve(dataDir, "exports"),
+        allowanceProposalExportDir: path.resolve(dataDir, "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(dataDir, "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(dataDir, "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(dataDir, "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      { userDataPath, env }
+    );
+
+    const backupPath = path.resolve(testRoot, "backup-n8-metadata.json");
+    writeFileSync(
+      backupPath,
+      JSON.stringify({
+        tables: {
+          performance_files: [
+            {
+              id: "file-meta",
+              file_name: "test.xlsx",
+              file_path: "C:\\test\\test.xlsx",
+              directory_type: "approved",
+              template_kind: "schedule-plan",
+              sheet_name: "Sheet1",
+              row_count: 4,
+              column_count: 10,
+              file_size: 4,
+              modified_time_ms: 1000,
+              duplicate_key: "dup-meta",
+              received_at: "2026-03-01T00:00:00.000Z",
+              status: "approved",
+              entry_count: 4,
+              approved_entry_count: 1,
+              warning_count: 3,
+              preview_json: JSON.stringify([
+                { 근무지: "판교DC", 직원명: "김승인", 근무날짜: "2026-03-01" },
+                { 근무지: "판교DC", 직원명: "박미승", 근무날짜: "2026-03-02" },
+                { 근무지: "판교DC", 직원명: "이풀풀", 근무날짜: "2026-03-03" },
+                { 근무지: "판교DC", 직원명: "최무사", 근무날짜: "2026-03-04" }
+              ])
+            }
+          ],
+          performance_entries: [
+            {
+              id: "entry-approved",
+              performance_file_id: "file-meta",
+              logical_key: "key-1",
+              employee_name: "김승인",
+              employee_code: "EMP-001",
+              work_date: "2026-03-01",
+              work_hours: 8,
+              schedule_month: "2026-03",
+              schedule_key: "sk",
+              site_name: "판교DC",
+              work_type: "overtime",
+              section: "overtime",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 1,
+              sort_order: 1,
+              alert_json: "[]",
+              is_pool_worker: 0
+            },
+            {
+              id: "entry-pending",
+              performance_file_id: "file-meta",
+              logical_key: "key-2",
+              employee_name: "박미승",
+              employee_code: "EMP-002",
+              work_date: "2026-03-02",
+              work_hours: 8,
+              schedule_month: "2026-03",
+              schedule_key: "sk",
+              site_name: "판교DC",
+              work_type: "overtime",
+              section: "overtime",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 2,
+              sort_order: 2,
+              alert_json: JSON.stringify([{ severity: "warning", message: "미승인 정상 행 경고" }]),
+              is_pool_worker: 0
+            },
+            {
+              id: "entry-pool",
+              performance_file_id: "file-meta",
+              logical_key: "key-3",
+              employee_name: "이풀풀",
+              employee_code: "EMP-003",
+              work_date: "2026-03-03",
+              work_hours: 8,
+              schedule_month: "2026-03",
+              schedule_key: "sk",
+              site_name: "판교DC",
+              work_type: "substitute",
+              section: "substitute",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 3,
+              sort_order: 3,
+              alert_json: "[]",
+              is_pool_worker: 1,
+              substitute_allowance_eligible: 0,
+              substitute_allowance_reason_code: "POOL_SUBSTITUTE_EXCLUDED"
+            },
+            {
+              id: "entry-nocode",
+              performance_file_id: "file-meta",
+              logical_key: "key-4",
+              employee_name: "최무사",
+              employee_code: "",
+              work_date: "2026-03-04",
+              work_hours: 8,
+              schedule_month: "2026-03",
+              schedule_key: "sk",
+              site_name: "판교DC",
+              work_type: "holiday",
+              section: "legal-holiday",
+              break_minutes: 0,
+              total_work_minutes: 480,
+              base_work_minutes: 480,
+              overtime_minutes: 0,
+              night_minutes: 0,
+              source_row_number: 4,
+              sort_order: 4,
+              alert_json: JSON.stringify([
+                { severity: "error", message: "삭제될 무사번 행 에러" },
+                { severity: "warning", message: "삭제될 무사번 행 경고" }
+              ]),
+              is_pool_worker: 0
+            }
+          ],
+          performance_approvals: [
+            {
+              id: "app-1",
+              file_id: "file-meta",
+              entry_id: "entry-approved",
+              logical_key: "key-1",
+              decision: "approved",
+              file_name: "test.xlsx",
+              processed_at: "2026-03-05T00:00:00.000Z",
+              processed_by: "admin",
+              processed_by_name: "관리자",
+              snapshot_json: "{}"
+            },
+            {
+              id: "app-2-old",
+              file_id: "file-meta",
+              entry_id: "entry-pending",
+              logical_key: "key-2",
+              decision: "approved",
+              file_name: "test.xlsx",
+              processed_at: "2026-03-04T00:00:00.000Z",
+              processed_by: "admin",
+              processed_by_name: "관리자",
+              snapshot_json: "{}"
+            },
+            {
+              id: "app-2-latest",
+              file_id: "file-meta",
+              entry_id: "entry-pending",
+              logical_key: "key-2",
+              decision: "rejected",
+              file_name: "test.xlsx",
+              processed_at: "2026-03-05T10:00:00.000Z",
+              processed_by: "admin",
+              processed_by_name: "관리자",
+              snapshot_json: "{}"
+            },
+            {
+              id: "app-3-pool",
+              file_id: "file-meta",
+              entry_id: "entry-pool",
+              logical_key: "key-3",
+              decision: "approved",
+              file_name: "test.xlsx",
+              processed_at: "2026-03-05T00:00:00.000Z",
+              processed_by: "admin",
+              processed_by_name: "관리자",
+              snapshot_json: "{}"
+            }
+          ]
+        }
+      })
+    );
+
+    const summary = await runDatabaseMigrationUpdate({
+      userDataPath,
+      migrationFilePath: backupPath,
+      env
+    });
+
+    expect(summary.importedPerformanceEntryCount).toBe(3); // 4 - 1 = 3
+
+    const db = getSqliteDatabase()!;
+    const remainingEntries = db.prepare("SELECT * FROM performance_entries WHERE performance_file_id = 'file-meta'").all();
+    expect(remainingEntries).toHaveLength(3);
+
+    const file = db.prepare("SELECT * FROM performance_files WHERE id = 'file-meta'").get() as {
+      entry_count: number;
+      approved_entry_count: number;
+      warning_count: number;
+      row_count: number;
+      file_size: number;
+      preview_json: string;
+    };
+
+    // D4 / D10 / D12 검증:
+    // 1) entry_count: 남은 3행 중 김승인(EMP-001)과 박미승(EMP-002)만 payable이므로 2! (이풀풀 Pool 제외)
+    expect(file.entry_count).toBe(2);
+    // 2) approved_entry_count: 최신 결정이 approved인 김승인 1건만 카운트! (박미승 최신 rejected 제외, 이풀풀 Pool 제외)
+    expect(file.approved_entry_count).toBe(1);
+    // 3) warning_count: 박미승의 미승인 정상 행 경고 1건 보존, 최무사의 삭제 행 alert 2건(error 1 + warning 1) 차감되어 3 - 2 = 1!
+    expect(file.warning_count).toBe(1);
+    // 4) row_count, file_size 유지
+    expect(file.row_count).toBe(4);
+    expect(file.file_size).toBe(4);
+    // 5) preview: 최무사만 제거되어 3행
+    const preview = JSON.parse(file.preview_json) as Array<{ 직원명: string }>;
+    expect(preview).toHaveLength(3);
+    expect(preview.map((p) => p.직원명)).toEqual(["김승인", "박미승", "이풀풀"]);
   });
 });

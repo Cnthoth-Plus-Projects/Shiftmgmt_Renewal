@@ -22,8 +22,9 @@ import {
 import { selectActiveAllowanceRateVersion } from "../../shared/domain/allowance-rate-service";
 import type { AllowanceRateVersion, WorkType } from "../../shared/domain/model";
 import {
-  getNonPayableSubstituteReasonText,
-  isPoolSubstitutePerformanceEntry
+  getNonPayablePerformanceReasonText,
+  isNonPayablePerformanceEntry,
+  isPayablePerformanceEntry
 } from "../../shared/domain/performance-file";
 import {
   getLatestPerformanceApprovalByEntryId,
@@ -310,16 +311,14 @@ export const runApprovedAllowanceCalculationForApproval = async (
     };
   }
 
-  if (isPoolSubstitutePerformanceEntry(approvedEntry)) {
-    const reasonText = getNonPayableSubstituteReasonText(approvedEntry);
+  if (isNonPayablePerformanceEntry(approvedEntry)) {
+    const reasonText =
+      getNonPayablePerformanceReasonText(approvedEntry) ?? "수당 미지급 대상 실적입니다.";
 
     return {
       ok: false,
       errorCode: "ALLOWANCE_EXCLUDED_ENTRY",
-      message:
-        reasonText && approvedEntry.substituteAllowanceReasonCode
-          ? `${reasonText} 수당 실적 계산 대상이 아닙니다.`
-          : "Pool 대체근무는 수당 실적 계산 대상이 아닙니다."
+      message: reasonText
     };
   }
 
@@ -534,7 +533,7 @@ export const listApprovedAllowanceCalculationResults = (): AllowanceCalculationR
     .flatMap((approval) => {
       const snapshot = parsePerformanceApprovalSnapshot(approval.snapshotJson);
 
-      if (!snapshot?.entry || isPoolSubstitutePerformanceEntry(snapshot.entry)) {
+      if (!snapshot?.entry || isNonPayablePerformanceEntry(snapshot.entry)) {
         return [];
       }
 
@@ -633,7 +632,7 @@ export const listApprovedAllowanceTargets = () => {
     .filter((approval) => !calculatedApprovalIds.has(approval.id))
     .flatMap((approval) => {
       const snapshot = parsePerformanceApprovalSnapshot(approval.snapshotJson);
-      return snapshot?.entry && !isPoolSubstitutePerformanceEntry(snapshot.entry)
+      return snapshot?.entry && isPayablePerformanceEntry(snapshot.entry)
         ? [snapshot.entry]
         : [];
     })

@@ -18,6 +18,7 @@ import type {
   DatabaseMigrationStateSnapshot,
   DatabaseMigrationSummary
 } from "../../shared/bridge/contracts";
+import type { WorkType } from "../../shared/domain/model";
 import {
   createAllowanceRateItems,
   resolveAllowanceRateCategoryLabel,
@@ -31,8 +32,11 @@ import {
 } from "../../shared/domain/employment-type";
 import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
 import { createAllowanceCalculationSignature } from "../../shared/domain/allowance-service";
-import type { WorkType } from "../../shared/domain/model";
-import type { PerformanceEntrySection } from "../../shared/domain/performance-file";
+import {
+  type PerformanceEntrySection,
+  isPayablePerformanceEntry
+} from "../../shared/domain/performance-file";
+import type { SubstituteAllowanceReasonCode } from "../../shared/domain/substitute-allowance-policy";
 import { roundUpWon } from "../../shared/domain/rounding";
 import { parseCompressedShiftPatternString } from "../../shared/domain/shift-pattern-compression";
 import { appendWeekendTeamLabel, normalizeTeamLabel } from "../../shared/domain/team-label";
@@ -2221,6 +2225,18 @@ export const buildAccessPerformanceRows = (input: {
       return;
     }
 
+    if (!employeeCode || employeeCode.trim().length === 0) {
+      if (hasImportedAllowanceAmount) {
+        throw new Error(
+          `Access 실적 ${rowNumber}행(${employeeName})에 사번이 없으나 수당 금액이 존재하여 마이그레이션을 중단했습니다. 사번을 먼저 확인하세요.`
+        );
+      }
+
+      skippedRowCount += 1;
+      warningMessages.push(`실적 ${rowNumber}행(${employeeName})은 사번이 없어 실적 복원 대상에서 제외했습니다.`);
+      return;
+    }
+
     const scheduleMonth = workDate.slice(0, 7);
     const isApprovedRow = row["승인구분"] === true;
     const category = resolveAccessPerformanceCategory(row);
@@ -2845,6 +2861,8 @@ const importJsonBackupIntoCurrentDatabase = (
   const importableTableNames = listImportableTableNames(database);
   const importableTableSet = new Set(importableTableNames);
 
+  let removedPerformanceEntryCount = 0;
+
   database.exec("BEGIN;");
 
   try {
@@ -2856,6 +2874,184 @@ const importJsonBackupIntoCurrentDatabase = (
         restoredTableCount += 1;
       }
     });
+
+    const unassignedEntries = database.prepare(`
+      SELECT id, performance_file_id, logical_key, employee_name, employee_code, work_date, alert_json
+      FROM performance_entries
+      WHERE (employee_code IS NULL OR trim(employee_code) = '')
+    `).all() as Array<{
+      id: string;
+      performance_file_id: string;
+      logical_key: string;
+      employee_name: string;
+      employee_code: string | null;
+      work_date: string;
+      alert_json: string | null;
+    }>;
+
+    const unassignedNonBpEntries = unassignedEntries.filter(
+      (entry) => !isBpDisplayName(entry.employee_name)
+    );
+
+    if (unassignedNonBpEntries.length > 0) {
+      for (const entry of unassignedNonBpEntries) {
+        const hasApproval = database.prepare(`
+          SELECT 1 FROM performance_approvals WHERE entry_id = ? OR logical_key = ? LIMIT 1
+        `).get(entry.id, entry.logical_key);
+        const hasVisibility = database.prepare(`
+          SELECT 1 FROM hidden_approved_performance_rows WHERE entry_id = ? OR logical_key = ? LIMIT 1
+        `).get(entry.id, entry.logical_key);
+        const hasCalculation = database.prepare(`
+          SELECT 1 FROM allowance_calculations WHERE performance_entry_id = ? LIMIT 1
+        `).get(entry.id);
+
+        if (hasApproval || hasVisibility || hasCalculation) {
+          throw new Error(
+            `백업 JSON의 사번 없는 실적(${entry.employee_name}, ${entry.work_date})에 승인/숨김/수당 계산 이력이 연결되어 있어 복원할 수 없습니다.`
+          );
+        }
+
+        const fileRow = database.prepare(`
+          SELECT * FROM performance_files WHERE id = ?
+        `).get(entry.performance_file_id) as Record<string, unknown> | undefined;
+
+        let updatedPreview = "[]";
+        let updatedWarningCount = 0;
+
+        if (fileRow) {
+          const currentPreview = JSON.parse(
+            String(fileRow.preview_json ?? "[]")
+          ) as Array<Record<string, unknown>>;
+
+          const matchingIndices: number[] = [];
+          currentPreview.forEach((previewRow, idx) => {
+            const rowEmpName = String(
+              previewRow["직원명"] ?? previewRow["employee_name"] ?? previewRow["employeeName"] ?? ""
+            ).trim();
+            const rowWorkDate = String(
+              previewRow["근무날짜"] ?? previewRow["work_date"] ?? previewRow["workDate"] ?? ""
+            ).trim();
+            if (rowEmpName === entry.employee_name && rowWorkDate === entry.work_date) {
+              matchingIndices.push(idx);
+            }
+          });
+
+          if (matchingIndices.length > 1) {
+            throw new Error(
+              `백업 JSON의 사번 없는 실적(${entry.employee_name}, ${entry.work_date})에 대응하는 preview 행이 ${matchingIndices.length}개로 모호하여 복원을 중단했습니다.`
+            );
+          }
+
+          const filteredPreview =
+            matchingIndices.length === 1
+              ? currentPreview.filter((_, idx) => idx !== matchingIndices[0])
+              : currentPreview;
+          updatedPreview = JSON.stringify(filteredPreview);
+
+          let deletedEntryAlertCount = 0;
+          try {
+            const parsedAlerts = JSON.parse(String(entry.alert_json ?? "[]"));
+            if (Array.isArray(parsedAlerts)) {
+              deletedEntryAlertCount = parsedAlerts.length;
+            }
+          } catch {
+            deletedEntryAlertCount = 0;
+          }
+
+          updatedWarningCount = Math.max(
+            0,
+            Number(fileRow.warning_count ?? 0) - deletedEntryAlertCount
+          );
+        }
+
+        database.prepare(`
+          DELETE FROM performance_entries WHERE id = ?
+        `).run(entry.id);
+        removedPerformanceEntryCount++;
+
+        if (fileRow) {
+          const remainingRows = database.prepare(`
+            SELECT * FROM performance_entries WHERE performance_file_id = ?
+          `).all(entry.performance_file_id) as Array<Record<string, unknown>>;
+
+          const remainingPayableRows = remainingRows.filter((r) =>
+            isPayablePerformanceEntry({
+              employeeCode: String(r.employee_code ?? ""),
+              employeeName: String(r.employee_name ?? ""),
+              isPoolWorker: Number(r.is_pool_worker ?? 0) === 1,
+              section: r.section ? (String(r.section) as PerformanceEntrySection) : undefined,
+              substituteAllowanceEligible:
+                r.substitute_allowance_eligible === null || r.substitute_allowance_eligible === undefined
+                  ? undefined
+                  : Number(r.substitute_allowance_eligible) === 1,
+              substituteAllowanceReasonCode: r.substitute_allowance_reason_code
+                ? (String(r.substitute_allowance_reason_code) as SubstituteAllowanceReasonCode)
+                : undefined
+            })
+          );
+          const remainingPayableCount = remainingPayableRows.length;
+          const remainingPayableEntryIds = new Set(
+            remainingPayableRows.map((r) => String(r.id))
+          );
+
+          const approvalHistoryRows = database.prepare(`
+            SELECT entry_id, decision, processed_at
+            FROM performance_approvals
+            WHERE file_id = ?
+            ORDER BY processed_at DESC, id DESC
+          `).all(entry.performance_file_id) as Array<{
+            entry_id: string | null;
+            decision: string | null;
+            processed_at: string;
+          }>;
+
+          let resolvedApprovedCount: number;
+
+          if (approvalHistoryRows.length === 0) {
+            resolvedApprovedCount = Math.min(
+              remainingPayableCount,
+              Number(fileRow.approved_entry_count ?? 0)
+            );
+          } else {
+            const latestDecisionByEntryId = new Map<string, string>();
+            for (const row of approvalHistoryRows) {
+              const entryId = row.entry_id ? String(row.entry_id) : "";
+              if (entryId && !latestDecisionByEntryId.has(entryId)) {
+                latestDecisionByEntryId.set(entryId, String(row.decision ?? ""));
+              }
+            }
+
+            let payableApprovedCount = 0;
+            for (const [entryId, decision] of latestDecisionByEntryId.entries()) {
+              if (decision === "approved" && remainingPayableEntryIds.has(entryId)) {
+                payableApprovedCount++;
+              }
+            }
+
+            resolvedApprovedCount = payableApprovedCount;
+          }
+
+          database.prepare(`
+            UPDATE performance_files
+            SET preview_json = ?,
+                entry_count = ?,
+                approved_entry_count = ?,
+                warning_count = ?
+            WHERE id = ?
+          `).run(
+            updatedPreview,
+            remainingPayableCount,
+            resolvedApprovedCount,
+            updatedWarningCount,
+            entry.performance_file_id
+          );
+        }
+      }
+
+      warningMessages.push(
+        `백업 JSON의 사번 없는 실적 ${removedPerformanceEntryCount}건을 V4 복원 대상에서 제거했습니다. 원본 백업은 변경하지 않았습니다.`
+      );
+    }
 
     database.exec("COMMIT;");
   } catch (error) {
@@ -2903,9 +3099,10 @@ const importJsonBackupIntoCurrentDatabase = (
     importedPerformanceFileCount: Array.isArray(backupSnapshot.tables.performance_files)
       ? backupSnapshot.tables.performance_files.length
       : 0,
-    importedPerformanceEntryCount: Array.isArray(backupSnapshot.tables.performance_entries)
-      ? backupSnapshot.tables.performance_entries.length
-      : 0,
+    importedPerformanceEntryCount:
+      (Array.isArray(backupSnapshot.tables.performance_entries)
+        ? backupSnapshot.tables.performance_entries.length
+        : 0) - removedPerformanceEntryCount,
     importedApprovedEntryCount: Array.isArray(backupSnapshot.tables.performance_approvals)
       ? backupSnapshot.tables.performance_approvals.length
       : 0,

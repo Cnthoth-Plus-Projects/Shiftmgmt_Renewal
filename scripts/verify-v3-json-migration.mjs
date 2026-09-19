@@ -17,6 +17,8 @@ const {
 
 const EXPECTED_SETTINGS_WARNING =
   "백업 JSON의 경로 설정은 무시하고 현재 환경 경로를 유지했습니다.";
+const EXPECTED_REMOVAL_WARNING =
+  "백업 JSON의 사번 없는 실적 1건을 V4 복원 대상에서 제거했습니다. 원본 백업은 변경하지 않았습니다.";
 
 class VerificationError extends Error {
   constructor(message) {
@@ -67,18 +69,23 @@ function canonicalTableHash(rows) {
   return hash.digest("hex");
 }
 
-function assertSettingsWarning(warnings, context) {
+function assertMigrationWarnings(warnings, context) {
   if (!Array.isArray(warnings)) {
     fail(`오류: ${context} warningMessages가 배열이 아닙니다.`);
   }
-  if (warnings.length !== 1) {
+  if (warnings.length !== 2) {
     fail(
-      `오류: ${context} 설정 경고 개수 불일치 (기대: 1개, 실제: ${warnings.length}개 - [${warnings.join("; ")}])`
+      `오류: ${context} 경고 개수 불일치 (기대: 2개, 실제: ${warnings.length}개 - [${warnings.join("; ")}])`
     );
   }
-  if (warnings[0] !== EXPECTED_SETTINGS_WARNING) {
+  if (!warnings.includes(EXPECTED_SETTINGS_WARNING)) {
     fail(
-      `오류: ${context} 설정 경고 문구 불일치\n  기대: "${EXPECTED_SETTINGS_WARNING}"\n  실제: "${warnings[0]}"`
+      `오류: ${context} 설정 경고 문구 누락\n  기대 포함: "${EXPECTED_SETTINGS_WARNING}"\n  실제: [${warnings.join("; ")}]`
+    );
+  }
+  if (!warnings.includes(EXPECTED_REMOVAL_WARNING)) {
+    fail(
+      `오류: ${context} 사번 없는 실적 제거 경고 문구 누락\n  기대 포함: "${EXPECTED_REMOVAL_WARNING}"\n  실제: [${warnings.join("; ")}]`
     );
   }
 }
@@ -160,8 +167,8 @@ async function main() {
       console.warn = origWarn;
     }
 
-    // P22-D2: preview 설정 경고 정확히 1개 검증
-    assertSettingsWarning(previewResult.warningMessages, "preview");
+    // P22-D2: preview 경고 검증 (경로 설정 유지 1건 + 사번 없는 실적 제거 1건)
+    assertMigrationWarnings(previewResult.warningMessages, "preview");
 
     const isExcludedSchemaWarning = (msg) =>
       msg.includes("employee_employment_periods") ||
@@ -202,8 +209,8 @@ async function main() {
       console.warn = origWarn;
     }
 
-    // P22-D2: 실복원 설정 경고 정확히 1개 검증
-    assertSettingsWarning(restoreResult.warningMessages, "복원 실행");
+    // P22-D2: 실복원 경고 검증 (경로 설정 유지 1건 + 사번 없는 실적 제거 1건)
+    assertMigrationWarnings(restoreResult.warningMessages, "복원 실행");
 
     const restoreExclusions = [
       ...restoreResult.warningMessages.filter(isExcludedSchemaWarning),
@@ -260,8 +267,8 @@ async function main() {
       targetTotalRows += count;
     }
 
-    if (targetTotalRows !== 3598) {
-      fail(`오류: target DB 총 행 수 불일치 (기대: 3598, 실제: ${targetTotalRows})`);
+    if (targetTotalRows !== 3597) {
+      fail(`오류: target DB 총 행 수 불일치 (기대: 3597, 실제: ${targetTotalRows})`);
     }
 
     // 7. app_setting_entries check
@@ -272,10 +279,46 @@ async function main() {
     }
 
     // 8. 39 tables canonical comparison
+    const EXCLUDED_NOCODE_ENTRY_ID =
+      "access-performance-entry-accessperformance202408sk증권nocode202408150056";
+    const TARGET_FILE_ID = "access-performance-file-202408|sk증권|approved";
+
     for (const t of targetTables) {
       if (t === "app_setting_entries") continue;
-      const sRows = parsedJson.tables[t] || [];
+      let sRows = parsedJson.tables[t] || [];
       const tRows = db.prepare(`SELECT * FROM ${t}`).all();
+
+      if (t === "performance_entries") {
+        const matchingEntryCount = sRows.filter((r) => r.id === EXCLUDED_NOCODE_ENTRY_ID).length;
+        if (matchingEntryCount !== 1) {
+          fail(`오류: source performance_entries에서 exact ID '${EXCLUDED_NOCODE_ENTRY_ID}' 일치 건수 불일치 (기대: 1, 실제: ${matchingEntryCount})`);
+        }
+        sRows = sRows.filter((r) => r.id !== EXCLUDED_NOCODE_ENTRY_ID);
+      } else if (t === "performance_files") {
+        sRows = sRows.map((file) => {
+          if (file.id === TARGET_FILE_ID) {
+            const preview = JSON.parse(file.preview_json || "[]");
+            const matchesTargetHong = (p) => {
+              const name = String(p["직원명"] ?? p["employee_name"] ?? p["employeeName"] ?? "").trim();
+              const workDate = String(p["근무날짜"] ?? p["work_date"] ?? p["workDate"] ?? "").trim();
+              return name === "홍길동1" && workDate === "2024-08-15";
+            };
+            const matchingCount = preview.filter(matchesTargetHong).length;
+            if (matchingCount !== 1) {
+              fail(`오류: target file(${TARGET_FILE_ID}) preview에서 홍길동1 / 2024-08-15 일치 건수 불일치 (기대: 1, 실제: ${matchingCount})`);
+            }
+            const filteredPreview = preview.filter((p) => !matchesTargetHong(p));
+            return {
+              ...file,
+              entry_count: 4,
+              approved_entry_count: 4,
+              warning_count: 0,
+              preview_json: JSON.stringify(filteredPreview)
+            };
+          }
+          return file;
+        });
+      }
 
       if (sRows.length !== tRows.length) {
         fail(`오류: 표 '${t}' 행 수 불일치 (source: ${sRows.length}, target: ${tRows.length})`);
@@ -308,7 +351,54 @@ async function main() {
       fail(`오류: 신규 컬럼 non-null 수 불일치 (기대: 87/84/0, 실제: ${asgnNonNull}/${wageNonNull}/${perfNonNull})`);
     }
 
-    // 11. Verify input file SHA afterwards
+    // 11. Domain & Payroll assertions
+    const poolPerfCount = db.prepare(`
+      SELECT COUNT(*) AS cnt
+      FROM performance_entries pe
+      JOIN performance_files pf ON pe.performance_file_id = pf.id
+      WHERE pe.employee_name LIKE '%전인환%' AND pf.status = 'approved'
+    `).get().cnt;
+    const poolApprCount = db.prepare("SELECT COUNT(*) AS cnt FROM performance_approvals WHERE employee_name LIKE '%전인환%'").get().cnt;
+    const poolCalcCount = db.prepare("SELECT COUNT(*) AS cnt FROM allowance_calculations WHERE employee_name LIKE '%전인환%'").get().cnt;
+    if (poolPerfCount !== 44 || poolApprCount !== 0 || poolCalcCount !== 0) {
+      fail(`오류: Pool 전인환 실적/승인/계산 수 불일치 (기대: 44/0/0, 실제: ${poolPerfCount}/${poolApprCount}/${poolCalcCount})`);
+    }
+
+    const bpPerfCount = db.prepare("SELECT COUNT(*) AS cnt FROM performance_entries WHERE employee_name LIKE '%정다운%'").get().cnt;
+    const bpApprCount = db.prepare("SELECT COUNT(*) AS cnt FROM performance_approvals WHERE employee_name LIKE '%정다운%'").get().cnt;
+    const bpCalcCount = db.prepare("SELECT COUNT(*) AS cnt FROM allowance_calculations WHERE employee_name LIKE '%정다운%'").get().cnt;
+    if (bpPerfCount !== 0 || bpApprCount !== 0 || bpCalcCount !== 0) {
+      fail(`오류: BP 정다운 실적/승인/계산 수 불일치 (기대: 0/0/0, 실제: ${bpPerfCount}/${bpApprCount}/${bpCalcCount})`);
+    }
+
+    const unassignedNonBpCount = db.prepare(`
+      SELECT COUNT(*) AS cnt FROM performance_entries
+      WHERE (employee_code IS NULL OR trim(employee_code) = '')
+        AND employee_name NOT LIKE '%BP%'
+        AND employee_name NOT LIKE '%(BP)%'
+    `).get().cnt;
+    if (unassignedNonBpCount !== 0) {
+      fail(`오류: target DB에 사번 없는 비-BP 실적 존재 (${unassignedNonBpCount}건)`);
+    }
+
+    const totalCalc = db.prepare(`
+      SELECT COUNT(*) AS cnt, COALESCE(SUM(total_allowance_amount), 0) AS total_amount
+      FROM allowance_calculations
+    `).get();
+    if (totalCalc.cnt !== 263 || totalCalc.total_amount !== 56076024) {
+      fail(`오류: 수당 계산 전체 건수/금액 불일치 (기대: 263건 / 56,076,024원, 실제: ${totalCalc.cnt}건 / ${totalCalc.total_amount}원)`);
+    }
+
+    const approvedCalc = db.prepare(`
+      SELECT COUNT(*) AS cnt, COALESCE(SUM(total_allowance_amount), 0) AS total_amount
+      FROM allowance_calculations
+      WHERE status = 'approved' OR status = 'proposal-approved'
+    `).get();
+    if (approvedCalc.cnt !== 64 || approvedCalc.total_amount !== 13611839) {
+      fail(`오류: 승인 완료 수당 계산 건수/금액 불일치 (기대: 64건 / 13,611,839원, 실제: ${approvedCalc.cnt}건 / ${approvedCalc.total_amount}원)`);
+    }
+
+    // 12. Verify input file SHA afterwards
     const finalSha = computeFileSha256(options.input);
     if (finalSha.toLowerCase() !== initialSha.toLowerCase()) {
       fail(`오류: 검증 후 입력 파일 SHA 변조 감지! (전: ${initialSha}, 후: ${finalSha})`);
@@ -392,11 +482,12 @@ async function main() {
   console.log(`- 입력 JSON SHA-256 (전/후 동일): ${successSummary.finalSha.toUpperCase()}`);
   console.log(`- 입력 표/행: ${successSummary.sourceTableCount}개 표, ${successSummary.sourceTotalRows}개 행`);
   console.log(`- preview/실복원 스키마 제외 경고: 0건`);
-  console.log(`- preview/실복원 경로 설정 유지 경고: 각각 정확히 1건 확인 ("${EXPECTED_SETTINGS_WARNING}")`);
+  console.log(`- preview/실복원 경고: 각각 2건 확인 ("${EXPECTED_SETTINGS_WARNING}" / "${EXPECTED_REMOVAL_WARNING}")`);
   console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
   console.log(`- restoredTableCount: ${successSummary.restoreResult.restoredTableCount}`);
-  console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries: source 18 -> target 17, 정책 경고 1건)`);
-  console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치`);
+  console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries 1건 제외 및 사번 없는 실적 1건 안전 제거, 3599 -> 3597)`);
+  console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치 (performance_entries 349건 대조, performance_files 정규화 대조)`);
+  console.log(`- 도메인/수당 단언: Pool 전인환 44/0/0, BP 정다운 0/0/0, 계산 전체 263건(56,076,024원), 승인 64건(13,611,839원) 전건 일치`);
   console.log(`- 신규 4표 행 수: periods=${successSummary.periodsCount}, closures=${successSummary.closuresCount}, events=${successSummary.eventsCount}, wage_rate_history=${successSummary.wageHistCount}`);
   console.log(`- 신규 3컬럼 비NULL 수: assignments=${successSummary.asgnNonNull}/89, wages=${successSummary.wageNonNull}/87, performance_snapshot=${successSummary.perfNonNull}/37`);
   console.log(`- SQLite 무결성: quick_check=ok, integrity_check=ok`);

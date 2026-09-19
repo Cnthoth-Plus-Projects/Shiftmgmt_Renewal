@@ -264,6 +264,8 @@ const prepareReturnedWorkbook = async (changedSlotPriorityEffectiveFrom: string)
   const entries = detail?.entries ?? [];
 
   return {
+    detail,
+    alerts: detail?.alerts ?? [],
     entries,
     at: (workDate: string) => entries.filter((entry) => entry.workDate === workDate),
     nameAt: (workDate: string) =>
@@ -276,7 +278,7 @@ describe("변경후 우선 규칙 — 적용 시작일 이전(옛 규칙 유지)
     "credits the 변경전 worker and ignores 변경후, exactly as before",
     async () => {
       // Work dates are 2026-03-xx, the effective date is later, so nothing may change.
-      const { at, nameAt } = await prepareReturnedWorkbook("2026-07-01");
+      const { at, nameAt, alerts } = await prepareReturnedWorkbook("2026-07-01");
 
       // A. 변경전 실명 + 변경후 실명 -> 변경전(김철수) credited, 박영수 dropped.
       const kim = at("2026-03-01").filter((entry) => entry.employeeName === "김철수");
@@ -301,9 +303,18 @@ describe("변경후 우선 규칙 — 적용 시작일 이전(옛 규칙 유지)
         at("2026-03-01").find((entry) => entry.employeeName === "한소희")?.note
       ).toContain("빈 근무열 기준 법정휴일근로");
 
-      // K. "None_A3" is not exactly "None", so it used to be read as a person's name.
-      expect(nameAt("2026-03-03")).toContain("None_A3");
+      // K. "None_A3" is not a registered worker and has no employee code, so it is filtered out.
+      // Under the pre-effective-date rule, the 변경후 worker 임수정 is also ignored.
+      expect(nameAt("2026-03-03")).not.toContain("None_A3");
       expect(nameAt("2026-03-03")).not.toContain("임수정");
+      expect(at("2026-03-03")).toHaveLength(0);
+      expect(
+        alerts.some(
+          (alert) =>
+            alert.severity === "warning" &&
+            alert.message.includes("사번 없는 실적 1건을 실적 목록에서 제외했습니다")
+        )
+      ).toBe(true);
 
       // E. 변경전 None + 변경후 실명 -> 변경후 credited.
       expect(nameAt("2026-03-04")).toContain("최유리");

@@ -5,6 +5,7 @@ import type { SchedulePlanTemplateVariant } from "./schedule-plan";
 import type { SubstituteAllowanceReasonCode } from "./substitute-allowance-policy";
 import { substituteAllowanceReasonLabels } from "./substitute-allowance-policy";
 import type { TeamWorkType } from "./team-work-type";
+import { isBpDisplayName } from "./employment-type";
 
 export type ExcelTemplateKind =
   | "schedule-plan"
@@ -243,6 +244,109 @@ export const isNonPayableSubstitutePerformanceEntry = (
 export const isPoolSubstitutePerformanceEntry = isNonPayableSubstitutePerformanceEntry;
 
 export const isNonPayablePoolSubstitutePerformanceEntry = isNonPayableSubstitutePerformanceEntry;
+
+export type NonPayablePerformanceReasonCode =
+  | "POOL_WORKER_EXCLUDED"
+  | "BP_WORKER_EXCLUDED"
+  | "NO_EMPLOYEE_CODE"
+  | SubstituteAllowanceReasonCode
+  | "NON_PAYABLE";
+
+export const getNonPayablePerformanceReasonCode = (
+  entry: Partial<
+    Pick<
+      PerformanceEntryRecord,
+      | "employeeCode"
+      | "employeeName"
+      | "isPoolWorker"
+      | "section"
+      | "substituteAllowanceEligible"
+      | "substituteAllowanceReasonCode"
+    >
+  >
+): NonPayablePerformanceReasonCode | undefined => {
+  if (Boolean(entry.isPoolWorker) || isPoolWorkerDisplayName(entry.employeeName)) {
+    return "POOL_WORKER_EXCLUDED";
+  }
+
+  if (isBpDisplayName(entry.employeeName)) {
+    return "BP_WORKER_EXCLUDED";
+  }
+
+  const code = entry.employeeCode?.trim();
+  if (!code) {
+    return "NO_EMPLOYEE_CODE";
+  }
+
+  if (entry.section === "substitute") {
+    if (entry.substituteAllowanceEligible === false) {
+      return entry.substituteAllowanceReasonCode ?? "POOL_SUBSTITUTE_EXCLUDED";
+    }
+  }
+
+  return undefined;
+};
+
+export const isNonPayablePerformanceEntry = (
+  entry: Partial<
+    Pick<
+      PerformanceEntryRecord,
+      | "employeeCode"
+      | "employeeName"
+      | "isPoolWorker"
+      | "section"
+      | "substituteAllowanceEligible"
+      | "substituteAllowanceReasonCode"
+    >
+  >
+): boolean => getNonPayablePerformanceReasonCode(entry) !== undefined;
+
+export const isPayablePerformanceEntry = (
+  entry: Partial<
+    Pick<
+      PerformanceEntryRecord,
+      | "employeeCode"
+      | "employeeName"
+      | "isPoolWorker"
+      | "section"
+      | "substituteAllowanceEligible"
+      | "substituteAllowanceReasonCode"
+    >
+  >
+): boolean => !isNonPayablePerformanceEntry(entry);
+
+export const getNonPayablePerformanceReasonText = (
+  entry: Partial<
+    Pick<
+      PerformanceEntryRecord,
+      | "employeeCode"
+      | "employeeName"
+      | "isPoolWorker"
+      | "section"
+      | "substituteAllowanceEligible"
+      | "substituteAllowanceReasonCode"
+    >
+  >
+): string | undefined => {
+  const code = getNonPayablePerformanceReasonCode(entry);
+  if (!code) {
+    return undefined;
+  }
+
+  switch (code) {
+    case "POOL_WORKER_EXCLUDED":
+      return "Pool 인력은 승인 및 수당 처리 대상이 아닙니다.";
+    case "BP_WORKER_EXCLUDED":
+      return "BP 인력은 승인 및 수당 처리 대상이 아닙니다.";
+    case "NO_EMPLOYEE_CODE":
+      return "사번이 없는 실적은 승인 및 수당 처리 대상이 아닙니다.";
+    default:
+      if (entry.substituteAllowanceReasonCode && substituteAllowanceReasonLabels[entry.substituteAllowanceReasonCode]) {
+        return `${substituteAllowanceReasonLabels[entry.substituteAllowanceReasonCode]} 승인 및 수당 처리 대상이 아닙니다.`;
+      }
+      return "수당 미지급 대상 실적입니다.";
+  }
+};
 
 // 화면·알림에 쓰는 미지급 사유 문구. 사유 코드가 없으면 기존 Pool 문구를 쓴다.
 export const getNonPayableSubstituteReasonText = (

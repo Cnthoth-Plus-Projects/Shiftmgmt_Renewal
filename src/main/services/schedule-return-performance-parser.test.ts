@@ -1143,12 +1143,20 @@ describe("schedule-return-performance-parser", () => {
       filePath: fixture.filePath,
       fileId: "schedule-return-same-name-same-site"
     });
-    const overtimeEntry = parsed.entries.find((entry) => entry.section === "overtime");
+    const overtimeEntry = parsed.entries.find((entry) => entry.employeeName === fixture.workers.overtime.name);
 
-    expect(overtimeEntry?.employeeCode).toBe("");
+    expect(overtimeEntry).toBeUndefined();
     expect(
-      overtimeEntry?.alerts.some(
-        (alert) => alert.severity === "error" && alert.message.includes("사번을 확정할 수 없습니다")
+      parsed.previewRows.some((row) =>
+        String(row["직원명"] ?? row["employee_name"] ?? row["employeeName"] ?? "") ===
+        fixture.workers.overtime.name
+      )
+    ).toBe(false);
+    expect(
+      parsed.alerts.some(
+        (alert) =>
+          alert.severity === "warning" &&
+          alert.message.includes("사번 없는 실적 1건을 실적 목록에서 제외했습니다")
       )
     ).toBe(true);
   });
@@ -1188,5 +1196,230 @@ describe("schedule-return-performance-parser", () => {
         )
       )
     ).toBe(true);
+  });
+
+  it("should mark Pool holiday and overtime rows as non-payable without missing wage errors", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+
+    await updateReturnedWorkbook(fixture.filePath, (worksheet) => {
+      worksheet.getCell("Z12").value = `${fixture.workers.holiday.name}(P)`;
+    });
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture.filePath,
+      fileId: "schedule-return-pool-holiday"
+    });
+    const holidayEntry = parsed.entries.find(
+      (entry) =>
+        entry.section === "legal-holiday" &&
+        entry.employeeName === fixture.workers.holiday.name
+    );
+
+    expect(holidayEntry).toMatchObject({
+      employeeName: fixture.workers.holiday.name,
+      isPoolWorker: true
+    });
+    expect(holidayEntry?.note).toContain("Pool 근무");
+    expect(holidayEntry?.note).toContain("수당 미지급");
+    expect(
+      holidayEntry?.alerts.some((alert) => alert.message.includes("시급"))
+    ).toBe(false);
+  });
+
+  it("should filter out non-BP rows without employee code and add an aggregated warning", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+
+    // 엑셀에 등록되지 않은 임의의 비-BP 직원명 입력
+    await updateReturnedWorkbook(fixture.filePath, (worksheet) => {
+      worksheet.getCell("BG34").value = "미등록비사번직원";
+    });
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture.filePath,
+      fileId: "schedule-return-missing-code-filter"
+    });
+
+    const unassignedEntry = parsed.entries.find(
+      (entry) => entry.employeeName === "미등록비사번직원"
+    );
+    expect(unassignedEntry).toBeUndefined();
+    expect(
+      parsed.alerts.some(
+        (alert) =>
+          alert.severity === "warning" &&
+          alert.message.includes("사번 없는 실적 1건을 실적 목록에서 제외했습니다")
+      )
+    ).toBe(true);
+  });
+
+  it("should not treat an employee as Pool when past Pool assignment has ended and current duty date is in a normal team", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const holidayEmployeeCode = fixture.workers.holiday.employeeCode;
+    const holidayEmployee = getSqliteDatabase()!
+      .prepare("SELECT id FROM employees WHERE employee_code = ?")
+      .get(holidayEmployeeCode) as { id: string } | undefined;
+
+    if (!holidayEmployee) {
+      throw new Error("테스트 인력 정보를 찾지 못했습니다.");
+    }
+
+    // 과거 Pool 배치 추가 (2025년도)
+    getSqliteDatabase()!
+      .prepare(`
+        INSERT INTO employee_site_assignments (
+          id, employee_id, site_id, shift_group, start_date, end_date, status, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      .run(
+        "assign-past-pool",
+        holidayEmployee.id,
+        getSiteIdByName(fixture.siteName),
+        "Pool",
+        "2025-01-01",
+        "2025-12-31",
+        "closed",
+        "2025-01-01T00:00:00.000Z"
+      );
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture.filePath,
+      fileId: "schedule-return-past-pool-not-pool-now"
+    });
+    const holidayEntry = parsed.entries.find(
+      (entry) =>
+        entry.section === "legal-holiday" &&
+        entry.employeeName === fixture.workers.holiday.name
+    );
+
+    // 2026-03 근무일에는 Pool이 아니어야 함
+    expect(holidayEntry?.isPoolWorker).toBe(false);
+    expect(holidayEntry?.note).toBeUndefined();
+  });
+
+  it("should treat worker as normal when normal assignment starts on the pool assignment end_date (endDate exclusive)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const holidayEmployeeCode = fixture.workers.holiday.employeeCode;
+    const db = getSqliteDatabase()!;
+    const holidayEmployee = db
+      .prepare("SELECT id FROM employees WHERE employee_code = ?")
+      .get(holidayEmployeeCode) as { id: string } | undefined;
+
+    if (!holidayEmployee) {
+      throw new Error("테스트 인력 정보를 찾지 못했습니다.");
+    }
+
+    // 기존 배정 모두 비활성화
+    db.prepare("UPDATE employee_site_assignments SET status = 'closed' WHERE employee_id = ?").run(holidayEmployee.id);
+
+    // 1) Pool 배정: 2026-01-01 ~ 2026-03-01 (2026-03-01은 endDate exclusive이므로 제외되어야 함)
+    db.prepare(`
+      INSERT INTO employee_site_assignments (
+        id, employee_id, site_id, shift_group, start_date, end_date, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      "assign-pool-end-0301",
+      holidayEmployee.id,
+      getSiteIdByName(fixture.siteName),
+      "Pool",
+      "2026-01-01",
+      "2026-03-01",
+      "active",
+      "2026-01-01T00:00:00.000Z"
+    );
+
+    // 2) 일반 배정: 2026-03-01 ~ 2026-12-31
+    db.prepare(`
+      INSERT INTO employee_site_assignments (
+        id, employee_id, site_id, shift_group, start_date, end_date, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      "assign-normal-start-0301",
+      holidayEmployee.id,
+      getSiteIdByName(fixture.siteName),
+      "A조",
+      "2026-03-01",
+      "2026-12-31",
+      "active",
+      "2026-03-01T00:00:00.000Z"
+    );
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture.filePath,
+      fileId: "schedule-return-pool-end-date-boundary"
+    });
+    const holidayEntry = parsed.entries.find(
+      (entry) =>
+        entry.section === "legal-holiday" &&
+        entry.employeeName === fixture.workers.holiday.name
+    );
+
+    // 2026-03-01 당일은 Pool 종료일(exclusive)이자 일반 시작일이므로 일반(false)이어야 함
+    expect(holidayEntry?.isPoolWorker).toBe(false);
+    expect(holidayEntry?.note ?? "").not.toContain("Pool");
+  });
+
+  it("should not treat worker as pool when pool assignment exists at another site on the same date", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const holidayEmployeeCode = fixture.workers.holiday.employeeCode;
+    const db = getSqliteDatabase()!;
+    const holidayEmployee = db
+      .prepare("SELECT id FROM employees WHERE employee_code = ?")
+      .get(holidayEmployeeCode) as { id: string } | undefined;
+
+    if (!holidayEmployee) {
+      throw new Error("테스트 인력 정보를 찾지 못했습니다.");
+    }
+
+    // 다른 근무지 생성
+    const otherSiteId = "test-other-site-pool-scope";
+    db.prepare(`
+      INSERT OR REPLACE INTO sites (id, site_code, name, customer_name, status, timezone, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(otherSiteId, "SITE-OTHER-POOL", "다른근무지", "고객사", "active", "Asia/Seoul", "2026-01-01T00:00:00.000Z");
+
+    // 다른 근무지에 동시 Pool 배정 등록 (2026-01-01 ~ 2026-12-31)
+    db.prepare(`
+      INSERT INTO employee_site_assignments (
+        id, employee_id, site_id, shift_group, start_date, end_date, status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      "assign-other-site-pool",
+      holidayEmployee.id,
+      otherSiteId,
+      "Pool",
+      "2026-01-01",
+      "2026-12-31",
+      "active",
+      "2026-01-01T00:00:00.000Z"
+    );
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture.filePath,
+      fileId: "schedule-return-other-site-pool-not-affect"
+    });
+    const holidayEntry = parsed.entries.find(
+      (entry) =>
+        entry.section === "legal-holiday" &&
+        entry.employeeName === fixture.workers.holiday.name
+    );
+
+    // 대상 근무지에는 일반(A조) 배정이 있으므로 다른 근무지의 Pool 배정으로 인해 Pool로 오판되지 않아야 함
+    expect(holidayEntry?.isPoolWorker).toBe(false);
+    expect(holidayEntry?.note ?? "").not.toContain("Pool");
   });
 });

@@ -803,14 +803,16 @@ const resolveHourlyRate = (
     [...candidates].find((employee) => employee.resolveHourlyRate(workDate) !== undefined) ??
     candidates[0];
 
+    const teamLabel = resolveEmployeeTeamLabel(matchedEmployee, siteName, workDate);
+
   return {
     employeeCode: matchedEmployee.employeeCode,
     employeeRank: matchedEmployee.employeeRank,
     hourlyRate: matchedEmployee.resolveHourlyRate(workDate),
     latestEffectiveFrom: matchedEmployee.latestEffectiveFrom,
     duplicateNameCount: nameCandidates.length || candidates.length,
-    isPoolWorker: matchedEmployee.isPoolWorker,
-    teamLabel: resolveEmployeeTeamLabel(matchedEmployee, siteName, workDate)
+    isPoolWorker: isPoolShiftGroup(teamLabel),
+    teamLabel
   };
 };
 
@@ -1093,9 +1095,8 @@ const buildEntry = (input: {
   );
   const alerts = [...(input.alerts ?? [])];
   const isPoolWorker = Boolean(
-    employeeContext?.isPoolWorker || (input.section === "substitute" && parsedEmployeeName.isPoolDisplayName)
+    employeeContext?.isPoolWorker || parsedEmployeeName.isPoolDisplayName
   );
-  const isPoolSubstitute = input.section === "substitute" && isPoolWorker;
   // 대체근무 행만 판정한다. 투입자의 그날 소속 조로 근무유형을 정하고, 대체 대상은 슬롯(원 근무자)의 조를 본다.
   // 조를 모르면 기존처럼 지급되도록 ROTATING으로 둔다(새 규칙이 과거 동작을 건드리지 않게).
   const substituteDecision =
@@ -1121,10 +1122,10 @@ const buildEntry = (input: {
 
   if (!employeeContext) {
     alerts.push(
-      isPoolSubstitute
+      isPoolWorker
         ? {
             severity: "warning",
-            message: `${input.employeeName}은 Pool 대체근무 표시로 인식했지만 등록 인력 정보를 찾지 못했습니다.`
+            message: `${input.employeeName}은 Pool 표시로 인식했지만 등록 인력 정보를 찾지 못했습니다.`
           }
         : {
             severity: "error",
@@ -1136,7 +1137,7 @@ const buildEntry = (input: {
       severity: "error",
       message: employeeContext.resolutionError
     });
-  } else if (!isPoolSubstitute && employeeContext.hourlyRate === undefined) {
+  } else if (!isPoolWorker && employeeContext.hourlyRate === undefined) {
     alerts.push({
       severity: "error",
       message: employeeContext.latestEffectiveFrom
@@ -1147,9 +1148,9 @@ const buildEntry = (input: {
 
   const notes = [
     input.note,
-    isPoolSubstitute ? "Pool 대체근무" : undefined,
-    !isPoolSubstitute && isNonPayableSubstitute ? substituteDecision?.reasonLabel : undefined,
-    isPoolSubstitute || isNonPayableSubstitute ? "수당 미지급" : undefined,
+    isPoolWorker ? (input.section === "substitute" ? "Pool 대체근무" : "Pool 근무") : undefined,
+    !isPoolWorker && isNonPayableSubstitute ? substituteDecision?.reasonLabel : undefined,
+    isPoolWorker || isNonPayableSubstitute ? "수당 미지급" : undefined,
     parsedEmployeeName.isPoolDisplayName && employeeName !== input.employeeName
       ? `원본 표기 ${input.employeeName}`
       : undefined
@@ -1192,8 +1193,18 @@ const buildEntry = (input: {
     isPoolWorker,
     substituteWorkType: substituteDecision?.substituteWorkType,
     targetWorkType: substituteDecision?.targetWorkType,
-    substituteAllowanceEligible: substituteDecision?.eligible,
-    substituteAllowanceReasonCode: substituteDecision?.reasonCode,
+    substituteAllowanceEligible:
+      input.section === "substitute"
+        ? isPoolWorker
+          ? false
+          : substituteDecision?.eligible
+        : undefined,
+    substituteAllowanceReasonCode:
+      input.section === "substitute"
+        ? isPoolWorker
+          ? "POOL_SUBSTITUTE_EXCLUDED"
+          : substituteDecision?.reasonCode
+        : undefined,
     substituteAllowancePolicyVersion: substituteDecision?.policyVersion
   };
 };
@@ -1901,9 +1912,32 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
         left.workDate.localeCompare(right.workDate) ||
         left.employeeName.localeCompare(right.employeeName, "ko")
   );
+
+  const filteredEntries: PerformanceEntryRecord[] = [];
+  let unassignedCodeCount = 0;
+
+  for (const entry of parsedEntries) {
+    if (
+      !isBpDisplayName(entry.employeeName) &&
+      (!entry.employeeCode || entry.employeeCode.trim() === "")
+    ) {
+      unassignedCodeCount++;
+    } else {
+      filteredEntries.push(entry);
+    }
+  }
+
+  const scheduleAlerts = [...scheduleContext.scheduleAlerts];
+  if (unassignedCodeCount > 0) {
+    scheduleAlerts.push({
+      severity: "warning",
+      message: `사번 없는 실적 ${unassignedCodeCount}건을 실적 목록에서 제외했습니다.`
+    });
+  }
+
   const retainedEntries = scheduleContext.schedule
-    ? parsedEntries
-    : markMissingScheduleRows(parsedEntries, identity.scheduleMonth, resolvedSiteName);
+    ? filteredEntries
+    : markMissingScheduleRows(filteredEntries, identity.scheduleMonth, resolvedSiteName);
 
   const entries = validateEmployeeTimeConflicts(retainedEntries);
 
@@ -1915,7 +1949,7 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
     scheduleMonth: identity.scheduleMonth,
     siteName: resolvedSiteName,
     scheduleKey,
-    alerts: scheduleContext.scheduleAlerts,
+    alerts: scheduleAlerts,
     previewRows: buildPreviewRows(entries),
     entries
   };

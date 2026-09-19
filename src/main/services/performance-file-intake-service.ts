@@ -7,7 +7,7 @@ import type {
   PerformanceFileSyncIssue,
   PerformanceFileSyncStateSnapshot
 } from "../../shared/domain/performance-file";
-import { isPoolSubstitutePerformanceEntry } from "../../shared/domain/performance-file";
+import { isPayablePerformanceEntry } from "../../shared/domain/performance-file";
 import type { AppSettings } from "./app-settings-service";
 import { inspectExcelTemplate } from "./excel-template-parser";
 import { toFileWatchEvent } from "./file-watch-service";
@@ -465,7 +465,7 @@ export const buildPerformanceFileDetailFromPath = async (input: {
         fileId
       });
       const effectiveEntries = parsed.entries.filter(
-        (entry) => !isPoolSubstitutePerformanceEntry(entry)
+        (entry) => isPayablePerformanceEntry(entry)
       );
       const effectiveWarningCount =
         parsed.alerts.length +

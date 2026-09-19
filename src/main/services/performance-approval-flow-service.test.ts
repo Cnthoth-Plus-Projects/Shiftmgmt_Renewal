@@ -858,4 +858,46 @@ describe("performance-approval-flow-service", () => {
     // The original approved copy keeps its effective flag.
     expect(getStoredPerformanceFileDetail(firstDetail.id)?.isEffective).toBe(true);
   });
+
+  it("should block approving non-payable performance entries (Pool / BP / unassigned code)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: createTestRoot(),
+      templateVariant: "sample1"
+    });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const database = getSqliteDatabase()!;
+
+    // 1. Pool 행으로 갱신 후 승인 시도 -> 차단
+    database.prepare("UPDATE performance_entries SET is_pool_worker = 1 WHERE id = ?").run(detail.entries[0]!.id);
+    const poolResult = await approvePerformanceFile(
+      { fileId: detail.id, entryId: detail.entries[0]!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(poolResult.ok).toBe(false);
+    expect(poolResult.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+    expect(poolResult.message).toContain("Pool");
+
+    // 2. BP 행으로 갱신 후 승인 시도 -> 차단
+    database.prepare("UPDATE performance_entries SET is_pool_worker = 0, employee_name = 'BP(홍길동)' WHERE id = ?").run(detail.entries[0]!.id);
+    const bpResult = await approvePerformanceFile(
+      { fileId: detail.id, entryId: detail.entries[0]!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(bpResult.ok).toBe(false);
+    expect(bpResult.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+    expect(bpResult.message).toContain("BP");
+
+    // 3. 무사번 비-BP 행으로 갱신 후 승인 시도 -> 차단
+    database.prepare("UPDATE performance_entries SET is_pool_worker = 0, employee_name = '홍길동', employee_code = '' WHERE id = ?").run(detail.entries[0]!.id);
+    const noCodeResult = await approvePerformanceFile(
+      { fileId: detail.id, entryId: detail.entries[0]!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(noCodeResult.ok).toBe(false);
+    expect(noCodeResult.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+    expect(noCodeResult.message).toContain("사번");
+  });
 });

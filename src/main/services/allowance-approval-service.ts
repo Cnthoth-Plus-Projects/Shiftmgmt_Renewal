@@ -6,7 +6,7 @@ import type {
   AllowanceApprovalRecord,
   AllowanceReviewActionInput
 } from "../../shared/domain/allowance-workflow";
-import { isPoolSubstitutePerformanceEntry } from "../../shared/domain/performance-file";
+import { isPayablePerformanceEntry } from "../../shared/domain/performance-file";
 import {
   getAllowanceCalculationById,
   listAllowanceCalculationsByIds,
@@ -270,7 +270,7 @@ const syncApprovedAllowanceSiteToPerformance = async (
 
   for (const detail of pendingDetails) {
     const eligibleEntryCount = detail.entries.filter(
-      (entry) => !isPoolSubstitutePerformanceEntry(entry)
+      (entry) => isPayablePerformanceEntry(entry)
     ).length;
 
     if (eligibleEntryCount === 0 || (detail.approvedEntryCount ?? 0) < eligibleEntryCount) {

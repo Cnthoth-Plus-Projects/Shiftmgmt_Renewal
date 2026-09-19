@@ -1054,4 +1054,102 @@ describe("performance-management-service", () => {
     expect(approvedRow?.entry.hourlyRate).toBeGreaterThan(0);
     expect(approvedRow?.entry.alerts.some((alert) => alert.message.includes("적용 시급"))).toBe(false);
   });
+
+  it("should treat Pool legal-holiday and overtime rows as non-payable rather than approved ghosts in approved folder and prevent approval in pending (P2-6-D6)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: createTestRoot(),
+      templateVariant: "sample1"
+    });
+
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const overtimeEntry = detail.entries.find((entry) => entry.section === "overtime");
+    const legalHolidayEntry = detail.entries.find((entry) => entry.section === "legal-holiday");
+
+    expect(overtimeEntry).toBeDefined();
+    expect(legalHolidayEntry).toBeDefined();
+
+    const database = getSqliteDatabase();
+    expect(database).not.toBeNull();
+
+    // 연장 및 법정공휴일 행을 Pool 인력으로 업데이트
+    database!.prepare(`
+      UPDATE performance_entries
+      SET employee_name = '전인환(P)',
+          is_pool_worker = 1
+      WHERE id = ?
+    `).run(overtimeEntry!.id);
+
+    database!.prepare(`
+      UPDATE performance_entries
+      SET employee_name = '홍길동(P)',
+          is_pool_worker = 1
+      WHERE id = ?
+    `).run(legalHolidayEntry!.id);
+
+    // 1. Pending 상태에서 확인: canApprove = false, approvalStatus = non-payable
+    const pendingOverview = await listPerformanceOverview(
+      {
+        approvalScope: "pending",
+        scheduleMonth: "2026-03"
+      },
+      {
+        pendingDir: fixture.pendingDir,
+        approvedDir: fixture.approvedDir
+      }
+    );
+
+    const pendingOvertimeRow = pendingOverview.groups[0]?.rows.find(
+      (row) => row.entryId === overtimeEntry!.id
+    );
+    const pendingHolidayRow = pendingOverview.groups[0]?.rows.find(
+      (row) => row.entryId === legalHolidayEntry!.id
+    );
+
+    expect(pendingOvertimeRow).toBeDefined();
+    expect(pendingOvertimeRow?.approvalStatus).toBe("non-payable");
+    expect(pendingOvertimeRow?.canApprove).toBe(false);
+
+    expect(pendingHolidayRow).toBeDefined();
+    expect(pendingHolidayRow?.approvalStatus).toBe("non-payable");
+    expect(pendingHolidayRow?.canApprove).toBe(false);
+
+    // 2. 파일을 승인완료 폴더로 이동하여 승인완료 상태 모의
+    const approvedFilePath = path.resolve(fixture.approvedDir, fixture.fileName);
+    renameSync(fixture.filePath, approvedFilePath);
+
+    database!.prepare(`
+      UPDATE performance_files
+      SET directory_type = 'approved',
+          file_path = ?,
+          status = 'approved'
+      WHERE id = ?
+    `).run(approvedFilePath, detail.id);
+
+    // 3. Approved 폴더 조회 시 Pool 법정공휴일/연장 행이 'approved' ghost가 아니라 'non-payable'인지 단언
+    const approvedOverview = await listPerformanceOverview(
+      {
+        approvalScope: "approved",
+        scheduleMonth: "2026-03"
+      },
+      {
+        pendingDir: fixture.pendingDir,
+        approvedDir: fixture.approvedDir
+      }
+    );
+
+    const approvedOvertimeRow = approvedOverview.groups[0]?.rows.find(
+      (row) => row.entryId === overtimeEntry!.id
+    );
+    const approvedHolidayRow = approvedOverview.groups[0]?.rows.find(
+      (row) => row.entryId === legalHolidayEntry!.id
+    );
+
+    expect(approvedOvertimeRow).toBeDefined();
+    expect(approvedOvertimeRow?.approvalStatus).toBe("non-payable");
+    expect(approvedOvertimeRow?.canApprove).toBe(false);
+
+    expect(approvedHolidayRow).toBeDefined();
+    expect(approvedHolidayRow?.approvalStatus).toBe("non-payable");
+    expect(approvedHolidayRow?.canApprove).toBe(false);
+  });
 });
