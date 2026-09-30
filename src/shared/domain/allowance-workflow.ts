@@ -77,8 +77,10 @@ export interface AllowanceProposalApprovalInput {
 export interface AllowanceBackupSummary {
   createdAt: string;
   jsonBackupPath: string;
-  excelBackupPath?: string;
-  accessBackupPath?: string;
+  backupSha256: string;
+  schemaVersion: string;
+  tableCount: number;
+  rowCount: number;
   warningMessages: string[];
 }
 

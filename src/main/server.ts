@@ -25,6 +25,7 @@ import type { RouteRegistry } from "./http/route-registry";
 import type { SessionManager } from "./http/session";
 import type { DialogBridge } from "./http/api-types";
 import { AppRuntime } from "./runtime";
+import { documentLayoutPreviewArtifactService } from "./services/document-layout-preview-artifact-service";
 
 /** 기본 포트(환경변수 SHIFTMGMT_PORT 로 바꿀 수 있다) */
 export const DEFAULT_PORT = 8734;
@@ -105,6 +106,13 @@ export interface CreateServerOptions {
   runtime?: AppRuntime;
   /** PowerShell 대화상자 스크립트 경로 */
   scriptPath?: string;
+  /** 미리보기 아티팩트 해석기(기본값 = 싱글톤 서비스) */
+  previewArtifactResolver?: {
+    resolveArtifact: (
+      previewId: string,
+      memberId: string
+    ) => { bytes: Buffer; mediaType: string; fileName: string } | null;
+  };
 }
 
 /** 실제로 배정된 포트(port 0 으로 띄운 테스트에서도 이 값이 검문 기준이 된다) */
@@ -145,6 +153,9 @@ export function createServer(options: CreateServerOptions = {}): Server {
 
   const dialogBridge = options.dialogBridge ?? runtime.dialogBridge;
   const routeRegistry = options.routeRegistry ?? runtime.registry;
+  const sessionManager = options.sessionManager ?? runtime.sessionManager;
+  const previewArtifactResolver =
+    options.previewArtifactResolver ?? documentLayoutPreviewArtifactService;
 
   const staticFiles = createStaticFiles({ root: staticRoot });
   const context: ApiContext = { version, dataDir, routeRegistry };
@@ -205,6 +216,37 @@ export function createServer(options: CreateServerOptions = {}): Server {
     port: number
   ): Promise<void> {
     if (method === "GET") {
+      const PREVIEW_PREFIX = "/api/document-layout-previews/";
+      if (pathname.startsWith(PREVIEW_PREFIX)) {
+        const subPath = pathname.slice(PREVIEW_PREFIX.length);
+        const segments = subPath.split("/");
+        if (segments.length !== 2) {
+          sendFailure(res, 404);
+          return;
+        }
+
+        const [previewId, memberId] = segments as [string, string];
+        const cookieHeader = req.headers.cookie;
+        const guardResult = sessionManager.requireRoleSession("admin", cookieHeader);
+        if (!guardResult.ok) {
+          sendJson(res, guardResult.status, guardResult.body);
+          return;
+        }
+
+        const artifact = previewArtifactResolver.resolveArtifact(previewId, memberId);
+        if (!artifact) {
+          sendFailure(res, 404);
+          return;
+        }
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", artifact.mediaType);
+        res.setHeader("Content-Length", String(artifact.bytes.length));
+        res.setHeader("Cache-Control", "no-store");
+        res.end(artifact.bytes);
+        return;
+      }
+
       const handler = resolveGetRoute(pathname);
 
       if (handler === undefined) {

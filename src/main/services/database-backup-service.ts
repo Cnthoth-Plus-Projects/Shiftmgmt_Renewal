@@ -1,11 +1,14 @@
-import { copyFile, mkdir, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import crypto from "node:crypto";
+import { existsSync, rmSync } from "node:fs";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import ExcelJS from "exceljs";
-
-import type { AppSettingsSnapshot, DatabaseBackupSummary } from "../../shared/bridge/contracts";
+import type {
+  AppSettingsSnapshot,
+  JsonDatabaseBackupSummary
+} from "../../shared/bridge/contracts";
 import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
-import { resolveConfiguredAccessSourceState } from "./database-file-policy-service";
 import { getSqliteDatabase } from "./sqlite-storage-service";
 
 interface BackupRuntimeState {
@@ -100,97 +103,51 @@ const buildJsonBackupSnapshot = (input: {
   };
 };
 
-const trimBackupSheetName = (value: string) => value.replace(/[\\/*?:[\]]/g, "-").trim() || "table";
+const reservedBackupPaths = new Set<string>();
 
-const resolveUniqueBackupSheetName = (value: string, usedNames: Set<string>) => {
-  const baseName = trimBackupSheetName(value);
-  let candidate = baseName.slice(0, 31) || "table";
-  let duplicateIndex = 1;
+const claimAndPublishBackupFile = async (
+  tempJsonPath: string,
+  jsonDir: string,
+  timestamp: string
+): Promise<string> => {
+  const baseName = `shiftmgmt-backup-${timestamp}`;
+  let counter = 0;
 
-  while (usedNames.has(candidate.toLowerCase())) {
-    const suffix = `_${String(duplicateIndex).padStart(2, "0")}`;
-    const trimmedBaseName = baseName.slice(0, Math.max(31 - suffix.length, 1)) || "table";
-    candidate = `${trimmedBaseName}${suffix}`;
-    duplicateIndex += 1;
+  while (counter < 1000) {
+    const candidateName =
+      counter === 0
+        ? `${baseName}.json`
+        : `${baseName}_${String(counter).padStart(2, "0")}.json`;
+    const candidatePath = path.resolve(jsonDir, candidateName);
+
+    if (reservedBackupPaths.has(candidatePath) || existsSync(candidatePath)) {
+      counter += 1;
+      continue;
+    }
+
+    reservedBackupPaths.add(candidatePath);
+    try {
+      if (existsSync(candidatePath)) {
+        counter += 1;
+        continue;
+      }
+      await rename(tempJsonPath, candidatePath);
+      return candidatePath;
+    } catch (err: unknown) {
+      const code = (err as { code?: string })?.code;
+      if (code === "EPERM" || code === "EEXIST") {
+        counter += 1;
+        continue;
+      }
+      throw err;
+    } finally {
+      reservedBackupPaths.delete(candidatePath);
+    }
   }
 
-  usedNames.add(candidate.toLowerCase());
-  return candidate;
+  throw new Error("고유한 백업 파일 경로를 예약하지 못했습니다.");
 };
 
-const toExcelCellValue = (value: unknown): ExcelJS.CellValue => {
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  if (value instanceof Date) {
-    return value;
-  }
-
-  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-    return value;
-  }
-
-  if (typeof value === "bigint") {
-    return value.toString();
-  }
-
-  if (Buffer.isBuffer(value)) {
-    return value.toString("base64");
-  }
-
-  return JSON.stringify(value);
-};
-
-const stringifyExcelCellValue = (value: unknown) => {
-  const normalized = toExcelCellValue(value);
-  return normalized instanceof Date ? normalized.toISOString() : String(normalized);
-};
-
-const writeExcelBackupSnapshot = async (input: {
-  createdAt: string;
-  outputPath: string;
-  tables: BackupTableSnapshot[];
-}) => {
-  const workbook = new ExcelJS.Workbook();
-  const usedNames = new Set<string>();
-
-  workbook.creator = "ShiftMgmt";
-  workbook.lastModifiedBy = "ShiftMgmt database backup";
-  workbook.created = new Date(input.createdAt);
-  workbook.modified = new Date(input.createdAt);
-
-  input.tables.forEach((table) => {
-    const worksheet = workbook.addWorksheet(resolveUniqueBackupSheetName(table.name, usedNames));
-    const headerRow = worksheet.addRow(table.columns);
-
-    worksheet.views = [{ state: "frozen", ySplit: 1 }];
-    headerRow.font = {
-      bold: true,
-      color: { argb: "FF1B2D45" }
-    };
-    headerRow.fill = {
-      type: "pattern",
-      pattern: "solid",
-      fgColor: { argb: "FFEFF3F9" }
-    };
-
-    table.rows.forEach((row) => {
-      worksheet.addRow(table.columns.map((column) => toExcelCellValue(row[column])));
-    });
-
-    table.columns.forEach((column, index) => {
-      const maxLength = Math.max(
-        column.length,
-        ...table.rows.map((row) => stringifyExcelCellValue(row[column]).length)
-      );
-
-      worksheet.getColumn(index + 1).width = Math.min(Math.max(maxLength + 2, 12), 40);
-    });
-  });
-
-  await workbook.xlsx.writeFile(input.outputPath);
-};
 
 const shouldRunForSchedule = (
   schedule: AppSettingsSnapshot["databaseBackupSchedule"],
@@ -220,80 +177,64 @@ const getScheduleSlotKey = (
 export const runDatabaseBackupNow = async (input: {
   userDataPath: string;
   env?: NodeJS.ProcessEnv;
-}): Promise<DatabaseBackupSummary> => {
+}): Promise<JsonDatabaseBackupSummary> => {
   const settings = getStoredAppSettingsSnapshot(input);
   const timestamp = getTimestampSegment();
   const createdAt = new Date().toISOString();
   const tableSnapshots = listBackupTableSnapshots();
   const jsonDir = path.resolve(settings.databaseBackupDir, "json");
-  const excelDir = path.resolve(settings.databaseBackupDir, "excel");
-  const accessDir = path.resolve(settings.databaseBackupDir, "access");
-  const jsonBackupPath = path.resolve(jsonDir, `shiftmgmt-backup-${timestamp}.json`);
-  const excelBackupPath = path.resolve(excelDir, `shiftmgmt-backup-${timestamp}.xlsx`);
-  const accessSourceState = resolveConfiguredAccessSourceState(settings);
-  const warningMessages: string[] = [];
+  const tempJsonPath = path.resolve(jsonDir, `.tmp-${Date.now()}-${randomUUID()}.json`);
 
   await mkdir(jsonDir, { recursive: true });
-  await mkdir(excelDir, { recursive: true });
-  await mkdir(accessDir, { recursive: true });
 
-  const jsonBackupPromise = writeFile(
-    jsonBackupPath,
-    JSON.stringify(
-      buildJsonBackupSnapshot({
-        createdAt,
-        tables: tableSnapshots
-      }),
-      null,
-      2
-    ),
-    "utf8"
+  const totalRowCount = tableSnapshots.reduce((acc, t) => acc + t.rows.length, 0);
+  const tableCount = tableSnapshots.length;
+
+  const jsonContent = JSON.stringify(
+    buildJsonBackupSnapshot({
+      createdAt,
+      tables: tableSnapshots
+    }),
+    null,
+    2
   );
-  const excelBackupPromise = writeExcelBackupSnapshot({
-    createdAt,
-    outputPath: excelBackupPath,
-    tables: tableSnapshots
-  });
 
-  const accessBackupPromise = (async () => {
-    if (accessSourceState.status === "missing-config") {
-      warningMessages.push("Access 원본 경로가 설정되지 않아 Access 백업은 생략했습니다.");
-      return undefined;
+  let finalJsonPath: string | null = null;
+  try {
+    await writeFile(tempJsonPath, jsonContent, "utf8");
+
+    finalJsonPath = await claimAndPublishBackupFile(tempJsonPath, jsonDir, timestamp);
+
+    // 공개된 실파일을 다시 읽어 SHA-256 계산
+    const publishedBytes = await readFile(finalJsonPath);
+    const backupSha256 = crypto.createHash("sha256").update(publishedBytes).digest("hex");
+
+    return {
+      createdAt,
+      jsonBackupPath: finalJsonPath,
+      backupSha256,
+      schemaVersion: "1",
+      tableCount,
+      rowCount: totalRowCount,
+      warningMessages: []
+    };
+  } catch (error) {
+    if (existsSync(tempJsonPath)) {
+      try {
+        rmSync(tempJsonPath, { force: true });
+      } catch {
+        // ignore cleanup error
+      }
     }
-
-    if (accessSourceState.status === "not-access") {
-      warningMessages.push("현재 복원 파일 경로가 Access(.accdb)가 아니어서 Access 원본 백업은 생략했습니다.");
-      return undefined;
+    if (finalJsonPath && existsSync(finalJsonPath)) {
+      try {
+        rmSync(finalJsonPath, { force: true });
+      } catch {
+        // ignore cleanup error
+      }
     }
-
-    if (accessSourceState.status === "missing-file") {
-      warningMessages.push("설정된 Access 원본 파일을 찾을 수 없어 Access 백업은 생략했습니다.");
-      return undefined;
-    }
-
-    if (accessSourceState.status === "not-file") {
-      warningMessages.push("설정된 Access 원본 경로가 파일이 아니어서 Access 백업은 생략했습니다.");
-      return undefined;
-    }
-
-    const accessBackupPath = path.resolve(accessDir, `access-backup-${timestamp}.accdb`);
-    await copyFile(accessSourceState.filePath, accessBackupPath);
-    return accessBackupPath;
-  })();
-
-  const [, , accessBackupPath] = await Promise.all([
-    jsonBackupPromise,
-    excelBackupPromise,
-    accessBackupPromise
-  ]);
-
-  return {
-    createdAt,
-    jsonBackupPath,
-    excelBackupPath,
-    accessBackupPath,
-    warningMessages
-  };
+    throw error;
+  }
 };
 
 const checkAndRunScheduledBackup = async (input: {

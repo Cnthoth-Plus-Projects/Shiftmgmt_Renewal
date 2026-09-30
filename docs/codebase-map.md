@@ -7,7 +7,7 @@
 
 | 파일 | 하는 일 |
 |---|---|
-| `package.json` | 실행·빌드·검사 명령(스크립트)과 도구 목록. 실행 의존성은 3개뿐이다 — 엑셀 읽기·쓰기, 폴더 감시, 그리고 PDF 자리 패키지(`vendor/electron-compat`) |
+| `package.json` | 실행·빌드·검사 명령(스크립트)과 도구 목록. 실행 의존성은 3개뿐이다 — 엑셀 읽기·쓰기(exceljs), 폴더 감시(chokidar), 브라우저 자동화(playwright) |
 | `package-lock.json` | 실행 의존성과 개발 도구의 정확한 판 번호 고정(`npm ci` 가 이 파일을 본다) |
 | `./VERSION` | 이 프로그램의 판 번호 한 줄. 「적용」 스크립트와 `npm run release:check` 가 이 값을 본다 |
 | `./.gitignore` | 저장소에 담지 않을 것(설치 폴더·빌드 결과·데이터·캡처) |
@@ -30,17 +30,22 @@
 | 파일 | 하는 일 |
 |---|---|
 | `scripts/dev.mjs` | 개발 실행 조정기: 빌드 → 서버 시작 → 서버 응답 확인 → 설치된 크롬으로 화면 열기. 크롬 창을 닫아도 서버는 남는다 |
-| `scripts/lib/find-chrome.mjs` | 이 PC에 설치된 크롬을 찾는다(내려받지 않는다). 개발 실행·캡처가 함께 쓴다 |
+| `scripts/lib/find-chrome.mjs` | 이 PC에 설치된 크롬을 찾는다(내려받지 않는다). 개발 실행·캡처·PDF 출력이 함께 쓴다 |
 | `scripts/copy-web-assets.mjs` | 화면 파일과 글꼴을 빌드 폴더로 복사한다(Pretendard는 woff2만, 폴더 구조 그대로) |
 | `scripts/capture-screen.mjs` | 실제 크롬으로 화면을 열어 PNG로 찍는다. 콘솔 오류나 400 이상 응답이 있으면 실패로 끝난다 |
 | `scripts/validate-codebase-map.mjs` | 이 지도가 가리키는 파일이 실제로 있는지 확인한다(원본 0.5.4 복사본, 수정 없음) |
 | `scripts/release-check.mjs` | 내보내기 전 점검: 판 번호 일치·작업 트리 깨끗·같은 판 태그 없음·검사 3종 통과·빌드 산출물 확인 |
-| `scripts/smoke-require.mjs` | 빌드 결과의 서비스가 정확히 72개이고 전부 불러와지는지 확인한다(`npm run smoke`) |
+| `scripts/clean-server-build.mjs` | 서버 빌드 전 `dist/server` 생성물만 안전하게 청소한다 |
+| `scripts/smoke-require.mjs` | 빌드 결과의 서비스가 정확히 79개이고 전부 불러와지는지 확인한다(`npm run smoke`) |
 | `scripts/verify-v3-json-migration.mjs` | 실제 운영 v0.5.8 JSON 백업의 스키마 40표·행 무손실 복원 및 정합성을 격리 임시 DB에서 검증한다 |
 | `scripts/windows-dialog.ps1` | Windows Forms 기반 파일·폴더 선택 및 경로 열기 PowerShell 스크립트 (UTF-8 JSON stdin/stdout) |
 | `scripts/issue-account-recovery-key.mjs` | 원본 계정 복구 유지보수 시험이 실행하는 바이트 동일 스크립트(제품 자동 실행 없음) |
 | `scripts/lib/release-publish-helpers.cjs` | 원본 릴리스 게시 helper 시험 전용 바이트 동일 모듈(제품 게시 흐름에는 연결하지 않음) |
 | `build/installer-update-data.ps1` | 원본 설치 데이터 백업·복원 시험 전용 바이트 동일 스크립트(새 패치 방식에는 연결하지 않음) |
+| `scripts/lib/ui-check.mjs` | 설치 Chrome 기반 공통 UI 검증 실행기: localhost 검문·서버 건강 상태·브라우저 계측·시나리오 실행·캡처·manifest 생성 |
+| `scripts/ui-checks/ready.mjs` | 실제 준비 화면 접속·상태 확인→캡처→재로드→재확인·캡처 시나리오 |
+| `scripts/ui-checks/login.mjs` | 실제 Chrome 기반 로그인 흐름 및 L1~L5 검증 시나리오 스크립트 |
+| `scripts/ui-checks/shell.mjs` | 실제 Chrome 기반 역할별 셸 메뉴, 사이드바 접힘, 상태줄 검증 시나리오 스크립트 |
 
 ## 서버 (`src/main`)
 
@@ -92,7 +97,6 @@
 | `src/main/ipc` | 창구가 서비스를 부를 때 쓰는 공통 도움 함수 1개와 원본 시험 1파일·15개 |
 | `src/renderer/assets/brand-logo-clean.png` | 문서 출력 로직과 원본 시험이 읽는 로고 원본(옛 화면 코드는 이관하지 않음) |
 | `양식샘플` | 원본에서 가져온 엑셀 양식·실제 산출물 견본 9개(근무표 템플릿·샘플, 품의서, 별첨1·2). 출력 모양을 맞출 때 대조용으로 쓴다 |
-| `vendor/electron-compat` | PDF 자리 패키지 3개 — 복사본이 부르는 `electron` 이름만 풀어 준다. Phase 2.5-5 에서 실제 방식으로 대체된다 |
 | `test-fixtures/legacy-resources/release-history` | 원본 릴리스 이력 시험 3개만을 위한 v0.4.5·v0.4.6 manifest 격리본. 빌드·제품 릴리스 이력에는 포함하지 않는다 |
 
 ## 화면 (`src/web`)
@@ -104,6 +108,11 @@
 | `src/web/styles.css` | 준비 화면의 최소 스타일(글꼴·색 3개). 디자인 시스템은 Phase 3-1에서 들어온다 |
 | `src/web/bridge/app-bridge.ts` | `window.appBridge` 에 111개 메서드를 계약 그대로 합성하여 노출하는 브라우저 브리지 |
 | `src/web/bridge/app-bridge.test.ts` | 브라우저 브리지 메서드 합성, 후행 undefined 제거 및 통신 검증 시험 |
+| `src/web/login.css` | 로그인 L1~L5 화면 전용 스타일시트 |
+| `src/web/shell.css` | 앱 셸, 사이드바, 헤더, 상태줄 레이아웃 스타일시트 |
+| `src/web/screens/login.ts` | 로그인 L1~L5 화면 렌더링, 폼 입력, 규칙 검증, 계정복구 처리 |
+| `src/web/screens/shell.ts` | 역할별 앱 셸, 메뉴 네비게이션, 사이드바 토글, 로그아웃 화면 |
+| `src/web/screens/status-bar.ts` | DB·동기화·대기파일·감시·업데이트 실제 API 상태줄 컴포넌트 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 

@@ -32,7 +32,21 @@ import {
   listStoredEmployeeWageRates
 } from "./employee-history-service";
 import { listStoredEmployees } from "./employee-storage-service";
-import { inspectSchedulePlanTemplateFromWorkbook } from "./schedule-plan-adapter";
+import {
+  assertScheduleLayoutRevisionMetadata,
+  assertScheduleWorkbookProtectedStructure,
+  computeCanonicalDigestSha256,
+  inspectSchedulePlanTemplateFromDefinition,
+  inspectSchedulePlanTemplateFromWorkbook,
+  readScheduleLayoutRevisionMetadataFromWorkbook,
+  resolveScheduleSectionLayoutsFromDefinition
+} from "./schedule-plan-adapter";
+import { getDocumentLayoutDefinitionByRevision } from "./document-layout-storage-service";
+import {
+  getBuiltInDocumentLayoutDefinition,
+  parseDocumentLayoutStorageKey
+} from "./document-layout-definition-service";
+import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
 import { listStoredMonthlySchedules } from "./monthly-schedule-storage-service";
 import { listStoredShiftPatterns } from "./shift-pattern-storage-service";
 import { listStoredSites } from "./site-storage-service";
@@ -1441,9 +1455,10 @@ const buildHolidayEntries = (
 const buildSubstituteEntries = (
   worksheet: ExcelJS.Worksheet,
   layout: SchedulePlanTemplateLayout,
-  context: RowParseContext
+  context: RowParseContext,
+  customSectionLayout?: SectionTableLayout
 ) => {
-  const sectionLayout = substituteLayoutByVariant[layout.variant];
+  const sectionLayout = customSectionLayout ?? substituteLayoutByVariant[layout.variant];
   const entries: PerformanceEntryRecord[] = [];
 
   for (let rowNumber = sectionLayout.startRow; rowNumber <= sectionLayout.endRow; rowNumber += 1) {
@@ -1594,9 +1609,10 @@ const toTimeText = (hourText: string, minuteText: string) => {
 const buildOvertimeEntries = (
   worksheet: ExcelJS.Worksheet,
   variant: SchedulePlanTemplateVariant,
-  context: RowParseContext
+  context: RowParseContext,
+  customSectionLayout?: SectionTableLayout
 ) => {
-  const sectionLayout = overtimeLayoutByVariant[variant];
+  const sectionLayout = customSectionLayout ?? overtimeLayoutByVariant[variant];
   const entries: PerformanceEntryRecord[] = [];
   const finalRow = Math.min(sectionLayout.endRow, worksheet.rowCount);
 
@@ -1878,7 +1894,54 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
 }): Promise<SchedulePerformanceParseResult> => {
   // 워크북을 한 번만 읽고, 같은 워크북에서 레이아웃을 도출한다(파일 중복 읽기 제거).
   const workbook = await readWorkbook(input.filePath);
-  const layout = inspectSchedulePlanTemplateFromWorkbook(workbook);
+  const metadata = readScheduleLayoutRevisionMetadataFromWorkbook(workbook);
+
+  let layout: SchedulePlanTemplateLayout;
+  let customSectionLayouts: { substitute: SectionTableLayout; overtime: SectionTableLayout } | undefined;
+
+  if (metadata !== null) {
+    assertScheduleLayoutRevisionMetadata(metadata);
+    const key = parseDocumentLayoutStorageKey(metadata.layoutKey);
+
+    let historicalDefinition: DocumentLayoutDefinition;
+    if (metadata.revisionKind === "stored") {
+      historicalDefinition = getDocumentLayoutDefinitionByRevision(key, metadata.revisionId);
+    } else if (metadata.revisionKind === "built-in") {
+      historicalDefinition = getBuiltInDocumentLayoutDefinition(key);
+      const expectedBuiltInId = `builtin:${metadata.layoutKey}:${computeCanonicalDigestSha256(historicalDefinition)}`;
+      if (metadata.revisionId !== expectedBuiltInId) {
+        throw new Error(`메타데이터 검증 실패: built-in revisionId가 규약과 일치하지 않습니다: ${metadata.revisionId}`);
+      }
+    } else {
+      throw new Error(`메타데이터 검증 실패: 알 수 없는 revisionKind입니다: ${String(metadata.revisionKind)}`);
+    }
+
+    const actualDigest = computeCanonicalDigestSha256(historicalDefinition);
+    if (actualDigest !== metadata.definitionSha256) {
+      throw new Error(
+        `메타데이터 검증 실패: 레이아웃 정의 digest 불일치 (기대: ${metadata.definitionSha256}, 실제: ${actualDigest})`
+      );
+    }
+    if (historicalDefinition.generatorCompatibilityVersion !== metadata.generatorCompatibilityVersion) {
+      throw new Error(
+        `메타데이터 검증 실패: generatorCompatibilityVersion 불일치 (기대: ${metadata.generatorCompatibilityVersion}, 실제: ${historicalDefinition.generatorCompatibilityVersion})`
+      );
+    }
+
+    assertScheduleWorkbookProtectedStructure(workbook, historicalDefinition);
+    layout = inspectSchedulePlanTemplateFromDefinition(historicalDefinition, workbook);
+    customSectionLayouts = resolveScheduleSectionLayoutsFromDefinition(historicalDefinition);
+  } else {
+    const baseLayout = inspectSchedulePlanTemplateFromWorkbook(workbook);
+    const defaultDef = getBuiltInDocumentLayoutDefinition({
+      documentKind: "schedule-xlsx",
+      variant: baseLayout.variant === "sample2" ? "template2" : "template1"
+    });
+    assertScheduleWorkbookProtectedStructure(workbook, defaultDef);
+    layout = baseLayout;
+    customSectionLayouts = undefined;
+  }
+
   const worksheet = workbook.getWorksheet(layout.sheetName) ?? workbook.worksheets[0];
   const identity = resolveFileIdentityFromWorksheet(worksheet, layout, path.basename(input.filePath));
   const scheduleContext = resolveScheduleContext(identity.scheduleMonth, identity.siteName);
@@ -1904,8 +1967,8 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
   };
   const parsedEntries = [
     ...buildHolidayEntries(worksheet, layout, context),
-    ...buildSubstituteEntries(worksheet, layout, context),
-    ...buildOvertimeEntries(worksheet, layout.variant, context)
+    ...buildSubstituteEntries(worksheet, layout, context, customSectionLayouts?.substitute),
+    ...buildOvertimeEntries(worksheet, layout.variant, context, customSectionLayouts?.overtime)
   ].sort(
       (left, right) =>
         left.sortOrder - right.sortOrder ||

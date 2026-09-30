@@ -1020,7 +1020,7 @@ const ensureTemplateSeed = () => {
   }
 
   const countRow = database.prepare(
-    "SELECT COUNT(*) as count FROM document_template_versions"
+    "SELECT COUNT(*) as count FROM document_template_versions WHERE template_type IN ('schedule', 'proposal', 'attachment1', 'attachment2')"
   ).get() as {
     count: number;
   };
@@ -2195,6 +2195,7 @@ export const listStoredDocumentTemplateVersions = (
   const rows = database.prepare(`
     SELECT *
     FROM document_template_versions
+    WHERE template_type IN ('schedule', 'proposal', 'attachment1', 'attachment2')
     ORDER BY template_type ASC, is_default DESC, created_at DESC
   `).all() as Array<Record<string, unknown>>;
 

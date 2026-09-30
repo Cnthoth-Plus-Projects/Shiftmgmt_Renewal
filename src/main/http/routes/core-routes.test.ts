@@ -173,56 +173,103 @@ describe("core-routes", () => {
       dialogBridge: mockDialogBridge,
     };
 
-    // 1. Chart export cancelled
+    // 1. Chart export cancelled -> 0 activity
     dialogCancelled = true;
     const cancelRes = await registry.dispatch(
       "dashboard:export-chart-data",
-      [{ chartKey: "k", chartTitle: "t", outputFormat: "xlsx" }],
+      [{ chartKey: "k", chartTitle: "t", outputFormat: "xlsx", columns: [{ key: "k", header: "h" }], rows: [] }],
       baseCtx,
     );
     expect(cancelRes?.status).toBe(200);
     const cancelBody = cancelRes?.body as BridgeResponseShape;
     expect(cancelBody.ok).toBe(false);
     expect(cancelBody.errorCode).toBe("EXPORT_CANCELLED");
-    expect(recorded).toHaveLength(0); // 0 activity on cancel
+    expect(recorded).toHaveLength(0);
 
-    // 2. Chart export selected -> failure
+    // 2. Chart export selected with invalid columns (failure) -> 0 activity
     dialogCancelled = false;
     const failRes = await registry.dispatch(
       "dashboard:export-chart-data",
-      [{ chartKey: "k", chartTitle: "t", outputFormat: "xlsx" }],
+      [{ chartKey: "k", chartTitle: "t", outputFormat: "xlsx", columns: [], rows: [] }],
       baseCtx,
     );
     expect(failRes?.status).toBe(200);
     const failBody = failRes?.body as BridgeResponseShape;
     expect(failBody.ok).toBe(false);
     expect(failBody.errorCode).toBe("DASHBOARD_CHART_EXPORT_FAILED");
-    expect(failBody.message).toContain("아직 지원하지 않습니다");
-    expect(recorded).toHaveLength(0); // 0 activity on failure
+    expect(recorded).toHaveLength(0);
 
-    // 3. Report export cancelled
+    // 3. Chart export selected valid (success) -> exactly 1 activity
+    const successRes = await registry.dispatch(
+      "dashboard:export-chart-data",
+      [
+        {
+          chartKey: "k",
+          chartTitle: "차트 타이틀",
+          sheetName: "차트",
+          outputFormat: "xlsx",
+          filters: { year: "2026", month: "3월", siteName: "전체", employeeName: "전체", dataSource: "실데이터" },
+          columns: [{ key: "k", header: "h" }],
+          rows: []
+        }
+      ],
+      baseCtx,
+    );
+    expect(successRes?.status).toBe(200);
+    const successBody = successRes?.body as BridgeResponseShape;
+    expect(successBody.ok).toBe(true);
+    expect(recorded).toHaveLength(1);
+    expect(recorded[0].actionType).toBe("dashboard-export");
+
+    // 4. Report export cancelled -> activity stays 1
     dialogCancelled = true;
     const reportCancelRes = await registry.dispatch(
       "dashboard:export-report",
-      [{ title: "r", outputFormat: "xlsx", dateFrom: "2026-01-01", dateTo: "2026-01-31" }],
+      [{ title: "r", outputFormat: "xlsx", filters: { year: "2026", month: "3월", siteName: "전체", employeeName: "전체", dataSource: "실데이터" }, sections: [] }],
       baseCtx,
     );
     expect(reportCancelRes?.status).toBe(200);
     const reportCancelBody = reportCancelRes?.body as BridgeResponseShape;
     expect(reportCancelBody.errorCode).toBe("EXPORT_CANCELLED");
-    expect(recorded).toHaveLength(0);
+    expect(recorded).toHaveLength(1);
 
-    // 4. Report export selected -> failure
+    // 5. Report export selected with empty sections (failure) -> activity stays 1
     dialogCancelled = false;
     const reportFailRes = await registry.dispatch(
       "dashboard:export-report",
-      [{ title: "r", outputFormat: "xlsx", dateFrom: "2026-01-01", dateTo: "2026-01-31" }],
+      [{ title: "r", outputFormat: "xlsx", filters: { year: "2026", month: "3월", siteName: "전체", employeeName: "전체", dataSource: "실데이터" }, sections: [] }],
       baseCtx,
     );
     expect(reportFailRes?.status).toBe(200);
     const reportFailBody = reportFailRes?.body as BridgeResponseShape;
     expect(reportFailBody.errorCode).toBe("DASHBOARD_REPORT_EXPORT_FAILED");
-    expect(reportFailBody.message).toContain("아직 지원하지 않습니다");
-    expect(recorded).toHaveLength(0);
+    expect(recorded).toHaveLength(1);
+
+    // 6. Report export selected valid (success) -> activity becomes 2
+    const reportSuccessRes = await registry.dispatch(
+      "dashboard:export-report",
+      [
+        {
+          title: "보고서 타이틀",
+          outputFormat: "xlsx",
+          filters: { year: "2026", month: "3월", siteName: "전체", employeeName: "전체", dataSource: "실데이터" },
+          sections: [
+            {
+              sectionKey: "s",
+              chartTitle: "섹션1",
+              sheetName: "섹션1",
+              columns: [{ key: "c", header: "h" }],
+              rows: []
+            }
+          ]
+        }
+      ],
+      baseCtx,
+    );
+    expect(reportSuccessRes?.status).toBe(200);
+    const reportSuccessBody = reportSuccessRes?.body as BridgeResponseShape;
+    expect(reportSuccessBody.ok).toBe(true);
+    expect(recorded).toHaveLength(2);
+    expect(recorded[1].actionType).toBe("dashboard-export");
   });
 });

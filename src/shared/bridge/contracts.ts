@@ -2,8 +2,6 @@ import type {
   AllowanceRateHistoryRecord,
   AllowanceRateVersion,
   AuthSession,
-  DocumentTemplateHistoryRecord,
-  DocumentTemplateVersion,
   EmployeeRecord,
   EmployeeSiteAssignment,
   HolidayCalendar,
@@ -25,7 +23,16 @@ import type {
   AccessLogActionType,
   AccessLogRecord
 } from "../domain/access-log";
-import type { AccessMigrationTableName } from "../domain/database-migration";
+import type {
+  DocumentLayoutHistoryRecord,
+  DocumentLayoutKey,
+  DocumentLayoutPreview,
+  DocumentLayoutPreviewInput,
+  DocumentLayoutResetInput,
+  DocumentLayoutSaveInput,
+  DocumentLayoutSnapshot,
+  DocumentLayoutSummary
+} from "../domain/document-layout";
 import type { TeamWorkType } from "../domain/team-work-type";
 import type { AllowanceCalculationSnapshot, TimeRange } from "../domain/calculation";
 import type { AuthSessionPolicy } from "../config/auth-session-policy";
@@ -186,92 +193,90 @@ export interface LocalFileSelection {
   filePath: string;
 }
 
-export interface DatabaseMigrationRunInput {
-  migrationFilePath: string;
-  selectedAccessTables?: AccessMigrationTableName[];
+export interface JsonBackupFileSelectionInput {
+  defaultPath?: string;
 }
 
-export type DatabaseMigrationRequirementStatus =
-  | "not-required"
+export interface JsonBackupFileSelection {
+  fileName: string;
+  filePath: string;
+}
+
+export interface JsonDatabaseRestoreInput {
+  backupFilePath: string;
+}
+
+export type JsonDatabaseRestoreRequirementStatus =
   | "ready"
-  | "script-missing"
-  | "provider-missing"
+  | "invalid-json"
+  | "unsupported-schema"
+  | "missing-table"
   | "check-failed";
 
-export interface DatabaseMigrationRequirementCheck {
-  sourceType: "access" | "json";
+export interface JsonDatabaseRestoreRequirementCheck {
+  sourceType: "json";
   isReady: boolean;
-  status: DatabaseMigrationRequirementStatus;
+  status: JsonDatabaseRestoreRequirementStatus;
   checkedAt: string;
+  backupSha256?: string;
+  schemaVersion?: string;
+  tableCount?: number;
   headline: string;
   details: string[];
   recommendedActions: string[];
-  scriptPath?: string;
-  detectedProvider?: string;
 }
 
-export interface DatabaseMigrationStateSnapshot {
-  siteCount: number;
-  employeeCount: number;
-  activeAssignmentCount: number;
-  endedAssignmentCount: number;
-  wageRateCount: number;
-  patternCount: number;
-  holidayCalendarCount: number;
-  holidayItemCount: number;
-  rateVersionCount: number;
-  rateItemCount: number;
-  userCount: number;
-  templateVersionCount: number;
-  templateHistoryCount: number;
-  performanceFileCount: number;
-  performanceEntryCount: number;
-  performanceApprovalCount: number;
-  allowanceCalculationCount: number;
-  allowanceDocumentExportCount: number;
+export interface JsonDatabaseTableImpact {
+  tableName: string;
+  currentRowCount: number;
+  nextRowCount: number;
 }
 
-export interface DatabaseBackupSummary {
-  createdAt: string;
-  jsonBackupPath: string;
-  excelBackupPath?: string;
-  accessBackupPath?: string;
+export interface JsonDatabaseRestorePreview {
+  sourceType: "json";
+  backupFilePath: string;
+  backupSha256: string;
+  schemaVersion: string;
+  previewToken: string;
+  expiresAt: string;
+  tableImpacts: JsonDatabaseTableImpact[];
   warningMessages: string[];
-}
-
-interface DatabaseMigrationBaseSummary {
-  sourceType: "access" | "json";
-  requirementCheck: DatabaseMigrationRequirementCheck;
-  migrationFilePath: string;
-  selectedAccessTables: AccessMigrationTableName[];
-  importedSiteCount: number;
-  importedEmployeeCount: number;
-  importedWageRateCount: number;
-  importedPatternCount: number;
-  importedPerformanceFileCount: number;
-  importedPerformanceEntryCount: number;
-  importedApprovedEntryCount: number;
-  importedAllowanceCalculationCount: number;
-  closedAssignmentCount: number;
-  skippedDutyReleaseCount: number;
-  restoredTableCount: number;
-  skippedPatternSiteNames: string[];
-  warningMessages: string[];
-}
-
-export interface DatabaseMigrationPreview extends DatabaseMigrationBaseSummary {
-  databasePath: string;
-  currentState: DatabaseMigrationStateSnapshot;
-  previewState: DatabaseMigrationStateSnapshot;
   previewedAt: string;
 }
 
-export interface DatabaseMigrationSummary extends DatabaseMigrationBaseSummary {
+export interface JsonDatabaseRestoreExecuteInput extends JsonDatabaseRestoreInput {
+  backupSha256: string;
+  previewToken: string;
+  confirmationText: "교체";
+}
+
+export interface JsonDatabaseBackupSummary {
+  createdAt: string;
+  jsonBackupPath: string;
+  backupSha256: string;
+  schemaVersion: string;
+  tableCount: number;
+  rowCount: number;
+  warningMessages: string[];
+}
+
+export interface JsonDatabaseRestoreSummary {
+  sourceType: "json";
+  backupFilePath: string;
+  sourceBackupSha256: string;
   databasePath: string;
-  databaseState: DatabaseMigrationStateSnapshot;
-  backupSummary: DatabaseBackupSummary;
+  tableResults: JsonDatabaseTableImpact[];
+  backupBeforeRestore: JsonDatabaseBackupSummary;
+  warningMessages: string[];
   completedAt: string;
 }
+
+export type DatabaseBackupSummary = JsonDatabaseBackupSummary;
+export type DatabaseMigrationRequirementCheck = JsonDatabaseRestoreRequirementCheck;
+export type DatabaseMigrationPreview = JsonDatabaseRestorePreview;
+export type DatabaseMigrationSummary = JsonDatabaseRestoreSummary;
+export type DatabaseMigrationRunInput = JsonDatabaseRestoreInput;
+
 
 export interface AllowanceRateItemSaveInput {
   allowanceCode: string;
@@ -986,22 +991,22 @@ export interface OperationsBridge {
   selectDirectory: (
     input?: DirectorySelectionInput
   ) => Promise<BridgeResult<string | null>>;
-  selectMigrationFile: (
-    input?: FileSelectionInput
-  ) => Promise<BridgeResult<string | null>>;
+  selectJsonBackupFile: (
+    input?: JsonBackupFileSelectionInput
+  ) => Promise<BridgeResult<JsonBackupFileSelection | null>>;
   selectSpreadsheetFile: (
     input?: FileSelectionInput
   ) => Promise<BridgeResult<LocalFileSelection | null>>;
   checkDatabaseMigrationRequirements: (
-    input: DatabaseMigrationRunInput
-  ) => Promise<BridgeResult<DatabaseMigrationRequirementCheck>>;
+    input: JsonDatabaseRestoreInput
+  ) => Promise<BridgeResult<JsonDatabaseRestoreRequirementCheck>>;
   previewDatabaseMigrationUpdate: (
-    input: DatabaseMigrationRunInput
-  ) => Promise<BridgeResult<DatabaseMigrationPreview>>;
+    input: JsonDatabaseRestoreInput
+  ) => Promise<BridgeResult<JsonDatabaseRestorePreview>>;
   updateDatabaseFromMigration: (
-    input: DatabaseMigrationRunInput
-  ) => Promise<BridgeResult<DatabaseMigrationSummary>>;
-  runDatabaseBackupNow: () => Promise<BridgeResult<DatabaseBackupSummary>>;
+    input: JsonDatabaseRestoreExecuteInput
+  ) => Promise<BridgeResult<JsonDatabaseRestoreSummary>>;
+  runDatabaseBackupNow: () => Promise<BridgeResult<JsonDatabaseBackupSummary>>;
   getFileWatchStatus: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
   restartFileWatch: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
   stopFileWatch: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
@@ -1051,36 +1056,22 @@ export interface OperationsBridge {
   deleteSiteNameOption: (
     input: SiteNameOptionDeleteInput
   ) => Promise<BridgeResult<null>>;
-  listDocumentTemplateHistory: (
-    templateType?: TemplateType
-  ) => Promise<BridgeResult<DocumentTemplateHistoryRecord[]>>;
-  selectDocumentTemplateFile: (
-    templateType?: TemplateType
-  ) => Promise<BridgeResult<DocumentTemplateFileSelection | null>>;
-  inspectDocumentTemplate: (
-    input: DocumentTemplateInspectInput
-  ) => Promise<BridgeResult<DocumentTemplateValidationSnapshot & { profile: DocumentTemplateProfile }>>;
-  previewDocumentTemplate: (
-    input: DocumentTemplatePreviewInput
-  ) => Promise<BridgeResult<DocumentTemplatePreviewRecord | null>>;
-  saveDocumentTemplateVersion: (
-    input: DocumentTemplateSaveInput
-  ) => Promise<BridgeResult<DocumentTemplateVersion>>;
-  approveDocumentTemplateVersion: (
-    templateId: string
-  ) => Promise<BridgeResult<DocumentTemplateVersion>>;
-  setDefaultDocumentTemplateVersion: (
-    templateId: string
-  ) => Promise<BridgeResult<DocumentTemplateVersion>>;
-  updateDocumentTemplateOutputFileName: (
-    input: DocumentTemplateOutputFileNameUpdateInput
-  ) => Promise<BridgeResult<DocumentTemplateVersion>>;
-  deleteDocumentTemplateVersion: (
-    templateId: string
-  ) => Promise<BridgeResult<null>>;
-  listDocumentTemplateVersions: (
-    templateType?: TemplateType
-  ) => Promise<BridgeResult<DocumentTemplateVersion[]>>;
+  listDocumentLayouts: () => Promise<BridgeResult<DocumentLayoutSummary[]>>;
+  getDocumentLayout: (
+    key: DocumentLayoutKey
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  saveDocumentLayout: (
+    input: DocumentLayoutSaveInput
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  resetDocumentLayout: (
+    input: DocumentLayoutResetInput
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  previewDocumentLayout: (
+    input: DocumentLayoutPreviewInput
+  ) => Promise<BridgeResult<DocumentLayoutPreview>>;
+  listDocumentLayoutHistory: (
+    key: DocumentLayoutKey
+  ) => Promise<BridgeResult<DocumentLayoutHistoryRecord[]>>;
   listShiftPatterns: (
     siteId?: string
   ) => Promise<BridgeResult<ShiftPatternRecord[]>>;

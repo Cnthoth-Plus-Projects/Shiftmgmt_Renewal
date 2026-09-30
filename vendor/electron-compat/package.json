@@ -1,8 +1,0 @@
-{
-  "name": "@shiftmgmt/electron-compat",
-  "version": "0.0.0-compat",
-  "private": true,
-  "description": "electron 이름만 풀어 주는 자리 패키지 — Phase 1 은 PDF 지원 안 함 · 2.5-5. PDF 흡수 에서 대체(R-15)",
-  "main": "index.js",
-  "types": "index.d.ts"
-}

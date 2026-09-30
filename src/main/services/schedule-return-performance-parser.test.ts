@@ -23,6 +23,13 @@ import {
 import { parseReturnedSchedulePerformanceFile } from "./schedule-return-performance-parser";
 import { listStoredSites } from "./site-storage-service";
 import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import {
+  attachScheduleLayoutMetadataToWorkbook,
+  computeCanonicalDigestSha256,
+  type ScheduleLayoutRevisionMetadata
+} from "./schedule-plan-adapter";
+import { getBuiltInDocumentLayoutDefinition } from "./document-layout-definition-service";
+import { applyDocumentLayoutToWorksheet } from "./document-layout-excel-render-service";
 
 const testRoot = path.resolve(process.cwd(), "artifacts", "tests", "schedule-return-performance-parser");
 
@@ -1421,5 +1428,237 @@ describe("schedule-return-performance-parser", () => {
     // 대상 근무지에는 일반(A조) 배정이 있으므로 다른 근무지의 Pool 배정으로 인해 Pool로 오판되지 않아야 함
     expect(holidayEntry?.isPoolWorker).toBe(false);
     expect(holidayEntry?.note ?? "").not.toContain("Pool");
+  });
+
+  // 33. N1~N5: invalid metadata / missing fields / unknown revision / mismatch fail-closed matrix (Phase 2.5-4 R2/T5)
+  it("N1~N5: invalid metadata / missing fields / unknown revision / mismatch fail-closed matrix (Phase 2.5-4 R2/T5)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+
+    const def = getBuiltInDocumentLayoutDefinition({ documentKind: "schedule-xlsx", variant: "template1" });
+    const digest = computeCanonicalDigestSha256(def);
+
+    const validMeta: ScheduleLayoutRevisionMetadata = {
+      definitionSha256: digest,
+      format: "shiftmgmt.schedule-layout-revision",
+      generatorCompatibilityVersion: "built-in-excel-layout-v1",
+      layoutKey: "schedule-xlsx/template1",
+      revisionId: `builtin:schedule-xlsx/template1:${digest}`,
+      revisionKind: "built-in",
+      schemaVersion: 1
+    };
+
+    const testMetadataFailure = async (
+      setupWb: (wb: ExcelJS.Workbook) => void,
+      expectedErrorPattern: string | RegExp
+    ) => {
+      const wb = new ExcelJS.Workbook();
+      await wb.xlsx.readFile(fixture.filePath);
+      setupWb(wb);
+      const testPath = path.join(path.dirname(fixture.filePath), `meta-test-${randomUUID()}.xlsx`);
+      await wb.xlsx.writeFile(testPath);
+
+      await expect(
+        parseReturnedSchedulePerformanceFile({
+          filePath: testPath,
+          fileId: "invalid-meta-test"
+        })
+      ).rejects.toThrow(expectedErrorPattern);
+    };
+
+    // N1: invalid JSON
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      wb.getWorksheet("__shiftmgmt_meta")!.getCell("A1").value = "{invalid json";
+    }, "메타데이터 JSON 형식이 올바르지 않습니다");
+
+    // N1-2: 필드 누락
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      const corrupt = { ...validMeta } as Record<string, unknown>;
+      delete corrupt.format;
+      wb.getWorksheet("__shiftmgmt_meta")!.getCell("A1").value = JSON.stringify(corrupt);
+    }, "허용되지 않거나 누락된 필드");
+
+    // N1-3: 추가 필드
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      const corrupt = { ...validMeta, rogueField: "illegal" };
+      wb.getWorksheet("__shiftmgmt_meta")!.getCell("A1").value = JSON.stringify(corrupt);
+    }, "허용되지 않거나 누락된 필드");
+
+    // N2: 정의 이름 없음
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      wb.definedNames.model = [];
+    }, "메타데이터 시트 또는 정의 이름이 누락되었습니다");
+
+    // N2-2: 정의 이름이 A1이 아닌 B1을 가리킴
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      wb.definedNames.model = [{ name: "_SHIFT_MGMT_SCHEDULE_LAYOUT_REVISION", ranges: ["__shiftmgmt_meta!$B$1"] }];
+    }, "정의 이름이 가리키는 범위가 올바르지 않습니다");
+
+    // N2-3: metaSheet가 visible
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      wb.getWorksheet("__shiftmgmt_meta")!.state = "visible";
+    }, "메타데이터 시트가 숨겨져 있지 않습니다");
+
+    // N3: unknown stored ID
+    await testMetadataFailure((wb) => {
+      const storedMeta: ScheduleLayoutRevisionMetadata = {
+        ...validMeta,
+        revisionKind: "stored",
+        revisionId: randomUUID()
+      };
+      attachScheduleLayoutMetadataToWorkbook(wb, storedMeta);
+    }, "레이아웃 판을 찾을 수 없습니다");
+
+    // N4: unknown built-in ID
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      const unknownBuiltin: ScheduleLayoutRevisionMetadata = {
+        ...validMeta,
+        revisionId: `builtin:schedule-xlsx/template1:${"0".repeat(64)}`
+      };
+      wb.getWorksheet("__shiftmgmt_meta")!.getCell("A1").value = JSON.stringify(unknownBuiltin);
+    }, "built-in revisionId가 규약과 일치하지 않습니다");
+
+    // N4-2: generatorCompatibilityVersion 불일치
+    await testMetadataFailure((wb) => {
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      const invalidGen: ScheduleLayoutRevisionMetadata = {
+        ...validMeta,
+        generatorCompatibilityVersion: "incompatible-generator-v99"
+      };
+      wb.getWorksheet("__shiftmgmt_meta")!.getCell("A1").value = JSON.stringify(invalidGen);
+    }, "generatorCompatibilityVersion");
+
+    // N5: layoutKey/variant 불일치 (template1 파일에 template2 layoutKey 기록)
+    await testMetadataFailure((wb) => {
+      const template2Def = getBuiltInDocumentLayoutDefinition({ documentKind: "schedule-xlsx", variant: "template2" });
+      const template2Digest = computeCanonicalDigestSha256(template2Def);
+      const mismatchKeyMeta: ScheduleLayoutRevisionMetadata = {
+        definitionSha256: template2Digest,
+        format: "shiftmgmt.schedule-layout-revision",
+        generatorCompatibilityVersion: "built-in-excel-layout-v1",
+        layoutKey: "schedule-xlsx/template2",
+        revisionId: `builtin:schedule-xlsx/template2:${template2Digest}`,
+        revisionKind: "built-in",
+        schemaVersion: 1
+      };
+      attachScheduleLayoutMetadataToWorkbook(wb, mismatchKeyMeta);
+    }, "보호 구조 검증 실패");
+  });
+
+  // 34. N6: parser-critical header / DATE / merge / row-height 변조 fail-closed matrix (Phase 2.5-4 R4/T5)
+  it("N6: parser-critical header / DATE / merge / row-height 변조 fail-closed matrix (Phase 2.5-4 R4/T5)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+
+    const def = getBuiltInDocumentLayoutDefinition({ documentKind: "schedule-xlsx", variant: "template1" });
+    const digest = computeCanonicalDigestSha256(def);
+    const validMeta: ScheduleLayoutRevisionMetadata = {
+      definitionSha256: digest,
+      format: "shiftmgmt.schedule-layout-revision",
+      generatorCompatibilityVersion: "built-in-excel-layout-v1",
+      layoutKey: "schedule-xlsx/template1",
+      revisionId: `builtin:schedule-xlsx/template1:${digest}`,
+      revisionKind: "built-in",
+      schemaVersion: 1
+    };
+
+    const testTamperFailure = async (
+      tamper: (ws: ExcelJS.Worksheet) => void,
+      expectedPattern: string | RegExp
+    ) => {
+      const wb = new ExcelJS.Workbook();
+      await wb.xlsx.readFile(fixture.filePath);
+      attachScheduleLayoutMetadataToWorkbook(wb, validMeta);
+      const ws = wb.getWorksheet("교대 근무 계획표")!;
+      tamper(ws);
+
+      const testPath = path.join(path.dirname(fixture.filePath), `tamper-test-${randomUUID()}.xlsx`);
+      await wb.xlsx.writeFile(testPath);
+
+      await expect(
+        parseReturnedSchedulePerformanceFile({
+          filePath: testPath,
+          fileId: "tamper-test"
+        })
+      ).rejects.toThrow(expectedPattern);
+    };
+
+    // A. DATE 표식 변조 (row 9 col 2)
+    await testTamperFailure((ws) => {
+      ws.getCell(9, 2).value = "날짜";
+    }, "DATE 표식이 일치하지 않거나 변조되었습니다");
+
+    // B. 변경 사유 머리글 변조 (AX9)
+    await testTamperFailure((ws) => {
+      ws.getCell("AX9").value = "단순 사유";
+    }, "변경 사유 머리글이 일치하지 않거나 변조되었습니다");
+
+    // C. 정적 표 머리글 변조 (substitute header: BA9)
+    await testTamperFailure((ws) => {
+      ws.getCell("BA9").value = "임의 변경된 머리글";
+    }, "정적 표 머리글이 변조되었습니다");
+
+    // D. 병합(Merge) 변조: 중요한 셀 unmerge
+    await testTamperFailure((ws) => {
+      try {
+        ws.unMergeCells("C3:G4");
+      } catch {
+        const model = ws.model as unknown as { merges?: string[] };
+        model.merges = model.merges?.filter((m: string) => !m.includes("C3"));
+      }
+    }, "보호된 병합 범위가 일치하지 않거나 변조되었습니다");
+
+    // E. 행 높이 변조
+    await testTamperFailure((ws) => {
+      ws.getRow(9).height = 45;
+    }, "보호된 행 높이가 변조되었습니다");
+  });
+
+  // 35. N7: legacy 정상 허용 vs metadata 제거된 shifted workbook 거절 (Phase 2.5-4 R5/T5)
+  it("N7: legacy 정상 허용 vs metadata 제거된 shifted workbook 거절 (Phase 2.5-4 R5/T5)", async () => {
+    // 1) metadata가 없는 정상 fixture는 legacy로 통과
+    const fixture1 = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const parsedLegacy = await parseReturnedSchedulePerformanceFile({
+      filePath: fixture1.filePath,
+      fileId: "legacy-pass-1"
+    });
+    expect(parsedLegacy.entries.length).toBeGreaterThan(0);
+
+    // 2) shifted 워크북에서 metadata만 제거한 경우 -> 거절 (N7)
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.readFile(fixture1.filePath);
+    const ws = wb.getWorksheet("교대 근무 계획표")!;
+
+    // 블록 이동 적용
+    const baseDef = getBuiltInDocumentLayoutDefinition({ documentKind: "schedule-xlsx", variant: "template1" });
+    const shiftedDef: DocumentLayoutDefinition = JSON.parse(JSON.stringify(baseDef));
+    const grid = shiftedDef.outputs[0]!.blocks.find((b) => b.id === "schedule.calendar-grid")!;
+    grid.y += 1;
+    applyDocumentLayoutToWorksheet({ worksheet: ws, definition: shiftedDef });
+
+    // metadata 시트와 정의 이름이 전혀 없는 상태로 저장
+    const shiftedPath = path.join(path.dirname(fixture1.filePath), "shifted-stripped.xlsx");
+    await wb.xlsx.writeFile(shiftedPath);
+
+    await expect(
+      parseReturnedSchedulePerformanceFile({
+        filePath: shiftedPath,
+        fileId: "shifted-stripped-reject"
+      })
+    ).rejects.toThrow("보호 구조 검증 실패");
   });
 });

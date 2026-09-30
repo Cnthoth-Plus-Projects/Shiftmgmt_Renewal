@@ -16,7 +16,17 @@ type MutableImageRange = {
   tl?: MutableImageAnchor;
 };
 
-const resolveBrandLogoBuffer = () => {
+let customLogoResolverForTest: (() => Buffer | null) | null = null;
+
+export const setBrandLogoResolverForTest = (resolver: (() => Buffer | null) | null) => {
+  customLogoResolverForTest = resolver;
+};
+
+export const resolveBrandLogoBuffer = (): Buffer | null => {
+  if (customLogoResolverForTest) {
+    return customLogoResolverForTest();
+  }
+
   const candidatePaths = [
     path.resolve(__dirname, "../../../dist/assets/brand-logo-clean.png"),
     path.resolve(__dirname, "../../../src/renderer/assets/brand-logo-clean.png"),
@@ -47,6 +57,55 @@ const resolveBrandLogoBuffer = () => {
   }
 
   return null;
+};
+
+export const resolveBrandLogoDataUrl = (): string | null => {
+  const buffer = resolveBrandLogoBuffer();
+  if (!buffer) {
+    return null;
+  }
+  return `data:image/png;base64,${buffer.toString("base64")}`;
+};
+
+const toColumnLetter = (columnNumber: number) => {
+  let current = columnNumber;
+  let result = "";
+
+  while (current > 0) {
+    current -= 1;
+    result = String.fromCharCode(65 + (current % 26)) + result;
+    current = Math.floor(current / 26);
+  }
+
+  return result;
+};
+
+export const addBrandLogoToWorksheetRange = (
+  worksheet: ExcelJS.Worksheet,
+  range: {
+    startColumn: number;
+    startRow: number;
+    endColumn: number;
+    endRow: number;
+  },
+  documentKindLabel: string = "수당 문서"
+) => {
+  const logoBuffer = resolveBrandLogoBuffer();
+
+  if (!logoBuffer) {
+    throw new Error(`[${documentKindLabel}] 브랜드 로고 이미지를 찾을 수 없습니다.`);
+  }
+
+  const imageId = worksheet.workbook.addImage({
+    buffer: logoBuffer as unknown as ExcelJS.Buffer,
+    extension: "png"
+  });
+
+  const rangeString = `${toColumnLetter(range.startColumn)}${range.startRow}:${toColumnLetter(range.endColumn)}${range.endRow}`;
+  worksheet.addImage(imageId, rangeString);
+  fitWorksheetBrandLogoToRange(worksheet, range);
+
+  return imageId;
 };
 
 export const applyWorkbookBrandLogo = (workbook: ExcelJS.Workbook) => {

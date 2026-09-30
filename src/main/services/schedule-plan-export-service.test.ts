@@ -17,12 +17,23 @@ import {
   saveStoredDocumentTemplateVersion
 } from "./operations-storage-service";
 import { exportMonthlySchedulePlan } from "./schedule-plan-export-service";
+import { parseReturnedSchedulePerformanceFile } from "./schedule-return-performance-parser";
 import {
   listStoredShiftPatterns,
   saveStoredShiftPattern
 } from "./shift-pattern-storage-service";
 import { listStoredSites } from "./site-storage-service";
 import { initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { getDefaultDocumentLayoutDefinition } from "./document-layout-definition-service";
+import {
+  resetDocumentLayout,
+  saveDocumentLayout
+} from "./document-layout-storage-service";
+import {
+  readScheduleLayoutRevisionMetadataFromWorkbook,
+  resolveScheduleSectionLayoutsFromDefinition
+} from "./schedule-plan-adapter";
+import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
 
 const testOutputDir = path.resolve(process.cwd(), "artifacts", "tests", "schedule-exports");
 const calendarDateFormat = 'dd"일"';
@@ -483,7 +494,7 @@ describe("schedule-plan-export-service", () => {
     expectCalendarDateCell(worksheet, "U39", 2024, 11, 9);
   });
 
-  it("should export using the bundled default template when the stored seed path is stale", async () => {
+  it("should export template1 without sourcePath, apply modifications, and parse identically via return parser", async () => {
     initializeSqliteStorage({
       dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
     });
@@ -512,7 +523,7 @@ describe("schedule-plan-export-service", () => {
     const site = listStoredSites().find((item) => item.name === "보라매DC");
     const pattern = listStoredShiftPatterns(site?.id)[0];
     const employee = createAssignedEmployee({
-      employeeCode: "EMP-EXP-FALLBACK",
+      employeeCode: "EMP-EXP-FALLBACK-1",
       name: "하랑",
       siteId: site!.id,
       shiftGroup: "A조"
@@ -544,6 +555,155 @@ describe("schedule-plan-export-service", () => {
 
     expect(exported).not.toBeNull();
     expect(existsSync(exported!.outputPath)).toBe(true);
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: exported!.outputPath,
+      fileId: "test-return-t1"
+    });
+
+    expect(parsed.sheetName).toBe("교대 근무 계획표");
+    expect(parsed.templateVariant).toBe("sample1");
+    expect(parsed.scheduleMonth).toBe("2026-03");
+    expect(parsed.siteName).toBe("보라매DC");
+    expect(Array.isArray(parsed.entries)).toBe(true);
+
+    const wbLoaded = new ExcelJS.Workbook();
+    await wbLoaded.xlsx.readFile(exported!.outputPath);
+    const meta = readScheduleLayoutRevisionMetadataFromWorkbook(wbLoaded);
+    expect(meta).not.toBeNull();
+    expect(meta?.layoutKey).toBe("schedule-xlsx/template1");
+    expect(meta?.revisionKind).toBe("built-in");
+    expect(meta?.definitionSha256).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("should export template2 without sourcePath, apply modifications, and parse identically via return parser", async () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
+    });
+
+    const seededTemplate = listStoredDocumentTemplateVersions("schedule").find(
+      (item) => item.id === "template-schedule-sample2-2026-1"
+    );
+    expect(seededTemplate).toBeDefined();
+
+    if (!seededTemplate) {
+      return;
+    }
+
+    const staleTemplate = saveStoredDocumentTemplateVersion({
+      id: seededTemplate.id,
+      templateType: seededTemplate.templateType,
+      versionLabel: seededTemplate.versionLabel,
+      sourcePath: "C:/missing/templates/근무표_템플릿2.xlsx",
+      status: seededTemplate.status,
+      isDefault: seededTemplate.isDefault,
+      outputFileNamePattern: seededTemplate.outputFileNamePattern,
+      profileSchemaVersion: seededTemplate.profileSchemaVersion,
+      profile: seededTemplate.profile,
+      validation: seededTemplate.validation
+    });
+    const site = listStoredSites().find((item) => item.name === "보라매DC");
+    const pattern = listStoredShiftPatterns(site?.id)[0];
+    const employee = createAssignedEmployee({
+      employeeCode: "EMP-EXP-FALLBACK-2",
+      name: "다온",
+      siteId: site!.id,
+      shiftGroup: "A조"
+    });
+    const saved = saveStoredMonthlySchedule({
+      siteId: site!.id,
+      scheduleMonth: "2026-03",
+      patternId: pattern!.id,
+      generatedBy: "admin",
+      templateVersionId: staleTemplate.id,
+      items: [
+        {
+          employeeCode: employee.employeeCode,
+          teamLabel: "A조",
+          workDate: "2026-03-01",
+          dutyCode: "D",
+          startTime: "06:00",
+          endTime: "18:00",
+          breakMinutes: 60
+        }
+      ]
+    });
+
+    const exported = await exportMonthlySchedulePlan({
+      scheduleId: saved.id,
+      userDataPath: process.cwd(),
+      outputDir: testOutputDir
+    });
+
+    expect(exported).not.toBeNull();
+    expect(existsSync(exported!.outputPath)).toBe(true);
+
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: exported!.outputPath,
+      fileId: "test-return-t2"
+    });
+
+    expect(parsed.sheetName).toBe("교대 근무 계획표");
+    expect(parsed.templateVariant).toBe("sample2");
+    expect(parsed.scheduleMonth).toBe("2026-03");
+    expect(parsed.siteName).toBe("보라매DC");
+    expect(Array.isArray(parsed.entries)).toBe(true);
+
+    const wbLoaded2 = new ExcelJS.Workbook();
+    await wbLoaded2.xlsx.readFile(exported!.outputPath);
+    const meta2 = readScheduleLayoutRevisionMetadataFromWorkbook(wbLoaded2);
+    expect(meta2).not.toBeNull();
+    expect(meta2?.layoutKey).toBe("schedule-xlsx/template2");
+    expect(meta2?.revisionKind).toBe("built-in");
+    expect(meta2?.definitionSha256).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("should throw an error and prevent file creation when duty code E is included in template2", async () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
+    });
+
+    const template2 = listStoredDocumentTemplateVersions("schedule").find(
+      (item) => item.id === "template-schedule-sample2-2026-1"
+    );
+    expect(template2).toBeDefined();
+
+    const site = listStoredSites().find((item) => item.name === "보라매DC");
+    const pattern = listStoredShiftPatterns(site?.id)[0];
+    const employee = createAssignedEmployee({
+      employeeCode: "EMP-EXP-E-FAIL",
+      name: "가람",
+      siteId: site!.id,
+      shiftGroup: "A조"
+    });
+    const saved = saveStoredMonthlySchedule({
+      siteId: site!.id,
+      scheduleMonth: "2026-03",
+      patternId: pattern!.id,
+      generatedBy: "admin",
+      templateVersionId: template2!.id,
+      items: [
+        {
+          employeeCode: employee.employeeCode,
+          teamLabel: "A조",
+          workDate: "2026-03-01",
+          dutyCode: "E",
+          startTime: "14:00",
+          endTime: "22:00",
+          breakMinutes: 60
+        }
+      ]
+    });
+
+    await expect(
+      exportMonthlySchedulePlan({
+        scheduleId: saved.id,
+        userDataPath: process.cwd(),
+        outputDir: testOutputDir
+      })
+    ).rejects.toThrow("선택한 배포 양식은 E 근무를 지원하지 않습니다.");
+
+    expect(existsSync(path.resolve(testOutputDir, "2026년", "3월"))).toBe(false);
   });
 
   it("should use the stored schedule export directory when no output override is provided", async () => {
@@ -610,5 +770,349 @@ describe("schedule-plan-export-service", () => {
       path.resolve(testOutputDir, "2024년", "10월")
     );
     expect(existsSync(exported!.outputPath)).toBe(true);
+  });
+
+  it("should apply active saved layout modifications and handle duplicate output filenames with _dup01", async () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
+    });
+
+    saveStoredAppSettings(
+      {
+        holidayApiBaseUrl: "https://example.com/holidays",
+        pendingDir: path.resolve(testOutputDir, "..", "pending"),
+        approvedDir: path.resolve(testOutputDir, "..", "approved"),
+        scheduleExportDir: testOutputDir,
+        allowanceProposalExportDir: path.resolve(testOutputDir, "..", "allowance", "proposal"),
+        allowanceAttachment1ExportDir: path.resolve(testOutputDir, "..", "allowance", "attachment1"),
+        allowanceAttachment2ExportDir: path.resolve(testOutputDir, "..", "allowance", "attachment2"),
+        databaseBackupDir: path.resolve(testOutputDir, "..", "backups"),
+        databaseBackupSchedule: "daily",
+        databaseBackupTime: "02:00",
+        migrationFilePath: ""
+      },
+      {
+        userDataPath: process.cwd()
+      }
+    );
+
+    const template = listStoredDocumentTemplateVersions("schedule").find(
+      (item) => item.versionLabel === "근무표 양식 1"
+    );
+    const site = listStoredSites().find((item) => item.name === "보라매DC");
+    const pattern = listStoredShiftPatterns(site?.id)[0];
+    const employee = createAssignedEmployee({
+      employeeCode: "EMP-LAYOUT-DUP",
+      name: "테스트직원",
+      siteId: site!.id,
+      shiftGroup: "A조"
+    });
+    const saved = saveStoredMonthlySchedule({
+      siteId: site!.id,
+      scheduleMonth: "2024-10",
+      patternId: pattern!.id,
+      generatedBy: "admin",
+      templateVersionId: template!.id,
+      items: [
+        {
+          employeeCode: employee.employeeCode,
+          teamLabel: "A조",
+          workDate: "2024-10-01",
+          dutyCode: "D",
+          startTime: "06:00",
+          endTime: "18:00",
+          breakMinutes: 60
+        }
+      ]
+    });
+
+    // 1. 활성 저장본 레이아웃 등록 (커스텀 제목 문구 및 커스텀 파일명 패턴)
+    const baseDef = getDefaultDocumentLayoutDefinition({
+      documentKind: "schedule-xlsx",
+      variant: "template1"
+    });
+    const customDef: DocumentLayoutDefinition = JSON.parse(JSON.stringify(baseDef));
+    customDef.outputs[0]!.outputFileNamePattern = "{year}년/{monthNumber}월/{siteName}_커스텀_{year}{month2}.xlsx";
+    const titleBlock = customDef.outputs[0]!.blocks.find((b) => b.id === "schedule.title");
+    expect(titleBlock).toBeDefined();
+    titleBlock!.text = "보라매DC 전용 교대 근무 계획 관리";
+    titleBlock!.font = {
+      family: "맑은 고딕",
+      sizePt: 22,
+      bold: true,
+      color: "#0000FF"
+    };
+
+    const savedLayout = saveDocumentLayout({
+      definition: customDef,
+      expectedRevisionId: null,
+      versionLabel: "보라매 전용 레이아웃"
+    });
+
+    try {
+      // 2. 1회차 내보내기 실행 -> 커스텀 파일명 및 제목 확인
+      const export1 = await exportMonthlySchedulePlan({
+        scheduleId: saved.id,
+        userDataPath: process.cwd()
+      });
+
+      expect(export1).not.toBeNull();
+      expect(export1!.outputFileName).toBe("보라매DC_커스텀_202410.xlsx");
+      expect(existsSync(export1!.outputPath)).toBe(true);
+
+      const wb = new ExcelJS.Workbook();
+      await wb.xlsx.readFile(export1!.outputPath);
+      const sheet = wb.getWorksheet("교대 근무 계획표") ?? wb.worksheets[0]!;
+      expect(sheet.getCell("A1").value).toBe("보라매DC 전용 교대 근무 계획 관리");
+      expect(sheet.getCell("A1").font?.bold).toBe(true);
+
+      // 3. 2회차 내보내기 실행 -> 중복 회피로 _dup01.xlsx 생성 확인
+      const export2 = await exportMonthlySchedulePlan({
+        scheduleId: saved.id,
+        userDataPath: process.cwd()
+      });
+
+      expect(export2).not.toBeNull();
+      expect(export2!.outputFileName).toBe("보라매DC_커스텀_202410_dup01.xlsx");
+      expect(existsSync(export2!.outputPath)).toBe(true);
+    } finally {
+      resetDocumentLayout({
+        documentKind: "schedule-xlsx",
+        variant: "template1",
+        expectedRevisionId: savedLayout.activeRevisionId
+      });
+    }
+  });
+
+  // 9. 조정된 template1 및 template2 레이아웃 export 후 return parser 왕복 parity (Phase 2.5-4 R7/T4)
+  it("조정된 template1 및 template2 레이아웃 export 후 return parser 왕복 parity (Phase 2.5-4 R7/T4)", async () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
+    });
+
+    const variants: Array<"template1" | "template2"> = ["template1", "template2"];
+
+    for (const v of variants) {
+      const templateLabel = v === "template1" ? "근무표 양식 1" : "근무표 양식 2";
+      const template = listStoredDocumentTemplateVersions("schedule").find(
+        (item) => item.versionLabel === templateLabel
+      );
+      expect(template).toBeDefined();
+
+      const site = listStoredSites().find((item) => item.name === "보라매DC")!;
+      const pattern = listStoredShiftPatterns(site.id)[0]!;
+      const emp1 = createAssignedEmployee({
+        employeeCode: `EMP-ADJ-${v}-1`,
+        name: `조정자_${v}_1`,
+        siteId: site.id,
+        shiftGroup: "A조"
+      });
+      const emp2 = createAssignedEmployee({
+        employeeCode: `EMP-ADJ-${v}-2`,
+        name: `조정자_${v}_2`,
+        siteId: site.id,
+        shiftGroup: "A조"
+      });
+
+      const savedSchedule = saveStoredMonthlySchedule({
+        siteId: site.id,
+        scheduleMonth: "2026-04",
+        patternId: pattern.id,
+        generatedBy: "admin",
+        templateVersionId: template!.id,
+        items: [
+          {
+            employeeCode: emp1.employeeCode,
+            teamLabel: "A조",
+            workDate: "2026-04-01",
+            dutyCode: "D",
+            startTime: "06:00",
+            endTime: "18:00",
+            breakMinutes: 60
+          },
+          {
+            employeeCode: emp2.employeeCode,
+            teamLabel: "A조",
+            workDate: "2026-04-01",
+            dutyCode: "D",
+            startTime: "06:00",
+            endTime: "18:00",
+            breakMinutes: 60
+          }
+        ]
+      });
+
+      // 판독 블록 이동 레이아웃 저장 (substitute & overtime 위치 이동)
+      const baseDef = getDefaultDocumentLayoutDefinition({
+        documentKind: "schedule-xlsx",
+        variant: v
+      });
+      const adjustedDef: DocumentLayoutDefinition = JSON.parse(JSON.stringify(baseDef));
+      const subBlock = adjustedDef.outputs[0]!.blocks.find((b) => b.id === "schedule.substitute")!;
+      const otBlock = adjustedDef.outputs[0]!.blocks.find((b) => b.id === "schedule.overtime")!;
+      if (v === "template1") {
+        subBlock.x += 1;
+        subBlock.y += 1;
+        otBlock.x += 1;
+        otBlock.y += 1;
+      } else {
+        subBlock.x -= 1;
+        subBlock.y += 1;
+        otBlock.x -= 1;
+        otBlock.y += 1;
+      }
+
+      const savedLayout = saveDocumentLayout({
+        definition: adjustedDef,
+        expectedRevisionId: null,
+        changeReason: `${v} 위치 조정 판`
+      });
+
+      try {
+        const exported = await exportMonthlySchedulePlan({
+          scheduleId: savedSchedule.id,
+          userDataPath: process.cwd(),
+          outputDir: testOutputDir
+        });
+        expect(exported).not.toBeNull();
+
+        // 회수 파일 조작: 이동된 substitute 및 overtime에 실적 입력
+        const wb = new ExcelJS.Workbook();
+        await wb.xlsx.readFile(exported!.outputPath);
+        const ws = wb.getWorksheet("교대 근무 계획표")!;
+
+        const sections = resolveScheduleSectionLayoutsFromDefinition(adjustedDef);
+
+        // substitute 첫 행에 대체 실적 입력
+        const subRow = sections.substitute.startRow;
+        ws.getCell(`${sections.substitute.dateColumns[0]}${subRow}`).value = "2026-04-01";
+        ws.getCell(`${sections.substitute.originalWorkerColumns![0]}${subRow}`).value = emp1.name;
+        ws.getCell(`${sections.substitute.substituteWorkerColumns![0]}${subRow}`).value = emp2.name;
+
+        // overtime 마지막 행(67행 스캔 윈도우 끝)에 연장 실적 입력
+        const otRow = sections.overtime.endRow;
+        ws.getCell(`${sections.overtime.dateColumns[0]}${otRow}`).value = "2026-04-01";
+        ws.getCell(`${sections.overtime.startHourColumn}${otRow}`).value = "18";
+        ws.getCell(`${sections.overtime.startMinuteColumn}${otRow}`).value = "00";
+        ws.getCell(`${sections.overtime.endHourColumn}${otRow}`).value = "20";
+        ws.getCell(`${sections.overtime.endMinuteColumn}${otRow}`).value = "00";
+        ws.getCell(`${sections.overtime.workerColumns![0]}${otRow}`).value = emp1.name;
+
+        await wb.xlsx.writeFile(exported!.outputPath);
+
+        // 파서 실행
+        const parsed = await parseReturnedSchedulePerformanceFile({
+          filePath: exported!.outputPath,
+          fileId: `return-adj-${v}`
+        });
+
+        // 결과 확인: substitute 및 마지막 67행 overtime 항목이 모두 파싱됨
+        expect(parsed.entries.some((e) => e.section === "substitute" && e.employeeName === emp2.name)).toBe(true);
+        expect(parsed.entries.some((e) => e.section === "overtime" && e.employeeName === emp1.name)).toBe(true);
+      } finally {
+        resetDocumentLayout({
+          documentKind: "schedule-xlsx",
+          variant: v,
+          expectedRevisionId: savedLayout.activeRevisionId
+        });
+      }
+    }
+  });
+
+  // 10. export 후 더 새 레이아웃 revision 활성화 시에도 과거 배포 파일은 당시 판으로 파싱 불변 (Phase 2.5-4 R2/T4)
+  it("export 후 더 새 레이아웃 revision 활성화 시에도 과거 배포 파일은 당시 판으로 파싱 불변 (Phase 2.5-4 R2/T4)", async () => {
+    initializeSqliteStorage({
+      dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite")
+    });
+
+    const template = listStoredDocumentTemplateVersions("schedule").find(
+      (item) => item.versionLabel === "근무표 양식 1"
+    )!;
+    const site = listStoredSites().find((item) => item.name === "보라매DC")!;
+    const pattern = listStoredShiftPatterns(site.id)[0]!;
+    const emp = createAssignedEmployee({
+      employeeCode: "EMP-EXP-HIST-1",
+      name: "역사판직원",
+      siteId: site.id,
+      shiftGroup: "A조"
+    });
+
+    const savedSchedule = saveStoredMonthlySchedule({
+      siteId: site.id,
+      scheduleMonth: "2026-05",
+      patternId: pattern.id,
+      generatedBy: "admin",
+      templateVersionId: template.id,
+      items: [
+        {
+          employeeCode: emp.employeeCode,
+          teamLabel: "A조",
+          workDate: "2026-05-01",
+          dutyCode: "D",
+          startTime: "06:00",
+          endTime: "18:00",
+          breakMinutes: 60
+        }
+      ]
+    });
+
+    // 1) 판 v1 저장 및 활성화
+    const baseDef = getDefaultDocumentLayoutDefinition({
+      documentKind: "schedule-xlsx",
+      variant: "template1"
+    });
+    const def1: DocumentLayoutDefinition = JSON.parse(JSON.stringify(baseDef));
+    const titleBlock1 = def1.outputs[0]!.blocks.find((b) => b.id === "schedule.title")!;
+    titleBlock1.text = "버전 1 판 타이틀";
+    const snap1 = saveDocumentLayout({
+      definition: def1,
+      expectedRevisionId: null,
+      changeReason: "v1 저장"
+    });
+    const rev1 = snap1.activeRevisionId!;
+
+    // 2) v1 활성 상태에서 export
+    const exported1 = await exportMonthlySchedulePlan({
+      scheduleId: savedSchedule.id,
+      userDataPath: process.cwd(),
+      outputDir: testOutputDir
+    });
+    expect(exported1).not.toBeNull();
+
+    // 3) 더 새 판 v2 저장 및 활성화 (rev1은 이제 비활성)
+    const def2: DocumentLayoutDefinition = JSON.parse(JSON.stringify(baseDef));
+    const titleBlock2 = def2.outputs[0]!.blocks.find((b) => b.id === "schedule.title")!;
+    titleBlock2.text = "버전 2 판 타이틀";
+    const snap2 = saveDocumentLayout({
+      definition: def2,
+      expectedRevisionId: rev1,
+      changeReason: "v2 저장"
+    });
+    const rev2 = snap2.activeRevisionId!;
+    expect(rev2).not.toBe(rev1);
+
+    // 4) 앞서 export된 v1 파일 파싱 -> v2가 아닌 v1으로 해석되어야 함
+    const parsed = await parseReturnedSchedulePerformanceFile({
+      filePath: exported1!.outputPath,
+      fileId: "return-hist-v1"
+    });
+
+    expect(parsed.sheetName).toBe("교대 근무 계획표");
+    expect(parsed.scheduleMonth).toBe("2026-05");
+    expect(parsed.siteName).toBe("보라매DC");
+
+    // 파일 내 메타데이터가 rev1을 가리키는지 확인
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.readFile(exported1!.outputPath);
+    const meta = readScheduleLayoutRevisionMetadataFromWorkbook(wb);
+    expect(meta?.revisionId).toBe(rev1);
+    expect(meta?.revisionKind).toBe("stored");
+
+    // 정리
+    resetDocumentLayout({
+      documentKind: "schedule-xlsx",
+      variant: "template1",
+      expectedRevisionId: rev2
+    });
   });
 });

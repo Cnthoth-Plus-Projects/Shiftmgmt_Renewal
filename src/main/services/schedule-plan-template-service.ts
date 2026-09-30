@@ -1,7 +1,7 @@
 import type { SchedulePlanTemplateLayout } from "../../shared/domain/schedule-plan";
 import type { DocumentTemplateVersion } from "../../shared/domain/model";
-import { inspectSchedulePlanTemplate } from "./schedule-plan-adapter";
-import { resolveDocumentTemplateSourcePathOrThrow } from "./document-template-source-path-service";
+import { inspectSchedulePlanTemplateFromWorkbook } from "./schedule-plan-adapter";
+import { createBuiltInExcelWorkbook } from "./built-in-excel-layout-service";
 import {
   listStoredApprovedDocumentTemplateVersions,
   listStoredDocumentTemplateVersions,
@@ -37,7 +37,19 @@ export const resolveSchedulePlanTemplateLayout = async (
     return template.profile.layout;
   }
 
-  return inspectSchedulePlanTemplate(resolveDocumentTemplateSourcePathOrThrow(template));
+  if (template.id === "template-schedule-sample1-2026-1") {
+    return inspectSchedulePlanTemplateFromWorkbook(
+      createBuiltInExcelWorkbook("schedule-xlsx/template1")
+    );
+  }
+
+  if (template.id === "template-schedule-sample2-2026-1") {
+    return inspectSchedulePlanTemplateFromWorkbook(
+      createBuiltInExcelWorkbook("schedule-xlsx/template2")
+    );
+  }
+
+  throw new Error("지원하는 기본 근무표 레이아웃을 확인할 수 없습니다.");
 };
 
 export const resolveAnySchedulePlanTemplateVersion = (

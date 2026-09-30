@@ -1,72 +1,152 @@
 import "./bridge/app-bridge";
 
-// 준비 화면이 하는 일은 하나뿐이다 — 서버가 살아 있는지 확인해서 상태 줄을 바꾼다.
-// 화면다운 화면은 Phase 3에서 만든다(디자인 시스템·창구 껍데기 포함).
+import type { AuthSession } from "../shared/domain/model";
+import { LoginScreen } from "./screens/login";
+import { ShellScreen } from "./screens/shell";
 
-interface HealthInfo {
-  version: string;
-  node: string;
-  dataDir: string;
+// Phase 3-1b 앱 진입점
+// 브리지 세션 확인 -> 상태별(로그인 L1~L5 / 셸) 렌더링 조정
+
+let activeScreen: LoginScreen | ShellScreen | null = null;
+
+function getRootElement(): HTMLElement {
+  let root = document.getElementById("app");
+  if (!root) {
+    root = document.createElement("div");
+    root.id = "app";
+    document.body.appendChild(root);
+  }
+  return root;
 }
 
-type BridgeResult<T> = { ok: true; data: T } | { ok: false; errorCode: string; message: string };
+function renderErrorState(message: string, onRetry: () => void): void {
+  const root = getRootElement();
+  root.innerHTML = "";
 
-/** 2초 간격 최대 10회 재시도 */
-const RETRY_LIMIT = 10;
-const RETRY_DELAY_MS = 2_000;
+  const container = document.createElement("div");
+  container.className = "login-container";
 
-const CONNECTING_TEXT = "서버 연결 확인 중…";
-const FAILURE_TEXT = "서버에 연결할 수 없습니다. 프로그램이 켜져 있는지 확인하세요.";
+  const card = document.createElement("div");
+  card.className = "login-card card-center";
 
-function describeHealth(info: HealthInfo): string {
-  return `서버 연결됨 · 판 ${info.version} · Node ${info.node} · 데이터 폴더: ${info.dataDir}`;
+  card.innerHTML = `
+    <div class="server-error-icon">
+      <span class="material-symbols-outlined" aria-hidden="true">cloud_off</span>
+    </div>
+    <h1 class="server-error-title">서버 연결 확인 실패</h1>
+    <p class="server-error-desc">${escapeHtml(message)}</p>
+  `;
+
+  const retryBtn = document.createElement("button");
+  retryBtn.type = "button";
+  retryBtn.className = "btn-primary mt-16";
+  retryBtn.textContent = "다시 시도";
+  retryBtn.addEventListener("click", onRetry);
+
+  card.appendChild(retryBtn);
+  container.appendChild(card);
+  root.appendChild(container);
 }
 
-function wait(milliseconds: number): Promise<void> {
-  return new Promise((resolve) => {
-    window.setTimeout(resolve, milliseconds);
+function mountLogin(initialMode: "L1" | "L4" = "L1", initialSession?: AuthSession | null): void {
+  if (activeScreen && "destroy" in activeScreen) {
+    activeScreen.destroy();
+  }
+
+  const root = getRootElement();
+  const screen = new LoginScreen({
+    container: root,
+    initialMode,
+    initialSession,
+    onLoginSuccess: (session: AuthSession) => {
+      mountShell(session);
+    },
   });
+
+  activeScreen = screen;
+  void screen.init();
 }
 
-async function requestHealth(): Promise<HealthInfo | null> {
+function mountShell(session: AuthSession): void {
+  if (activeScreen && "destroy" in activeScreen) {
+    activeScreen.destroy();
+  }
+
+  const root = getRootElement();
+  const screen = new ShellScreen({
+    container: root,
+    session,
+    onSignOut: () => {
+      mountLogin("L1");
+    },
+    onSessionExpired: () => {
+      mountLogin("L1", null);
+    },
+  });
+
+  activeScreen = screen;
+  screen.render();
+}
+
+async function startApp(): Promise<void> {
+  const root = getRootElement();
+  root.innerHTML = `
+    <div class="login-container">
+      <div class="login-card card-center">
+        <p id="health" role="status" aria-live="polite" class="loading-text">
+          서버 연결 확인 중…
+        </p>
+      </div>
+    </div>
+  `;
+
   try {
-    const response = await fetch("/api/health", { headers: { Accept: "application/json" } });
-
-    if (!response.ok) {
-      return null;
+    const bridge = window.appBridge;
+    if (!bridge) {
+      renderErrorState(
+        "브리지 환경을 초기화하지 못했습니다. 브라우저 지원 여부를 확인해 주세요.",
+        () => void startApp(),
+      );
+      return;
     }
+    const sessionRes = await bridge.getSession();
 
-    const payload = (await response.json()) as BridgeResult<HealthInfo>;
-
-    return payload.ok ? payload.data : null;
-  } catch {
-    return null;
-  }
-}
-
-async function connect(): Promise<void> {
-  const target = document.getElementById("health");
-
-  if (target === null) {
-    return;
-  }
-
-  target.textContent = CONNECTING_TEXT;
-
-  for (let attempt = 1; attempt <= RETRY_LIMIT; attempt += 1) {
-    const info = await requestHealth();
-
-    if (info !== null) {
-      target.textContent = describeHealth(info);
+    if (!sessionRes.ok) {
+      renderErrorState(
+        sessionRes.message || "서버 세션 정보를 조회하지 못했습니다. 프로그램 연결을 확인해 주세요.",
+        () => void startApp(),
+      );
       return;
     }
 
-    if (attempt < RETRY_LIMIT) {
-      await wait(RETRY_DELAY_MS);
-    }
-  }
+    const session = sessionRes.data;
 
-  target.textContent = FAILURE_TEXT;
+    if (!session) {
+      // 비로그인 상태 -> L1
+      mountLogin("L1");
+    } else if (session.passwordChangeRequired) {
+      // 비밀번호 변경 필요 -> L4 (셸 진입 차단)
+      mountLogin("L4", session);
+    } else {
+      // 정상 로그인 상태 -> 셸
+      mountShell(session);
+    }
+  } catch {
+    renderErrorState(
+      "서버와 통신할 수 없습니다. 프로그램이 실행 중인지 확인하세요.",
+      () => void startApp(),
+    );
+  }
 }
 
-void connect();
+function escapeHtml(str: string): string {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => void startApp());
+} else {
+  void startApp();
+}

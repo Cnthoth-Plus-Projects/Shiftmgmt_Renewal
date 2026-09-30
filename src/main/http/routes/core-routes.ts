@@ -23,6 +23,10 @@ import {
   createIpcSuccess,
   runIpcAction,
 } from "../../ipc/ipc-handler-helpers";
+import {
+  exportDashboardChartData,
+  exportDashboardReport,
+} from "../../services/dashboard-chart-export-service";
 import type { RouteRegistry } from "../route-registry";
 import type { SessionManager } from "../session";
 
@@ -130,10 +134,22 @@ export const registerCoreRoutes = (
       return createIpcFailure("EXPORT_CANCELLED", "차트 내보내기를 취소했습니다.");
     }
 
-    return createIpcFailure(
-      "DASHBOARD_CHART_EXPORT_FAILED",
-      "대시보드 차트 내보내기는 현재 판에서 아직 지원하지 않습니다.",
-    );
+    const exportResult = await exportDashboardChartData(input, {
+      userDataPath: context.dataDir,
+      outputPath: dialogResult.path,
+    });
+
+    if (exportResult.ok) {
+      await context.recordActivity({
+        actionType: "dashboard-export",
+        actionLabel: "대시보드 출력",
+        routeKey: "dashboard",
+        routeLabel: "대시보드",
+        details: `${input.chartTitle} (${outputFormat.toUpperCase()})`,
+      });
+    }
+
+    return exportResult;
   });
 
   // 9. dashboard:export-report (D6)
@@ -169,10 +185,22 @@ export const registerCoreRoutes = (
       return createIpcFailure("EXPORT_CANCELLED", "대시보드 내보내기를 취소했습니다.");
     }
 
-    return createIpcFailure(
-      "DASHBOARD_REPORT_EXPORT_FAILED",
-      "대시보드 보고서 내보내기는 현재 판에서 아직 지원하지 않습니다.",
-    );
+    const exportResult = await exportDashboardReport(input, {
+      userDataPath: context.dataDir,
+      outputPath: dialogResult.path,
+    });
+
+    if (exportResult.ok) {
+      await context.recordActivity({
+        actionType: "dashboard-export",
+        actionLabel: "대시보드 출력",
+        routeKey: "dashboard",
+        routeLabel: "대시보드",
+        details: `${input.title} (${input.outputFormat.toUpperCase()})`,
+      });
+    }
+
+    return exportResult;
   });
 
   // 10. auth:sign-in

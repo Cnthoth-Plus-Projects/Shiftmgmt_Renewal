@@ -15,8 +15,10 @@ import {
   resolveAllowanceDocumentOutputTarget,
   unmergeCellsInRangeForTest,
   writeAttachmentOneWorkbookForTest,
+  writeAttachmentTwoWorkbookForTest,
   writeUpdatedProposalWorkbookForTest
 } from "./allowance-document-export-service";
+import { extractWorksheetSemanticSnapshot } from "../../test-utils/document-layout-semantic-snapshot";
 import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
 import { reviewAllowanceCalculations } from "./allowance-approval-service";
 import {
@@ -34,6 +36,7 @@ import {
   saveStoredDocumentTemplateVersion
 } from "./operations-storage-service";
 import { listStoredSites, saveStoredSite } from "./site-storage-service";
+import { saveStoredEmployee } from "./employee-storage-service";
 import { resetPerformanceFileStorageForTest } from "./performance-file-storage-service";
 import {
   prepareReturnedScheduleFixture,
@@ -42,6 +45,12 @@ import {
   testAdminSession
 } from "./performance-test-helpers";
 import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
+import { getDefaultDocumentLayoutDefinition } from "./document-layout-definition-service";
+import {
+  resetDocumentLayout,
+  saveDocumentLayout
+} from "./document-layout-storage-service";
 
 const testRoot = path.resolve(process.cwd(), "artifacts", "tests", "allowance-document-export");
 const exportDocumentTestTimeoutMs = 60000;
@@ -211,6 +220,16 @@ const createAttachmentOneTemplateStub = (sourcePath: string) =>
     id: "test-attachment1-template",
     templateType: "attachment1",
     versionLabel: "테스트 별첨1",
+    sourcePath,
+    status: "approved",
+    isDefault: true
+  }) as unknown as DocumentTemplateVersion;
+
+const createAttachmentTwoTemplateStub = (sourcePath: string) =>
+  ({
+    id: "test-attachment2-template",
+    templateType: "attachment2",
+    versionLabel: "테스트 별첨2",
     sourcePath,
     status: "approved",
     isDefault: true
@@ -734,18 +753,16 @@ describe("allowance-document-export-service", () => {
 
     const { worksheet, merges } = await readWorkbookMerges(outputPath);
 
-    // All fixed anchors shift one row down: title 12, intro 13, section title 19,
-    // regular details 22-24, regular total 25, early-payout header band 28-29.
-    expect(readCellText(worksheet?.getCell("A12").value)).toContain("제  목");
-    expect(readCellText(worksheet?.getCell("A11").value)).toBe("");
-    expect(readCellText(worksheet?.getCell("B19").value)).toBe("2. 5월 지급 요청 내역");
-    expect(readCellText(worksheet?.getCell("B18").value)).toBe("");
-    expect(merges.has("B25:D25")).toBe(true);
-    expect(readCellText(worksheet?.getCell("B27").value)).toContain("퇴사자 지급 내역");
-    expect(merges.has("B28:D29")).toBe(true);
-    expect(readCellText(worksheet?.getCell("B28").value)).toBe("단위 사업 조직");
-    expect(merges.has("B31:D31")).toBe(true);
-    expect(readCellText(worksheet?.getCell("B33").value)).toContain("4. 지급 요청일");
+    // In Phase 2.5-2, all proposal exports use the built-in compact layout regardless of input template
+    expect(readCellText(worksheet?.getCell("A11").value)).toContain("제  목");
+    expect(readCellText(worksheet?.getCell("B18").value)).toBe("2. 5월 지급 요청 내역");
+    expect(merges.has("B24:D24")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B26").value)).toContain("퇴사자 조기 지급");
+    expect(merges.has("B27:D28")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B27").value)).toBe("단위 사업 조직");
+    expect(merges.has("B30:D30")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B32").value)).toBe("총 합계");
+    expect(merges.has("B32:G32")).toBe(true);
   });
 
   it("keeps 별첨1 guide and header merges aligned for any detail row count", async () => {
@@ -917,7 +934,24 @@ describe("allowance-document-export-service", () => {
           kind: "attachment2",
           primarySheetName: "별첨2",
           editorSchemaVersion: "2",
-          semanticZones: [],
+          semanticZones: [
+            {
+              id: "dateRangeCell",
+              fieldKey: "dateRangeCell",
+              sheetName: "별첨2",
+              bindingType: "cell",
+              bindings: ["G2"],
+              description: "작성 기간"
+            },
+            {
+              id: "customMergeZone",
+              fieldKey: "customMergeZone",
+              sheetName: "별첨2",
+              bindingType: "cell",
+              bindings: ["D2:F2"],
+              description: "커스텀 병합 영역"
+            }
+          ],
           styleSpec: {
             fillColors: {
               dateRangeCell: "#F2F7FF"
@@ -926,13 +960,13 @@ describe("allowance-document-export-service", () => {
               dateRangeCell: "center"
             },
             mergedRanges: {
-              dateRangeCell: "F2:H2"
+              customMergeZone: "D2:F2"
             }
           },
           fieldMappings: {
             sheetName: "별첨2",
-            titleCell: "B2",
-            dateRangeCell: "F2",
+            titleCell: "Z99",
+            dateRangeCell: "F99",
             dataStartRow: "9"
           }
         }
@@ -1054,66 +1088,22 @@ describe("allowance-document-export-service", () => {
       await attachment1Workbook.xlsx.readFile(exported.data.attachment1Path);
       const attachment1Worksheet = attachment1Workbook.getWorksheet("별첨1");
 
-      expect(String(attachment1Worksheet?.getCell("B2").value ?? "")).toContain("2026년 3월");
-      expect(String(attachment1Worksheet?.getCell("B2").value ?? "")).toContain("DT사업1팀");
-      expect(String(attachment1Worksheet?.getCell("B8").value ?? "")).toBeTruthy();
-      expect(String(attachment1Worksheet?.getCell("C8").value ?? "")).toBeTruthy();
-      expect(String(attachment1Worksheet?.getCell("D8").value ?? "")).toBe("사원");
-      expect(String(attachment1Worksheet?.getCell("F8").value ?? "")).toBe("연장근무");
-      expect(String(attachment1Worksheet?.getCell("K8").value ?? "")).toBe("");
-      expect(Number(attachment1Worksheet?.getCell("N8").value ?? 0)).toBeGreaterThan(0);
-      expect(typeof attachment1Worksheet?.getCell("R8").value).toBe("number");
-      expect(attachment1Worksheet?.getCell("R8").numFmt?.replaceAll('"', "")).toBe("#,##0.00원");
-      expect(Number(attachment1Worksheet?.getCell("S8").value ?? 0)).toBe(
+      expect(String(attachment1Worksheet?.getCell("A1").value ?? "")).toContain("2026년 3월");
+      expect(String(attachment1Worksheet?.getCell("B5").value ?? "")).toBeTruthy();
+      expect(String(attachment1Worksheet?.getCell("C5").value ?? "")).toBeTruthy();
+      expect(String(attachment1Worksheet?.getCell("D5").value ?? "")).toBe("사원");
+      expect(String(attachment1Worksheet?.getCell("F5").value ?? "")).toBe("연장근무");
+      expect(String(attachment1Worksheet?.getCell("K5").value ?? "")).toBe("");
+      expect(Number(attachment1Worksheet?.getCell("N5").value ?? 0)).toBeGreaterThan(0);
+      expect(typeof attachment1Worksheet?.getCell("R5").value).toBe("number");
+      expect(Number(attachment1Worksheet?.getCell("S5").value ?? 0)).toBe(
         calculation.data.snapshot.totalAllowanceAmount
       );
-      expect(String(attachment1Worksheet?.getCell("C9").value ?? "")).toBe("소   계");
-      expect(String(attachment1Worksheet?.getCell("F9").value ?? "")).toBe("-");
-      expect(hasWorksheetText(attachment1Worksheet, "1. 법정공휴일")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "적용 요율: 2026.3-테스트")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "적용 배수: 기본 x1.9 / 연장 x2.4 / 야간 x2.8")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "계산식 1: 기본수당 = 시급 x 기본시간 x1.9")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "계산식 2: 연장수당 = 시급 x 연장시간 x2.4")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "계산식 3: 야간수당 = 시급 x 야간시간 x2.8")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "법정공휴일")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "평_대체근로수당")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "휴_대체근로수당")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "평_연장근로수당")).toBe(true);
-      expect(hasWorksheetText(attachment1Worksheet, "휴_연장근로수당")).toBe(true);
-      const firstGuideRow = findWorksheetRowContainingText(attachment1Worksheet, "1. 법정공휴일");
-      const firstGuideRateRow = findWorksheetRowContainingText(attachment1Worksheet, "적용 요율:");
-      const firstGuideAppliedValueRow = findWorksheetRowContainingText(attachment1Worksheet, "적용 배수:");
-      const firstGuideFormulaOneRow = findWorksheetRowContainingText(
-        attachment1Worksheet,
-        "계산식 1: 기본수당 = 시급 x 기본시간 x1.9"
-      );
-      const firstGuideFormulaThreeRow = findWorksheetRowContainingText(
-        attachment1Worksheet,
-        "계산식 3: 야간수당 = 시급 x 야간시간 x2.8"
-      );
-      const secondGuideRow = findWorksheetRowContainingText(attachment1Worksheet, "2. 평_대체근로수당");
-      expect(firstGuideRow).toBeGreaterThan(0);
-      expect(firstGuideRateRow).toBe(firstGuideRow + 2);
-      expect(firstGuideAppliedValueRow).toBe(firstGuideRow + 3);
-      expect(firstGuideFormulaOneRow).toBe(firstGuideRow + 4);
-      expect(firstGuideFormulaThreeRow).toBe(firstGuideRow + 6);
-      expect(secondGuideRow).toBe(firstGuideRow + 8);
-      const attachment1LastContentRow = findLastWorksheetRowWithValue(attachment1Worksheet);
-      const attachment1Merges = new Set(
-        ((attachment1Worksheet?.model.merges ?? []) as string[]).map(String)
-      );
-      expect(attachment1LastContentRow).toBeGreaterThan(0);
-      expect(String(attachment1Worksheet?.getCell("C10").value ?? "")).toBe("합   계");
-      expect(readCellFillArgb(attachment1Worksheet, "A9")).toBe("FFD0D0D0");
-      expect(readCellFillArgb(attachment1Worksheet, "A10")).toBe("FFA6A6A6");
-      expect(readCellFillArgb(attachment1Worksheet, `A${firstGuideRow}`)).toBe("FFD0D0D0");
-      expect(readCellFillArgb(attachment1Worksheet, `A${firstGuideRateRow}`)).toBe("FFF4F4F4");
-      expect(readCellFillArgb(attachment1Worksheet, `A${firstGuideFormulaOneRow}`)).toBe("FFE8EEF9");
-      expect(countBorderedCellsInRow(attachment1Worksheet, secondGuideRow - 1, 19)).toBe(0);
-      expect(countBorderedCellsInRow(attachment1Worksheet, attachment1LastContentRow + 1, 19)).toBe(0);
-      expect(countBorderedCellsInRow(attachment1Worksheet, attachment1Worksheet!.rowCount, 19)).toBe(0);
-      expect(attachment1Merges.has("A130:J130")).toBe(false);
-      expect(attachment1Merges.has("A131:J131")).toBe(false);
+      expect(String(attachment1Worksheet?.getCell("C6").value ?? "")).toBe("소   계");
+      expect(String(attachment1Worksheet?.getCell("C7").value ?? "")).toBe("합   계");
+      expect(hasWorksheetText(attachment1Worksheet, "* Sort")).toBe(true);
+      expect(hasWorksheetText(attachment1Worksheet, "대체근로")).toBe(true);
+      expect(hasWorksheetText(attachment1Worksheet, "연장근로")).toBe(true);
       expect(readWorksheetImageBufferLength(attachment1Workbook, attachment1Worksheet)).toBe(
         expectedBrandLogoLength
       );
@@ -1174,30 +1164,26 @@ describe("allowance-document-export-service", () => {
       await attachment2Workbook.xlsx.readFile(exported.data.attachment2Path);
       const attachment2Worksheet = attachment2Workbook.getWorksheet("별첨2");
 
-      expect(String(attachment2Worksheet?.getCell("B2").value ?? "")).toContain("202603");
-      expect(String(attachment2Worksheet?.getCell("B2").value ?? "")).toContain("DT사업1팀");
-      expect(String(attachment2Worksheet?.getCell("F2").value ?? "")).toContain("2026.3.1");
-      expect(attachment2Worksheet?.getCell("F2").fill).toEqual(
-        expect.objectContaining({
-          type: "pattern",
-          pattern: "solid",
-          fgColor: expect.objectContaining({ argb: "FFF2F7FF" })
-        })
-      );
-      expect(attachment2Worksheet?.getCell("F2").alignment).toEqual(
+      expect(String(attachment2Worksheet?.getCell("B1").value ?? "")).toContain("202603");
+      expect(String(attachment2Worksheet?.getCell("B1").value ?? "")).toContain("DT사업1팀");
+      expect(String(attachment2Worksheet?.getCell("G2").value ?? "")).toContain("2026.3.1");
+      expect(String(attachment2Worksheet?.getCell("B5").value ?? "")).toBeTruthy();
+      expect(attachment2Worksheet?.getCell("Z99").value).toBeNull();
+      expect(attachment2Worksheet?.getCell("F99").value).toBeNull();
+      expect(readCellFillArgb(attachment2Worksheet, "G2")).toBe("FFF2F7FF");
+      expect(attachment2Worksheet?.getCell("G2").alignment).toEqual(
         expect.objectContaining({
           horizontal: "center"
         })
       );
-      expect(new Set(((attachment2Worksheet?.model.merges ?? []) as string[]).map(String)).has("F2:H2")).toBe(true);
-      expect(String(attachment2Worksheet?.getCell("B9").value ?? "")).toBeTruthy();
       const attachment2LastContentRow = findLastWorksheetRowWithValue(attachment2Worksheet);
       const attachment2Merges = new Set(
         ((attachment2Worksheet?.model.merges ?? []) as string[]).map(String)
       );
+      expect(attachment2Merges.has("D2:F2")).toBe(true);
       expect(attachment2LastContentRow).toBeGreaterThan(0);
-      expect(readCellFillArgb(attachment2Worksheet, "A10")).toBe("FFD0D0D0");
-      expect(readCellFillArgb(attachment2Worksheet, "A11")).toBe("FFA6A6A6");
+      expect(readCellFillArgb(attachment2Worksheet, "A6")).toBe("FFD0D0D0");
+      expect(readCellFillArgb(attachment2Worksheet, "A7")).toBe("FFA6A6A6");
       expect(countBorderedCellsInRow(attachment2Worksheet, attachment2LastContentRow + 1, 7)).toBe(0);
       expect(countBorderedCellsInRow(attachment2Worksheet, attachment2Worksheet!.rowCount, 7)).toBe(0);
       expect(attachment2Merges.has("A13:C13")).toBe(false);
@@ -2124,5 +2110,668 @@ describe("allowance-document-export-service", () => {
     // proving the inserted rows were accounted for without a header/total overlap.
     expect(earlyPayoutTitleRowNumber).toBeGreaterThan(32);
     expect(proposalMerges.has(`B${earlyPayoutTitleRowNumber}:D${earlyPayoutTitleRowNumber}`)).toBe(false);
+  }, exportDocumentTestTimeoutMs);
+
+  it("should export proposal, attachment1, and attachment2 XLSX files even when all template sourcePaths do not exist (N3)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+
+    saveStoredDocumentTemplateVersion({
+      templateType: "proposal",
+      versionLabel: "품의서 누락경로",
+      sourcePath: path.resolve(testRoot, "missing", "proposal.xlsx"),
+      status: "approved",
+      isDefault: true,
+      outputFileNamePattern: "결재품의_{workMonth}.xlsx"
+    });
+    saveStoredDocumentTemplateVersion({
+      templateType: "attachment1",
+      versionLabel: "별첨1 누락경로",
+      sourcePath: path.resolve(testRoot, "missing", "attachment1.xlsx"),
+      status: "approved",
+      isDefault: true,
+      outputFileNamePattern: "첨부1_{workMonth}.xlsx"
+    });
+    saveStoredDocumentTemplateVersion({
+      templateType: "attachment2",
+      versionLabel: "별첨2 누락경로",
+      sourcePath: path.resolve(testRoot, "missing", "attachment2.xlsx"),
+      status: "approved",
+      isDefault: true,
+      outputFileNamePattern: "첨부2_{workMonth}.xlsx"
+    });
+
+    for (const entry of detail.entries) {
+      await approvePerformanceFile(
+        { fileId: detail.id, entryId: entry.id },
+        testAdminSession,
+        { userDataPath: fixture.userDataPath }
+      );
+    }
+
+    const calculations: AllowanceCalculationResultRecord[] = [];
+    for (const entry of detail.entries) {
+      const calculated = await runApprovedAllowanceCalculation({ entryId: entry.id });
+      expect(calculated.ok).toBe(true);
+      if (calculated.ok) {
+        calculations.push(calculated.data);
+      }
+    }
+
+    const allowanceApproval = await reviewAllowanceCalculations(
+      {
+        calculationIds: calculations.map((item) => item.id),
+        decision: "approved"
+      },
+      testAdminSession
+    );
+    expect(allowanceApproval.ok).toBe(true);
+
+    const exported = await exportAllowanceDocuments(
+      {
+        calculationIds: calculations.map((item) => item.id),
+        outputFormat: "xlsx"
+      },
+      { userDataPath: fixture.userDataPath }
+    );
+
+    expect(exported.ok).toBe(true);
+    if (!exported.ok) {
+      throw new Error(exported.message);
+    }
+
+    expect(existsSync(exported.data.proposalPath)).toBe(true);
+    expect(existsSync(exported.data.attachment1Path)).toBe(true);
+    expect(existsSync(exported.data.attachment2Path)).toBe(true);
+
+    const proposalWorkbook = new ExcelJS.Workbook();
+    await proposalWorkbook.xlsx.readFile(exported.data.proposalPath);
+    const proposalWorksheet = proposalWorkbook.getWorksheet("품의서");
+    expect(proposalWorksheet).toBeDefined();
+    expect(proposalWorksheet?.getImages().length).toBe(1);
+
+    const attachment1Workbook = new ExcelJS.Workbook();
+    await attachment1Workbook.xlsx.readFile(exported.data.attachment1Path);
+    expect(attachment1Workbook.worksheets.map((ws) => ws.name)).toEqual(["별첨1"]);
+    const attachment1Worksheet = attachment1Workbook.getWorksheet("별첨1");
+    expect(attachment1Worksheet?.getImages().length).toBe(1);
+
+    const attachment2Workbook = new ExcelJS.Workbook();
+    await attachment2Workbook.xlsx.readFile(exported.data.attachment2Path);
+    const attachment2Worksheet = attachment2Workbook.getWorksheet("별첨2");
+    expect(attachment2Worksheet).toBeDefined();
+    expect(attachment2Worksheet?.getImages().length).toBe(1);
+  }, exportDocumentTestTimeoutMs);
+
+  it("should handle proposal edge case with 0 regular sites and 1 early payout site with proper merge and empty labels", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    const outputPath = path.resolve(testRoot, "proposal-edge-0-1.xlsx");
+
+    await writeProposalRowsToTemplate(
+      path.resolve(process.cwd(), "양식샘플", "품의서_2026-04_수정본.xlsx"),
+      { outputPath, regularSiteCount: 0, earlyPayoutSiteCount: 1 }
+    );
+
+    const { worksheet, merges } = await readWorkbookMerges(outputPath);
+
+    // 1. Regular 0-site section assertion: "해당 없음" label, B21:D21 merge, and empty amounts ("-")
+    expect(merges.has("B21:D21")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B21").value).trim()).toBe("해당 없음");
+    expect(worksheet?.getCell("E21").value).toBe("-");
+    expect(worksheet?.getCell("F21").value).toBe("-");
+    expect(worksheet?.getCell("G21").value).toBe("-");
+    expect(worksheet?.getCell("H21").value).toBe("-");
+
+    // Regular total row
+    expect(merges.has("B22:D22")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B22").value).replace(/\s+/g, "")).toBe("합계");
+    expect(worksheet?.getCell("E22").value).toBe("-");
+    expect(worksheet?.getCell("F22").value).toBe("-");
+    expect(worksheet?.getCell("G22").value).toBe("-");
+    expect(worksheet?.getCell("H22").value).toBe(0);
+
+    // 2. Early payout section
+    const earlyTitleRow = findWorksheetRowContainingText(worksheet, "퇴사자 조기 지급");
+    expect(earlyTitleRow).toBe(24);
+    expect(merges.has("B25:D26")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B27").value)).toBe("SK텔레콤");
+    expect(readCellText(worksheet?.getCell("D27").value)).toBe("선지급근무지1");
+
+    expect(merges.has("B28:D28")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B30").value)).toBe("총 합계");
+    expect(merges.has("B30:G30")).toBe(true);
+
+    // 3. No residual sample template values
+    const residualSampleValues = ["SKB동작국사", "이천HN_OP", "513558", "256799"];
+    for (const val of residualSampleValues) {
+      expect(hasWorksheetText(worksheet, val)).toBe(false);
+    }
+  });
+
+  it("should handle proposal edge case with 1 regular site and 0 early payout sites with proper merge and empty labels", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    const outputPath = path.resolve(testRoot, "proposal-edge-1-0.xlsx");
+
+    await writeProposalRowsToTemplate(
+      path.resolve(process.cwd(), "양식샘플", "품의서_2026-04_수정본.xlsx"),
+      { outputPath, regularSiteCount: 1, earlyPayoutSiteCount: 0 }
+    );
+
+    const { worksheet, merges } = await readWorkbookMerges(outputPath);
+
+    // 1. Regular 1-site section
+    expect(readCellText(worksheet?.getCell("B21").value)).toBe("SK텔레콤");
+    expect(readCellText(worksheet?.getCell("D21").value)).toBe("정규근무지1");
+    expect(merges.has("B22:D22")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B22").value).replace(/\s+/g, "")).toBe("합계");
+
+    // 2. Early payout 0-site section: "해당 없음" label, B27:D27 merge, and empty amounts ("-")
+    const earlyTitleRow = findWorksheetRowContainingText(worksheet, "퇴사자 조기 지급");
+    expect(earlyTitleRow).toBe(24);
+    expect(merges.has("B25:D26")).toBe(true);
+    expect(merges.has("B27:D27")).toBe(true);
+    expect(readCellText(worksheet?.getCell("B27").value).trim()).toBe("해당 없음");
+    expect(worksheet?.getCell("E27").value).toBe("-");
+    expect(worksheet?.getCell("F27").value).toBe("-");
+    expect(worksheet?.getCell("G27").value).toBe("-");
+    expect(worksheet?.getCell("H27").value).toBe("-");
+
+    // Early payout total row
+    expect(merges.has("B28:D28")).toBe(true);
+    expect(worksheet?.getCell("E28").value).toBe("-");
+    expect(worksheet?.getCell("F28").value).toBe("-");
+    expect(worksheet?.getCell("G28").value).toBe("-");
+    expect(worksheet?.getCell("H28").value).toBe(0);
+
+    expect(readCellText(worksheet?.getCell("B30").value)).toBe("총 합계");
+    expect(merges.has("B30:G30")).toBe(true);
+
+    // 3. No residual sample template values
+    const residualSampleValues = ["SKB동작국사", "이천HN_OP", "513558", "256799"];
+    for (const val of residualSampleValues) {
+      expect(hasWorksheetText(worksheet, val)).toBe(false);
+    }
+  });
+
+  it("should handle multi-site combinations for proposal, compact single-sheet attachment1 with dynamic details and 22-row guide, and attachment2 grouped totals", async () => {
+    mkdirSync(testRoot, { recursive: true });
+    const proposalPath = path.resolve(testRoot, "multi-site-proposal.xlsx");
+    const attachment1Path = path.resolve(testRoot, "multi-site-attachment1.xlsx");
+    const attachment2Path = path.resolve(testRoot, "multi-site-attachment2.xlsx");
+
+    const rows = [
+      createProposalExportRowForTest({ department: "근무지A", amount: 22500 }),
+      createProposalExportRowForTest({ department: "근무지B", amount: 30000 }),
+      createProposalExportRowForTest({
+        department: "근무지A",
+        earlyPayoutDate: "2026-05-15",
+        amount: 15000
+      }),
+      createProposalExportRowForTest({
+        department: "근무지C",
+        earlyPayoutDate: "2026-05-20",
+        amount: 45000
+      })
+    ];
+
+    await writeUpdatedProposalWorkbookForTest({
+      template: createProposalTemplateStub(path.resolve(process.cwd(), "양식샘플", "품의서_2026-04_수정본.xlsx")),
+      outputPath: proposalPath,
+      workMonth: "2026-05",
+      rows,
+      regularTotalAllowanceAmount: rows
+        .filter((r) => !r.earlyPayoutDate)
+        .reduce((s, r) => s + r.totalAllowanceAmount, 0),
+      earlyPayoutTotalAllowanceAmount: rows
+        .filter((r) => Boolean(r.earlyPayoutDate))
+        .reduce((s, r) => s + r.totalAllowanceAmount, 0)
+    });
+
+    const { worksheet: pWorksheet, merges: pMerges } = await readWorkbookMerges(proposalPath);
+    expect(findWorksheetRowContainingText(pWorksheet, "근무지A")).toBeGreaterThan(0);
+    expect(findWorksheetRowContainingText(pWorksheet, "근무지B")).toBeGreaterThan(0);
+    expect(findWorksheetRowContainingText(pWorksheet, "근무지C")).toBeGreaterThan(0);
+    const grandTotalRow = findWorksheetRowContainingText(pWorksheet, "총 합계");
+    expect(grandTotalRow).toBeGreaterThan(0);
+    expect(pMerges.has(`B${grandTotalRow}:G${grandTotalRow}`)).toBe(true);
+
+    await writeAttachmentOneWorkbookForTest({
+      template: createAttachmentOneTemplateStub(path.resolve(process.cwd(), "양식샘플", "별첨1_2026-04_수정본.xlsx")),
+      outputPath: attachment1Path,
+      workMonth: "2026-05",
+      rateGuideEntries: [],
+      rows
+    });
+
+    const a1Workbook = new ExcelJS.Workbook();
+    await a1Workbook.xlsx.readFile(attachment1Path);
+    expect(a1Workbook.worksheets.map((ws) => ws.name)).toEqual(["별첨1"]);
+    const a1Worksheet = a1Workbook.getWorksheet("별첨1");
+    expect(hasWorksheetText(a1Worksheet, "* Sort :")).toBe(true);
+    expect(hasWorksheetText(a1Worksheet, "휴일근로수당 = (공)휴일근로시간 x 1.5 x 통상시급")).toBe(true);
+
+    const sampleA1Workbook = new ExcelJS.Workbook();
+    await sampleA1Workbook.xlsx.readFile(path.resolve(process.cwd(), "양식샘플", "별첨1_2026-04_수정본.xlsx"));
+    expectAttachmentOneStaticGuideToMatchSample(sampleA1Workbook.getWorksheet("별첨1"), a1Worksheet);
+
+    // Attachment2 generation and multi-site grouped totals assertion
+    const totalAllowanceAmount = rows.reduce((s, r) => s + r.totalAllowanceAmount, 0);
+    await writeAttachmentTwoWorkbookForTest({
+      template: createAttachmentTwoTemplateStub(path.resolve(process.cwd(), "양식샘플", "별첨2_샘플.xlsx")),
+      outputPath: attachment2Path,
+      workMonth: "2026-05",
+      rows,
+      totalAllowanceAmount
+    });
+
+    const a2Workbook = new ExcelJS.Workbook();
+    await a2Workbook.xlsx.readFile(attachment2Path);
+    expect(a2Workbook.worksheets.map((ws) => ws.name)).toEqual(["별첨2"]);
+    const a2Worksheet = a2Workbook.getWorksheet("별첨2")!;
+
+    // Title and date range
+    expect(readCellText(a2Worksheet.getCell("B1").value)).toContain("202605");
+    expect(readCellText(a2Worksheet.getCell("G2").value)).toContain("2026.5.1");
+
+    // Check multi-site rows exist: 근무지A, 근무지B, 근무지C
+    expect(findWorksheetRowContainingText(a2Worksheet, "근무지A")).toBeGreaterThanOrEqual(5);
+    expect(findWorksheetRowContainingText(a2Worksheet, "근무지B")).toBeGreaterThanOrEqual(5);
+    expect(findWorksheetRowContainingText(a2Worksheet, "근무지C")).toBeGreaterThanOrEqual(5);
+
+    // Check subtotal rows ("소   계") and grand total ("합   계")
+    let subtotalCount = 0;
+    let grandTotalFound = false;
+    for (let r = 5; r <= a2Worksheet.rowCount; r++) {
+      const valA = readCellText(a2Worksheet.getCell(r, 1).value).replace(/\s+/g, "");
+      if (valA === "소계") {
+        subtotalCount += 1;
+        const subtotalAmount = Number(a2Worksheet.getCell(r, 7).value);
+        expect(subtotalAmount).toBeGreaterThan(0);
+      } else if (valA === "합계") {
+        grandTotalFound = true;
+        const totalAmount = Number(a2Worksheet.getCell(r, 7).value);
+        expect(totalAmount).toBe(totalAllowanceAmount);
+      }
+    }
+    // rows has 3 distinct departments (근무지A, 근무지B, 근무지C) -> 3 subtotals
+    expect(subtotalCount).toBe(3);
+    expect(grandTotalFound).toBe(true);
+  });
+
+  it("should exclude Pool, BP, and unassigned non-BP employees from allowance approval and document export, keeping only valid assigned employees (N5)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+
+    // Register a valid employee for the Pool worker so the intake resolver associates it with employeeCode
+    const site = listStoredSites().find((item) => item.name === "보라매DC")!;
+    saveStoredEmployee({
+      employeeCode: "EMP-POOL-001",
+      name: "풀인력",
+      rank: "사원",
+      employmentType: "정규",
+      status: "active",
+      hireDate: "2024-01-01",
+      siteId: site.id,
+      shiftGroup: "A조",
+      hourlyRate: 15000
+    });
+
+    // Write independent Pool, BP, unassigned non-BP, and regular valid workers to returned workbook
+    await updateReturnedWorkbook(fixture.filePath, (worksheet) => {
+      // Row 34: Valid regular overtime worker (already set in fixture: fixture.workers.overtime.name)
+
+      // Row 35: Pool worker (marked by (P))
+      worksheet.getCell("BA35").value = "2026-03-04";
+      worksheet.getCell("BC35").value = 20;
+      worksheet.getCell("BD35").value = 0;
+      worksheet.getCell("BE35").value = 22;
+      worksheet.getCell("BF35").value = 0;
+      worksheet.getCell("BG35").value = "풀인력(P)";
+      worksheet.getCell("BH35").value = "Pool연장";
+      worksheet.getCell("BJ35").value = "Pool증적";
+
+      // Row 36: BP worker (marked by BP(name))
+      worksheet.getCell("BA36").value = "2026-03-05";
+      worksheet.getCell("BC36").value = 20;
+      worksheet.getCell("BD36").value = 0;
+      worksheet.getCell("BE36").value = 22;
+      worksheet.getCell("BF36").value = 0;
+      worksheet.getCell("BG36").value = "BP(협력직원)";
+      worksheet.getCell("BH36").value = "BP연장";
+      worksheet.getCell("BJ36").value = "BP증적";
+
+      // Row 37: Unassigned non-BP worker (not in employee storage -> empty employeeCode)
+      worksheet.getCell("BA37").value = "2026-03-06";
+      worksheet.getCell("BC37").value = 20;
+      worksheet.getCell("BD37").value = 0;
+      worksheet.getCell("BE37").value = 22;
+      worksheet.getCell("BF37").value = 0;
+      worksheet.getCell("BG37").value = "무사번직원";
+      worksheet.getCell("BH37").value = "무사번연장";
+      worksheet.getCell("BJ37").value = "무사번증적";
+    });
+
+    const detail = await syncPreparedReturnedSchedule(fixture);
+
+    const validEntry = detail.entries.find((e) => e.employeeName === fixture.workers.overtime.name);
+    const poolEntry = detail.entries.find((e) => e.employeeName === "풀인력");
+
+    // Valid assigned worker exists
+    expect(validEntry).toBeDefined();
+
+    // Pool worker is parsed with isPoolWorker: true
+    expect(poolEntry).toBeDefined();
+    expect(poolEntry?.isPoolWorker).toBe(true);
+
+    // BP worker and unassigned non-BP worker are excluded at parser intake (target count 0)
+    expect(detail.entries.some((e) => e.employeeName.includes("BP"))).toBe(false);
+    expect(detail.entries.some((e) => e.employeeName === "무사번직원")).toBe(false);
+
+    // 1. Pool worker entry -> approval blocked
+    const poolApproval = await approvePerformanceFile(
+      { fileId: detail.id, entryId: poolEntry!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(poolApproval.ok).toBe(false);
+    expect(poolApproval.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+    expect(poolApproval.message).toContain("Pool");
+
+    // 2. Only the valid assigned employee gets approved and calculated
+    const validApproval = await approvePerformanceFile(
+      { fileId: detail.id, entryId: validEntry!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(validApproval.ok).toBe(true);
+
+    const calculated = await runApprovedAllowanceCalculation({ entryId: validEntry!.id });
+    expect(calculated.ok).toBe(true);
+    if (!calculated.ok) {
+      return;
+    }
+
+    const reviewed = await reviewAllowanceCalculations(
+      {
+        calculationIds: [calculated.data.id],
+        decision: "approved"
+      },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(reviewed.ok, reviewed.ok ? "" : reviewed.message).toBe(true);
+
+    const exported = await exportAllowanceDocuments(
+      {
+        calculationIds: [calculated.data.id],
+        outputFormat: "xlsx"
+      },
+      { userDataPath: fixture.userDataPath }
+    );
+    expect(exported.ok).toBe(true);
+    if (!exported.ok) {
+      return;
+    }
+
+    // Verify all 3 XLSX files contain only the valid worker and 0 occurrences of excluded identifiers
+    const excludedPatterns = ["BP(협력직원)", "풀인력", "무사번직원"];
+    for (const docPath of [exported.data.proposalPath, exported.data.attachment1Path, exported.data.attachment2Path]) {
+      const wb = new ExcelJS.Workbook();
+      await wb.xlsx.readFile(docPath);
+      for (const pattern of excludedPatterns) {
+        for (const ws of wb.worksheets) {
+          expect(hasWorksheetText(ws, pattern), `Expected ${pattern} to be absent from ${ws.name} in ${path.basename(docPath)}`).toBe(false);
+        }
+      }
+    }
+  }, exportDocumentTestTimeoutMs);
+
+  it("should apply customized saved layout definitions and handle duplicate output filenames with _dup01", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+
+    const validEntry = detail.entries.find((e) => e.employeeName === fixture.workers.overtime.name);
+    expect(validEntry).toBeDefined();
+
+    await approvePerformanceFile(
+      { fileId: detail.id, entryId: validEntry!.id },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+
+    const calculated = await runApprovedAllowanceCalculation({ entryId: validEntry!.id });
+    expect(calculated.ok).toBe(true);
+    if (!calculated.ok) return;
+
+    await reviewAllowanceCalculations(
+      {
+        calculationIds: [calculated.data.id],
+        decision: "approved"
+      },
+      testAdminSession,
+      { userDataPath: fixture.userDataPath }
+    );
+
+    // 1. 세 수당 문서의 커스텀 레이아웃 등록
+    const propBase = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-xlsx" });
+    const propCustom: DocumentLayoutDefinition = JSON.parse(JSON.stringify(propBase));
+    propCustom.outputs[0]!.outputFileNamePattern = "{year}년/{month2}월/{year}_{month2}_맞춤품의서.xlsx";
+    const propTitle = propCustom.outputs[0]!.blocks.find((b) => b.id === "proposal.title");
+    expect(propTitle).toBeDefined();
+    propTitle!.text = "[맞춤] 시간외 근로 수당 지급 품의";
+
+    const att1Base = getDefaultDocumentLayoutDefinition({ documentKind: "attachment1-xlsx" });
+    const att1Custom: DocumentLayoutDefinition = JSON.parse(JSON.stringify(att1Base));
+    att1Custom.outputs[0]!.outputFileNamePattern = "{year}년/{month2}월/{year}_{month2}_맞춤별첨1.xlsx";
+
+    const att2Base = getDefaultDocumentLayoutDefinition({ documentKind: "attachment2-xlsx" });
+    const att2Custom: DocumentLayoutDefinition = JSON.parse(JSON.stringify(att2Base));
+    att2Custom.outputs[0]!.outputFileNamePattern = "{year}년/{month2}월/{year}_{month2}_맞춤별첨2.xlsx";
+
+    const savedProp = saveDocumentLayout({
+      definition: propCustom,
+      expectedRevisionId: null,
+      versionLabel: "맞춤 품의서"
+    });
+    const savedAtt1 = saveDocumentLayout({
+      definition: att1Custom,
+      expectedRevisionId: null,
+      versionLabel: "맞춤 별첨1"
+    });
+    const savedAtt2 = saveDocumentLayout({
+      definition: att2Custom,
+      expectedRevisionId: null,
+      versionLabel: "맞춤 별첨2"
+    });
+
+    try {
+      // 2. 1회차 내보내기 -> 커스텀 파일명 및 내용 검증
+      const export1 = await exportAllowanceDocuments(
+        {
+          calculationIds: [calculated.data.id],
+          outputFormat: "xlsx"
+        },
+        { userDataPath: fixture.userDataPath }
+      );
+      expect(export1.ok).toBe(true);
+      if (!export1.ok) return;
+
+      expect(export1.data.proposalFileName).toBe("2026_03_맞춤품의서.xlsx");
+      expect(export1.data.attachment1FileName).toBe("2026_03_맞춤별첨1.xlsx");
+      expect(export1.data.attachment2FileName).toBe("2026_03_맞춤별첨2.xlsx");
+
+      const wb = new ExcelJS.Workbook();
+      await wb.xlsx.readFile(export1.data.proposalPath);
+      const sheet = wb.getWorksheet("품의서") ?? wb.worksheets[0]!;
+      expect(sheet.getCell("A11").value).toBe("[맞춤] 시간외 근로 수당 지급 품의");
+
+      // 3. 2회차 내보내기 -> _dup01 중복 접미사 검증
+      const export2 = await exportAllowanceDocuments(
+        {
+          calculationIds: [calculated.data.id],
+          outputFormat: "xlsx"
+        },
+        { userDataPath: fixture.userDataPath }
+      );
+      expect(export2.ok).toBe(true);
+      if (!export2.ok) return;
+
+      expect(export2.data.proposalFileName).toBe("2026_03_맞춤품의서_dup01.xlsx");
+      expect(export2.data.attachment1FileName).toBe("2026_03_맞춤별첨1_dup01.xlsx");
+      expect(export2.data.attachment2FileName).toBe("2026_03_맞춤별첨2_dup01.xlsx");
+    } finally {
+      resetDocumentLayout({
+        documentKind: "proposal-xlsx",
+        expectedRevisionId: savedProp.activeRevisionId
+      });
+      resetDocumentLayout({
+        documentKind: "attachment1-xlsx",
+        expectedRevisionId: savedAtt1.activeRevisionId
+      });
+      resetDocumentLayout({
+        documentKind: "attachment2-xlsx",
+        expectedRevisionId: savedAtt2.activeRevisionId
+      });
+    }
+  }, exportDocumentTestTimeoutMs);
+
+  it("E1 검증: proposal, attachment1, attachment2 실제 writer의 definition 생략 결과와 explicit 기본 definition 결과의 full semantic parity (100% 일치)", async () => {
+    const { getDefaultDocumentLayoutDefinition } = await import("./document-layout-definition-service");
+    const fs = await import("node:fs");
+    const os = await import("node:os");
+
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "allowance-writer-parity-"));
+
+    try {
+      const rows = [
+        createProposalExportRowForTest({
+          department: "근무지A",
+          amount: 50000
+        }),
+        createProposalExportRowForTest({
+          department: "근무지B",
+          amount: 30000
+        }),
+        createProposalExportRowForTest({
+          department: "근무지C",
+          earlyPayoutDate: "2026-05-20",
+          amount: 45000
+        })
+      ];
+      const regularTotalAllowanceAmount = rows
+        .filter((r) => !r.earlyPayoutDate)
+        .reduce((s, r) => s + r.totalAllowanceAmount, 0);
+      const earlyPayoutTotalAllowanceAmount = rows
+        .filter((r) => Boolean(r.earlyPayoutDate))
+        .reduce((s, r) => s + r.totalAllowanceAmount, 0);
+      const totalAllowanceAmount = rows.reduce((s, r) => s + r.totalAllowanceAmount, 0);
+
+      // 1. Proposal: omitted vs explicit default definition
+      const propOmittedPath = path.join(tempDir, "proposal_omitted.xlsx");
+      const propExplicitPath = path.join(tempDir, "proposal_explicit.xlsx");
+      const propDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-xlsx" });
+
+      await writeUpdatedProposalWorkbookForTest({
+        outputPath: propOmittedPath,
+        workMonth: "2026-05",
+        rows,
+        regularTotalAllowanceAmount,
+        earlyPayoutTotalAllowanceAmount
+      });
+      await writeUpdatedProposalWorkbookForTest({
+        outputPath: propExplicitPath,
+        workMonth: "2026-05",
+        rows,
+        regularTotalAllowanceAmount,
+        earlyPayoutTotalAllowanceAmount,
+        definition: propDef
+      });
+
+      const propWbOmitted = new ExcelJS.Workbook();
+      await propWbOmitted.xlsx.readFile(propOmittedPath);
+      const propWbExplicit = new ExcelJS.Workbook();
+      await propWbExplicit.xlsx.readFile(propExplicitPath);
+
+      expect(propWbExplicit.worksheets).toHaveLength(propWbOmitted.worksheets.length);
+      for (let i = 0; i < propWbOmitted.worksheets.length; i++) {
+        expect(extractWorksheetSemanticSnapshot(propWbExplicit.worksheets[i]!)).toEqual(
+          extractWorksheetSemanticSnapshot(propWbOmitted.worksheets[i]!)
+        );
+      }
+
+      // 2. Attachment 1: omitted vs explicit default definition
+      const att1OmittedPath = path.join(tempDir, "att1_omitted.xlsx");
+      const att1ExplicitPath = path.join(tempDir, "att1_explicit.xlsx");
+      const att1Def = getDefaultDocumentLayoutDefinition({ documentKind: "attachment1-xlsx" });
+
+      await writeAttachmentOneWorkbookForTest({
+        outputPath: att1OmittedPath,
+        workMonth: "2026-05",
+        rateGuideEntries: [],
+        rows
+      });
+      await writeAttachmentOneWorkbookForTest({
+        outputPath: att1ExplicitPath,
+        workMonth: "2026-05",
+        rateGuideEntries: [],
+        rows,
+        definition: att1Def
+      });
+
+      const att1WbOmitted = new ExcelJS.Workbook();
+      await att1WbOmitted.xlsx.readFile(att1OmittedPath);
+      const att1WbExplicit = new ExcelJS.Workbook();
+      await att1WbExplicit.xlsx.readFile(att1ExplicitPath);
+
+      expect(att1WbExplicit.worksheets).toHaveLength(att1WbOmitted.worksheets.length);
+      for (let i = 0; i < att1WbOmitted.worksheets.length; i++) {
+        expect(extractWorksheetSemanticSnapshot(att1WbExplicit.worksheets[i]!)).toEqual(
+          extractWorksheetSemanticSnapshot(att1WbOmitted.worksheets[i]!)
+        );
+      }
+
+      // 3. Attachment 2: omitted vs explicit default definition
+      const att2OmittedPath = path.join(tempDir, "att2_omitted.xlsx");
+      const att2ExplicitPath = path.join(tempDir, "att2_explicit.xlsx");
+      const att2Def = getDefaultDocumentLayoutDefinition({ documentKind: "attachment2-xlsx" });
+
+      await writeAttachmentTwoWorkbookForTest({
+        outputPath: att2OmittedPath,
+        workMonth: "2026-05",
+        rows,
+        totalAllowanceAmount
+      });
+      await writeAttachmentTwoWorkbookForTest({
+        outputPath: att2ExplicitPath,
+        workMonth: "2026-05",
+        rows,
+        totalAllowanceAmount,
+        definition: att2Def
+      });
+
+      const att2WbOmitted = new ExcelJS.Workbook();
+      await att2WbOmitted.xlsx.readFile(att2OmittedPath);
+      const att2WbExplicit = new ExcelJS.Workbook();
+      await att2WbExplicit.xlsx.readFile(att2ExplicitPath);
+
+      expect(att2WbExplicit.worksheets).toHaveLength(att2WbOmitted.worksheets.length);
+      for (let i = 0; i < att2WbOmitted.worksheets.length; i++) {
+        expect(extractWorksheetSemanticSnapshot(att2WbExplicit.worksheets[i]!)).toEqual(
+          extractWorksheetSemanticSnapshot(att2WbOmitted.worksheets[i]!)
+        );
+      }
+    } finally {
+      if (fs.existsSync(tempDir)) {
+        fs.rmSync(tempDir, { recursive: true, force: true });
+      }
+    }
   }, exportDocumentTestTimeoutMs);
 });

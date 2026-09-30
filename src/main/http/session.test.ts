@@ -218,4 +218,96 @@ describe("SessionManager", () => {
     const opCheck = sessionManager.requireRoleSession("operator", cookie);
     expect(opCheck.ok).toBe(true);
   });
+
+  it("A31-01: handleGetSession validates session freshness, identity, and prunes stale map entries", () => {
+    let globalSession: AuthSession | null = createMockSession({
+      userId: "u-1",
+      sessionToken: "tok-1",
+    });
+
+    const mockAuthService = {
+      signIn: vi.fn(),
+      signOut: vi.fn(),
+      getSession: vi.fn(() => ({ ok: true, data: globalSession })),
+      getSessionWithRenewal: vi.fn(() => ({ ok: true, data: globalSession })),
+      changePassword: vi.fn(),
+    };
+
+    const sessionManager = new SessionManager({
+      authService: mockAuthService,
+      randomId: () => "e".repeat(64),
+    });
+
+    const cookieHex = "e".repeat(64);
+    const cookieHeader = createSetCookieHeader(cookieHex);
+
+    (sessionManager as unknown as { sessionMap: Map<string, { session: AuthSession; issuedAt: number; lastSeenAt: number }> }).sessionMap.set(cookieHex, {
+      session: globalSession,
+      issuedAt: Date.now(),
+      lastSeenAt: Date.now(),
+    });
+
+    expect(sessionManager.getMapSize()).toBe(1);
+
+    // 1. 유효한 세션 조회: authService.getSession()과 일치 -> 세션 반환
+    const validLookup = sessionManager.handleGetSession(cookieHeader);
+    expect(validLookup.ok).toBe(true);
+    expect(validLookup.data?.userId).toBe("u-1");
+    expect(sessionManager.getMapSize()).toBe(1);
+
+    // 2. 만료된 세션: authService.getSession()이 null 반환 -> null 반환 및 맵에서 제거
+    globalSession = null;
+    const expiredLookup = sessionManager.handleGetSession(cookieHeader);
+    expect(expiredLookup.ok).toBe(true);
+    expect(expiredLookup.data).toBeNull();
+    expect(sessionManager.getMapSize()).toBe(0);
+
+    // 3. 다른 토큰/다른 사용자 세션: 맵의 정보와 authService의 activeSession이 불일치 -> null 및 맵 제거
+    globalSession = createMockSession({ userId: "u-2", sessionToken: "tok-2" });
+    (sessionManager as unknown as { sessionMap: Map<string, { session: AuthSession; issuedAt: number; lastSeenAt: number }> }).sessionMap.set(cookieHex, {
+      session: createMockSession({ userId: "u-1", sessionToken: "tok-1" }),
+      issuedAt: Date.now(),
+      lastSeenAt: Date.now(),
+    });
+    expect(sessionManager.getMapSize()).toBe(1);
+
+    const mismatchedLookup = sessionManager.handleGetSession(cookieHeader);
+    expect(mismatchedLookup.ok).toBe(true);
+    expect(mismatchedLookup.data).toBeNull();
+    expect(sessionManager.getMapSize()).toBe(0);
+
+    // 4. 비밀번호 변경 후 갱신된 세션(동일 userId/새 sessionToken):
+    globalSession = createMockSession({
+      userId: "u-3",
+      sessionToken: "tok-old",
+      passwordChangeRequired: true,
+    });
+    mockAuthService.changePassword = vi.fn((_input: AuthPasswordChangeInput): BridgeResult<AuthSession> => {
+      globalSession = createMockSession({
+        userId: "u-3",
+        sessionToken: "tok-new",
+        passwordChangeRequired: false,
+      });
+      return { ok: true, data: globalSession };
+    });
+
+    (sessionManager as unknown as { sessionMap: Map<string, { session: AuthSession; issuedAt: number; lastSeenAt: number }> }).sessionMap.set(cookieHex, {
+      session: globalSession,
+      issuedAt: Date.now(),
+      lastSeenAt: Date.now(),
+    });
+
+    const changeRes = sessionManager.handleChangePassword(
+      { currentPassword: "old", nextPassword: "new" },
+      cookieHeader,
+    );
+    expect(changeRes.result.ok).toBe(true);
+    expect(changeRes.result.data.sessionToken).toBe("tok-new");
+
+    const afterChangeLookup = sessionManager.handleGetSession(cookieHeader);
+    expect(afterChangeLookup.ok).toBe(true);
+    expect(afterChangeLookup.data?.sessionToken).toBe("tok-new");
+    expect(afterChangeLookup.data?.passwordChangeRequired).toBe(false);
+    expect(sessionManager.getMapSize()).toBe(1);
+  });
 });

@@ -1,80 +1,43 @@
-import { randomUUID } from "node:crypto";
+import crypto, { randomUUID } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
   readFileSync,
-  rmSync,
-  statSync
+  rmSync
 } from "node:fs";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
 import type { DatabaseSync } from "node:sqlite";
 
 import type {
   AppSettingsSnapshot,
-  AppSettingsUpdateInput,
-  DatabaseMigrationRequirementCheck,
-  DatabaseMigrationPreview,
-  DatabaseMigrationStateSnapshot,
-  DatabaseMigrationSummary
+  JsonDatabaseBackupSummary,
+  JsonDatabaseRestorePreview,
+  JsonDatabaseRestoreRequirementCheck,
+  JsonDatabaseRestoreRequirementStatus,
+  JsonDatabaseRestoreSummary,
+  JsonDatabaseTableImpact
 } from "../../shared/bridge/contracts";
-import type { WorkType } from "../../shared/domain/model";
-import {
-  createAllowanceRateItems,
-  resolveAllowanceRateCategoryLabel,
-  type AllowanceRateCategoryCode,
-  type AllowanceRateMatrix
-} from "../../shared/domain/allowance-rate-matrix";
-import { calculateWorkBreakdown } from "../../shared/domain/calculation";
-import {
-  isBpDisplayName,
-  resolveImportedEmploymentType
-} from "../../shared/domain/employment-type";
-import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
-import { createAllowanceCalculationSignature } from "../../shared/domain/allowance-service";
+import { isBpDisplayName } from "../../shared/domain/employment-type";
 import {
   type PerformanceEntrySection,
   isPayablePerformanceEntry
 } from "../../shared/domain/performance-file";
 import type { SubstituteAllowanceReasonCode } from "../../shared/domain/substitute-allowance-policy";
-import { roundUpWon } from "../../shared/domain/rounding";
-import { parseCompressedShiftPatternString } from "../../shared/domain/shift-pattern-compression";
-import { appendWeekendTeamLabel, normalizeTeamLabel } from "../../shared/domain/team-label";
-import {
-  normalizeSelectedAccessMigrationTables,
-  resolveDatabaseMigrationSourceType,
-  type AccessMigrationTableName
-} from "../../shared/domain/database-migration";
-import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
+import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
 import { runDatabaseBackupNow } from "./database-backup-service";
 import { resolveDatabaseMigrationInput } from "./database-file-policy-service";
-import {
-  buildAccessExportFailureMessage,
-  buildAccessRequirementCheckFailure,
-  buildPowerShellDiagnosticText,
-  normalizePowerShellCommandOutput,
-  parseDetectedAccessProvider
-} from "./database-powershell-diagnostic-service";
 import {
   removeSqliteSidecars,
   replaceDatabaseFileAtomically
 } from "./database-replacement-service";
-import { closeSqliteStorage, getSqliteDatabase, initializeSqliteStorage } from "./sqlite-storage-service";
+import {
+  closeSqliteStorage,
+  getSqliteDatabase,
+  initializeSqliteStorage
+} from "./sqlite-storage-service";
 
-const ACCESS_TABLES = [
-  "공휴일",
-  "연장근로요율",
-  "사업조직현황",
-  "사업조직별근무자현황",
-  "근무자별시급관리",
-  "사업조직별근무실적",
-  "사업조직별패턴",
-  "직무해제자현황"
-] as const;
+const APP_SETTINGS_TABLE_NAME = "app_setting_entries";
 
-const ACCESS_TABLE_NAME_SET = new Set<AccessMigrationTableName>(ACCESS_TABLES);
-
-const TEAM_COLUMN_LABELS = ["A", "B", "C", "D", "E", "F", "G", "H"] as const;
 const JSON_IMPORT_TABLE_ORDER = [
   "sites",
   "employees",
@@ -103,2783 +66,1462 @@ const JSON_IMPORT_TABLE_ORDER = [
   "allowance_rate_items",
   "allowance_rate_history",
   "app_users",
+  "access_logs",
   "document_template_versions",
   "document_template_history",
   "performance_files",
   "performance_entries",
   "performance_approvals",
+  "hidden_approved_performance_rows",
   "allowance_calculations",
   "allowance_calculation_items",
-  "allowance_document_exports"
+  "allowance_document_exports",
+  "allowance_approvals",
+  "allowance_proposal_approvals"
 ] as const;
 
-interface AccessTableMap {
-  holidays: Array<Record<string, unknown>>;
-  rates: Array<Record<string, unknown>>;
-  sites: Array<Record<string, unknown>>;
-  employees: Array<Record<string, unknown>>;
-  wages: Array<Record<string, unknown>>;
-  performances: Array<Record<string, unknown>>;
-  patterns: Array<Record<string, unknown>>;
-  dutyReleases: Array<Record<string, unknown>>;
-}
+const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
+  sites: [
+    "id", "site_code", "name", "customer_name", "status", "timezone", "deleted_at", "created_at", "updated_at"
+  ],
+  employees: [
+    "id", "employee_code", "name", "contact", "rank", "employment_type", "status", "hire_date", "retire_date", "deleted_at", "created_at", "updated_at"
+  ],
+  employee_employment_periods: [
+    "id", "employee_id", "start_date", "end_date", "closure_provenance_complete", "created_at", "updated_at"
+  ],
+  employee_site_assignments: [
+    "id", "employee_id", "employment_period_id", "site_id", "team_name", "shift_group", "sort_order", "start_date", "end_date", "status", "created_at"
+  ],
+  wage_rates: [
+    "id", "employee_id", "employment_period_id", "hourly_rate", "effective_from", "effective_to", "reason", "created_at"
+  ],
+  wage_rate_history: [
+    "id", "wage_rate_id", "employee_id", "employment_period_id", "employee_code", "employee_name", "action_type", "hourly_rate", "effective_from", "effective_to", "wage_reason", "change_reason", "actor_user_id", "actor_login_id", "actor_display_name", "actor_role", "occurred_at"
+  ],
+  employee_retirement_history_closures: [
+    "id", "employment_period_id", "history_kind", "history_id", "previous_status", "previous_end_date", "created_at"
+  ],
+  employee_employment_period_events: [
+    "id", "employee_id", "employment_period_id", "event_type", "event_date", "previous_event_date", "reason", "created_at"
+  ],
+  shift_patterns: [
+    "id", "site_id", "name", "team_count", "cycle_length", "pattern_code", "start_index_rule", "pattern_start_date", "pool_enabled", "pool_start_time", "pool_end_time", "pool_break_minutes", "status", "created_at", "updated_at", "effective_from"
+  ],
+  shift_pattern_steps: [
+    "id", "pattern_id", "step_index", "duty_code", "start_time", "end_time", "break_minutes", "created_at"
+  ],
+  shift_pattern_team_indexes: [
+    "id", "pattern_id", "team_label", "team_index", "created_at"
+  ],
+  shift_pattern_cycles: [
+    "id", "pattern_id", "cycle_key", "cycle_name", "cycle_order", "shift_count", "cycle_length", "pattern_code", "pattern_string", "pattern_start_date", "holiday_time_mode", "weekday_public_holiday_as_holiday", "created_at"
+  ],
+  shift_pattern_cycle_steps: [
+    "id", "cycle_id", "step_index", "duty_code", "start_time", "end_time", "break_minutes", "holiday_start_time", "holiday_end_time", "holiday_break_minutes", "created_at"
+  ],
+  shift_pattern_cycle_team_indexes: [
+    "id", "cycle_id", "team_label", "team_index", "created_at"
+  ],
+  shift_pattern_team_cycles: [
+    "id", "pattern_id", "team_label", "cycle_key", "created_at"
+  ],
+  shift_pattern_team_capacities: [
+    "id", "pattern_id", "team_label", "max_headcount", "created_at"
+  ],
+  shift_pattern_team_settings: [
+    "id", "pattern_id", "team_label", "display_name", "work_type", "is_active", "sort_order", "created_at"
+  ],
+  shift_pattern_duty_types: [
+    "id", "pattern_id", "duty_type_id", "kind", "label", "sort_order", "start_time", "end_time", "break_minutes", "is_break_dirty", "holiday_start_time", "holiday_end_time", "holiday_break_minutes", "is_holiday_break_dirty", "created_at"
+  ],
+  monthly_schedules: [
+    "id", "site_id", "schedule_month", "pattern_id", "generated_at", "generated_by", "template_version_id"
+  ],
+  monthly_schedule_items: [
+    "id", "schedule_id", "employee_id", "team_label", "sort_order", "work_date", "duty_code", "start_time", "end_time", "break_minutes"
+  ],
+  schedule_plan_exports: [
+    "id", "schedule_id", "schedule_month", "site_name", "pattern_name", "template_version_id", "template_version_label", "output_file_name", "output_path", "update_count", "publish_status", "published_path", "exported_at"
+  ],
+  holiday_calendars: [
+    "id", "year", "source_name", "source_version", "created_at"
+  ],
+  holiday_items: [
+    "id", "calendar_id", "holiday_date", "name", "is_substitute", "created_at"
+  ],
+  allowance_rate_versions: [
+    "id", "year", "version_label", "status", "effective_from", "effective_to", "change_reason", "created_at", "updated_at"
+  ],
+  allowance_rate_items: [
+    "id", "version_id", "allowance_code", "multiplier", "rounding_policy"
+  ],
+  allowance_rate_history: [
+    "id", "rate_version_id", "year", "version_label", "action_type", "reason", "detail", "occurred_at"
+  ],
+  app_users: [
+    "id", "login_id", "display_name", "role", "status", "password_hash", "must_change_password", "sign_in_failure_count", "sign_in_locked_until", "account_recovery_key_hash", "account_recovery_key_issued_at", "account_recovery_failure_count", "account_recovery_locked_until", "extension_number", "contact", "email", "created_at", "updated_at"
+  ],
+  access_logs: [
+    "id", "user_id", "login_id", "display_name", "role", "action_type", "action_label", "route_key", "route_label", "details", "occurred_at"
+  ],
+  document_template_versions: [
+    "id", "template_type", "version_label", "source_path", "status", "is_default", "output_file_name_pattern", "profile_schema_version", "profile_json", "validation_json", "checksum", "created_at", "updated_at", "approved_at"
+  ],
+  document_template_history: [
+    "id", "template_id", "template_type", "version_label", "action_type", "detail", "occurred_at"
+  ],
+  performance_files: [
+    "id", "file_name", "file_path", "directory_type", "template_kind", "template_variant", "sheet_name", "row_count", "column_count", "file_size", "modified_time_ms", "duplicate_key", "received_at", "schedule_month", "site_name", "schedule_key", "entry_count", "approved_entry_count", "warning_count", "is_effective", "completed_at", "status", "error_message", "preview_json", "reparse_marker_snapshot_json"
+  ],
+  performance_entries: [
+    "id", "performance_file_id", "logical_key", "employee_code", "employee_name", "employee_rank", "work_date", "work_hours", "schedule_month", "schedule_key", "site_name", "work_type", "section", "duty_code", "start_time", "end_time", "break_minutes", "total_work_minutes", "base_work_minutes", "overtime_minutes", "night_minutes", "department", "category", "reason_text", "evidence_text", "source_signature", "source_row_number", "sort_order", "team_label", "alert_json", "hourly_rate", "note", "is_pool_worker", "substitute_work_type", "target_work_type", "substitute_allowance_eligible", "substitute_allowance_reason_code", "substitute_allowance_policy_version"
+  ],
+  performance_approvals: [
+    "id", "file_id", "entry_id", "logical_key", "file_name", "schedule_key", "employee_code", "employee_name", "work_date", "work_type", "decision", "processed_at", "processed_by", "processed_by_name", "comment", "rejection_reason", "snapshot_json", "archived_file_name", "archived_file_path"
+  ],
+  hidden_approved_performance_rows: [
+    "id", "approval_id", "logical_key", "file_id", "entry_id", "hidden_at", "hidden_by", "hidden_by_name"
+  ],
+  allowance_calculations: [
+    "id", "performance_approval_id", "performance_entry_id", "calculation_version", "status", "file_id", "file_name", "site_name", "employee_code", "employee_name", "employee_rank", "work_date", "work_type", "hourly_rate", "rate_version_id", "rate_version_label", "total_work_minutes", "base_work_minutes", "overtime_minutes", "night_minutes", "holiday_minutes", "substitute_minutes", "total_allowance_amount", "early_payout_date", "signature", "snapshot_json", "created_at"
+  ],
+  allowance_calculation_items: [
+    "id", "calculation_id", "allowance_code", "work_minutes", "multiplier", "amount", "detail_json"
+  ],
+  allowance_document_exports: [
+    "id", "work_month", "output_format", "calculation_ids_json", "calculation_count", "employee_count", "total_allowance_amount", "proposal_template_version_id", "attachment1_template_version_id", "attachment2_template_version_id", "proposal_file_name", "proposal_path", "attachment1_file_name", "attachment1_path", "attachment2_file_name", "attachment2_path", "exported_at"
+  ],
+  allowance_approvals: [
+    "id", "calculation_id", "work_month", "site_name", "employee_code", "employee_name", "work_date", "work_type", "decision", "processed_at", "processed_by", "processed_by_name", "comment"
+  ],
+  allowance_proposal_approvals: [
+    "id", "work_month", "calculation_ids_json", "calculation_count", "employee_count", "total_allowance_amount", "regular_total_allowance_amount", "early_payout_total_allowance_amount", "export_record_id", "output_format", "approved_at", "approved_by", "approved_by_name", "comment", "preview_snapshot_json", "backup_summary_json"
+  ],
+  app_setting_entries: [
+    "setting_key", "value", "updated_at"
+  ]
+};
 
-type ImportedMigrationSummary = Omit<
-  DatabaseMigrationSummary,
-  "databaseState" | "backupSummary" | "requirementCheck"
->;
+type ColumnDeclaredType = "TEXT" | "INTEGER" | "REAL";
 
-interface RawSiteRow {
-  id: string;
-  site_code: string;
+interface TableColumnContract {
   name: string;
-  status: string;
-  timezone: string;
-  deleted_at: null;
-  created_at: string;
-  updated_at: null;
+  declaredType: ColumnDeclaredType;
+  notNull: boolean;
 }
 
-interface RawEmployeeRow {
-  id: string;
-  employee_code: string;
-  name: string;
-  rank: string | null;
-  employment_type: string;
-  status: string;
-  hire_date: string | null;
-  retire_date: string | null;
-  created_at: string;
-  updated_at: string | null;
+const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
+  sites: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "site_code", declaredType: "TEXT", notNull: true },
+    { name: "name", declaredType: "TEXT", notNull: true },
+    { name: "customer_name", declaredType: "TEXT", notNull: false },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "timezone", declaredType: "TEXT", notNull: true },
+    { name: "deleted_at", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+  ],
+  employees: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employee_code", declaredType: "TEXT", notNull: true },
+    { name: "name", declaredType: "TEXT", notNull: true },
+    { name: "contact", declaredType: "TEXT", notNull: false },
+    { name: "rank", declaredType: "TEXT", notNull: false },
+    { name: "employment_type", declaredType: "TEXT", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "hire_date", declaredType: "TEXT", notNull: false },
+    { name: "retire_date", declaredType: "TEXT", notNull: false },
+    { name: "deleted_at", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+  ],
+  employee_employment_periods: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "start_date", declaredType: "TEXT", notNull: true },
+    { name: "end_date", declaredType: "TEXT", notNull: false },
+    { name: "closure_provenance_complete", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+  ],
+  employee_site_assignments: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "employment_period_id", declaredType: "TEXT", notNull: false },
+    { name: "site_id", declaredType: "TEXT", notNull: true },
+    { name: "team_name", declaredType: "TEXT", notNull: false },
+    { name: "shift_group", declaredType: "TEXT", notNull: false },
+    { name: "sort_order", declaredType: "INTEGER", notNull: true },
+    { name: "start_date", declaredType: "TEXT", notNull: true },
+    { name: "end_date", declaredType: "TEXT", notNull: false },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  wage_rates: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "employment_period_id", declaredType: "TEXT", notNull: false },
+    { name: "hourly_rate", declaredType: "INTEGER", notNull: true },
+    { name: "effective_from", declaredType: "TEXT", notNull: true },
+    { name: "effective_to", declaredType: "TEXT", notNull: false },
+    { name: "reason", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  wage_rate_history: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "wage_rate_id", declaredType: "TEXT", notNull: true },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "employment_period_id", declaredType: "TEXT", notNull: false },
+    { name: "employee_code", declaredType: "TEXT", notNull: false },
+    { name: "employee_name", declaredType: "TEXT", notNull: false },
+    { name: "action_type", declaredType: "TEXT", notNull: true },
+    { name: "hourly_rate", declaredType: "REAL", notNull: true },
+    { name: "effective_from", declaredType: "TEXT", notNull: true },
+    { name: "effective_to", declaredType: "TEXT", notNull: false },
+    { name: "wage_reason", declaredType: "TEXT", notNull: false },
+    { name: "change_reason", declaredType: "TEXT", notNull: true },
+    { name: "actor_user_id", declaredType: "TEXT", notNull: true },
+    { name: "actor_login_id", declaredType: "TEXT", notNull: true },
+    { name: "actor_display_name", declaredType: "TEXT", notNull: true },
+    { name: "actor_role", declaredType: "TEXT", notNull: true },
+    { name: "occurred_at", declaredType: "TEXT", notNull: true },
+  ],
+  employee_retirement_history_closures: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employment_period_id", declaredType: "TEXT", notNull: true },
+    { name: "history_kind", declaredType: "TEXT", notNull: true },
+    { name: "history_id", declaredType: "TEXT", notNull: true },
+    { name: "previous_status", declaredType: "TEXT", notNull: false },
+    { name: "previous_end_date", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  employee_employment_period_events: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "employment_period_id", declaredType: "TEXT", notNull: true },
+    { name: "event_type", declaredType: "TEXT", notNull: true },
+    { name: "event_date", declaredType: "TEXT", notNull: true },
+    { name: "previous_event_date", declaredType: "TEXT", notNull: false },
+    { name: "reason", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_patterns: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "site_id", declaredType: "TEXT", notNull: true },
+    { name: "name", declaredType: "TEXT", notNull: true },
+    { name: "team_count", declaredType: "INTEGER", notNull: true },
+    { name: "cycle_length", declaredType: "INTEGER", notNull: true },
+    { name: "pattern_code", declaredType: "TEXT", notNull: true },
+    { name: "start_index_rule", declaredType: "TEXT", notNull: true },
+    { name: "pattern_start_date", declaredType: "TEXT", notNull: false },
+    { name: "pool_enabled", declaredType: "INTEGER", notNull: true },
+    { name: "pool_start_time", declaredType: "TEXT", notNull: false },
+    { name: "pool_end_time", declaredType: "TEXT", notNull: false },
+    { name: "pool_break_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+    { name: "effective_from", declaredType: "TEXT", notNull: false },
+  ],
+  shift_pattern_steps: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "step_index", declaredType: "INTEGER", notNull: true },
+    { name: "duty_code", declaredType: "TEXT", notNull: true },
+    { name: "start_time", declaredType: "TEXT", notNull: false },
+    { name: "end_time", declaredType: "TEXT", notNull: false },
+    { name: "break_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_team_indexes: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: true },
+    { name: "team_index", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_cycles: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "cycle_key", declaredType: "TEXT", notNull: true },
+    { name: "cycle_name", declaredType: "TEXT", notNull: true },
+    { name: "cycle_order", declaredType: "INTEGER", notNull: true },
+    { name: "shift_count", declaredType: "INTEGER", notNull: true },
+    { name: "cycle_length", declaredType: "INTEGER", notNull: true },
+    { name: "pattern_code", declaredType: "TEXT", notNull: true },
+    { name: "pattern_string", declaredType: "TEXT", notNull: false },
+    { name: "pattern_start_date", declaredType: "TEXT", notNull: false },
+    { name: "holiday_time_mode", declaredType: "TEXT", notNull: false },
+    { name: "weekday_public_holiday_as_holiday", declaredType: "INTEGER", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_cycle_steps: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "cycle_id", declaredType: "TEXT", notNull: true },
+    { name: "step_index", declaredType: "INTEGER", notNull: true },
+    { name: "duty_code", declaredType: "TEXT", notNull: true },
+    { name: "start_time", declaredType: "TEXT", notNull: false },
+    { name: "end_time", declaredType: "TEXT", notNull: false },
+    { name: "break_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "holiday_start_time", declaredType: "TEXT", notNull: false },
+    { name: "holiday_end_time", declaredType: "TEXT", notNull: false },
+    { name: "holiday_break_minutes", declaredType: "INTEGER", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_cycle_team_indexes: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "cycle_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: true },
+    { name: "team_index", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_team_cycles: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: true },
+    { name: "cycle_key", declaredType: "TEXT", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_team_capacities: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: true },
+    { name: "max_headcount", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_team_settings: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: true },
+    { name: "display_name", declaredType: "TEXT", notNull: false },
+    { name: "work_type", declaredType: "TEXT", notNull: true },
+    { name: "is_active", declaredType: "INTEGER", notNull: true },
+    { name: "sort_order", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  shift_pattern_duty_types: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "duty_type_id", declaredType: "TEXT", notNull: true },
+    { name: "kind", declaredType: "TEXT", notNull: true },
+    { name: "label", declaredType: "TEXT", notNull: true },
+    { name: "sort_order", declaredType: "INTEGER", notNull: true },
+    { name: "start_time", declaredType: "TEXT", notNull: false },
+    { name: "end_time", declaredType: "TEXT", notNull: false },
+    { name: "break_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "is_break_dirty", declaredType: "INTEGER", notNull: true },
+    { name: "holiday_start_time", declaredType: "TEXT", notNull: false },
+    { name: "holiday_end_time", declaredType: "TEXT", notNull: false },
+    { name: "holiday_break_minutes", declaredType: "INTEGER", notNull: false },
+    { name: "is_holiday_break_dirty", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  monthly_schedules: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "site_id", declaredType: "TEXT", notNull: true },
+    { name: "schedule_month", declaredType: "TEXT", notNull: true },
+    { name: "pattern_id", declaredType: "TEXT", notNull: true },
+    { name: "generated_at", declaredType: "TEXT", notNull: true },
+    { name: "generated_by", declaredType: "TEXT", notNull: true },
+    { name: "template_version_id", declaredType: "TEXT", notNull: false },
+  ],
+  monthly_schedule_items: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "schedule_id", declaredType: "TEXT", notNull: true },
+    { name: "employee_id", declaredType: "TEXT", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: false },
+    { name: "sort_order", declaredType: "INTEGER", notNull: true },
+    { name: "work_date", declaredType: "TEXT", notNull: true },
+    { name: "duty_code", declaredType: "TEXT", notNull: true },
+    { name: "start_time", declaredType: "TEXT", notNull: false },
+    { name: "end_time", declaredType: "TEXT", notNull: false },
+    { name: "break_minutes", declaredType: "INTEGER", notNull: true },
+  ],
+  schedule_plan_exports: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "schedule_id", declaredType: "TEXT", notNull: true },
+    { name: "schedule_month", declaredType: "TEXT", notNull: true },
+    { name: "site_name", declaredType: "TEXT", notNull: true },
+    { name: "pattern_name", declaredType: "TEXT", notNull: true },
+    { name: "template_version_id", declaredType: "TEXT", notNull: false },
+    { name: "template_version_label", declaredType: "TEXT", notNull: false },
+    { name: "output_file_name", declaredType: "TEXT", notNull: true },
+    { name: "output_path", declaredType: "TEXT", notNull: true },
+    { name: "update_count", declaredType: "INTEGER", notNull: true },
+    { name: "publish_status", declaredType: "TEXT", notNull: true },
+    { name: "published_path", declaredType: "TEXT", notNull: false },
+    { name: "exported_at", declaredType: "TEXT", notNull: true },
+  ],
+  holiday_calendars: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "year", declaredType: "INTEGER", notNull: true },
+    { name: "source_name", declaredType: "TEXT", notNull: true },
+    { name: "source_version", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  holiday_items: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "calendar_id", declaredType: "TEXT", notNull: true },
+    { name: "holiday_date", declaredType: "TEXT", notNull: true },
+    { name: "name", declaredType: "TEXT", notNull: true },
+    { name: "is_substitute", declaredType: "INTEGER", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  allowance_rate_versions: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "year", declaredType: "INTEGER", notNull: true },
+    { name: "version_label", declaredType: "TEXT", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "effective_from", declaredType: "TEXT", notNull: true },
+    { name: "effective_to", declaredType: "TEXT", notNull: false },
+    { name: "change_reason", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+  ],
+  allowance_rate_items: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "version_id", declaredType: "TEXT", notNull: true },
+    { name: "allowance_code", declaredType: "TEXT", notNull: true },
+    { name: "multiplier", declaredType: "REAL", notNull: true },
+    { name: "rounding_policy", declaredType: "TEXT", notNull: true },
+  ],
+  allowance_rate_history: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "rate_version_id", declaredType: "TEXT", notNull: true },
+    { name: "year", declaredType: "INTEGER", notNull: true },
+    { name: "version_label", declaredType: "TEXT", notNull: true },
+    { name: "action_type", declaredType: "TEXT", notNull: true },
+    { name: "reason", declaredType: "TEXT", notNull: true },
+    { name: "detail", declaredType: "TEXT", notNull: false },
+    { name: "occurred_at", declaredType: "TEXT", notNull: true },
+  ],
+  app_users: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "login_id", declaredType: "TEXT", notNull: true },
+    { name: "display_name", declaredType: "TEXT", notNull: true },
+    { name: "role", declaredType: "TEXT", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "password_hash", declaredType: "TEXT", notNull: false },
+    { name: "must_change_password", declaredType: "INTEGER", notNull: true },
+    { name: "sign_in_failure_count", declaredType: "INTEGER", notNull: true },
+    { name: "sign_in_locked_until", declaredType: "TEXT", notNull: false },
+    { name: "account_recovery_key_hash", declaredType: "TEXT", notNull: false },
+    { name: "account_recovery_key_issued_at", declaredType: "TEXT", notNull: false },
+    { name: "account_recovery_failure_count", declaredType: "INTEGER", notNull: true },
+    { name: "account_recovery_locked_until", declaredType: "TEXT", notNull: false },
+    { name: "extension_number", declaredType: "TEXT", notNull: false },
+    { name: "contact", declaredType: "TEXT", notNull: false },
+    { name: "email", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+  ],
+  access_logs: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "user_id", declaredType: "TEXT", notNull: true },
+    { name: "login_id", declaredType: "TEXT", notNull: true },
+    { name: "display_name", declaredType: "TEXT", notNull: true },
+    { name: "role", declaredType: "TEXT", notNull: true },
+    { name: "action_type", declaredType: "TEXT", notNull: true },
+    { name: "action_label", declaredType: "TEXT", notNull: true },
+    { name: "route_key", declaredType: "TEXT", notNull: false },
+    { name: "route_label", declaredType: "TEXT", notNull: false },
+    { name: "details", declaredType: "TEXT", notNull: false },
+    { name: "occurred_at", declaredType: "TEXT", notNull: true },
+  ],
+  document_template_versions: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "template_type", declaredType: "TEXT", notNull: true },
+    { name: "version_label", declaredType: "TEXT", notNull: true },
+    { name: "source_path", declaredType: "TEXT", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "is_default", declaredType: "INTEGER", notNull: true },
+    { name: "output_file_name_pattern", declaredType: "TEXT", notNull: false },
+    { name: "profile_schema_version", declaredType: "TEXT", notNull: false },
+    { name: "profile_json", declaredType: "TEXT", notNull: false },
+    { name: "validation_json", declaredType: "TEXT", notNull: false },
+    { name: "checksum", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: false },
+    { name: "approved_at", declaredType: "TEXT", notNull: false },
+  ],
+  document_template_history: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "template_id", declaredType: "TEXT", notNull: true },
+    { name: "template_type", declaredType: "TEXT", notNull: true },
+    { name: "version_label", declaredType: "TEXT", notNull: true },
+    { name: "action_type", declaredType: "TEXT", notNull: true },
+    { name: "detail", declaredType: "TEXT", notNull: false },
+    { name: "occurred_at", declaredType: "TEXT", notNull: true },
+  ],
+  performance_files: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "file_name", declaredType: "TEXT", notNull: true },
+    { name: "file_path", declaredType: "TEXT", notNull: true },
+    { name: "directory_type", declaredType: "TEXT", notNull: true },
+    { name: "template_kind", declaredType: "TEXT", notNull: true },
+    { name: "template_variant", declaredType: "TEXT", notNull: false },
+    { name: "sheet_name", declaredType: "TEXT", notNull: true },
+    { name: "row_count", declaredType: "INTEGER", notNull: true },
+    { name: "column_count", declaredType: "INTEGER", notNull: true },
+    { name: "file_size", declaredType: "INTEGER", notNull: true },
+    { name: "modified_time_ms", declaredType: "INTEGER", notNull: true },
+    { name: "duplicate_key", declaredType: "TEXT", notNull: true },
+    { name: "received_at", declaredType: "TEXT", notNull: true },
+    { name: "schedule_month", declaredType: "TEXT", notNull: false },
+    { name: "site_name", declaredType: "TEXT", notNull: false },
+    { name: "schedule_key", declaredType: "TEXT", notNull: false },
+    { name: "entry_count", declaredType: "INTEGER", notNull: true },
+    { name: "approved_entry_count", declaredType: "INTEGER", notNull: true },
+    { name: "warning_count", declaredType: "INTEGER", notNull: true },
+    { name: "is_effective", declaredType: "INTEGER", notNull: true },
+    { name: "completed_at", declaredType: "TEXT", notNull: false },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "error_message", declaredType: "TEXT", notNull: false },
+    { name: "preview_json", declaredType: "TEXT", notNull: true },
+    { name: "reparse_marker_snapshot_json", declaredType: "TEXT", notNull: false },
+  ],
+  performance_entries: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "performance_file_id", declaredType: "TEXT", notNull: true },
+    { name: "logical_key", declaredType: "TEXT", notNull: true },
+    { name: "employee_code", declaredType: "TEXT", notNull: true },
+    { name: "employee_name", declaredType: "TEXT", notNull: true },
+    { name: "employee_rank", declaredType: "TEXT", notNull: false },
+    { name: "work_date", declaredType: "TEXT", notNull: true },
+    { name: "work_hours", declaredType: "REAL", notNull: true },
+    { name: "schedule_month", declaredType: "TEXT", notNull: false },
+    { name: "schedule_key", declaredType: "TEXT", notNull: false },
+    { name: "site_name", declaredType: "TEXT", notNull: false },
+    { name: "work_type", declaredType: "TEXT", notNull: false },
+    { name: "section", declaredType: "TEXT", notNull: false },
+    { name: "duty_code", declaredType: "TEXT", notNull: false },
+    { name: "start_time", declaredType: "TEXT", notNull: false },
+    { name: "end_time", declaredType: "TEXT", notNull: false },
+    { name: "break_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "total_work_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "base_work_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "overtime_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "night_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "department", declaredType: "TEXT", notNull: false },
+    { name: "category", declaredType: "TEXT", notNull: false },
+    { name: "reason_text", declaredType: "TEXT", notNull: false },
+    { name: "evidence_text", declaredType: "TEXT", notNull: false },
+    { name: "source_signature", declaredType: "TEXT", notNull: false },
+    { name: "source_row_number", declaredType: "INTEGER", notNull: false },
+    { name: "sort_order", declaredType: "INTEGER", notNull: true },
+    { name: "team_label", declaredType: "TEXT", notNull: false },
+    { name: "alert_json", declaredType: "TEXT", notNull: false },
+    { name: "hourly_rate", declaredType: "REAL", notNull: false },
+    { name: "note", declaredType: "TEXT", notNull: false },
+    { name: "is_pool_worker", declaredType: "INTEGER", notNull: true },
+    { name: "substitute_work_type", declaredType: "TEXT", notNull: false },
+    { name: "target_work_type", declaredType: "TEXT", notNull: false },
+    { name: "substitute_allowance_eligible", declaredType: "INTEGER", notNull: false },
+    { name: "substitute_allowance_reason_code", declaredType: "TEXT", notNull: false },
+    { name: "substitute_allowance_policy_version", declaredType: "TEXT", notNull: false },
+  ],
+  performance_approvals: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "file_id", declaredType: "TEXT", notNull: true },
+    { name: "entry_id", declaredType: "TEXT", notNull: true },
+    { name: "logical_key", declaredType: "TEXT", notNull: false },
+    { name: "file_name", declaredType: "TEXT", notNull: true },
+    { name: "schedule_key", declaredType: "TEXT", notNull: false },
+    { name: "employee_code", declaredType: "TEXT", notNull: false },
+    { name: "employee_name", declaredType: "TEXT", notNull: false },
+    { name: "work_date", declaredType: "TEXT", notNull: false },
+    { name: "work_type", declaredType: "TEXT", notNull: false },
+    { name: "decision", declaredType: "TEXT", notNull: true },
+    { name: "processed_at", declaredType: "TEXT", notNull: true },
+    { name: "processed_by", declaredType: "TEXT", notNull: true },
+    { name: "processed_by_name", declaredType: "TEXT", notNull: true },
+    { name: "comment", declaredType: "TEXT", notNull: false },
+    { name: "rejection_reason", declaredType: "TEXT", notNull: false },
+    { name: "snapshot_json", declaredType: "TEXT", notNull: false },
+    { name: "archived_file_name", declaredType: "TEXT", notNull: false },
+    { name: "archived_file_path", declaredType: "TEXT", notNull: false },
+  ],
+  hidden_approved_performance_rows: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "approval_id", declaredType: "TEXT", notNull: true },
+    { name: "logical_key", declaredType: "TEXT", notNull: true },
+    { name: "file_id", declaredType: "TEXT", notNull: true },
+    { name: "entry_id", declaredType: "TEXT", notNull: true },
+    { name: "hidden_at", declaredType: "TEXT", notNull: true },
+    { name: "hidden_by", declaredType: "TEXT", notNull: true },
+    { name: "hidden_by_name", declaredType: "TEXT", notNull: true },
+  ],
+  allowance_calculations: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "performance_approval_id", declaredType: "TEXT", notNull: true },
+    { name: "performance_entry_id", declaredType: "TEXT", notNull: false },
+    { name: "calculation_version", declaredType: "INTEGER", notNull: true },
+    { name: "status", declaredType: "TEXT", notNull: true },
+    { name: "file_id", declaredType: "TEXT", notNull: true },
+    { name: "file_name", declaredType: "TEXT", notNull: true },
+    { name: "site_name", declaredType: "TEXT", notNull: false },
+    { name: "employee_code", declaredType: "TEXT", notNull: false },
+    { name: "employee_name", declaredType: "TEXT", notNull: true },
+    { name: "employee_rank", declaredType: "TEXT", notNull: false },
+    { name: "work_date", declaredType: "TEXT", notNull: true },
+    { name: "work_type", declaredType: "TEXT", notNull: false },
+    { name: "hourly_rate", declaredType: "REAL", notNull: false },
+    { name: "rate_version_id", declaredType: "TEXT", notNull: true },
+    { name: "rate_version_label", declaredType: "TEXT", notNull: true },
+    { name: "total_work_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "base_work_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "overtime_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "night_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "holiday_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "substitute_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "total_allowance_amount", declaredType: "INTEGER", notNull: true },
+    { name: "early_payout_date", declaredType: "TEXT", notNull: false },
+    { name: "signature", declaredType: "TEXT", notNull: true },
+    { name: "snapshot_json", declaredType: "TEXT", notNull: true },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+  ],
+  allowance_calculation_items: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "calculation_id", declaredType: "TEXT", notNull: true },
+    { name: "allowance_code", declaredType: "TEXT", notNull: true },
+    { name: "work_minutes", declaredType: "INTEGER", notNull: true },
+    { name: "multiplier", declaredType: "REAL", notNull: true },
+    { name: "amount", declaredType: "INTEGER", notNull: true },
+    { name: "detail_json", declaredType: "TEXT", notNull: false },
+  ],
+  allowance_document_exports: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "work_month", declaredType: "TEXT", notNull: true },
+    { name: "output_format", declaredType: "TEXT", notNull: true },
+    { name: "calculation_ids_json", declaredType: "TEXT", notNull: true },
+    { name: "calculation_count", declaredType: "INTEGER", notNull: true },
+    { name: "employee_count", declaredType: "INTEGER", notNull: true },
+    { name: "total_allowance_amount", declaredType: "INTEGER", notNull: true },
+    { name: "proposal_template_version_id", declaredType: "TEXT", notNull: false },
+    { name: "attachment1_template_version_id", declaredType: "TEXT", notNull: false },
+    { name: "attachment2_template_version_id", declaredType: "TEXT", notNull: false },
+    { name: "proposal_file_name", declaredType: "TEXT", notNull: true },
+    { name: "proposal_path", declaredType: "TEXT", notNull: true },
+    { name: "attachment1_file_name", declaredType: "TEXT", notNull: true },
+    { name: "attachment1_path", declaredType: "TEXT", notNull: true },
+    { name: "attachment2_file_name", declaredType: "TEXT", notNull: true },
+    { name: "attachment2_path", declaredType: "TEXT", notNull: true },
+    { name: "exported_at", declaredType: "TEXT", notNull: true },
+  ],
+  allowance_approvals: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "calculation_id", declaredType: "TEXT", notNull: true },
+    { name: "work_month", declaredType: "TEXT", notNull: true },
+    { name: "site_name", declaredType: "TEXT", notNull: false },
+    { name: "employee_code", declaredType: "TEXT", notNull: false },
+    { name: "employee_name", declaredType: "TEXT", notNull: true },
+    { name: "work_date", declaredType: "TEXT", notNull: true },
+    { name: "work_type", declaredType: "TEXT", notNull: false },
+    { name: "decision", declaredType: "TEXT", notNull: true },
+    { name: "processed_at", declaredType: "TEXT", notNull: true },
+    { name: "processed_by", declaredType: "TEXT", notNull: true },
+    { name: "processed_by_name", declaredType: "TEXT", notNull: true },
+    { name: "comment", declaredType: "TEXT", notNull: false },
+  ],
+  allowance_proposal_approvals: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "work_month", declaredType: "TEXT", notNull: true },
+    { name: "calculation_ids_json", declaredType: "TEXT", notNull: true },
+    { name: "calculation_count", declaredType: "INTEGER", notNull: true },
+    { name: "employee_count", declaredType: "INTEGER", notNull: true },
+    { name: "total_allowance_amount", declaredType: "INTEGER", notNull: true },
+    { name: "regular_total_allowance_amount", declaredType: "INTEGER", notNull: true },
+    { name: "early_payout_total_allowance_amount", declaredType: "INTEGER", notNull: true },
+    { name: "export_record_id", declaredType: "TEXT", notNull: true },
+    { name: "output_format", declaredType: "TEXT", notNull: true },
+    { name: "approved_at", declaredType: "TEXT", notNull: true },
+    { name: "approved_by", declaredType: "TEXT", notNull: true },
+    { name: "approved_by_name", declaredType: "TEXT", notNull: true },
+    { name: "comment", declaredType: "TEXT", notNull: false },
+    { name: "preview_snapshot_json", declaredType: "TEXT", notNull: true },
+    { name: "backup_summary_json", declaredType: "TEXT", notNull: true },
+  ],
+  app_setting_entries: [
+    { name: "setting_key", declaredType: "TEXT", notNull: false },
+    { name: "value", declaredType: "TEXT", notNull: true },
+    { name: "updated_at", declaredType: "TEXT", notNull: true },
+  ],
+};
+
+const KNOWN_SETTING_KEYS = new Set([
+  // 1. 설치 대상 기기의 경로 (7개)
+  "pending_dir",
+  "approved_dir",
+  "schedule_export_dir",
+  "allowance_proposal_export_dir",
+  "allowance_attachment1_export_dir",
+  "allowance_attachment2_export_dir",
+  "database_backup_dir",
+  // 2. 이번에 선택한 입력 (1개)
+  "migration_file_path",
+  // 3. 설치 대상 기기의 운영 설정 (6개)
+  "holiday_api_base_url",
+  "database_backup_schedule",
+  "database_backup_time",
+  "update_last_seen_patch_note_version",
+  "update_last_skipped_version",
+  "substitute_allowance_policy_reparse_marker",
+  // 4. 업무 규칙 (6개 - 선택 JSON에서 필수 제공)
+  "schedule_consecutive_night_limit",
+  "schedule_minimum_rest_minutes",
+  "schedule_require_weekly_holiday",
+  "schedule_weekly_max_minutes",
+  "substitute_allowance_policy_effective_from",
+  "changed_slot_priority_effective_from"
+]);
+
+const BUSINESS_RULE_KEYS = [
+  "schedule_consecutive_night_limit",
+  "schedule_minimum_rest_minutes",
+  "schedule_require_weekly_holiday",
+  "schedule_weekly_max_minutes",
+  "substitute_allowance_policy_effective_from",
+  "changed_slot_priority_effective_from"
+] as const;
+
+interface NormalizedJsonBackupSnapshot {
+  schemaVersion: number;
+  createdAt: string;
+  tables: Record<string, Array<Record<string, unknown>>>;
 }
 
-interface RawAssignmentRow {
-  id: string;
-  employee_id: string;
-  site_id: string;
-  team_name: string | null;
-  shift_group: string | null;
-  start_date: string;
-  end_date: string | null;
-  status: "active" | "ended";
-  created_at: string;
+interface PreviewTokenEntry {
+  token: string;
+  backupFilePath: string;
+  backupSha256: string;
+  databaseFingerprint: string;
+  expiresAt: number;
 }
 
-interface RawWageRateRow {
-  id: string;
-  employee_id: string;
-  hourly_rate: number;
-  effective_from: string;
-  effective_to: string | null;
-  reason: string | null;
-  created_at: string;
-}
-
-interface RawPatternRows {
-  patterns: Array<Record<string, unknown>>;
-  steps: Array<Record<string, unknown>>;
-  teamIndexes: Array<Record<string, unknown>>;
-  cycles: Array<Record<string, unknown>>;
-  cycleSteps: Array<Record<string, unknown>>;
-  cycleTeamIndexes: Array<Record<string, unknown>>;
-  teamCycles: Array<Record<string, unknown>>;
-  teamCapacities: Array<Record<string, unknown>>;
-  importedPatternCount: number;
-  skippedPatternSiteNames: string[];
-  warningMessages: string[];
-}
-
-interface RawAccessPerformanceFileRow {
-  id: string;
-  file_name: string;
-  file_path: string;
-  directory_type: "pending" | "approved" | "unknown";
-  template_kind: "unknown";
-  template_variant: null;
-  sheet_name: string;
-  row_count: number;
-  column_count: number;
-  file_size: number;
-  modified_time_ms: number;
-  duplicate_key: string;
-  received_at: string;
-  schedule_month: string;
-  site_name: string;
-  schedule_key: string;
-  entry_count: number;
-  approved_entry_count: number;
-  warning_count: number;
-  is_effective: 0 | 1;
-  completed_at: string | null;
-  status: "parsed" | "approved";
-  error_message: null;
-  preview_json: string;
-}
-
-interface RawAccessPerformanceEntryRow {
-  id: string;
-  performance_file_id: string;
-  logical_key: string;
-  employee_code: string;
-  employee_name: string;
-  employee_rank: string | null;
-  work_date: string;
-  work_hours: number;
-  schedule_month: string;
-  schedule_key: string;
-  site_name: string;
-  work_type: WorkType;
-  section: PerformanceEntrySection;
-  duty_code: string | null;
-  start_time: string | null;
-  end_time: string | null;
-  break_minutes: number;
-  total_work_minutes: number;
-  base_work_minutes: number;
-  overtime_minutes: number;
-  night_minutes: number;
-  department: string | null;
-  category: string | null;
-  reason_text: string | null;
-  evidence_text: string | null;
-  source_row_number: number;
-  sort_order: number;
-  alert_json: string;
-  hourly_rate: number | null;
-  note: string | null;
-  is_pool_worker: 0 | 1;
-}
-
-interface RawAccessPerformanceApprovalRow {
-  id: string;
-  file_id: string;
-  entry_id: string;
-  logical_key: string;
-  file_name: string;
-  schedule_key: string;
-  employee_code: string;
-  employee_name: string;
-  work_date: string;
-  work_type: WorkType;
-  decision: "approved";
-  processed_at: string;
-  processed_by: string;
-  processed_by_name: string;
-  comment: string | null;
-  rejection_reason: null;
-  snapshot_json: string;
-  archived_file_name: string;
-  archived_file_path: string;
-}
-
-interface RawAccessAllowanceCalculationRow {
-  id: string;
-  performance_approval_id: string;
-  performance_entry_id: string;
-  calculation_version: number;
-  status: "calculated";
-  file_id: string;
-  file_name: string;
-  site_name: string;
-  employee_code: string;
-  employee_name: string;
-  employee_rank: string | null;
-  work_date: string;
-  work_type: WorkType;
-  hourly_rate: number | null;
-  rate_version_id: string;
-  rate_version_label: string;
-  total_work_minutes: number;
-  base_work_minutes: number;
-  overtime_minutes: number;
-  night_minutes: number;
-  holiday_minutes: number;
-  substitute_minutes: number;
-  total_allowance_amount: number;
-  early_payout_date: null;
-  signature: string;
-  snapshot_json: string;
-  created_at: string;
-}
-
-interface RawAccessAllowanceCalculationItemRow {
-  id: string;
-  calculation_id: string;
-  allowance_code: "base" | "overtime" | "night";
-  work_minutes: number;
-  multiplier: number;
-  amount: number;
-  detail_json: string;
-}
-
-interface RawAccessPerformanceRows {
-  files: RawAccessPerformanceFileRow[];
-  entries: RawAccessPerformanceEntryRow[];
-  approvals: RawAccessPerformanceApprovalRow[];
-  calculations: RawAccessAllowanceCalculationRow[];
-  calculationItems: RawAccessAllowanceCalculationItemRow[];
-  importedFileCount: number;
-  importedEntryCount: number;
-  importedApprovedEntryCount: number;
-  importedAllowanceCalculationCount: number;
-  skippedRowCount: number;
-  warningMessages: string[];
-}
-
-interface JsonBackupSnapshot {
-  appSettings?: Partial<AppSettingsUpdateInput>;
-  tables: Record<string, unknown[]>;
-}
-
-interface AccessSiteConfig {
-  siteName: string;
-  declaredWorkType?: string;
-  declaredShiftCount?: number;
-  declaredTeamCount?: number;
-  availableShiftCount: number;
-  shiftTimes: string[];
-  breakMinutes: number[];
-  fallbackTeamCapacity?: number;
-  teamCapacities: Map<string, number>;
-  poolEnabled: boolean;
-}
-
-interface AccessPatternGroup {
-  siteName: string;
-  patternStartDate: string;
-  workType: string;
-  teamCount: number;
-  shiftCount: number;
-  rows: Array<Record<string, unknown>>;
-}
-
-interface EmployeeImportSource {
-  assignmentId: string;
-  employeeCode: string;
-  employeeName: string;
-  siteName: string;
-  groupName: string;
-  groupNumber: string;
-  groupType: string;
-  assignmentStartDate: string;
-}
-
-interface SiteValueLookup<T> {
-  exact: Map<string, T>;
-  loose: Map<string, T>;
-}
-
-const normalizeText = (value: unknown) => String(value ?? "").replace(/\uFEFF/g, "").trim();
-const normalizePersonName = (value: unknown) => normalizeText(value).replace(/_[A-Z]$/i, "");
-const normalizeSiteLookupKey = (value: unknown) => normalizeText(value).replace(/\s+/g, "").toUpperCase();
-const normalizeKey = (value: unknown) =>
-  normalizeText(value)
-    .toLowerCase()
-    .replace(/[\s_\-()/\\[\]{}.:]+/g, "");
-export const normalizeImportedEmployeeStatus = (value: unknown): "active" | "leave" | "retired" => {
-  if (typeof value === "boolean") {
-    return value ? "active" : "retired";
-  }
-
-  const normalizedText = normalizeText(value);
-  const normalizedKey = normalizeKey(value);
-
-  if (!normalizedText || normalizedKey.includes("미분류") || normalizedKey === "unknown") {
-    return "active";
-  }
-
-  if (
-    normalizedKey.includes("퇴사") ||
-    normalizedKey.includes("퇴직") ||
-    normalizedKey.includes("직무해제") ||
-    normalizedKey.includes("retired") ||
-    normalizedKey === "false" ||
-    normalizedKey === "n" ||
-    normalizedKey === "no" ||
-    normalizedKey === "0"
-  ) {
-    return "retired";
-  }
-
-  if (normalizedKey.includes("휴직") || normalizedKey.includes("leave")) {
-    return "leave";
-  }
-
-  return "active";
-};
-const buildSiteValueLookup = <T,>(entries: Array<{ name: string; value: T }>): SiteValueLookup<T> => {
-  const exact = new Map<string, T>();
-  const looseCandidates = new Map<string, Set<T>>();
-
-  entries.forEach(({ name, value }) => {
-    const normalizedName = normalizeText(name);
-
-    if (!normalizedName) {
-      return;
-    }
-
-    exact.set(normalizedName, value);
-
-    const lookupKey = normalizeSiteLookupKey(normalizedName);
-    const bucket = looseCandidates.get(lookupKey) ?? new Set<T>();
-
-    bucket.add(value);
-    looseCandidates.set(lookupKey, bucket);
-  });
-
-  const loose = new Map<string, T>();
-
-  looseCandidates.forEach((bucket, lookupKey) => {
-    if (bucket.size === 1) {
-      const [value] = Array.from(bucket);
-
-      if (value !== undefined) {
-        loose.set(lookupKey, value);
-      }
-    }
-  });
-
-  return {
-    exact,
-    loose
-  };
-};
-const resolveSiteLookupValue = <T,>(lookup: SiteValueLookup<T>, siteName: string) =>
-  lookup.exact.get(siteName) ?? lookup.loose.get(normalizeSiteLookupKey(siteName));
-const toPowerShellLiteral = (value: string) => `'${String(value).replace(/'/g, "''")}'`;
-const getProcessResourcesPath = () => {
-  const resourcesPath = (process as NodeJS.Process & { resourcesPath?: string }).resourcesPath;
-  return typeof resourcesPath === "string" && resourcesPath.trim().length > 0
-    ? resourcesPath
-    : undefined;
-};
-
-const resolveAccessExportScriptPath = () => {
-  const resourcesPath = getProcessResourcesPath();
-  const candidates = [
-    resourcesPath ? path.join(resourcesPath, "scripts", "export-access-db.ps1") : undefined,
-    path.resolve(process.cwd(), "scripts", "export-access-db.ps1")
-  ].filter((candidate): candidate is string => Boolean(candidate));
-
-  const scriptPath = candidates.find((candidate) => existsSync(candidate));
-
-  if (!scriptPath) {
-    throw new Error(
-      "Access 복구 스크립트를 찾을 수 없습니다. 설치본 패키지에 export-access-db.ps1 포함 여부를 확인하세요."
-    );
-  }
-
-  return scriptPath;
-};
-
-const buildDatabaseMigrationRequirementFailureMessage = (
-  requirementCheck: DatabaseMigrationRequirementCheck
-) => [requirementCheck.headline, ...requirementCheck.details, ...requirementCheck.recommendedActions].join("\n");
-
-const createJsonMigrationRequirementCheck = (): DatabaseMigrationRequirementCheck => ({
-  sourceType: "json",
-  isReady: true,
-  status: "not-required",
-  checkedAt: new Date().toISOString(),
-  headline: "JSON 복원은 추가 구성 없이 실행할 수 있습니다.",
-  details: ["운영 DB 백업 JSON(.json) 파일이면 현재 PC 환경에서 바로 미리보기와 복원을 실행할 수 있습니다."],
-  recommendedActions: []
-});
-
-const createAccessMigrationRequirementCheck = (): DatabaseMigrationRequirementCheck => {
-  const checkedAt = new Date().toISOString();
-  let scriptPath: string | undefined;
-
-  try {
-    scriptPath = resolveAccessExportScriptPath();
-  } catch (error) {
-    return {
-      sourceType: "access",
-      isReady: false,
-      status: "script-missing",
-      checkedAt,
-      headline: "설치본에 Access 복구 스크립트가 없습니다.",
-      details: [error instanceof Error ? error.message : "Access 복구 스크립트를 찾을 수 없습니다."],
-      recommendedActions: [
-        "최신 설치본으로 다시 설치한 뒤 DB복원 미리보기를 다시 확인하세요."
-      ]
-    };
-  }
-
-  const result = spawnSync(
-    "powershell",
-    [
-      "-ExecutionPolicy",
-      "Bypass",
-      "-Command",
-      `& ${toPowerShellLiteral(scriptPath)} -CheckProviderOnly`
-    ],
-    {
-      cwd: path.dirname(scriptPath),
-      encoding: "utf8",
-      windowsHide: true
-    }
-  );
-  const snapshot = {
-    status: result.status,
-    stdout: result.stdout,
-    stderr: result.stderr,
-    errorMessage: result.error instanceof Error ? result.error.message : ""
-  };
-  const output = normalizePowerShellCommandOutput(snapshot);
-
-  if (result.status === 0) {
-    return {
-      sourceType: "access",
-      isReady: true,
-      status: "ready",
-      checkedAt,
-      headline: "현재 PC에서 Access DB 복원을 실행할 수 있습니다.",
-      details: [
-        `Access 복구 스크립트: ${scriptPath}`,
-        `감지된 Provider: ${parseDetectedAccessProvider(output) ?? "확인됨"}`
-      ],
-      recommendedActions: [],
-      scriptPath,
-      detectedProvider: parseDetectedAccessProvider(output)
-    };
-  }
-
-  const failureCheck = buildAccessRequirementCheckFailure({
-    checkedAt,
-    scriptPath,
-    snapshot
-  });
-
-  if (failureCheck.status === "check-failed") {
-    console.error(
-      "[database-migration] access requirement check failed",
-      buildPowerShellDiagnosticText({
-        commandName: "access-provider-check",
-        scriptPath,
-        snapshot
-      })
-    );
-  }
-
-  return failureCheck;
-};
-
-export const checkDatabaseMigrationRequirements = (input: {
-  migrationFilePath: string;
-}): DatabaseMigrationRequirementCheck => {
-  const { extension } = resolveDatabaseMigrationInput(input);
-  return extension === ".json" ? createJsonMigrationRequirementCheck() : createAccessMigrationRequirementCheck();
-};
-
-const assertDatabaseMigrationRequirementsReady = (
-  requirementCheck: DatabaseMigrationRequirementCheck
-) => {
-  if (requirementCheck.isReady) {
-    return;
-  }
-
-  throw new Error(buildDatabaseMigrationRequirementFailureMessage(requirementCheck));
-};
-
-const normalizeIsoDate = (value: unknown) => {
-  const matched = String(value ?? "").match(/(\d{4})[-./](\d{2})[-./](\d{2})/);
-
-  if (!matched) {
-    return undefined;
-  }
-
-  return `${matched[1]}-${matched[2]}-${matched[3]}`;
-};
-
-const normalizeTimeValue = (value: unknown) => {
-  const matched = String(value ?? "").match(/T(\d{2}):(\d{2})/);
-
-  if (!matched) {
-    return undefined;
-  }
-
-  return `${matched[1]}:${matched[2]}`;
-};
-
-const normalizeNumber = (value: unknown, label: string) => {
-  const nextValue = Number(value);
-
-  if (!Number.isFinite(nextValue)) {
-    throw new Error(`${label} 값을 숫자로 해석할 수 없습니다.`);
-  }
-
-  return nextValue;
-};
-
-const normalizeOptionalInteger = (value: unknown, fallbackValue: number) => {
-  if (value === null || value === undefined || normalizeText(value).length === 0) {
-    return fallbackValue;
-  }
-
-  const nextValue = Number(value);
-
-  return Number.isInteger(nextValue) ? nextValue : fallbackValue;
-};
-
-const findRowValue = (row: Record<string, unknown>, keys: string[]) => {
-  for (const key of keys) {
-    if (row[key] !== undefined && row[key] !== null && String(row[key]).trim().length > 0) {
-      return row[key];
-    }
-  }
-
-  return undefined;
-};
-
-const accessPerformanceRankColumnName = "직급명";
-const getAccessEmployeeRankText = (row: Record<string, unknown>) =>
-  normalizeText(row[accessPerformanceRankColumnName]);
-const normalizeAccessEmployeeRank = (row: Record<string, unknown>) =>
-  normalizeEmployeeRank(getAccessEmployeeRankText(row)) ?? null;
-
-const assertRowValue = (row: Record<string, unknown>, keys: string[], label: string) => {
-  const value = findRowValue(row, keys);
-
-  if (value === undefined) {
-    throw new Error(`${label} 값을 찾을 수 없습니다.`);
-  }
-
-  return value;
-};
-
-const formatCompactDate = (value: Date) => {
-  const year = value.getFullYear();
-  const month = String(value.getMonth() + 1).padStart(2, "0");
-  const day = String(value.getDate()).padStart(2, "0");
-  return `${year}${month}${day}`;
-};
-
-const getShiftLabels = (shiftCount: number) => {
-  if (shiftCount === 1) {
-    return ["주간"];
-  }
-
-  if (shiftCount === 2) {
-    return ["주간", "야간"];
-  }
-
-  if (shiftCount === 3) {
-    return ["1근", "2근", "3근"];
-  }
-
-  return Array.from({ length: shiftCount }, (_, index) => `${index + 1}근`);
-};
-
-const getTeamLabels = (teamCount: number) =>
-  Array.from({ length: teamCount }, (_, index) => `${String.fromCharCode(65 + index)}조`);
-
-const isPoolTeamLabel = (value: string) => normalizeTeamLabel(value) === "Pool";
-
-const buildImportedShiftGroup = (groupName: string, groupType: string) => {
-  if (isPoolTeamLabel(groupName)) {
-    return "Pool";
-  }
-
-  if (groupType === "주말") {
-    return appendWeekendTeamLabel(groupName) ?? null;
-  }
-
-  return normalizeTeamLabel(groupName) ?? null;
-};
-
-const buildImportedTeamName = (groupName: string, groupNumber: string, groupType: string) => {
-  const normalizedGroupLabel =
-    normalizeTeamLabel(groupName)?.replace(/\(주말\)$/, "") ??
-    groupName.replace(/\(주말\)$/, "").trim();
-  const normalizedGroupNumber = groupNumber.trim();
-
-  if (!normalizedGroupLabel && !normalizedGroupNumber) {
-    return null;
-  }
-
-  if (normalizedGroupLabel === "Pool") {
-    return `${normalizedGroupLabel}${normalizedGroupNumber}`.trim();
-  }
-
-  if (groupType === "주말") {
-    return `${normalizedGroupLabel}${normalizedGroupNumber}-주말`.trim();
-  }
-
-  return `${normalizedGroupLabel}${normalizedGroupNumber}`.trim();
-};
-
-const parseWorkType = (value: unknown) => {
-  const normalized = normalizeText(value);
-  const matched = normalized.match(/(\d+)\s*조\s*(\d+)\s*교대/);
-
-  if (!matched) {
-    return null;
-  }
-
-  return {
-    teamCount: Number(matched[1]),
-    shiftCount: Number(matched[2]),
-    normalizedWorkType: normalized.replace(/\s+/g, "")
-  };
-};
-
-const isPlaceholderName = (name: unknown) => {
-  const normalizedName = normalizeText(name);
-
-  return (
-    normalizedName.length === 0 ||
-    /^none_/i.test(normalizedName) ||
-    /^공석/i.test(normalizedName) ||
-    normalizedName === "-" ||
-    normalizedName.toUpperCase() === "TBD"
-  );
-};
-
-const compareEmployeeRows = (left: Record<string, unknown>, right: Record<string, unknown>) => {
-  const leftDate =
-    normalizeIsoDate(left["직무적용일자"]) ??
-    normalizeIsoDate(left["조직개편일자"]) ??
-    "0001-01-01";
-  const rightDate =
-    normalizeIsoDate(right["직무적용일자"]) ??
-    normalizeIsoDate(right["조직개편일자"]) ??
-    "0001-01-01";
-
-  if (leftDate !== rightDate) {
-    return rightDate.localeCompare(leftDate);
-  }
-
-  const leftGroupType = normalizeText(left["그룹유형"]);
-  const rightGroupType = normalizeText(right["그룹유형"]);
-
-  if (leftGroupType !== rightGroupType) {
-    if (leftGroupType === "기본") {
-      return -1;
-    }
-
-    if (rightGroupType === "기본") {
-      return 1;
+// 10분 TTL 인메모리 토큰 저장소
+const previewTokens = new Map<string, PreviewTokenEntry>();
+const TOKEN_TTL_MS = 10 * 60 * 1000;
+
+const purgeExpiredTokens = () => {
+  const now = Date.now();
+  for (const [token, entry] of previewTokens.entries()) {
+    if (entry.expiresAt <= now) {
+      previewTokens.delete(token);
     }
   }
-
-  const leftGroupNumber = Number(left["그룹번호"] ?? Number.MAX_SAFE_INTEGER);
-  const rightGroupNumber = Number(right["그룹번호"] ?? Number.MAX_SAFE_INTEGER);
-
-  if (leftGroupNumber !== rightGroupNumber) {
-    return leftGroupNumber - rightGroupNumber;
-  }
-
-  return normalizePersonName(left["직원명"]).localeCompare(normalizePersonName(right["직원명"]), "ko");
 };
 
-const buildEmployeeRankMapFromAccessPerformanceRows = (
-  performanceRows: Array<Record<string, unknown>>
-) => {
-  const rankByEmployeeCode = new Map<
-    string,
-    { rank: NonNullable<RawEmployeeRow["rank"]>; workDate: string }
-  >();
-
-  performanceRows.forEach((row) => {
-    const employeeCode = normalizeText(row["사원번호"]);
-    const rank = normalizeAccessEmployeeRank(row);
-
-    if (!employeeCode || !rank) {
-      return;
-    }
-
-    const workDate = normalizeIsoDate(row["근무날짜"]) ?? "";
-    const existing = rankByEmployeeCode.get(employeeCode);
-
-    if (!existing || workDate >= existing.workDate) {
-      rankByEmployeeCode.set(employeeCode, { rank, workDate });
-    }
-  });
-
-  return new Map(
-    Array.from(rankByEmployeeCode.entries()).map(([employeeCode, value]) => [
-      employeeCode,
-      value.rank
-    ])
-  );
-};
-
-const resolveRateCategoryCode = (rawCategory: unknown): AllowanceRateCategoryCode => {
-  const normalized = normalizeKey(rawCategory);
-
-  if (normalized.includes("법정공휴일") || normalized.includes("법정휴일") || normalized.includes("공휴일")) {
-    return "legal-holiday";
-  }
-
-  if (normalized.includes("평대체")) {
-    return "weekday-substitute";
-  }
-
-  if (normalized.includes("휴대체")) {
-    return "holiday-substitute";
-  }
-
-  if (normalized.includes("평연장")) {
-    return "weekday-overtime";
-  }
-
-  if (normalized.includes("휴연장")) {
-    return "holiday-overtime";
-  }
-
-  throw new Error(`알 수 없는 근로유형입니다: ${String(rawCategory)}`);
-};
-
-const ensureMigrationDirectory = (databasePath: string) => {
-  const migrationDir = path.resolve(path.dirname(databasePath), ".migration-work");
-  mkdirSync(migrationDir, { recursive: true });
-  return migrationDir;
-};
-
-const getRequiredDatabase = () => {
+const getRequiredDatabase = (): DatabaseSync => {
   const database = getSqliteDatabase();
-
   if (!database) {
-    throw new Error("SQLite storage is not initialized.");
+    throw new Error("데이터베이스가 초기화되지 않았습니다.");
   }
-
   return database;
 };
 
-const queryCount = (database: DatabaseSync, tableName: string, whereClause?: string) => {
-  const clause = whereClause ? ` WHERE ${whereClause}` : "";
-  const row = database
-    .prepare(`SELECT COUNT(*) AS count FROM ${tableName}${clause}`)
-    .get() as { count: number };
-
-  return Number(row.count ?? 0);
-};
-
-const collectDatabaseMigrationState = (database: DatabaseSync): DatabaseMigrationStateSnapshot => ({
-  siteCount: queryCount(database, "sites"),
-  employeeCount: queryCount(database, "employees"),
-  activeAssignmentCount: queryCount(database, "employee_site_assignments", `status = 'active'`),
-  endedAssignmentCount: queryCount(database, "employee_site_assignments", `status = 'ended'`),
-  wageRateCount: queryCount(database, "wage_rates"),
-  patternCount: queryCount(database, "shift_patterns"),
-  holidayCalendarCount: queryCount(database, "holiday_calendars"),
-  holidayItemCount: queryCount(database, "holiday_items"),
-  rateVersionCount: queryCount(database, "allowance_rate_versions"),
-  rateItemCount: queryCount(database, "allowance_rate_items"),
-  userCount: queryCount(database, "app_users"),
-  templateVersionCount: queryCount(database, "document_template_versions"),
-  templateHistoryCount: queryCount(database, "document_template_history"),
-  performanceFileCount: queryCount(database, "performance_files"),
-  performanceEntryCount: queryCount(database, "performance_entries"),
-  performanceApprovalCount: queryCount(database, "performance_approvals"),
-  allowanceCalculationCount: queryCount(database, "allowance_calculations"),
-  allowanceDocumentExportCount: queryCount(database, "allowance_document_exports")
-});
-
-const importMigrationIntoCurrentStorage = (input: {
-  extension: ".accdb" | ".json";
-  migrationFilePath: string;
-  currentSettings: AppSettingsSnapshot;
-  selectedAccessTables?: AccessMigrationTableName[];
-  userDataPath: string;
-}): ImportedMigrationSummary =>
-  input.extension === ".json"
-    ? importJsonBackupIntoCurrentDatabase(
-        input.migrationFilePath,
-        input.currentSettings,
-        input.selectedAccessTables ?? [],
-        input.userDataPath
-      )
-    : importAccessDatabaseIntoCurrentDatabase(
-        input.migrationFilePath,
-        input.currentSettings,
-        normalizeSelectedAccessMigrationTables(input.selectedAccessTables),
-        input.userDataPath
-      );
-
-const readJsonFile = (filePath: string) =>
-  JSON.parse(readFileSync(filePath, "utf8").replace(/^\uFEFF/, "")) as unknown;
-
-const createTimestampSegment = () => formatCompactDate(new Date()) + randomUUID().slice(0, 8);
-
-const exportAccessTables = (
-  databasePath: string,
-  outputDir: string,
-  selectedTables: readonly AccessMigrationTableName[]
-): AccessTableMap => {
-  const scriptPath = resolveAccessExportScriptPath();
-  const selectedTableSet = new Set<AccessMigrationTableName>(
-    selectedTables.filter((table): table is AccessMigrationTableName =>
-      ACCESS_TABLE_NAME_SET.has(table)
-    )
-  );
-  const args = [
-    "-ExecutionPolicy",
-    "Bypass",
-    "-Command",
-    `& ${toPowerShellLiteral(scriptPath)} -DatabasePath ${toPowerShellLiteral(
-      databasePath
-    )} -OutputDir ${toPowerShellLiteral(outputDir)} -Tables @(${selectedTables.map(toPowerShellLiteral).join(
-      ", "
-    )}) -IncludeRows`
-  ];
-  const result = spawnSync("powershell", args, {
-    cwd: path.dirname(scriptPath),
-    encoding: "utf8",
-    windowsHide: true
-  });
-
-  if (result.status !== 0) {
-    const snapshot = {
-      status: result.status,
-      stdout: result.stdout,
-      stderr: result.stderr,
-      errorMessage: result.error instanceof Error ? result.error.message : ""
-    };
-
-    console.error(
-      "[database-migration] access export failed",
-      buildPowerShellDiagnosticText({
-        commandName: "access-export",
-        scriptPath,
-        databasePath,
-        snapshot
-      })
-    );
-    throw new Error(buildAccessExportFailureMessage(snapshot));
-  }
-
-  const readSelectedTableRows = (tableName: AccessMigrationTableName) => {
-    if (!selectedTableSet.has(tableName)) {
-      return [] as Array<Record<string, unknown>>;
-    }
-
-    return readJsonFile(path.join(outputDir, "tables", `${tableName}.json`)) as Array<
-      Record<string, unknown>
-    >;
-  };
-
-  return {
-    holidays: readSelectedTableRows("공휴일"),
-    rates: readSelectedTableRows("연장근로요율"),
-    sites: readSelectedTableRows("사업조직현황"),
-    employees: readSelectedTableRows("사업조직별근무자현황"),
-    wages: readSelectedTableRows("근무자별시급관리"),
-    performances: readSelectedTableRows("사업조직별근무실적"),
-    patterns: readSelectedTableRows("사업조직별패턴"),
-    dutyReleases: readSelectedTableRows("직무해제자현황")
-  };
-};
-
-const buildAccessSiteRows = (
-  siteRows: Array<Record<string, unknown>>,
-  employeeRows: Array<Record<string, unknown>>,
-  patternRows: Array<Record<string, unknown>>,
-  performanceRows: Array<Record<string, unknown>>,
-  createdAt: string
-) => {
-  const siteNameByKey = new Map<string, string>();
-
-  const registerSiteName = (value: unknown) => {
-    const siteName = normalizeText(value);
-
-    if (!siteName) {
-      return;
-    }
-
-    const lookupKey = normalizeSiteLookupKey(siteName);
-
-    if (!siteNameByKey.has(lookupKey)) {
-      siteNameByKey.set(lookupKey, siteName);
-    }
-  };
-
-  siteRows.forEach((row) => {
-    const siteName =
-      normalizeText(row["근무지"]) ||
-      normalizeText(row["근무지명"]) ||
-      normalizeText(row["사업조직"]) ||
-      normalizeText(row["사업조직명"]);
-
-    registerSiteName(siteName);
-  });
-
-  employeeRows.forEach((row) => {
-    registerSiteName(row["근무지"]);
-  });
-
-  patternRows.forEach((row) => {
-    registerSiteName(row["근무지"]);
-  });
-
-  performanceRows.forEach((row) => {
-    registerSiteName(row["근무지"]);
-  });
-
-  return Array.from(siteNameByKey.values())
-    .sort((left, right) => left.localeCompare(right, "ko"))
-    .map<RawSiteRow>((name, index) => ({
-      id: randomUUID(),
-      site_code: `ACCESS-SITE-${String(index + 1).padStart(3, "0")}`,
-      name,
-      status: "active",
-      timezone: "Asia/Seoul",
-      deleted_at: null,
-      created_at: createdAt,
-      updated_at: null
-    }));
-};
-
-const buildHolidayRows = (
-  rows: Array<Record<string, unknown>>,
-  sourceVersion: string,
-  createdAt: string
-) => {
-  const itemsByYear = new Map<number, Array<{ holidayDate: string; name: string; isSubstitute: boolean }>>();
-
-  rows.forEach((row) => {
-    const holidayDate = normalizeIsoDate(assertRowValue(row, ["날짜", "공휴일날짜"], "공휴일 날짜"));
-    const name = normalizeText(assertRowValue(row, ["공휴일명", "이름", "명칭"], "공휴일명"));
-
-    if (!holidayDate || !name) {
-      return;
-    }
-
-    const year = Number(holidayDate.slice(0, 4));
-    const bucket = itemsByYear.get(year) ?? [];
-
-    if (bucket.some((item) => item.holidayDate === holidayDate)) {
-      return;
-    }
-
-    bucket.push({
-      holidayDate,
-      name,
-      isSubstitute: name.includes("대체")
-    });
-    itemsByYear.set(year, bucket);
-  });
-
-  const calendars: Array<Record<string, unknown>> = [];
-  const items: Array<Record<string, unknown>> = [];
-
-  Array.from(itemsByYear.entries())
-    .sort(([left], [right]) => left - right)
-    .forEach(([year, yearItems]) => {
-      const calendarId = `holiday-access-${year}`;
-
-      calendars.push({
-        id: calendarId,
-        year,
-        source_name: "access-db",
-        source_version: sourceVersion,
-        created_at: createdAt
-      });
-
-      yearItems
-        .sort((left, right) => left.holidayDate.localeCompare(right.holidayDate))
-        .forEach((item, index) => {
-          items.push({
-            id: `holiday-item-access-${year}-${String(index + 1).padStart(3, "0")}`,
-            calendar_id: calendarId,
-            holiday_date: item.holidayDate,
-            name: item.name,
-            is_substitute: item.isSubstitute ? 1 : 0,
-            created_at: createdAt
-          });
-        });
-    });
-
-  return {
-    calendars,
-    items
-  };
-};
-
-const buildAllowanceRateRows = (
-  rows: Array<Record<string, unknown>>,
-  fallbackYear: number,
-  sourceVersion: string,
-  createdAt: string
-) => {
-  const matrixByYear = new Map<number, Partial<AllowanceRateMatrix>>();
-
-  rows.forEach((row) => {
-    const categoryCode = resolveRateCategoryCode(assertRowValue(row, ["근로유형"], "근로유형"));
-    const year = Number(findRowValue(row, ["요율정의년도", "정의년도", "년도", "연도"]) ?? fallbackYear);
-    const bucket = matrixByYear.get(year) ?? {};
-
-    bucket[categoryCode] = {
-      base: normalizeNumber(
-        assertRowValue(row, ["기본근로수당요율", "기본요율"], "기본근로수당요율"),
-        `${String(row["근로유형"])} 기본근로수당요율`
-      ),
-      overtime: normalizeNumber(
-        assertRowValue(row, ["연장근로수당요율", "연장요율"], "연장근로수당요율"),
-        `${String(row["근로유형"])} 연장근로수당요율`
-      ),
-      night: normalizeNumber(
-        assertRowValue(row, ["야간근로수당요율", "야간요율"], "야간근로수당요율"),
-        `${String(row["근로유형"])} 야간근로수당요율`
-      )
-    };
-    matrixByYear.set(year, bucket);
-  });
-
-  const years = Array.from(matrixByYear.keys()).sort((left, right) => left - right);
-  const latestYear = years[years.length - 1] ?? fallbackYear;
-  const versions: Array<Record<string, unknown>> = [];
-  const items: Array<Record<string, unknown>> = [];
-
-  years.forEach((year) => {
-    const versionId = `allowance-rate-access-${year}`;
-    const status = year === latestYear ? "active" : "retired";
-
-    versions.push({
-      id: versionId,
-      year,
-      version_label: `ACCDB ${year} ${sourceVersion}`,
-      status,
-      effective_from: `${year}-01-01`,
-      effective_to: status === "retired" ? `${year}-12-31` : null,
-      created_at: createdAt,
-      updated_at: createdAt
-    });
-
-    createAllowanceRateItems(versionId, matrixByYear.get(year)).forEach((item) => {
-      items.push({
-        id: item.id,
-        version_id: versionId,
-        allowance_code: item.allowanceCode,
-        multiplier: item.multiplier,
-        rounding_policy: item.roundingPolicy
-      });
-    });
-  });
-
-  return {
-    versions,
-    items
-  };
-};
-
-const buildActiveWageMap = (
-  wageRows: Array<Record<string, unknown>>,
-  sourceYear: number,
-  sourceVersion: string
-) => {
-  const byEmployee = new Map<
-    string,
-    {
-      employeeCode: string;
-      employeeName: string;
-      siteName: string;
-      hourlyRate: number;
-      effectiveFrom: string;
-      reason: string;
-    }
-  >();
-
-  wageRows.forEach((row) => {
-    const employeeCode = normalizeText(row["사원번호"]);
-    const employeeName = normalizeText(row["직원명"]);
-    const hourlyRate = Number(row["통상시급"] ?? 0);
-
-    if (row["적용유무"] !== true || !employeeCode || !employeeName) {
-      return;
-    }
-
-    if (!Number.isFinite(hourlyRate) || hourlyRate <= 0) {
-      return;
-    }
-
-    const key = employeeCode;
-    const registeredAt =
-      normalizeIsoDate(row["시급등록일시"]) ??
-      (Number(row["시급정의년도"]) > 2000 ? `${Number(row["시급정의년도"])}-01-01` : `${sourceYear}-01-01`);
-    const candidate = {
-      employeeCode,
-      employeeName,
-      siteName: normalizeText(row["근무지"]),
-      hourlyRate,
-      effectiveFrom: registeredAt,
-      reason: `Access import ${sourceVersion}`
-    };
-    const existing = byEmployee.get(key);
-
-    if (!existing || candidate.effectiveFrom > existing.effectiveFrom) {
-      byEmployee.set(key, candidate);
-    }
-  });
-
-  return byEmployee;
-};
-
-export const buildEmployeeRows = (input: {
-  employeeRows: Array<Record<string, unknown>>;
-  performanceRows?: Array<Record<string, unknown>>;
-  activeWageMap: ReturnType<typeof buildActiveWageMap>;
-  siteIdByName: Map<string, string>;
-  sourceYear: number;
-  sourceVersion: string;
-  createdAt: string;
-}) => {
-  const siteLookup = buildSiteValueLookup(
-    Array.from(input.siteIdByName.entries()).map(([name, value]) => ({
-      name,
-      value
-    }))
-  );
-  const selectedRowsByEmployee = new Map<string, Record<string, unknown>>();
-  const rankByEmployeeCode = buildEmployeeRankMapFromAccessPerformanceRows(
-    input.performanceRows ?? []
-  );
-
-  input.employeeRows.forEach((row) => {
-    const employeeCode = normalizeText(row["사원번호"]);
-    const employeeName = normalizePersonName(row["직원명"]);
-
-    if (isPlaceholderName(employeeName) || !employeeCode) {
-      return;
-    }
-
-    const key = employeeCode;
-    const existing = selectedRowsByEmployee.get(key);
-
-    if (!existing || compareEmployeeRows(row, existing) < 0) {
-      selectedRowsByEmployee.set(key, row);
-    }
-  });
-
-  const employees: RawEmployeeRow[] = [];
-  const assignments: RawAssignmentRow[] = [];
-  const wageRates: RawWageRateRow[] = [];
-  const sources: EmployeeImportSource[] = [];
-  const warningMessages: string[] = [];
-
-  Array.from(selectedRowsByEmployee.entries())
-    .sort(([left], [right]) => left.localeCompare(right, "ko"))
-    .forEach(([, row]) => {
-      const employeeCode = normalizeText(row["사원번호"]);
-      const employeeName = normalizePersonName(row["직원명"]);
-      const siteName = normalizeText(row["근무지"]);
-      const siteId = resolveSiteLookupValue(siteLookup, siteName);
-      const activeWage = input.activeWageMap.get(employeeCode);
-      const groupName = normalizeText(row["그룹명"]);
-      const groupNumber = normalizeText(row["그룹번호"]);
-      const groupType = normalizeText(row["그룹유형"]);
-      const employeeRank = rankByEmployeeCode.get(employeeCode) ?? null;
-      const startDate =
-        normalizeIsoDate(row["직무적용일자"]) ??
-        normalizeIsoDate(row["조직개편일자"]) ??
-        activeWage?.effectiveFrom ??
-        `${input.sourceYear}-01-01`;
-
-      if (!siteId) {
-        warningMessages.push(`인력 ${employeeName}의 근무지 ${siteName}를 찾을 수 없어 제외했습니다.`);
-        return;
-      }
-
-      const employeeId = randomUUID();
-      const assignmentId = randomUUID();
-      const shiftGroup = buildImportedShiftGroup(groupName, groupType);
-      const teamName = buildImportedTeamName(groupName, groupNumber, groupType);
-
-      employees.push({
-        id: employeeId,
-        employee_code: employeeCode,
-        name: employeeName,
-        rank: employeeRank,
-        employment_type: resolveImportedEmploymentType(row),
-        status: normalizeImportedEmployeeStatus(row["재직유무"]),
-        hire_date: startDate,
-        retire_date: null,
-        created_at: input.createdAt,
-        updated_at: null
-      });
-      assignments.push({
-        id: assignmentId,
-        employee_id: employeeId,
-        site_id: siteId,
-        team_name: teamName,
-        shift_group: shiftGroup,
-        start_date: startDate,
-        end_date: null,
-        status: "active",
-        created_at: input.createdAt
-      });
-      sources.push({
-        assignmentId,
-        employeeCode,
-        employeeName,
-        siteName,
-        groupName,
-        groupNumber,
-        groupType,
-        assignmentStartDate: startDate
-      });
-
-      if (activeWage) {
-        wageRates.push({
-          id: randomUUID(),
-          employee_id: employeeId,
-          hourly_rate: activeWage.hourlyRate,
-          effective_from: activeWage.effectiveFrom,
-          effective_to: null,
-          reason: activeWage.reason,
-          created_at: input.createdAt
-        });
-      }
-    });
-
-  return {
-    employees,
-    assignments,
-    wageRates,
-    sources,
-    warningMessages
-  };
-};
-
-const buildAccessTeamCapacitiesBySiteName = (employeeRows: Array<Record<string, unknown>>) => {
-  const map = new Map<string, Map<string, number>>();
-
-  employeeRows.forEach((row) => {
-    const siteName = normalizeText(row["근무지"]);
-    const groupName = normalizeText(row["그룹명"]);
-    const groupType = normalizeText(row["그룹유형"]);
-    const teamLabel = buildImportedShiftGroup(groupName, groupType);
-
-    if (!siteName || !teamLabel || teamLabel === "Pool" || teamLabel.endsWith("(주말)")) {
-      return;
-    }
-
-    const siteKey = normalizeSiteLookupKey(siteName);
-    const siteMap = map.get(siteKey) ?? new Map<string, number>();
-
-    siteMap.set(teamLabel, (siteMap.get(teamLabel) ?? 0) + 1);
-    map.set(siteKey, siteMap);
-  });
-
-  return map;
-};
-
-const buildAccessPoolSiteNames = (employeeRows: Array<Record<string, unknown>>) => {
-  const poolSiteNames = new Set<string>();
-
-  employeeRows.forEach((row) => {
-    const siteName = normalizeText(row["근무지"]);
-    const groupName = normalizeText(row["그룹명"]);
-
-    if (siteName && isPoolTeamLabel(groupName)) {
-      poolSiteNames.add(normalizeSiteLookupKey(siteName));
-    }
-  });
-
-  return poolSiteNames;
-};
-
-const buildSiteConfigByName = (
-  siteRows: Array<Record<string, unknown>>,
-  employeeRows: Array<Record<string, unknown>>
-) => {
-  const map = new Map<string, AccessSiteConfig>();
-  const teamCapacitiesBySiteName = buildAccessTeamCapacitiesBySiteName(employeeRows);
-  const poolSiteNames = buildAccessPoolSiteNames(employeeRows);
-
-  siteRows.forEach((row) => {
-    const siteName = normalizeText(row["근무지"]);
-    const workType = parseWorkType(row["근무형태"]);
-    const shiftTimes: string[] = [];
-    const breakMinutes: number[] = [];
-
-    if (!siteName) {
-      return;
-    }
-
-    for (let index = 1; index <= 6; index += 1) {
-      const startTime = normalizeTimeValue(row[`근무시작시간${index}`]);
-      const endTime = normalizeTimeValue(row[`근무종료시간${index}`]);
-
-      if (!startTime || !endTime) {
-        continue;
-      }
-
-      shiftTimes.push(`${startTime} - ${endTime}`);
-      breakMinutes.push(
-        Math.max(0, Math.round(Number(row[`휴게시간${index}`] ?? 0) * 60))
-      );
-    }
-
-    if (shiftTimes.length === 0) {
-      return;
-    }
-
-    const siteKey = normalizeSiteLookupKey(siteName);
-
-    map.set(siteKey, {
-      siteName,
-      declaredWorkType: workType?.normalizedWorkType,
-      declaredShiftCount: workType?.shiftCount,
-      declaredTeamCount: workType?.teamCount,
-      availableShiftCount: shiftTimes.length,
-      shiftTimes,
-      breakMinutes,
-      fallbackTeamCapacity: Number.isFinite(Number(row["투입정원"])) ? Number(row["투입정원"]) : undefined,
-      teamCapacities: teamCapacitiesBySiteName.get(siteKey) ?? new Map<string, number>(),
-      poolEnabled: poolSiteNames.has(siteKey)
-    });
-  });
-
-  return map;
-};
-
-const buildPatternGroups = (patternRows: Array<Record<string, unknown>>) => {
-  const groups = new Map<string, AccessPatternGroup>();
-
-  patternRows.forEach((row) => {
-    const siteName = normalizeText(row["근무지"]);
-    const patternStartDate = normalizeIsoDate(row["패턴시작날짜"]);
-    const workType = parseWorkType(row["근무유형"]);
-    const patternString = normalizeText(row["근무시작패턴"]);
-
-    if (!siteName || !patternStartDate || !workType || !patternString) {
-      return;
-    }
-
-    const key = `${siteName}|${patternStartDate}|${workType.normalizedWorkType}`;
-    const bucket =
-      groups.get(key) ??
-      {
-        siteName,
-        patternStartDate,
-        workType: workType.normalizedWorkType,
-        teamCount: workType.teamCount,
-        shiftCount: workType.shiftCount,
-        rows: []
-      };
-
-    bucket.rows.push(row);
-    groups.set(key, bucket);
-  });
-
-  return Array.from(groups.values()).sort((left, right) =>
-    `${left.siteName}|${left.patternStartDate}`.localeCompare(
-      `${right.siteName}|${right.patternStartDate}`,
-      "ko"
-    )
-  );
-};
-
-export const buildPatternRows = (input: {
-  siteRows: Array<Record<string, unknown>>;
-  employeeRows: Array<Record<string, unknown>>;
-  patternRows: Array<Record<string, unknown>>;
-  siteIdByName: Map<string, string>;
-  sourceVersion: string;
-  createdAt: string;
-}) => {
-  const siteConfigByName = buildSiteConfigByName(input.siteRows, input.employeeRows);
-  const siteLookup = buildSiteValueLookup(
-    Array.from(input.siteIdByName.entries()).map(([name, value]) => ({
-      name,
-      value
-    }))
-  );
-  const groups = buildPatternGroups(input.patternRows);
-  const rows: RawPatternRows = {
-    patterns: [],
-    steps: [],
-    teamIndexes: [],
-    cycles: [],
-    cycleSteps: [],
-    cycleTeamIndexes: [],
-    teamCycles: [],
-    teamCapacities: [],
-    importedPatternCount: 0,
-    skippedPatternSiteNames: [],
-    warningMessages: []
-  };
-
-  groups.forEach((group) => {
-    const siteId = resolveSiteLookupValue(siteLookup, group.siteName);
-    const siteConfig = siteConfigByName.get(normalizeSiteLookupKey(group.siteName));
-
-    if (!siteId || !siteConfig) {
-      rows.skippedPatternSiteNames.push(group.siteName);
-      return;
-    }
-
-    if (siteConfig.availableShiftCount < group.shiftCount) {
-      rows.warningMessages.push(
-        `${group.siteName} 패턴은 시간대 슬롯이 부족해 제외했습니다.`
-      );
-      rows.skippedPatternSiteNames.push(group.siteName);
-      return;
-    }
-
-    if (siteConfig.declaredShiftCount && siteConfig.declaredShiftCount !== group.shiftCount) {
-      rows.warningMessages.push(
-        `${group.siteName}는 사업조직별패턴 교대 수(${group.shiftCount})를 우선 적용했습니다.`
-      );
-    }
-
-    const shiftLabels = getShiftLabels(group.shiftCount);
-    const teamLabels = getTeamLabels(group.teamCount);
-    const cycles: Array<{
-      id: string;
-      cycleKey: string;
-      name: string;
-      order: number;
-      shiftCount: number;
-      patternCode: string;
-      patternString?: string;
-      patternStartDate: string;
-      steps: Array<{
-        stepIndex: number;
-        dutyCode: string;
-        startTime?: string;
-        endTime?: string;
-        breakMinutes: number;
-      }>;
-      teamIndexes: Array<{ teamLabel: string; index: number }>;
-    }> = [];
-    const assignments: Array<{ teamLabel: string; cycleKey: string }> = [];
-    let hasParseError = false;
-
-    group.rows.forEach((row: Record<string, unknown>, rowIndex: number) => {
-      if (hasParseError) {
-        return;
-      }
-
-      const patternString = normalizeText(row["근무시작패턴"]);
-      const parsedPattern = parseCompressedShiftPatternString(
-        patternString,
-        group.shiftCount,
-        shiftLabels
-      );
-
-      if (parsedPattern.invalidTokens.length > 0 || parsedPattern.tokens.length === 0) {
-        rows.warningMessages.push(
-          `${group.siteName} 패턴 문자열을 해석하지 못해 제외했습니다.`
-        );
-        rows.skippedPatternSiteNames.push(group.siteName);
-        hasParseError = true;
-        return;
-      }
-
-      const symbolIndexBySymbol = new Map(
-        parsedPattern.symbolEntries.map((entry, index) => [entry.symbol, index])
-      );
-      const symbolEntryBySymbol = new Map(
-        parsedPattern.symbolEntries.map((entry) => [entry.symbol, entry])
-      );
-      const steps = parsedPattern.tokens.map((token, stepIndex) => {
-        if (token === "휴") {
-          return {
-            stepIndex,
-            dutyCode: "X",
-            breakMinutes: 0
-          };
-        }
-
-        const symbolIndex = symbolIndexBySymbol.get(token) ?? 0;
-        const entry = symbolEntryBySymbol.get(token);
-        const [startTime = "", endTime = ""] = String(siteConfig.shiftTimes[symbolIndex] ?? "")
-          .split("-")
-          .map((item) => item.trim());
-
-        return {
-          stepIndex,
-          dutyCode: entry?.dutyCode ?? `S${symbolIndex + 1}`,
-          startTime: startTime || undefined,
-          endTime: endTime || undefined,
-          breakMinutes: siteConfig.breakMinutes[symbolIndex] ?? 0
-        };
-      });
-
-      const cycleKey = `cycle-${rowIndex + 1}`;
-      const assignedTeamLabels = TEAM_COLUMN_LABELS.filter(
-        (label) => row[label] !== null && row[label] !== undefined
-      ).map((label) => `${label}조`);
-
-      assignedTeamLabels.forEach((teamLabel) => {
-        assignments.push({
-          teamLabel,
-          cycleKey
-        });
-      });
-
-      cycles.push({
-        id: randomUUID(),
-        cycleKey,
-        name: group.rows.length > 1 ? `Cycle ${rowIndex + 1}` : "Cycle 1",
-        order: rowIndex,
-        shiftCount: group.shiftCount,
-        patternCode: steps.map((step) => step.dutyCode).join(""),
-        patternString,
-        patternStartDate: group.patternStartDate,
-        steps,
-        teamIndexes: teamLabels.map((teamLabel, teamIndex) => ({
-          teamLabel,
-          index: normalizeOptionalInteger(row[teamLabel[0]], teamIndex)
-        }))
-      });
-    });
-
-    if (hasParseError || cycles.length === 0) {
-      return;
-    }
-
-    const firstCycle = cycles[0];
-    const assignedTeams = new Set(assignments.map((item) => item.teamLabel));
-
-    teamLabels.forEach((teamLabel) => {
-      if (!assignedTeams.has(teamLabel)) {
-        assignments.push({
-          teamLabel,
-          cycleKey: firstCycle.cycleKey
-        });
-      }
-    });
-
-    const patternId = randomUUID();
-
-    const [poolStartTime = "", poolEndTime = ""] = String(siteConfig.shiftTimes[0] ?? "")
-      .split("-")
-      .map((item) => item.trim());
-
-    rows.patterns.push({
-      id: patternId,
-      site_id: siteId,
-      name: `ACCDB | ${group.siteName} | ${group.workType}`,
-      team_count: group.teamCount,
-      cycle_length: firstCycle.steps.length,
-      pattern_code: firstCycle.patternCode,
-      start_index_rule: `access-import-${input.sourceVersion}`,
-      pattern_start_date: group.patternStartDate,
-      pool_enabled: siteConfig.poolEnabled ? 1 : 0,
-      pool_start_time: siteConfig.poolEnabled ? poolStartTime || null : null,
-      pool_end_time: siteConfig.poolEnabled ? poolEndTime || null : null,
-      pool_break_minutes: siteConfig.poolEnabled ? siteConfig.breakMinutes[0] ?? 0 : 0,
-      status: "active",
-      created_at: input.createdAt,
-      updated_at: input.createdAt
-    });
-
-    firstCycle.steps.forEach((step) => {
-      rows.steps.push({
-        id: randomUUID(),
-        pattern_id: patternId,
-        step_index: step.stepIndex,
-        duty_code: step.dutyCode,
-        start_time: step.startTime ?? null,
-        end_time: step.endTime ?? null,
-        break_minutes: step.breakMinutes,
-        created_at: input.createdAt
-      });
-    });
-
-    firstCycle.teamIndexes.forEach((item) => {
-      rows.teamIndexes.push({
-        id: randomUUID(),
-        pattern_id: patternId,
-        team_label: item.teamLabel,
-        team_index: item.index,
-        created_at: input.createdAt
-      });
-    });
-
-    cycles.forEach((cycle) => {
-      rows.cycles.push({
-        id: cycle.id,
-        pattern_id: patternId,
-        cycle_key: cycle.cycleKey,
-        cycle_name: cycle.name,
-        cycle_order: cycle.order,
-        shift_count: cycle.shiftCount,
-        cycle_length: cycle.steps.length,
-        pattern_code: cycle.patternCode,
-        pattern_string: cycle.patternString ?? null,
-        pattern_start_date: cycle.patternStartDate,
-        created_at: input.createdAt
-      });
-
-      cycle.steps.forEach((step) => {
-        rows.cycleSteps.push({
-          id: randomUUID(),
-          cycle_id: cycle.id,
-          step_index: step.stepIndex,
-          duty_code: step.dutyCode,
-          start_time: step.startTime ?? null,
-          end_time: step.endTime ?? null,
-          break_minutes: step.breakMinutes,
-          created_at: input.createdAt
-        });
-      });
-
-      cycle.teamIndexes.forEach((item) => {
-        rows.cycleTeamIndexes.push({
-          id: randomUUID(),
-          cycle_id: cycle.id,
-          team_label: item.teamLabel,
-          team_index: item.index,
-          created_at: input.createdAt
-        });
-      });
-    });
-
-    assignments.forEach((item) => {
-      rows.teamCycles.push({
-        id: randomUUID(),
-        pattern_id: patternId,
-        team_label: item.teamLabel,
-        cycle_key: item.cycleKey,
-        created_at: input.createdAt
-      });
-    });
-
-    teamLabels.forEach((teamLabel) => {
-      const maxHeadcount = siteConfig.teamCapacities.get(teamLabel) ?? siteConfig.fallbackTeamCapacity;
-
-      if (typeof maxHeadcount === "number" && maxHeadcount > 0) {
-        rows.teamCapacities.push({
-          id: randomUUID(),
-          pattern_id: patternId,
-          team_label: teamLabel,
-          max_headcount: maxHeadcount,
-          created_at: input.createdAt
-        });
-      }
-    });
-
-    rows.importedPatternCount += 1;
-  });
-
-  rows.skippedPatternSiteNames = Array.from(new Set(rows.skippedPatternSiteNames)).sort((left, right) =>
-    left.localeCompare(right, "ko")
-  );
-
-  return rows;
-};
-
-const applyDutyReleaseRows = (
-  sources: EmployeeImportSource[],
-  dutyReleaseRows: Array<Record<string, unknown>>,
-  assignments: RawAssignmentRow[]
-) => {
-  const exactIndex = new Map<string, EmployeeImportSource[]>();
-  const normalizedIndex = new Map<string, EmployeeImportSource[]>();
-  const assignmentById = new Map(assignments.map((item) => [item.id, item]));
-  let closedCount = 0;
-  let skippedCount = 0;
-  let normalizedMatchCount = 0;
-
-  sources.forEach((employee) => {
-    const exactKey = [
-      employee.siteName,
-      employee.employeeName,
-      employee.groupName,
-      employee.groupNumber,
-      employee.groupType
-    ].join("|");
-    const normalizedKey = [employee.siteName, normalizePersonName(employee.employeeName)].join("|");
-    const exactBucket = exactIndex.get(exactKey) ?? [];
-    const normalizedBucket = normalizedIndex.get(normalizedKey) ?? [];
-
-    exactBucket.push(employee);
-    normalizedBucket.push(employee);
-    exactIndex.set(exactKey, exactBucket);
-    normalizedIndex.set(normalizedKey, normalizedBucket);
-  });
-
-  const sortedRows = [...dutyReleaseRows].sort((left, right) => {
-    const leftDate = normalizeIsoDate(left["직무해제일자"]) ?? "9999-12-31";
-    const rightDate = normalizeIsoDate(right["직무해제일자"]) ?? "9999-12-31";
-
-    if (leftDate !== rightDate) {
-      return leftDate.localeCompare(rightDate);
-    }
-
-    const leftKey = `${normalizeText(left["근무지"])}|${normalizeText(left["직원명"])}`;
-    const rightKey = `${normalizeText(right["근무지"])}|${normalizeText(right["직원명"])}`;
-    return leftKey.localeCompare(rightKey, "ko");
-  });
-
-  sortedRows.forEach((row) => {
-    const siteName = normalizeText(row["근무지"]);
-    const employeeName = normalizeText(row["직원명"]);
-    const groupName = normalizeText(row["그룹명"]);
-    const groupNumber = normalizeText(row["그룹번호"]);
-    const groupType = normalizeText(row["그룹유형"]);
-    const dutyReleaseDate = normalizeIsoDate(row["직무해제일자"]);
-
-    if (isPlaceholderName(employeeName) || !dutyReleaseDate) {
-      skippedCount += 1;
-      return;
-    }
-
-    const exactKey = [siteName, employeeName, groupName, groupNumber, groupType].join("|");
-    const normalizedKey = [siteName, normalizePersonName(employeeName)].join("|");
-    const exactMatches = exactIndex.get(exactKey) ?? [];
-    const normalizedMatches = normalizedIndex.get(normalizedKey) ?? [];
-    const matched =
-      exactMatches.length === 1
-        ? exactMatches[0]
-        : normalizedMatches.length === 1
-          ? normalizedMatches[0]
-          : null;
-
-    if (!matched) {
-      skippedCount += 1;
-      return;
-    }
-
-    if (exactMatches.length !== 1 && normalizedMatches.length === 1) {
-      normalizedMatchCount += 1;
-    }
-
-    const assignment = assignmentById.get(matched.assignmentId);
-
-    if (!assignment || assignment.status !== "active") {
-      skippedCount += 1;
-      return;
-    }
-
-    if (dutyReleaseDate < matched.assignmentStartDate) {
-      skippedCount += 1;
-      return;
-    }
-
-    assignment.end_date = dutyReleaseDate;
-    assignment.status = "ended";
-    closedCount += 1;
-  });
-
-  const warningMessages: string[] = [];
-
-  if (normalizedMatchCount > 0) {
-    warningMessages.push(`직무해제 ${normalizedMatchCount}건은 이름 정규화로 매칭했습니다.`);
-  }
-
-  return {
-    closedCount,
-    skippedCount,
-    warningMessages
-  };
-};
-
-const sanitizeFileSegment = (value: string) =>
-  value.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-").replace(/\s+/g, "_");
-
-const padTimePart = (value: unknown) => String(Math.max(0, Number(value ?? 0))).padStart(2, "0");
-
-const buildAccessTimeText = (hourValue: unknown, minuteValue: unknown) => {
-  const hour = Number(hourValue);
-  const minute = Number(minuteValue);
-
-  if (!Number.isInteger(hour) || !Number.isInteger(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) {
-    return null;
-  }
-
-  return `${padTimePart(hour)}:${padTimePart(minute)}`;
-};
-
-const toAccessWorkMinutes = (value: unknown) => {
-  const hours = Number(value ?? 0);
-
-  if (!Number.isFinite(hours) || hours <= 0) {
-    return 0;
-  }
-
-  return Math.round(hours * 60);
-};
-
-const calculateAccessRawDurationMinutes = (startTime?: string | null, endTime?: string | null) => {
-  if (!startTime || !endTime) {
-    return null;
-  }
-
-  const [startHour, startMinute] = startTime.split(":").map((item) => Number(item));
-  const [endHour, endMinute] = endTime.split(":").map((item) => Number(item));
-
-  if (
-    !Number.isInteger(startHour) ||
-    !Number.isInteger(startMinute) ||
-    !Number.isInteger(endHour) ||
-    !Number.isInteger(endMinute)
-  ) {
-    return null;
-  }
-
-  const startTotalMinutes = (startHour * 60) + startMinute;
-  const endTotalMinutes = (endHour * 60) + endMinute;
-  const normalizedEndMinutes =
-    endTotalMinutes <= startTotalMinutes ? endTotalMinutes + (24 * 60) : endTotalMinutes;
-
-  return Math.max(normalizedEndMinutes - startTotalMinutes, 0);
-};
-
-const normalizeAccessPerformanceBreakdown = (input: {
-  workType: WorkType;
-  totalWorkMinutes: number;
-  baseWorkMinutes: number;
-  overtimeMinutes: number;
-  nightMinutes: number;
-  startTime?: string | null;
-  endTime?: string | null;
-  breakMinutes: number;
-}) => {
-  if (input.workType !== "overtime") {
-    return {
-      totalWorkMinutes: input.totalWorkMinutes,
-      baseWorkMinutes: input.baseWorkMinutes,
-      overtimeMinutes: input.overtimeMinutes,
-      nightMinutes: input.nightMinutes
-    };
-  }
-
-  if (input.startTime && input.endTime) {
-    return calculateWorkBreakdown({
-      workType: "overtime",
-      timeRange: {
-        startTime: input.startTime,
-        endTime: input.endTime,
-        breakMinutes: input.breakMinutes
-      }
-    });
-  }
-
-  return {
-    totalWorkMinutes: input.totalWorkMinutes,
-    baseWorkMinutes: 0,
-    overtimeMinutes: Math.max(input.totalWorkMinutes - input.nightMinutes, 0),
-    nightMinutes: Math.min(input.nightMinutes, input.totalWorkMinutes),
-    holidayMinutes: 0,
-    substituteMinutes: 0
-  };
-};
-
-const calculateAccessAllowanceAmount = (
-  hourlyRate: number | null,
-  workMinutes: number,
-  multiplier: number,
-  fallbackAmount: number
-) => {
-  if (!Number.isFinite(workMinutes) || workMinutes <= 0) {
-    return 0;
-  }
-
-  if (
-    hourlyRate &&
-    hourlyRate > 0 &&
-    Number.isFinite(multiplier) &&
-    multiplier > 0
-  ) {
-    return roundUpWon((hourlyRate * workMinutes * multiplier) / 60);
-  }
-
-  return Number.isFinite(fallbackAmount) && fallbackAmount > 0 ? fallbackAmount : 0;
-};
-
-const hasPositiveNumericValue = (value: unknown) => {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0;
-};
-
-const hasAccessImportedAllowanceAmount = (row: Record<string, unknown>) =>
-  [
-    row["총근로수당"],
-    row["기본근로수당"],
-    row["연장근로수당"],
-    row["야간근로수당"]
-  ].some(hasPositiveNumericValue);
-
-const buildAccessPerformanceFallbackIdentity = (input: {
-  siteName: string;
-  employeeName: string;
-  workDate?: string;
-  rowNumber: number;
-  createdAt: string;
-}) => ({
-  siteName: input.siteName || "미지정 근무지",
-  employeeName: input.employeeName || `미상(${input.rowNumber}행)`,
-  workDate: input.workDate ?? input.createdAt.slice(0, 10)
-});
-
-const buildAccessPerformanceFallbackAlerts = (input: {
-  rowNumber: number;
-  siteNameMissing: boolean;
-  employeeNameMissing: boolean;
-  workDateMissing: boolean;
-  fallbackWorkDate: string;
-}) => {
-  const alerts: Array<{ severity: "warning"; message: string }> = [];
-
-  if (input.siteNameMissing) {
-    alerts.push({
-      severity: "warning",
-      message: `Access ${input.rowNumber}행의 근무지가 비어 있어 미지정 근무지로 복원했습니다.`
-    });
-  }
-
-  if (input.employeeNameMissing) {
-    alerts.push({
-      severity: "warning",
-      message: `Access ${input.rowNumber}행의 직원명이 비어 있어 미상으로 복원했습니다.`
-    });
-  }
-
-  if (input.workDateMissing) {
-    alerts.push({
-      severity: "warning",
-      message: `Access ${input.rowNumber}행의 근무날짜가 비어 있어 ${input.fallbackWorkDate}로 복원했습니다.`
-    });
-  }
-
-  return alerts;
-};
-
-const findFallbackActiveHourlyRate = (
-  activeWageMap: ReturnType<typeof buildActiveWageMap>,
-  employeeCode: string
-) => {
-  const exact = activeWageMap.get(employeeCode);
-
-  if (exact) {
-    return exact.hourlyRate;
-  }
-
-  return null;
-};
-
-const deriveAccessHourlyRate = (
-  row: Record<string, unknown>,
-  activeWageMap: ReturnType<typeof buildActiveWageMap>
-) => {
-  const directRate = Number(row["통상시급"] ?? 0);
-
-  if (Number.isFinite(directRate) && directRate > 0) {
-    return directRate;
-  }
-
-  const candidates = [
-    {
-      hours: Number(row["기본근로시간"] ?? 0),
-      multiplier: Number(row["기본근로요율"] ?? 0),
-      amount: Number(row["기본근로수당"] ?? 0)
-    },
-    {
-      hours: Number(row["연장근로시간"] ?? 0),
-      multiplier: Number(row["연장근로요율"] ?? 0),
-      amount: Number(row["연장근로수당"] ?? 0)
-    },
-    {
-      hours: Number(row["야간근로시간"] ?? 0),
-      multiplier: Number(row["야간근로요율"] ?? 0),
-      amount: Number(row["야간근로수당"] ?? 0)
-    }
-  ];
-
-  for (const candidate of candidates) {
-    if (
-      Number.isFinite(candidate.hours) &&
-      Number.isFinite(candidate.multiplier) &&
-      Number.isFinite(candidate.amount) &&
-      candidate.hours > 0 &&
-      candidate.multiplier > 0 &&
-      candidate.amount > 0
-    ) {
-      return Math.round(candidate.amount / (candidate.hours * candidate.multiplier));
-    }
-  }
-
-  const employeeCode = normalizeText(row["사원번호"]);
-  const employeeName = normalizeText(row["직원명"]);
-
-  if (!employeeCode) {
-    return null;
-  }
-
-  return findFallbackActiveHourlyRate(activeWageMap, employeeCode);
-};
-
-const resolveAccessPerformanceCategory = (
-  row: Record<string, unknown>
-): {
-  workType: WorkType;
-  section: PerformanceEntrySection;
-  allowanceCategoryCode: AllowanceRateCategoryCode;
-} => {
-  const normalized = normalizeKey(row["수당지급유형"] ?? row["근로유형"]);
-
-  if (normalized.includes("대체근로법정휴일")) {
-    return {
-      workType: "holiday",
-      section: "legal-holiday",
-      allowanceCategoryCode: "holiday-substitute"
-    };
-  }
-
-  if (normalized.includes("연장근로법정휴일")) {
-    return {
-      workType: "holiday",
-      section: "legal-holiday",
-      allowanceCategoryCode: "holiday-overtime"
-    };
-  }
-
-  if (normalized.includes("법정휴일") || normalized.includes("법정공휴일")) {
-    return {
-      workType: "holiday",
-      section: "legal-holiday",
-      allowanceCategoryCode: "legal-holiday"
-    };
-  }
-
-  if (normalized.includes("대체")) {
-    return {
-      workType: "substitute",
-      section: "substitute",
-      allowanceCategoryCode: "weekday-substitute"
-    };
-  }
-
-  return {
-    workType: "overtime",
-    section: "overtime",
-    allowanceCategoryCode: "weekday-overtime"
-  };
-};
-
-const isAccessPoolWorker = (employeeName: string) => /\(P\)$/i.test(employeeName.trim());
-const isExcludedAccessPerformanceEmployeeName = (employeeName: string) =>
-  isBpDisplayName(employeeName) || normalizePersonName(employeeName).toUpperCase() === "BP";
-
-const buildSyntheticPerformanceFilePath = (input: {
-  migrationFilePath: string;
-  scheduleMonth: string;
-  statusLabel: "approved" | "pending" | "hidden";
-  fileName: string;
-}) =>
-  path.resolve(
-    path.dirname(input.migrationFilePath),
-    "__access_migrated__",
-    input.statusLabel,
-    input.scheduleMonth,
-    input.fileName
-  );
-
-export const buildAccessPerformanceRows = (input: {
-  performanceRows: Array<Record<string, unknown>>;
-  migrationFilePath: string;
-  modifiedTimeMs: number;
-  createdAt: string;
-  activeWageMap: ReturnType<typeof buildActiveWageMap>;
-}): RawAccessPerformanceRows => {
-  const grouped = new Map<
-    string,
-    {
-      file: RawAccessPerformanceFileRow;
-      entries: RawAccessPerformanceEntryRow[];
-      approvals: RawAccessPerformanceApprovalRow[];
-      calculations: RawAccessAllowanceCalculationRow[];
-      calculationItems: RawAccessAllowanceCalculationItemRow[];
-      visibleEntryCount: number;
-      approvedVisibleEntryCount: number;
-      alertCount: number;
-    }
-  >();
-  const warningMessages: string[] = [];
-  let skippedRowCount = 0;
-
-  input.performanceRows.forEach((row, index) => {
-    const rawSiteName = normalizeText(row["근무지"]);
-    const rawEmployeeName = normalizeText(row["직원명"]);
-    const employeeCode = normalizeText(row["사원번호"]);
-    const rawWorkDate = normalizeIsoDate(row["근무날짜"]);
-    const rowNumber = index + 1;
-    const hasImportedAllowanceAmount = hasAccessImportedAllowanceAmount(row);
-    const { siteName, employeeName, workDate } = buildAccessPerformanceFallbackIdentity({
-      siteName: rawSiteName,
-      employeeName: rawEmployeeName,
-      workDate: rawWorkDate,
-      rowNumber,
-      createdAt: input.createdAt
-    });
-    const employeeRank = normalizeAccessEmployeeRank(row);
-    const employeeRankText = getAccessEmployeeRankText(row);
-    const hasMissingRequiredIdentity =
-      rawSiteName.length === 0 || rawEmployeeName.length === 0 || !rawWorkDate;
-
-    if (hasMissingRequiredIdentity && !hasImportedAllowanceAmount) {
-      skippedRowCount += 1;
-      warningMessages.push(`실적 ${rowNumber}행은 근무지/직원명/근무날짜가 없어 제외했습니다.`);
-      return;
-    }
-
-    if (isExcludedAccessPerformanceEmployeeName(rawEmployeeName)) {
-      skippedRowCount += 1;
-      warningMessages.push(`실적 ${rowNumber}행은 직원명이 BP 인력이라서 제외했습니다.`);
-      return;
-    }
-
-    if (!employeeCode || employeeCode.trim().length === 0) {
-      if (hasImportedAllowanceAmount) {
-        throw new Error(
-          `Access 실적 ${rowNumber}행(${employeeName})에 사번이 없으나 수당 금액이 존재하여 마이그레이션을 중단했습니다. 사번을 먼저 확인하세요.`
-        );
-      }
-
-      skippedRowCount += 1;
-      warningMessages.push(`실적 ${rowNumber}행(${employeeName})은 사번이 없어 실적 복원 대상에서 제외했습니다.`);
-      return;
-    }
-
-    const scheduleMonth = workDate.slice(0, 7);
-    const isApprovedRow = row["승인구분"] === true;
-    const category = resolveAccessPerformanceCategory(row);
-    const isPoolWorker = isAccessPoolWorker(employeeName);
-    const startTime = buildAccessTimeText(row["근무시작시간_시"], row["근무시작시간_분"]);
-    const endTime = buildAccessTimeText(row["근무종료시간_시"], row["근무종료시간_분"]);
-    const importedTotalWorkMinutes = toAccessWorkMinutes(row["총근로시간"]);
-    const importedBaseWorkMinutes = toAccessWorkMinutes(row["기본근로시간"]);
-    const importedOvertimeMinutes = toAccessWorkMinutes(row["연장근로시간"]);
-    const importedNightMinutes = toAccessWorkMinutes(row["야간근로시간"]);
-    const rawDurationMinutes = calculateAccessRawDurationMinutes(startTime, endTime);
-    const breakMinutes =
-      rawDurationMinutes !== null ? Math.max(rawDurationMinutes - importedTotalWorkMinutes, 0) : 0;
-    const hourlyRate = deriveAccessHourlyRate(row, input.activeWageMap);
-    const normalizedBreakdown = normalizeAccessPerformanceBreakdown({
-      workType: category.workType,
-      totalWorkMinutes: importedTotalWorkMinutes,
-      baseWorkMinutes: importedBaseWorkMinutes,
-      overtimeMinutes: importedOvertimeMinutes,
-      nightMinutes: importedNightMinutes,
-      startTime,
-      endTime,
-      breakMinutes
-    });
-    const totalWorkMinutes = normalizedBreakdown.totalWorkMinutes;
-    const baseWorkMinutes = normalizedBreakdown.baseWorkMinutes;
-    const overtimeMinutes = normalizedBreakdown.overtimeMinutes;
-    const nightMinutes = normalizedBreakdown.nightMinutes;
-    const visibilityStatus = isApprovedRow ? "approved" : "pending";
-    const fileKey = `${scheduleMonth}|${siteName}|${visibilityStatus}`;
-    const scheduleKey = `access-performance:${scheduleMonth}:${normalizeKey(siteName)}:${visibilityStatus}`;
-    const fileId = `access-performance-file-${normalizeKey(fileKey)}`;
-    const displayStatus = isApprovedRow ? "승인완료" : "미승인";
-    const fileName = `ACCESS_실적_${scheduleMonth}_${sanitizeFileSegment(siteName)}_${displayStatus}.json`;
-    const filePath = buildSyntheticPerformanceFilePath({
-      migrationFilePath: input.migrationFilePath,
-      scheduleMonth,
-      statusLabel: isApprovedRow ? "approved" : "pending",
-      fileName
-    });
-    const logicalKey = `access-performance:${scheduleMonth}:${normalizeKey(siteName)}:${employeeCode || "no-code"}:${workDate}:${String(index + 1).padStart(4, "0")}`;
-    const entryId = `access-performance-entry-${normalizeKey(logicalKey)}`;
-    const importedTotalAllowanceAmount = Number(row["총근로수당"] ?? 0);
-    const importedBaseAmount = Number(row["기본근로수당"] ?? 0);
-    const importedOvertimeAmount = Number(row["연장근로수당"] ?? 0);
-    const importedNightAmount = Number(row["야간근로수당"] ?? 0);
-    const baseMultiplier = Number(row["기본근로요율"] ?? 0);
-    const overtimeMultiplier = Number(row["연장근로요율"] ?? 0);
-    const nightMultiplier = Number(row["야간근로요율"] ?? 0);
-    const shouldNormalizeOvertimeAllowance =
-      category.workType === "overtime" &&
-      (importedBaseWorkMinutes !== baseWorkMinutes ||
-        importedOvertimeMinutes !== overtimeMinutes ||
-        importedNightMinutes !== nightMinutes);
-    const baseAmount = shouldNormalizeOvertimeAllowance
-      ? calculateAccessAllowanceAmount(hourlyRate, baseWorkMinutes, baseMultiplier, importedBaseAmount)
-      : importedBaseAmount;
-    const overtimeAmount = shouldNormalizeOvertimeAllowance
-      ? calculateAccessAllowanceAmount(
-          hourlyRate,
-          overtimeMinutes,
-          overtimeMultiplier,
-          importedOvertimeAmount
-        )
-      : importedOvertimeAmount;
-    const nightAmount = shouldNormalizeOvertimeAllowance
-      ? calculateAccessAllowanceAmount(hourlyRate, nightMinutes, nightMultiplier, importedNightAmount)
-      : importedNightAmount;
-    const totalAllowanceAmount = shouldNormalizeOvertimeAllowance
-      ? baseAmount + overtimeAmount + nightAmount
-      : importedTotalAllowanceAmount;
-    const notes = ["Access 실적 이관"];
-    const alerts = buildAccessPerformanceFallbackAlerts({
-      rowNumber,
-      siteNameMissing: rawSiteName.length === 0,
-      employeeNameMissing: rawEmployeeName.length === 0,
-      workDateMissing: !rawWorkDate,
-      fallbackWorkDate: workDate
-    });
-    const canRestoreAllowanceHistory =
-      !isPoolWorker &&
-      isApprovedRow &&
-      (
-        (hourlyRate !== null && hourlyRate > 0) ||
-        totalAllowanceAmount > 0 ||
-        baseAmount > 0 ||
-        overtimeAmount > 0 ||
-        nightAmount > 0
-      );
-
-    if (hasMissingRequiredIdentity && hasImportedAllowanceAmount) {
-      notes.push("복원보정항목");
-      warningMessages.push(
-        `실적 ${rowNumber}행은 필수값 일부가 비어 있었지만 수당 금액이 있어 보정 복원했습니다.`
-      );
-    }
-
-    if (normalizeText(row["근무예정자"])) {
-      notes.push(`근무예정자 ${normalizeText(row["근무예정자"])}`);
-    }
-
-    if (!isPoolWorker && (!hourlyRate || hourlyRate <= 0)) {
-      notes.push("시급미반영항목");
-      alerts.push({
-        severity: "warning",
-        message: canRestoreAllowanceHistory
-          ? "Access 원본에서 시급을 복원하지 못했습니다. 시급미반영항목으로 분류하고 금액 기준으로 수당 이력을 복원했습니다."
-          : "Access 원본에서 시급을 복원하지 못했습니다. 시급미반영항목으로 분류했습니다."
-      });
-    }
-
-    const entry: RawAccessPerformanceEntryRow = {
-      id: entryId,
-      performance_file_id: fileId,
-      logical_key: logicalKey,
-      employee_code: employeeCode,
-      employee_name: employeeName,
-      work_date: workDate,
-      work_hours: totalWorkMinutes / 60,
-      schedule_month: scheduleMonth,
-      schedule_key: scheduleKey,
-      site_name: siteName,
-      work_type: category.workType,
-      section: category.section,
-      duty_code: null,
-      start_time: startTime,
-      end_time: endTime,
-      break_minutes: breakMinutes,
-      total_work_minutes: totalWorkMinutes,
-      base_work_minutes: baseWorkMinutes,
-      overtime_minutes: overtimeMinutes,
-      night_minutes: nightMinutes,
-      employee_rank: employeeRank,
-      department: employeeRankText || null,
-      category: normalizeText(row["수당지급유형"]) || null,
-      reason_text: normalizeText(row["근무사유"]) || null,
-      evidence_text: normalizeText(row["증적자료"]) || null,
-      source_row_number: rowNumber,
-      sort_order: rowNumber,
-      alert_json: JSON.stringify(alerts),
-      hourly_rate: hourlyRate && hourlyRate > 0 ? hourlyRate : null,
-      note: notes.join(" / "),
-      is_pool_worker: isPoolWorker ? 1 : 0
-    };
-    const previewRow = {
-      근무지: siteName,
-      직원명: employeeName,
-      근무날짜: workDate,
-      근로유형: normalizeText(row["근로유형"]) || normalizeText(row["수당지급유형"]),
-      승인구분: isApprovedRow ? "승인" : "미승인"
-    };
-    const existingGroup =
-      grouped.get(fileKey) ??
-      {
-        file: {
-          id: fileId,
-          file_name: fileName,
-          file_path: filePath,
-          directory_type: isApprovedRow ? "approved" : "pending",
-          template_kind: "unknown",
-          template_variant: null,
-          sheet_name: "사업조직별근무실적",
-          row_count: 0,
-          column_count: 27,
-          file_size: 0,
-          modified_time_ms: input.modifiedTimeMs,
-          duplicate_key: scheduleKey,
-          received_at: `${workDate}T00:00:00.000Z`,
-          schedule_month: scheduleMonth,
-          site_name: siteName,
-          schedule_key: scheduleKey,
-          entry_count: 0,
-          approved_entry_count: 0,
-          warning_count: 0,
-          is_effective: isApprovedRow ? 1 : 0,
-          completed_at: isApprovedRow ? input.createdAt : null,
-          status: isApprovedRow ? "approved" : "parsed",
-          error_message: null,
-          preview_json: "[]"
-        },
-        entries: [],
-        approvals: [],
-        calculations: [],
-        calculationItems: [],
-        visibleEntryCount: 0,
-        approvedVisibleEntryCount: 0,
-        alertCount: 0
-      };
-
-    existingGroup.entries.push(entry);
-    existingGroup.file.row_count += 1;
-    existingGroup.file.file_size += 1;
-    existingGroup.alertCount += alerts.length;
-
-    const previewRows = JSON.parse(existingGroup.file.preview_json) as Array<Record<string, string>>;
-
-    if (previewRows.length < 5) {
-      previewRows.push(previewRow);
-      existingGroup.file.preview_json = JSON.stringify(previewRows);
-    }
-
-    if (!isPoolWorker) {
-      existingGroup.visibleEntryCount += 1;
-
-      if (canRestoreAllowanceHistory) {
-        existingGroup.approvedVisibleEntryCount += 1;
-        const approvalId = `access-performance-approval-${normalizeKey(logicalKey)}`;
-        const processedAt = `${workDate}T23:59:59.000Z`;
-        const snapshotJson = JSON.stringify({
-          fileId,
-          fileName,
-          filePath,
-          scheduleMonth,
-          siteName,
-          scheduleKey,
-          templateKind: "unknown",
-          sheetName: "사업조직별근무실적",
-          duplicateKey: scheduleKey,
-          receivedAt: `${workDate}T00:00:00.000Z`,
-          entry: {
-            id: entry.id,
-            performanceFileId: fileId,
-            logicalKey,
-            scheduleMonth,
-            scheduleKey,
-            siteName,
-            employeeCode: employeeCode,
-            employeeName,
-            workDate,
-            workType: category.workType,
-            section: category.section,
-            dutyCode: undefined,
-            startTime: startTime ?? undefined,
-            endTime: endTime ?? undefined,
-            breakMinutes,
-            totalWorkMinutes,
-            baseWorkMinutes,
-            overtimeMinutes,
-            nightMinutes,
-            reason: normalizeText(row["근무사유"]) || undefined,
-            evidence: normalizeText(row["증적자료"]) || undefined,
-            sourceRowNumber: rowNumber,
-            sortOrder: rowNumber,
-            alerts,
-            status: "approved",
-            latestApprovalAt: processedAt,
-            latestApprovalByName: "Access 마이그레이션",
-            hourlyRate: hourlyRate ?? undefined,
-            note: notes.join(" / "),
-            workHours: totalWorkMinutes / 60,
-            employeeRank: employeeRank ?? undefined,
-            department: employeeRankText || undefined,
-            category: normalizeText(row["수당지급유형"]) || undefined,
-            isPoolWorker: false
-          }
-        });
-        const rateVersionId = `access-performance-inline-${workDate.slice(0, 4)}`;
-        const rateVersionLabel = `Access 실적 이관 ${workDate.slice(0, 4)}`;
-        const breakdown = {
-          totalWorkMinutes,
-          baseWorkMinutes,
-          overtimeMinutes,
-          nightMinutes,
-          holidayMinutes: category.workType === "holiday" ? totalWorkMinutes : 0,
-          substituteMinutes:
-            category.allowanceCategoryCode === "weekday-substitute" ||
-            category.allowanceCategoryCode === "holiday-substitute"
-              ? totalWorkMinutes
-              : 0
-        };
-        const lines = [
-          baseWorkMinutes > 0
-            ? {
-                allowanceCode: "base" as const,
-                workMinutes: baseWorkMinutes,
-                multiplier: baseMultiplier,
-                amount: baseAmount
-              }
-            : null,
-          overtimeMinutes > 0
-            ? {
-                allowanceCode: "overtime" as const,
-                workMinutes: overtimeMinutes,
-                multiplier: overtimeMultiplier,
-                amount: overtimeAmount
-              }
-            : null,
-          nightMinutes > 0
-            ? {
-                allowanceCode: "night" as const,
-                workMinutes: nightMinutes,
-                multiplier: nightMultiplier,
-                amount: nightAmount
-              }
-            : null
-        ].filter(
-          (line): line is {
-            allowanceCode: "base" | "overtime" | "night";
-            workMinutes: number;
-            multiplier: number;
-            amount: number;
-          } => line !== null
-        );
-        const calculationSnapshot = {
-          id: `access-allowance-calculation-${normalizeKey(logicalKey)}`,
-          performanceApprovalId: approvalId,
-          calculationVersion: 1,
-          businessCategoryCode: category.allowanceCategoryCode,
-          businessCategoryLabel: resolveAllowanceRateCategoryLabel(category.allowanceCategoryCode),
-          breakdown,
-          lines,
-          totalAllowanceAmount:
-            Number.isFinite(totalAllowanceAmount) && totalAllowanceAmount > 0
-              ? totalAllowanceAmount
-              : lines.reduce((sum, line) => sum + line.amount, 0),
-          createdAt: processedAt
-        };
-        const signature = createAllowanceCalculationSignature(calculationSnapshot);
-
-        existingGroup.approvals.push({
-          id: approvalId,
-          file_id: fileId,
-          entry_id: entry.id,
-          logical_key: logicalKey,
-          file_name: fileName,
-          schedule_key: scheduleKey,
-          employee_code: employeeCode,
-          employee_name: employeeName,
-          work_date: workDate,
-          work_type: category.workType,
-          decision: "approved",
-          processed_at: processedAt,
-          processed_by: "access-migration",
-          processed_by_name: "Access 마이그레이션",
-          comment: "Access 승인 이관",
-          rejection_reason: null,
-          snapshot_json: snapshotJson,
-          archived_file_name: fileName,
-          archived_file_path: filePath
-        });
-
-        existingGroup.calculations.push({
-          id: calculationSnapshot.id,
-          performance_approval_id: approvalId,
-          performance_entry_id: entry.id,
-          calculation_version: 1,
-          status: "calculated",
-          file_id: fileId,
-          file_name: fileName,
-          site_name: siteName,
-          employee_code: employeeCode,
-          employee_name: employeeName,
-          employee_rank: employeeRank,
-          work_date: workDate,
-          work_type: category.workType,
-          hourly_rate: hourlyRate && hourlyRate > 0 ? hourlyRate : null,
-          rate_version_id: rateVersionId,
-          rate_version_label: rateVersionLabel,
-          total_work_minutes: totalWorkMinutes,
-          base_work_minutes: baseWorkMinutes,
-          overtime_minutes: overtimeMinutes,
-          night_minutes: nightMinutes,
-          holiday_minutes: breakdown.holidayMinutes,
-          substitute_minutes: breakdown.substituteMinutes,
-          total_allowance_amount: calculationSnapshot.totalAllowanceAmount,
-          early_payout_date: null,
-          signature,
-          snapshot_json: JSON.stringify(calculationSnapshot),
-          created_at: processedAt
-        });
-
-        lines.forEach((line) => {
-          existingGroup.calculationItems.push({
-            id: randomUUID(),
-            calculation_id: calculationSnapshot.id,
-            allowance_code: line.allowanceCode,
-            work_minutes: line.workMinutes,
-            multiplier: line.multiplier,
-            amount: line.amount,
-            detail_json: JSON.stringify({
-              sourceType: "access-performance",
-              entryId: entry.id,
-              fileId
-            })
-          });
-        });
-      } else if (isApprovedRow) {
-        warningMessages.push(
-          `${siteName} ${employeeName} ${workDate} 승인 행은 시급과 수당 금액을 모두 복원하지 못해 승인/수당 이력을 생성하지 않았습니다.`
-        );
-      }
-    }
-
-    grouped.set(fileKey, existingGroup);
-  });
-
-  const files = Array.from(grouped.values())
-    .map((group) => {
-      group.file.entry_count = group.visibleEntryCount;
-      group.file.approved_entry_count = group.approvedVisibleEntryCount;
-      group.file.warning_count = group.alertCount;
-
-      if (group.visibleEntryCount === 0) {
-        group.file.directory_type = "unknown";
-        group.file.is_effective = 0;
-      }
-
-      return group.file;
-    })
-    .sort((left, right) => left.file_name.localeCompare(right.file_name, "ko"));
-  const entries = Array.from(grouped.values()).flatMap((group) => group.entries);
-  const approvals = Array.from(grouped.values()).flatMap((group) => group.approvals);
-  const calculations = Array.from(grouped.values()).flatMap((group) => group.calculations);
-  const calculationItems = Array.from(grouped.values()).flatMap((group) => group.calculationItems);
-
-  return {
-    files,
-    entries,
-    approvals,
-    calculations,
-    calculationItems,
-    importedFileCount: files.filter((file) => file.directory_type !== "unknown").length,
-    importedEntryCount: entries.filter((entry) => entry.is_pool_worker === 0).length,
-    importedApprovedEntryCount: approvals.length,
-    importedAllowanceCalculationCount: calculations.length,
-    skippedRowCount,
-    warningMessages
-  };
-};
-
-const normalizeSqliteValue = (value: unknown) => {
-  if (value === undefined) {
-    return null;
-  }
-
-  if (typeof value === "boolean") {
-    return value ? 1 : 0;
-  }
-
-  if (value === null || typeof value === "string" || typeof value === "number") {
-    return value;
-  }
-
-  return JSON.stringify(value);
-};
-
-const normalizeImportedTableValue = (
-  tableName: string,
-  columnName: string,
-  value: unknown
-) => {
-  if (tableName === "employees" && columnName === "status") {
-    return normalizeImportedEmployeeStatus(value);
-  }
-
-  if (
-    (tableName === "employees" && columnName === "rank") ||
-    (tableName === "performance_entries" && columnName === "employee_rank") ||
-    (tableName === "allowance_calculations" && columnName === "employee_rank")
-  ) {
-    return normalizeEmployeeRank(value === null || value === undefined ? undefined : String(value)) ?? null;
-  }
-
-  return value;
-};
-
-const insertTableRows = (
-  database: NonNullable<ReturnType<typeof getSqliteDatabase>>,
-  tableName: string,
-  rows: unknown[]
-) => {
-  if (rows.length === 0) {
-    return 0;
-  }
-
-  const backupColumns = Array.from(
-    rows.reduce<Set<string>>((accumulator, current) => {
-      if (current && typeof current === "object" && !Array.isArray(current)) {
-        Object.keys(current as Record<string, unknown>).forEach((key) => {
-          accumulator.add(key);
-        });
-      }
-
-      return accumulator;
-    }, new Set<string>())
-  );
-
-  // 백업 컬럼을 현재 표에 실제로 존재하는 컬럼과 교집합한다.
-  // 새 버전 백업을 옛 구조로 되돌릴 때(없는 컬럼 포함) 복원 전체가 중단되지 않도록,
-  // 없는 컬럼은 건너뛰고 있는 컬럼만 채운다.
-  const liveColumns = new Set(
-    (database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>).map(
-      (column) => column.name
-    )
-  );
-  const columns = backupColumns.filter((column) => liveColumns.has(column));
-  const droppedColumns = backupColumns.filter((column) => !liveColumns.has(column));
-
-  if (droppedColumns.length > 0) {
-    console.warn(
-      `[database-migration] '${tableName}' 표의 현재 구조에 없는 컬럼은 복원에서 제외했습니다: ${droppedColumns.join(", ")}`
-    );
-  }
-
-  if (columns.length === 0) {
-    return 0;
-  }
-
-  const placeholders = columns.map(() => "?").join(", ");
-  const statement = database.prepare(`
-    INSERT INTO ${tableName} (${columns.join(", ")})
-    VALUES (${placeholders})
-  `);
-
-  rows.forEach((row) => {
-    const record = row as Record<string, unknown>;
-    statement.run(
-      ...columns.map((column) =>
-        normalizeSqliteValue(normalizeImportedTableValue(tableName, column, record[column]))
-      )
-    );
-  });
-
-  return rows.length;
-};
-
-const APP_SETTINGS_TABLE_NAME = "app_setting_entries";
-const RESERVED_BACKUP_ROOT_KEYS = new Set(["tables", "schemaVersion", "createdAt", "appSettings"]);
-
-const normalizeJsonBackupSnapshot = (filePath: string): JsonBackupSnapshot => {
-  const parsed = readJsonFile(filePath);
-
-  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("백업 JSON 형식이 올바르지 않습니다.");
-  }
-
-  const tables: JsonBackupSnapshot["tables"] = {};
-  const rootRecord = parsed as Record<string, unknown>;
-  const tableRecord =
-    rootRecord.tables && typeof rootRecord.tables === "object" && !Array.isArray(rootRecord.tables)
-      ? (rootRecord.tables as Record<string, unknown>)
-      : {};
-
-  // 백업은 sqlite_master 전수 덤프이므로, 복원도 고정 목록에 의존하지 않고
-  // 백업에 들어 있는 모든 표를 그대로 받아들인다(승인·감사 이력 등 누락 방지).
-  // 실제 삽입 대상은 importJsonBackupIntoCurrentDatabase에서 현재 스키마에 존재하는 표로 제한한다.
-  Object.entries(tableRecord).forEach(([tableName, tableRows]) => {
-    if (Array.isArray(tableRows)) {
-      tables[tableName] = tableRows;
-    }
-  });
-
-  // 구버전 백업(테이블이 최상위에 평탄하게 들어간 형식) 호환.
-  Object.entries(rootRecord).forEach(([tableName, tableRows]) => {
-    if (RESERVED_BACKUP_ROOT_KEYS.has(tableName) || tableName in tables) {
-      return;
-    }
-
-    if (Array.isArray(tableRows)) {
-      tables[tableName] = tableRows;
-    }
-  });
-
-  return {
-    tables
-  };
-};
-
-const buildAppSettingsInput = (
-  settings: AppSettingsSnapshot,
-  migrationFilePath: string
-): AppSettingsUpdateInput => ({
-  holidayApiBaseUrl: settings.holidayApiBaseUrl,
-  pendingDir: settings.pendingDir,
-  approvedDir: settings.approvedDir,
-  scheduleExportDir: settings.scheduleExportDir,
-  allowanceProposalExportDir: settings.allowanceProposalExportDir,
-  allowanceAttachment1ExportDir: settings.allowanceAttachment1ExportDir,
-  allowanceAttachment2ExportDir: settings.allowanceAttachment2ExportDir,
-  databaseBackupDir: settings.databaseBackupDir,
-  databaseBackupSchedule: settings.databaseBackupSchedule,
-  databaseBackupTime: settings.databaseBackupTime,
-  migrationFilePath
-});
-
-// 현재 데이터베이스 스키마에 실제로 존재하는 표를, 알려진 순서를 앞세워 나열한다.
-// 백업에는 있으나 현재 구조에 없는 표는 여기서 빠지므로 삽입 시 오류가 나지 않고,
-// 새로 추가된 표는 자동으로 포함되어 고정 목록 갱신을 잊어도 복원에서 누락되지 않는다.
-const listImportableTableNames = (
-  database: NonNullable<ReturnType<typeof getSqliteDatabase>>
-): string[] => {
-  const liveTables = (
+const listUserTableNames = (database: DatabaseSync): string[] => {
+  return (
     database
       .prepare(
         `SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' ORDER BY name`
       )
       .all() as Array<{ name: string }>
-  )
-    .map((row) => row.name)
-    .filter((name) => name !== APP_SETTINGS_TABLE_NAME);
-
-  const liveTableSet = new Set(liveTables);
-  const knownOrder = (JSON_IMPORT_TABLE_ORDER as readonly string[]).filter((name) =>
-    liveTableSet.has(name)
-  );
-  const knownOrderSet = new Set(knownOrder);
-
-  return [...knownOrder, ...liveTables.filter((name) => !knownOrderSet.has(name))];
+  ).map((row) => row.name);
 };
 
-const importJsonBackupIntoCurrentDatabase = (
-  migrationFilePath: string,
-  currentSettings: AppSettingsSnapshot,
-  selectedAccessTables: AccessMigrationTableName[],
-  userDataPath: string
-): ImportedMigrationSummary => {
-  const database = getRequiredDatabase();
-  const backupSnapshot = normalizeJsonBackupSnapshot(migrationFilePath);
-  const warningMessages: string[] = [];
-  let restoredTableCount = 0;
+const computeFileSha256 = (filePath: string): string => {
+  const bytes = readFileSync(filePath);
+  return crypto.createHash("sha256").update(bytes).digest("hex");
+};
 
-  const importableTableNames = listImportableTableNames(database);
-  const importableTableSet = new Set(importableTableNames);
+const serializeValue = (val: unknown): string => {
+  if (val === null || val === undefined) {
+    return "N";
+  }
+  if (typeof val === "number") {
+    return `F:${Number.isFinite(val) ? val.toString() : String(val)}`;
+  }
+  if (typeof val === "bigint") {
+    return `I:${val.toString()}`;
+  }
+  if (typeof val === "boolean") {
+    return `B:${val ? "1" : "0"}`;
+  }
+  if (Buffer.isBuffer(val) || val instanceof Uint8Array) {
+    const hex = Buffer.from(val).toString("hex");
+    return `X:${hex.length}:${hex}`;
+  }
+  const str = String(val);
+  const buf = Buffer.from(str, "utf8");
+  return `S:${buf.length}:${str}`;
+};
+
+const serializeRow = (row: Record<string, unknown>, sortedColumns: string[]): string => {
+  const parts: string[] = [];
+  for (const col of sortedColumns) {
+    const serializedVal = serializeValue(row[col]);
+    parts.push(`${col.length}:${col}:${serializedVal}`);
+  }
+  return parts.join("|");
+};
+
+/**
+ * 40개 표의 스키마와 모든 행 내용(값)을 반영하는 지문을 산출한다.
+ * 타입·길이 접두어 및 행 정렬을 적용하여 구분자 충돌 및 행 순서 의존성을 원천 차단한다.
+ */
+export const computeDatabaseContentFingerprint = (database: DatabaseSync): string => {
+  const hash = crypto.createHash("sha256");
+  const tableNames = listUserTableNames(database).sort();
+
+  for (const tableName of tableNames) {
+    const pragmaColumns = (
+      database.prepare(`PRAGMA table_info("${tableName.replace(/"/g, '""')}")`).all() as Array<{
+        name: string;
+      }>
+    ).map((col) => col.name).sort();
+
+    hash.update(`TABLE:${tableName.length}:${tableName}:COLS:${pragmaColumns.join(",")}\n`);
+
+    const rows = database
+      .prepare(`SELECT * FROM "${tableName.replace(/"/g, '""')}"`)
+      .all() as Array<Record<string, unknown>>;
+
+    hash.update(`COUNT:${rows.length}\n`);
+
+    const serializedRows = rows.map((row) => serializeRow(row, pragmaColumns)).sort();
+
+    for (const sRow of serializedRows) {
+      hash.update(`${sRow.length}:${sRow}\n`);
+    }
+  }
+
+  return hash.digest("hex");
+};
+
+const ensureMigrationDirectory = (databasePath: string) => {
+  const migrationDir = path.join(path.dirname(databasePath), "migration");
+  mkdirSync(migrationDir, { recursive: true });
+  return migrationDir;
+};
+
+const quoteSqlIdentifier = (value: string) => `"${value.replace(/"/g, "\"\"")}"`;
+
+const validateTableRowsSchema = (
+  tableName: string,
+  rows: Array<Record<string, unknown>>
+) => {
+  const expectedCols = TABLE_SCHEMA_COLUMNS[tableName];
+  if (!expectedCols) {
+    const err = new Error(`정규 스키마에 정의되지 않은 테이블입니다: ${tableName}`);
+    (err as unknown as { code: string }).code = "INVALID_TABLES";
+    throw err;
+  }
+  const expectedColSet = new Set<string>(expectedCols);
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (typeof row !== "object" || row === null || Array.isArray(row)) {
+      const err = new Error(`'${tableName}' 표의 ${i + 1}번째 행이 객체 형식이 아닙니다.`);
+      (err as unknown as { code: string }).code = "INVALID_JSON";
+      throw err;
+    }
+
+    const rowKeys = Object.keys(row);
+    const missingCols = expectedCols.filter((col) => !(col in row));
+    const unknownCols = rowKeys.filter((col) => !expectedColSet.has(col));
+
+    if (missingCols.length > 0 || unknownCols.length > 0) {
+      const details = [
+        missingCols.length > 0 ? `누락 컬럼: ${missingCols.join(", ")}` : "",
+        unknownCols.length > 0 ? `알 수 없는 컬럼: ${unknownCols.join(", ")}` : ""
+      ]
+        .filter(Boolean)
+        .join("; ");
+      const err = new Error(
+        `'${tableName}' 표의 ${i + 1}번째 행의 컬럼 구성이 올바르지 않습니다 (${details}).`
+      );
+      (err as unknown as { code: string }).code = "INVALID_COLUMNS";
+      throw err;
+    }
+
+    const contracts = TABLE_COLUMN_CONTRACTS[tableName];
+    for (let c = 0; c < contracts.length; c++) {
+      const contract = contracts[c];
+      const val = row[contract.name];
+
+      if (val === null) {
+        if (contract.notNull) {
+          const err = new Error(
+            `'${tableName}' 표의 ${i + 1}번째 행의 '${contract.name}' 열은 필수 항목(NOT NULL)이지만 null 값이 전달되었습니다 (기대: NOT NULL ${contract.declaredType}, 실제: null).`
+          );
+          (err as unknown as { code: string }).code = "CHECK_FAILED";
+          throw err;
+        }
+      } else if (contract.declaredType === "TEXT") {
+        if (typeof val !== "string") {
+          const actualType = Array.isArray(val) ? "array" : typeof val;
+          const err = new Error(
+            `'${tableName}' 표의 ${i + 1}번째 행의 '${contract.name}' 열의 값 타입이 올바르지 않습니다 (기대: TEXT(문자열), 실제: ${actualType}).`
+          );
+          (err as unknown as { code: string }).code = "CHECK_FAILED";
+          throw err;
+        }
+      } else {
+        if (typeof val !== "number" || !Number.isFinite(val)) {
+          const actualType = Array.isArray(val) ? "array" : typeof val;
+          const err = new Error(
+            `'${tableName}' 표의 ${i + 1}번째 행의 '${contract.name}' 열의 값 타입이 올바르지 않습니다 (기대: ${contract.declaredType}(숫자), 실제: ${actualType}).`
+          );
+          (err as unknown as { code: string }).code = "CHECK_FAILED";
+          throw err;
+        }
+      }
+    }
+  }
+};
+
+const insertTableRows = (
+  database: DatabaseSync,
+  tableName: string,
+  rows: Array<Record<string, unknown>>
+) => {
+  if (rows.length === 0) {
+    return;
+  }
+
+  const pragmaColumns = (
+    database.prepare(`PRAGMA table_info("${tableName.replace(/"/g, '""')}")`).all() as Array<{
+      name: string;
+    }>
+  ).map((c) => c.name);
+  const dbColSet = new Set(pragmaColumns);
+
+  const columns = Object.keys(rows[0]);
+  for (const col of columns) {
+    if (!dbColSet.has(col)) {
+      throw new Error(`테이블 '${tableName}'에 존재하지 않는 컬럼 '${col}'이 포함되어 있습니다.`);
+    }
+  }
+
+  const columnList = columns.map(quoteSqlIdentifier).join(", ");
+  const placeholderList = columns.map(() => "?").join(", ");
+  const statement = database.prepare(
+    `INSERT INTO ${quoteSqlIdentifier(tableName)} (${columnList}) VALUES (${placeholderList})`
+  );
+
+  rows.forEach((row, idx) => {
+    const rowKeys = Object.keys(row);
+    if (rowKeys.length !== columns.length || columns.some((col) => !(col in row))) {
+      throw new Error(`테이블 '${tableName}'의 ${idx + 1}번째 행의 컬럼 구성이 일치하지 않습니다.`);
+    }
+    statement.run(...columns.map((column) => (row[column] ?? null) as string | number | bigint | null | Uint8Array));
+  });
+};
+
+const isValidCalendarDate = (dateStr: string): boolean => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return false;
+  }
+  const [yStr, mStr, dStr] = dateStr.split("-");
+  const y = parseInt(yStr, 10);
+  const m = parseInt(mStr, 10);
+  const d = parseInt(dStr, 10);
+  if (m < 1 || m > 12 || d < 1 || d > 31) {
+    return false;
+  }
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return (
+    date.getUTCFullYear() === y &&
+    date.getUTCMonth() === m - 1 &&
+    date.getUTCDate() === d
+  );
+};
+
+/**
+ * 백업 JSON을 엄격하게 파싱하고 유효성을 검증한다.
+ */
+const parseAndValidateBackupJson = (
+  filePath: string
+): {
+  snapshot: NormalizedJsonBackupSnapshot;
+  fileSha256: string;
+} => {
+  const rawBytes = readFileSync(filePath);
+  const fileSha256 = crypto.createHash("sha256").update(rawBytes).digest("hex");
+  const rawText = rawBytes.toString("utf8");
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawText);
+  } catch (error) {
+    const err = new Error(
+      `백업 파일 JSON 구문 분석에 실패했습니다: ${error instanceof Error ? error.message : String(error)}`
+    );
+    (err as unknown as { code: string }).code = "INVALID_JSON";
+    throw err;
+  }
+
+  if (typeof parsed !== "object" || parsed === null) {
+    const err = new Error("백업 JSON 최상위 형식이 객체가 아닙니다.");
+    (err as unknown as { code: string }).code = "INVALID_JSON";
+    throw err;
+  }
+
+  const rawObj = parsed as Record<string, unknown>;
+
+  if (rawObj.schemaVersion !== 1) {
+    const err = new Error(
+      `지원하지 않는 백업 버전입니다. (지원 버전: 1, 백업 파일 버전: ${String(rawObj.schemaVersion)})`
+    );
+    (err as unknown as { code: string }).code = "UNSUPPORTED_SCHEMA";
+    throw err;
+  }
+
+  if (typeof rawObj.tables !== "object" || rawObj.tables === null) {
+    const err = new Error("백업 JSON에 'tables' 객체가 누락되었습니다.");
+    (err as unknown as { code: string }).code = "MISSING_TABLE";
+    throw err;
+  }
+
+  const tablesObj = rawObj.tables as Record<string, unknown>;
+
+  // 40개 표가 정확히 1:1로 일치하는지 검사 (누락 표 및 알 수 없는 표 원천 차단)
+  const allRequiredTableNames = [...JSON_IMPORT_TABLE_ORDER, APP_SETTINGS_TABLE_NAME];
+  const requiredTableSet = new Set<string>(allRequiredTableNames);
+  const rawTableNames = Object.keys(tablesObj);
+
+  const missingTables = allRequiredTableNames.filter((t) => !(t in tablesObj));
+  const unknownTables = rawTableNames.filter((t) => !requiredTableSet.has(t));
+
+  if (missingTables.length > 0 || unknownTables.length > 0) {
+    const details = [
+      missingTables.length > 0 ? `누락 표: ${missingTables.join(", ")}` : "",
+      unknownTables.length > 0 ? `알 수 없는 표: ${unknownTables.join(", ")}` : ""
+    ]
+      .filter(Boolean)
+      .join("; ");
+    const err = new Error(
+      missingTables.length > 0
+        ? `백업 JSON에 필수 표가 누락되었습니다: ${missingTables.join(", ")}`
+        : `백업 JSON 표 목록이 40개 정규 스키마와 일치하지 않습니다 (${details}).`
+    );
+    (err as unknown as { code: string }).code = missingTables.length > 0 ? "MISSING_TABLE" : "INVALID_TABLES";
+    throw err;
+  }
+
+  // 각 표의 모든 행 검사 (정규 스키마 컬럼 1:1 대조, 누락/추가 컬럼 원천 차단)
+  for (const tableName of allRequiredTableNames) {
+    const rows = tablesObj[tableName];
+    if (!Array.isArray(rows)) {
+      const err = new Error(`백업 JSON의 '${tableName}' 표 데이터가 배열 형식이 아닙니다.`);
+      (err as unknown as { code: string }).code = "INVALID_JSON";
+      throw err;
+    }
+
+    validateTableRowsSchema(tableName, rows as Array<Record<string, unknown>>);
+  }
+
+  // app_setting_entries의 타입 및 키 검사 (문자열 타입 강제, 중복 키, 미인지 키, 6대 업무 규칙 존재 여부)
+  const settingRows = tablesObj[APP_SETTINGS_TABLE_NAME] as Array<Record<string, unknown>>;
+  const seenSettingKeys = new Set<string>();
+
+  for (let i = 0; i < settingRows.length; i++) {
+    const row = settingRows[i];
+    if (
+      typeof row.setting_key !== "string" ||
+      typeof row.value !== "string" ||
+      typeof row.updated_at !== "string"
+    ) {
+      const err = new Error(
+        `app_setting_entries ${i + 1}번째 행의 필드(setting_key, value, updated_at)는 모두 문자열이어야 합니다.`
+      );
+      (err as unknown as { code: string }).code = "CHECK_FAILED";
+      throw err;
+    }
+
+    const key = row.setting_key.trim();
+    if (!key) {
+      const err = new Error("app_setting_entries에 빈 설정 키가 존재합니다.");
+      (err as unknown as { code: string }).code = "CHECK_FAILED";
+      throw err;
+    }
+    if (seenSettingKeys.has(key)) {
+      const err = new Error(`app_setting_entries에 중복된 설정 키가 존재합니다: ${key}`);
+      (err as unknown as { code: string }).code = "CHECK_FAILED";
+      throw err;
+    }
+    seenSettingKeys.add(key);
+
+    if (!KNOWN_SETTING_KEYS.has(key)) {
+      const err = new Error(`알 수 없는 설정 키가 백업에 포함되어 있습니다: ${key}`);
+      (err as unknown as { code: string }).code = "CHECK_FAILED";
+      throw err;
+    }
+  }
+
+  // 6대 업무 규칙 키 누락 검사 (N3)
+  const missingBusinessKeys: string[] = [];
+  for (const bizKey of BUSINESS_RULE_KEYS) {
+    if (!seenSettingKeys.has(bizKey)) {
+      missingBusinessKeys.push(bizKey);
+    }
+  }
+
+  if (missingBusinessKeys.length > 0) {
+    const err = new Error(
+      `백업 JSON에 필수 업무 규칙 설정 키가 누락되었습니다: ${missingBusinessKeys.join(", ")}`
+    );
+    (err as unknown as { code: string }).code = "CHECK_FAILED";
+    throw err;
+  }
+
+  // 업무 규칙 값 유효성 검사 (N3: 1 이상 유한 정수, 유효 불리언, 실제 달력일)
+  for (const row of settingRows) {
+    const key = (row.setting_key as string).trim();
+    const val = row.value as string;
+
+    if (
+      key === "schedule_consecutive_night_limit" ||
+      key === "schedule_minimum_rest_minutes" ||
+      key === "schedule_weekly_max_minutes"
+    ) {
+      const trimmed = val.trim();
+      if (!/^\d+$/.test(trimmed)) {
+        const err = new Error(
+          `업무 규칙 설정 '${key}'의 값이 유효한 1 이상 정수가 아닙니다: ${val}`
+        );
+        (err as unknown as { code: string }).code = "CHECK_FAILED";
+        throw err;
+      }
+      const num = Number(trimmed);
+      if (!Number.isFinite(num) || !Number.isInteger(num) || num < 1 || String(num) !== trimmed) {
+        const err = new Error(
+          `업무 규칙 설정 '${key}'의 값이 유효한 1 이상 정수가 아닙니다: ${val}`
+        );
+        (err as unknown as { code: string }).code = "CHECK_FAILED";
+        throw err;
+      }
+    } else if (key === "schedule_require_weekly_holiday") {
+      if (val !== "true" && val !== "false") {
+        const err = new Error(
+          `업무 규칙 설정 '${key}'의 값이 유효한 불리언(true/false)이 아닙니다: ${val}`
+        );
+        (err as unknown as { code: string }).code = "CHECK_FAILED";
+        throw err;
+      }
+    } else if (
+      key === "substitute_allowance_policy_effective_from" ||
+      key === "changed_slot_priority_effective_from"
+    ) {
+      const trimmed = val.trim();
+      if (trimmed !== "") {
+        if (!isValidCalendarDate(trimmed)) {
+          const err = new Error(
+            `업무 규칙 설정 '${key}'의 날짜 형식이 올바르지 않거나 존재하지 않는 달력일입니다: ${trimmed}`
+          );
+          (err as unknown as { code: string }).code = "CHECK_FAILED";
+          throw err;
+        }
+      }
+    }
+  }
+
+  return {
+    snapshot: {
+      schemaVersion: Number(rawObj.schemaVersion),
+      createdAt: String(rawObj.createdAt ?? new Date().toISOString()),
+      tables: tablesObj as Record<string, Array<Record<string, unknown>>>
+    },
+    fileSha256
+  };
+};
+
+/**
+ * 1. 복원 요구사항 검사
+ */
+export const checkDatabaseMigrationRequirements = (input: {
+  backupFilePath: string;
+}): JsonDatabaseRestoreRequirementCheck => {
+  const checkedAt = new Date().toISOString();
+
+  let resolvedPath: string;
+  try {
+    const resolved = resolveDatabaseMigrationInput(input);
+    resolvedPath = resolved.backupFilePath;
+  } catch (error) {
+    return {
+      sourceType: "json",
+      isReady: false,
+      status: "check-failed",
+      checkedAt,
+      headline: "복원 요구사항 검사 실패",
+      details: [error instanceof Error ? error.message : String(error)],
+      recommendedActions: ["올바른 JSON 백업 파일 경로를 지정해 주세요."]
+    };
+  }
+
+  try {
+    const { snapshot, fileSha256 } = parseAndValidateBackupJson(resolvedPath);
+    const tableCount = Object.keys(snapshot.tables).length;
+
+    return {
+      sourceType: "json",
+      isReady: true,
+      status: "ready",
+      checkedAt,
+      backupSha256: fileSha256,
+      schemaVersion: String(snapshot.schemaVersion),
+      tableCount,
+      headline: "JSON 데이터베이스 복원 준비 완료",
+      details: [
+        "40개 필수 데이터 테이블이 모두 확인되었습니다.",
+        "6개 업무 정책 규칙이 확인되었습니다.",
+        "백업 원본 파일의 SHA-256이 확인되었습니다."
+      ],
+      recommendedActions: [
+        "미리보기를 통해 복원 후 영향도를 확인한 뒤 교체 복원을 진행하세요."
+      ]
+    };
+  } catch (error) {
+    const code = (error as { code?: string })?.code;
+    let status: JsonDatabaseRestoreRequirementStatus = "check-failed";
+    let headline = "복원 요구사항 검사 실패";
+
+    if (code === "INVALID_JSON") {
+      status = "invalid-json";
+      headline = "JSON 백업 파일 구문 오류";
+    } else if (code === "UNSUPPORTED_SCHEMA") {
+      status = "unsupported-schema";
+      headline = "지원하지 않는 백업 버전";
+    } else if (code === "MISSING_TABLE") {
+      status = "missing-table";
+      headline = "필수 데이터 테이블 누락";
+    }
+
+    return {
+      sourceType: "json",
+      isReady: false,
+      status,
+      checkedAt,
+      headline,
+      details: [error instanceof Error ? error.message : String(error)],
+      recommendedActions: [
+        "유효한 40표 JSON 백업 파일인지 확인하고 다시 시도해 주세요."
+      ]
+    };
+  }
+};
+
+interface OperatingSettingsCapture {
+  holidayApiBaseUrl: string;
+  databaseBackupSchedule: string;
+  databaseBackupTime: string;
+  updateLastSeenPatchNoteVersion: string | null;
+  updateLastSkippedVersion: string | null;
+  existingReparseMarker: string | null;
+  targetSubstitutePolicyEffectiveFrom: string;
+  targetChangedSlotPriorityEffectiveFrom: string;
+}
+
+const captureOperatingSettings = (
+  database: DatabaseSync,
+  currentSettings: AppSettingsSnapshot
+): OperatingSettingsCapture => {
+  const rows = database
+    .prepare(
+      `SELECT setting_key, value FROM app_setting_entries WHERE setting_key IN (
+        'holiday_api_base_url',
+        'database_backup_schedule',
+        'database_backup_time',
+        'update_last_seen_patch_note_version',
+        'update_last_skipped_version',
+        'substitute_allowance_policy_reparse_marker',
+        'substitute_allowance_policy_effective_from',
+        'changed_slot_priority_effective_from'
+      )`
+    )
+    .all() as Array<{ setting_key: string; value: string }>;
+
+  const map = new Map<string, string>();
+  for (const r of rows) {
+    map.set(r.setting_key, r.value);
+  }
+
+  return {
+    holidayApiBaseUrl: map.get("holiday_api_base_url") ?? currentSettings.holidayApiBaseUrl,
+    databaseBackupSchedule:
+      map.get("database_backup_schedule") ?? currentSettings.databaseBackupSchedule,
+    databaseBackupTime: map.get("database_backup_time") ?? currentSettings.databaseBackupTime,
+    updateLastSeenPatchNoteVersion: map.get("update_last_seen_patch_note_version") ?? null,
+    updateLastSkippedVersion: map.get("update_last_skipped_version") ?? null,
+    existingReparseMarker: map.get("substitute_allowance_policy_reparse_marker") ?? null,
+    targetSubstitutePolicyEffectiveFrom:
+      map.get("substitute_allowance_policy_effective_from") ?? "",
+    targetChangedSlotPriorityEffectiveFrom:
+      map.get("changed_slot_priority_effective_from") ?? ""
+  };
+};
+
+const buildFinalAppSettingRows = (input: {
+  currentSettings: AppSettingsSnapshot;
+  operatingSettings: OperatingSettingsCapture;
+  sourceSettingsRows: Array<Record<string, unknown>>;
+  resolvedBackupFilePath: string;
+  nowIso: string;
+}): Array<{ setting_key: string; value: string; updated_at: string }> => {
+  const sourceSettingMap = new Map<string, string>();
+  for (const r of input.sourceSettingsRows) {
+    if (typeof r.setting_key !== "string" || typeof r.value !== "string") {
+      throw new Error("app_setting_entries의 키 또는 값이 문자열이 아닙니다.");
+    }
+    sourceSettingMap.set(r.setting_key, r.value);
+  }
+
+  const finalRows: Array<{ setting_key: string; value: string; updated_at: string }> = [];
+
+  // 분류 1: 설치 대상 기기의 경로 (7개) -> 대상 환경 경로 유지
+  const pathKeys: Array<[string, string]> = [
+    ["pending_dir", input.currentSettings.pendingDir],
+    ["approved_dir", input.currentSettings.approvedDir],
+    ["schedule_export_dir", input.currentSettings.scheduleExportDir],
+    ["allowance_proposal_export_dir", input.currentSettings.allowanceProposalExportDir],
+    ["allowance_attachment1_export_dir", input.currentSettings.allowanceAttachment1ExportDir],
+    ["allowance_attachment2_export_dir", input.currentSettings.allowanceAttachment2ExportDir],
+    ["database_backup_dir", input.currentSettings.databaseBackupDir]
+  ];
+  for (const [key, val] of pathKeys) {
+    finalRows.push({ setting_key: key, value: val, updated_at: input.nowIso });
+  }
+
+  // 분류 2: 이번 선택한 입력 (1개) -> 이번 선택 JSON 경로
+  finalRows.push({
+    setting_key: "migration_file_path",
+    value: input.resolvedBackupFilePath,
+    updated_at: input.nowIso
+  });
+
+  // 분류 3: 설치 대상 기기의 운영 설정 (6개 중 기본 3개 + 선택 2개 + 마커 1개)
+  finalRows.push({
+    setting_key: "holiday_api_base_url",
+    value: input.operatingSettings.holidayApiBaseUrl,
+    updated_at: input.nowIso
+  });
+  finalRows.push({
+    setting_key: "database_backup_schedule",
+    value: input.operatingSettings.databaseBackupSchedule,
+    updated_at: input.nowIso
+  });
+  finalRows.push({
+    setting_key: "database_backup_time",
+    value: input.operatingSettings.databaseBackupTime,
+    updated_at: input.nowIso
+  });
+
+  // 선택적 운영 키 (대상 기기에 키가 존재하면 보존, 없으면 없는 상태 유지)
+  if (input.operatingSettings.updateLastSeenPatchNoteVersion !== null) {
+    finalRows.push({
+      setting_key: "update_last_seen_patch_note_version",
+      value: input.operatingSettings.updateLastSeenPatchNoteVersion,
+      updated_at: input.nowIso
+    });
+  }
+  if (input.operatingSettings.updateLastSkippedVersion !== null) {
+    finalRows.push({
+      setting_key: "update_last_skipped_version",
+      value: input.operatingSettings.updateLastSkippedVersion,
+      updated_at: input.nowIso
+    });
+  }
+
+  // 정책 시작일 변경 여부 대조
+  const sourceSubstitutePolicy =
+    sourceSettingMap.get("substitute_allowance_policy_effective_from") ?? "";
+  const sourceChangedSlotPriority =
+    sourceSettingMap.get("changed_slot_priority_effective_from") ?? "";
+
+  const policyDateChanged =
+    input.operatingSettings.targetSubstitutePolicyEffectiveFrom !== sourceSubstitutePolicy ||
+    input.operatingSettings.targetChangedSlotPriorityEffectiveFrom !== sourceChangedSlotPriority;
+
+  if (policyDateChanged) {
+    // 정책일 변경 시 marker를 새 ISO 타임스탬프로 설정
+    finalRows.push({
+      setting_key: "substitute_allowance_policy_reparse_marker",
+      value: input.nowIso,
+      updated_at: input.nowIso
+    });
+  } else if (input.operatingSettings.existingReparseMarker !== null) {
+    // 정책일이 같더라도 대상 기기에 기존 marker가 이미 존재했으면 그 값 보존
+    finalRows.push({
+      setting_key: "substitute_allowance_policy_reparse_marker",
+      value: input.operatingSettings.existingReparseMarker,
+      updated_at: input.nowIso
+    });
+  }
+
+  // 분류 4: 업무 규칙 (6개) -> 선택 JSON 값 필수 복원
+  for (const bizKey of BUSINESS_RULE_KEYS) {
+    const sourceVal = sourceSettingMap.get(bizKey);
+    if (sourceVal === undefined) {
+      throw new Error(`백업 JSON에 필수 업무 규칙 '${bizKey}'가 없습니다.`);
+    }
+    finalRows.push({
+      setting_key: bizKey,
+      value: sourceVal,
+      updated_at: input.nowIso
+    });
+  }
+
+  return finalRows;
+};
+
+/**
+ * 임시 데이터베이스에 39개 표 및 2026-09-27 승인 설정 변환을 적용하고 검증한다.
+ */
+const importJsonBackupIntoDatabase = (input: {
+  database: DatabaseSync;
+  snapshot: NormalizedJsonBackupSnapshot;
+  resolvedBackupFilePath: string;
+  currentSettings: AppSettingsSnapshot;
+  operatingSettings: OperatingSettingsCapture;
+}): {
+  warningMessages: string[];
+  removedPerformanceEntryCount: number;
+} => {
+  const { database, snapshot, resolvedBackupFilePath, currentSettings, operatingSettings } = input;
+  const warningMessages: string[] = [];
+
+  // 경고 메시지 1 & 2: 계정 교체 및 외부 파일 미포함 경고
+  warningMessages.push("계정 정보(app_users)가 백업 파일의 계정으로 교체됩니다.");
+  warningMessages.push(
+    "실적 파일 등 외부 파일 자체는 JSON 백업에 포함되지 않으므로 기기 간 이동 시 별도 보존이 필요할 수 있습니다."
+  );
 
   let removedPerformanceEntryCount = 0;
 
   database.exec("BEGIN;");
 
   try {
-    importableTableNames.forEach((tableName) => {
-      const rows = backupSnapshot.tables[tableName] ?? [];
-
+    // 1. 일반 39개 표 복원
+    for (const tableName of JSON_IMPORT_TABLE_ORDER) {
+      const rows = snapshot.tables[tableName] ?? [];
       if (Array.isArray(rows) && rows.length > 0) {
         insertTableRows(database, tableName, rows);
-        restoredTableCount += 1;
       }
-    });
+    }
 
-    const unassignedEntries = database.prepare(`
-      SELECT id, performance_file_id, logical_key, employee_name, employee_code, work_date, alert_json
-      FROM performance_entries
-      WHERE (employee_code IS NULL OR trim(employee_code) = '')
-    `).all() as Array<{
+    // 2. DEC-001: 사번 없는 비-BP 실적 1건 안전 제외
+    const unassignedEntries = database
+      .prepare(
+        `
+        SELECT id, performance_file_id, logical_key, employee_name, employee_code, work_date, alert_json
+        FROM performance_entries
+        WHERE (employee_code IS NULL OR trim(employee_code) = '')
+      `
+      )
+      .all() as Array<{
       id: string;
       performance_file_id: string;
       logical_key: string;
@@ -2895,15 +1537,23 @@ const importJsonBackupIntoCurrentDatabase = (
 
     if (unassignedNonBpEntries.length > 0) {
       for (const entry of unassignedNonBpEntries) {
-        const hasApproval = database.prepare(`
-          SELECT 1 FROM performance_approvals WHERE entry_id = ? OR logical_key = ? LIMIT 1
-        `).get(entry.id, entry.logical_key);
-        const hasVisibility = database.prepare(`
-          SELECT 1 FROM hidden_approved_performance_rows WHERE entry_id = ? OR logical_key = ? LIMIT 1
-        `).get(entry.id, entry.logical_key);
-        const hasCalculation = database.prepare(`
-          SELECT 1 FROM allowance_calculations WHERE performance_entry_id = ? LIMIT 1
-        `).get(entry.id);
+        const hasApproval = database
+          .prepare(
+            `SELECT 1 FROM performance_approvals WHERE entry_id = ? OR logical_key = ? LIMIT 1`
+          )
+          .get(entry.id, entry.logical_key);
+
+        const hasVisibility = database
+          .prepare(
+            `SELECT 1 FROM hidden_approved_performance_rows WHERE entry_id = ? OR logical_key = ? LIMIT 1`
+          )
+          .get(entry.id, entry.logical_key);
+
+        const hasCalculation = database
+          .prepare(
+            `SELECT 1 FROM allowance_calculations WHERE performance_entry_id = ? LIMIT 1`
+          )
+          .get(entry.id);
 
         if (hasApproval || hasVisibility || hasCalculation) {
           throw new Error(
@@ -2911,9 +1561,9 @@ const importJsonBackupIntoCurrentDatabase = (
           );
         }
 
-        const fileRow = database.prepare(`
-          SELECT * FROM performance_files WHERE id = ?
-        `).get(entry.performance_file_id) as Record<string, unknown> | undefined;
+        const fileRow = database
+          .prepare(`SELECT * FROM performance_files WHERE id = ?`)
+          .get(entry.performance_file_id) as Record<string, unknown> | undefined;
 
         let updatedPreview = "[]";
         let updatedWarningCount = 0;
@@ -2964,15 +1614,13 @@ const importJsonBackupIntoCurrentDatabase = (
           );
         }
 
-        database.prepare(`
-          DELETE FROM performance_entries WHERE id = ?
-        `).run(entry.id);
+        database.prepare(`DELETE FROM performance_entries WHERE id = ?`).run(entry.id);
         removedPerformanceEntryCount++;
 
         if (fileRow) {
-          const remainingRows = database.prepare(`
-            SELECT * FROM performance_entries WHERE performance_file_id = ?
-          `).all(entry.performance_file_id) as Array<Record<string, unknown>>;
+          const remainingRows = database
+            .prepare(`SELECT * FROM performance_entries WHERE performance_file_id = ?`)
+            .all(entry.performance_file_id) as Array<Record<string, unknown>>;
 
           const remainingPayableRows = remainingRows.filter((r) =>
             isPayablePerformanceEntry({
@@ -2994,12 +1642,11 @@ const importJsonBackupIntoCurrentDatabase = (
             remainingPayableRows.map((r) => String(r.id))
           );
 
-          const approvalHistoryRows = database.prepare(`
-            SELECT entry_id, decision, processed_at
-            FROM performance_approvals
-            WHERE file_id = ?
-            ORDER BY processed_at DESC, id DESC
-          `).all(entry.performance_file_id) as Array<{
+          const approvalHistoryRows = database
+            .prepare(
+              `SELECT entry_id, decision, processed_at FROM performance_approvals WHERE file_id = ? ORDER BY processed_at DESC, id DESC`
+            )
+            .all(entry.performance_file_id) as Array<{
             entry_id: string | null;
             decision: string | null;
             processed_at: string;
@@ -3031,20 +1678,24 @@ const importJsonBackupIntoCurrentDatabase = (
             resolvedApprovedCount = payableApprovedCount;
           }
 
-          database.prepare(`
-            UPDATE performance_files
-            SET preview_json = ?,
-                entry_count = ?,
-                approved_entry_count = ?,
-                warning_count = ?
-            WHERE id = ?
-          `).run(
-            updatedPreview,
-            remainingPayableCount,
-            resolvedApprovedCount,
-            updatedWarningCount,
-            entry.performance_file_id
-          );
+          database
+            .prepare(
+              `
+              UPDATE performance_files
+              SET preview_json = ?,
+                  entry_count = ?,
+                  approved_entry_count = ?,
+                  warning_count = ?
+              WHERE id = ?
+            `
+            )
+            .run(
+              updatedPreview,
+              remainingPayableCount,
+              resolvedApprovedCount,
+              updatedWarningCount,
+              entry.performance_file_id
+            );
         }
       }
 
@@ -3053,233 +1704,66 @@ const importJsonBackupIntoCurrentDatabase = (
       );
     }
 
-    database.exec("COMMIT;");
-  } catch (error) {
-    database.exec("ROLLBACK;");
-    throw error;
-  }
+    // 3. app_setting_entries 복원 (2026-09-27 사용자 승인 설정 변환 정책)
+    const finalSettingsRows = buildFinalAppSettingRows({
+      currentSettings,
+      operatingSettings,
+      sourceSettingsRows: snapshot.tables[APP_SETTINGS_TABLE_NAME] ?? [],
+      resolvedBackupFilePath,
+      nowIso: new Date().toISOString()
+    });
 
-  const skippedBackupTables = Object.keys(backupSnapshot.tables).filter(
-    (tableName) =>
-      tableName !== APP_SETTINGS_TABLE_NAME &&
-      !importableTableSet.has(tableName) &&
-      Array.isArray(backupSnapshot.tables[tableName]) &&
-      backupSnapshot.tables[tableName].length > 0
-  );
+    insertTableRows(database, APP_SETTINGS_TABLE_NAME, finalSettingsRows);
 
-  if (skippedBackupTables.length > 0) {
-    warningMessages.push(
-      `백업의 다음 표는 현재 버전 구조에 없어 복원에서 제외했습니다: ${skippedBackupTables.join(", ")}`
-    );
-  }
-
-  if (Array.isArray(backupSnapshot.tables.app_setting_entries)) {
+    // 경고 메시지 3: 경로 설정 유지 경고
     warningMessages.push("백업 JSON의 경로 설정은 무시하고 현재 환경 경로를 유지했습니다.");
-  }
 
-  saveStoredAppSettings(buildAppSettingsInput(currentSettings, migrationFilePath), {
-    userDataPath
-  });
-
-  return {
-    sourceType: "json",
-    migrationFilePath,
-    selectedAccessTables,
-    databasePath: currentSettings.databasePath,
-    importedSiteCount: Array.isArray(backupSnapshot.tables.sites) ? backupSnapshot.tables.sites.length : 0,
-    importedEmployeeCount: Array.isArray(backupSnapshot.tables.employees)
-      ? backupSnapshot.tables.employees.length
-      : 0,
-    importedWageRateCount: Array.isArray(backupSnapshot.tables.wage_rates)
-      ? backupSnapshot.tables.wage_rates.length
-      : 0,
-    importedPatternCount: Array.isArray(backupSnapshot.tables.shift_patterns)
-      ? backupSnapshot.tables.shift_patterns.length
-      : 0,
-    importedPerformanceFileCount: Array.isArray(backupSnapshot.tables.performance_files)
-      ? backupSnapshot.tables.performance_files.length
-      : 0,
-    importedPerformanceEntryCount:
-      (Array.isArray(backupSnapshot.tables.performance_entries)
-        ? backupSnapshot.tables.performance_entries.length
-        : 0) - removedPerformanceEntryCount,
-    importedApprovedEntryCount: Array.isArray(backupSnapshot.tables.performance_approvals)
-      ? backupSnapshot.tables.performance_approvals.length
-      : 0,
-    importedAllowanceCalculationCount: Array.isArray(backupSnapshot.tables.allowance_calculations)
-      ? backupSnapshot.tables.allowance_calculations.length
-      : 0,
-    closedAssignmentCount: 0,
-    skippedDutyReleaseCount: 0,
-    restoredTableCount,
-    skippedPatternSiteNames: [],
-    warningMessages,
-    completedAt: new Date().toISOString()
-  };
-};
-
-const importAccessDatabaseIntoCurrentDatabase = (
-  migrationFilePath: string,
-  currentSettings: AppSettingsSnapshot,
-  selectedAccessTables: AccessMigrationTableName[],
-  userDataPath: string
-): ImportedMigrationSummary => {
-  if (selectedAccessTables.length === 0) {
-    throw new Error("복원할 Access 테이블을 하나 이상 선택해야 합니다.");
-  }
-
-  const database = getRequiredDatabase();
-  const databaseStat = statSync(migrationFilePath);
-  const sourceVersion = formatCompactDate(databaseStat.mtime);
-  const createdAt = new Date().toISOString();
-  const migrationDir = ensureMigrationDirectory(currentSettings.databasePath);
-  const exportOutputDir = path.join(migrationDir, `access-import-${createTimestampSegment()}`);
-  mkdirSync(exportOutputDir, { recursive: true });
-
-  const accessTables = exportAccessTables(migrationFilePath, exportOutputDir, selectedAccessTables);
-  const sites = buildAccessSiteRows(
-    accessTables.sites,
-    accessTables.employees,
-    accessTables.patterns,
-    accessTables.performances,
-    createdAt
-  );
-  const siteIdByName = new Map(sites.map((site) => [site.name, site.id]));
-  const holidayRows = buildHolidayRows(accessTables.holidays, sourceVersion, createdAt);
-  const rateRows = buildAllowanceRateRows(
-    accessTables.rates,
-    databaseStat.mtime.getFullYear(),
-    sourceVersion,
-    createdAt
-  );
-  const activeWageMap = buildActiveWageMap(
-    accessTables.wages,
-    databaseStat.mtime.getFullYear(),
-    sourceVersion
-  );
-  const employeeRows = buildEmployeeRows({
-    employeeRows: accessTables.employees,
-    performanceRows: accessTables.performances,
-    activeWageMap,
-    siteIdByName,
-    sourceYear: databaseStat.mtime.getFullYear(),
-    sourceVersion,
-    createdAt
-  });
-  const patternRows = buildPatternRows({
-    siteRows: accessTables.sites,
-    employeeRows: accessTables.employees,
-    patternRows: accessTables.patterns,
-    siteIdByName,
-    sourceVersion,
-    createdAt
-  });
-  const performanceRows = buildAccessPerformanceRows({
-    performanceRows: accessTables.performances,
-    migrationFilePath,
-    modifiedTimeMs: databaseStat.mtimeMs,
-    createdAt,
-    activeWageMap
-  });
-  const dutyReleaseResult = applyDutyReleaseRows(
-    employeeRows.sources,
-    accessTables.dutyReleases,
-    employeeRows.assignments
-  );
-
-  database.exec("BEGIN;");
-
-  try {
-    insertTableRows(database, "sites", sites);
-    insertTableRows(database, "employees", employeeRows.employees);
-    insertTableRows(database, "employee_site_assignments", employeeRows.assignments);
-    insertTableRows(database, "wage_rates", employeeRows.wageRates);
-    insertTableRows(database, "shift_patterns", patternRows.patterns);
-    insertTableRows(database, "shift_pattern_steps", patternRows.steps);
-    insertTableRows(database, "shift_pattern_team_indexes", patternRows.teamIndexes);
-    insertTableRows(database, "shift_pattern_cycles", patternRows.cycles);
-    insertTableRows(database, "shift_pattern_cycle_steps", patternRows.cycleSteps);
-    insertTableRows(database, "shift_pattern_cycle_team_indexes", patternRows.cycleTeamIndexes);
-    insertTableRows(database, "shift_pattern_team_cycles", patternRows.teamCycles);
-    insertTableRows(database, "shift_pattern_team_capacities", patternRows.teamCapacities);
-    insertTableRows(database, "holiday_calendars", holidayRows.calendars);
-    insertTableRows(database, "holiday_items", holidayRows.items);
-    insertTableRows(database, "allowance_rate_versions", rateRows.versions);
-    insertTableRows(database, "allowance_rate_items", rateRows.items);
-    insertTableRows(database, "performance_files", performanceRows.files);
-    insertTableRows(database, "performance_entries", performanceRows.entries);
-    insertTableRows(database, "performance_approvals", performanceRows.approvals);
-    insertTableRows(database, "allowance_calculations", performanceRows.calculations);
-    insertTableRows(database, "allowance_calculation_items", performanceRows.calculationItems);
     database.exec("COMMIT;");
   } catch (error) {
     database.exec("ROLLBACK;");
     throw error;
   }
 
-  const warningMessages = [
-    ...employeeRows.warningMessages,
-    ...patternRows.warningMessages,
-    ...performanceRows.warningMessages,
-    ...dutyReleaseResult.warningMessages
-  ];
-
-  if (patternRows.skippedPatternSiteNames.length > 0) {
-    warningMessages.push(
-      `패턴 복원 제외 근무지: ${patternRows.skippedPatternSiteNames.join(", ")}`
+  // SQLite PRAGMA 무결성 검증
+  const quickCheckResult = database.prepare("PRAGMA quick_check;").all() as Array<{
+    quick_check: string;
+  }>;
+  if (quickCheckResult.length === 0 || quickCheckResult[0].quick_check !== "ok") {
+    throw new Error(
+      `데이터베이스 quick_check 검증에 실패했습니다: ${JSON.stringify(quickCheckResult)}`
     );
   }
 
-  if (dutyReleaseResult.skippedCount > 0) {
-    warningMessages.push(`직무해제 ${dutyReleaseResult.skippedCount}건은 자동 매칭되지 않아 제외했습니다.`);
+  const integrityCheckResult = database.prepare("PRAGMA integrity_check;").all() as Array<{
+    integrity_check: string;
+  }>;
+  if (integrityCheckResult.length === 0 || integrityCheckResult[0].integrity_check !== "ok") {
+    throw new Error(
+      `데이터베이스 integrity_check 검증에 실패했습니다: ${JSON.stringify(integrityCheckResult)}`
+    );
   }
-
-  if (dutyReleaseResult.closedCount > 0) {
-    warningMessages.push(`직무해제 적용으로 배정 ${dutyReleaseResult.closedCount}건이 종료 상태로 복원되었습니다.`);
-  }
-
-  if (performanceRows.skippedRowCount > 0) {
-    warningMessages.push(`실적 ${performanceRows.skippedRowCount}건은 필수값 부족으로 제외했습니다.`);
-  }
-
-  saveStoredAppSettings(buildAppSettingsInput(currentSettings, migrationFilePath), {
-    userDataPath
-  });
 
   return {
-    sourceType: "access",
-    migrationFilePath,
-    selectedAccessTables,
-    databasePath: currentSettings.databasePath,
-    importedSiteCount: sites.length,
-    importedEmployeeCount: employeeRows.employees.length,
-    importedWageRateCount: employeeRows.wageRates.length,
-    importedPatternCount: patternRows.importedPatternCount,
-    importedPerformanceFileCount: performanceRows.importedFileCount,
-    importedPerformanceEntryCount: performanceRows.importedEntryCount,
-    importedApprovedEntryCount: performanceRows.importedApprovedEntryCount,
-    importedAllowanceCalculationCount: performanceRows.importedAllowanceCalculationCount,
-    closedAssignmentCount: dutyReleaseResult.closedCount,
-    skippedDutyReleaseCount: dutyReleaseResult.skippedCount,
-    restoredTableCount: 0,
-    skippedPatternSiteNames: patternRows.skippedPatternSiteNames,
     warningMessages,
-    completedAt: new Date().toISOString()
+    removedPerformanceEntryCount
   };
 };
 
+/**
+ * 2. 복원 미리보기
+ */
 export const previewDatabaseMigrationUpdate = (input: {
   userDataPath: string;
-  migrationFilePath: string;
-  selectedAccessTables?: AccessMigrationTableName[];
+  backupFilePath: string;
   env?: NodeJS.ProcessEnv;
-}): DatabaseMigrationPreview => {
-  const { migrationFilePath, extension } = resolveDatabaseMigrationInput(input);
-  const requirementCheck =
-    extension === ".json" ? createJsonMigrationRequirementCheck() : createAccessMigrationRequirementCheck();
+  onPreviewSuccess?: () => void;
+}): JsonDatabaseRestorePreview => {
+  purgeExpiredTokens();
 
-  assertDatabaseMigrationRequirementsReady(requirementCheck);
+  const { backupFilePath: resolvedBackupFilePath } = resolveDatabaseMigrationInput(input);
+  const { snapshot, fileSha256 } = parseAndValidateBackupJson(resolvedBackupFilePath);
 
+  // 저장소 초기화
   initializeSqliteStorage({
     userDataPath: input.userDataPath,
     env: input.env
@@ -3289,8 +1773,10 @@ export const previewDatabaseMigrationUpdate = (input: {
     userDataPath: input.userDataPath,
     env: input.env
   });
-  const currentDatabase = getRequiredDatabase();
-  const currentState = collectDatabaseMigrationState(currentDatabase);
+
+  const liveDbBeforeClose = getRequiredDatabase();
+  const operatingSettings = captureOperatingSettings(liveDbBeforeClose, currentSettings);
+
   const tempDatabasePath = path.join(
     ensureMigrationDirectory(currentSettings.databasePath),
     `preview-${Date.now()}-${randomUUID()}.sqlite`
@@ -3298,6 +1784,9 @@ export const previewDatabaseMigrationUpdate = (input: {
 
   closeSqliteStorage();
 
+  const nextRowCounts = new Map<string, number>();
+  let warningMessages: string[] = [];
+
   try {
     initializeSqliteStorage({
       dbPath: tempDatabasePath,
@@ -3305,48 +1794,134 @@ export const previewDatabaseMigrationUpdate = (input: {
       env: input.env
     });
 
-    const previewSummary = importMigrationIntoCurrentStorage({
-      extension,
-      migrationFilePath,
+    const tempDb = getRequiredDatabase();
+    const importResult = importJsonBackupIntoDatabase({
+      database: tempDb,
+      snapshot,
+      resolvedBackupFilePath,
       currentSettings,
-      selectedAccessTables: input.selectedAccessTables,
-      userDataPath: input.userDataPath
+      operatingSettings
     });
-    const previewState = collectDatabaseMigrationState(getRequiredDatabase());
-    const { completedAt: _completedAt, ...summary } = previewSummary;
 
-    return {
-      ...summary,
-      requirementCheck,
-      databasePath: currentSettings.databasePath,
-      currentState,
-      previewState,
-      previewedAt: new Date().toISOString()
-    };
+    warningMessages = importResult.warningMessages;
+
+    const allTables = listUserTableNames(tempDb);
+    for (const tableName of allTables) {
+      const row = tempDb
+        .prepare(`SELECT COUNT(*) as count FROM ${quoteSqlIdentifier(tableName)}`)
+        .get() as { count: number };
+      nextRowCounts.set(tableName, row.count);
+    }
   } finally {
     closeSqliteStorage();
     removeSqliteSidecars(tempDatabasePath);
     rmSync(tempDatabasePath, { force: true });
+
+    // 운영 DB 복원 및 재열기
     initializeSqliteStorage({
       dbPath: currentSettings.databasePath,
       userDataPath: input.userDataPath,
       env: input.env
     });
   }
+
+  const liveDb = getRequiredDatabase();
+
+  // Sol 코드 전략 4: HTTP 미리보기 성공 시 access_logs 1행을 토큰 발급 전에 동기 콜백으로 기록
+  if (input.onPreviewSuccess) {
+    input.onPreviewSuccess();
+  }
+
+  // 활동 기록 후 현재 live DB의 40개 표 상태 및 지문 확정
+  const liveTables = listUserTableNames(liveDb);
+  const liveTableSet = new Set(liveTables);
+
+  const tableImpacts: JsonDatabaseTableImpact[] = [];
+  const all40Tables = [
+    ...JSON_IMPORT_TABLE_ORDER.filter((t) => liveTableSet.has(t)),
+    APP_SETTINGS_TABLE_NAME
+  ];
+
+  for (const tableName of all40Tables) {
+    const row = liveDb
+      .prepare(`SELECT COUNT(*) as count FROM ${quoteSqlIdentifier(tableName)}`)
+      .get() as { count: number };
+
+    tableImpacts.push({
+      tableName,
+      currentRowCount: row.count,
+      nextRowCount: nextRowCounts.get(tableName) ?? 0
+    });
+  }
+
+  const databaseFingerprint = computeDatabaseContentFingerprint(liveDb);
+
+  const previewToken = randomUUID();
+  const expiresAt = Date.now() + TOKEN_TTL_MS;
+
+  previewTokens.set(previewToken, {
+    token: previewToken,
+    backupFilePath: resolvedBackupFilePath,
+    backupSha256: fileSha256,
+    databaseFingerprint,
+    expiresAt
+  });
+
+  return {
+    sourceType: "json",
+    backupFilePath: resolvedBackupFilePath,
+    backupSha256: fileSha256,
+    schemaVersion: "1",
+    previewToken,
+    expiresAt: new Date(expiresAt).toISOString(),
+    tableImpacts,
+    warningMessages,
+    previewedAt: new Date().toISOString()
+  };
 };
 
+/**
+ * 3. 복원 실행
+ */
 export const runDatabaseMigrationUpdate = async (input: {
   userDataPath: string;
-  migrationFilePath: string;
-  selectedAccessTables?: AccessMigrationTableName[];
+  backupFilePath: string;
+  backupSha256: string;
+  previewToken: string;
+  confirmationText: "교체";
   env?: NodeJS.ProcessEnv;
-}): Promise<DatabaseMigrationSummary> => {
-  const { migrationFilePath, extension } = resolveDatabaseMigrationInput(input);
-  const requirementCheck =
-    extension === ".json" ? createJsonMigrationRequirementCheck() : createAccessMigrationRequirementCheck();
+}): Promise<JsonDatabaseRestoreSummary> => {
+  purgeExpiredTokens();
 
-  assertDatabaseMigrationRequirementsReady(requirementCheck);
+  if (input.confirmationText !== "교체") {
+    throw new Error("확인 문구가 올바르지 않습니다. 정확히 '교체'를 입력해야 합니다.");
+  }
 
+  const { backupFilePath: resolvedBackupFilePath } = resolveDatabaseMigrationInput(input);
+
+  // 토큰 검증
+  const tokenEntry = previewTokens.get(input.previewToken);
+  if (!tokenEntry || tokenEntry.expiresAt <= Date.now()) {
+    throw new Error(
+      "유효하지 않거나 만료된 미리보기 토큰입니다. 다시 미리보기를 진행해 주세요."
+    );
+  }
+
+  if (path.resolve(tokenEntry.backupFilePath) !== path.resolve(resolvedBackupFilePath)) {
+    throw new Error("미리보기 시점과 다른 백업 파일 경로입니다. 다시 미리보기를 진행해 주세요.");
+  }
+
+  if (tokenEntry.backupSha256 !== input.backupSha256) {
+    throw new Error("요청된 백업 SHA와 미리보기 토큰 SHA가 일치하지 않습니다.");
+  }
+
+  // 실시간 백업 파일 바이트 SHA 재검증 (N4)
+  const currentFileSha = computeFileSha256(resolvedBackupFilePath);
+  if (currentFileSha.toLowerCase() !== tokenEntry.backupSha256.toLowerCase()) {
+    throw new Error("미리보기 이후 백업 파일이 변경되었습니다. 다시 미리보기를 진행해 주세요.");
+  }
+
+  // 라이브 DB 연결 및 지문 검증 (N4)
   initializeSqliteStorage({
     userDataPath: input.userDataPath,
     env: input.env
@@ -3356,13 +1931,61 @@ export const runDatabaseMigrationUpdate = async (input: {
     userDataPath: input.userDataPath,
     env: input.env
   });
-  const backupSummary = await runDatabaseBackupNow(input);
+
+  const liveDb = getRequiredDatabase();
+  const currentFingerprint = computeDatabaseContentFingerprint(liveDb);
+
+  if (currentFingerprint !== tokenEntry.databaseFingerprint) {
+    throw new Error(
+      "미리보기 이후 데이터베이스 내용이 변경되었습니다. 다시 미리보기를 진행해 주세요."
+    );
+  }
+
+  // 토큰 1회 소비 (N4)
+  previewTokens.delete(input.previewToken);
+
+  // 교체 전 현재 DB의 사전 백업 완료 및 확인
+  const backupBeforeRestore: JsonDatabaseBackupSummary = await runDatabaseBackupNow({
+    userDataPath: input.userDataPath,
+    env: input.env
+  });
+
+  if (!existsSync(backupBeforeRestore.jsonBackupPath)) {
+    throw new Error("사전 백업 파일이 생성되지 않아 복원을 중단했습니다.");
+  }
+
+  // await 사이 원본 파일이나 운영 DB 변경 여부 재확인 (C03, N6)
+  const postBackupFileSha = computeFileSha256(resolvedBackupFilePath);
+  if (postBackupFileSha.toLowerCase() !== tokenEntry.backupSha256.toLowerCase()) {
+    throw new Error("사전 백업 중 백업 원본 파일이 변경되었습니다.");
+  }
+
+  // C03: 사전 백업 await 도중 live DB 변경(새 승인/실적 등) 감지
+  const postBackupDbFingerprint = computeDatabaseContentFingerprint(liveDb);
+  if (postBackupDbFingerprint !== tokenEntry.databaseFingerprint) {
+    throw new Error(
+      "사전 백업 진행 중 데이터베이스 내용이 변경되었습니다. 다시 미리보기를 진행해 주세요."
+    );
+  }
+
+  // C03: 실제 파싱된 버퍼의 SHA와 미리보기 토큰 SHA 대조
+  const { snapshot, fileSha256: parsedSha } = parseAndValidateBackupJson(resolvedBackupFilePath);
+  if (parsedSha.toLowerCase() !== tokenEntry.backupSha256.toLowerCase()) {
+    throw new Error("파싱된 백업 파일 해시가 미리보기 토큰 해시와 일치하지 않습니다.");
+  }
+
+  // C01: 대상 기기의 6운영 설정 live DB에서 캡처
+  const operatingSettings = captureOperatingSettings(liveDb, currentSettings);
+
   const tempDatabasePath = path.join(
     ensureMigrationDirectory(currentSettings.databasePath),
     `restore-${Date.now()}-${randomUUID()}.sqlite`
   );
 
   closeSqliteStorage();
+
+  let warningMessages: string[] = [];
+  const tableResults: JsonDatabaseTableImpact[] = [];
 
   try {
     initializeSqliteStorage({
@@ -3371,41 +1994,63 @@ export const runDatabaseMigrationUpdate = async (input: {
       env: input.env
     });
 
-    const summary = importMigrationIntoCurrentStorage({
-      extension,
-      migrationFilePath,
+    const tempDb = getRequiredDatabase();
+    const importResult = importJsonBackupIntoDatabase({
+      database: tempDb,
+      snapshot,
+      resolvedBackupFilePath,
       currentSettings,
-      selectedAccessTables: input.selectedAccessTables,
-      userDataPath: input.userDataPath
+      operatingSettings
     });
 
+    warningMessages = importResult.warningMessages;
+
+    const tempTables = listUserTableNames(tempDb);
+    for (const tableName of tempTables) {
+      const row = tempDb
+        .prepare(`SELECT COUNT(*) as count FROM ${quoteSqlIdentifier(tableName)}`)
+        .get() as { count: number };
+      tableResults.push({
+        tableName,
+        currentRowCount: 0, // 교체 후 결과
+        nextRowCount: row.count
+      });
+    }
+
     closeSqliteStorage();
+
+    // 기존 데이터베이스 파일을 새 복원 DB로 원자적 교체
     replaceDatabaseFileAtomically(currentSettings.databasePath, tempDatabasePath);
+
+    // 새 라이브 DB 재열기
     initializeSqliteStorage({
       dbPath: currentSettings.databasePath,
       userDataPath: input.userDataPath,
       env: input.env
     });
-    const databaseState = collectDatabaseMigrationState(getRequiredDatabase());
 
     return {
-      ...summary,
-      requirementCheck,
-      migrationFilePath,
+      sourceType: "json",
+      backupFilePath: resolvedBackupFilePath,
+      sourceBackupSha256: tokenEntry.backupSha256,
       databasePath: currentSettings.databasePath,
-      databaseState,
-      backupSummary,
+      tableResults,
+      backupBeforeRestore,
+      warningMessages,
       completedAt: new Date().toISOString()
     };
   } catch (error) {
     closeSqliteStorage();
     removeSqliteSidecars(tempDatabasePath);
     rmSync(tempDatabasePath, { force: true });
+
+    // 실패 시 기존 운영 DB 유지 및 재열기
     initializeSqliteStorage({
       dbPath: currentSettings.databasePath,
       userDataPath: input.userDataPath,
       env: input.env
     });
+
     throw error;
   }
 };

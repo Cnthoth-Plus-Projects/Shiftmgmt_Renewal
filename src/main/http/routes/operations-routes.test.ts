@@ -1,4 +1,3 @@
-import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   CHANNEL_CONTRACTS,
@@ -35,17 +34,47 @@ const mocks = vi.hoisted(() => ({
 
   // database-migration-service
   checkDatabaseMigrationRequirements: vi.fn().mockResolvedValue({ canMigrate: true }),
-  previewDatabaseMigrationUpdate: vi.fn().mockResolvedValue({ changes: [] }),
+  previewDatabaseMigrationUpdate: vi.fn((options?: { onPreviewSuccess?: () => void }) => {
+    options?.onPreviewSuccess?.();
+    return { changes: [] };
+  }),
   runDatabaseMigrationUpdate: vi.fn().mockResolvedValue({ applied: true }),
 
-  // document-template-management-service
-  approveManagedDocumentTemplateVersion: vi.fn().mockResolvedValue({ approved: true }),
-  deleteManagedDocumentTemplateVersion: vi.fn().mockResolvedValue(undefined),
-  inspectDocumentTemplateImport: vi.fn().mockResolvedValue({ valid: true }),
-  saveManagedDocumentTemplateVersion: vi.fn().mockResolvedValue({ id: "tpl-1" }),
+  // document-layout-storage-service
+  listDocumentLayouts: vi.fn(() => []),
+  getDocumentLayout: vi.fn((key: { documentKind?: string }) => ({
+    documentKind: key.documentKind,
+    activeRevisionId: "rev-1",
+    definition: {},
+    capabilities: {},
+  })),
+  saveDocumentLayout: vi.fn((input: { definition: { documentKind: string } }) => ({
+    documentKind: input.definition.documentKind,
+    activeRevisionId: "rev-2",
+    definition: input.definition,
+    capabilities: {},
+  })),
+  resetDocumentLayout: vi.fn((input: { documentKind: string }) => ({
+    documentKind: input.documentKind,
+    activeRevisionId: "rev-3",
+    definition: {},
+    capabilities: {},
+  })),
+  listDocumentLayoutHistory: vi.fn(() => []),
 
-  // document-template-preview-service
-  previewDocumentTemplateFile: vi.fn().mockResolvedValue({ previewUrl: "http://preview" }),
+  // document-layout-preview-artifact-service
+  createPreview: vi.fn().mockResolvedValue({
+    previewId: "prev-1",
+    outputs: [
+      {
+        memberId: "main",
+        mediaType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        previewUrl: "/api/document-layout-previews/prev-1/main",
+        expiresAt: "2026-09-21T00:00:00.000Z",
+      },
+    ],
+    validationIssues: [],
+  }),
 
   // holiday-api-service
   fetchHolidayApiItems: vi.fn().mockResolvedValue([{ date: "2026-01-01", name: "신정" }]),
@@ -57,8 +86,6 @@ const mocks = vi.hoisted(() => ({
   deleteStoredHolidayItem: vi.fn(),
   deleteStoredOperationUser: vi.fn(),
   listStoredAllowanceRateVersions: vi.fn(() => []),
-  listStoredDocumentTemplateHistory: vi.fn(() => []),
-  listStoredDocumentTemplateVersions: vi.fn(() => []),
   listStoredHolidayCalendars: vi.fn(() => []),
   listStoredOperationUsers: vi.fn(() => []),
   listStoredSiteNameOptions: vi.fn(() => []),
@@ -68,8 +95,6 @@ const mocks = vi.hoisted(() => ({
   saveStoredHolidayItem: vi.fn((input: unknown) => input),
   saveStoredOperationUser: vi.fn((input: unknown) => input),
   saveStoredSiteNameOption: vi.fn((input: unknown) => input),
-  setStoredDefaultDocumentTemplateVersion: vi.fn((id: string) => ({ id, isDefault: true })),
-  updateStoredDocumentTemplateOutputFileNamePattern: vi.fn((input: unknown) => input),
   findStoredOperationAuthByLoginId: vi.fn(() => null),
 
   // release-history-service
@@ -102,15 +127,18 @@ vi.mock("../../services/database-migration-service", () => ({
   runDatabaseMigrationUpdate: mocks.runDatabaseMigrationUpdate,
 }));
 
-vi.mock("../../services/document-template-management-service", () => ({
-  approveManagedDocumentTemplateVersion: mocks.approveManagedDocumentTemplateVersion,
-  deleteManagedDocumentTemplateVersion: mocks.deleteManagedDocumentTemplateVersion,
-  inspectDocumentTemplateImport: mocks.inspectDocumentTemplateImport,
-  saveManagedDocumentTemplateVersion: mocks.saveManagedDocumentTemplateVersion,
+vi.mock("../../services/document-layout-storage-service", () => ({
+  listDocumentLayouts: mocks.listDocumentLayouts,
+  getDocumentLayout: mocks.getDocumentLayout,
+  saveDocumentLayout: mocks.saveDocumentLayout,
+  resetDocumentLayout: mocks.resetDocumentLayout,
+  listDocumentLayoutHistory: mocks.listDocumentLayoutHistory,
 }));
 
-vi.mock("../../services/document-template-preview-service", () => ({
-  previewDocumentTemplateFile: mocks.previewDocumentTemplateFile,
+vi.mock("../../services/document-layout-preview-artifact-service", () => ({
+  documentLayoutPreviewArtifactService: {
+    createPreview: mocks.createPreview,
+  },
 }));
 
 vi.mock("../../services/holiday-api-service", () => ({
@@ -124,8 +152,6 @@ vi.mock("../../services/operations-storage-service", () => ({
   deleteStoredHolidayItem: mocks.deleteStoredHolidayItem,
   deleteStoredOperationUser: mocks.deleteStoredOperationUser,
   listStoredAllowanceRateVersions: mocks.listStoredAllowanceRateVersions,
-  listStoredDocumentTemplateHistory: mocks.listStoredDocumentTemplateHistory,
-  listStoredDocumentTemplateVersions: mocks.listStoredDocumentTemplateVersions,
   listStoredHolidayCalendars: mocks.listStoredHolidayCalendars,
   listStoredOperationUsers: mocks.listStoredOperationUsers,
   listStoredSiteNameOptions: mocks.listStoredSiteNameOptions,
@@ -135,8 +161,6 @@ vi.mock("../../services/operations-storage-service", () => ({
   saveStoredHolidayItem: mocks.saveStoredHolidayItem,
   saveStoredOperationUser: mocks.saveStoredOperationUser,
   saveStoredSiteNameOption: mocks.saveStoredSiteNameOption,
-  setStoredDefaultDocumentTemplateVersion: mocks.setStoredDefaultDocumentTemplateVersion,
-  updateStoredDocumentTemplateOutputFileNamePattern: mocks.updateStoredDocumentTemplateOutputFileNamePattern,
   findStoredOperationAuthByLoginId: mocks.findStoredOperationAuthByLoginId,
 }));
 
@@ -172,7 +196,7 @@ const createMockDialogBridge = (overrides: Partial<DialogBridge> = {}): DialogBr
     if (req.operation === "saveFile") {
       return { ok: true, cancelled: false, path: "C:/selected/preview.xlsx" };
     }
-    if (req.title === "복원 파일 선택") {
+    if (req.title === "복원 파일 선택" || req.title === "JSON 백업 파일 선택") {
       return { ok: true, cancelled: false, path: "C:/selected/backup.json" };
     }
     if (req.title === "Excel 파일 선택") {
@@ -255,11 +279,11 @@ const validArgsMap: Record<string, unknown[]> = {
   "operations:get-app-settings": [],
   "operations:save-app-settings": [{ autoBackupEnabled: true }],
   "operations:select-directory": [{ title: "폴더 선택" }],
-  "operations:select-migration-file": [{ title: "복원 파일 선택" }],
+  "operations:select-json-backup-file": [{ defaultPath: "C:/sentinel/mig" }],
   "operations:select-spreadsheet-file": [{ title: "Excel 파일 선택" }],
-  "operations:check-database-migration-requirements": [{ migrationFilePath: "C:/selected/backup.json" }],
-  "operations:preview-database-migration-update": [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
-  "operations:update-database-from-migration": [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
+  "operations:check-database-migration-requirements": [{ backupFilePath: "C:/selected/backup.json" }],
+  "operations:preview-database-migration-update": [{ backupFilePath: "C:/selected/backup.json" }],
+  "operations:update-database-from-migration": [{ backupFilePath: "C:/selected/backup.json", backupSha256: "sha-1", previewToken: "token-1", confirmationText: "교체" }],
   "operations:run-database-backup-now": [],
   "operations:get-file-watch-status": [],
   "operations:restart-file-watch": [],
@@ -282,16 +306,12 @@ const validArgsMap: Record<string, unknown[]> = {
   "operations:list-site-name-options": [],
   "operations:save-site-name-option": [{ name: "본사" }],
   "operations:delete-site-name-option": [{ name: "본사" }],
-  "operations:list-document-template-history": ["schedule"],
-  "operations:select-document-template-file": ["schedule"],
-  "operations:inspect-document-template": [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx" }],
-  "operations:preview-document-template": [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx", versionLabel: "v1" }],
-  "operations:save-document-template-version": [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx", versionLabel: "v1" }],
-  "operations:approve-document-template-version": ["tpl-1"],
-  "operations:set-default-document-template-version": ["tpl-1"],
-  "operations:update-document-template-output-file-name": [{ templateType: "schedule", pattern: "{date}_{name}" }],
-  "operations:delete-document-template-version": ["tpl-1"],
-  "operations:list-document-template-versions": ["schedule"],
+  "operations:list-document-layouts": [],
+  "operations:get-document-layout": [{ documentKind: "schedule-xlsx", variant: "template1" }],
+  "operations:save-document-layout": [{ definition: { documentKind: "schedule-xlsx", variant: "template1" }, expectedRevisionId: "rev-1" }],
+  "operations:reset-document-layout": [{ documentKind: "schedule-xlsx", variant: "template1", expectedRevisionId: "rev-1" }],
+  "operations:preview-document-layout": [{ definition: { documentKind: "schedule-xlsx", variant: "template1" }, basedOnRevisionId: "rev-1" }],
+  "operations:list-document-layout-history": [{ documentKind: "schedule-xlsx", variant: "template1" }],
 };
 
 const expectedActivities = {
@@ -313,13 +333,9 @@ const expectedActivities = {
   "operations:rotate-account-recovery-key": ["account-recovery-key-rotate", "admin 계정복구키 발급"],
   "operations:save-site-name-option": ["site-name-save", "본사 사이트 명 저장"],
   "operations:delete-site-name-option": ["site-name-delete", "사이트 명 삭제"],
-  "operations:inspect-document-template": ["template-inspect", "근무표 양식 검증"],
-  "operations:preview-document-template": ["template-preview", "근무표 양식 미리보기"],
-  "operations:save-document-template-version": ["template-save", "근무표 양식 등록"],
-  "operations:approve-document-template-version": ["template-approve", "양식 승인"],
-  "operations:set-default-document-template-version": ["template-set-default", "기본 양식 지정"],
-  "operations:update-document-template-output-file-name": ["template-file-name-update", "출력 파일명 규칙 저장"],
-  "operations:delete-document-template-version": ["template-delete", "양식 삭제"],
+  "operations:save-document-layout": ["layout-save", "문서 레이아웃 저장"],
+  "operations:reset-document-layout": ["layout-reset", "문서 레이아웃 초기화"],
+  "operations:preview-document-layout": ["layout-preview", "문서 레이아웃 미리보기"],
 } as const;
 
 type ChannelEffectDescriptor = {
@@ -362,20 +378,23 @@ const channelEffectDescriptors: Record<string, ChannelEffectDescriptor> = {
       expect(body).toEqual({ ok: true, data: "C:/selected/dir" });
     },
   },
-  "operations:select-migration-file": {
-    args: [{ title: "복원 파일 선택" }],
+  "operations:select-json-backup-file": {
+    args: [{ defaultPath: "C:/sentinel/mig" }],
     assertEffects: (env, _args, signal, body) => {
       expect(env.dialogBridge.showDialog).toHaveBeenCalledTimes(1);
       expect(env.dialogBridge.showDialog).toHaveBeenCalledWith(
         {
           operation: "openFile",
-          title: "복원 파일 선택",
-          defaultPath: undefined,
-          filters: [{ name: "복원 파일", extensions: ["json", "accdb"] }],
+          title: "JSON 백업 파일 선택",
+          defaultPath: "C:/sentinel/mig",
+          filters: [{ name: "JSON 백업 파일", extensions: ["json"] }],
         },
         signal,
       );
-      expect(body).toEqual({ ok: true, data: "C:/selected/backup.json" });
+      expect(body).toEqual({
+        ok: true,
+        data: { fileName: "backup.json", filePath: "C:/selected/backup.json" },
+      });
     },
   },
   "operations:select-spreadsheet-file": {
@@ -398,28 +417,30 @@ const channelEffectDescriptors: Record<string, ChannelEffectDescriptor> = {
     },
   },
   "operations:check-database-migration-requirements": {
-    args: [{ migrationFilePath: "C:/selected/backup.json" }],
+    args: [{ backupFilePath: "C:/selected/backup.json" }],
     assertEffects: (_env, args) => {
       expect(mocks.checkDatabaseMigrationRequirements).toHaveBeenCalledTimes(1);
       expect(mocks.checkDatabaseMigrationRequirements).toHaveBeenCalledWith(args[0]);
     },
   },
   "operations:preview-database-migration-update": {
-    args: [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
+    args: [{ backupFilePath: "C:/selected/backup.json" }],
     assertEffects: (env, args) => {
       expect(mocks.stopFileWatchRuntime).toHaveBeenCalledTimes(1);
       expect(mocks.stopFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
       expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledTimes(1);
-      expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledWith({
-        userDataPath: env.dataDir,
-        ...(args[0] as object),
-      });
+      expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userDataPath: env.dataDir,
+          ...(args[0] as object),
+        }),
+      );
       expect(mocks.restartFileWatchRuntime).toHaveBeenCalledTimes(1);
       expect(mocks.restartFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
     },
   },
   "operations:update-database-from-migration": {
-    args: [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
+    args: [{ backupFilePath: "C:/selected/backup.json", backupSha256: "sha-1", previewToken: "token-1", confirmationText: "교체" }],
     assertEffects: (env, args) => {
       expect(mocks.stopFileWatchRuntime).toHaveBeenCalledTimes(1);
       expect(mocks.stopFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
@@ -591,98 +612,62 @@ const channelEffectDescriptors: Record<string, ChannelEffectDescriptor> = {
       expect(mocks.deleteStoredSiteNameOption).toHaveBeenCalledWith(args[0]);
     },
   },
-  "operations:list-document-template-history": {
-    args: ["schedule"],
+  "operations:list-document-layouts": {
+    args: [],
     assertEffects: () => {
-      expect(mocks.listStoredDocumentTemplateHistory).toHaveBeenCalledTimes(1);
-      expect(mocks.listStoredDocumentTemplateHistory).toHaveBeenCalledWith("schedule");
+      expect(mocks.listDocumentLayouts).toHaveBeenCalledTimes(1);
+      expect(mocks.listDocumentLayouts).toHaveBeenCalledWith();
     },
   },
-  "operations:select-document-template-file": {
-    args: ["schedule"],
-    assertEffects: (env, _args, signal, body) => {
-      expect(env.dialogBridge.showDialog).toHaveBeenCalledTimes(1);
-      expect(env.dialogBridge.showDialog).toHaveBeenCalledWith(
-        {
-          operation: "openFile",
-          title: "양식 파일 선택",
-          filters: [{ name: "근무표 Excel 양식", extensions: ["xlsx", "xlsm"] }],
-        },
-        signal,
-      );
-      expect(body).toEqual({
-        ok: true,
-        data: { fileName: "template.xlsx", filePath: "C:/selected/template.xlsx" },
-      });
-    },
-  },
-  "operations:inspect-document-template": {
-    args: [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx" }],
+  "operations:get-document-layout": {
+    args: [{ documentKind: "schedule-xlsx", variant: "template1" }],
     assertEffects: (_env, args) => {
-      expect(mocks.inspectDocumentTemplateImport).toHaveBeenCalledTimes(1);
-      expect(mocks.inspectDocumentTemplateImport).toHaveBeenCalledWith(args[0]);
+      expect(mocks.getDocumentLayout).toHaveBeenCalledTimes(1);
+      expect(mocks.getDocumentLayout).toHaveBeenCalledWith(args[0]);
     },
   },
-  "operations:preview-document-template": {
-    args: [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx", versionLabel: "v1" }],
-    assertEffects: (env, args, _signal, body) => {
-      expect(mocks.getStoredAppSettingsSnapshot).toHaveBeenCalledTimes(1);
-      expect(mocks.getStoredAppSettingsSnapshot).toHaveBeenCalledWith({ userDataPath: env.dataDir });
-      expect(env.dialogBridge.showDialog).toHaveBeenCalledTimes(1);
-      expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledTimes(1);
-      expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledWith(args[0], {
-        outputPath: "C:/selected/preview.xlsx",
-      });
-      expect(body).toEqual({
-        ok: true,
-        data: { previewUrl: "http://preview" },
-      });
-    },
-  },
-  "operations:save-document-template-version": {
-    args: [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx", versionLabel: "v1" }],
-    assertEffects: (env, args) => {
-      expect(mocks.saveManagedDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-      expect(mocks.saveManagedDocumentTemplateVersion).toHaveBeenCalledWith(args[0], {
-        userDataPath: env.dataDir,
-      });
-    },
-  },
-  "operations:approve-document-template-version": {
-    args: ["tpl-1"],
-    assertEffects: () => {
-      expect(mocks.approveManagedDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-      expect(mocks.approveManagedDocumentTemplateVersion).toHaveBeenCalledWith("tpl-1");
-    },
-  },
-  "operations:set-default-document-template-version": {
-    args: ["tpl-1"],
-    assertEffects: () => {
-      expect(mocks.setStoredDefaultDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-      expect(mocks.setStoredDefaultDocumentTemplateVersion).toHaveBeenCalledWith("tpl-1");
-    },
-  },
-  "operations:update-document-template-output-file-name": {
-    args: [{ templateType: "schedule", pattern: "{date}_{name}" }],
+  "operations:save-document-layout": {
+    args: [
+      {
+        definition: { documentKind: "schedule-xlsx", variant: "template1" },
+        expectedRevisionId: "rev-1",
+      },
+    ],
     assertEffects: (_env, args) => {
-      expect(mocks.updateStoredDocumentTemplateOutputFileNamePattern).toHaveBeenCalledTimes(1);
-      expect(mocks.updateStoredDocumentTemplateOutputFileNamePattern).toHaveBeenCalledWith(args[0]);
+      expect(mocks.saveDocumentLayout).toHaveBeenCalledTimes(1);
+      expect(mocks.saveDocumentLayout).toHaveBeenCalledWith(args[0]);
     },
   },
-  "operations:delete-document-template-version": {
-    args: ["tpl-1"],
-    assertEffects: (env) => {
-      expect(mocks.deleteManagedDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-      expect(mocks.deleteManagedDocumentTemplateVersion).toHaveBeenCalledWith("tpl-1", {
-        userDataPath: env.dataDir,
-      });
+  "operations:reset-document-layout": {
+    args: [
+      {
+        documentKind: "schedule-xlsx",
+        variant: "template1",
+        expectedRevisionId: "rev-1",
+      },
+    ],
+    assertEffects: (_env, args) => {
+      expect(mocks.resetDocumentLayout).toHaveBeenCalledTimes(1);
+      expect(mocks.resetDocumentLayout).toHaveBeenCalledWith(args[0]);
     },
   },
-  "operations:list-document-template-versions": {
-    args: ["schedule"],
-    assertEffects: () => {
-      expect(mocks.listStoredDocumentTemplateVersions).toHaveBeenCalledTimes(1);
-      expect(mocks.listStoredDocumentTemplateVersions).toHaveBeenCalledWith("schedule");
+  "operations:preview-document-layout": {
+    args: [
+      {
+        definition: { documentKind: "schedule-xlsx", variant: "template1" },
+        basedOnRevisionId: "rev-1",
+      },
+    ],
+    assertEffects: (_env, args) => {
+      expect(mocks.createPreview).toHaveBeenCalledTimes(1);
+      expect(mocks.createPreview).toHaveBeenCalledWith(args[0]);
+    },
+  },
+  "operations:list-document-layout-history": {
+    args: [{ documentKind: "schedule-xlsx", variant: "template1" }],
+    assertEffects: (_env, args) => {
+      expect(mocks.listDocumentLayoutHistory).toHaveBeenCalledTimes(1);
+      expect(mocks.listDocumentLayoutHistory).toHaveBeenCalledWith(args[0]);
     },
   },
 };
@@ -697,9 +682,6 @@ const expectedDataDirChannels = [
   "operations:restart-file-watch",
   "operations:stop-file-watch",
   "operations:fetch-holiday-api-items",
-  "operations:preview-document-template",
-  "operations:save-document-template-version",
-  "operations:delete-document-template-version",
 ].sort();
 
 describe("operations-routes", () => {
@@ -708,17 +690,17 @@ describe("operations-routes", () => {
   });
 
   describe("C2 & RN1/RN2 contract counts (CN1, CN2)", () => {
-    it("verifies the final 111-contract aggregate registration accurately", () => {
+    it("verifies the final 107-contract aggregate registration accurately", () => {
       const { sessionManager } = setupTestEnv();
       const registry = assembleRoutes(sessionManager);
 
-      expect(CHANNEL_CONTRACTS).toHaveLength(111);
+      expect(CHANNEL_CONTRACTS).toHaveLength(107);
       expect(CORE_CHANNELS).toHaveLength(17);
-      expect(OPERATIONS_CHANNELS).toHaveLength(40);
+      expect(OPERATIONS_CHANNELS).toHaveLength(36);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(111);
-      expect(new Set(registered).size).toBe(111);
+      expect(registered).toHaveLength(107);
+      expect(new Set(registered).size).toBe(107);
 
       for (const channel of CORE_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
@@ -732,21 +714,21 @@ describe("operations-routes", () => {
       }
     });
 
-    it("verifies registerOperationsRoutes registers exactly 40 channels independently", () => {
+    it("verifies registerOperationsRoutes registers exactly 36 channels independently", () => {
       const { sessionManager } = setupTestEnv();
       const registry = new RouteRegistry(sessionManager);
       registerOperationsRoutes(registry, sessionManager);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(40);
-      expect(new Set(registered).size).toBe(40);
+      expect(registered).toHaveLength(36);
+      expect(new Set(registered).size).toBe(36);
       for (const channel of OPERATIONS_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
       }
     });
   });
 
-  describe("R2-1 & R2-2. 40 Channel service/effect and 25 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
+  describe("R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
     it("matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly", () => {
       const expectedKeys = [...OPERATIONS_CHANNELS].sort();
       expect(Object.keys(validArgsMap).sort()).toEqual(expectedKeys);
@@ -762,13 +744,13 @@ describe("operations-routes", () => {
       const activityContracts = CHANNEL_CONTRACTS.filter(
         (c) => c.group === "operations" && c.recordsActivity,
       );
-      expect(activityContracts).toHaveLength(25);
+      expect(activityContracts).toHaveLength(21);
       const manifestActivityKeys = activityContracts.map((c) => c.channel).sort();
       const literalActivityKeys = Object.keys(expectedActivities).sort();
       expect(literalActivityKeys).toEqual(manifestActivityKeys);
     });
 
-    it("dispatches all 40 operations channels independently, verifying exact service effects and activity logs (25 tracked, 15 untracked)", async () => {
+    it("dispatches all 36 operations channels independently, verifying exact service effects and activity logs (21 tracked, 15 untracked)", async () => {
       for (const channel of OPERATIONS_CHANNELS) {
         vi.clearAllMocks();
         const env = setupTestEnv();
@@ -835,26 +817,35 @@ describe("operations-routes", () => {
       expect(env.accessLogSpy).toHaveBeenCalledTimes(0);
     });
 
-    it("verifies activity is 0 and service calls are 0 when preview-document-template dialog is cancelled (RN3, CN6)", async () => {
+    it("verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)", async () => {
       vi.clearAllMocks();
       const env = setupTestEnv();
       const registry = assembleRoutes(env.sessionManager);
 
-      const cancelledBridge = createMockDialogBridge({
-        showDialog: vi.fn().mockResolvedValue({ ok: true, cancelled: true }),
-      });
+      mocks.createPreview.mockRejectedValueOnce(
+        new Error("레이아웃 판 동시성 충돌이 발생했습니다."),
+      );
 
       const { result } = await dispatchAsAdmin(
         registry,
-        "operations:preview-document-template",
-        [{ templateType: "schedule", sourcePath: "C:/tpl.xlsx" }],
+        "operations:preview-document-layout",
+        [
+          {
+            definition: { documentKind: "schedule-xlsx", variant: "template1" },
+            basedOnRevisionId: "stale-rev",
+          },
+        ],
         env,
-        { dialogBridge: cancelledBridge },
       );
 
       expect(result?.status).toBe(200);
-      expect(result?.body).toEqual({ ok: true, data: null });
-      expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledTimes(0);
+      expect((result?.body as { ok: boolean })?.ok).toBe(false);
+      expect((result?.body as { errorCode: string })?.errorCode).toBe(
+        "DOCUMENT_LAYOUT_PREVIEW_FAILED",
+      );
+      expect((result?.body as { message: string })?.message).toContain(
+        "동시성 충돌",
+      );
       expect(env.accessLogSpy).toHaveBeenCalledTimes(0);
     });
   });
@@ -899,17 +890,12 @@ describe("operations-routes", () => {
     });
   });
 
-  describe("R2-3. Dialog 5 channels cancellation and full request shape verification (RN4, CN7, CN8)", () => {
-    it("verifies 5 dialog channels return cancelled null when cancelled (RN4, CN7)", async () => {
+  describe("R2-3. Dialog 3 channels cancellation and full request shape verification (RN4, CN7, CN8)", () => {
+    it("verifies 3 dialog channels return cancelled null when cancelled (RN4, CN7)", async () => {
       const dialogChannels: Array<{ channel: string; args: unknown[] }> = [
         { channel: "operations:select-directory", args: [] },
-        { channel: "operations:select-migration-file", args: [] },
+        { channel: "operations:select-json-backup-file", args: [] },
         { channel: "operations:select-spreadsheet-file", args: [] },
-        { channel: "operations:select-document-template-file", args: ["schedule"] },
-        {
-          channel: "operations:preview-document-template",
-          args: [{ templateType: "schedule", sourcePath: "C:/test/src.xlsx" }],
-        },
       ];
 
       for (const { channel, args } of dialogChannels) {
@@ -930,7 +916,7 @@ describe("operations-routes", () => {
       }
     });
 
-    it("verifies 5 dialog channels request full options, signal identity, and return exact shapes (RN4, CN7)", async () => {
+    it("verifies 3 dialog channels request full options, signal identity, and return exact shapes (RN4, CN7)", async () => {
       // 1. select-directory
       {
         vi.clearAllMocks();
@@ -957,7 +943,7 @@ describe("operations-routes", () => {
         );
       }
 
-      // 2. select-migration-file (.json success)
+      // 2. select-json-backup-file (.json success)
       {
         vi.clearAllMocks();
         const env = setupTestEnv();
@@ -969,26 +955,29 @@ describe("operations-routes", () => {
 
         const { result } = await dispatchAsAdmin(
           registry,
-          "operations:select-migration-file",
-          [{ title: "DB 복원 파일", defaultPath: "C:/sentinel/mig" }],
+          "operations:select-json-backup-file",
+          [{ defaultPath: "C:/sentinel/mig" }],
           env,
           { signal, dialogBridge: migBridge },
         );
 
-        expect(result?.body).toEqual({ ok: true, data: "C:/selected/backup.json" });
+        expect(result?.body).toEqual({
+          ok: true,
+          data: { fileName: "backup.json", filePath: "C:/selected/backup.json" },
+        });
         expect(migBridge.showDialog).toHaveBeenCalledTimes(1);
         expect(migBridge.showDialog).toHaveBeenCalledWith(
           {
             operation: "openFile",
-            title: "DB 복원 파일",
+            title: "JSON 백업 파일 선택",
             defaultPath: "C:/sentinel/mig",
-            filters: [{ name: "복원 파일", extensions: ["json", "accdb"] }],
+            filters: [{ name: "JSON 백업 파일", extensions: ["json"] }],
           },
           signal,
         );
       }
 
-      // 2b. select-migration-file default title fallback
+      // 2b. select-json-backup-file default title fallback
       {
         vi.clearAllMocks();
         const env = setupTestEnv();
@@ -998,7 +987,7 @@ describe("operations-routes", () => {
         });
         const signal = new AbortController().signal;
 
-        await dispatchAsAdmin(registry, "operations:select-migration-file", [], env, {
+        await dispatchAsAdmin(registry, "operations:select-json-backup-file", [], env, {
           signal,
           dialogBridge: migBridge,
         });
@@ -1006,9 +995,9 @@ describe("operations-routes", () => {
         expect(migBridge.showDialog).toHaveBeenCalledWith(
           {
             operation: "openFile",
-            title: "복원 파일 선택",
+            title: "JSON 백업 파일 선택",
             defaultPath: undefined,
-            filters: [{ name: "복원 파일", extensions: ["json", "accdb"] }],
+            filters: [{ name: "JSON 백업 파일", extensions: ["json"] }],
           },
           signal,
         );
@@ -1073,131 +1062,9 @@ describe("operations-routes", () => {
           signal,
         );
       }
-
-      // 4. select-document-template-file (schedule)
-      {
-        vi.clearAllMocks();
-        const env = setupTestEnv();
-        const registry = assembleRoutes(env.sessionManager);
-        const tplBridge = createMockDialogBridge({
-          showDialog: vi.fn().mockResolvedValue({ ok: true, cancelled: false, path: "C:/selected/template.xlsx" }),
-        });
-        const signal = new AbortController().signal;
-
-        const { result } = await dispatchAsAdmin(
-          registry,
-          "operations:select-document-template-file",
-          ["schedule"],
-          env,
-          { signal, dialogBridge: tplBridge },
-        );
-
-        expect(result?.body).toEqual({
-          ok: true,
-          data: { fileName: "template.xlsx", filePath: "C:/selected/template.xlsx" },
-        });
-        expect(tplBridge.showDialog).toHaveBeenCalledTimes(1);
-        expect(tplBridge.showDialog).toHaveBeenCalledWith(
-          {
-            operation: "openFile",
-            title: "양식 파일 선택",
-            filters: [{ name: "근무표 Excel 양식", extensions: ["xlsx", "xlsm"] }],
-          },
-          signal,
-        );
-      }
-
-      // 4b. select-document-template-file (proposal filter distinction)
-      {
-        vi.clearAllMocks();
-        const env = setupTestEnv();
-        const registry = assembleRoutes(env.sessionManager);
-        const tplBridge = createMockDialogBridge({
-          showDialog: vi.fn().mockResolvedValue({ ok: true, cancelled: false, path: "C:/selected/proposal.xlsx" }),
-        });
-        const signal = new AbortController().signal;
-
-        const { result } = await dispatchAsAdmin(
-          registry,
-          "operations:select-document-template-file",
-          ["proposal"],
-          env,
-          { signal, dialogBridge: tplBridge },
-        );
-
-        expect(result?.body).toEqual({
-          ok: true,
-          data: { fileName: "proposal.xlsx", filePath: "C:/selected/proposal.xlsx" },
-        });
-        expect(tplBridge.showDialog).toHaveBeenCalledWith(
-          {
-            operation: "openFile",
-            title: "양식 파일 선택",
-            filters: [{ name: "Excel 양식 파일", extensions: ["xlsx", "xlsm"] }],
-          },
-          signal,
-        );
-      }
-
-      // 5. preview-document-template
-      {
-        vi.clearAllMocks();
-        const env = setupTestEnv();
-        const registry = assembleRoutes(env.sessionManager);
-        const previewBridge = createMockDialogBridge({
-          showDialog: vi.fn().mockResolvedValue({ ok: true, cancelled: false, path: "C:/preview/out.xlsx" }),
-        });
-        const signal = new AbortController().signal;
-        const input = { templateType: "schedule", sourcePath: "C:/test/src.xlsx", versionLabel: "v2" };
-
-        const { result } = await dispatchAsAdmin(
-          registry,
-          "operations:preview-document-template",
-          [input],
-          env,
-          { signal, dialogBridge: previewBridge },
-        );
-
-        expect(result?.status).toBe(200);
-        expect(result?.body).toEqual({ ok: true, data: { previewUrl: "http://preview" } });
-
-        const expectedDefaultPath = path.resolve(
-          "C:/exports",
-          "template-previews",
-          "schedule",
-          "근무표_v2_preview.xlsx",
-        );
-
-        expect(previewBridge.showDialog).toHaveBeenCalledTimes(1);
-        expect(previewBridge.showDialog).toHaveBeenCalledWith(
-          {
-            operation: "saveFile",
-            title: "양식 미리보기 저장",
-            defaultPath: expectedDefaultPath,
-            filters: [{ name: "Excel Workbook", extensions: ["xlsx"] }],
-            showOverwriteConfirmation: true,
-          },
-          signal,
-        );
-
-        expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledTimes(1);
-        expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledWith(input, {
-          outputPath: "C:/preview/out.xlsx",
-        });
-
-        expect(env.accessLogSpy).toHaveBeenCalledTimes(1);
-        const [firstArg] = env.accessLogSpy.mock.calls[0];
-        expect(firstArg).toEqual({
-          actionType: "template-preview",
-          actionLabel: accessLogActionLabels["template-preview"],
-          routeKey: "operations",
-          routeLabel: "운영 관리",
-          details: "근무표 양식 미리보기",
-        });
-      }
     });
 
-    it("verifies select-migration-file rejects .xlsx selection with DATABASE_RESTORE_FILE_REQUIRED (RN4, CN8)", async () => {
+    it("verifies select-json-backup-file rejects .xlsx selection with DATABASE_RESTORE_FILE_REQUIRED (RN4, CN8)", async () => {
       vi.clearAllMocks();
       const env = setupTestEnv();
       const registry = assembleRoutes(env.sessionManager);
@@ -1207,7 +1074,7 @@ describe("operations-routes", () => {
 
       const { result } = await dispatchAsAdmin(
         registry,
-        "operations:select-migration-file",
+        "operations:select-json-backup-file",
         [],
         env,
         { dialogBridge: invalidBridge },
@@ -1217,23 +1084,23 @@ describe("operations-routes", () => {
       expect(result?.body).toEqual({
         ok: false,
         errorCode: "DATABASE_RESTORE_FILE_REQUIRED",
-        message: "DB복구는 JSON 백업(.json) 또는 Access DB(.accdb) 파일만 선택할 수 있습니다.",
+        message: "DB복구는 JSON 백업(.json) 파일만 선택할 수 있습니다.",
       });
       expect(env.accessLogSpy).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe("R2-4. dataDir 12 channels isolated propagation verification (RN5, CN9)", () => {
+  describe("R2-4. dataDir 9 channels isolated propagation verification (RN5, CN9)", () => {
     it("matches dataDir literal channels with manifest usesDataDir channels exactly", () => {
       const dataDirContracts = CHANNEL_CONTRACTS.filter(
         (c) => c.group === "operations" && c.usesDataDir,
       );
-      expect(dataDirContracts).toHaveLength(12);
+      expect(dataDirContracts).toHaveLength(9);
       const manifestDataDirKeys = dataDirContracts.map((c) => c.channel).sort();
       expect(expectedDataDirChannels).toEqual(manifestDataDirKeys);
     });
 
-    it("verifies sentinel dataDir is passed to all 12 usesDataDir channels in isolated runs", async () => {
+    it("verifies sentinel dataDir is passed to all 9 usesDataDir channels in isolated runs", async () => {
       for (const channel of expectedDataDirChannels) {
         vi.clearAllMocks();
         const env = setupTestEnv();
@@ -1262,11 +1129,12 @@ describe("operations-routes", () => {
             expect(mocks.stopFileWatchRuntime).toHaveBeenCalledTimes(1);
             expect(mocks.stopFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
             expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledTimes(1);
-            expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledWith({
-              userDataPath: env.dataDir,
-              migrationFilePath: "C:/selected/backup.json",
-              selectedAccessTables: [],
-            });
+            expect(mocks.previewDatabaseMigrationUpdate).toHaveBeenCalledWith(
+              expect.objectContaining({
+                userDataPath: env.dataDir,
+                backupFilePath: "C:/selected/backup.json",
+              }),
+            );
             expect(mocks.restartFileWatchRuntime).toHaveBeenCalledTimes(1);
             expect(mocks.restartFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
             break;
@@ -1276,8 +1144,10 @@ describe("operations-routes", () => {
             expect(mocks.runDatabaseMigrationUpdate).toHaveBeenCalledTimes(1);
             expect(mocks.runDatabaseMigrationUpdate).toHaveBeenCalledWith({
               userDataPath: env.dataDir,
-              migrationFilePath: "C:/selected/backup.json",
-              selectedAccessTables: [],
+              backupFilePath: "C:/selected/backup.json",
+              backupSha256: "sha-1",
+              previewToken: "token-1",
+              confirmationText: "교체",
             });
             expect(mocks.restartFileWatchRuntime).toHaveBeenCalledTimes(1);
             expect(mocks.restartFileWatchRuntime).toHaveBeenCalledWith({ userDataPath: env.dataDir });
@@ -1305,26 +1175,6 @@ describe("operations-routes", () => {
             expect(mocks.fetchHolidayApiItems).toHaveBeenCalledWith({
               baseUrl: "https://api.test/holidays",
               year: 2026,
-            });
-            break;
-          case "operations:preview-document-template":
-            expect(mocks.getStoredAppSettingsSnapshot).toHaveBeenCalledTimes(1);
-            expect(mocks.getStoredAppSettingsSnapshot).toHaveBeenCalledWith({ userDataPath: env.dataDir });
-            expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledTimes(1);
-            expect(mocks.previewDocumentTemplateFile).toHaveBeenCalledWith(args[0], {
-              outputPath: "C:/selected/preview.xlsx",
-            });
-            break;
-          case "operations:save-document-template-version":
-            expect(mocks.saveManagedDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-            expect(mocks.saveManagedDocumentTemplateVersion).toHaveBeenCalledWith(args[0], {
-              userDataPath: env.dataDir,
-            });
-            break;
-          case "operations:delete-document-template-version":
-            expect(mocks.deleteManagedDocumentTemplateVersion).toHaveBeenCalledTimes(1);
-            expect(mocks.deleteManagedDocumentTemplateVersion).toHaveBeenCalledWith("tpl-1", {
-              userDataPath: env.dataDir,
             });
             break;
         }
@@ -1360,18 +1210,23 @@ describe("operations-routes", () => {
         mocks.stopFileWatchRuntime.mockImplementationOnce(async () => {
           order.push("stop");
         });
-        matrixItem.actionSpy.mockImplementationOnce(async () => {
+        matrixItem.actionSpy.mockImplementationOnce(async (options?: { onPreviewSuccess?: () => void }) => {
           order.push("action");
+          options?.onPreviewSuccess?.();
           return { ok: true };
         });
         mocks.restartFileWatchRuntime.mockImplementationOnce(async () => {
           order.push("restart");
         });
 
+        const args = matrixItem.channel === "operations:preview-database-migration-update"
+          ? [{ backupFilePath: "C:/selected/backup.json" }]
+          : [{ backupFilePath: "C:/selected/backup.json", backupSha256: "sha-1", previewToken: "token-1", confirmationText: "교체" }];
+
         const { result } = await dispatchAsAdmin(
           registry,
           matrixItem.channel,
-          [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
+          args,
           env,
         );
 
@@ -1410,10 +1265,14 @@ describe("operations-routes", () => {
           order.push("restart");
         });
 
+        const args = matrixItem.channel === "operations:preview-database-migration-update"
+          ? [{ backupFilePath: "C:/selected/backup.json" }]
+          : [{ backupFilePath: "C:/selected/backup.json", backupSha256: "sha-1", previewToken: "token-1", confirmationText: "교체" }];
+
         const { result } = await dispatchAsAdmin(
           registry,
           matrixItem.channel,
-          [{ migrationFilePath: "C:/selected/backup.json", selectedAccessTables: [] }],
+          args,
           env,
         );
 

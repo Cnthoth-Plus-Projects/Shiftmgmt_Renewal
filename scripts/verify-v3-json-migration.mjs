@@ -12,9 +12,14 @@ const {
   runDatabaseMigrationUpdate
 } = require("../dist/server/main/services/database-migration-service.js");
 const {
+  initializeSqliteStorage,
   closeSqliteStorage
 } = require("../dist/server/main/services/sqlite-storage-service.js");
 
+const EXPECTED_ACCOUNT_WARNING =
+  "계정 정보(app_users)가 백업 파일의 계정으로 교체됩니다.";
+const EXPECTED_EXTERNAL_FILE_WARNING =
+  "실적 파일 등 외부 파일 자체는 JSON 백업에 포함되지 않으므로 기기 간 이동 시 별도 보존이 필요할 수 있습니다.";
 const EXPECTED_SETTINGS_WARNING =
   "백업 JSON의 경로 설정은 무시하고 현재 환경 경로를 유지했습니다.";
 const EXPECTED_REMOVAL_WARNING =
@@ -73,9 +78,19 @@ function assertMigrationWarnings(warnings, context) {
   if (!Array.isArray(warnings)) {
     fail(`오류: ${context} warningMessages가 배열이 아닙니다.`);
   }
-  if (warnings.length !== 2) {
+  if (warnings.length !== 4) {
     fail(
-      `오류: ${context} 경고 개수 불일치 (기대: 2개, 실제: ${warnings.length}개 - [${warnings.join("; ")}])`
+      `오류: ${context} 경고 개수 불일치 (기대: 4개, 실제: ${warnings.length}개 - [${warnings.join("; ")}])`
+    );
+  }
+  if (!warnings.includes(EXPECTED_ACCOUNT_WARNING)) {
+    fail(
+      `오류: ${context} 계정 교체 경고 문구 누락\n  기대 포함: "${EXPECTED_ACCOUNT_WARNING}"\n  실제: [${warnings.join("; ")}]`
+    );
+  }
+  if (!warnings.includes(EXPECTED_EXTERNAL_FILE_WARNING)) {
+    fail(
+      `오류: ${context} 외부 파일 미포함 경고 문구 누락\n  기대 포함: "${EXPECTED_EXTERNAL_FILE_WARNING}"\n  실제: [${warnings.join("; ")}]`
     );
   }
   if (!warnings.includes(EXPECTED_SETTINGS_WARNING)) {
@@ -142,6 +157,28 @@ async function main() {
   fs.mkdirSync(dataDir, { recursive: true });
   const env = { DATA_DIR: dataDir };
 
+  // C01: 대상 운영 키를 실제 fixture에 심기
+  initializeSqliteStorage({
+    userDataPath,
+    env
+  });
+
+  const fixtureDbPath = path.join(dataDir, "shiftmgmt.sqlite");
+  const fixtureDb = new DatabaseSync(fixtureDbPath);
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("holiday_api_base_url", "https://target-device.holiday-api.internal", "2026-09-01T00:00:00.000Z");
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("database_backup_schedule", "weekly", "2026-09-01T00:00:00.000Z");
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("database_backup_time", "04:30", "2026-09-01T00:00:00.000Z");
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("update_last_seen_patch_note_version", "v1.8.2", "2026-09-01T00:00:00.000Z");
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("update_last_skipped_version", "v1.8.0", "2026-09-01T00:00:00.000Z");
+  fixtureDb.prepare("INSERT OR REPLACE INTO app_setting_entries (setting_key, value, updated_at) VALUES (?, ?, ?)")
+    .run("substitute_allowance_policy_reparse_marker", "2026-09-01T00:00:00.000Z", "2026-09-01T00:00:00.000Z");
+  fixtureDb.close();
+
   let db = null;
   let primaryError = null;
   const cleanupErrors = [];
@@ -160,14 +197,13 @@ async function main() {
     try {
       previewResult = previewDatabaseMigrationUpdate({
         userDataPath,
-        migrationFilePath: options.input,
+        backupFilePath: options.input,
         env
       });
     } finally {
       console.warn = origWarn;
     }
 
-    // P22-D2: preview 경고 검증 (경로 설정 유지 1건 + 사번 없는 실적 제거 1건)
     assertMigrationWarnings(previewResult.warningMessages, "preview");
 
     const isExcludedSchemaWarning = (msg) =>
@@ -187,8 +223,10 @@ async function main() {
       fail(`오류: preview에서 스키마 제외 경고 감지: ${previewExclusions.join("; ")}`);
     }
 
-    if (previewResult.restoredTableCount !== 32) {
-      fail(`오류: preview restoredTableCount 불일치 (기대: 32, 실제: ${previewResult.restoredTableCount})`);
+    if (!Array.isArray(previewResult.tableImpacts) || previewResult.tableImpacts.length !== 40) {
+      fail(
+        `오류: preview tableImpacts 불일치 (기대: 40개 표, 실제: ${previewResult.tableImpacts?.length})`
+      );
     }
 
     // 2. Real restore
@@ -202,14 +240,16 @@ async function main() {
     try {
       restoreResult = await runDatabaseMigrationUpdate({
         userDataPath,
-        migrationFilePath: options.input,
+        backupFilePath: options.input,
+        backupSha256: previewResult.backupSha256,
+        previewToken: previewResult.previewToken,
+        confirmationText: "교체",
         env
       });
     } finally {
       console.warn = origWarn;
     }
 
-    // P22-D2: 실복원 경고 검증 (경로 설정 유지 1건 + 사번 없는 실적 제거 1건)
     assertMigrationWarnings(restoreResult.warningMessages, "복원 실행");
 
     const restoreExclusions = [
@@ -221,8 +261,10 @@ async function main() {
       fail(`오류: 복원 실행에서 스키마 제외 경고 감지: ${restoreExclusions.join("; ")}`);
     }
 
-    if (restoreResult.restoredTableCount !== 32) {
-      fail(`오류: 복원 restoredTableCount 불일치 (기대: 32, 실제: ${restoreResult.restoredTableCount})`);
+    if (!Array.isArray(restoreResult.tableResults) || restoreResult.tableResults.length !== 40) {
+      fail(
+        `오류: 복원 tableResults 불일치 (기대: 40개 표, 실제: ${restoreResult.tableResults?.length})`
+      );
     }
 
     // 3. Open restored database directly
@@ -260,22 +302,123 @@ async function main() {
       fail("오류: target DB에 'shift_pattern_duty_types' 표 누락");
     }
 
-    // 6. Target total rows check
+    // 6. app_setting_entries 4대 분류 매핑 및 행 수 검증
+    const sourceSettingsRows = parsedJson.tables.app_setting_entries || [];
+    const sourceSettingsMap = new Map();
+    for (const r of sourceSettingsRows) {
+      sourceSettingsMap.set(r.setting_key, r.value);
+    }
+    if (sourceSettingsRows.length !== 18) {
+      fail(`오류: source app_setting_entries 행 수 불일치 (기대: 18, 실제: ${sourceSettingsRows.length})`);
+    }
+
+    const targetSettingsRows = db.prepare("SELECT * FROM app_setting_entries").all();
+    const targetSettingsMap = new Map();
+    for (const r of targetSettingsRows) {
+      targetSettingsMap.set(r.setting_key, r.value);
+    }
+
+    // 분류 1: 설치 대상 기기의 경로 (7개)
+    const expectedPathKeys = [
+      "pending_dir", "approved_dir", "schedule_export_dir",
+      "allowance_proposal_export_dir", "allowance_attachment1_export_dir",
+      "allowance_attachment2_export_dir", "database_backup_dir"
+    ];
+    for (const k of expectedPathKeys) {
+      if (!targetSettingsMap.has(k)) {
+        fail(`오류: target app_setting_entries에 경로 설정 키 '${k}' 누락`);
+      }
+    }
+
+    // 분류 2: 이번 선택 파일 경로 (1개)
+    if (path.resolve(targetSettingsMap.get("migration_file_path")) !== path.resolve(options.input)) {
+      fail(`오류: target migration_file_path 불일치 (기대: ${options.input}, 실제: ${targetSettingsMap.get("migration_file_path")})`);
+    }
+
+    // 분류 3: 운영 설정 (6개: 기본 3개 + 선택 2개 + reparse marker 1개)
+    const expectedOperatingValues = {
+      holiday_api_base_url: "https://target-device.holiday-api.internal",
+      database_backup_schedule: "weekly",
+      database_backup_time: "04:30",
+      update_last_seen_patch_note_version: "v1.8.2",
+      update_last_skipped_version: "v1.8.0"
+    };
+
+    const targetRowMap = new Map();
+    for (const r of targetSettingsRows) {
+      targetRowMap.set(r.setting_key, r);
+    }
+
+    for (const [k, expectedVal] of Object.entries(expectedOperatingValues)) {
+      if (!targetRowMap.has(k)) {
+        fail(`오류: target app_setting_entries에 운영 설정 키 '${k}' 누락`);
+      }
+      const row = targetRowMap.get(k);
+      if (row.value !== expectedVal) {
+        fail(`오류: target 운영 설정 '${k}' 값 불일치 (기대: ${expectedVal}, 실제: ${row.value})`);
+      }
+    }
+
+    if (!targetRowMap.has("substitute_allowance_policy_reparse_marker")) {
+      fail("오류: target app_setting_entries에 substitute_allowance_policy_reparse_marker 누락");
+    }
+
+    const markerRow = targetRowMap.get("substitute_allowance_policy_reparse_marker");
+    // C01: 정책일 변경에 따른 marker 값 갱신 검증 (이전 fixture 값 "2026-09-01T00:00:00.000Z"에서 새 ISO 타임스탬프로 갱신)
+    if (markerRow.value === "2026-09-01T00:00:00.000Z") {
+      fail("오류: substitute_allowance_policy_reparse_marker가 정책일 변경에도 불구하고 기존 fixture 값을 유지했습니다.");
+    }
+    const markerTime = Date.parse(markerRow.value);
+    if (isNaN(markerTime)) {
+      fail(`오류: substitute_allowance_policy_reparse_marker 값이 올바른 ISO 타임스탬프가 아닙니다: ${markerRow.value}`);
+    }
+    if (markerRow.value !== markerRow.updated_at) {
+      fail(`오류: substitute_allowance_policy_reparse_marker의 value와 updated_at 불일치 (value: ${markerRow.value}, updated_at: ${markerRow.updated_at})`);
+    }
+
+    // C01: 운영 키들의 updated_at도 마이그레이션 실행 시점(markerRow.updated_at)과 일치해야 함
+    for (const k of Object.keys(expectedOperatingValues)) {
+      const row = targetRowMap.get(k);
+      if (row.updated_at !== markerRow.updated_at) {
+        fail(`오류: 운영 설정 '${k}'의 updated_at이 마이그레이션 실행 시점(${markerRow.updated_at})과 일치하지 않습니다: ${row.updated_at}`);
+      }
+    }
+
+    // 분류 4: 필수 업무 규칙 (6개) - source에서 필수 복원
+    const expectedBizKeys = [
+      "schedule_consecutive_night_limit",
+      "schedule_minimum_rest_minutes",
+      "schedule_require_weekly_holiday",
+      "schedule_weekly_max_minutes",
+      "substitute_allowance_policy_effective_from",
+      "changed_slot_priority_effective_from"
+    ];
+    for (const k of expectedBizKeys) {
+      if (!targetSettingsMap.has(k)) {
+        fail(`오류: target app_setting_entries에 업무 규칙 키 '${k}' 누락`);
+      }
+      if (targetSettingsMap.get(k) !== sourceSettingsMap.get(k)) {
+        fail(`오류: target 업무 규칙 '${k}' 값 불일치 (기대: ${sourceSettingsMap.get(k)}, 실제: ${targetSettingsMap.get(k)})`);
+      }
+    }
+
+    const hasReparseMarker = targetSettingsMap.has("substitute_allowance_policy_reparse_marker");
+    const expectedTargetSettingsCount = 7 + 1 + 3 + 2 + (hasReparseMarker ? 1 : 0) + 6;
+    if (targetSettingsRows.length !== expectedTargetSettingsCount) {
+      fail(`오류: target app_setting_entries 행 수 불일치 (기대: ${expectedTargetSettingsCount}, 실제: ${targetSettingsRows.length})`);
+    }
+
+    // 7. Target total rows check (승인된 변환 결과로 산출: 3599 - 1[DEC-001] - sourceSettings + targetSettings)
     let targetTotalRows = 0;
     for (const t of targetTables) {
       const count = db.prepare(`SELECT COUNT(*) AS cnt FROM ${t}`).get().cnt;
       targetTotalRows += count;
     }
 
-    if (targetTotalRows !== 3597) {
-      fail(`오류: target DB 총 행 수 불일치 (기대: 3597, 실제: ${targetTotalRows})`);
-    }
-
-    // 7. app_setting_entries check
-    const sourceSettingsCount = parsedJson.tables.app_setting_entries?.length ?? 0;
-    const targetSettingsCount = db.prepare("SELECT COUNT(*) AS cnt FROM app_setting_entries").get().cnt;
-    if (sourceSettingsCount !== 18 || targetSettingsCount !== 17) {
-      fail(`오류: app_setting_entries 행 수 불일치 (source: ${sourceSettingsCount}, target: ${targetSettingsCount})`);
+    const expectedTargetTotalRows =
+      sourceTotalRows - 1 - sourceSettingsRows.length + targetSettingsRows.length;
+    if (targetTotalRows !== expectedTargetTotalRows) {
+      fail(`오류: target DB 총 행 수 불일치 (기대: ${expectedTargetTotalRows}, 실제: ${targetTotalRows})`);
     }
 
     // 8. 39 tables canonical comparison
@@ -482,10 +625,10 @@ async function main() {
   console.log(`- 입력 JSON SHA-256 (전/후 동일): ${successSummary.finalSha.toUpperCase()}`);
   console.log(`- 입력 표/행: ${successSummary.sourceTableCount}개 표, ${successSummary.sourceTotalRows}개 행`);
   console.log(`- preview/실복원 스키마 제외 경고: 0건`);
-  console.log(`- preview/실복원 경고: 각각 2건 확인 ("${EXPECTED_SETTINGS_WARNING}" / "${EXPECTED_REMOVAL_WARNING}")`);
+  console.log(`- preview/실복원 경고: 각각 4건 확인 ("${EXPECTED_ACCOUNT_WARNING}" / "${EXPECTED_EXTERNAL_FILE_WARNING}" / "${EXPECTED_SETTINGS_WARNING}" / "${EXPECTED_REMOVAL_WARNING}")`);
   console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
-  console.log(`- restoredTableCount: ${successSummary.restoreResult.restoredTableCount}`);
-  console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries 1건 제외 및 사번 없는 실적 1건 안전 제거, 3599 -> 3597)`);
+  console.log(`- restoredTableCount: ${successSummary.restoreResult.tableResults.length}`);
+  console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries 4대 분류 변환 및 DEC-001 사번 없는 실적 1건 안전 제거 반영)`);
   console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치 (performance_entries 349건 대조, performance_files 정규화 대조)`);
   console.log(`- 도메인/수당 단언: Pool 전인환 44/0/0, BP 정다운 0/0/0, 계산 전체 263건(56,076,024원), 승인 64건(13,611,839원) 전건 일치`);
   console.log(`- 신규 4표 행 수: periods=${successSummary.periodsCount}, closures=${successSummary.closuresCount}, events=${successSummary.eventsCount}, wage_rate_history=${successSummary.wageHistCount}`);

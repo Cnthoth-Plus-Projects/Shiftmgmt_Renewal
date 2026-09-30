@@ -13,7 +13,7 @@ describe("app-bridge", () => {
     expect(original).toEqual([1, undefined, "a", undefined, undefined]);
   });
 
-  it("exposes exactly 111 methods mapped to their contract channels (R8)", async () => {
+  it("exposes exactly 107 methods mapped to their contract channels (R8)", async () => {
     const calledUrls: string[] = [];
     const fakeFetch = vi.fn(async (url: string | URL | Request) => {
       const urlStr = String(url);
@@ -26,7 +26,21 @@ describe("app-bridge", () => {
 
     const bridge = createBrowserAppBridge(fakeFetch);
 
-    expect(Object.keys(bridge)).toHaveLength(111);
+    expect(Object.keys(bridge)).toHaveLength(107);
+
+    expect(typeof bridge.listDocumentLayouts).toBe("function");
+    expect(typeof bridge.getDocumentLayout).toBe("function");
+    expect(typeof bridge.saveDocumentLayout).toBe("function");
+    expect(typeof bridge.resetDocumentLayout).toBe("function");
+    expect(typeof bridge.previewDocumentLayout).toBe("function");
+    expect(typeof bridge.listDocumentLayoutHistory).toBe("function");
+
+    const rawBridge = bridge as Record<string, unknown>;
+    expect(rawBridge.listDocumentTemplateVersions).toBeUndefined();
+    expect(rawBridge.inspectDocumentTemplate).toBeUndefined();
+    expect(rawBridge.saveDocumentTemplateVersion).toBeUndefined();
+    expect(rawBridge.selectMigrationFile).toBeUndefined();
+    expect(typeof bridge.selectJsonBackupFile).toBe("function");
 
     for (const contract of CHANNEL_CONTRACTS) {
       const fn = (bridge as Record<string, (...args: unknown[]) => Promise<unknown>>)[contract.method];
@@ -36,7 +50,7 @@ describe("app-bridge", () => {
       expect(calledUrls).toContain(`/api/${contract.channel}`);
     }
 
-    expect(calledUrls).toHaveLength(111);
+    expect(calledUrls).toHaveLength(107);
   });
 
   it("handles network failure and returns standard NETWORK_ERROR (N10)", async () => {

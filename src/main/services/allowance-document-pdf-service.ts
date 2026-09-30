@@ -1,8 +1,3 @@
-import { existsSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
-import { nativeImage } from "electron";
-
 import type { AllowanceRateAxis } from "../../shared/domain/allowance-rate-matrix";
 import {
   ALLOWANCE_DOCUMENT_OWNER_DEPARTMENT,
@@ -11,7 +6,17 @@ import {
   buildAllowanceProposalDocumentNumber
 } from "../../shared/domain/allowance-document";
 import { formatEmployeeRank } from "../../shared/domain/employee-rank";
+import type {
+  DocumentLayoutBlock,
+  DocumentLayoutDefinition
+} from "../../shared/domain/document-layout";
 import { getSession } from "./auth-service";
+import { resolveBrandLogoDataUrl } from "./document-brand-logo-service";
+import { getDefaultDocumentLayoutDefinition } from "./document-layout-definition-service";
+import {
+  commitPdfBatchAtomically,
+  renderHtmlBatchToPdfBytes
+} from "./installed-chrome-pdf-service";
 import { listStoredOperationUsers } from "./operations-storage-service";
 
 interface PdfExportRow {
@@ -416,7 +421,17 @@ const renderAttachmentTwoTableHtml = (input: {
     .join("");
 
   return `
-    <table>
+    <table class="attachment2-table">
+      <colgroup>
+        <col class="attachment2-col-no" />
+        <col class="attachment2-col-department" />
+        <col class="attachment2-col-work-date" />
+        <col class="attachment2-col-name" />
+        <col class="attachment2-col-substitute" />
+        <col class="attachment2-col-overtime" />
+        <col class="attachment2-col-holiday" />
+        <col class="attachment2-col-total" />
+      </colgroup>
       <thead>
         <tr>
           <th>No</th><th>근무지</th><th>근무일</th><th>이름</th><th>대체근로수당</th><th>연장근로수당</th><th>(공)휴일근로수당</th><th>계</th>
@@ -450,113 +465,6 @@ const renderAttachmentTwoTableHtml = (input: {
 
 export const renderAttachmentOneTableHtmlForTest = renderAttachmentOneTableHtml;
 export const renderAttachmentTwoTableHtmlForTest = renderAttachmentTwoTableHtml;
-
-const buildNormalizedBrandLogoPng = (logoPath: string) => {
-  const image = nativeImage.createFromPath(logoPath);
-
-  if (image.isEmpty()) {
-    return null;
-  }
-
-  const { width, height } = image.getSize();
-  const bitmap = Buffer.from(image.toBitmap());
-
-  if (bitmap.length !== width * height * 4) {
-    return image.toPNG();
-  }
-
-  const readPixel = (x: number, y: number) => {
-    const offset = (y * width + x) * 4;
-
-    return {
-      alpha: bitmap[offset + 3] ?? 255,
-      blue: bitmap[offset] ?? 255,
-      green: bitmap[offset + 1] ?? 255,
-      red: bitmap[offset + 2] ?? 255
-    };
-  };
-
-  const cornerPixels = [
-    readPixel(0, 0),
-    readPixel(width - 1, 0),
-    readPixel(0, height - 1),
-    readPixel(width - 1, height - 1)
-  ];
-  const backgroundColor = {
-    blue: Math.round(cornerPixels.reduce((sum, pixel) => sum + pixel.blue, 0) / cornerPixels.length),
-    green: Math.round(cornerPixels.reduce((sum, pixel) => sum + pixel.green, 0) / cornerPixels.length),
-    red: Math.round(cornerPixels.reduce((sum, pixel) => sum + pixel.red, 0) / cornerPixels.length)
-  };
-
-  for (let offset = 0; offset <= bitmap.length - 4; offset += 4) {
-    const blue = bitmap[offset] ?? 255;
-    const green = bitmap[offset + 1] ?? 255;
-    const red = bitmap[offset + 2] ?? 255;
-    const alpha = bitmap[offset + 3] ?? 255;
-
-    if (alpha === 0 || red < 220 || green < 220 || blue < 220) {
-      continue;
-    }
-
-    const distance = Math.max(
-      Math.abs(red - backgroundColor.red),
-      Math.abs(green - backgroundColor.green),
-      Math.abs(blue - backgroundColor.blue)
-    );
-
-    if (distance <= 6) {
-      bitmap[offset] = 255;
-      bitmap[offset + 1] = 255;
-      bitmap[offset + 2] = 255;
-      bitmap[offset + 3] = 0;
-      continue;
-    }
-
-    if (distance <= 24) {
-      bitmap[offset] = 255;
-      bitmap[offset + 1] = 255;
-      bitmap[offset + 2] = 255;
-      bitmap[offset + 3] = 255;
-    }
-  }
-
-  return nativeImage.createFromBitmap(bitmap, { height, scaleFactor: 1, width }).toPNG();
-};
-
-const resolveBrandLogoDataUrl = () => {
-  const candidatePaths = [
-    path.resolve(__dirname, "../../../dist/assets"),
-    path.resolve(__dirname, "../../../src/renderer/assets"),
-    path.resolve(process.cwd(), "dist", "assets"),
-    path.resolve(process.cwd(), "src", "renderer", "assets")
-  ];
-
-  for (const candidatePath of candidatePaths) {
-    if (!existsSync(candidatePath)) {
-      continue;
-    }
-
-    if (candidatePath.endsWith(".png")) {
-      const normalizedPng = buildNormalizedBrandLogoPng(candidatePath);
-
-      return normalizedPng ? `data:image/png;base64,${normalizedPng.toString("base64")}` : null;
-    }
-
-    const logoFileName = readdirSync(candidatePath).find((fileName) =>
-      /^brand-logo-clean.*\.png$/i.test(fileName)
-    );
-
-    if (!logoFileName) {
-      continue;
-    }
-
-    const normalizedPng = buildNormalizedBrandLogoPng(path.resolve(candidatePath, logoFileName));
-
-    return normalizedPng ? `data:image/png;base64,${normalizedPng.toString("base64")}` : null;
-  }
-
-  return null;
-};
 
 const renderDocumentBrandLogo = (logoDataUrl: string | null) =>
   logoDataUrl
@@ -838,57 +746,141 @@ const renderPdfPageShell = (input: {
   <body>${input.body}</body>
 </html>`;
 
-const createPdfDocument = async (input: {
-  outputPath: string;
-  html: string;
-  landscape?: boolean;
-}) => {
-  if (!process.versions.electron) {
-    throw new Error("PDF 출력은 Electron 앱 실행 환경에서만 지원합니다.");
+const parseColumnLetterNumber = (key: string): number => {
+  let result = 0;
+  for (let i = 0; i < key.length; i++) {
+    result = result * 26 + (key.charCodeAt(i) - 64);
   }
+  return result;
+};
 
-  const { BrowserWindow } = await import("electron");
-  const browserWindow = new BrowserWindow({
-    show: false,
-    width: input.landscape ? 1600 : 1200,
-    height: 1200,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      sandbox: true
-    }
-  });
-  const tempDir = mkdtempSync(path.resolve(tmpdir(), "shiftmgmt-allowance-pdf-"));
-  const tempHtmlPath = path.resolve(tempDir, "document.html");
-
-  try {
-    writeFileSync(tempHtmlPath, input.html, "utf8");
-    await browserWindow.loadFile(tempHtmlPath);
-
-    const pdfBuffer = await Promise.race([
-      browserWindow.webContents.printToPDF({
-        landscape: input.landscape ?? false,
-        printBackground: true,
-        preferCSSPageSize: true
-      }),
-      new Promise<never>((_, reject) => {
-        setTimeout(() => {
-          reject(new Error("PDF 생성이 제한 시간 내에 완료되지 않았습니다."));
-        }, 30000);
+const buildFixedColgroupHtml = (
+  columnWidths: Record<string, number> | undefined,
+  requiredKeys: string[]
+): string => {
+  if (
+    columnWidths &&
+    requiredKeys.length > 0 &&
+    requiredKeys.every((k) => typeof columnWidths[k] === "number" && columnWidths[k]! > 0)
+  ) {
+    const totalWeight = requiredKeys.reduce((sum, k) => sum + columnWidths[k]!, 0);
+    return `<colgroup>${requiredKeys
+      .map((k) => {
+        const w = columnWidths[k]!;
+        const pct = ((w / totalWeight) * 100).toFixed(2);
+        return `<col style="width: ${pct}%" />`;
       })
-    ]);
-
-    writeFileSync(input.outputPath, pdfBuffer);
-  } finally {
-    if (!browserWindow.isDestroyed()) {
-      browserWindow.destroy();
-    }
-
-    rmSync(tempDir, {
-      recursive: true,
-      force: true
-    });
+      .join("")}</colgroup>`;
   }
+  const equalPct = (100 / requiredKeys.length).toFixed(2);
+  return `<colgroup>${requiredKeys.map(() => `<col style="width: ${equalPct}%" />`).join("")}</colgroup>`;
+};
+
+const sanitizeCssFontFamily = (family?: string): string => {
+  if (!family) {
+    return "";
+  }
+  if (/["';\\<>()=\u0000-\u001f\u007f-\u009f]/.test(family)) {
+    return "";
+  }
+  const cleaned = family.trim();
+  return cleaned ? `"${cleaned}"` : "";
+};
+
+interface BlockDelta {
+  visible: boolean;
+  wrapperStyle: string;
+  fontStyle: string;
+  customText?: string;
+  logoAssetId?: string | null;
+  colgroupHtml?: string;
+}
+
+const computeLayoutBlockDelta = (
+  activeBlock: DocumentLayoutBlock | undefined,
+  baseBlock: DocumentLayoutBlock
+): BlockDelta => {
+  if (!activeBlock) {
+    return {
+      visible: baseBlock.visible,
+      wrapperStyle: "",
+      fontStyle: "",
+      logoAssetId: baseBlock.logoAssetId
+    };
+  }
+
+  if (activeBlock.visible === false) {
+    return {
+      visible: false,
+      wrapperStyle: "",
+      fontStyle: "",
+      logoAssetId: activeBlock.logoAssetId
+    };
+  }
+
+  const styles: string[] = [];
+  if (activeBlock.x !== baseBlock.x) {
+    styles.push(`margin-left: ${activeBlock.x - baseBlock.x}mm`);
+  }
+  if (activeBlock.y !== baseBlock.y) {
+    styles.push(`margin-top: ${activeBlock.y - baseBlock.y}mm`);
+  }
+  if (activeBlock.width !== baseBlock.width) {
+    styles.push(`width: ${activeBlock.width}mm`, `max-width: ${activeBlock.width}mm`);
+  }
+  if (activeBlock.height !== baseBlock.height) {
+    styles.push(`min-height: ${activeBlock.height}mm`);
+  }
+
+  const fontStyles: string[] = [];
+  if (activeBlock.font) {
+    if (activeBlock.font.family && activeBlock.font.family !== baseBlock.font?.family) {
+      const sanitizedFamily = sanitizeCssFontFamily(activeBlock.font.family);
+      if (sanitizedFamily) {
+        fontStyles.push(`font-family: ${sanitizedFamily}, sans-serif`);
+      }
+    }
+    if (activeBlock.font.sizePt && activeBlock.font.sizePt !== baseBlock.font?.sizePt) {
+      fontStyles.push(`font-size: ${activeBlock.font.sizePt}pt`);
+    }
+    if (activeBlock.font.bold !== undefined && activeBlock.font.bold !== baseBlock.font?.bold) {
+      fontStyles.push(`font-weight: ${activeBlock.font.bold ? "bold" : "normal"}`);
+    }
+    if (activeBlock.font.italic !== undefined && activeBlock.font.italic !== baseBlock.font?.italic) {
+      fontStyles.push(`font-style: ${activeBlock.font.italic ? "italic" : "normal"}`);
+    }
+    if (activeBlock.font.color && activeBlock.font.color !== baseBlock.font?.color) {
+      fontStyles.push(`color: ${activeBlock.font.color}`);
+    }
+  }
+
+  let colgroupHtml: string | undefined;
+  if (activeBlock.columnWidths && Object.keys(activeBlock.columnWidths).length > 0) {
+    const isDifferentFromBase =
+      !baseBlock.columnWidths ||
+      JSON.stringify(activeBlock.columnWidths) !== JSON.stringify(baseBlock.columnWidths);
+
+    if (isDifferentFromBase) {
+      const entries = Object.entries(activeBlock.columnWidths).sort(
+        ([a], [b]) => parseColumnLetterNumber(a) - parseColumnLetterNumber(b)
+      );
+      const totalWeight = entries.reduce((sum, [, w]) => sum + w, 0);
+      if (totalWeight > 0) {
+        colgroupHtml = `<colgroup>${entries
+          .map(([, w]) => `<col style="width: ${((w / totalWeight) * 100).toFixed(2)}%" />`)
+          .join("")}</colgroup>`;
+      }
+    }
+  }
+
+  return {
+    visible: true,
+    wrapperStyle: styles.length > 0 ? styles.join("; ") + ";" : "",
+    fontStyle: fontStyles.length > 0 ? fontStyles.join("; ") + ";" : "",
+    customText: activeBlock.text !== undefined && activeBlock.text !== baseBlock.text ? activeBlock.text : undefined,
+    logoAssetId: activeBlock.logoAssetId,
+    colgroupHtml
+  };
 };
 
 const buildPdfSiteSummaries = (rows: PdfExportRow[]): PdfSiteSummary[] =>
@@ -1040,13 +1032,21 @@ const buildDonutGradient = (
     .join(", ")})`;
 };
 
-export const writeAllowancePdfDocuments = async (input: {
-  proposalPath: string;
-  attachment1Path: string;
-  attachment2Path: string;
+const formatBlockWrapperAttr = (blockId: string, delta: BlockDelta): string => {
+  const styles: string[] = [];
+  if (delta.wrapperStyle) {
+    styles.push(delta.wrapperStyle);
+  }
+  if (delta.fontStyle) {
+    styles.push(delta.fontStyle);
+  }
+  const styleAttr = styles.length > 0 ? ` style="${escapeHtml(styles.join(" "))}"` : "";
+  return `data-layout-block-id="${escapeHtml(blockId)}"${styleAttr}`;
+};
+
+export interface BuildAllowanceProposalHtmlInput {
   workMonth: string;
   rows: PdfExportRow[];
-  holidayNamesByDate: ReadonlyMap<string, string>;
   totalAllowanceAmount: number;
   regularTotalAllowanceAmount: number;
   earlyPayoutTotalAllowanceAmount: number;
@@ -1056,11 +1056,36 @@ export const writeAllowancePdfDocuments = async (input: {
   formatCurrencyLabel: (amount: number) => string;
   formatHoursLabel: (minutes: number) => string;
   formatNextPayrollMonthLabel: (workMonth: string) => string;
-  summaryCategoryOrder: Record<string, number>;
-  rateGuideEntries: AllowanceRateGuideEntry[];
-  allowanceAxisLabels: Record<AllowanceRateAxis, string>;
-}) => {
-  const brandLogoDataUrl = resolveBrandLogoDataUrl();
+  layoutDefinition?: DocumentLayoutDefinition;
+  brandLogoDataUrl?: string | null;
+}
+
+export const buildAllowanceProposalHtml = (input: BuildAllowanceProposalHtmlInput): string => {
+  const brandLogoDataUrl =
+    input.brandLogoDataUrl !== undefined ? input.brandLogoDataUrl : resolveBrandLogoDataUrl();
+  const defaultDefinition = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+  const baseOutput = defaultDefinition.outputs[0];
+  const activeOutput =
+    input.layoutDefinition?.outputs.find((output) => output.memberId === "proposal") ??
+    input.layoutDefinition?.outputs[0];
+
+  const getDelta = (blockId: string) =>
+    computeLayoutBlockDelta(
+      activeOutput?.blocks.find((block) => block.id === blockId),
+      baseOutput.blocks.find((block) => block.id === blockId)!
+    );
+
+  const titleDelta = getDelta("allowance-pdf.proposal.title");
+  const metaDelta = getDelta("allowance-pdf.proposal.meta");
+  const criteriaDelta = getDelta("allowance-pdf.proposal.criteria");
+  const regularTableDelta = getDelta("allowance-pdf.proposal.regular-table");
+  const earlyTableDelta = getDelta("allowance-pdf.proposal.early-table");
+  const footerDelta = getDelta("allowance-pdf.proposal.footer");
+  const chartTitleDelta = getDelta("allowance-pdf.proposal.chart-title");
+  const chartNoteDelta = getDelta("allowance-pdf.proposal.chart-note");
+  const chartSummaryDelta = getDelta("allowance-pdf.proposal.chart-summary");
+  const chartGridDelta = getDelta("allowance-pdf.proposal.chart-grid");
+
   const sessionResult = getSession();
   const currentSession = sessionResult.ok ? sessionResult.data : null;
   const currentOperationUser =
@@ -1094,7 +1119,37 @@ export const writeAllowancePdfDocuments = async (input: {
   const proposalChartNote =
     "품의 제출용으로는 근무지별 지급액 순위를 가로 막대로, 근로유형별 구성 비중을 도넛으로 함께 제시하는 방식이 가장 빠르게 읽힙니다.";
 
-  const proposalHtml = renderPdfPageShell({
+  const metaHtml =
+    metaDelta.visible !== false
+      ? renderProposalMetaTableHtml({
+          authorExtension: proposalAuthorExtension,
+          authorName: proposalAuthorName,
+          ownerDepartment: ALLOWANCE_DOCUMENT_OWNER_DEPARTMENT,
+          printedDate,
+          workMonth: input.workMonth
+        }).replace(
+          '<table class="proposal-meta"',
+          `<table class="proposal-meta" ${formatBlockWrapperAttr("allowance-pdf.proposal.meta", metaDelta)}`
+        )
+      : "";
+
+  const proposalRegularColgroup =
+    regularTableDelta.colgroupHtml ??
+    buildFixedColgroupHtml(
+      activeOutput?.blocks.find((b) => b.id === "allowance-pdf.proposal.regular-table")?.columnWidths ??
+        baseOutput.blocks.find((b) => b.id === "allowance-pdf.proposal.regular-table")?.columnWidths,
+      ["A", "B", "C", "D", "E", "F", "G"]
+    );
+
+  const proposalEarlyColgroup =
+    earlyTableDelta.colgroupHtml ??
+    buildFixedColgroupHtml(
+      activeOutput?.blocks.find((b) => b.id === "allowance-pdf.proposal.early-table")?.columnWidths ??
+        baseOutput.blocks.find((b) => b.id === "allowance-pdf.proposal.early-table")?.columnWidths,
+      ["A", "B", "C", "D", "E", "F", "G"]
+    );
+
+  return renderPdfPageShell({
     title: `${input.workMonth} 품의서`,
     pageSize: "A4 portrait",
     extraCss: `
@@ -1543,219 +1598,369 @@ export const writeAllowancePdfDocuments = async (input: {
         line-height: 1.65;
       }
     `,
-    body: `
-      <div class="${proposalLayout.mainPageClassName}">
-        <div class="proposal-title-strip">
-          <div class="proposal-title-block">
-            <span class="proposal-title-label">ALLOWANCE APPROVAL REQUEST</span>
-            <strong class="proposal-title-main">시간외 근로 수당 지급 품의서</strong>
-            <span class="proposal-title-sub">${escapeHtml(input.formatMonthLabel(input.workMonth))} 기준 지급 승인 요청</span>
-          </div>
-          ${renderDocumentBrandLogo(brandLogoDataUrl)}
-        </div>
-        ${renderProposalMetaTableHtml({
-          authorExtension: proposalAuthorExtension,
-          authorName: proposalAuthorName,
-          ownerDepartment: ALLOWANCE_DOCUMENT_OWNER_DEPARTMENT,
-          printedDate,
-          workMonth: input.workMonth
-        })}
-        <div class="proposal-hero">
-          <div class="proposal-copy">
-            <h2 class="proposal-section-title">1. 대상 기준 및 대상자</h2>
-            <p>${escapeHtml(input.formatMonthLabel(input.workMonth))} 실적 승인 기준으로 연장근무, 대체근무, 휴일근무 발생분을 집계했습니다. 아래 기준과 대상자를 확인해 결재를 요청합니다.</p>
-            <div class="proposal-callout">
-              <p><strong>① 대상 기준</strong> : 월 근무계획 외 연장, 대체 근무를 수행한 자 또는 휴일근무를 수행한 자</p>
-              <p><strong>② 당월 지급 대상자</strong> : ${employeeCount}명</p>
+    body: (() => {
+      const titleHtml =
+        titleDelta.visible !== false
+          ? `
+            <div class="proposal-title-strip" ${formatBlockWrapperAttr("allowance-pdf.proposal.title", titleDelta)}>
+              <div class="proposal-title-block">
+                <span class="proposal-title-label">ALLOWANCE APPROVAL REQUEST</span>
+                <strong class="proposal-title-main">${escapeHtml(
+                  titleDelta.customText ?? "시간외 근로 수당 지급 품의서"
+                )}</strong>
+                <span class="proposal-title-sub">${escapeHtml(
+                  input.formatMonthLabel(input.workMonth)
+                )} 기준 지급 승인 요청</span>
+              </div>
+              ${titleDelta.logoAssetId === null ? "" : renderDocumentBrandLogo(brandLogoDataUrl)}
             </div>
-          </div>
-          ${renderProposalHighlightCardHtml({
-            earlyPayoutTotalAllowanceAmount: input.earlyPayoutTotalAllowanceAmount,
-            formatCurrencyLabel: input.formatCurrencyLabel,
-            regularTotalAllowanceAmount: input.regularTotalAllowanceAmount,
-            totalAllowanceAmount: input.totalAllowanceAmount
-          })}
-        </div>
-        <section class="${proposalLayout.regularSectionClassName}">
-          <h2 class="proposal-section-title">2. ${Number(input.workMonth.slice(5))}월 지급 요청 내역</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>단위 사업</th><th>조직</th><th>근무지</th><th>대체근로수당</th><th>연장근로수당</th><th>(공)휴일근로수당</th><th>계</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${siteSummaries.map((row) => `
-                <tr>
-                  <td class="center">교대근무</td>
-                  <td class="center">운영</td>
-                  <td>${escapeHtml(row.department)}</td>
-                  <td class="number">${row.substituteAmount > 0 ? input.formatCurrencyLabel(row.substituteAmount) : "-"}</td>
-                  <td class="number">${row.overtimeAmount > 0 ? input.formatCurrencyLabel(row.overtimeAmount) : "-"}</td>
-                  <td class="number">${row.holidayAmount > 0 ? input.formatCurrencyLabel(row.holidayAmount) : "-"}</td>
-                  <td class="number">${input.formatCurrencyLabel(row.totalAmount)}</td>
-                </tr>
-              `).join("")}
-              <tr class="total-row">
-                <td class="center" colspan="3">합 계</td>
-                <td class="number">${siteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0)) : "-"}</td>
-                <td class="number">${siteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0)) : "-"}</td>
-                <td class="number">${siteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0)) : "-"}</td>
-                <td class="number">${input.formatCurrencyLabel(input.regularTotalAllowanceAmount)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section class="${proposalLayout.earlyPayoutSectionClassName}">
-          <h2 class="proposal-section-title">3. ${escapeHtml(nextPayrollMonthLabel)} 퇴사자 지급 내역</h2>
-          ${
-            earlyPayoutSiteSummaries.length > 0
-              ? `<table>
-                  <thead>
+          `
+          : "";
+
+      const criteriaHtml =
+        criteriaDelta.visible !== false
+          ? `
+            <div class="proposal-hero" ${formatBlockWrapperAttr("allowance-pdf.proposal.criteria", criteriaDelta)}>
+              <div class="proposal-copy">
+                <h2 class="proposal-section-title">1. 대상 기준 및 대상자</h2>
+                <p>${escapeHtml(
+                  input.formatMonthLabel(input.workMonth)
+                )} 실적 승인 기준으로 연장근무, 대체근무, 휴일근무 발생분을 집계했습니다. 아래 기준과 대상자를 확인해 결재를 요청합니다.</p>
+                <div class="proposal-callout">
+                  <p><strong>① 대상 기준</strong> : 월 근무계획 외 연장, 대체 근무를 수행한 자 또는 휴일근무를 수행한 자</p>
+                  <p><strong>② 당월 지급 대상자</strong> : ${employeeCount}명</p>
+                </div>
+              </div>
+              ${renderProposalHighlightCardHtml({
+                earlyPayoutTotalAllowanceAmount: input.earlyPayoutTotalAllowanceAmount,
+                formatCurrencyLabel: input.formatCurrencyLabel,
+                regularTotalAllowanceAmount: input.regularTotalAllowanceAmount,
+                totalAllowanceAmount: input.totalAllowanceAmount
+              })}
+            </div>
+          `
+          : "";
+
+      const regularTableHtml =
+        regularTableDelta.visible !== false
+          ? `
+            <section class="${proposalLayout.regularSectionClassName}" ${formatBlockWrapperAttr(
+              "allowance-pdf.proposal.regular-table",
+              regularTableDelta
+            )}>
+              <h2 class="proposal-section-title">2. ${Number(input.workMonth.slice(5))}월 지급 요청 내역</h2>
+              <table>
+                ${proposalRegularColgroup}
+                <thead>
+                  <tr>
+                    <th>단위 사업</th><th>조직</th><th>근무지</th><th>대체근로수당</th><th>연장근로수당</th><th>(공)휴일근로수당</th><th>계</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${siteSummaries
+                    .map(
+                      (row) => `
                     <tr>
-                      <th>단위 사업</th><th>조직</th><th>근무지</th><th>대체근로수당</th><th>연장근로수당</th><th>(공)휴일근로수당</th><th>계</th>
+                      <td class="center">교대근무</td>
+                      <td class="center">운영</td>
+                      <td>${escapeHtml(row.department)}</td>
+                      <td class="number">${row.substituteAmount > 0 ? input.formatCurrencyLabel(row.substituteAmount) : "-"}</td>
+                      <td class="number">${row.overtimeAmount > 0 ? input.formatCurrencyLabel(row.overtimeAmount) : "-"}</td>
+                      <td class="number">${row.holidayAmount > 0 ? input.formatCurrencyLabel(row.holidayAmount) : "-"}</td>
+                      <td class="number">${input.formatCurrencyLabel(row.totalAmount)}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    ${earlyPayoutSiteSummaries
+                  `
+                    )
+                    .join("")}
+                  <tr class="total-row">
+                    <td class="center" colspan="3">합 계</td>
+                    <td class="number">${siteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0)) : "-"}</td>
+                    <td class="number">${siteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0)) : "-"}</td>
+                    <td class="number">${siteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0) > 0 ? input.formatCurrencyLabel(siteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0)) : "-"}</td>
+                    <td class="number">${input.formatCurrencyLabel(input.regularTotalAllowanceAmount)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+          `
+          : "";
+
+      const earlyTableHtml =
+        earlyTableDelta.visible !== false
+          ? `
+            <section class="${proposalLayout.earlyPayoutSectionClassName}" ${formatBlockWrapperAttr(
+              "allowance-pdf.proposal.early-table",
+              earlyTableDelta
+            )}>
+              <h2 class="proposal-section-title">3. ${escapeHtml(nextPayrollMonthLabel)} 퇴사자 지급 내역</h2>
+              ${
+                earlyPayoutSiteSummaries.length > 0
+                  ? `<table>
+                      ${proposalEarlyColgroup}
+                      <thead>
+                        <tr>
+                          <th>단위 사업</th><th>조직</th><th>근무지</th><th>대체근로수당</th><th>연장근로수당</th><th>(공)휴일근로수당</th><th>계</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${earlyPayoutSiteSummaries
+                          .map(
+                            (row) => `
+                              <tr>
+                                <td class="center">교대근무</td>
+                                <td class="center">운영</td>
+                                <td>${escapeHtml(row.department)}</td>
+                                <td class="number">${row.substituteAmount > 0 ? input.formatCurrencyLabel(row.substituteAmount) : "-"}</td>
+                                <td class="number">${row.overtimeAmount > 0 ? input.formatCurrencyLabel(row.overtimeAmount) : "-"}</td>
+                                <td class="number">${row.holidayAmount > 0 ? input.formatCurrencyLabel(row.holidayAmount) : "-"}</td>
+                                <td class="number">${input.formatCurrencyLabel(row.totalAmount)}</td>
+                              </tr>
+                            `
+                          )
+                          .join("")}
+                        <tr class="total-row">
+                          <td class="center" colspan="3">합 계</td>
+                          <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0)) : "-"}</td>
+                          <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0)) : "-"}</td>
+                          <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0)) : "-"}</td>
+                          <td class="number">${input.formatCurrencyLabel(input.earlyPayoutTotalAllowanceAmount)}</td>
+                        </tr>
+                      </tbody>
+                    </table>`
+                  : `<p>해당 없음</p>`
+              }
+            </section>
+          `
+          : "";
+
+      const footerHtml =
+        footerDelta.visible !== false
+          ? `
+            <section class="${proposalLayout.footerSectionClassName}" ${formatBlockWrapperAttr(
+              "allowance-pdf.proposal.footer",
+              footerDelta
+            )}>
+              <p><span class="proposal-section-title">4. 지급 요청일</span> : ${escapeHtml(nextPayrollMonthLabel)} 급여일</p>
+              <p><span class="proposal-section-title">5. 세부내역</span> : 별첨1, 별첨2 참조</p>
+            </section>
+          `
+          : "";
+
+      const isPage2Visible =
+        chartTitleDelta.visible !== false ||
+        chartNoteDelta.visible !== false ||
+        chartSummaryDelta.visible !== false ||
+        chartGridDelta.visible !== false;
+
+      const page2Html = isPage2Visible
+        ? `
+          <div class="proposal-document-page proposal-chart-page">
+            ${
+              chartTitleDelta.visible !== false
+                ? `
+              <div class="proposal-title-strip" ${formatBlockWrapperAttr("allowance-pdf.proposal.chart-title", chartTitleDelta)}>
+                <div class="proposal-title-block">
+                  <span class="proposal-title-label">ALLOWANCE VISUAL SUMMARY</span>
+                  <strong class="proposal-title-main">${escapeHtml(
+                    chartTitleDelta.customText ?? "수당 분포 요약 차트"
+                  )}</strong>
+                  <span class="proposal-title-sub">${escapeHtml(
+                    input.formatMonthLabel(input.workMonth)
+                  )} 지급액 기준</span>
+                </div>
+                ${chartTitleDelta.logoAssetId === null ? "" : renderDocumentBrandLogo(brandLogoDataUrl)}
+              </div>
+            `
+                : ""
+            }
+
+            ${
+              chartNoteDelta.visible !== false
+                ? `
+              <section class="proposal-section-block" ${formatBlockWrapperAttr("allowance-pdf.proposal.chart-note", chartNoteDelta)}>
+                <h2 class="proposal-section-title">6. 수당 분포 요약 차트</h2>
+                <p class="proposal-chart-note">${escapeHtml(chartNoteDelta.customText ?? proposalChartNote)}</p>
+              </section>
+            `
+                : ""
+            }
+
+            ${
+              chartSummaryDelta.visible !== false
+                ? `
+              <div class="proposal-summary-grid" ${formatBlockWrapperAttr("allowance-pdf.proposal.chart-summary", chartSummaryDelta)}>
+                <div class="proposal-summary-card">
+                  <span>총 지급 요청 금액</span>
+                  <strong>${escapeHtml(input.formatCurrencyLabel(input.totalAllowanceAmount))}</strong>
+                  <em>품의서 전체 합계</em>
+                </div>
+                <div class="proposal-summary-card">
+                  <span>정규 지급</span>
+                  <strong>${escapeHtml(input.formatCurrencyLabel(input.regularTotalAllowanceAmount))}</strong>
+                  <em>2번 항목 기준</em>
+                </div>
+                <div class="proposal-summary-card">
+                  <span>퇴사자 선지급</span>
+                  <strong>${escapeHtml(input.formatCurrencyLabel(input.earlyPayoutTotalAllowanceAmount))}</strong>
+                  <em>3번 항목 기준</em>
+                </div>
+                <div class="proposal-summary-card">
+                  <span>대상 인원</span>
+                  <strong>${employeeCount}명</strong>
+                  <em>문서 기준 산출 인원</em>
+                </div>
+              </div>
+            `
+                : ""
+            }
+
+            ${
+              chartGridDelta.visible !== false
+                ? `
+              <div class="proposal-chart-grid" ${formatBlockWrapperAttr("allowance-pdf.proposal.chart-grid", chartGridDelta)}>
+                <section class="proposal-chart-card">
+                  <div class="proposal-chart-card-head">
+                    <h3>6-1. 근무지별 지급액 분포</h3>
+                    <p>근무지별 총 지급액 순위를 가로 막대로 정리했습니다.</p>
+                  </div>
+                  <div class="proposal-bar-list">
+                    ${chartSiteSummaries
                       .map(
                         (row) => `
-                          <tr>
-                            <td class="center">교대근무</td>
-                            <td class="center">운영</td>
-                            <td>${escapeHtml(row.department)}</td>
-                            <td class="number">${row.substituteAmount > 0 ? input.formatCurrencyLabel(row.substituteAmount) : "-"}</td>
-                            <td class="number">${row.overtimeAmount > 0 ? input.formatCurrencyLabel(row.overtimeAmount) : "-"}</td>
-                            <td class="number">${row.holidayAmount > 0 ? input.formatCurrencyLabel(row.holidayAmount) : "-"}</td>
-                            <td class="number">${input.formatCurrencyLabel(row.totalAmount)}</td>
-                          </tr>
+                          <div class="proposal-bar-row">
+                            <div class="proposal-bar-copy">
+                              <strong>${escapeHtml(row.department)}</strong>
+                              <span>${escapeHtml(input.formatCurrencyLabel(row.totalAmount))} · ${row.employeeCount}명</span>
+                            </div>
+                            <div class="proposal-bar-track">
+                              <div class="proposal-bar-fill" style="width: ${Math.max(
+                                (row.totalAmount / chartMaxAmount) * 100,
+                                10
+                              )}%"></div>
+                            </div>
+                          </div>
                         `
                       )
                       .join("")}
-                    <tr class="total-row">
-                      <td class="center" colspan="3">합 계</td>
-                      <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.substituteAmount, 0)) : "-"}</td>
-                      <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.overtimeAmount, 0)) : "-"}</td>
-                      <td class="number">${earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0) > 0 ? input.formatCurrencyLabel(earlyPayoutSiteSummaries.reduce((sum, row) => sum + row.holidayAmount, 0)) : "-"}</td>
-                      <td class="number">${input.formatCurrencyLabel(input.earlyPayoutTotalAllowanceAmount)}</td>
-                    </tr>
-                  </tbody>
-                </table>`
-              : `<p>해당 없음</p>`
-          }
-        </section>
-        <section class="${proposalLayout.footerSectionClassName}">
-          <p><span class="proposal-section-title">4. 지급 요청일</span> : ${escapeHtml(nextPayrollMonthLabel)} 급여일</p>
-          <p><span class="proposal-section-title">5. 세부내역</span> : 별첨1, 별첨2 참조</p>
-        </section>
-      </div>
-      <div class="proposal-document-page proposal-chart-page">
-        <div class="proposal-title-strip">
-          <div class="proposal-title-block">
-            <span class="proposal-title-label">ALLOWANCE VISUAL SUMMARY</span>
-            <strong class="proposal-title-main">수당 분포 요약 차트</strong>
-            <span class="proposal-title-sub">${escapeHtml(input.formatMonthLabel(input.workMonth))} 지급액 기준</span>
-          </div>
-          ${renderDocumentBrandLogo(brandLogoDataUrl)}
-        </div>
+                  </div>
+                </section>
 
-        <section class="proposal-section-block">
-          <h2 class="proposal-section-title">6. 수당 분포 요약 차트</h2>
-          <p class="proposal-chart-note">${escapeHtml(proposalChartNote)}</p>
-        </section>
-
-        <div class="proposal-summary-grid">
-          <div class="proposal-summary-card">
-            <span>총 지급 요청 금액</span>
-            <strong>${escapeHtml(input.formatCurrencyLabel(input.totalAllowanceAmount))}</strong>
-            <em>품의서 전체 합계</em>
-          </div>
-          <div class="proposal-summary-card">
-            <span>정규 지급</span>
-            <strong>${escapeHtml(input.formatCurrencyLabel(input.regularTotalAllowanceAmount))}</strong>
-            <em>2번 항목 기준</em>
-          </div>
-          <div class="proposal-summary-card">
-            <span>퇴사자 선지급</span>
-            <strong>${escapeHtml(input.formatCurrencyLabel(input.earlyPayoutTotalAllowanceAmount))}</strong>
-            <em>3번 항목 기준</em>
-          </div>
-          <div class="proposal-summary-card">
-            <span>대상 인원</span>
-            <strong>${employeeCount}명</strong>
-            <em>문서 기준 산출 인원</em>
-          </div>
-        </div>
-
-        <div class="proposal-chart-grid">
-          <section class="proposal-chart-card">
-            <div class="proposal-chart-card-head">
-              <h3>6-1. 근무지별 지급액 분포</h3>
-              <p>근무지별 총 지급액 순위를 가로 막대로 정리했습니다.</p>
-            </div>
-            <div class="proposal-bar-list">
-              ${chartSiteSummaries
-                .map(
-                  (row) => `
-                    <div class="proposal-bar-row">
-                      <div class="proposal-bar-copy">
-                        <strong>${escapeHtml(row.department)}</strong>
-                        <span>${escapeHtml(input.formatCurrencyLabel(row.totalAmount))} · ${row.employeeCount}명</span>
-                      </div>
-                      <div class="proposal-bar-track">
-                        <div class="proposal-bar-fill" style="width: ${Math.max(
-                          (row.totalAmount / chartMaxAmount) * 100,
-                          10
-                        )}%"></div>
+                <section class="proposal-chart-card">
+                  <div class="proposal-chart-card-head">
+                    <h3>6-2. 근로유형별 비중</h3>
+                    <p>근무유형별 지급액 구성 비중을 함께 표시했습니다.</p>
+                  </div>
+                  <div class="proposal-donut-shell">
+                    <div class="proposal-donut" style="background: ${donutGradient}">
+                      <div class="proposal-donut-center">
+                        <strong>${escapeHtml(
+                          workTypeSegments.dominantSegment
+                            ? `${workTypeSegments.dominantSegment.percentage}%`
+                            : "0%"
+                        )}</strong>
+                        <span>${escapeHtml(
+                          workTypeSegments.dominantSegment?.label ?? "비중 없음"
+                        )}</span>
                       </div>
                     </div>
-                  `
-                )
-                .join("")}
-            </div>
-          </section>
+                    <div class="proposal-donut-legend">
+                      ${workTypeSegments.segments
+                        .map(
+                          (segment) => `
+                            <div class="proposal-donut-legend-item">
+                              <span class="proposal-donut-label">
+                                <i class="proposal-donut-dot" style="background: ${segment.color}"></i>
+                                <strong>${escapeHtml(segment.label)}</strong>
+                              </span>
+                              <span>${segment.percentage}% · ${escapeHtml(segment.formattedAmount)}</span>
+                            </div>
+                          `
+                        )
+                        .join("")}
+                    </div>
+                  </div>
+                </section>
+              </div>
+            `
+                : ""
+            }
+          </div>
+        `
+        : "";
 
-          <section class="proposal-chart-card">
-            <div class="proposal-chart-card-head">
-              <h3>6-2. 근로유형별 비중</h3>
-              <p>근무유형별 지급액 구성 비중을 함께 표시했습니다.</p>
-            </div>
-            <div class="proposal-donut-shell">
-              <div class="proposal-donut" style="background: ${donutGradient}">
-                <div class="proposal-donut-center">
-                  <strong>${escapeHtml(
-                    workTypeSegments.dominantSegment
-                      ? `${workTypeSegments.dominantSegment.percentage}%`
-                      : "0%"
-                  )}</strong>
-                  <span>${escapeHtml(
-                    workTypeSegments.dominantSegment?.label ?? "비중 없음"
-                  )}</span>
-                </div>
-              </div>
-              <div class="proposal-donut-legend">
-                ${workTypeSegments.segments
-                  .map(
-                    (segment) => `
-                      <div class="proposal-donut-legend-item">
-                        <span class="proposal-donut-label">
-                          <i class="proposal-donut-dot" style="background: ${segment.color}"></i>
-                          <strong>${escapeHtml(segment.label)}</strong>
-                        </span>
-                        <span>${segment.percentage}% · ${escapeHtml(segment.formattedAmount)}</span>
-                      </div>
-                    `
-                  )
-                  .join("")}
-              </div>
-            </div>
-          </section>
+      return `
+        <div class="${proposalLayout.mainPageClassName}">
+          ${titleHtml}
+          ${metaHtml}
+          ${criteriaHtml}
+          ${regularTableHtml}
+          ${earlyTableHtml}
+          ${footerHtml}
         </div>
-      </div>
-    `
+        ${page2Html}
+      `;
+    })()
   });
+};
 
-  const attachment1Html = renderPdfPageShell({
+export interface BuildAllowanceAttachmentOneHtmlInput {
+  workMonth: string;
+  rows: PdfExportRow[];
+  holidayNamesByDate: ReadonlyMap<string, string>;
+  formatCurrencyLabel: (amount: number) => string;
+  formatDate: (value: string) => string;
+  formatHoursLabel: (minutes: number) => string;
+  summaryCategoryOrder: Record<string, number>;
+  rateGuideEntries: AllowanceRateGuideEntry[];
+  allowanceAxisLabels: Record<AllowanceRateAxis, string>;
+  layoutDefinition?: DocumentLayoutDefinition;
+  brandLogoDataUrl?: string | null;
+}
+
+export const buildAllowanceAttachmentOneHtml = (input: BuildAllowanceAttachmentOneHtmlInput): string => {
+  const brandLogoDataUrl =
+    input.brandLogoDataUrl !== undefined ? input.brandLogoDataUrl : resolveBrandLogoDataUrl();
+  const defaultDefinition = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+  const baseOutput = defaultDefinition.outputs[1];
+  const activeOutput =
+    input.layoutDefinition?.outputs.find((output) => output.memberId === "attachment1") ??
+    input.layoutDefinition?.outputs[1];
+
+  const getDelta = (blockId: string) =>
+    computeLayoutBlockDelta(
+      activeOutput?.blocks.find((block) => block.id === blockId),
+      baseOutput.blocks.find((block) => block.id === blockId)!
+    );
+
+  const titleDelta = getDelta("allowance-pdf.attachment1.title");
+  const tableDelta = getDelta("allowance-pdf.attachment1.table");
+  const rateGuideDelta = getDelta("allowance-pdf.attachment1.rate-guide");
+
+  const titleHtml = renderAttachmentOneTitleHtml({
+    logoDataUrl: titleDelta.logoAssetId === null ? null : brandLogoDataUrl,
+    workMonth: input.workMonth
+  }).replace("<div class=\"attachment-title-strip\"", `<div class="attachment-title-strip" ${formatBlockWrapperAttr("allowance-pdf.attachment1.title", titleDelta)}`);
+
+  let tableHtml = renderAttachmentOneTableHtml({
+    rows: input.rows,
+    holidayNamesByDate: input.holidayNamesByDate,
+    formatCurrencyLabel: input.formatCurrencyLabel,
+    formatDate: input.formatDate,
+    formatHoursLabel: input.formatHoursLabel,
+    summaryCategoryOrder: input.summaryCategoryOrder,
+    allowanceAxisLabels: input.allowanceAxisLabels
+  }).replace("<table class=\"attachment1-table\"", `<table class="attachment1-table" ${formatBlockWrapperAttr("allowance-pdf.attachment1.table", tableDelta)}`);
+
+  if (tableDelta.colgroupHtml) {
+    tableHtml = tableHtml.replace(/<colgroup>[\s\S]*?<\/colgroup>/, tableDelta.colgroupHtml);
+  }
+
+  const rateGuideHtml = renderAttachmentRateGuideHtml(input.rateGuideEntries).replace(
+    "<div class=\"attachment-rate-guide\"",
+    `<div class="attachment-rate-guide" ${formatBlockWrapperAttr("allowance-pdf.attachment1.rate-guide", rateGuideDelta)}`
+  );
+
+  return renderPdfPageShell({
     title: `${input.workMonth} 별첨1`,
     pageSize: "A4 landscape",
     extraCss: `
@@ -1770,7 +1975,6 @@ export const writeAllowancePdfDocuments = async (input: {
       table.attachment1-table th {
         white-space: nowrap;
       }
-      /* 직급 칸(3.5%)을 넣으면서 다른 칸에서 조금씩 덜어냈다. 합은 그대로 99.5%. */
       table.attachment1-table .attachment1-col-no { width: 3%; }
       table.attachment1-table .attachment1-col-employee-code { width: 5.5%; }
       table.attachment1-table .attachment1-col-name { width: 5.5%; }
@@ -1834,24 +2038,63 @@ export const writeAllowancePdfDocuments = async (input: {
       ${attachmentRateGuideCss}
     `,
     body: `
-      ${renderAttachmentOneTitleHtml({
-        logoDataUrl: brandLogoDataUrl,
-        workMonth: input.workMonth
-      })}
-      ${renderAttachmentOneTableHtml({
-        rows: input.rows,
-        holidayNamesByDate: input.holidayNamesByDate,
-        formatCurrencyLabel: input.formatCurrencyLabel,
-        formatDate: input.formatDate,
-        formatHoursLabel: input.formatHoursLabel,
-        summaryCategoryOrder: input.summaryCategoryOrder,
-        allowanceAxisLabels: input.allowanceAxisLabels
-      })}
-      ${renderAttachmentRateGuideHtml(input.rateGuideEntries)}
+      ${titleDelta.visible !== false ? titleHtml : ""}
+      ${tableDelta.visible !== false ? tableHtml : ""}
+      ${rateGuideDelta.visible !== false ? rateGuideHtml : ""}
     `
   });
+};
 
-  const attachment2Html = renderPdfPageShell({
+export interface BuildAllowanceAttachmentTwoHtmlInput {
+  workMonth: string;
+  rows: PdfExportRow[];
+  formatCurrencyLabel: (amount: number) => string;
+  formatDate: (value: string) => string;
+  formatProposalDateRange: (workMonth: string) => string;
+  summaryCategoryOrder: Record<string, number>;
+  layoutDefinition?: DocumentLayoutDefinition;
+  brandLogoDataUrl?: string | null;
+}
+
+export const buildAllowanceAttachmentTwoHtml = (input: BuildAllowanceAttachmentTwoHtmlInput): string => {
+  const brandLogoDataUrl =
+    input.brandLogoDataUrl !== undefined ? input.brandLogoDataUrl : resolveBrandLogoDataUrl();
+  const defaultDefinition = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+  const baseOutput = defaultDefinition.outputs[2];
+  const activeOutput =
+    input.layoutDefinition?.outputs.find((output) => output.memberId === "attachment2") ??
+    input.layoutDefinition?.outputs[2];
+
+  const getDelta = (blockId: string) =>
+    computeLayoutBlockDelta(
+      activeOutput?.blocks.find((block) => block.id === blockId),
+      baseOutput.blocks.find((block) => block.id === blockId)!
+    );
+
+  const titleDelta = getDelta("allowance-pdf.attachment2.title");
+  const tableDelta = getDelta("allowance-pdf.attachment2.table");
+
+  const titleHtml = renderAttachmentTwoTitleHtml({
+    dateRangeLabel: input.formatProposalDateRange(input.workMonth),
+    logoDataUrl: titleDelta.logoAssetId === null ? null : brandLogoDataUrl,
+    workMonth: input.workMonth
+  }).replace("<div class=\"attachment-title-strip\"", `<div class="attachment-title-strip" ${formatBlockWrapperAttr("allowance-pdf.attachment2.title", titleDelta)}`);
+
+  let tableHtml = renderAttachmentTwoTableHtml({
+    rows: input.rows,
+    formatCurrencyLabel: input.formatCurrencyLabel,
+    formatDate: input.formatDate,
+    summaryCategoryOrder: input.summaryCategoryOrder
+  }).replace(
+    '<table class="attachment2-table"',
+    `<table class="attachment2-table" ${formatBlockWrapperAttr("allowance-pdf.attachment2.table", tableDelta)}`
+  );
+
+  if (tableDelta.colgroupHtml) {
+    tableHtml = tableHtml.replace(/<colgroup>[\s\S]*?<\/colgroup>/, tableDelta.colgroupHtml);
+  }
+
+  return renderPdfPageShell({
     title: `${input.workMonth} 별첨2`,
     pageSize: "A4 portrait",
     extraCss: `
@@ -1873,31 +2116,66 @@ export const writeAllowancePdfDocuments = async (input: {
       .subtotal-row td, .total-row td { background: #f4f6fb; font-weight: 700; }
     `,
     body: `
-      ${renderAttachmentTwoTitleHtml({
-        dateRangeLabel: input.formatProposalDateRange(input.workMonth),
-        logoDataUrl: brandLogoDataUrl,
-        workMonth: input.workMonth
-      })}
-      ${renderAttachmentTwoTableHtml({
-        rows: input.rows,
-        formatCurrencyLabel: input.formatCurrencyLabel,
-        formatDate: input.formatDate,
-        summaryCategoryOrder: input.summaryCategoryOrder
-      })}
+      ${titleDelta.visible !== false ? titleHtml : ""}
+      ${tableDelta.visible !== false ? tableHtml : ""}
     `
   });
+};
 
-  await createPdfDocument({
-    outputPath: input.proposalPath,
-    html: proposalHtml
+export interface WriteAllowancePdfDocumentsInput {
+  proposalPath: string;
+  attachment1Path: string;
+  attachment2Path: string;
+  workMonth: string;
+  rows: PdfExportRow[];
+  holidayNamesByDate: ReadonlyMap<string, string>;
+  totalAllowanceAmount: number;
+  regularTotalAllowanceAmount: number;
+  earlyPayoutTotalAllowanceAmount: number;
+  formatDate: (value: string) => string;
+  formatMonthLabel: (workMonth: string) => string;
+  formatProposalDateRange: (workMonth: string) => string;
+  formatCurrencyLabel: (amount: number) => string;
+  formatHoursLabel: (minutes: number) => string;
+  formatNextPayrollMonthLabel: (workMonth: string) => string;
+  summaryCategoryOrder: Record<string, number>;
+  rateGuideEntries: AllowanceRateGuideEntry[];
+  allowanceAxisLabels: Record<AllowanceRateAxis, string>;
+  layoutDefinition?: DocumentLayoutDefinition;
+}
+
+export const writeAllowancePdfDocuments = async (input: WriteAllowancePdfDocumentsInput): Promise<void> => {
+  const brandLogoDataUrl = resolveBrandLogoDataUrl();
+  const defaultDefinition = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+  const layoutDefinition = input.layoutDefinition ?? defaultDefinition;
+
+  const proposalHtml = buildAllowanceProposalHtml({
+    ...input,
+    layoutDefinition,
+    brandLogoDataUrl
   });
-  await createPdfDocument({
-    outputPath: input.attachment1Path,
-    html: attachment1Html,
-    landscape: true
+
+  const attachment1Html = buildAllowanceAttachmentOneHtml({
+    ...input,
+    layoutDefinition,
+    brandLogoDataUrl
   });
-  await createPdfDocument({
-    outputPath: input.attachment2Path,
-    html: attachment2Html
+
+  const attachment2Html = buildAllowanceAttachmentTwoHtml({
+    ...input,
+    layoutDefinition,
+    brandLogoDataUrl
   });
+
+  const [proposalBytes, attachment1Bytes, attachment2Bytes] = await renderHtmlBatchToPdfBytes([
+    proposalHtml,
+    attachment1Html,
+    attachment2Html
+  ]);
+
+  await commitPdfBatchAtomically([
+    { targetPath: input.proposalPath, bytes: proposalBytes },
+    { targetPath: input.attachment1Path, bytes: attachment1Bytes },
+    { targetPath: input.attachment2Path, bytes: attachment2Bytes }
+  ]);
 };

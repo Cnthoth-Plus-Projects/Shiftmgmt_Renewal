@@ -3,24 +3,10 @@ import path from "node:path";
 
 import type { AppSettingsSnapshot } from "../../shared/bridge/contracts";
 import {
-  resolveDatabaseMigrationSourceType,
-  type DatabaseMigrationSourceType
+  resolveDatabaseMigrationSourceType
 } from "../../shared/domain/database-migration";
 
-type DatabaseMigrationExtension = ".accdb" | ".json";
-
 type ConfiguredMigrationPathSettings = Pick<AppSettingsSnapshot, "migrationFilePath" | "dataDir">;
-
-export type ConfiguredAccessSourceState =
-  | { status: "missing-config" }
-  | { status: "not-access"; filePath: string }
-  | { status: "missing-file"; filePath: string }
-  | { status: "not-file"; filePath: string }
-  | { status: "ready"; filePath: string };
-
-const toDatabaseMigrationExtension = (
-  sourceType: DatabaseMigrationSourceType
-): DatabaseMigrationExtension => (sourceType === "json" ? ".json" : ".accdb");
 
 export const resolveConfiguredMigrationFilePath = (settings: ConfiguredMigrationPathSettings) => {
   const migrationFilePath = settings.migrationFilePath.trim();
@@ -34,44 +20,12 @@ export const resolveConfiguredMigrationFilePath = (settings: ConfiguredMigration
     : path.resolve(settings.dataDir, migrationFilePath);
 };
 
-export const resolveConfiguredAccessSourceState = (
-  settings: ConfiguredMigrationPathSettings
-): ConfiguredAccessSourceState => {
-  const filePath = resolveConfiguredMigrationFilePath(settings);
-
-  if (!filePath) {
-    return { status: "missing-config" };
-  }
-
-  if (resolveDatabaseMigrationSourceType(filePath) !== "access") {
-    return {
-      status: "not-access",
-      filePath
-    };
-  }
-
-  if (!existsSync(filePath)) {
-    return {
-      status: "missing-file",
-      filePath
-    };
-  }
-
-  if (!statSync(filePath).isFile()) {
-    return {
-      status: "not-file",
-      filePath
-    };
-  }
-
-  return {
-    status: "ready",
-    filePath
-  };
-};
-
-export const resolveDatabaseMigrationInput = (input: { migrationFilePath: string }) => {
-  const trimmedMigrationFilePath = input.migrationFilePath.trim();
+export const resolveDatabaseMigrationInput = (input: {
+  backupFilePath?: string;
+  migrationFilePath?: string;
+}) => {
+  const rawPath = input.backupFilePath ?? input.migrationFilePath ?? "";
+  const trimmedMigrationFilePath = rawPath.trim();
 
   if (!trimmedMigrationFilePath) {
     throw new Error("복원 파일 경로를 입력하세요.");
@@ -89,15 +43,16 @@ export const resolveDatabaseMigrationInput = (input: { migrationFilePath: string
 
   const sourceType = resolveDatabaseMigrationSourceType(migrationFilePath);
 
-  if (!sourceType) {
+  if (sourceType !== "json") {
     throw new Error(
-      "지원하지 않는 복원 파일 형식입니다. JSON 백업(.json) 또는 Access DB(.accdb)만 사용할 수 있습니다."
+      "지원하지 않는 복원 파일 형식입니다. JSON 백업(.json)만 사용할 수 있습니다."
     );
   }
 
   return {
+    backupFilePath: migrationFilePath,
     migrationFilePath,
-    sourceType,
-    extension: toDatabaseMigrationExtension(sourceType)
+    sourceType: "json" as const,
+    extension: ".json" as const
   };
 };

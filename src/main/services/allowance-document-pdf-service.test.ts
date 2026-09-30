@@ -1,6 +1,12 @@
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  buildAllowanceProposalHtml,
+  buildAllowanceAttachmentOneHtml,
+  buildAllowanceAttachmentTwoHtml,
   buildProposalLayoutConfigForTest,
   renderAttachmentOneTitleHtmlForTest,
   renderAttachmentTwoTitleHtmlForTest,
@@ -8,8 +14,10 @@ import {
   renderAttachmentOneTableHtmlForTest,
   renderAttachmentTwoTableHtmlForTest,
   renderProposalHighlightCardHtmlForTest,
-  renderProposalMetaTableHtmlForTest
+  renderProposalMetaTableHtmlForTest,
+  writeAllowancePdfDocuments
 } from "./allowance-document-pdf-service";
+import { getDefaultDocumentLayoutDefinition } from "./document-layout-definition-service";
 
 describe("allowance-document-pdf-service", () => {
   it("renders attachment1 rate guide with separate block lines for applied values and formulas", () => {
@@ -302,4 +310,389 @@ describe("allowance-document-pdf-service", () => {
     expect(html).toContain('<tr class="total-row">');
     expect(html).toContain("전체 총소계");
   });
+
+  it("applies layout delta to proposal HTML (position, font, visibility, custom text, colgroup)", () => {
+    const baseDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+    const customizedDef = JSON.parse(JSON.stringify(baseDef));
+
+    // 1. Title delta: move, font, remove logo
+    const titleBlock = customizedDef.outputs[0].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.proposal.title"
+    );
+    titleBlock.x = 15;
+    titleBlock.y = 14;
+    titleBlock.width = 185;
+    titleBlock.height = 34;
+    titleBlock.font = {
+      family: "CustomProposalFont",
+      sizePt: 16,
+      bold: true,
+      color: "#123456"
+    };
+    titleBlock.logoAssetId = null;
+
+    // 2. Chart title custom text
+    const chartTitleBlock = customizedDef.outputs[0].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.proposal.chart-title"
+    );
+    chartTitleBlock.text = "맞춤형 수당 지급 분석 차트";
+    chartTitleBlock.logoAssetId = null;
+
+    // 3. Regular table colgroup delta
+    const regularTableBlock = customizedDef.outputs[0].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.proposal.regular-table"
+    );
+    regularTableBlock.columnWidths = {
+      A: 10,
+      B: 10,
+      C: 20,
+      D: 15,
+      E: 15,
+      F: 15,
+      G: 15
+    };
+
+    const html = buildAllowanceProposalHtml({
+      workMonth: "2026-03",
+      rows: [],
+      totalAllowanceAmount: 0,
+      regularTotalAllowanceAmount: 0,
+      earlyPayoutTotalAllowanceAmount: 0,
+      formatDate: (v) => v,
+      formatMonthLabel: (m) => m,
+      formatProposalDateRange: (m) => m,
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatHoursLabel: (m) => `${m}분`,
+      formatNextPayrollMonthLabel: (m) => m,
+      layoutDefinition: customizedDef,
+      brandLogoDataUrl: "data:image/png;base64,samplelogo"
+    });
+
+    // delta styles
+    expect(html).toContain('data-layout-block-id="allowance-pdf.proposal.title"');
+    expect(html).toContain("margin-left: 5mm");
+    expect(html).toContain("margin-top: 4mm");
+    expect(html).toContain('font-family: &quot;CustomProposalFont&quot;, sans-serif');
+    expect(html).toContain("font-size: 16pt");
+    expect(html).toContain("font-weight: bold");
+    expect(html).toContain("color: #123456");
+
+    // logo suppressed for title
+    expect(html).not.toContain('class="document-brand-logo"');
+
+    // custom text applied
+    expect(html).toContain("맞춤형 수당 지급 분석 차트");
+
+    // colgroup applied
+    expect(html).toContain("<colgroup>");
+    expect(html).toContain('style="width: 10.00%"');
+    expect(html).toContain('style="width: 20.00%"');
+  });
+
+  it("applies layout delta to attachment1 and attachment2 HTML", () => {
+    const baseDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+    const customizedDef = JSON.parse(JSON.stringify(baseDef));
+
+    // attachment1 colgroup delta (20 columns A~T)
+    const att1TableBlock = customizedDef.outputs[1].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.attachment1.table"
+    );
+    const keys20 = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"];
+    att1TableBlock.columnWidths = Object.fromEntries(keys20.map((k) => [k, 5]));
+
+    const att1Html = buildAllowanceAttachmentOneHtml({
+      workMonth: "2026-03",
+      rows: [],
+      holidayNamesByDate: new Map(),
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatHoursLabel: (m) => `${m}분`,
+      summaryCategoryOrder: {},
+      rateGuideEntries: [],
+      allowanceAxisLabels: { base: "기본", overtime: "연장", night: "야간" },
+      layoutDefinition: customizedDef
+    });
+
+    expect(att1Html).toContain('data-layout-block-id="allowance-pdf.attachment1.table"');
+    expect(att1Html).toContain('style="width: 5.00%"');
+    const att1Cols = att1Html.match(/<col style="width: [^"]+" \/>/g) ?? [];
+    expect(att1Cols.length).toBe(20);
+
+    // attachment2 colgroup delta (8 columns A~H)
+    const att2TableBlock = customizedDef.outputs[2].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.attachment2.table"
+    );
+    const keys8 = ["A","B","C","D","E","F","G","H"];
+    att2TableBlock.columnWidths = Object.fromEntries(keys8.map((k) => [k, 12.5]));
+
+    const att2Html = buildAllowanceAttachmentTwoHtml({
+      workMonth: "2026-03",
+      rows: [],
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatProposalDateRange: (m) => m,
+      summaryCategoryOrder: {},
+      layoutDefinition: customizedDef
+    });
+
+    expect(att2Html).toContain('data-layout-block-id="allowance-pdf.attachment2.table"');
+    expect(att2Html).toContain('style="width: 12.50%"');
+    const att2Cols = att2Html.match(/<col style="width: [^"]+" \/>/g) ?? [];
+    expect(att2Cols.length).toBe(8);
+  });
+
+  // T-C4: font family 적대 payload 및 style attribute escape 검증
+  it("T-C4: font family 적대 payload와 style attribute가 안전하게 escape/정제된다", () => {
+    const dangerousPayloads = [
+      '" onmouseover="boom',
+      "';background:url(http://x)",
+      "</style><script>"
+    ];
+
+    for (const payload of dangerousPayloads) {
+      const baseDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+      const customizedDef = JSON.parse(JSON.stringify(baseDef));
+      const titleBlock = customizedDef.outputs[0].blocks.find(
+        (b: { id: string }) => b.id === "allowance-pdf.proposal.title"
+      )!;
+      titleBlock.font = { family: payload, sizePt: 16 };
+
+      const html = buildAllowanceProposalHtml({
+        workMonth: "2026-03",
+        rows: [],
+        totalAllowanceAmount: 0,
+        regularTotalAllowanceAmount: 0,
+        earlyPayoutTotalAllowanceAmount: 0,
+        formatDate: (v) => v,
+        formatMonthLabel: (m) => m,
+        formatProposalDateRange: (m) => m,
+        formatCurrencyLabel: (a) => `${a}원`,
+        formatHoursLabel: (m) => `${m}분`,
+        formatNextPayrollMonthLabel: (m) => m,
+        layoutDefinition: customizedDef
+      });
+
+      expect(html).not.toContain("onmouseover=");
+      expect(html).not.toContain("url(");
+      expect(html).not.toContain("<script>");
+      expect(html).not.toContain("</style><script>");
+      expect((html.match(/<\/style>/g) ?? []).length).toBe(1);
+    }
+  });
+
+  // T-C5b: 고정표 7/20/8열 col 개수 정확히 7/20/8 검증
+  it("T-C5b: proposal(7열), attachment1(20열), attachment2(8열) colgroup 태그 수가 정확하다", () => {
+    const defaultDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+
+    // Proposal regular table: 7 columns
+    const propHtml = buildAllowanceProposalHtml({
+      workMonth: "2026-03",
+      rows: [],
+      totalAllowanceAmount: 0,
+      regularTotalAllowanceAmount: 0,
+      earlyPayoutTotalAllowanceAmount: 0,
+      formatDate: (v) => v,
+      formatMonthLabel: (m) => m,
+      formatProposalDateRange: (m) => m,
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatHoursLabel: (m) => `${m}분`,
+      formatNextPayrollMonthLabel: (m) => m,
+      layoutDefinition: defaultDef
+    });
+    // proposal regular table의 colgroup 확인
+    const propTableSection = propHtml.split('data-layout-block-id="allowance-pdf.proposal.regular-table"')[1] ?? "";
+    const propColMatches = propTableSection.split("</table>")[0].match(/<col style="width: [^"]+" \/>/g) ?? [];
+    expect(propColMatches.length).toBe(7);
+
+    // Attachment 1: 20 columns
+    const att1Html = buildAllowanceAttachmentOneHtml({
+      workMonth: "2026-03",
+      rows: [],
+      holidayNamesByDate: new Map(),
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatHoursLabel: (m) => `${m}분`,
+      summaryCategoryOrder: {},
+      rateGuideEntries: [],
+      allowanceAxisLabels: { base: "기본", overtime: "연장", night: "야간" },
+      layoutDefinition: defaultDef
+    });
+    const att1ColMatches = att1Html.match(/<col\b/g) ?? [];
+    expect(att1ColMatches.length).toBe(20);
+
+    // Attachment 2: 8 columns
+    const att2Html = buildAllowanceAttachmentTwoHtml({
+      workMonth: "2026-03",
+      rows: [],
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatProposalDateRange: (m) => m,
+      summaryCategoryOrder: {},
+      layoutDefinition: defaultDef
+    });
+    const att2ColMatches = att2Html.match(/<col\b/g) ?? [];
+    expect(att2ColMatches.length).toBe(8);
+  });
+
+  // T-C6: 기본 proposal HTML/CSS baseline presentation 복원 검증
+  it("T-C6: 기본 proposal HTML/CSS baseline presentation 대표값(chart grid, donut, bar gradient) 및 도넛 범례 스타일이 일치한다", () => {
+    const html = buildAllowanceProposalHtml({
+      workMonth: "2026-03",
+      rows: [],
+      totalAllowanceAmount: 0,
+      regularTotalAllowanceAmount: 0,
+      earlyPayoutTotalAllowanceAmount: 0,
+      formatDate: (v) => v,
+      formatMonthLabel: (m) => m,
+      formatProposalDateRange: (m) => m,
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatHoursLabel: (m) => `${m}분`,
+      formatNextPayrollMonthLabel: (m) => m
+    });
+
+    // 1. Chart grid: minmax(0, 1.25fr) minmax(0, 0.9fr)
+    expect(html).toContain("grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);");
+
+    // 2. Donut outer/inner: 180px / 118px
+    expect(html).toContain("width: 180px;");
+    expect(html).toContain("height: 180px;");
+    expect(html).toContain("width: 118px;");
+    expect(html).toContain("height: 118px;");
+
+    // 3. Bar gradient: #3758b0 -> #8da2de
+    expect(html).toContain("linear-gradient(90deg, #3758b0 0%, #8da2de 100%)");
+
+    // 4. Donut legend item: gap 12px, color #41526d (baseline 복원)
+    expect(html).toContain(".proposal-donut-legend-item {");
+    expect(html).toMatch(/\.proposal-donut-legend-item\s*\{[^}]*gap:\s*12px;/);
+    expect(html).toMatch(/\.proposal-donut-legend-item\s*\{[^}]*color:\s*#41526d;/);
+
+    // 5. Donut legend item strong: color #1f325a (baseline 복원)
+    expect(html).toMatch(/\.proposal-donut-legend-item\s+strong\s*\{[^}]*color:\s*#1f325a;/);
+
+    // 6. Donut dot: display: inline-block 없음 (baseline에는 없었음)
+    expect(html).not.toMatch(/\.proposal-donut-dot\s*\{[^}]*display:\s*inline-block;/);
+  });
+
+  // T-C7: 각 output visible === false 시 DOM 완전 생략 검증
+  it("T-C7: proposal, attachment1, attachment2 블록 visible=false 시 wrapper 및 내용이 DOM에서 완전히 생략된다", () => {
+    // 1. Proposal 블록들 검증
+    const proposalBlockIds = [
+      "allowance-pdf.proposal.title",
+      "allowance-pdf.proposal.meta",
+      "allowance-pdf.proposal.criteria",
+      "allowance-pdf.proposal.regular-table",
+      "allowance-pdf.proposal.early-table",
+      "allowance-pdf.proposal.footer",
+      "allowance-pdf.proposal.chart-title",
+      "allowance-pdf.proposal.chart-note",
+      "allowance-pdf.proposal.chart-summary",
+      "allowance-pdf.proposal.chart-grid"
+    ];
+
+    for (const blockId of proposalBlockIds) {
+      const baseDef = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+      const customizedDef = JSON.parse(JSON.stringify(baseDef));
+      const targetBlock = customizedDef.outputs[0].blocks.find(
+        (b: { id: string }) => b.id === blockId
+      )!;
+      targetBlock.visible = false;
+
+      const html = buildAllowanceProposalHtml({
+        workMonth: "2026-03",
+        rows: [],
+        totalAllowanceAmount: 1000,
+        regularTotalAllowanceAmount: 1000,
+        earlyPayoutTotalAllowanceAmount: 0,
+        formatDate: (v) => v,
+        formatMonthLabel: (m) => m,
+        formatProposalDateRange: (m) => m,
+        formatCurrencyLabel: (a) => `${a}원`,
+        formatHoursLabel: (m) => `${m}분`,
+        formatNextPayrollMonthLabel: (m) => m,
+        layoutDefinition: customizedDef
+      });
+
+      expect(html).not.toContain(`data-layout-block-id="${blockId}"`);
+    }
+
+    // 2. Attachment 1 table visible: false
+    const att1Def = JSON.parse(JSON.stringify(getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" })));
+    const att1TableBlock = att1Def.outputs[1].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.attachment1.table"
+    )!;
+    att1TableBlock.visible = false;
+    const att1Html = buildAllowanceAttachmentOneHtml({
+      workMonth: "2026-03",
+      rows: [],
+      holidayNamesByDate: new Map(),
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatHoursLabel: (m) => `${m}분`,
+      summaryCategoryOrder: {},
+      rateGuideEntries: [],
+      allowanceAxisLabels: { base: "기본", overtime: "연장", night: "야간" },
+      layoutDefinition: att1Def
+    });
+    expect(att1Html).not.toContain('data-layout-block-id="allowance-pdf.attachment1.table"');
+
+    // 3. Attachment 2 table visible: false
+    const att2Def = JSON.parse(JSON.stringify(getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" })));
+    const att2TableBlock = att2Def.outputs[2].blocks.find(
+      (b: { id: string }) => b.id === "allowance-pdf.attachment2.table"
+    )!;
+    att2TableBlock.visible = false;
+    const att2Html = buildAllowanceAttachmentTwoHtml({
+      workMonth: "2026-03",
+      rows: [],
+      formatCurrencyLabel: (a) => `${a}원`,
+      formatDate: (v) => v,
+      formatProposalDateRange: (m) => m,
+      summaryCategoryOrder: {},
+      layoutDefinition: att2Def
+    });
+    expect(att2Html).not.toContain('data-layout-block-id="allowance-pdf.attachment2.table"');
+  });
+
+  it("writes 3 allowance PDF documents atomically using installed Chrome", async () => {
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "allowance-pdf-test-"));
+    const proposalPath = path.join(tempDir, "proposal.pdf");
+    const attachment1Path = path.join(tempDir, "attachment1.pdf");
+    const attachment2Path = path.join(tempDir, "attachment2.pdf");
+
+    try {
+      await writeAllowancePdfDocuments({
+        proposalPath,
+        attachment1Path,
+        attachment2Path,
+        workMonth: "2026-03",
+        rows: [],
+        holidayNamesByDate: new Map(),
+        totalAllowanceAmount: 0,
+        regularTotalAllowanceAmount: 0,
+        earlyPayoutTotalAllowanceAmount: 0,
+        formatDate: (v) => v,
+        formatMonthLabel: (m) => m,
+        formatProposalDateRange: (m) => m,
+        formatCurrencyLabel: (a) => `${a}원`,
+        formatHoursLabel: (m) => `${m}분`,
+        formatNextPayrollMonthLabel: (m) => m,
+        summaryCategoryOrder: {},
+        rateGuideEntries: [],
+        allowanceAxisLabels: { base: "기본", overtime: "연장", night: "야간" }
+      });
+
+      const [pBuf, a1Buf, a2Buf] = await Promise.all([
+        fs.readFile(proposalPath),
+        fs.readFile(attachment1Path),
+        fs.readFile(attachment2Path)
+      ]);
+
+      expect(pBuf.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+      expect(a1Buf.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+      expect(a2Buf.subarray(0, 5).toString("latin1")).toBe("%PDF-");
+    } finally {
+      await fs.rm(tempDir, { recursive: true, force: true });
+    }
+  }, 30000);
 });

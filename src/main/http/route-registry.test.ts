@@ -100,4 +100,71 @@ describe("RouteRegistry", () => {
     const unreg = await registry.dispatch("operations:delete-user", [], baseCtx);
     expect(unreg).toBeNull();
   });
+
+  it("C31-01: ensures auth:get-session performs non-renewing lookup and bypasses resolveSession renewal", async () => {
+    const mockSession: AuthSession = {
+      userId: "u-admin",
+      loginId: "admin",
+      displayName: "관리자",
+      role: "admin",
+      passwordChangeRequired: false,
+      issuedAt: "2026-09-28T00:00:00.000Z",
+      expiresAt: "2026-09-28T08:00:00.000Z",
+    };
+
+    const getSessionMock = vi.fn(() => ({ ok: true, data: mockSession }));
+    const getSessionWithRenewalMock = vi.fn(() => ({ ok: true, data: mockSession }));
+
+    const sessionManager = new SessionManager({
+      authService: {
+        signIn: vi.fn(),
+        signOut: vi.fn(),
+        getSession: getSessionMock,
+        getSessionWithRenewal: getSessionWithRenewalMock,
+        changePassword: vi.fn(),
+      },
+      randomId: () => "a".repeat(64),
+    });
+
+    const registry = new RouteRegistry(sessionManager);
+
+    registry.register("auth:get-session", (_args, context) =>
+      sessionManager.handleGetSession(context.cookie),
+    );
+    registry.register("access-logs:record", async () => ({ ok: true, data: null }));
+
+    const token = "a".repeat(64);
+    const cookie = `sm_session=${token}`;
+    (sessionManager as unknown as { sessionMap: Map<string, { session: AuthSession; issuedAt: number; lastSeenAt: number }> }).sessionMap.set(token, {
+      session: mockSession,
+      issuedAt: Date.now(),
+      lastSeenAt: Date.now(),
+    });
+
+    const baseCtx = {
+      headers: {},
+      signal: new AbortController().signal,
+      version: "0.1.0",
+      dataDir: "C:/test",
+      dialogBridge: mockDialogBridge,
+    };
+
+    // 1. auth:get-session 호출: getSessionWithRenewal은 0회, getSession은 1회(비갱신) 호출되어야 함
+    const res = await registry.dispatch("auth:get-session", [], {
+      ...baseCtx,
+      cookie,
+    });
+
+    expect(res?.status).toBe(200);
+    expect(res?.body).toEqual({ ok: true, data: mockSession });
+    expect(getSessionWithRenewalMock).toHaveBeenCalledTimes(0);
+    expect(getSessionMock).toHaveBeenCalledTimes(1);
+
+    // 2. 일반 보호 채널(access-logs:record) 호출: getSessionWithRenewal이 호출되어야 함
+    await registry.dispatch("access-logs:record", [{}], {
+      ...baseCtx,
+      cookie,
+    });
+    expect(getSessionWithRenewalMock).toHaveBeenCalledTimes(1);
+  });
 });

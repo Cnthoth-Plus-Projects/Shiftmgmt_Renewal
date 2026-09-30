@@ -63,6 +63,10 @@ export class RouteRegistry {
         };
       }
       activeSession = authResult.session;
+    } else if (channel === "auth:get-session") {
+      // C31-01: auth:get-session은 비갱신 세션 조회를 보장해야 하므로 resolveSession(갱신 조회)을 건너뛴다.
+      // handler(SessionManager.handleGetSession)가 쿠키의 비갱신 유효성을 직접 검증한다.
+      activeSession = null;
     } else {
       switch (meta.guard) {
         case "none": {

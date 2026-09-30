@@ -1,0 +1,1106 @@
+// 실제 Chrome 기반 교대근무관리 홈 화면(H1~H5, 권한, 액션, 오류) 시나리오 검증 스크립트
+//
+//   node scripts/ui-checks/home.mjs <http://127.0.0.1:포트/> [--case=<case>]
+//
+// 케이스: live-admin | operator-fixture | empty-fixture | loading-error | stale-response | admin-action
+//
+import os from "node:os";
+import { existsSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import { runScreenCheck, validateTargetUrl } from "../lib/ui-check.mjs";
+
+const rawArgs = process.argv.slice(2);
+const targetUrl = rawArgs.find((arg) => !arg.startsWith("--"));
+const caseArg = rawArgs.find((arg) => arg.startsWith("--case="))?.split("=")[1];
+
+if (!targetUrl) {
+  process.stderr.write("쓰는 법: node scripts/ui-checks/home.mjs <http://127.0.0.1:포트/> [--case=<case>]\n");
+  process.exit(1);
+}
+
+// 1. URL 형식 사전 검증
+try {
+  validateTargetUrl(targetUrl);
+} catch (err) {
+  process.stderr.write(`[URL 검증 실패] ${err.message}\n`);
+  process.exit(1);
+}
+
+const repoRoot = path.resolve(process.cwd());
+
+// 2. os.tmpdir() 및 격리 디렉토리 경계 검증
+const rawTemp = os.tmpdir();
+let tempRoot = path.resolve(rawTemp);
+try {
+  if (existsSync(tempRoot)) {
+    tempRoot = realpathSync(tempRoot);
+  }
+} catch {
+  // 기본 해석값 유지
+}
+
+const userDataDir = process.env.SHIFTMGMT_USER_DATA_DIR;
+if (!userDataDir || !path.isAbsolute(userDataDir)) {
+  process.stderr.write("[오류] SHIFTMGMT_USER_DATA_DIR 환경변수에 절대 경로가 지정되지 않았습니다.\n");
+  process.exit(2);
+}
+
+const resolvedUserDataDir = path.resolve(userDataDir);
+const relUserDataToTemp = path.relative(tempRoot, resolvedUserDataDir);
+if (relUserDataToTemp.startsWith("..") || path.isAbsolute(relUserDataToTemp) || relUserDataToTemp === "") {
+  process.stderr.write("[오류] userDataDir이 os.tmpdir() 내부의 격리 폴더가 아닙니다.\n");
+  process.exit(2);
+}
+
+const tempSegments = relUserDataToTemp.split(path.sep).filter(Boolean);
+if (tempSegments.length !== 1) {
+  process.stderr.write("[오류] userDataDir은 os.tmpdir() 바로 아래의 하위 폴더여야 합니다.\n");
+  process.exit(2);
+}
+
+const relUserDataToRepo = path.relative(repoRoot, resolvedUserDataDir);
+if (!relUserDataToRepo.startsWith("..") && !path.isAbsolute(relUserDataToRepo)) {
+  process.stderr.write("[오류] userDataDir이 저장소 내부에 위치할 수 없습니다. 격리 폴더를 사용하세요.\n");
+  process.exit(2);
+}
+
+let realUserDataDir = resolvedUserDataDir;
+if (existsSync(resolvedUserDataDir)) {
+  try {
+    realUserDataDir = realpathSync(resolvedUserDataDir);
+  } catch (err) {
+    process.stderr.write(`[오류] userDataDir 실제 경로 확인 실패: ${err.message}\n`);
+    process.exit(2);
+  }
+}
+
+// 3. SHIFTMGMT_UI_BOOTSTRAP_FILE 검증
+const bootstrapPath = process.env.SHIFTMGMT_UI_BOOTSTRAP_FILE;
+if (!bootstrapPath || !path.isAbsolute(bootstrapPath)) {
+  process.stderr.write("[오류] SHIFTMGMT_UI_BOOTSTRAP_FILE 환경변수에 절대 경로가 지정되지 않았습니다.\n");
+  process.exit(2);
+}
+
+const resolvedBootstrapPath = path.resolve(bootstrapPath);
+const expectedBoot = path.normalize(path.resolve(resolvedUserDataDir, "data", "bootstrap-credentials.json"));
+if (path.normalize(resolvedBootstrapPath) !== expectedBoot) {
+  process.stderr.write("[오류] bootstrap 파일 경로는 <격리폴더>/data/bootstrap-credentials.json 정확한 경로여야 합니다.\n");
+  process.exit(2);
+}
+
+if (!existsSync(resolvedBootstrapPath)) {
+  process.stderr.write("[오류] bootstrap 파일이 존재하지 않습니다.\n");
+  process.exit(2);
+}
+
+let bootstrapData;
+try {
+  bootstrapData = JSON.parse(readFileSync(resolvedBootstrapPath, "utf8"));
+} catch (err) {
+  process.stderr.write(`[오류] bootstrap 파일 파싱 실패: ${err.message}\n`);
+  process.exit(2);
+}
+
+const adminCreds = bootstrapData.credentials?.["user-admin"];
+const operatorCreds = bootstrapData.credentials?.["user-operator"];
+
+if (!adminCreds || !operatorCreds) {
+  process.stderr.write("[오류] bootstrap 파일에 user-admin 또는 user-operator 자격증명이 누락되었습니다.\n");
+  process.exit(2);
+}
+
+// 4. 로그인 헬퍼 (비밀번호 노출 화면 캡처 방지)
+async function performLogin(page, creds, waitForFontsReady) {
+  const idInput = page.locator("#login-id");
+  const pwInput = page.locator("#login-password");
+  const submitBtn = page.locator("button[type='submit']");
+
+  await idInput.waitFor({ state: "visible", timeout: 10_000 });
+  await idInput.fill(creds.loginId);
+  await pwInput.fill(creds.password);
+  await submitBtn.click();
+
+  const l4OrShell = await Promise.race([
+    page.locator("#l4-btn-submit").waitFor({ state: "visible", timeout: 10_000 }).then(() => "L4"),
+    page.locator(".btn-logout").waitFor({ state: "visible", timeout: 10_000 }).then(() => "SHELL"),
+  ]).catch(() => "TIMEOUT");
+
+  if (l4OrShell === "L4") {
+    const nextStrongPw = "P@ssw0rd2026!#" + Math.random().toString(36).slice(2, 6);
+    await page.locator("#l4-current-pw").fill(creds.password);
+    await page.locator("#l4-new-pw").fill(nextStrongPw);
+    await page.locator("#l4-confirm-pw").fill(nextStrongPw);
+    await page.locator("#l4-btn-submit").click();
+  }
+
+  await page.locator(".btn-logout").waitFor({ state: "visible", timeout: 15_000 });
+  if (waitForFontsReady) {
+    await waitForFontsReady(15_000);
+  }
+}
+
+// 미구현 업무 화면 버튼(0개 엄수) 검사기
+async function assertNoForbiddenButtons(page) {
+  const forbiddenTexts = ["보기", "바로 가기", "원인 보기", "실적 관리에서 확인", "근무지 등록", "실적 관리 보기"];
+  const buttons = page.locator("#main-content button");
+  const count = await buttons.count();
+  for (let i = 0; i < count; i++) {
+    const btn = buttons.nth(i);
+    const text = (await btn.textContent())?.trim() || "";
+    for (const forbidden of forbiddenTexts) {
+      if (text === forbidden || text.includes(forbidden)) {
+        throw new Error(`[위반] 미구현 화면 이동 버튼이 렌더링되었습니다: '${text}'`);
+      }
+    }
+  }
+}
+
+// 실제 세션과 HTTP 응답 경계만 사용해 두 액션의 수명/재시도를 확인한다.
+async function verifyActionLifetime(page, kind, capture) {
+  const recovery = kind === "retry-recovery";
+  const selector = recovery ? "#btn-retry-recovery" : "#home-btn-restart-watch";
+  const channel = recovery ? "performance:retry-startup-recovery" : "operations:restart-file-watch";
+  const otherChannel = recovery ? "operations:restart-file-watch" : "performance:retry-startup-recovery";
+  const otherSelector = recovery ? "#home-btn-restart-watch" : "#btn-retry-recovery";
+  const assertions = [];
+  let expectedNetwork = false;
+  let networkFailures = 0;
+  const requestListeners = page.listeners("requestfailed");
+  const consoleListeners = page.listeners("console");
+  page.removeAllListeners("requestfailed");
+  page.removeAllListeners("console");
+  page.on("requestfailed", (request) => {
+    if (expectedNetwork && decodeURIComponent(new URL(request.url()).pathname) === `/api/${channel}`) {
+      networkFailures++;
+    } else for (const listener of requestListeners) listener(request);
+  });
+  page.on("console", (message) => {
+    const location = message.location().url;
+    if (expectedNetwork && message.type() === "error" && message.text().includes("net::ERR_FAILED") &&
+      location && decodeURIComponent(new URL(location).pathname) === `/api/${channel}`) return;
+    for (const listener of consoleListeners) listener(message);
+  });
+  try {
+    const scenarios = ["live", "refresh", "leave", "failure-refresh"];
+    for (const scenario of scenarios) {
+      const outcomes = scenario === "failure-refresh" ? ["failure", "network"] : ["success", "failure", "auth", "network"];
+      for (const outcome of outcomes) {
+        await page.unrouteAll({ behavior: "wait" });
+        expectedNetwork = outcome === "network";
+        networkFailures = 0;
+        let release;
+        let started;
+        const held = new Promise((resolve) => { release = resolve; });
+        const requested = new Promise((resolve) => { started = resolve; });
+        let requests = 0;
+        const recoveryState = { hasRun: true, completedAt: new Date().toISOString(), restoredScheduleCount: 0,
+          skippedScheduleCount: 0, approvedSyncIssueCount: 1, issues: ["검증용 복구 실패"] };
+        const watchState = { isRunning: false, pendingDir: "/fixture-pending", approvedDir: "/fixture-approved", recentEvents: [] };
+        await page.route("**/api/*", async (route) => {
+          const current = decodeURIComponent(new URL(route.request().url()).pathname).slice(5);
+          if (current === "performance:get-startup-recovery-status" || current === "operations:get-file-watch-status") {
+            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true,
+              data: current === "performance:get-startup-recovery-status" ? recoveryState : watchState }) });
+          } else if (current === otherChannel) {
+            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true,
+              data: recovery ? watchState : recoveryState }) });
+          } else if (current === channel) {
+            requests++;
+            started();
+            await held;
+            if (outcome === "network") await route.abort("failed");
+            else await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(
+              outcome === "success" ? { ok: true, data: recovery ? recoveryState : watchState } :
+                { ok: false, errorCode: outcome === "auth" ? "AUTH_SESSION_REQUIRED" : "FIXTURE_ACTION_FAILURE",
+                  message: "검증용 액션 실패" }) });
+          } else await route.continue();
+        });
+        await page.goto(targetUrl);
+        await page.locator(".btn-logout").waitFor({ state: "visible" });
+        await page.locator(selector).waitFor({ state: "visible" });
+        await page.evaluate(() => {
+          window.homeAuthTransitions = 0;
+          let visible = false;
+          window.homeAuthObserver?.disconnect();
+          window.homeAuthObserver = new MutationObserver(() => {
+            const next = !!document.querySelector("#login-id");
+            if (next && !visible) window.homeAuthTransitions++;
+            visible = next;
+          });
+          window.homeAuthObserver.observe(document.body, { childList: true, subtree: true });
+        });
+        const oldButton = await page.locator(selector).elementHandle();
+        await page.locator(selector).focus();
+        await page.keyboard.press("Enter");
+        await requested;
+        await oldButton.evaluate((button) => button.click());
+        if (requests !== 1 || !(await oldButton.evaluate((button) => button.disabled))) {
+          throw new Error(`${kind}/${scenario}/${outcome}: 중복 요청 또는 잠금 실패`);
+        }
+        try {
+          if (scenario === "refresh") {
+            // 다른 실제 액션의 성공은 같은 HomeScreen.refresh()를 호출한다.
+            // 사이드바 홈 클릭은 기존 HomeScreen을 destroy/remount하므로 별개의 수명이다.
+            await page.locator(otherSelector).click();
+            await oldButton.waitForElementState("hidden");
+            await page.locator(selector).waitFor({ state: "visible" });
+            if (!(await page.locator(selector).isDisabled())) throw new Error("진행 중 요청의 새 버튼 잠금 누락");
+          } else if (scenario === "leave") {
+            await page.getByRole("button", { name: "근무 현황", exact: true }).click();
+            await page.locator(".notice-banner").waitFor({ state: "visible" });
+          }
+          release();
+          if (scenario === "leave") {
+            await page.waitForTimeout(250);
+            if (!(await page.locator(".notice-banner").isVisible()) || await page.locator("#login-id").count()) {
+              throw new Error("홈 이탈 뒤 늦은 결과가 현재 화면을 변경함");
+            }
+          } else if (scenario === "live" && outcome === "auth") {
+            await page.locator("#login-id").waitFor({ state: "visible" });
+            if (await page.evaluate(() => window.homeAuthTransitions) !== 1) throw new Error("살아 있는 AUTH 전환은 1회여야 함");
+          } else {
+            await page.waitForFunction((s) => {
+              const button = document.querySelector(s);
+              return button && !button.disabled;
+            }, selector);
+            if (scenario === "failure-refresh") {
+              await page.locator(otherSelector).click();
+              await page.locator(selector).waitFor({ state: "visible" });
+              await page.waitForTimeout(2100);
+              if (!(await page.locator(selector).isEnabled())) throw new Error("실패 후 refresh 버튼의 영구 잠금");
+            }
+            if (await page.locator("#login-id").count()) throw new Error("오래된 AUTH가 세션을 변경함");
+            await page.locator(selector).click();
+            await page.waitForTimeout(150);
+            if (requests !== 2) throw new Error("현재 버튼으로 재시도 요청을 보낼 수 없음");
+          }
+          if (scenario === "refresh" || scenario === "leave") {
+            const old = await oldButton.evaluate((button) => ({ connected: button.isConnected, text: button.textContent, disabled: button.disabled }));
+            if (old.connected || old.text !== "처리 중…" || !old.disabled) throw new Error("분리된 이전 버튼을 변경함");
+          }
+          if (outcome === "network" && networkFailures !== requests) throw new Error("의도된 네트워크 실패 요청수 불일치");
+          assertions.push({ kind, scenario, outcome, requests, expectedNetworkFailures: networkFailures, result: "PASS" });
+        } finally { release(); }
+      }
+    }
+    const imagePath = await capture(`home-${kind}-lifetime`);
+    writeFileSync(path.join(path.dirname(imagePath), "action-assertions.json"), JSON.stringify({ fixtureBoundary: "HTTP responses", realSession: true, assertions }, null, 2));
+  } finally {
+    page.removeAllListeners("requestfailed");
+    page.removeAllListeners("console");
+    for (const listener of requestListeners) page.on("requestfailed", listener);
+    for (const listener of consoleListeners) page.on("console", listener);
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 케이스 정의
+// ----------------------------------------------------------------------------
+
+const casesToRun = caseArg ? [caseArg] : [
+  "live-admin",
+  "operator-fixture",
+  "empty-fixture",
+  "loading-error",
+  "stale-response",
+  "admin-action",
+  "employees-error",
+  "sites-error",
+  "sync-error",
+  "recovery-error",
+  "watch-error",
+  "stale-retry-action",
+  "stale-watch-action",
+];
+
+for (const currentCase of casesToRun) {
+  if (currentCase === "live-admin") {
+    await runScreenCheck({
+      id: "home-live-admin",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. /web/home.css 로딩 계측
+        let homeCssLoaded = false;
+        page.on("response", (res) => {
+          if (res.url().includes("/web/home.css") && res.status() === 200) {
+            homeCssLoaded = true;
+          }
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. 홈 콘텐츠 렌더링 확인
+        const mainContent = page.locator("#main-content");
+        await mainContent.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 4. 진행 현황 카드 3개 실측 확인
+        const prepCard = page.locator("#card-progress-prep");
+        const opsCard = page.locator("#card-progress-ops");
+        const settleCard = page.locator("#card-progress-settle");
+
+        await prepCard.waitFor({ state: "visible", timeout: 10_000 });
+        await opsCard.waitFor({ state: "visible", timeout: 10_000 });
+        await settleCard.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 단위 검증: 준비='근무지', 운영/정산='단계'
+        const prepText = await prepCard.textContent();
+        if (!prepText.includes("근무지") || !prepText.includes("(현재 배정 기준)")) {
+          throw new Error(`준비 카드 단위 또는 문구 누락: ${prepText}`);
+        }
+
+        const opsText = await opsCard.textContent();
+        if (!opsText.includes("단계")) {
+          throw new Error(`운영 카드 단위 누락: ${opsText}`);
+        }
+
+        const settleText = await settleCard.textContent();
+        if (!settleText.includes("단계")) {
+          throw new Error(`정산 카드 단위 누락: ${settleText}`);
+        }
+
+        // 5. 대기 실적 현황 확인
+        const kpiSection = page.locator("#section-performance-kpi");
+        await kpiSection.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 6. 미구현 화면 버튼 0개 검증
+        await assertNoForbiddenButtons(page);
+
+        // 7. 캡처
+        await capture("home-live-admin");
+      },
+    });
+  } else if (currentCase === "operator-fixture") {
+    await runScreenCheck({
+      id: "home-operator-fixture",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. 운영자 로그인
+        await performLogin(page, operatorCreds, waitForFontsReady);
+
+        // 2. 역할 배지 확인 (운영자)
+        const roleBadge = page.locator(".role-badge");
+        await roleBadge.waitFor({ state: "visible", timeout: 10_000 });
+        const roleText = (await roleBadge.textContent())?.trim();
+        if (roleText !== "운영자") {
+          throw new Error(`운영자 역할 배지 불일치: ${roleText}`);
+        }
+
+        // 3. 관리자 전용 감시 중단 버튼 및 todo 부재 확인
+        const restartWatchBtn = page.locator("#home-btn-restart-watch");
+        const count = await restartWatchBtn.count();
+        if (count > 0) {
+          throw new Error("운영자 화면에 감시 재시작 버튼이 노출되었습니다.");
+        }
+
+        // 4. 미구현 화면 버튼 0개 검증
+        await assertNoForbiddenButtons(page);
+
+        // 5. 캡처
+        await capture("home-operator-fixture");
+      },
+    });
+  } else if (currentCase === "empty-fixture") {
+    await runScreenCheck({
+      id: "home-empty-fixture",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // Playwright route fixture: 모든 조건이 완료되어 할 일이 0개인 H4 상태 주입
+        await page.route("**/api/*", async (route) => {
+          const url = new URL(route.request().url());
+          const channel = url.pathname.replace(/^\/api\//, "");
+
+          if (channel === "performance:list-overview") {
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  groups: [],
+                  reapprovalFiles: [],
+                  syncIssues: [],
+                  siteCount: 0,
+                  rowCount: 0,
+                  approvedCount: 0,
+                  pendingCount: 0,
+                  rejectedCount: 0,
+                  approvableCount: 0,
+                  needsReapprovalCount: 0,
+                  changeLockedCount: 0,
+                },
+              }),
+            });
+            return;
+          }
+
+          if (channel === "performance:get-sync-state") {
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  status: "idle",
+                  totalCount: 0,
+                  processedCount: 0,
+                  parsedCount: 0,
+                  skippedCount: 0,
+                  issueCount: 0,
+                  message: "",
+                },
+              }),
+            });
+            return;
+          }
+
+          if (channel === "performance:get-startup-recovery-status") {
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  hasRun: true,
+                  completedAt: "2026-09-01T00:00:00Z",
+                  restoredScheduleCount: 0,
+                  skippedScheduleCount: 0,
+                  approvedSyncIssueCount: 0,
+                  issues: [],
+                },
+              }),
+            });
+            return;
+          }
+
+          if (channel === "operations:get-file-watch-status") {
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  isRunning: true,
+                  pendingDir: "/pending",
+                  approvedDir: "/approved",
+                  recentEvents: [],
+                },
+              }),
+            });
+            return;
+          }
+
+          await route.continue();
+        });
+
+        // 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // H4: 할 일 없음 빈 상태 카드 검증
+        const emptyCard = page.locator("#section-empty-todos");
+        await emptyCard.waitFor({ state: "visible", timeout: 10_000 });
+
+        const emptyTitle = page.locator(".empty-state-title");
+        const titleText = (await emptyTitle.textContent())?.trim();
+        if (titleText !== "이번 달 처리할 일이 없습니다") {
+          throw new Error(`빈 상태 제목 불일치: ${titleText}`);
+        }
+
+        // 미구현 버튼 0개 확인
+        await assertNoForbiddenButtons(page);
+
+        // 캡처
+        await capture("home-empty-fixture");
+
+        // 이미 H4인 화면에서도 refresh가 시작되면 이전 성공 표시를 즉시 제거한다.
+        for (const fail of [false, true]) {
+          let release;
+          let started;
+          const held = new Promise((resolve) => { release = resolve; });
+          const requested = new Promise((resolve) => { started = resolve; });
+          const handler = async (route) => {
+            started();
+            await held;
+            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(
+              fail ? { ok: false, errorCode: "FIXTURE_SYNC_ERROR", message: "검증용 조회 실패" } :
+                { ok: true, data: { status: "idle", issueCount: 0, message: "" } }) });
+          };
+          await page.route("**/api/performance:get-sync-state", handler);
+          await page.getByRole("button", { name: "홈", exact: true }).click();
+          await requested;
+          try {
+            if (await page.locator("#section-empty-todos").count() || !(await page.locator('[aria-busy="true"]').count())) {
+              throw new Error("refresh 대기 중 이전 H4 표시 또는 H5 누락");
+            }
+            await capture(fail ? "home-refresh-pending-error" : "home-refresh-pending-success");
+          } finally { release(); }
+          await page.locator(fail ? "#todo-item-sync-error" : "#section-empty-todos").waitFor({ state: "visible" });
+          if (fail && await page.locator("#section-empty-todos").count()) throw new Error("refresh 실패 뒤 H4 표시");
+          await page.unroute("**/api/performance:get-sync-state", handler);
+        }
+      },
+    });
+  } else if (currentCase === "loading-error") {
+    await runScreenCheck({
+      id: "home-loading-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // Playwright route fixture: 대기 실적 조회 실패(H2 부분 오류) 주입
+        await page.route("**/api/performance:list-overview", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "SERVER_ERROR",
+              message: "실적 데이터 조회에 실패했습니다.",
+            }),
+          });
+        });
+
+        // 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 섹션 에러 배너 노출 확인
+        const kpiSection = page.locator("#section-performance-kpi");
+        await kpiSection.waitFor({ state: "visible", timeout: 10_000 });
+
+        const errorBanner = kpiSection.locator(".section-error-banner");
+        await errorBanner.waitFor({ state: "visible", timeout: 10_000 });
+        const errorText = await errorBanner.textContent();
+        if (!errorText.includes("대기 실적 현황을 불러오지 못했습니다")) {
+          throw new Error(`섹션 에러 문구 불일치: ${errorText}`);
+        }
+
+        // 미구현 버튼 0개 확인
+        await assertNoForbiddenButtons(page);
+
+        // 캡처
+        await capture("home-loading-error");
+      },
+    });
+  } else if (currentCase === "stale-response") {
+    await runScreenCheck({
+      id: "home-stale-response",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 응답 지연 fixture
+        await page.route("**/api/performance:list-overview", async (route) => {
+          await new Promise((r) => setTimeout(r, 600));
+          await route.continue();
+        });
+
+        // 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 홈 진입 중 사이드바 메뉴 클릭으로 홈 이탈 후 재진입
+        const opsMenuBtn = page.getByRole("button", { name: "근무 현황" });
+        await opsMenuBtn.click();
+
+        // 화면 준비 중 안내 확인
+        const noticeBanner = page.locator(".notice-banner");
+        await noticeBanner.waitFor({ state: "visible", timeout: 5_000 });
+
+        // 다시 홈 버튼 클릭
+        const homeMenuBtn = page.getByRole("button", { name: "홈" });
+        await homeMenuBtn.click();
+
+        // 최종 홈 정상 로드 확인
+        const kpiSection = page.locator("#section-performance-kpi");
+        await kpiSection.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 캡처
+        await capture("home-stale-response");
+      },
+    });
+  } else if (currentCase === "admin-action") {
+    await runScreenCheck({
+      id: "home-admin-action",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 관리자 액션 fixture: 감시 중단 상태 주입 및 restart 응답
+        await page.route("**/api/*", async (route) => {
+          const url = new URL(route.request().url());
+          const channel = url.pathname.replace(/^\/api\//, "");
+
+          if (channel === "operations:get-file-watch-status") {
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  isRunning: false, // 감시 중단 상태
+                  pendingDir: "/pending",
+                  approvedDir: "/approved",
+                  recentEvents: [],
+                },
+              }),
+            });
+            return;
+          }
+
+          if (channel === "operations:restart-file-watch") {
+            await new Promise((r) => setTimeout(r, 300));
+            await route.fulfill({
+              status: 200,
+              contentType: "application/json",
+              body: JSON.stringify({
+                ok: true,
+                data: {
+                  isRunning: true,
+                  pendingDir: "/pending",
+                  approvedDir: "/approved",
+                  recentEvents: [],
+                },
+              }),
+            });
+            return;
+          }
+
+          await route.continue();
+        });
+
+        // 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 감시 재시작 버튼 노출 확인
+        const restartWatchBtn = page.locator("#home-btn-restart-watch");
+        await restartWatchBtn.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 클릭하여 잠금/처리 중 상태 확인
+        await restartWatchBtn.click();
+        const isDisabled = await restartWatchBtn.isDisabled();
+        if (!isDisabled) {
+          throw new Error("액션 실행 중 버튼이 비활성화(disabled)되지 않았습니다.");
+        }
+
+        // 캡처
+        await capture("home-admin-action");
+      },
+    });
+  } else if (currentCase === "employees-error") {
+    await runScreenCheck({
+      id: "home-employees-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. listEmployees 실패 fixture 주입 (R31C-01)
+        await page.route("**/api/employees:list*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "EMPLOYEE_LIST_FAILED",
+              message: "직원 목록 조회 실패",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. 준비 카드가 오류 상태이고 정상 비율(0/1 등)이 없는지 검증
+        const prepCard = page.locator("#card-progress-prep");
+        await prepCard.waitFor({ state: "visible", timeout: 10_000 });
+        const prepText = (await prepCard.textContent()) || "";
+        if (/\d+\/\d+/.test(prepText)) {
+          throw new Error(`직원 조회 실패 시 준비 카드에 정상 비율이 노출되었습니다: ${prepText}`);
+        }
+        if (!prepText.includes("오류") && !prepText.includes("확인 불가") && !prepText.includes("불러오지 못했습니다")) {
+          throw new Error(`직원 조회 실패 시 준비 오류 안내가 누락되었습니다: ${prepText}`);
+        }
+
+        // 4. 다른 정상 섹션(운영 카드 등) 유지 확인
+        const opsCard = page.locator("#card-progress-ops");
+        await opsCard.waitFor({ state: "visible", timeout: 10_000 });
+        const opsText = (await opsCard.textContent()) || "";
+        if (!opsText.includes("단계")) {
+          throw new Error(`운영 카드 유지 실패: ${opsText}`);
+        }
+
+        // 5. 캡처 (오류 상태)
+        await capture("home-employees-error");
+
+        // 6. route 해제 후 새로고침하여 정상 복원 검증
+        await page.unroute("**/api/employees:list*");
+        const homeMenuBtn = page.getByRole("button", { name: "홈" });
+        await homeMenuBtn.click();
+        await page.waitForFunction(() => {
+          const el = document.getElementById("card-progress-prep");
+          return el && /\d+\/\d+\s*근무지/.test(el.textContent || "");
+        }, undefined, { timeout: 10_000 });
+      },
+    });
+  } else if (currentCase === "sites-error") {
+    await runScreenCheck({
+      id: "home-sites-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. listSites 실패 fixture 주입 (R31C-02)
+        await page.route("**/api/sites:list*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "SITE_LIST_FAILED",
+              message: "근무지 목록 조회 실패",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. 운영 카드가 오류 상태이고 정상 비율(2/2 등)이 없는지 검증
+        const opsCard = page.locator("#card-progress-ops");
+        await opsCard.waitFor({ state: "visible", timeout: 10_000 });
+        const opsText = (await opsCard.textContent()) || "";
+        if (/\d+\/\d+/.test(opsText)) {
+          throw new Error(`sites 실패 시 운영 섹션에 정상 비율이 노출되었습니다: ${opsText}`);
+        }
+        if (!opsText.includes("오류") && !opsText.includes("확인 불가") && !opsText.includes("불러오지 못") && !opsText.includes("확인할 수 없습니다")) {
+          throw new Error(`sites 실패 시 운영 오류 안내가 누락되었습니다: ${opsText}`);
+        }
+
+        // 4. overview의 4 KPI는 정상 유지 확인
+        const kpiSection = page.locator("#section-performance-kpi");
+        await kpiSection.waitFor({ state: "visible", timeout: 10_000 });
+        const kpiText = (await kpiSection.textContent()) || "";
+        if (!kpiText.includes("대기 실적") || !kpiText.includes("재승인 필요")) {
+          throw new Error(`overview 정상 KPI 유지 실패: ${kpiText}`);
+        }
+
+        // 5. 캡처 (오류 상태)
+        await capture("home-sites-error");
+
+        // 6. route 해제 후 새로고침하여 정상 복원 검증
+        await page.unroute("**/api/sites:list*");
+        const homeMenuBtn = page.getByRole("button", { name: "홈" });
+        await homeMenuBtn.click();
+        await page.waitForFunction(() => {
+          const el = document.getElementById("card-progress-ops");
+          return el && /\d+\/\d+\s*단계/.test(el.textContent || "");
+        }, undefined, { timeout: 10_000 });
+      },
+    });
+  } else if (currentCase === "sync-error") {
+    await runScreenCheck({
+      id: "home-sync-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. sync 실패 fixture 주입 (R31C-03)
+        await page.route("**/api/performance:get-sync-state*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "SYNC_STATE_FAILED",
+              message: "동기화 상태 조회 실패",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. 진짜 H4 빈 상태(#section-empty-todos)가 없어야 함
+        const emptyTodos = page.locator("#section-empty-todos");
+        const emptyCount = await emptyTodos.count();
+        if (emptyCount > 0) {
+          throw new Error("sync 실패 시 H4(할 일 없음) 배너가 노출되어서는 안 됩니다.");
+        }
+
+        // 4. 할 일 섹션 및 sync error 항목 노출 확인
+        const syncErrItem = page.locator("#todo-item-sync-error");
+        await syncErrItem.waitFor({ state: "visible", timeout: 10_000 });
+        const errText = (await syncErrItem.textContent()) || "";
+        if (!errText.includes("동기화 상태를 불러오지 못했습니다")) {
+          throw new Error(`sync 오류 안내 문구 불일치: ${errText}`);
+        }
+
+        // 5. 캡처
+        await capture("home-sync-error");
+
+        // 6. unroute 후 복원 확인
+        await page.unroute("**/api/performance:get-sync-state*");
+        const homeMenuBtn = page.getByRole("button", { name: "홈" });
+        await homeMenuBtn.click();
+        await page.waitForFunction(() => {
+          return !document.getElementById("todo-item-sync-error");
+        }, undefined, { timeout: 10_000 });
+      },
+    });
+  } else if (currentCase === "recovery-error") {
+    await runScreenCheck({
+      id: "home-recovery-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. recovery 실패 fixture 주입 (R31C-03)
+        await page.route("**/api/performance:get-startup-recovery-status*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "RECOVERY_STATUS_FAILED",
+              message: "복구 상태 조회 실패",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. H4 빈 상태(#section-empty-todos)가 없어야 함
+        const emptyTodos = page.locator("#section-empty-todos");
+        const emptyCount = await emptyTodos.count();
+        if (emptyCount > 0) {
+          throw new Error("recovery 실패 시 H4(할 일 없음) 배너가 노출되어서는 안 됩니다.");
+        }
+
+        // 4. recovery error 항목 노출 확인
+        const recErrItem = page.locator("#todo-item-recovery-error");
+        await recErrItem.waitFor({ state: "visible", timeout: 10_000 });
+        const errText = (await recErrItem.textContent()) || "";
+        if (!errText.includes("자동 복구 상태를 불러오지 못했습니다")) {
+          throw new Error(`recovery 오류 안내 문구 불일치: ${errText}`);
+        }
+
+        // 5. 캡처
+        await capture("home-recovery-error");
+
+        // 6. unroute 후 복원 확인
+        await page.unroute("**/api/performance:get-startup-recovery-status*");
+        const homeMenuBtn = page.getByRole("button", { name: "홈" });
+        await homeMenuBtn.click();
+        await page.waitForFunction(() => {
+          return !document.getElementById("todo-item-recovery-error");
+        }, undefined, { timeout: 10_000 });
+      },
+    });
+  } else if (currentCase === "watch-error") {
+    await runScreenCheck({
+      id: "home-watch-error",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        // 1. admin watch 실패 fixture 주입 (R31C-03)
+        await page.route("**/api/operations:get-file-watch-status*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "FILE_WATCH_STATUS_FAILED",
+              message: "감시 상태 조회 실패",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. admin에서 H4가 노출되지 않고 watch error 노출 확인
+        const emptyTodos = page.locator("#section-empty-todos");
+        const emptyCount = await emptyTodos.count();
+        if (emptyCount > 0) {
+          throw new Error("admin watch 실패 시 H4(할 일 없음) 배너가 노출되어서는 안 됩니다.");
+        }
+
+        const watchErrItem = page.locator("#todo-item-watch-error");
+        await watchErrItem.waitFor({ state: "visible", timeout: 10_000 });
+        const errText = (await watchErrItem.textContent()) || "";
+        if (!errText.includes("파일 감시 상태를 불러오지 못했습니다")) {
+          throw new Error(`watch 오류 안내 문구 불일치: ${errText}`);
+        }
+
+        // 4. 캡처 (admin 오류 상태)
+        await capture("home-watch-error");
+
+        // 5. unroute 후 관리자 로그아웃
+        await page.unroute("**/api/operations:get-file-watch-status*");
+        const logoutBtn = page.locator(".btn-logout");
+        await logoutBtn.click();
+        await page.locator("#login-id").waitFor({ state: "visible", timeout: 10_000 });
+
+        // 6. 운영자(operator) 로그인 시 watch API 호출 0건 계측
+        let watchCallCount = 0;
+        page.on("request", (req) => {
+          if (req.url().includes("operations:get-file-watch-status")) {
+            watchCallCount++;
+          }
+        });
+
+        await performLogin(page, operatorCreds, waitForFontsReady);
+        const mainContent = page.locator("#main-content");
+        await mainContent.waitFor({ state: "visible", timeout: 10_000 });
+
+        if (watchCallCount > 0) {
+          throw new Error(`비admin 로그인에서 watch API가 ${watchCallCount}회 호출되었습니다.`);
+        }
+      },
+    });
+  } else if (currentCase === "stale-retry-action") {
+    await runScreenCheck({
+      id: "home-stale-retry-action",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        let holdRetryPromiseResolve = null;
+        const retryHeldPromise = new Promise((resolve) => {
+          holdRetryPromiseResolve = resolve;
+        });
+
+        // 1. recovery 상태: issues 주입하여 retry 버튼 노출
+        await page.route("**/api/performance:get-startup-recovery-status*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: true,
+              data: {
+                hasRun: true,
+                completedAt: new Date().toISOString(),
+                restoredScheduleCount: 0,
+                skippedScheduleCount: 0,
+                approvedSyncIssueCount: 2,
+                issues: ["미해결 근무 시간 복구 실패 2건"],
+              },
+            }),
+          });
+        });
+
+        // retry 액션 보류 라우트
+        await page.route("**/api/performance:retry-startup-recovery*", async (route) => {
+          await retryHeldPromise;
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "AUTH_SESSION_REQUIRED",
+              message: "인증 세션이 만료되었습니다.",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. 복구 재시도 버튼 노출 확인
+        const retryBtn = page.locator("#btn-retry-recovery");
+        await retryBtn.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 4. 클릭하여 비동기 호출 시작 및 잠금 확인
+        await retryBtn.click();
+        const isDisabled = await retryBtn.isDisabled();
+        if (!isDisabled) {
+          throw new Error("retry 실행 중 버튼이 비활성화되지 않았습니다.");
+        }
+
+        // 5. 응답 도달 전 화면 이탈 (사이드바 근무 현황 클릭)
+        const opsMenuBtn = page.getByRole("button", { name: "근무 현황" });
+        await opsMenuBtn.click();
+        const noticeBanner = page.locator(".notice-banner");
+        await noticeBanner.waitFor({ state: "visible", timeout: 5_000 });
+
+        // 6. 보류된 retry 액션에 AUTH_SESSION_REQUIRED 응답 방출
+        if (holdRetryPromiseResolve) {
+          holdRetryPromiseResolve();
+        }
+        await page.waitForTimeout(400);
+
+        // 7. 이탈 상태이므로 로그인 화면으로 튕기지 않고 여전히 셸 화면(notice-banner) 유지 확인 (R31C-04)
+        const isNoticeStillVisible = await noticeBanner.isVisible();
+        if (!isNoticeStillVisible) {
+          throw new Error("홈 이탈 후 늦은 AUTH 응답으로 인해 화면이 예기치 않게 전환되었습니다.");
+        }
+
+        // 8. 캡처
+        await capture("home-stale-retry-action");
+        await verifyActionLifetime(page, "retry-recovery", capture);
+      },
+    });
+  } else if (currentCase === "stale-watch-action") {
+    await runScreenCheck({
+      id: "home-stale-watch-action",
+      url: targetUrl,
+      steps: async ({ page, capture, waitForFontsReady }) => {
+        let holdRestartPromiseResolve = null;
+        const restartHeldPromise = new Promise((resolve) => {
+          holdRestartPromiseResolve = resolve;
+        });
+
+        // 1. watch stopped 주입하여 restart 버튼 노출
+        await page.route("**/api/operations:get-file-watch-status*", async (route) => {
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: true,
+              data: {
+                isRunning: false,
+                pendingDir: "/pending",
+                approvedDir: "/approved",
+                recentEvents: [],
+              },
+            }),
+          });
+        });
+
+        // restart 액션 보류 라우트
+        await page.route("**/api/operations:restart-file-watch*", async (route) => {
+          await restartHeldPromise;
+          await route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              ok: false,
+              errorCode: "AUTH_SESSION_REQUIRED",
+              message: "인증 세션 만료",
+            }),
+          });
+        });
+
+        // 2. 관리자 로그인
+        await performLogin(page, adminCreds, waitForFontsReady);
+
+        // 3. restart 버튼 노출 확인
+        const restartBtn = page.locator("#home-btn-restart-watch");
+        await restartBtn.waitFor({ state: "visible", timeout: 10_000 });
+
+        // 4. 클릭하여 잠금 확인
+        await restartBtn.click();
+        const isDisabled = await restartBtn.isDisabled();
+        if (!isDisabled) {
+          throw new Error("restart 실행 중 버튼이 비활성화되지 않았습니다.");
+        }
+
+        // 5. 응답 도달 전 화면 이탈 (사이드바 근무표 생성 클릭)
+        const createMenuBtn = page.getByRole("button", { name: "근무표 생성" });
+        await createMenuBtn.click();
+        const noticeBanner = page.locator(".notice-banner");
+        await noticeBanner.waitFor({ state: "visible", timeout: 5_000 });
+
+        // 6. 보류된 restart 응답 방출
+        if (holdRestartPromiseResolve) {
+          holdRestartPromiseResolve();
+        }
+        await page.waitForTimeout(400);
+
+        // 7. 이탈 상태이므로 세션 만료 전환 없이 셸 화면 유지 확인
+        const isNoticeStillVisible = await noticeBanner.isVisible();
+        if (!isNoticeStillVisible) {
+          throw new Error("홈 이탈 후 늦은 restart AUTH 응답으로 인해 화면이 전환되었습니다.");
+        }
+
+        // 8. 캡처
+        await capture("home-stale-watch-action");
+        await verifyActionLifetime(page, "restart-watch", capture);
+      },
+    });
+  } else {
+    throw new Error(`알 수 없는 케이스: ${currentCase}`);
+  }
+}

@@ -6,9 +6,10 @@ import path from "node:path";
 import { readFileSync } from "node:fs";
 import type { AddressInfo } from "node:net";
 import type { Server } from "node:http";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createServer, startServer } from "./server";
+import type { SessionManager } from "./http/session";
 
 const repoRoot = process.cwd();
 const versionText = readFileSync(path.join(repoRoot, "VERSION"), "utf8").trim();
@@ -48,6 +49,46 @@ function request(options: RequestOptions): Promise<RawResponse> {
             status: response.statusCode ?? 0,
             headers: response.headers,
             body: Buffer.concat(chunks).toString("utf8")
+          });
+        });
+      }
+    );
+
+    clientRequest.on("error", reject);
+
+    if (options.body !== undefined) {
+      clientRequest.write(options.body);
+    }
+
+    clientRequest.end();
+  });
+}
+
+interface RawBufferResponse {
+  status: number;
+  headers: http.IncomingHttpHeaders;
+  body: Buffer;
+}
+
+function requestBuffer(options: RequestOptions, targetPort = port): Promise<RawBufferResponse> {
+  return new Promise((resolve, reject) => {
+    const clientRequest = http.request(
+      {
+        host: "127.0.0.1",
+        port: targetPort,
+        method: options.method ?? "GET",
+        path: options.path,
+        headers: options.headers
+      },
+      (response) => {
+        const chunks: Buffer[] = [];
+
+        response.on("data", (chunk: Buffer) => chunks.push(chunk));
+        response.on("end", () => {
+          resolve({
+            status: response.statusCode ?? 0,
+            headers: response.headers,
+            body: Buffer.concat(chunks)
           });
         });
       }
@@ -418,5 +459,167 @@ describe("창구 서버", () => {
     expect(response.status).toBe(200);
     const payload = JSON.parse(response.body) as string;
     expect(payload).toBe(versionText);
+  });
+
+  it("13. 관리자 문서 레이아웃 미리보기 바이너리 GET 엔드포인트 검증 (N3, N6, R5, R6)", async () => {
+    const previewId = "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d";
+    const memberId = "member-001";
+    const sampleBinary = Buffer.from([
+      0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x08, 0x00, 0x00, 0x00, 0x21, 0x00,
+      0x01, 0x02, 0x03, 0x04, 0xff, 0xfe, 0xfd, 0xfc
+    ]);
+    const mediaType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+    const resolveArtifactMock = vi.fn((pid: string, mid: string) => {
+      if (pid === previewId && mid === memberId) {
+        return {
+          bytes: sampleBinary,
+          mediaType,
+          fileName: "attachment1.xlsx"
+        };
+      }
+      return null;
+    });
+
+    const mockSessionManager = {
+      requireRoleSession: vi.fn((requiredRole: string, cookieHeader?: string) => {
+        if (!cookieHeader || !cookieHeader.includes("sm_session=")) {
+          return {
+            ok: false,
+            status: 401,
+            body: {
+              ok: false,
+              errorCode: "AUTH_SESSION_REQUIRED",
+              message: "로그인 세션이 필요합니다."
+            }
+          };
+        }
+        if (cookieHeader.includes("sm_session=operator-token")) {
+          return {
+            ok: false,
+            status: 200,
+            body: {
+              ok: false,
+              errorCode: "AUTH_FORBIDDEN",
+              message: "관리자 권한이 필요합니다. (현재 권한: 담당자)"
+            }
+          };
+        }
+        if (cookieHeader.includes("sm_session=admin-token")) {
+          return {
+            ok: true,
+            session: {
+              userId: "admin-user",
+              loginId: "admin",
+              displayName: "최고관리자",
+              role: "admin",
+              mustChangePassword: false
+            }
+          };
+        }
+        return {
+          ok: false,
+          status: 401,
+          body: {
+            ok: false,
+            errorCode: "AUTH_SESSION_REQUIRED",
+            message: "로그인 세션이 필요합니다."
+          }
+        };
+      })
+    } as unknown as SessionManager;
+
+    const testServer = createServer({
+      staticRoot: path.join(repoRoot, "src"),
+      dataDir: path.join(repoRoot, "data"),
+      sessionManager: mockSessionManager,
+      previewArtifactResolver: { resolveArtifact: resolveArtifactMock },
+      log: () => {}
+    });
+
+    await new Promise<void>((resolve) => {
+      testServer.listen(0, "127.0.0.1", resolve);
+    });
+
+    const testPort = (testServer.address() as AddressInfo).port;
+
+    try {
+      // 1) 세션 쿠키 없이 요청: 401 AUTH_SESSION_REQUIRED
+      const noSessionRes = await requestBuffer(
+        {
+          method: "GET",
+          path: `/api/document-layout-previews/${previewId}/${memberId}`
+        },
+        testPort
+      );
+      expect(noSessionRes.status).toBe(401);
+      const noSessionPayload = JSON.parse(noSessionRes.body.toString("utf8")) as {
+        ok: boolean;
+        errorCode: string;
+      };
+      expect(noSessionPayload.ok).toBe(false);
+      expect(noSessionPayload.errorCode).toBe("AUTH_SESSION_REQUIRED");
+      expect(resolveArtifactMock).not.toHaveBeenCalled();
+
+      // 2) 비관리자(operator) 세션 요청: 200 AUTH_FORBIDDEN
+      const nonAdminRes = await requestBuffer(
+        {
+          method: "GET",
+          path: `/api/document-layout-previews/${previewId}/${memberId}`,
+          headers: { Cookie: "sm_session=operator-token" }
+        },
+        testPort
+      );
+      expect(nonAdminRes.status).toBe(200);
+      const nonAdminPayload = JSON.parse(nonAdminRes.body.toString("utf8")) as {
+        ok: boolean;
+        errorCode: string;
+      };
+      expect(nonAdminPayload.ok).toBe(false);
+      expect(nonAdminPayload.errorCode).toBe("AUTH_FORBIDDEN");
+      expect(resolveArtifactMock).not.toHaveBeenCalled();
+
+      // 3) 관리자 정상 바이너리 요청: 200 raw Buffer byte-equal, Content-Type, Content-Length, Cache-Control
+      const adminRes = await requestBuffer(
+        {
+          method: "GET",
+          path: `/api/document-layout-previews/${previewId}/${memberId}`,
+          headers: { Cookie: "sm_session=admin-token" }
+        },
+        testPort
+      );
+      expect(adminRes.status).toBe(200);
+      expect(adminRes.headers["content-type"]).toBe(mediaType);
+      expect(adminRes.headers["content-length"]).toBe(String(sampleBinary.length));
+      expect(adminRes.headers["cache-control"]).toBe("no-store");
+      expect(adminRes.body.equals(sampleBinary)).toBe(true);
+      expect(resolveArtifactMock).toHaveBeenCalledWith(previewId, memberId);
+
+      // 4) 만료/누락 artifact 요청: 404
+      const missingRes = await requestBuffer(
+        {
+          method: "GET",
+          path: `/api/document-layout-previews/missing-id/${memberId}`,
+          headers: { Cookie: "sm_session=admin-token" }
+        },
+        testPort
+      );
+      expect(missingRes.status).toBe(404);
+
+      // 5) 추가 세그먼트/형식 위반 요청: 404
+      const invalidPathRes = await requestBuffer(
+        {
+          method: "GET",
+          path: `/api/document-layout-previews/${previewId}/${memberId}/extra`,
+          headers: { Cookie: "sm_session=admin-token" }
+        },
+        testPort
+      );
+      expect(invalidPathRes.status).toBe(404);
+    } finally {
+      await new Promise<void>((resolve) => {
+        testServer.close(() => resolve());
+      });
+    }
   });
 });

@@ -37,6 +37,7 @@ import {
 import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
 import { resolvePerformanceEntryApprovalState } from "./performance-approval-resolution-service";
 import { deleteStoredEmployee, listStoredEmployees } from "./employee-storage-service";
+import { attachScheduleLayoutMetadataToWorkbook } from "./schedule-plan-adapter";
 
 const testRoot = path.resolve(
   process.cwd(),
@@ -1322,5 +1323,57 @@ describe("performance-file-intake-service", () => {
     });
 
     expect(getStoredPerformanceFileDetail(queued!.id)).toBeNull();
+  });
+
+  it("N8: metadata/revision/structure 오류 파일 인테이크 시 issue 생성 및 저장 실적 0건 원자성 (Phase 2.5-4 R8/T6)", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: testRoot,
+      templateVariant: "sample1"
+    });
+    const selectedMonthDir = path.resolve(fixture.pendingDir, "2026년", "3월");
+    mkdirSync(selectedMonthDir, { recursive: true });
+
+    // metadata 오류 파일 생성 (알 수 없는 revisionId)
+    const invalidMetaPath = path.resolve(selectedMonthDir, "2026_3_메타데이터오류.xlsx");
+    const wb = new ExcelJS.Workbook();
+    await wb.xlsx.readFile(fixture.filePath);
+    attachScheduleLayoutMetadataToWorkbook(wb, {
+      definitionSha256: "a".repeat(64),
+      format: "shiftmgmt.schedule-layout-revision",
+      generatorCompatibilityVersion: "built-in-excel-layout-v1",
+      layoutKey: "schedule-xlsx/template1",
+      revisionId: `builtin:schedule-xlsx/template1:${"a".repeat(64)}`,
+      revisionKind: "built-in",
+      schemaVersion: 1
+    });
+    await wb.xlsx.writeFile(invalidMetaPath);
+
+    const issues = await syncPendingPerformanceFilesToStorage({
+      settings: {
+        pendingDir: fixture.pendingDir,
+        approvedDir: fixture.approvedDir
+      },
+      scheduleMonth: "2026-03"
+    });
+
+    // 1) 해당 파일에 대한 issue가 생성되었는지 확인
+    const fileIssue = issues.find((issue) => issue.filePath === invalidMetaPath);
+    expect(fileIssue).toBeDefined();
+    expect(fileIssue?.message).toMatch(/메타데이터|레이아웃 판|규약과 일치하지 않습니다/);
+
+    // 2) SQLite DB에 해당 파일의 실적 항목(performance_entries)이 전혀 저장되지 않았는지(0건 원자성) 확인
+    const database = getSqliteDatabase()!;
+    const entryCount = database
+      .prepare("SELECT COUNT(*) as count FROM performance_entries WHERE performance_file_id IN (SELECT id FROM performance_files WHERE file_path = ?)")
+      .get(invalidMetaPath) as { count: number };
+    expect(entryCount.count).toBe(0);
+
+    // 3) 파일 상태는 error이며 실적 건수는 0
+    const queued = listStoredPendingPerformanceFiles().find(
+      (item) => item.fileName === "2026_3_메타데이터오류.xlsx"
+    );
+    expect(queued).toBeDefined();
+    expect(queued?.status).toBe("error");
+    expect(queued?.entryCount).toBe(0);
   });
 });

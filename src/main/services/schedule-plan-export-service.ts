@@ -1,10 +1,8 @@
-import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 
 import type { SchedulePlanExportRecord } from "../../shared/domain/schedule-plan";
 import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
 import { buildSchedulePlanCalendarDates, writeSchedulePlanWorkbook } from "./schedule-plan-adapter";
-import { resolveDocumentTemplateSourcePathOrThrow } from "./document-template-source-path-service";
 import { listStoredHolidayCalendars } from "./operations-storage-service";
 import { saveStoredSchedulePlanExport } from "./schedule-plan-export-history-service";
 import { previewMonthlySchedulePlan } from "./schedule-plan-preview-service";
@@ -13,32 +11,14 @@ import {
   resolveSchedulePlanTemplateLayout,
   resolveSchedulePlanTemplateVersion
 } from "./schedule-plan-template-service";
-
-const sanitizeFileSegment = (value: string) =>
-  value.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-").replace(/\s+/g, "_");
+import { resolveDocumentLayoutOutputFilePath } from "./document-layout-excel-render-service";
+import { getDocumentLayout } from "./document-layout-storage-service";
 
 const getRowNumber = (address: string) => Number(address.match(/\d+$/)?.[0] ?? 0);
 const CALENDAR_DEFAULT_FILL = "FFFFFFFF";
 const HOLIDAY_FILL = "FFFFD1D1";
 const SCHEDULE_ODD_ROW_FILL = "FFF2F2F2";
 const SCHEDULE_EVEN_ROW_FILL = "FFFFFFFF";
-
-const resolveUniqueOutputPath = (directoryPath: string, fileName: string) => {
-  const extension = path.extname(fileName);
-  const baseName = path.basename(fileName, extension);
-  let currentPath = path.resolve(directoryPath, fileName);
-  let duplicateIndex = 1;
-
-  while (existsSync(currentPath)) {
-    currentPath = path.resolve(
-      directoryPath,
-      `${sanitizeFileSegment(baseName)}_${duplicateIndex}${extension}`
-    );
-    duplicateIndex += 1;
-  }
-
-  return currentPath;
-};
 
 const createScheduleCellFillUpdates = async (input: {
   template: ReturnType<typeof resolveSchedulePlanTemplateVersion>;
@@ -133,8 +113,18 @@ export const exportMonthlySchedulePlan = async (input: {
   }
 
   const template = resolveSchedulePlanTemplateVersion(schedule.templateVersionId);
+  const layout = await resolveSchedulePlanTemplateLayout(template);
+  const documentLayoutVariant = layout.variant === "sample2" ? "template2" : "template1";
+  const layoutSnapshot = getDocumentLayout({
+    documentKind: "schedule-xlsx",
+    variant: documentLayoutVariant
+  });
+  const definition = layoutSnapshot.definition;
+
   const [yearText, monthText] = preview.scheduleMonth.split("-");
-  const numericMonth = Number(monthText);
+  const year = Number(yearText);
+  const monthNumber = Number(monthText);
+  const month2 = monthText;
 
   const outputRootDir =
     input.outputDir ??
@@ -142,17 +132,21 @@ export const exportMonthlySchedulePlan = async (input: {
       userDataPath: input.userDataPath,
       env: input.env
     }).scheduleExportDir;
-  const outputDir = path.resolve(
-    outputRootDir,
-    `${yearText}년`,
-    `${numericMonth}월`
-  );
-  mkdirSync(outputDir, { recursive: true });
 
-  const requestedOutputFileName = `${yearText}_${numericMonth}_${sanitizeFileSegment(
-    preview.siteName
-  )}.xlsx`;
-  const outputPath = resolveUniqueOutputPath(outputDir, requestedOutputFileName);
+  const pattern =
+    definition.outputs[0]?.outputFileNamePattern ??
+    "{year}년/{monthNumber}월/{year}_{monthNumber}_{siteName}.xlsx";
+
+  const outputPath = resolveDocumentLayoutOutputFilePath(
+    outputRootDir,
+    pattern,
+    {
+      year,
+      monthNumber,
+      month2,
+      siteName: preview.siteName
+    }
+  );
   const outputFileName = path.basename(outputPath);
   const cellFillUpdates = await createScheduleCellFillUpdates({
     template,
@@ -160,11 +154,18 @@ export const exportMonthlySchedulePlan = async (input: {
   });
 
   await writeSchedulePlanWorkbook({
-    templatePath: resolveDocumentTemplateSourcePathOrThrow(template),
+    variant: layout.variant,
     outputPath,
     updates: preview.updates,
     cellFillUpdates,
-    template
+    template,
+    definition,
+    layoutRevisionIdentity: {
+      activeRevisionId: layoutSnapshot.activeRevisionId,
+      usingBuiltInDefault: layoutSnapshot.usingBuiltInDefault,
+      layoutKey: `schedule-xlsx/${documentLayoutVariant}`,
+      definition
+    }
   });
 
   return saveStoredSchedulePlanExport({

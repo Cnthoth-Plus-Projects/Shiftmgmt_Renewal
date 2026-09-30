@@ -3,14 +3,11 @@ import type {
   AllowanceRateVersionDeleteInput,
   AllowanceRateVersionSaveInput,
   AppSettingsUpdateInput,
-  DatabaseMigrationRunInput,
   DirectorySelectionInput,
-  DocumentTemplateInspectInput,
-  DocumentTemplateOutputFileNameUpdateInput,
-  DocumentTemplatePreviewInput,
-  DocumentTemplateSaveInput,
   FileSelectionInput,
   HolidayCalendarReplaceInput,
+  JsonBackupFileSelectionInput,
+  JsonDatabaseRestoreExecuteInput,
   HolidayItemDeleteInput,
   HolidayItemRenameInput,
   HolidayItemUpsertInput,
@@ -21,7 +18,12 @@ import type {
   SiteNameOptionSaveInput,
 } from "../../../shared/bridge/contracts";
 import { isSupportedDatabaseMigrationFilePath } from "../../../shared/domain/database-migration";
-import type { TemplateType } from "../../../shared/domain/model";
+import type {
+  DocumentLayoutKey,
+  DocumentLayoutPreviewInput,
+  DocumentLayoutResetInput,
+  DocumentLayoutSaveInput,
+} from "../../../shared/domain/document-layout";
 import {
   getStoredAppSettingsSnapshot,
   saveStoredAppSettings,
@@ -42,12 +44,13 @@ import {
   runDatabaseMigrationUpdate,
 } from "../../services/database-migration-service";
 import {
-  approveManagedDocumentTemplateVersion,
-  deleteManagedDocumentTemplateVersion,
-  inspectDocumentTemplateImport,
-  saveManagedDocumentTemplateVersion,
-} from "../../services/document-template-management-service";
-import { previewDocumentTemplateFile } from "../../services/document-template-preview-service";
+  getDocumentLayout,
+  listDocumentLayoutHistory,
+  listDocumentLayouts,
+  resetDocumentLayout,
+  saveDocumentLayout,
+} from "../../services/document-layout-storage-service";
+import { documentLayoutPreviewArtifactService } from "../../services/document-layout-preview-artifact-service";
 import { fetchHolidayApiItems } from "../../services/holiday-api-service";
 import {
   deleteStoredAllowanceRateVersion,
@@ -56,8 +59,6 @@ import {
   deleteStoredHolidayItem,
   deleteStoredOperationUser,
   listStoredAllowanceRateVersions,
-  listStoredDocumentTemplateHistory,
-  listStoredDocumentTemplateVersions,
   listStoredHolidayCalendars,
   listStoredOperationUsers,
   listStoredSiteNameOptions,
@@ -67,8 +68,6 @@ import {
   saveStoredHolidayItem,
   saveStoredOperationUser,
   saveStoredSiteNameOption,
-  setStoredDefaultDocumentTemplateVersion,
-  updateStoredDocumentTemplateOutputFileNamePattern,
 } from "../../services/operations-storage-service";
 import { listReleaseHistory } from "../../services/release-history-service";
 import {
@@ -76,27 +75,24 @@ import {
   createIpcSuccess,
   runIpcAction,
   runIpcActionWithCleanup,
-  runIpcSaveDialogAction,
   type IpcActivityInput,
 } from "../../ipc/ipc-handler-helpers";
 import type { RouteRegistry } from "../route-registry";
 import type { SessionManager } from "../session";
 import type { RequestContext } from "../api-types";
 
-const documentTemplateLabelByType: Record<TemplateType, string> = {
-  schedule: "근무표",
-  proposal: "품의서",
-  attachment1: "별첨1",
-  attachment2: "별첨2",
+const resolveRestorePath = (input: unknown): string => {
+  if (typeof input === "object" && input !== null) {
+    const obj = input as { backupFilePath?: string; migrationFilePath?: string };
+    return obj.backupFilePath ?? obj.migrationFilePath ?? "";
+  }
+  return "";
 };
-
-const sanitizeFileSegment = (value: string): string =>
-  value.replace(/[<>:"/\\|?*\u0000-\u001f]/g, "-").replace(/\s+/g, "_");
 
 const assertSupportedDatabaseRestoreFile = (filePath: string): void => {
   if (!isSupportedDatabaseMigrationFilePath(filePath)) {
     throw new Error(
-      "DB복구는 JSON 백업(.json) 또는 Access DB(.accdb) 파일만 사용할 수 있습니다. Excel 파일은 복구 대상이 아닙니다.",
+      "DB복구는 JSON 백업(.json) 파일만 사용할 수 있습니다. Excel 및 Access 파일은 복구 대상이 아닙니다.",
     );
   }
 };
@@ -171,34 +167,37 @@ export const registerOperationsRoutes = (
     return createIpcSuccess(result.cancelled ? null : (result.path ?? null));
   });
 
-  // 4. operations:select-migration-file
-  registry.register("operations:select-migration-file", async (args, context) => {
-    const input = args[0] as FileSelectionInput | undefined;
+  // 4. operations:select-json-backup-file
+  registry.register("operations:select-json-backup-file", async (args, context) => {
+    const input = args[0] as JsonBackupFileSelectionInput | undefined;
     const result = await context.dialogBridge.showDialog(
       {
         operation: "openFile",
-        title: input?.title ?? "복원 파일 선택",
+        title: "JSON 백업 파일 선택",
         defaultPath: input?.defaultPath,
-        filters:
-          input?.filters && input.filters.length > 0
-            ? input.filters
-            : [
-                {
-                  name: "복원 파일",
-                  extensions: ["json", "accdb"],
-                },
-              ],
+        filters: [
+          {
+            name: "JSON 백업 파일",
+            extensions: ["json"],
+          },
+        ],
       },
       context.signal,
     );
     const selectedFilePath = result.cancelled ? null : (result.path ?? null);
-    if (selectedFilePath && !isSupportedDatabaseMigrationFilePath(selectedFilePath)) {
+    if (!selectedFilePath) {
+      return createIpcSuccess(null);
+    }
+    if (!selectedFilePath.toLowerCase().endsWith(".json")) {
       return createIpcFailure(
         "DATABASE_RESTORE_FILE_REQUIRED",
-        "DB복구는 JSON 백업(.json) 또는 Access DB(.accdb) 파일만 선택할 수 있습니다.",
+        "DB복구는 JSON 백업(.json) 파일만 선택할 수 있습니다.",
       );
     }
-    return createIpcSuccess(selectedFilePath);
+    return createIpcSuccess({
+      fileName: path.basename(selectedFilePath),
+      filePath: selectedFilePath,
+    });
   });
 
   // 5. operations:select-spreadsheet-file
@@ -233,12 +232,12 @@ export const registerOperationsRoutes = (
 
   // 6. operations:check-database-migration-requirements
   registry.register("operations:check-database-migration-requirements", async (args) => {
-    const input = args[0] as DatabaseMigrationRunInput;
+    const restorePath = resolveRestorePath(args[0]);
     return runIpcAction({
       action: () => {
-        assertSupportedDatabaseRestoreFile(input.migrationFilePath);
+        assertSupportedDatabaseRestoreFile(restorePath);
         return checkDatabaseMigrationRequirements({
-          migrationFilePath: input.migrationFilePath,
+          backupFilePath: restorePath,
         });
       },
       errorCode: "DATABASE_MIGRATION_REQUIREMENTS_FAILED",
@@ -248,8 +247,8 @@ export const registerOperationsRoutes = (
 
   // 7. operations:preview-database-migration-update
   registry.register("operations:preview-database-migration-update", async (args, context) => {
-    const input = args[0] as DatabaseMigrationRunInput;
-    assertSupportedDatabaseRestoreFile(input.migrationFilePath);
+    const restorePath = resolveRestorePath(args[0]);
+    assertSupportedDatabaseRestoreFile(restorePath);
     await stopFileWatchRuntime({
       userDataPath: context.dataDir,
     });
@@ -257,8 +256,19 @@ export const registerOperationsRoutes = (
       action: () =>
         previewDatabaseMigrationUpdate({
           userDataPath: context.dataDir,
-          migrationFilePath: input.migrationFilePath,
-          selectedAccessTables: input.selectedAccessTables,
+          backupFilePath: restorePath,
+          onPreviewSuccess: () => {
+            sessionManager.recordSuccessfulActivity(
+              { ok: true },
+              {
+                actionType: "database-migration-preview",
+                routeKey: "operations",
+                routeLabel: "운영 관리",
+                details: "DB 복원 미리보기",
+                session: context.session,
+              },
+            );
+          },
         }),
       cleanup: () =>
         restartFileWatchRuntime({
@@ -266,19 +276,14 @@ export const registerOperationsRoutes = (
         }),
       errorCode: "DATABASE_MIGRATION_PREVIEW_FAILED",
       getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
-        actionType: "database-migration-preview",
-        routeKey: "operations",
-        routeLabel: "운영 관리",
-        details: "DB 복원 미리보기",
-      }),
     });
   });
 
   // 8. operations:update-database-from-migration
   registry.register("operations:update-database-from-migration", async (args, context) => {
-    const input = args[0] as DatabaseMigrationRunInput;
-    assertSupportedDatabaseRestoreFile(input.migrationFilePath);
+    const input = (args[0] ?? {}) as JsonDatabaseRestoreExecuteInput;
+    const restorePath = resolveRestorePath(input);
+    assertSupportedDatabaseRestoreFile(restorePath);
     await stopFileWatchRuntime({
       userDataPath: context.dataDir,
     });
@@ -286,8 +291,10 @@ export const registerOperationsRoutes = (
       action: () =>
         runDatabaseMigrationUpdate({
           userDataPath: context.dataDir,
-          migrationFilePath: input.migrationFilePath,
-          selectedAccessTables: input.selectedAccessTables,
+          backupFilePath: restorePath,
+          backupSha256: input.backupSha256,
+          previewToken: input.previewToken,
+          confirmationText: input.confirmationText,
         }),
       cleanup: () =>
         restartFileWatchRuntime({
@@ -610,203 +617,80 @@ export const registerOperationsRoutes = (
     });
   });
 
-  // 31. operations:list-document-template-history
-  registry.register("operations:list-document-template-history", (args) => {
-    const templateType = args[0] as TemplateType | undefined;
-    return createIpcSuccess(listStoredDocumentTemplateHistory(templateType));
-  });
+  // 31. operations:list-document-layouts
+  registry.register("operations:list-document-layouts", () =>
+    runIpcAction({
+      action: () => listDocumentLayouts(),
+      errorCode: "DOCUMENT_LAYOUT_LIST_FAILED",
+      getErrorMessage,
+    }),
+  );
 
-  // 32. operations:select-document-template-file
-  registry.register("operations:select-document-template-file", async (args, context) => {
-    const templateType = args[0] as TemplateType | undefined;
-    const result = await context.dialogBridge.showDialog(
-      {
-        operation: "openFile",
-        title: "양식 파일 선택",
-        filters: [
-          {
-            name:
-              templateType === "schedule" ? "근무표 Excel 양식" : "Excel 양식 파일",
-            extensions: ["xlsx", "xlsm"],
-          },
-        ],
-      },
-      context.signal,
-    );
-    if (result.cancelled || !result.path) {
-      return createIpcSuccess(null);
-    }
-    const filePath = result.path;
-    return createIpcSuccess({
-      fileName: path.basename(filePath),
-      filePath,
-    });
-  });
-
-  // 33. operations:inspect-document-template
-  registry.register("operations:inspect-document-template", async (args, context) => {
-    const input = args[0] as DocumentTemplateInspectInput;
+  // 32. operations:get-document-layout
+  registry.register("operations:get-document-layout", (args) => {
+    const key = args[0] as DocumentLayoutKey;
     return runIpcAction({
-      action: () => inspectDocumentTemplateImport(input),
-      errorCode: "DOCUMENT_TEMPLATE_INSPECT_FAILED",
+      action: () => getDocumentLayout(key),
+      errorCode: "DOCUMENT_LAYOUT_GET_FAILED",
       getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
-        actionType: "template-inspect",
-        routeKey: "operations",
-        routeLabel: "운영 관리",
-        details: `${documentTemplateLabelByType[input.templateType]} 양식 검증`,
-      }),
     });
   });
 
-  // 34. operations:preview-document-template
-  registry.register("operations:preview-document-template", async (args, context) => {
-    const input = args[0] as DocumentTemplatePreviewInput;
-    const settings = getStoredAppSettingsSnapshot({
-      userDataPath: context.dataDir,
-    });
-    const previewDirectory = path.resolve(
-      settings.scheduleExportDir,
-      "template-previews",
-      input.templateType,
-    );
-    const sourceBaseName = path.basename(input.sourcePath, path.extname(input.sourcePath));
-    const versionSegment = sanitizeFileSegment(
-      input.versionLabel?.trim() ||
-        sourceBaseName ||
-        documentTemplateLabelByType[input.templateType],
-    );
-    const defaultPath = path.resolve(
-      previewDirectory,
-      `${documentTemplateLabelByType[input.templateType]}_${versionSegment}_preview.xlsx`,
-    );
-
-    return runIpcSaveDialogAction({
-      choosePath: async () => {
-        const saveResult = await context.dialogBridge.showDialog(
-          {
-            operation: "saveFile",
-            title: "양식 미리보기 저장",
-            defaultPath,
-            filters: [
-              {
-                name: "Excel Workbook",
-                extensions: ["xlsx"],
-              },
-            ],
-            showOverwriteConfirmation: true,
-          },
-          context.signal,
-        );
-        return saveResult.cancelled ? null : (saveResult.path ?? null);
-      },
-      onCancel: () => createIpcSuccess(null),
-      action: (outputPath) =>
-        previewDocumentTemplateFile(input, {
-          outputPath,
-        }),
-      errorCode: "DOCUMENT_TEMPLATE_PREVIEW_FAILED",
-      getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
-        actionType: "template-preview",
-        routeKey: "operations",
-        routeLabel: "운영 관리",
-        details: `${documentTemplateLabelByType[input.templateType]} 양식 미리보기`,
-      }),
-    });
-  });
-
-  // 35. operations:save-document-template-version
-  registry.register("operations:save-document-template-version", async (args, context) => {
-    const input = args[0] as DocumentTemplateSaveInput;
+  // 33. operations:save-document-layout
+  registry.register("operations:save-document-layout", (args, context) => {
+    const input = args[0] as DocumentLayoutSaveInput;
     return runIpcAction({
-      action: () =>
-        saveManagedDocumentTemplateVersion(input, {
-          userDataPath: context.dataDir,
-        }),
-      errorCode: "DOCUMENT_TEMPLATE_SAVE_FAILED",
+      action: () => saveDocumentLayout(input),
+      errorCode: "DOCUMENT_LAYOUT_SAVE_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
-        actionType: "template-save",
+        actionType: "layout-save",
         routeKey: "operations",
         routeLabel: "운영 관리",
-        details: `${documentTemplateLabelByType[input.templateType]} 양식 등록`,
+        details: "문서 레이아웃 저장",
       }),
     });
   });
 
-  // 36. operations:approve-document-template-version
-  registry.register("operations:approve-document-template-version", async (args, context) => {
-    const templateId = args[0] as string;
+  // 34. operations:reset-document-layout
+  registry.register("operations:reset-document-layout", (args, context) => {
+    const input = args[0] as DocumentLayoutResetInput;
     return runIpcAction({
-      action: () => approveManagedDocumentTemplateVersion(templateId),
-      errorCode: "DOCUMENT_TEMPLATE_APPROVE_FAILED",
+      action: () => resetDocumentLayout(input),
+      errorCode: "DOCUMENT_LAYOUT_RESET_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
-        actionType: "template-approve",
+        actionType: "layout-reset",
         routeKey: "operations",
         routeLabel: "운영 관리",
-        details: "양식 승인",
+        details: "문서 레이아웃 초기화",
       }),
     });
   });
 
-  // 37. operations:set-default-document-template-version
-  registry.register("operations:set-default-document-template-version", async (args, context) => {
-    const templateId = args[0] as string;
+  // 35. operations:preview-document-layout
+  registry.register("operations:preview-document-layout", async (args, context) => {
+    const input = args[0] as DocumentLayoutPreviewInput;
     return runIpcAction({
-      action: () => setStoredDefaultDocumentTemplateVersion(templateId),
-      errorCode: "DOCUMENT_TEMPLATE_SET_DEFAULT_FAILED",
+      action: () => documentLayoutPreviewArtifactService.createPreview(input),
+      errorCode: "DOCUMENT_LAYOUT_PREVIEW_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
-        actionType: "template-set-default",
+        actionType: "layout-preview",
         routeKey: "operations",
         routeLabel: "운영 관리",
-        details: "기본 양식 지정",
+        details: "문서 레이아웃 미리보기",
       }),
     });
   });
 
-  // 38. operations:update-document-template-output-file-name
-  registry.register("operations:update-document-template-output-file-name", async (args, context) => {
-    const input = args[0] as DocumentTemplateOutputFileNameUpdateInput;
+  // 36. operations:list-document-layout-history
+  registry.register("operations:list-document-layout-history", (args) => {
+    const key = args[0] as DocumentLayoutKey;
     return runIpcAction({
-      action: () => updateStoredDocumentTemplateOutputFileNamePattern(input),
-      errorCode: "DOCUMENT_TEMPLATE_OUTPUT_FILE_NAME_UPDATE_FAILED",
+      action: () => listDocumentLayoutHistory(key),
+      errorCode: "DOCUMENT_LAYOUT_HISTORY_LIST_FAILED",
       getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
-        actionType: "template-file-name-update",
-        routeKey: "operations",
-        routeLabel: "운영 관리",
-        details: "출력 파일명 규칙 저장",
-      }),
     });
-  });
-
-  // 39. operations:delete-document-template-version
-  registry.register("operations:delete-document-template-version", async (args, context) => {
-    const templateId = args[0] as string;
-    return runIpcAction({
-      action: () => {
-        deleteManagedDocumentTemplateVersion(templateId, {
-          userDataPath: context.dataDir,
-        });
-        return null;
-      },
-      errorCode: "DOCUMENT_TEMPLATE_DELETE_FAILED",
-      getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
-        actionType: "template-delete",
-        routeKey: "operations",
-        routeLabel: "운영 관리",
-        details: "양식 삭제",
-      }),
-    });
-  });
-
-  // 40. operations:list-document-template-versions
-  registry.register("operations:list-document-template-versions", (args) => {
-    const templateType = args[0] as TemplateType | undefined;
-    return createIpcSuccess(listStoredDocumentTemplateVersions(templateType));
   });
 };

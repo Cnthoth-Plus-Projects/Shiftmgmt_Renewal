@@ -280,7 +280,19 @@ export class SessionManager {
     }
 
     const entry = this.sessionMap.get(cookieId)!;
-    return { ok: true, data: entry.session };
+    const activeResult = this.authService.getSession();
+    const activeSession = activeResult.ok ? activeResult.data : null;
+
+    if (
+      !activeSession ||
+      activeSession.userId !== entry.session.userId ||
+      activeSession.sessionToken !== entry.session.sessionToken
+    ) {
+      this.sessionMap.delete(cookieId);
+      return { ok: true, data: null };
+    }
+
+    return { ok: true, data: activeSession };
   }
 
   public handleChangePassword(

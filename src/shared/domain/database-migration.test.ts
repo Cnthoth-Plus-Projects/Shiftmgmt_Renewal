@@ -12,9 +12,9 @@ describe("database-migration source helpers", () => {
     expect(isSupportedDatabaseMigrationFilePath("C:/backup/shiftmgmt-backup.json")).toBe(true);
   });
 
-  it("resolves access database files", () => {
-    expect(resolveDatabaseMigrationSourceType("C:/backup/shiftmgmt-source.accdb")).toBe("access");
-    expect(isSupportedDatabaseMigrationFilePath("C:/backup/shiftmgmt-source.accdb")).toBe(true);
+  it("rejects access database files as unsupported", () => {
+    expect(resolveDatabaseMigrationSourceType("C:/backup/shiftmgmt-source.accdb")).toBeNull();
+    expect(isSupportedDatabaseMigrationFilePath("C:/backup/shiftmgmt-source.accdb")).toBe(false);
   });
 
   it("rejects unsupported restore file types", () => {
@@ -22,8 +22,8 @@ describe("database-migration source helpers", () => {
     expect(isSupportedDatabaseMigrationFilePath("C:/backup/shiftmgmt-source.xlsx")).toBe(false);
   });
 
-  it("provides user-facing labels for each supported source type", () => {
+  it("provides user-facing labels for json source type only", () => {
     expect(databaseMigrationSourceLabels.json).toBe("JSON 백업 복원");
-    expect(databaseMigrationSourceLabels.access).toBe("Access DB 복원");
+    expect((databaseMigrationSourceLabels as Record<string, string>).access).toBeUndefined();
   });
 });

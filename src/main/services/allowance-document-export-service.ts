@@ -1,9 +1,8 @@
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync } from "node:fs";
 import path from "node:path";
 
 import ExcelJS from "exceljs";
 
-import { APP_DISPLAY_NAME } from "../../shared/config/app-brand";
 import type {
   AllowanceDocumentExportInput,
   BridgeResult
@@ -12,6 +11,7 @@ import type {
   AllowanceDocumentExportFormat,
   AllowanceDocumentExportRecord
 } from "../../shared/domain/allowance-document";
+
 import {
   ALLOWANCE_DOCUMENT_OWNER_DEPARTMENT,
   buildAllowanceAttachmentOneTitle,
@@ -42,17 +42,8 @@ import {
 } from "./approved-allowance-calculation-service";
 import { saveStoredAllowanceDocumentExport } from "./allowance-document-export-history-service";
 import { writeAllowancePdfDocuments } from "./allowance-document-pdf-service";
-import {
-  resolveAttachmentOneTemplateFields,
-  resolveAttachmentTwoTemplateFields,
-  resolveProposalTemplateFields
-} from "./document-template-profile-service";
-import { applyWorkbookBrandLogo, fitWorksheetBrandLogoToRange } from "./document-brand-logo-service";
-import { resolveDocumentTemplateSourcePathOrThrow } from "./document-template-source-path-service";
-import {
-  detectProposalTemplateGeneration,
-  resolveProposalTemplateRowOffset
-} from "./proposal-template-layout";
+import { fitWorksheetBrandLogoToRange } from "./document-brand-logo-service";
+import { createBuiltInExcelWorkbook } from "./built-in-excel-layout-service";
 import { applyDocumentTemplateStyleSpec } from "./document-template-style-apply-service";
 import {
   listStoredHolidayCalendars,
@@ -62,6 +53,12 @@ import {
 import { listStoredEmployees } from "./employee-storage-service";
 import { listStoredSites } from "./site-storage-service";
 import { roundUpWon } from "../../shared/domain/rounding";
+import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
+import {
+  applyDocumentLayoutToWorksheet,
+  resolveDocumentLayoutOutputFilePath
+} from "./document-layout-excel-render-service";
+import { getDocumentLayout } from "./document-layout-storage-service";
 
 interface ResolvedAllowanceExportRow {
   calculation: AllowanceCalculationResultRecord;
@@ -124,12 +121,12 @@ interface ResolveAllowanceDocumentOptions {
   statusErrorMessage?: string;
 }
 
-interface AllowanceRateGuideLine {
+export interface AllowanceRateGuideLine {
   kind: "detail" | "applied" | "formula";
   text: string;
 }
 
-interface AllowanceRateGuideEntry {
+export interface AllowanceRateGuideEntry {
   categoryCode: AllowanceRateCategoryCode;
   label: string;
   lines: AllowanceRateGuideLine[];
@@ -153,13 +150,6 @@ interface SiteCustomerNameLookup {
   loose: Map<string, string | undefined>;
 }
 
-const updatedProposalTemplateFileNames = new Set([
-  "DT사업1팀 교대근무 조직 연장근로 수당 품의서_수정분.xlsx",
-  "품의서_2026-04_수정본.xlsx"
-]);
-
-const compactAttachmentOneTemplateFileNames = new Set(["별첨1_2026-04_수정본.xlsx"]);
-
 const summaryCategoryOrder: Record<AllowanceSummaryCategory, number> = {
   substitute: 0,
   overtime: 1,
@@ -178,14 +168,6 @@ const allowanceRateGuideDescriptions: Record<AllowanceRateCategoryCode, string> 
   "holiday-substitute": "휴일에 발생한 대체근무에 적용됩니다.",
   "weekday-overtime": "평일 연장근무에 적용됩니다.",
   "holiday-overtime": "휴일 연장근무 분류용 기준이며 현재는 별도 지급 없이 x0 기준을 사용합니다."
-};
-
-const readWorkbook = async (filePath: string) => {
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(filePath);
-  applyWorkbookBrandLogo(workbook);
-
-  return workbook;
 };
 
 const normalizeSiteCustomerLookupText = (value: unknown) => String(value ?? "").trim();
@@ -269,8 +251,6 @@ const formatDecimalHours = (minutes: number) => {
 };
 
 const formatHoursLabel = (minutes: number) => `${formatDecimalHours(minutes)}h`;
-
-const formatCurrencyLabel = (amount: number) => `₩${amount.toLocaleString("ko-KR")}`;
 
 const formatPdfCurrencyLabel = (amount: number) => `${amount.toLocaleString("ko-KR")}원`;
 
@@ -1809,10 +1789,6 @@ const syncCompactProposalFooterRows = (
   );
 };
 
-const isCompactProposalWorksheet = (worksheet: ExcelJS.Worksheet, rowOffset = 0) =>
-  String(worksheet.getCell(`B${30 + rowOffset}`).value ?? "").trim() === "총 합계" ||
-  String(worksheet.getCell(`B${24 + rowOffset}`).value ?? "").includes("퇴사자 조기 지급");
-
 const syncUpdatedProposalTitleFonts = (
   worksheet: ExcelJS.Worksheet,
   cells: string[],
@@ -1831,143 +1807,6 @@ const syncUpdatedProposalTitleFonts = (
     };
   });
 };
-
-const writeAttachmentOneRateGuide = (
-  worksheet: ExcelJS.Worksheet,
-  startRow: number,
-  entries: AllowanceRateGuideEntry[]
-) => {
-  const createGuideFill = (argb: string): ExcelJS.Fill => ({
-    type: "pattern",
-    pattern: "solid",
-    fgColor: { argb }
-  });
-  const createGuideBorder = (isSectionBreak: boolean): Partial<ExcelJS.Borders> => ({
-    left: { style: "medium", color: { argb: "FF000000" } },
-    right: { style: "medium", color: { argb: "FF000000" } },
-    top: { style: isSectionBreak ? "medium" : "thin", color: { argb: "FF000000" } },
-    bottom: { style: "thin", color: { argb: "FF000000" } }
-  });
-  const applyRateGuideRowStyle = (
-    rowNumber: number,
-    value: ExcelJS.CellValue,
-    input: {
-      fill: ExcelJS.Fill;
-      font?: Partial<ExcelJS.Font>;
-      height?: number;
-      isSectionBreak?: boolean;
-    }
-  ) => {
-    clearCellRangeFormatting(worksheet, {
-      startRow: rowNumber,
-      endRow: rowNumber,
-      startColumn: 1,
-      endColumn: 19
-    });
-    try {
-      worksheet.unMergeCells(`A${rowNumber}:S${rowNumber}`);
-    } catch {
-      // The target range is usually unmerged in the source template.
-    }
-    mergeCellsWithContext(worksheet, `A${rowNumber}:S${rowNumber}`, {
-      documentKind: "별첨1 Excel",
-      feature: "수당 요율 안내",
-      section: "요율 안내 행 전체 병합"
-    });
-    worksheet.getCell(`A${rowNumber}`).value = value;
-    worksheet.getCell(`A${rowNumber}`).alignment = {
-      horizontal: "left",
-      vertical: "middle",
-      wrapText: true
-    };
-    worksheet.getCell(`A${rowNumber}`).border = createGuideBorder(Boolean(input.isSectionBreak));
-    worksheet.getCell(`A${rowNumber}`).fill = input.fill;
-    worksheet.getCell(`A${rowNumber}`).font = {
-      ...worksheet.getCell(`A${rowNumber}`).font,
-      size: 10,
-      ...input.font
-    };
-    if (input.height) {
-      worksheet.getRow(rowNumber).height = input.height;
-    }
-  };
-
-  let nextRowNumber = startRow;
-
-  entries.forEach((entry, entryIndex) => {
-    const titleRowNumber = nextRowNumber;
-    applyRateGuideRowStyle(
-      titleRowNumber,
-      `${entry.sequence}. ${entry.label}`,
-      {
-        fill: createGuideFill("FFD0D0D0"),
-        font: {
-          bold: true
-        },
-        isSectionBreak: entryIndex === 0,
-        height: 22
-      },
-    );
-    nextRowNumber += 1;
-    entry.lines.forEach((line) => {
-      applyRateGuideRowStyle(
-        nextRowNumber,
-        line.text,
-        {
-          fill:
-            line.kind === "formula"
-              ? createGuideFill("FFE8EEF9")
-              : line.kind === "applied"
-                ? createGuideFill("FFF4F4F4")
-                : createGuideFill("FFF9F9F9"),
-          font:
-            line.kind === "formula"
-              ? {
-                  color: { argb: "FF41526D" }
-                }
-              : undefined,
-          height: 20
-        }
-      );
-      nextRowNumber += 1;
-    });
-    if (entryIndex < entries.length - 1) {
-      clearCellRangeFormatting(worksheet, {
-        startRow: nextRowNumber,
-        endRow: nextRowNumber,
-        startColumn: 1,
-        endColumn: 19
-      });
-      worksheet.getRow(nextRowNumber).height = 12;
-      nextRowNumber += 1;
-    }
-  });
-
-  return nextRowNumber - 1;
-};
-
-const hasUpdatedProposalFieldLayout = (
-  template: Pick<DocumentTemplateVersion, "profile" | "validation">
-) => {
-  const fields = resolveProposalTemplateFields(template);
-
-  return (
-    fields.sheetName === "품의서" &&
-    fields.workMonthCell === "C5" &&
-    fields.printedDateCell === "E5" &&
-    fields.documentTitleCell === "A11" &&
-    fields.summaryIntroCell === "C12" &&
-    fields.scopeCell === "B15" &&
-    fields.targetHeadcountCell === "B16" &&
-    fields.sectionTitleCell === "B18" &&
-    fields.dataStartRow === 21
-  );
-};
-
-const isUpdatedProposalTemplate = (template: DocumentTemplateVersion) =>
-  updatedProposalTemplateFileNames.has(
-    path.basename(resolveDocumentTemplateSourcePathOrThrow(template))
-  ) || hasUpdatedProposalFieldLayout(template);
 
 // 실적에 실린 이름은 BP 인원이면 "BP(홍길동)" 꼴로 감싸져 온다. 직급 조회 전에 벗겨낸다.
 const normalizeRankLookupName = (value: string | null | undefined) =>
@@ -2079,40 +1918,6 @@ const resolveExportRows = (
         left.employeeName.localeCompare(right.employeeName, "ko")
     );
 };
-
-const buildAttachmentOneSections = (rows: ResolvedAllowanceExportRow[]) =>
-  (Object.keys(summaryCategoryOrder) as AllowanceSummaryCategory[])
-    .map((summaryCategory) => {
-      const sectionRows = rows
-        .filter((row) => row.summaryCategory === summaryCategory)
-        .sort(
-          (left, right) =>
-            left.department.localeCompare(right.department, "ko") ||
-            left.workDate.localeCompare(right.workDate) ||
-            left.employeeName.localeCompare(right.employeeName, "ko")
-        );
-
-      return {
-        summaryCategory,
-        label: summaryCategoryLabel[summaryCategory],
-        rows: sectionRows,
-        totalWorkMinutes: sectionRows.reduce(
-          (sum, row) => sum + row.calculation.snapshot.breakdown.totalWorkMinutes,
-          0
-        ),
-        primaryMinutes: sectionRows.reduce((sum, row) => sum + row.primaryMinutes, 0),
-        primaryAmount: sectionRows.reduce((sum, row) => sum + row.primaryAmount, 0),
-        overtimeMinutes: sectionRows.reduce((sum, row) => sum + row.overtimeMinutes, 0),
-        overtimeAmount: sectionRows.reduce((sum, row) => sum + row.overtimeAmount, 0),
-        nightMinutes: sectionRows.reduce((sum, row) => sum + row.nightMinutes, 0),
-        nightAmount: sectionRows.reduce((sum, row) => sum + row.nightAmount, 0),
-        totalAllowanceAmount: sectionRows.reduce(
-          (sum, row) => sum + row.totalAllowanceAmount,
-          0
-        )
-      };
-    })
-    .filter((section) => section.rows.length > 0);
 
 const sortCompactAttachmentOneRows = (rows: ResolvedAllowanceExportRow[]) =>
   [...rows].sort(
@@ -2248,100 +2053,20 @@ const writeProposalDecisionCheckboxes = (worksheet: ExcelJS.Worksheet) => {
   worksheet.getCell("C3").value = "☐ 보고";
 };
 
-const writeLegacyProposalWorkbook = async (input: {
-  template: DocumentTemplateVersion;
+export const writeUpdatedProposalWorkbook = async (input: {
+  template?: DocumentTemplateVersion;
   outputPath: string;
   workMonth: string;
   rows: ResolvedAllowanceExportRow[];
   regularTotalAllowanceAmount: number;
   earlyPayoutTotalAllowanceAmount: number;
+  definition?: DocumentLayoutDefinition;
 }) => {
-  const workbook = await readWorkbook(resolveDocumentTemplateSourcePathOrThrow(input.template));
-  const fields = resolveProposalTemplateFields(input.template);
-  const worksheet = workbook.getWorksheet(fields.sheetName) ?? workbook.worksheets[0];
-  const sections = splitProposalExportSections(input.rows);
-  const siteSummaries = buildSiteSummaries(sections.regularRows);
-  const employeeCount = new Set(input.rows.map((row) => `${row.employeeCode}:${row.employeeName}`)).size;
-  const today = formatDate(new Date().toISOString().slice(0, 10));
-  const documentNumber = buildAllowanceProposalDocumentNumber({
-    printedDate: today,
-    fallbackWorkMonth: input.workMonth
-  });
-
-  writeProposalDecisionCheckboxes(worksheet);
-  worksheet.getCell(fields.workMonthCell).value = documentNumber;
-  worksheet.getCell(fields.printedDateCell).value = today;
-  worksheet.getCell(fields.ownerDepartmentCell).value = "교대근무 운영";
-  worksheet.getCell(fields.systemNameCell).value = `${APP_DISPLAY_NAME} 자동생성`;
-  worksheet.getCell(fields.documentTitleCell).value =
-    `제  목  :  ${formatMonthLabel(input.workMonth)} 교대근무 시간외근로 수당 지급 품의`;
-  worksheet.getCell(fields.summaryIntroCell).value =
-    `${formatMonthLabel(input.workMonth)} 승인 완료 수당 ${input.rows.length}건의 지급 승인을 요청드립니다.`;
-  worksheet.getCell(fields.scopeCell).value =
-    `① 지급 범위 : ${formatMonthLabel(input.workMonth)} 승인 완료 교대근무 수당`;
-  worksheet.getCell(fields.targetHeadcountCell).value =
-    `② 대  상  자 : 승인 건수 ${input.rows.length}건 / 대상 인원 ${employeeCount}명`;
-  worksheet.getCell(fields.sectionTitleCell).value =
-    `2. ${input.workMonth.slice(5)}월 교대근무 사이트별 지급 요청 내역`;
-  clearCellRange(worksheet, {
-    startRow: fields.dataStartRow,
-    endRow: Math.max(worksheet.rowCount, fields.dataStartRow + 23),
-    startColumn: 2,
-    endColumn: 8
-  });
-
-  siteSummaries.forEach((summary, index) => {
-    const rowNumber = fields.dataStartRow + index;
-    worksheet.getCell(`B${rowNumber}`).value = summary.customerName?.trim() || "";
-    worksheet.getCell(`C${rowNumber}`).value = "";
-    worksheet.getCell(`D${rowNumber}`).value = summary.department;
-    worksheet.getCell(`E${rowNumber}`).value = toNullableCellValue(summary.substituteAmount);
-    worksheet.getCell(`F${rowNumber}`).value = toNullableCellValue(summary.overtimeAmount);
-    worksheet.getCell(`G${rowNumber}`).value = toNullableCellValue(summary.holidayAmount);
-    worksheet.getCell(`H${rowNumber}`).value = summary.totalAmount;
-  });
-
-  const totalRowNumber = fields.dataStartRow + siteSummaries.length;
-  worksheet.getCell(`B${totalRowNumber}`).value = "합계";
-  worksheet.getCell(`C${totalRowNumber}`).value = "합계";
-  worksheet.getCell(`D${totalRowNumber}`).value = "합계";
-  worksheet.getCell(`E${totalRowNumber}`).value = toNullableCellValue(
-    siteSummaries.reduce((sum, item) => sum + item.substituteAmount, 0)
-  );
-  worksheet.getCell(`F${totalRowNumber}`).value = toNullableCellValue(
-    siteSummaries.reduce((sum, item) => sum + item.overtimeAmount, 0)
-  );
-  worksheet.getCell(`G${totalRowNumber}`).value = toNullableCellValue(
-    siteSummaries.reduce((sum, item) => sum + item.holidayAmount, 0)
-  );
-  worksheet.getCell(`H${totalRowNumber}`).value = input.regularTotalAllowanceAmount;
-  if (sections.earlyPayoutRows.length > 0) {
-    worksheet.getCell(`B${totalRowNumber + 2}`).value =
-      `퇴사자 선지급 별도 합계 : ${formatCurrencyLabel(input.earlyPayoutTotalAllowanceAmount)}`;
-  }
-
-  applyDocumentTemplateStyleSpec({
-    workbook,
-    template: input.template
-  });
-  await workbook.xlsx.writeFile(input.outputPath);
-};
-
-const writeUpdatedProposalWorkbook = async (input: {
-  template: DocumentTemplateVersion;
-  outputPath: string;
-  workMonth: string;
-  rows: ResolvedAllowanceExportRow[];
-  regularTotalAllowanceAmount: number;
-  earlyPayoutTotalAllowanceAmount: number;
-}) => {
-  const workbook = await readWorkbook(resolveDocumentTemplateSourcePathOrThrow(input.template));
+  const workbook = createBuiltInExcelWorkbook("proposal-xlsx");
   const worksheet = workbook.getWorksheet("품의서") ?? workbook.worksheets[0];
-  // Legacy (pre-2026-04) templates carry the same structure one row lower; shift every
-  // fixed row anchor so they receive the same content as the updated layout.
-  const rowOffset = resolveProposalTemplateRowOffset(detectProposalTemplateGeneration(workbook));
+  const rowOffset = 0;
   const anchorRow = (baseRow: number) => baseRow + rowOffset;
-  const isCompactTemplate = isCompactProposalWorksheet(worksheet, rowOffset);
+  const isCompactTemplate = true;
   const sections = splitProposalExportSections(input.rows);
   const siteSummaries = buildSiteSummaries(sections.regularRows);
   const earlyPayoutSiteSummaries = buildSiteSummaries(sections.earlyPayoutRows);
@@ -2413,34 +2138,40 @@ const writeUpdatedProposalWorkbook = async (input: {
     syncUpdatedProposalFooterRows(worksheet, earlyPayoutTotalRowNumber, nextPayrollMonthLabel, rowOffset);
   }
 
-  applyDocumentTemplateStyleSpec({
-    workbook,
-    template: input.template
-  });
+  if (input.template) {
+    applyDocumentTemplateStyleSpec({
+      workbook,
+      template: input.template
+    });
+  }
   syncUpdatedProposalFixedVisuals(worksheet, { grandTotalRowNumber });
+
+  if (input.definition) {
+    applyDocumentLayoutToWorksheet({
+      worksheet,
+      definition: input.definition,
+      context: {
+        proposal: {
+          regularSiteCount: siteSummaries.length,
+          earlySiteCount: earlyPayoutSiteSummaries.length
+        }
+      }
+    });
+  }
+
   await workbook.xlsx.writeFile(input.outputPath);
 };
 
-const writeProposalWorkbook = async (input: {
-  template: DocumentTemplateVersion;
+
+export const writeProposalWorkbook = async (input: {
+  template?: DocumentTemplateVersion;
   outputPath: string;
   workMonth: string;
   rows: ResolvedAllowanceExportRow[];
   regularTotalAllowanceAmount: number;
   earlyPayoutTotalAllowanceAmount: number;
+  definition?: DocumentLayoutDefinition;
 }) => {
-  if (!isUpdatedProposalTemplate(input.template)) {
-    // Legacy (pre-2026-04) templates carry the standard structure one row lower and are
-    // handled by the updated writer via a row offset. Only templates whose anchors we
-    // cannot recognize at all fall back to the generic field-mapping writer.
-    const workbook = await readWorkbook(resolveDocumentTemplateSourcePathOrThrow(input.template));
-
-    if (detectProposalTemplateGeneration(workbook) === "unknown") {
-      await writeLegacyProposalWorkbook(input);
-      return;
-    }
-  }
-
   await writeUpdatedProposalWorkbook(input);
 };
 
@@ -2450,14 +2181,6 @@ const attachmentOneStaticGuideStartRow = 24;
 const attachmentOneStaticGuideEndRow = 45;
 const attachmentOneStaticGuideRowCount =
   attachmentOneStaticGuideEndRow - attachmentOneStaticGuideStartRow + 1;
-
-const isCompactAttachmentOneWorksheet = (worksheet: ExcelJS.Worksheet) =>
-  String(worksheet.getCell("A18").value ?? "").includes("퇴사자 조기 지급") ||
-  String(worksheet.getCell("A24").value ?? "").includes("Sort");
-
-const isCompactAttachmentOneTemplate = (sourcePath: string, worksheet: ExcelJS.Worksheet) =>
-  compactAttachmentOneTemplateFileNames.has(path.basename(sourcePath)) ||
-  isCompactAttachmentOneWorksheet(worksheet);
 
 const writeAttachmentOneHeaderRows = (
   worksheet: ExcelJS.Worksheet,
@@ -2549,11 +2272,12 @@ const writeAttachmentOneStaticGuide = (
 
 const writeCompactAttachmentOneWorkbook = async (input: {
   outputPath: string;
-  template: DocumentTemplateVersion;
+  template?: DocumentTemplateVersion;
   workbook: ExcelJS.Workbook;
   worksheet: ExcelJS.Worksheet;
   workMonth: string;
   rows: ResolvedAllowanceExportRow[];
+  definition?: DocumentLayoutDefinition;
 }) => {
   const regularRows = sortCompactAttachmentOneRows(input.rows.filter((row) => !row.earlyPayoutDate));
   const earlyPayoutRows = sortCompactAttachmentOneRows(input.rows.filter((row) => Boolean(row.earlyPayoutDate)));
@@ -2677,222 +2401,65 @@ const writeCompactAttachmentOneWorkbook = async (input: {
     endColumn: 19
   });
 
-  applyDocumentTemplateStyleSpec({
-    workbook: input.workbook,
-    template: input.template
-  });
+  if (input.template) {
+    applyDocumentTemplateStyleSpec({
+      workbook: input.workbook,
+      template: input.template
+    });
+  }
+
+  if (input.definition) {
+    applyDocumentLayoutToWorksheet({
+      worksheet: input.worksheet,
+      definition: input.definition,
+      context: {
+        attachment1: {
+          regularRowCount: regularRenderedRowCount,
+          earlyRowCount: earlyRenderedRowCount
+        }
+      }
+    });
+  }
+
   await input.workbook.xlsx.writeFile(input.outputPath);
 };
 
-const writeAttachmentOneWorkbook = async (input: {
-  template: DocumentTemplateVersion;
+export const writeAttachmentOneWorkbook = async (input: {
+  template?: DocumentTemplateVersion;
   outputPath: string;
   workMonth: string;
   rateGuideEntries: AllowanceRateGuideEntry[];
   rows: ResolvedAllowanceExportRow[];
+  definition?: DocumentLayoutDefinition;
 }) => {
-  const templateSourcePath = resolveDocumentTemplateSourcePathOrThrow(input.template);
-  const workbook = await readWorkbook(templateSourcePath);
-  const fields = resolveAttachmentOneTemplateFields(input.template);
-  const worksheet = workbook.getWorksheet(fields.sheetName) ?? workbook.worksheets[0];
+  const workbook = createBuiltInExcelWorkbook("attachment1-xlsx");
+  const worksheet = workbook.getWorksheet("별첨1") ?? workbook.worksheets[0];
 
-  if (isCompactAttachmentOneTemplate(templateSourcePath, worksheet)) {
-    await writeCompactAttachmentOneWorkbook({
-      outputPath: input.outputPath,
-      template: input.template,
-      workbook,
-      worksheet,
-      workMonth: input.workMonth,
-      rows: input.rows
-    });
-    return;
-  }
-
-  const sections = buildAttachmentOneSections(input.rows);
-  const detailRowStyle = captureWorksheetRowStyle(worksheet, fields.dataStartRow, 19);
-  const subtotalRowStyle = captureWorksheetRowStyle(worksheet, 130, 19);
-  const totalRowStyle = captureWorksheetRowStyle(worksheet, 131, 19);
-  const rateGuideRowCount = input.rateGuideEntries.reduce(
-    (sum, entry, index) => sum + 1 + entry.lines.length + (index < input.rateGuideEntries.length - 1 ? 1 : 0),
-    0
-  );
-
-  worksheet.getCell(fields.titleCell).value = buildAllowanceAttachmentOneTitle(input.workMonth);
-  clearCellRange(worksheet, {
-    startRow: fields.dataStartRow,
-    endRow: Math.max(
-      worksheet.rowCount,
-      fields.dataStartRow + input.rows.length + sections.length + Math.max(24, rateGuideRowCount + 8)
-    ),
-    startColumn: 1,
-    endColumn: 19
-  });
-
-  let currentRow = fields.dataStartRow;
-  let runningIndex = 1;
-
-  sections.forEach((section) => {
-    section.rows.forEach((row) => {
-      worksheet.getCell(`A${currentRow}`).value = runningIndex;
-      worksheet.getCell(`B${currentRow}`).value = row.employeeCode;
-      worksheet.getCell(`C${currentRow}`).value = row.employeeName;
-      worksheet.getCell(`D${currentRow}`).value = row.employeeRank ?? "-";
-      worksheet.getCell(`E${currentRow}`).value = row.department;
-      worksheet.getCell(`F${currentRow}`).value = row.businessCategoryLabel;
-      worksheet.getCell(`G${currentRow}`).value = formatDate(row.workDate);
-      worksheet.getCell(`H${currentRow}`).value = Number(
-        formatDecimalHours(row.calculation.snapshot.breakdown.totalWorkMinutes)
-      );
-      worksheet.getCell(`I${currentRow}`).value = toBlankCellValue(
-        row.primaryMinutes > 0 ? Number(formatDecimalHours(row.primaryMinutes)) : 0
-      );
-      worksheet.getCell(`J${currentRow}`).value = toBlankCellValue(row.primaryMultiplier);
-      worksheet.getCell(`K${currentRow}`).value = toBlankCellValue(row.primaryAmount);
-      worksheet.getCell(`L${currentRow}`).value = toBlankCellValue(
-        row.overtimeMinutes > 0 ? Number(formatDecimalHours(row.overtimeMinutes)) : 0
-      );
-      worksheet.getCell(`M${currentRow}`).value = toBlankCellValue(row.overtimeMultiplier);
-      worksheet.getCell(`N${currentRow}`).value = toBlankCellValue(row.overtimeAmount);
-      worksheet.getCell(`O${currentRow}`).value = toBlankCellValue(
-        row.nightMinutes > 0 ? Number(formatDecimalHours(row.nightMinutes)) : 0
-      );
-      worksheet.getCell(`P${currentRow}`).value = toBlankCellValue(row.nightMultiplier);
-      worksheet.getCell(`Q${currentRow}`).value = toBlankCellValue(row.nightAmount);
-      worksheet.getCell(`R${currentRow}`).value = toBlankCellValue(row.hourlyRate);
-      worksheet.getCell(`R${currentRow}`).numFmt = attachmentOneHourlyRateNumFmt;
-      worksheet.getCell(`S${currentRow}`).value = row.totalAllowanceAmount;
-      applyCapturedWorksheetRowStyle(worksheet, currentRow, detailRowStyle);
-      assertAttachmentOneRequiredCells(worksheet, currentRow);
-      currentRow += 1;
-      runningIndex += 1;
-    });
-
-    worksheet.getCell(`A${currentRow}`).value = "-";
-    worksheet.getCell(`B${currentRow}`).value = "-";
-    worksheet.getCell(`C${currentRow}`).value = "소   계";
-    worksheet.getCell(`D${currentRow}`).value = "-";
-    worksheet.getCell(`E${currentRow}`).value = "-";
-    worksheet.getCell(`F${currentRow}`).value = "-";
-    worksheet.getCell(`G${currentRow}`).value = "-";
-    worksheet.getCell(`H${currentRow}`).value = toBlankCellValue(
-      section.totalWorkMinutes > 0 ? Number(formatDecimalHours(section.totalWorkMinutes)) : 0
-    );
-    worksheet.getCell(`I${currentRow}`).value = toBlankCellValue(
-      section.primaryMinutes > 0 ? Number(formatDecimalHours(section.primaryMinutes)) : 0
-    );
-    worksheet.getCell(`J${currentRow}`).value = "-";
-    worksheet.getCell(`K${currentRow}`).value = toBlankCellValue(section.primaryAmount);
-    worksheet.getCell(`L${currentRow}`).value = toBlankCellValue(
-      section.overtimeMinutes > 0 ? Number(formatDecimalHours(section.overtimeMinutes)) : 0
-    );
-    worksheet.getCell(`M${currentRow}`).value = "-";
-    worksheet.getCell(`N${currentRow}`).value = toBlankCellValue(section.overtimeAmount);
-    worksheet.getCell(`O${currentRow}`).value = toBlankCellValue(
-      section.nightMinutes > 0 ? Number(formatDecimalHours(section.nightMinutes)) : 0
-    );
-    worksheet.getCell(`P${currentRow}`).value = "-";
-    worksheet.getCell(`Q${currentRow}`).value = toBlankCellValue(section.nightAmount);
-    worksheet.getCell(`R${currentRow}`).value = "-";
-    worksheet.getCell(`S${currentRow}`).value = section.totalAllowanceAmount;
-    applyCapturedWorksheetRowStyle(worksheet, currentRow, subtotalRowStyle);
-    currentRow += 1;
-  });
-
-  const grandTotalRowNumber = currentRow;
-  worksheet.getCell(`A${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`B${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`C${grandTotalRowNumber}`).value = "합   계";
-  worksheet.getCell(`D${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`E${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`F${grandTotalRowNumber}`).value = "합계";
-  worksheet.getCell(`G${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`H${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.calculation.snapshot.breakdown.totalWorkMinutes, 0) > 0
-      ? Number(
-          formatDecimalHours(
-            input.rows.reduce((sum, row) => sum + row.calculation.snapshot.breakdown.totalWorkMinutes, 0)
-          )
-        )
-      : 0
-  );
-  worksheet.getCell(`I${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.primaryMinutes, 0) > 0
-      ? Number(formatDecimalHours(input.rows.reduce((sum, row) => sum + row.primaryMinutes, 0)))
-      : 0
-  );
-  worksheet.getCell(`J${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`K${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.primaryAmount, 0)
-  );
-  worksheet.getCell(`L${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.overtimeMinutes, 0) > 0
-      ? Number(formatDecimalHours(input.rows.reduce((sum, row) => sum + row.overtimeMinutes, 0)))
-      : 0
-  );
-  worksheet.getCell(`M${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`N${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.overtimeAmount, 0)
-  );
-  worksheet.getCell(`O${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.nightMinutes, 0) > 0
-      ? Number(formatDecimalHours(input.rows.reduce((sum, row) => sum + row.nightMinutes, 0)))
-      : 0
-  );
-  worksheet.getCell(`P${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`Q${grandTotalRowNumber}`).value = toBlankCellValue(
-    input.rows.reduce((sum, row) => sum + row.nightAmount, 0)
-  );
-  worksheet.getCell(`R${grandTotalRowNumber}`).value = "-";
-  worksheet.getCell(`S${grandTotalRowNumber}`).value = input.rows.reduce(
-    (sum, row) => sum + row.totalAllowanceAmount,
-    0
-  );
-  applyCapturedWorksheetRowStyle(worksheet, grandTotalRowNumber, totalRowStyle);
-  currentRow += 1;
-
-  for (let spacerRowNumber = currentRow + 1; spacerRowNumber <= currentRow + 5; spacerRowNumber += 1) {
-    worksheet.getRow(spacerRowNumber).height = 18;
-  }
-
-  const rateGuideStartRow = currentRow + 6;
-  const lastRateGuideRow = writeAttachmentOneRateGuide(
-    worksheet,
-    rateGuideStartRow,
-    input.rateGuideEntries
-  );
-  clearCellRangeFormatting(worksheet, {
-    startRow: currentRow,
-    endRow: rateGuideStartRow - 1,
-    startColumn: 1,
-    endColumn: 19
-  });
-  clearCellRangeFormatting(worksheet, {
-    startRow: lastRateGuideRow + 1,
-    endRow: worksheet.rowCount,
-    startColumn: 1,
-    endColumn: 19
-  });
-
-  applyDocumentTemplateStyleSpec({
+  await writeCompactAttachmentOneWorkbook({
+    outputPath: input.outputPath,
+    template: input.template,
     workbook,
-    template: input.template
+    worksheet,
+    workMonth: input.workMonth,
+    rows: input.rows,
+    definition: input.definition
   });
-  await workbook.xlsx.writeFile(input.outputPath);
 };
 
 export const writeAttachmentOneWorkbookForTest = writeAttachmentOneWorkbook;
 
-const writeAttachmentTwoWorkbook = async (input: {
-  template: DocumentTemplateVersion;
+export const writeAttachmentTwoWorkbook = async (input: {
+  template?: DocumentTemplateVersion;
   outputPath: string;
   workMonth: string;
   rows: ResolvedAllowanceExportRow[];
   totalAllowanceAmount: number;
+  definition?: DocumentLayoutDefinition;
 }) => {
-  const workbook = await readWorkbook(resolveDocumentTemplateSourcePathOrThrow(input.template));
-  const fields = resolveAttachmentTwoTemplateFields(input.template);
-  const worksheet = workbook.getWorksheet(fields.sheetName) ?? workbook.worksheets[0];
-  const detailRowStyle = captureWorksheetRowStyle(worksheet, fields.dataStartRow, 7);
+  const workbook = createBuiltInExcelWorkbook("attachment2-xlsx");
+  const worksheet = workbook.getWorksheet("별첨2") ?? workbook.worksheets[0];
+  const dataStartRow = 5;
+  const detailRowStyle = captureWorksheetRowStyle(worksheet, dataStartRow, 7);
   const subtotalRowStyle = captureWorksheetRowStyle(worksheet, 13, 7);
   const totalRowStyle = captureWorksheetRowStyle(worksheet, 86, 7);
   const groupedByDepartment = [...input.rows.reduce((accumulator, row) => {
@@ -2902,16 +2469,16 @@ const writeAttachmentTwoWorkbook = async (input: {
     return accumulator;
   }, new Map<string, ResolvedAllowanceExportRow[]>()).entries()];
 
-  worksheet.getCell(fields.titleCell).value = buildAllowanceAttachmentTwoTitle(input.workMonth);
-  worksheet.getCell(fields.dateRangeCell).value = formatProposalDateRange(input.workMonth);
+  worksheet.getCell("B1").value = buildAllowanceAttachmentTwoTitle(input.workMonth);
+  worksheet.getCell("G2").value = formatProposalDateRange(input.workMonth);
   clearCellRange(worksheet, {
-    startRow: fields.dataStartRow,
+    startRow: dataStartRow,
     endRow: Math.max(worksheet.rowCount, 86),
     startColumn: 1,
     endColumn: 7
   });
 
-  let currentRow = fields.dataStartRow;
+  let currentRow = dataStartRow;
   let runningIndex = 1;
 
   groupedByDepartment.forEach(([department, rows]) => {
@@ -2970,12 +2537,29 @@ const writeAttachmentTwoWorkbook = async (input: {
     endColumn: 7
   });
 
-  applyDocumentTemplateStyleSpec({
-    workbook,
-    template: input.template
-  });
+  if (input.template) {
+    applyDocumentTemplateStyleSpec({
+      workbook,
+      template: input.template
+    });
+  }
+
+  if (input.definition) {
+    applyDocumentLayoutToWorksheet({
+      worksheet,
+      definition: input.definition,
+      context: {
+        attachment2: {
+          lastRow: currentRow
+        }
+      }
+    });
+  }
+
   await workbook.xlsx.writeFile(input.outputPath);
 };
+
+export const writeAttachmentTwoWorkbookForTest = writeAttachmentTwoWorkbook;
 
 const resolveExportResults = (
   input: Pick<AllowanceDocumentExportInput, "calculationIds">,
@@ -3124,38 +2708,46 @@ export const exportAllowanceDocuments = async (
     const attachment1Template = resolveTemplate("attachment1");
     const attachment2Template = resolveTemplate("attachment2");
     const outputFormat = input.outputFormat ?? "xlsx";
-    const proposalTarget = resolveAllowanceDocumentOutputTarget({
-      baseDir: proposalOutputDir,
-      workMonth: resolvedContext.workMonth,
-      documentKind: "proposal",
-      outputFormat
-    });
-    const attachment1Target = resolveAllowanceDocumentOutputTarget({
-      baseDir: attachment1OutputDir,
-      workMonth: resolvedContext.workMonth,
-      documentKind: "attachment1",
-      outputFormat
-    });
-    const attachment2Target = resolveAllowanceDocumentOutputTarget({
-      baseDir: attachment2OutputDir,
-      workMonth: resolvedContext.workMonth,
-      documentKind: "attachment2",
-      outputFormat
-    });
-    const proposalPath = proposalTarget.outputPath;
-    const attachment1Path = attachment1Target.outputPath;
-    const attachment2Path = attachment2Target.outputPath;
-
-    attemptedOutputPaths = [proposalPath, attachment1Path, attachment2Path];
-    [
-      proposalTarget.directoryPath,
-      attachment1Target.directoryPath,
-      attachment2Target.directoryPath
-    ].forEach((directoryPath) => {
-      mkdirSync(directoryPath, { recursive: true });
-    });
+    let proposalPath: string;
+    let attachment1Path: string;
+    let attachment2Path: string;
 
     if (outputFormat === "pdf") {
+      const proposalPdfSnapshot = getDocumentLayout({ documentKind: "proposal-pdf" });
+      const definition = proposalPdfSnapshot.definition;
+
+      const outputs = definition.outputs;
+      if (
+        outputs.length !== 3 ||
+        outputs[0]?.memberId !== "proposal" ||
+        outputs[1]?.memberId !== "attachment1" ||
+        outputs[2]?.memberId !== "attachment2"
+      ) {
+        throw new Error("수당 PDF 레이아웃 정의의 출력 멤버 구성이 올바르지 않습니다.");
+      }
+
+      const [yearText, monthText] = resolvedContext.workMonth.split("-");
+      const year = Number(yearText);
+      const month2 = monthText;
+
+      proposalPath = resolveDocumentLayoutOutputFilePath(
+        proposalOutputDir,
+        outputs[0].outputFileNamePattern,
+        { year, month2 }
+      );
+      attachment1Path = resolveDocumentLayoutOutputFilePath(
+        attachment1OutputDir,
+        outputs[1].outputFileNamePattern,
+        { year, month2 }
+      );
+      attachment2Path = resolveDocumentLayoutOutputFilePath(
+        attachment2OutputDir,
+        outputs[2].outputFileNamePattern,
+        { year, month2 }
+      );
+
+      attemptedOutputPaths = [proposalPath, attachment1Path, attachment2Path];
+
       await writeAllowancePdfDocuments({
         proposalPath,
         attachment1Path,
@@ -3179,9 +2771,46 @@ export const exportAllowanceDocuments = async (
           base: "기본",
           overtime: "연장",
           night: "야간"
-        } satisfies Record<AllowanceRateAxis, string>
+        } satisfies Record<AllowanceRateAxis, string>,
+        layoutDefinition: definition
       });
     } else {
+      const proposalSnapshot = getDocumentLayout({ documentKind: "proposal-xlsx" });
+      const attachment1Snapshot = getDocumentLayout({ documentKind: "attachment1-xlsx" });
+      const attachment2Snapshot = getDocumentLayout({ documentKind: "attachment2-xlsx" });
+
+      const [yearText, monthText] = resolvedContext.workMonth.split("-");
+      const year = Number(yearText);
+      const month2 = monthText;
+
+      const proposalPattern =
+        proposalSnapshot.definition.outputs[0]?.outputFileNamePattern ??
+        "{year}년/{month2}월/{year}_{month2}_품의서.xlsx";
+      const attachment1Pattern =
+        attachment1Snapshot.definition.outputs[0]?.outputFileNamePattern ??
+        "{year}년/{month2}월/{year}_{month2}_별첨1.xlsx";
+      const attachment2Pattern =
+        attachment2Snapshot.definition.outputs[0]?.outputFileNamePattern ??
+        "{year}년/{month2}월/{year}_{month2}_별첨2.xlsx";
+
+      proposalPath = resolveDocumentLayoutOutputFilePath(
+        proposalOutputDir,
+        proposalPattern,
+        { year, month2 }
+      );
+      attachment1Path = resolveDocumentLayoutOutputFilePath(
+        attachment1OutputDir,
+        attachment1Pattern,
+        { year, month2 }
+      );
+      attachment2Path = resolveDocumentLayoutOutputFilePath(
+        attachment2OutputDir,
+        attachment2Pattern,
+        { year, month2 }
+      );
+
+      attemptedOutputPaths = [proposalPath, attachment1Path, attachment2Path];
+
       await writeProposalWorkbook({
         template: proposalTemplate,
         outputPath: proposalPath,
@@ -3189,21 +2818,24 @@ export const exportAllowanceDocuments = async (
         rows: resolvedContext.exportRows,
         regularTotalAllowanceAmount: resolvedContext.proposalSections.regularTotalAllowanceAmount,
         earlyPayoutTotalAllowanceAmount:
-          resolvedContext.proposalSections.earlyPayoutTotalAllowanceAmount
+          resolvedContext.proposalSections.earlyPayoutTotalAllowanceAmount,
+        definition: proposalSnapshot.definition
       });
       await writeAttachmentOneWorkbook({
         template: attachment1Template,
         outputPath: attachment1Path,
         workMonth: resolvedContext.workMonth,
         rateGuideEntries: resolvedContext.rateGuideEntries,
-        rows: resolvedContext.exportRows
+        rows: resolvedContext.exportRows,
+        definition: attachment1Snapshot.definition
       });
       await writeAttachmentTwoWorkbook({
         template: attachment2Template,
         outputPath: attachment2Path,
         workMonth: resolvedContext.workMonth,
         rows: resolvedContext.exportRows,
-        totalAllowanceAmount: resolvedContext.totalAllowanceAmount
+        totalAllowanceAmount: resolvedContext.totalAllowanceAmount,
+        definition: attachment2Snapshot.definition
       });
     }
 
