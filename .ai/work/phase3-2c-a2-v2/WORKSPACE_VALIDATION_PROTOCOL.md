@@ -1,5 +1,8 @@
 # A2 v2 — GitHub 개발 공간과 Windows 고정경로 검증 안전 절차
 
+> **2026-10-16 사용자 경로 정정 — 현재 적용 우선 지침:** 실제 로컬 프로젝트와 작업·검증 스크립트 실행 기준은 `C:\Projects\Active\ShftMgmt_Renewal`이다. 아래 원래 계획의 `C:\Projects\Active\_a2_v2_workspace\Shiftmgmt_Renewal` 별도 clone 생성·사용 지시는 **더 이상 현재 작업 절차가 아니다**. I3 스크립트는 현재 구현 브랜치의 `.ai/work/phase3-2c-a2-v2/probes/i3_reader_smoke_v2.mjs`에 포함되며 프로젝트 Git 루트에서 직접 실행한다. 기존 `C:\Projects\Active\ShiftMgmt_V4` 및 `C:\Projects\Active\교대근무관리 시스템`의 고정 계약·legacy 원본은 계속 보호한다. 실행 전 실제 로컬 repo 브랜치 및 Clean 상태를 확인하고, 안전이 입증되지 않은 브랜치 전환/overwrite는 금지한다. 이 지침은 외부 fixed-path gate의 특성이나 승인 없는 legacy overlay 금지를 변경하지 않는다.
+
+
 - 상태: SOL_WORKFLOW_DESIGN / NO_PRODUCT_MUTATION / RUNTIME_UNPROVEN
 - 등급: frontier (고정 절대경로·바이트 잠금·dirty12 보호·실행 증거 신뢰가 모두 충돌할 수 있음)
 - 공식 저장소: Cnthoth-Plus-Projects/Shiftmgmt_Renewal
