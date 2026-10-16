@@ -688,6 +688,7 @@ if (isDirectCli) {
   try { await bCtx.close(); state.resources.context.closedAtMs = Date.now(); } catch (e) { state.resources.context.error = e.message; }
   state.resources.browser.closeAttemptAtMs = Date.now();
   try { await browser.close(); state.resources.browser.closedAtMs = Date.now(); } catch (e) { state.resources.browser.error = e.message; }
+  state.updatePartial();
  }
  publishNormalEvidence(state);
 }
