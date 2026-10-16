@@ -133,6 +133,7 @@ if (isDirectCli) {
             const body = await res.json();
             match.endedAtMs ??= Date.now();
             if (body && typeof body === "object") {
+              if ("ok" in body) match.ok = !!body.ok;
               match.errorCode = body.errorCode || null;
               if (u.includes("/api/auth:")) {
                 const op = u.split("/api/auth:")[1];
@@ -145,7 +146,7 @@ if (isDirectCli) {
                       loginId: prev?.loginId || null,
                       userId: prev?.userId || null,
                       role: prev?.role || null,
-                      ok: res.ok(),
+                      ok: match.ok,
                       passwordChangeRequired: false,
                       timeMs: match.endedAtMs
                     });
@@ -155,7 +156,7 @@ if (isDirectCli) {
                       loginId: d.loginId || d.user?.loginId || prev?.loginId || null,
                       userId: d.userId || d.user?.id || prev?.userId || null,
                       role: d.role || d.user?.role || prev?.role || null,
-                      ok: res.ok(),
+                      ok: match.ok,
                       passwordChangeRequired: d.passwordChangeRequired ?? (d.user?.passwordChangeRequired ?? null),
                       timeMs: match.endedAtMs
                     });
