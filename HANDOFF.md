@@ -1,93 +1,125 @@
-# HANDOFF — A2 v2 I3 Reader 격리 검증
+# HANDOFF — A2 v2 I3 Reader 프로젝트 내 검증 (경로 정정본)
 
 - **Action: VERIFY_ONLY**
-- From: Sol (GPT-6): 분석·구현·검증 설계·수용 결정
-- To: Windows 로컬 CLI: 정해진 명령 실행·실측 결과 회신만
+- From: Sol (GPT-6): 설계·구현·검수
+- To: Windows CLI: 현장 측정 및 결과 회신만
+- 작업 등급: economy — 기존 구현의 SHA·syntax 및 격리 Reader 검증
 - Date: 2026-10-16 KST
-- Repo: `Cnthoth-Plus-Projects/Shiftmgmt_Renewal`
+- Repository: `Cnthoth-Plus-Projects/Shiftmgmt_Renewal`
+- **유일한 로컬 프로젝트 루트: `C:\Projects\Active\ShftMgmt_Renewal`**
 - Branch: `work/phase3-2c-a2-v2-implementation`
-- Local clone: `C:\Projects\Active\_a2_v2_workspace\Shiftmgmt_Renewal`
-- Product: clone 내부 `ShiftMgmt_V4`
-- **발행 HEAD:** 사용자가 중계하는 전체 40자 GitHub 커밋과 origin이 일치할 때만 시작
-- Source I3: normal reader에서 실제 raw SHA/PID/case/runId/context/contract/coverage 검문, 잘못된 case/diagnostics 구조 거부, normal partial 경로/해시 보존.
-- 이전 `Action: HOLD` 지시서는 `Log/20261016_A2V2_I3_HOLD_before_VERIFY_ONLY.md`에 원문 보존.
-- 상태: **I3_STATIC_READY / WIN_TEST_NOT_RUN / A2_NOT_ACCEPTED**
+- GitHub 발행 HEAD: 사용자 중계 메시지에 기재된 정확한 40자리 SHA와 비교
+- Product: `C:\Projects\Active\ShftMgmt_Renewal\ShiftMgmt_V4`
+- **검증 스크립트 (프로젝트에 tracked): `C:\Projects\Active\ShftMgmt_Renewal\.ai\work\phase3-2c-a2-v2\probes\i3_reader_smoke_v2.mjs`**
+- 과거 잘못된 별도 clone / 외부 scratch **스크립트 경로는 폐기**. 기존 HANDOFF 전체는 `Log/20261016_I3_OLD_WORKSPACE_HANDOFF_before_project_path_fix.md`에 원 blob으로 보존.
+- 상태: I3_STATIC_READY / PROJECT_WINDOWS_RUNTIME_UNVERIFIED / A2_NOT_ACCEPTED.
 
-## 절대 보호/중단
+## 1. 작업 경계
 
-- 원본 `C:\Projects\Active\ShiftMgmt_V4`의 12 dirty 파일, `교대근무관리 시스템` 원 계약, `ShiftMgmt_V3.4` 수정 금지.
-- 별도 개발 clone의 제품/계약/HANDOFF/Log/package/lock 변경 금지.
-- Git reset/stash/clean/rebase/commit/push/merge 금지. Clean 확인 후 `git fetch`와 `git pull --ff-only`만 허용.
-- npm install, localhost:18741 HTTP 요청, Chrome/서버 가동, 과거 제품 코드 임시 overlay, 타 PID 종료 금지.
-- 기존 I1, I2, I2b, I2c 검사 **반복 금지**.
-- 안전한 독립 시험 스크립트는 **이 대화에서 Sol이 제공한 `i3_reader_smoke_v1.mjs`(3902B, SHA-256 `06F4B9DF8B767CF1C6F8E58FE3E231216540ECF0412E07A7B8C8EB92740F7003`)**만 사용. 로컬 `C:\Projects\Active\_a2_v2_scratch`에 새 파일로 저장; 기존 파일이 있으면 덮어쓰지 않고 BLOCKED. 스크립트 원문 변형/테스트 약화 금지.
+- 실행은 **정확히 위 프로젝트의 Git 루트에서** 진행. 루트가 아닌 곳에서 상대경로로 Node 시작 금지.
+- CLI는 구현/분석/테스트 설계 하지 않음. 원본 제공 스크립트 그대로 실행하고 오류 발생 시 보고.
+- 코드·계약·HANDOFF·Log·package/lock·GitHub 원격 직접 수정 금지; Git push/reset/clean/stash/rebase/merge/npm install 금지.
+- 원본 `C:\Projects\Active\ShiftMgmt_V4`와 `C:\Projects\Active\교대근무관리 시스템`, V3.4 및 기존 12 dirty 파일은 모두 무변경.
+- 실제 Chrome, 18741 서버/HTTP, 제품 overlay, 다른 PID 종료 금지.
+- 스크립트는 **프로젝트 안에 이미 버전관리된 파일**이다. 별도로 다운로드/복사/덮어쓰기/생성할 필요 없음.
+- **스크립트의 합성 결과**만 Windows OS 임시 디렉터리(프로젝트 Git worktree 바깥)에 남긴다. 테스트가 Git 작업 트리에 파일을 만들면 STOP, 제거·clean하지 말고 보고.
 
-## 1. 사전확인 / ff-only
+## 2. 선행 검사 및 동기화
 
-PowerShell 명령:
+PowerShell:
 
 ```powershell
-$Root='C:\Projects\Active\_a2_v2_workspace\Shiftmgmt_Renewal'
-$Product=Join-Path $Root 'ShiftMgmt_V4'
-$Scratch='C:\Projects\Active\_a2_v2_scratch'
-$Probe=Join-Path $Scratch 'i3_reader_smoke_v1.mjs'
-git -C $Root fetch origin
+$Root = 'C:\Projects\Active\ShftMgmt_Renewal'
+$Branch = 'work/phase3-2c-a2-v2-implementation'
+$Product = Join-Path $Root 'ShiftMgmt_V4'
+$Probe = Join-Path $Root '.ai\work\phase3-2c-a2-v2\probes\i3_reader_smoke_v2.mjs'
+# 반드시 먼저 확인: Test-Path $Root, git -C $Root rev-parse --show-toplevel
 git -C $Root branch --show-current
 git -C $Root status --porcelain=v1
-git -C $Root rev-parse origin/work/phase3-2c-a2-v2-implementation
+git -C $Root rev-parse HEAD
 git -C $Root config --local --get core.autocrlf
+git -C $Root fetch origin
+git -C $Root rev-parse "origin/$Branch"
 ```
 
-원격 HEAD = 사용자 중계 40자, branch 정확, git Clean, `core.autocrlf=false` 확인 후에만:
+실행 조건 전부 필수:
+1. `git rev-parse --show-toplevel`가 정확히 `$Root`를 가리킴.
+2. 현재 브랜치가 정확히 `$Branch`, 시작 `git status --porcelain=v1`가 **비어 있음**.
+3. 원격 HEAD 전체 40자리 SHA가 사용자가 중계한 이 HANDOFF 발행 SHA와 정확히 같음.
+4. Git 이력이 fast-forward로만 적용 가능.
+5. `core.autocrlf=false`이거나 소스 파일의 실제 checkout 바이트가 아래 고정 SHA와 같음. 설정 임의 변경 금지.
+
+조건 실패 시 **BLOCKED** 및 실제 출력만 회신. 기존 프로젝트의 브랜치·dirty 파일을 자동으로 switch/reset/stash/clean하지 말 것.
+
+조건 통과 후에만:
 
 ```powershell
 git -C $Root pull --ff-only
 git -C $Root rev-parse HEAD
 git -C $Root status --porcelain=v1
-$N=@('access-history.mjs','access-history-shared.mjs','access-history-positive.mjs','access-history-negative.mjs')
-foreach($n in $N) {
-  $p=Join-Path $Product "scripts/ui-checks/$n"
-  "$n | $((Get-Item -LiteralPath $p).Length) bytes | $((Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash)"
-}
-foreach($n in @('access-history.mjs','access-history-positive.mjs','access-history-negative.mjs')) {
-  node --check (Join-Path $Product "scripts/ui-checks/$n")
-  "NODE_SYNTAX_$n=$LASTEXITCODE"
-}
 ```
 
-### 고정 SHA·크기 (모두 일치해야 다음으로)
+## 3. 소스 및 스크립트 검문
 
-- owner `29,520B / 6AD4B439CB6B45920C113FA637ED4D97D703019D07E3DAE34B2D36BC7A2AEE22`
-- shared `29,973B / C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4`
-- positive `25,678B / B2BC468E2029ACD7769EE4049F16DAD8103B4E9D0E5833D0EA6ED4ADE1FB253D`
-- negative `29,898B / BEF4014A83E03FB97C1CA4886898A1787811AC25CCB75F82D7B2DF5EDD83F8FA`
+고정 기준 SHA-256/bytes (기존 I3 제품 기준 변함없음):
 
-3개 구문 검사 RC0, 모든 크기·SHA 일치가 아니면 **BLOCKED** 보고 후 중단.
+| 실제 프로젝트 내부 파일 | Bytes | SHA-256 |
+|---|---:|---|
+| `ShiftMgmt_V4/scripts/ui-checks/access-history.mjs` | 29,520 | `6AD4B439CB6B45920C113FA637ED4D97D703019D07E3DAE34B2D36BC7A2AEE22` |
+| `ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs` | 29,973 | `C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4` |
+| `ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs` | 25,678 | `B2BC468E2029ACD7769EE4049F16DAD8103B4E9D0E5833D0EA6ED4ADE1FB253D` |
+| `ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs` | 29,898 | `BEF4014A83E03FB97C1CA4886898A1787811AC25CCB75F82D7B2DF5EDD83F8FA` |
+| `.ai/work/phase3-2c-a2-v2/probes/i3_reader_smoke_v2.mjs` | 4,435 | `06D349660888B183B1D6706CAC5E6CF22E7062227294ABD852FB22F3CA5D78D7` |
 
-## 2. 신규 isolated Reader smoke
-
-아래 명령은 사용자가 공유한 원본 변경 없는 `i3_reader_smoke_v1.mjs` 파일이 **새 scratch 위치에 배치된 뒤에만** 실행. 없음/기존 덮어쓰기 충돌/스크립트 SHA 불일치 시 BLOCKED.
+직접 측정:
 
 ```powershell
-(Get-Item -LiteralPath $Probe).Length
-(Get-FileHash -LiteralPath $Probe -Algorithm SHA256).Hash
-node --check $Probe
-"SMOKE_SYNTAX_RC=$LASTEXITCODE"
-node $Probe $Product $Scratch
-"SMOKE_RUNTIME_RC=$LASTEXITCODE"
+$SourceNames = @('access-history.mjs','access-history-shared.mjs','access-history-positive.mjs','access-history-negative.mjs')
+foreach ($n in $SourceNames) {
+  $p = Join-Path $Product "scripts/ui-checks/$n"
+  "$n | $((Get-Item -LiteralPath $p).Length) bytes | $((Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash)"
+}
+"PROBE_SIZE=$((Get-Item -LiteralPath $Probe).Length)"
+"PROBE_SHA=$((Get-FileHash -LiteralPath $Probe -Algorithm SHA256).Hash)"
+```
+
+모든 5개 실제 bytes/SHA가 고정값과 일치하지 않으면 STOP. 임의 CRLF/LF 변환·재저장 금지.
+
+## 4. 실행 — 반드시 해당 프로젝트에서
+
+```powershell
+Push-Location -LiteralPath $Root
+try {
+  foreach ($n in @('access-history.mjs','access-history-positive.mjs','access-history-negative.mjs')) {
+    node --check (Join-Path $Product "scripts/ui-checks/$n")
+    "SYNTAX_RC[$n]=$LASTEXITCODE"
+  }
+  node --check $Probe
+  "PROBE_SYNTAX_RC=$LASTEXITCODE"
+  # 위 node --check 4개 모두 RC0인 경우에만 다음을 실행
+  node $Probe
+  "PROBE_RUNTIME_RC=$LASTEXITCODE"
+} finally {
+  Pop-Location
+}
 git -C $Root status --porcelain=v1
 ```
 
-기대: 스크립트 3902B/고정 SHA, syntax RC0, runtime RC0, JSON `result=I3_READER_SMOKE_PASS`, `validAccepted=1`, `invalidRejected=9`, `source=actual-export`, git Clean. 발생 오류는 실제 stderr 및 RC만 제출. 실패한 테스트 코드/제품 코드를 CLI가 자체 수정하면 안 됨.
+기대: syntax 검사 4개 RC0, 실행 RC0, `I3_READER_SMOKE_PASS`, `validAccepted=1`, `invalidRejected=9`, `source=actual-export`, stdout의 `projectRoot` = `$Root`, 결과 디렉터리는 Windows OS 임시 폴더.
 
-**한계:** 이 probe는 합성 원시 JSON과 실제 Reader export의 입력 검증만 확인. 실제 owner/worker 서명·Chrome/SDK 관측, Python gate, 원 112 음성벡터, 정상 8개·A1 회귀는 여전히 **UNVERIFIED**. I3 전체 PASS/A2 수용 선언 금지.
+**기능 설명:** 스크립트는 프로젝트 안의 실제 `readNormalWorkerEvidence`를 호출하고 합성 raw/worker-final 1개 정상·9개 오류를 검증한다. 계약 JSON 구조는 **같은 프로젝트의 `.ai/contracts/`에서 읽기만 한다**. A1 잠금 계약의 CRLF/SHA 검증 자체는 이 smoke 시험 범위가 아니며, 고정 원본 계약이나 Shared 모듈을 수정하지 않는다.
 
-## 3. 결과 회신
+## 5. 결과 제출
 
-SETUP_PASS/STATIC_PASS/SMOKE_PASS 또는 BLOCKED; origin/HEAD 전체 40자/브랜치/Clean/core.autocrlf; 4파일 전체 SHA/bytes; node --check 3개 RC; 스크립트 SHA/size/RC/JSON stdout/stderr; scratch 생성한 경로; Git push/원본 Windows 수정 0; 기존 시험 재실행 NO.
+원격/로컬 HEAD 전체 SHA, 시작/종료 브랜치·git clean, core.autocrlf, 4개 제품 파일+스크립트 bytes/SHA, 4개 syntax RC, 실행 RC/stdout/stderr, 결과 JSON에 포함된 synthetic 임시 디렉터리 경로를 원문 그대로 전달.
+
+- 이전 I1/I2/I2b/I2c 시험 반복하지 않음.
+- 기존 원본/계약/로컬 프로젝트 파일을 수동 수정하지 않음.
+- 이번 격리 시험은 실제 Owner↔Worker IPC, Chrome, A1 게이트, 정상 8개, 원 음성 112개를 검증하지 않음. 그 결과는 모두 **UNVERIFIED**.
+- STOP 발생 시 코드를 임의 수정/재실행하여 PASS로 만들지 말고 `BLOCKED`와 원 오류를 보고.
 
 ---
 
 ## 회신
 
-명령 출력만 본 대화에 반환하고 GitHub의 HANDOFF를 직접 변경하지 않음.
+현재 작업은 GitHub 문서 수정이 아닌 Windows 실행 결과만 채팅으로 제출.
