@@ -278,7 +278,14 @@ export function installNormalObserver({ context, caseName, contract, execution, 
       errorCode = data.errorCode || null;
       if (data.ok !== undefined) ok = !!data.ok;
      }
-    } catch {}
+    } catch (err) {
+     ok = false;
+     errorCode = "A2_INVALID_JSON_BODY";
+     state.errors.unexpected.push({
+      code: errorCode, requestId: id,
+      errorName: err instanceof Error ? err.name : "Unknown", timeMs: Date.now()
+     });
+    }
 
     if (status >= 400) {
      state.rawErrors.badResponses.push({ requestId: id, status, url, method, errorCode, timeMs: Date.now() });
