@@ -1,5 +1,7 @@
 # A2 v2 — 원 소스 문자열 리터럴 및 GitHub SHA-256 직접 감사
 
+> **2026-10-16 정정:** 아래 `REMOTE_LOCK_MISMATCH`는 **GitHub LF blob 해시와 Windows CRLF worktree 해시를 다른 것으로 간주하지 않았던 초기 해석**입니다. 실제 두 로컬 Windows 파일은 정확한 CRLF 바이트로 원 잠금 해시에 일치하며, GitHub LF 파일을 메모리에서 CRLF로 변환하여 SHA-256 계산한 결과도 완전히 동일합니다. **현재 Windows 실행 차단으로 보지 않습니다.** 정본: [EOL_LOCK_RESOLUTION.md](EOL_LOCK_RESOLUTION.md). 아래 감사 데이터와 기존 관측은 이력으로만 보존합니다.
+
 - **판정: REMOTE_LOCK_MISMATCH / BLOCKED_REMOTE_RUNTIME_REPRODUCTION** — 4개 중 2개의 GitHub 현재 파일 해시가 v1 검증기 상수와 다름.
 - 방법: 검증기 원문에서 Windows 전체 문자열 리터럴을 파싱하고, GitHub 원파일 UTF-8 bytes를 **SHA-256 직접 계산** (기본 SHA-256 'abc' 테스트 벡터 통과). GitHub blob SHA-1만 비교한 게 아님.
 - 로컬 Windows Test-Path/해시는 현 세션에서 실행 불가. 로컬 CLI 보고서는 “4개 모두 일치”라고 말하지만, 이는 두 폴더의 서로 다른 물리 파일일 가능성이 있으므로 GitHub 파일과 동일성 보장 없음.
