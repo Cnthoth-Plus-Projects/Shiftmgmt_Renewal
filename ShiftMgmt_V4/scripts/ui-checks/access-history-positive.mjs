@@ -78,7 +78,8 @@ if (isDirectCli) {
   state.updatePartial();
 
   const collector = new AssertionCollector(caseArg, contract, state);
-
+  const protectedBase = path.join(repoRoot, "artifacts/captures/phase3", `access-history-${caseArg}`);
+  const beforeDirs = new Set(fs.existsSync(protectedBase) ? fs.readdirSync(protectedBase) : []);
 
   try {
   await runScreenCheck({
@@ -91,6 +92,12 @@ if (isDirectCli) {
       }
       state.environment.viewport = [vp.width, vp.height];
       state.environment.origin = new URL(page.url()).origin;
+      // The protected helper owns context/browser; use real close/disconnect events.
+      const liveContext = page.context();
+      const liveBrowser = liveContext.browser();
+      if (!liveBrowser) throw new Error("[A2] Cannot observe protected browser");
+      liveContext.once("close", () => { state.resources.context.closedAtMs = Date.now(); });
+      liveBrowser.once("disconnected", () => { state.resources.browser.closedAtMs = Date.now(); });
       // 페이지 request/response/console 이벤트 관측 바인딩
       const requestByIdentity = new WeakMap();
       page.on("request", req => {
@@ -492,18 +499,20 @@ if (isDirectCli) {
   });
   } finally { state.updatePartial(); }
 
-  state.resources.context.closedAtMs = Date.now();
-  state.resources.context.closeAttemptAtMs = Date.now();
-  state.resources.browser.closedAtMs = Date.now();
-  state.resources.browser.closeAttemptAtMs = Date.now();
+  if (!state.resources.context.closedAtMs || !state.resources.browser.closedAtMs) {
+    throw new Error("[A2] Protected browser close event was not observed");
+  }
+  // Close attempts and actual acquisition instants are not exposed by the protected helper.
+  // Keep closeAttemptAtMs null rather than manufacturing completion timestamps.
 
-  // 최신 protected manifest 및 capture 복사
-  const protectedBase = path.join(repoRoot, "artifacts/captures/phase3", `access-history-${caseArg}`);
-  const dirs = fs.readdirSync(protectedBase).filter(d => d.startsWith("run-") && d !== state.runId).sort().reverse();
-  if (dirs.length > 0) {
+  // Bind artifacts to the unique NEW run created by this call, never an older sibling.
+  const dirs = fs.readdirSync(protectedBase).filter(d => d.startsWith("run-") && !beforeDirs.has(d));
+  if (dirs.length !== 1) throw new Error("[A2] Cannot uniquely identify protected run");
+  {
     const latestDir = path.join(protectedBase, dirs[0]);
     const origMPath = path.join(latestDir, "manifest.json");
-    if (fs.existsSync(origMPath)) {
+    if (!fs.existsSync(origMPath)) throw new Error("[A2] Protected manifest missing");
+    {
       const origMBytes = fs.readFileSync(origMPath);
       const copyMPath = path.join(context.runDir, "normal-protected-manifest.json");
       fs.writeFileSync(copyMPath, origMBytes);
@@ -515,10 +524,22 @@ if (isDirectCli) {
       };
 
       const mJson = JSON.parse(origMBytes.toString("utf8"));
-      for (const cap of mJson.captures || []) {
+      if (mJson.status !== "PASS" || mJson.id !== `access-history-${caseArg}` || new URL(mJson.url).href !== new URL(targetUrl).href || !Array.isArray(mJson.captures)) {
+        throw new Error("[A2] Protected manifest does not match this run");
+      }
+      const captureNames = execution.normalCaptures?.[caseArg] || [];
+      if (mJson.captures.length !== captureNames.length ||
+          !captureNames.every(name => mJson.captures.some(c => c.name === name))) {
+        throw new Error("[A2] Protected captures do not match case");
+      }
+      for (const cap of mJson.captures) {
+        if (!captureNames.includes(cap.name) || cap.filename !== `${cap.name}.png`) {
+          throw new Error("[A2] Protected capture name invalid");
+        }
         const origCapPath = path.join(latestDir, cap.filename || `${cap.name}.png`);
         const copyCapPath = path.join(context.runDir, `normal-capture-${cap.name}.png`);
-        if (fs.existsSync(origCapPath)) {
+        if (!fs.existsSync(origCapPath)) throw new Error("[A2] Protected capture missing");
+        {
           const capB = fs.readFileSync(origCapPath);
           fs.writeFileSync(copyCapPath, capB);
           state.captures.push({
