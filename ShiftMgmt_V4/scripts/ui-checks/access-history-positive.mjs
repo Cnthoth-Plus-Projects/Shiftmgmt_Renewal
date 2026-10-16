@@ -85,22 +85,24 @@ if (isDirectCli) {
     url: targetUrl,
     steps: async ({ page, capture, waitForFontsReady }) => {
       // 페이지 request/response/console 이벤트 관측 바인딩
-      let reqMonotonic = 0;
+      const requestByIdentity = new WeakMap();
       page.on("request", req => {
         const u = req.url();
         if (u.startsWith("http://127.0.0.1:18741/api/")) {
           const id = state.nextRequestId();
           const isLogList = u.includes("/api/access-logs:list") && !["role-guard", "session-expired"].includes(caseArg);
-          state.requests.push({
-            id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: Date.now(), status: 0, ok: true, errorCode: null, query: isLogList ? parseBridgeQuery(req) : null
-          });
+          const observed = {
+            id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: null, status: 0, ok: false, errorCode: null, query: isLogList ? parseBridgeQuery(req) : null
+          };
+          state.requests.push(observed);
+          requestByIdentity.set(req, observed);
         }
       });
 
       page.on("response", async res => {
         const u = res.url();
         if (u.startsWith("http://127.0.0.1:18741/api/")) {
-          const match = state.requests.find(r => r.url === u && r.status === 0);
+          const match = requestByIdentity.get(res.request());
           if (match) {
             match.endedAtMs = Date.now();
             match.status = res.status();
@@ -441,12 +443,6 @@ if (isDirectCli) {
       const drainLimit = Date.now() + 5000;
       while (state.requests.some(r => r.status === 0) && Date.now() < drainLimit) {
         await page.waitForTimeout(100);
-      }
-      for (const r of state.requests) {
-        if (r.status === 0) {
-          r.status = 200;
-          r.endedAtMs = Date.now();
-        }
       }
     },
   });
