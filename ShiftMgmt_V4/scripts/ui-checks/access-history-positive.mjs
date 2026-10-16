@@ -313,6 +313,7 @@ if (isDirectCli) {
         const heldController = new HeldRouteController(state);
         let listInvocation = 0;
 
+        let primaryErr = null;
         try {
           await page.route("**/api/access-logs:list*", async (r) => {
             listInvocation++;
@@ -347,11 +348,23 @@ if (isDirectCli) {
           await waitForFontsReady(15000);
           state.environment.fontsReadyAtMs = Date.now();
           await capture("stale-response-prevented");
+        } catch (err) {
+          primaryErr = err;
         } finally {
-          if (heldController.isStarted() && !heldController.isCompleted()) {
-            heldController.abort();
+          const cleanupErrors = [];
+          try {
+            if (heldController.isStarted() && !heldController.isSettled()) {
+              if (heldController.action === null) heldController.abort();
+              await heldController.waitForComplete(5000);
+            }
+          } catch (err) { cleanupErrors.push(err); }
+          try { await page.unroute("**/api/access-logs:list*"); } catch (err) { cleanupErrors.push(err); }
+          if (cleanupErrors.length > 0 && state.errors) {
+            if (!Array.isArray(state.errors.cleanup)) state.errors.cleanup = [];
+            for (const ce of cleanupErrors) state.errors.cleanup.push({ message: ce.message, stack: ce.stack });
           }
-          await page.unroute("**/api/access-logs:list*").catch(() => {});
+          if (primaryErr) throw primaryErr;
+          if (cleanupErrors.length > 0) throw cleanupErrors[0];
         }
       } else if (caseArg === "role-guard") {
         const testRole = async (roleName, roleCreds) => {

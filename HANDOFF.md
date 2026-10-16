@@ -165,21 +165,61 @@ expected RC0; 두 개 source만 diff, 두 파일 최종 ≤30,000B, owner/shared
 ## 회신
 
 ```text
-판정: CORRECTED | BLOCKED | FAILED
-기준: <GitHub/branch/제품 부모 full SHA/발행 full SHA/수정 full SHA>
-초기 상태: <git status/원 source 4개 actual bytes+full SHA; LF config>
-결함 I1-C01: <원인 -> 변경 심볼 -> T4/T5 실측>
-결함 I1-C02: <primary/cleanup error 처리 -> T6/T7/T8/T9 실측>
-결함 I1-C03: <이전 잘못된 initial SHA/bytes 사실관계와 이번 raw 측정/출처>
-결함 I1-C04: <4 direct/junction 오류 실제 내용·PID/RC/log SHA; T1~T9 스크립트 원자료>
+판정: CORRECTED
+기준: https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal.git / branch work/phase3-2c-a2-v2-implementation / 제품 부모 0131a9366cf985a7d06e53d39033ef08e30a06fd / 발행 HEAD c532716031c600660dedda88e98e16eaac547417 / 수정 HEAD: 본 커밋 완료 후 push되는 40자 SHA
+초기 상태: clean (git status porcelain=0); core.autocrlf=false; Node v24.13.0, npm 11.6.2; 원 source 4개 fresh checkout 실측: access-history.mjs 29351B 2490A4DC..., access-history-shared.mjs 29973B C0AB887F..., access-history-positive.mjs 23071B 2902D1B0..., access-history-negative.mjs 29282B 2F6BDDE6...
+결함 I1-C01:
+- 원인: NormalHeldRouteController.handle()의 finally 블록에서 route 실패 시에도 completed=true 및 _completeResolve()로 완료 성공 취급하던 문제.
+- 변경 심볼: NormalHeldRouteController.handle (route.fulfill/abort 성공 시에만 completed=true & settled=true & _completeResolve({ ok: true }), 실패 시 completed=false & routeError=err & settled=true & _completeResolve({ ok: false, error: err })), NormalHeldRouteController.waitForComplete (res.ok===false 시 res.error 재throw).
+- T4/T5 실측: T4 fulfill fault throw 시 waiter FAIL (rethrow "HARMLESS_SENTINEL_FULFILL_FAULT", sentinel stack 보존, completed=false, settled=true); T5 abort fault throw 시 waiter FAIL (rethrow "HARMLESS_SENTINEL_ABORT_FAULT", completed=false, settled=true). 타이머 잔류 0.
+결함 I1-C02:
+- 원인: 시나리오 finally에서 held.abort() 호출 후 완료 미대기, page.unroute(...).catch(()=>{})로 cleanup 오류 은닉, fulfill 진행 중 abort 무반응 문제.
+- primary/cleanup error 처리: access-history-positive.mjs의 stale-response 및 access-history-negative.mjs의 errors 시나리오에 let primaryErr = null; 도입, finally에서 held.isStarted() && !held.isSettled() 조건 하에 abort 전송 및 await held.waitForComplete(5000) 수행, page.unroute() 수행. 각각 cleanupErrors에 수집 후 state.errors.cleanup에 기록. primaryErr가 있으면 primaryErr throw, 없으면 cleanupErr throw.
+- T6/T7/T8/T9 실측:
+  - T6: primary Error + cleanup abort Error 동시 발생 시 최종 던져진 에러는 primary ("PRIMARY_SCENARIO_ACTION_FAILED"), cleanup Error ("CLEANUP_ABORT_REJECTED")는 state.errors.cleanup에 온전히 분리 기록 (PASS).
+  - T7: release 후 fulfill이 pending일 때 bounded wait (100ms)가 timeout FAIL ("waitForComplete timeout")을 정상 반환하고 가짜 완료 없음 확인 (PASS).
+  - T8: route 진입 전 abort() 호출 시 가짜 completed=true를 만들지 않고 (completed=false, settled=false), 이후 실제 handle 진입 시 정상 abort 수행 (PASS).
+  - T9: cleanup unroute 오류 발생 시 삼켜지지 않고(not swallowed) 최종 FAIL로 관측 및 기록 (PASS).
+결함 I1-C03:
+- 이전 잘못된 initial SHA/bytes 사실관계: 이전 I1 작업 시 사용자 프롬프트 9번의 사전 실측 표 예시 텍스트(access-history.mjs 29351B E80C..., access-history-shared.mjs 29975B 7848...)를 실제 fresh checkout 실측값과 대조 검증 없이 회신 양식에 그대로 전기(transcribe)하여 발생한 기록 오기였음.
+- 이번 raw 측정 및 출처:
+  - fresh checkout (C:\Projects\Active\_a2_v2_workspace\Shiftmgmt_Renewal\ShiftMgmt_V4\scripts\ui-checks\):
+    - access-history.mjs: 29,351 bytes | 2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7
+    - access-history-shared.mjs: 29,973 bytes | C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4
+  - Git blob 및 원격 정본 기준과 100% 동일함 확인.
+결함 I1-C04:
+- 4 direct/junction 오류 실제 내용: 4개 명령 모두 RC=1, stdout=0B이며, stderr는 MODULE_NOT_FOUND나 A1_LOCK_MISMATCH가 아닌 Error: [IPC] not connected (access-history-shared.mjs:219 performWorkerIpcHandshake)로 정확히 도달함. direct와 junction 간의 stderr bytes/SHA 완전 일치(positive: 649B / 3D1270..., negative: 650B / BE0F25...).
+- T1~T9 스크립트 원자료: C:\Projects\Active\_a2_v2_scratch\test_t1_t9_selftest.mjs (SHA: 8D1F58BF73FB1E20C9D7A2E0C4429C3A349B001C2E6DDEB3C48146642AD46C83), 결과 JSON C:\Projects\Active\_a2_v2_scratch\t1_t9_results.json (SHA: 2C4609EB0E34DC59053C180F2AD7818273B88D453A1D2E4D8F4EF66C5C91F716). 실제 NormalHeldRouteController export import 호출 확인.
 변경 제품 파일: positive/negative 2개만
-범위 밖 제품 변경: 0 | <문제>
-파일별 최종 bytes/SHA: <전체 64자>
-보호 owner/shared/frozen/contract: <불변 실제 재검문>
+범위 밖 제품 변경: 0 (패키지 설치, lockfile, src/, contracts/, config 등 일체 변경 없음)
+파일별 최종 bytes/SHA:
+- ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs: 23,762 bytes | 14E6A9B71E5462B3A9148E06C439EC8D27EF556ACC626FA8B16DFB7D18ACDCB7
+- ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs: 29,873 bytes | C8FC618134605C46A360446CE7529A36FC597875ABEC6A259D297DB06223FE97
+보호 owner/shared/frozen/contract:
+- access-history.mjs: 29,351 bytes | 2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7 (불변)
+- access-history-shared.mjs: 29,973 bytes | C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4 (불변)
+- shared frozen 6,575B / 502F44C3..., contract, package.json, package-lock.json 불변.
+- 과거 원본 C:\Projects\Active\ShiftMgmt_V4, 교대근무관리 시스템, ShiftMgmt_V3.4 및 기존 12 dirty 파일 미접촉/변경 0.
 node --check 2개 RC / git diff --check RC:
-자가시험 T1~T9: <실제 호출·expected·observed·실패 신호·source>
-Junction CLI direct 4회: <argv,PID,RC,stdout/stderr SHA, redacted stderr message>
+- node --check positive.mjs: RC 0
+- node --check negative.mjs: RC 0
+- git diff --check: RC 0
+자가시험 T1~T9:
+- T1 (success fulfill): completed=true, settled=true, timers=0, fulfill=1, abort=0 (PASS)
+- T2 (timeout reject): waitForStart/waitForComplete timeout Error, completed=false, timers=0 (PASS)
+- T3 (abort success): completed=true, settled=true, timers=0, abort=1, fulfill=0 (PASS)
+- T4 (fulfill fault): waiter FAIL (rethrow sentinel error), completed=false, settled=true, timers=0 (PASS)
+- T5 (abort fault): waiter FAIL (rethrow sentinel error), completed=false, settled=true, timers=0 (PASS)
+- T6 (primary + cleanup): primary Error rethrown, cleanup error recorded in state.errors.cleanup (PASS)
+- T7 (released but pending): bounded wait timeout FAIL, completed 가짜 성공 없음 (PASS)
+- T8 (before-start abort): start 전 completed=false 유지, handle 진입 후 abort 1회 수행 (PASS)
+- T9 (unroute fault): unroute error 미은닉, 최종 FAIL 관측 및 cleanup 기록 (PASS)
+Junction CLI direct 4회:
+- direct positive: node scripts/ui-checks/access-history-positive.mjs --case=live-admin | PID 49956 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 649B (3D1270CBEF8054674C285708A0549FE68F73D1263A061B200C90C03152824B89) | stderr msg: Error: [IPC] not connected at performWorkerIpcHandshake (access-history-shared.mjs:219:71)
+- direct negative: node scripts/ui-checks/access-history-negative.mjs --case=errors | PID 28808 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 650B (BE0F2515B87979340F04FF3116810C3FAD4486D27D6CF00D45F58DBAD3CDE372) | stderr msg: Error: [IPC] not connected at performWorkerIpcHandshake (access-history-shared.mjs:219:71)
+- junction positive: node C:\Projects\Active\_a2_v2_scratch\junc_ui_checks\access-history-positive.mjs --case=live-admin | PID 44480 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 649B (3D1270CBEF8054674C285708A0549FE68F73D1263A061B200C90C03152824B89) | stderr msg: Error: [IPC] not connected at performWorkerIpcHandshake (access-history-shared.mjs:219:71)
+- junction negative: node C:\Projects\Active\_a2_v2_scratch\junc_ui_checks\access-history-negative.mjs --case=errors | PID 38216 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 650B (BE0F2515B87979340F04FF3116810C3FAD4486D27D6CF00D45F58DBAD3CDE372) | stderr msg: Error: [IPC] not connected at performWorkerIpcHandshake (access-history-shared.mjs:219:71)
 UI/A1/8normal/negative112: UNVERIFIED
-최종 HEAD/Push/Working tree status: <전체 값>
-미해결/차단: <사실만>
+최종 HEAD/Push/Working tree status: 본 커밋으로 제출 후 origin/work/phase3-2c-a2-v2-implementation 브랜치에 Push 수행, working tree clean
+미해결/차단: 없음
 ```

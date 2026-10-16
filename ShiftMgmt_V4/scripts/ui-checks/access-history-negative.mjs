@@ -104,7 +104,9 @@ export class NormalHeldRouteController {
     this.timeoutMs = timeoutMs;
     this.started = false;
     this.completed = false;
+    this.settled = false;
     this.action = null;
+    this.routeError = null;
     this.releaseOptions = null;
     this.route = null;
     this._startPromise = new Promise(r => this._startResolve = r);
@@ -124,27 +126,27 @@ export class NormalHeldRouteController {
         const opts = this.releaseOptions || defaultOptions || { status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: [] }) };
         await route.fulfill(opts);
       }
-    } finally {
       this.completed = true;
-      this._completeResolve();
+      this.settled = true;
+      this._completeResolve({ ok: true });
+    } catch (err) {
+      this.routeError = err;
+      this.completed = false;
+      this.settled = true;
+      this._completeResolve({ ok: false, error: err });
     }
   }
 
   isStarted() { return this.started; }
   isCompleted() { return this.completed; }
+  isSettled() { return this.settled; }
 
   async waitForStart(timeoutMs = this.timeoutMs) {
     let timerHandle = null;
     try {
-      const timerPromise = new Promise((_, rej) => {
-        timerHandle = setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs);
-      });
-      await Promise.race([this._startPromise, timerPromise]);
+      await Promise.race([this._startPromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs); })]);
     } finally {
-      if (timerHandle !== null) {
-        clearTimeout(timerHandle);
-        timerHandle = null;
-      }
+      if (timerHandle !== null) clearTimeout(timerHandle);
     }
   }
 
@@ -159,24 +161,15 @@ export class NormalHeldRouteController {
     if (this.action !== null) return;
     this.action = "abort";
     this._releaseResolve();
-    if (!this.started) {
-      this.completed = true;
-      this._completeResolve();
-    }
   }
 
   async waitForComplete(timeoutMs = this.timeoutMs) {
     let timerHandle = null;
     try {
-      const timerPromise = new Promise((_, rej) => {
-        timerHandle = setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs);
-      });
-      await Promise.race([this._completePromise, timerPromise]);
+      const res = await Promise.race([this._completePromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs); })]);
+      if (!res?.ok) throw (res?.error || new Error("waitForComplete failed"));
     } finally {
-      if (timerHandle !== null) {
-        clearTimeout(timerHandle);
-        timerHandle = null;
-      }
+      if (timerHandle !== null) clearTimeout(timerHandle);
     }
   }
 }
@@ -424,9 +417,7 @@ export function readNormalWorkerEvidence({ caseName, context, execution, contrac
   return { raw, workerFinal, coverage: workerFinal.coverage, artifactIds };
 }
 
-// -------------------------------------------------------------
 // CLI 진입점: errors / session-expired 실행
-// -------------------------------------------------------------
 const isDirectCli = Boolean(process.argv[1]) && (() => {
   try {
     return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
@@ -570,6 +561,7 @@ if (isDirectCli) {
       state.environment.routes.push({ url: "**/api/access-logs:list", timeMs: Date.now() });
 
       let listCallCount = 0;
+      let primaryErr = null;
       try {
         await page.route("**/api/access-logs:list", async (r) => {
           listCallCount++;
@@ -625,11 +617,23 @@ if (isDirectCli) {
         state.captures.push({
           id: "normal-capture-errors-alert", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
         });
+      } catch (err) {
+        primaryErr = err;
       } finally {
-        if (held.isStarted() && !held.isCompleted()) {
-          held.abort();
+        const cleanupErrors = [];
+        try {
+          if (held.isStarted() && !held.isSettled()) {
+            if (held.action === null) held.abort();
+            await held.waitForComplete(5000);
+          }
+        } catch (err) { cleanupErrors.push(err); }
+        try { await page.unroute("**/api/access-logs:list"); } catch (err) { cleanupErrors.push(err); }
+        if (cleanupErrors.length > 0 && state.errors) {
+          if (!Array.isArray(state.errors.cleanup)) state.errors.cleanup = [];
+          for (const ce of cleanupErrors) state.errors.cleanup.push({ message: ce.message, stack: ce.stack });
         }
-        await page.unroute("**/api/access-logs:list").catch(() => {});
+        if (primaryErr) throw primaryErr;
+        if (cleanupErrors.length > 0) throw cleanupErrors[0];
       }
     } else if (caseArg === "session-expired") {
       await performNormalLogin(page, targetUrl, adminCreds);
