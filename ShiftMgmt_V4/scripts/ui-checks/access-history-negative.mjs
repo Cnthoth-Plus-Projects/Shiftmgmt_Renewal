@@ -398,6 +398,7 @@ export function readNormalWorkerEvidence({ caseName, context, execution, contrac
   const rawBytes=fs.readFileSync(rawPath),raw=JSON.parse(rawBytes),workerFinal=JSON.parse(fs.readFileSync(wfPath,"utf8"));
   const fail=k=>{throw Error("A2_NORMAL_EVIDENCE_INVALID:"+k)};
   const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+  if(!execution.normalCases?.includes(caseName)||!Array.isArray(contract.fullUi?.rules?.[caseName])||!Array.isArray(raw.diagnostics))fail("shape");
   const runId=path.basename(runDir),ctxHash=sha(JSON.stringify(context));
   const required=(contract.fullUi?.rules?.[caseName]||[]).map(r=>r.id);
   const cov={requiredIds:required,missing:required,extra:raw.diagnostics?.map(d=>d.id),duplicates:[]};
