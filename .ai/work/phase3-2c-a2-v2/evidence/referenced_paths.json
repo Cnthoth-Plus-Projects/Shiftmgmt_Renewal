@@ -1,0 +1,40 @@
+{
+  "access-history.mjs": [
+    {
+      "reference": ".ai\\\\contracts\\\\phase3-2c-a2-v1\\\\baseline.json",
+      "exists_as_is": true
+    },
+    {
+      "reference": ".ai\\\\contracts\\\\phase3-2c-a2-v1\\\\gate-evidence.py",
+      "exists_as_is": true
+    },
+    {
+      "reference": "C:\\\\Projects\\\\Active\\\\교대근무관리",
+      "exists_as_is": false
+    },
+    {
+      "reference": "C:\\\\Users\\\\pangyo\\\\anaconda3\\\\python.exe",
+      "exists_as_is": true
+    },
+    {
+      "reference": "t:\\s*([^\\r\\n]+)/",
+      "exists_as_is": false
+    }
+  ],
+  "access-history-shared.mjs": [
+    {
+      "reference": ".ai\\\\contracts\\\\phase3-2c-a2-v1\\\\execution.json",
+      "exists_as_is": true
+    },
+    {
+      "reference": ".ai\\\\contracts\\\\phase3-2c-v1\\\\contract.json",
+      "exists_as_is": true
+    },
+    {
+      "reference": "C:\\\\Projects\\\\Active\\\\교대근무관리",
+      "exists_as_is": false
+    }
+  ],
+  "access-history-positive.mjs": [],
+  "access-history-negative.mjs": []
+}

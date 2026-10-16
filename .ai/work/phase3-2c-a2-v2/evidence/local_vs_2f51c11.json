@@ -1,0 +1,98 @@
+[
+  {
+    "file": "docs/codebase-map.md",
+    "match": true,
+    "local_size": 12802,
+    "remote_size": 12802,
+    "local_sha": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794",
+    "remote_sha": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794"
+  },
+  {
+    "file": "scripts/copy-web-assets.mjs",
+    "match": true,
+    "local_size": 4292,
+    "remote_size": 4292,
+    "local_sha": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115",
+    "remote_sha": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115"
+  },
+  {
+    "file": "src/web/index.html",
+    "match": true,
+    "local_size": 601,
+    "remote_size": 601,
+    "local_sha": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2",
+    "remote_sha": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2"
+  },
+  {
+    "file": "src/web/screens/shell.ts",
+    "match": true,
+    "local_size": 16334,
+    "remote_size": 16334,
+    "local_sha": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130",
+    "remote_sha": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130"
+  },
+  {
+    "file": "scripts/ui-checks/access-history-negative.mjs",
+    "match": true,
+    "local_size": 27848,
+    "remote_size": 27848,
+    "local_sha": "F49C87B2411664EFE6B2EF6C1DDE60010FB3AD8FCE710533A8C410A925A73BD6",
+    "remote_sha": "F49C87B2411664EFE6B2EF6C1DDE60010FB3AD8FCE710533A8C410A925A73BD6"
+  },
+  {
+    "file": "scripts/ui-checks/access-history-positive.mjs",
+    "match": true,
+    "local_size": 22530,
+    "remote_size": 22530,
+    "local_sha": "77B3131220F578897630A9717ACFFC83437189FF2B2D80C13F51528DEE0BFE01",
+    "remote_sha": "77B3131220F578897630A9717ACFFC83437189FF2B2D80C13F51528DEE0BFE01"
+  },
+  {
+    "file": "scripts/ui-checks/access-history-shared.mjs",
+    "match": true,
+    "local_size": 29973,
+    "remote_size": 29973,
+    "local_sha": "C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4",
+    "remote_sha": "C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4"
+  },
+  {
+    "file": "scripts/ui-checks/access-history.mjs",
+    "match": true,
+    "local_size": 29351,
+    "remote_size": 29351,
+    "local_sha": "2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7",
+    "remote_sha": "2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7"
+  },
+  {
+    "file": "src/web/access-history.css",
+    "match": true,
+    "local_size": 7261,
+    "remote_size": 7261,
+    "local_sha": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1",
+    "remote_sha": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1"
+  },
+  {
+    "file": "src/web/screens/access-history-model.test.ts",
+    "match": true,
+    "local_size": 10177,
+    "remote_size": 10177,
+    "local_sha": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E",
+    "remote_sha": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E"
+  },
+  {
+    "file": "src/web/screens/access-history-model.ts",
+    "match": true,
+    "local_size": 6786,
+    "remote_size": 6786,
+    "local_sha": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265",
+    "remote_sha": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265"
+  },
+  {
+    "file": "src/web/screens/access-history.ts",
+    "match": true,
+    "local_size": 29601,
+    "remote_size": 29601,
+    "local_sha": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979",
+    "remote_sha": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979"
+  }
+]

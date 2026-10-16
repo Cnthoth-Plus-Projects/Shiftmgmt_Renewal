@@ -1,0 +1,26 @@
+{
+  "os": "Windows-10-10.0.26200-SP0",
+  "architecture": "AMD64",
+  "processor": "Intel64 Family 6 Model 154 Stepping 3, GenuineIntel",
+  "node": {
+    "path": "C:\\Program Files\\nodejs\\node.exe",
+    "version": "v24.13.0"
+  },
+  "npm": {
+    "path": "C:\\Program Files\\nodejs\\npm",
+    "version": "11.6.2"
+  },
+  "python": {
+    "path": "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "version": "3.9.13 (main, Aug 25 2022, 23:51:50) [MSC v.1916 64 bit (AMD64)]"
+  },
+  "playwright_npm_ls": "shiftmgmt@0.1.0 C:\\Projects\\Active\\ShiftMgmt_V4\n└── playwright@1.63.0",
+  "chrome": [
+    {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "version": "155.0.8059.41"
+    }
+  ],
+  "port_18741_occupied": false,
+  "port_18741_details": "FREE"
+}

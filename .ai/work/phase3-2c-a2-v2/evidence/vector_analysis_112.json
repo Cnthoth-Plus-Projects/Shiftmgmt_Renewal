@@ -1,0 +1,1127 @@
+{
+  "groupCount": 20,
+  "vectorCount": 112,
+  "duplicateCount": 0,
+  "vectors": [
+    {
+      "group": "A-N01",
+      "id": "A-N01/owner-noargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; temp/server/worker/network0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N01",
+      "id": "A-N01/owner-empty",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; temp/server/worker/network0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N01",
+      "id": "A-N01/owner-unknown",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; temp/server/worker/network0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-duplicate-case",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-separate-value",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-url-option",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-positional-url",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-case-leading-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N02",
+      "id": "A-N02/owner-case-trailing-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; 외부 요청0; 자동trim/default0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-known",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-unknown",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-noargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-twoargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-leading-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-positive-trailing-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-known",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-unknown",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-noargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-twoargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-leading-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-negative-trailing-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-known",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-unknown",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-noargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-twoargs",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-leading-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N03",
+      "id": "A-N03/direct-shared-trailing-space",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각RC1; bootstrapread/network/browser/mkdir0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N04",
+      "id": "A-N04/forged-env-no-ipc-positive",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "IPC 없으면 RC1, stub request0, 원worker unknown-case우회0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N04",
+      "id": "A-N04/forged-env-no-ipc-negative",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "IPC 없으면 RC1, stub request0, 원worker unknown-case우회0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N04",
+      "id": "A-N04/forged-env-no-ipc-shared",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "IPC 없으면 RC1, stub request0, 원worker unknown-case우회0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-no-packet",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-context-timeout",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-nonce-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-owner-pid-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-worker-pid-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-ppid-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N05",
+      "id": "A-N05/ipc-case-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; dispatch전 sideeffects0; 자기child kill뒤close확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-contract-path-missing",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-contract-path-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-contract-digest-missing",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-contract-digest-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-run-external",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-run-sibling",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-run-symlink",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-temp-external",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-temp-sibling",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-temp-symlink",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-bootstrap-external",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-bootstrap-sibling",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N06",
+      "id": "A-N06/ipc-bootstrap-symlink",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; outside read/write/network0; source변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near-tolerance2",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near-tolerance4",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near-toleranceNaN",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near-actualNaN",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near-actualInfinity",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near133.5-vs132-tol1",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near132-boundary",
+      "description": "",
+      "expected": "ACCEPT_BOUNDARY",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/near133-boundary",
+      "description": "",
+      "expected": "ACCEPT_BOUNDARY",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N07",
+      "id": "A-N07/constant-provenance-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "모두거부;132와133은경계정상;상수actual/provenance불일치거부",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N08",
+      "id": "A-N08/core-id-missing",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; 누락/중복/추가 실제목록기록; 빈required집합0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N08",
+      "id": "A-N08/core-id-duplicate",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; 누락/중복/추가 실제목록기록; 빈required집합0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N08",
+      "id": "A-N08/core-id-unknown",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; 누락/중복/추가 실제목록기록; 빈required집합0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N08",
+      "id": "A-N08/core-id-extra",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; 누락/중복/추가 실제목록기록; 빈required집합0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N08",
+      "id": "A-N08/unknown-case-required-nonempty",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero; 누락/중복/추가 실제목록기록; 빈required집합0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N09",
+      "id": "A-N09/fixture-publish-wrong-label",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;canonical fullmap/bytes 실측; 실제정본변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N09",
+      "id": "A-N09/canonical-compiled-label-drift",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;canonical fullmap/bytes 실측; 실제정본변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N09",
+      "id": "A-N09/canonical-compiled-hash-drift",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;canonical fullmap/bytes 실측; 실제정본변경0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N10",
+      "id": "A-N10/unrelated-console-401",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;raw원문보존;문자열401예외0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N10",
+      "id": "A-N10/raw-pageerror",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;raw원문보존;문자열401예외0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N11",
+      "id": "A-N11/actual-context-close-then-throw",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;다른자원close시도·첫실패/cleanup보존;누수0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N11",
+      "id": "A-N11/actual-browser-close-then-throw",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;다른자원close시도·첫실패/cleanup보존;누수0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N12",
+      "id": "A-N12/worker-timeout",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;timer=close0;PIDs/close/잔여temp실측;타PIDkill0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N12",
+      "id": "A-N12/worker-kill-request",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;timer=close0;PIDs/close/잔여temp실측;타PIDkill0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N12",
+      "id": "A-N12/kill-without-close-observed",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;timer=close0;PIDs/close/잔여temp실측;타PIDkill0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N12",
+      "id": "A-N12/server-stop-timeout",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;timer=close0;PIDs/close/잔여temp실측;타PIDkill0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N13",
+      "id": "A-N13/worker-spawn-error",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;bootstrap/health순서우회0;partial/log/정리기록",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N13",
+      "id": "A-N13/server-spawn-error",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;bootstrap/health순서우회0;partial/log/정리기록",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N13",
+      "id": "A-N13/server-exit-before-listen",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;bootstrap/health순서우회0;partial/log/정리기록",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N14",
+      "id": "A-N14/owner-final-denied-sync",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;parent PASS출력0;실패경로/첫stack stderr;자원종료확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N14",
+      "id": "A-N14/owner-final-denied-async",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;parent PASS출력0;실패경로/첫stack stderr;자원종료확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N14",
+      "id": "A-N14/owner-final-denied-atomic-rename",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;parent PASS출력0;실패경로/첫stack stderr;자원종료확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N14",
+      "id": "A-N14/worker-final-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;parent PASS출력0;실패경로/첫stack stderr;자원종료확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/worker-stdout-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/worker-stderr-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/server-stdout-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/server-stderr-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/capture-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N15",
+      "id": "A-N15/core-observations-denied",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;stdoutPASS0;가능한partial보존;close/cleanup완료",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N16",
+      "id": "A-N16/capture-missing",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;파일존재/bytes/hash/path정확확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N16",
+      "id": "A-N16/capture-hash-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;파일존재/bytes/hash/path정확확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N16",
+      "id": "A-N16/capture-outside-path",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;파일존재/bytes/hash/path정확확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N16",
+      "id": "A-N16/capture-broken-png",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;파일존재/bytes/hash/path정확확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N16",
+      "id": "A-N16/worker-final-absent",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;파일존재/bytes/hash/path정확확인",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N17",
+      "id": "A-N17/protected-preflight-health-exit-before-steps",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "parentnonzero;원stdout/stderr/childRC·미실행/partial미생성표시;finally가정0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N17",
+      "id": "A-N17/protected-preflight-chrome-exit-before-steps",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "parentnonzero;원stdout/stderr/childRC·미실행/partial미생성표시;finally가정0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N18",
+      "id": "A-N18/owned-stub-port-busy",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "포트점유시foreignHTTP0/server0/temp0;정상owned실행은오염0·execArgv자동전달0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N18",
+      "id": "A-N18/inherited-SHIFT-poison",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "포트점유시foreignHTTP0/server0/temp0;정상owned실행은오염0·execArgv자동전달0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N18",
+      "id": "A-N18/inherited-SHIFTMGMT-poison",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "포트점유시foreignHTTP0/server0/temp0;정상owned실행은오염0·execArgv자동전달0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N18",
+      "id": "A-N18/inherited-NODE_OPTIONS-poison",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "포트점유시foreignHTTP0/server0/temp0;정상owned실행은오염0·execArgv자동전달0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N18",
+      "id": "A-N18/execArgv-no-auto-forward",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "포트점유시foreignHTTP0/server0/temp0;정상owned실행은오염0·execArgv자동전달0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-live-admin",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-list-fixture",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-empty-fixture",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-filters",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-errors",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-stale-response",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-role-guard",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N19",
+      "id": "A-N19/normal-incomplete-session-expired",
+      "description": "",
+      "expected": "INCOMPLETE",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "RC1/FAIL_INCOMPLETE,missing/extra/duplicate및모든실제오류보존;case/전체PASS0",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N20",
+      "id": "A-N20/actual-raw-pointer-mismatch",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;record의자기PASS를믿지않음",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N20",
+      "id": "A-N20/caller-expected-field",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;record의자기PASS를믿지않음",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N20",
+      "id": "A-N20/caller-pass-field",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;record의자기PASS를믿지않음",
+      "status": "UNPROVEN"
+    },
+    {
+      "group": "A-N20",
+      "id": "A-N20/caller-tolerance-field",
+      "description": "",
+      "expected": "REJECT",
+      "callSite": "",
+      "injectionMethod": "",
+      "requiredObservation": "각nonzero;record의자기PASS를믿지않음",
+      "status": "UNPROVEN"
+    }
+  ]
+}

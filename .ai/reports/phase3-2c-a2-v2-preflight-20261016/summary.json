@@ -1,0 +1,94 @@
+{
+  "reportType": "READ_ONLY_PREFLIGHT_EVIDENCE",
+  "timestampKst": "2026-10-16 15:45:00 KST",
+  "overallVerdict": "PRECHECK_PASS",
+  "verdictBreakdown": {
+    "ENV": "PRECHECK_PASS",
+    "BASELINE": "PRECHECK_PASS",
+    "SCOPE": "PRECHECK_PASS",
+    "VECTORS": "UNPROVEN_BY_DESIGN"
+  },
+  "localPaths": {
+    "workspace": "C:\\Projects\\Active\\ShftMgmt_Renewal",
+    "legacyProduct": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "legacyPlanning": "C:\\Projects\\Active\\교대근무관리 시스템",
+    "legacySourceV34": "C:\\Projects\\Active\\ShiftMgmt_V3.4 (READ_ONLY)",
+    "tempEvidenceDir": "C:\\Projects\\Active\\_a2_v2_preflight_evidence"
+  },
+  "gitInfo": {
+    "ShftMgmt_Renewal": {
+      "head": "c21aa263a02e57d57949bafc5aefe06aab582acd",
+      "branch": "main",
+      "remote": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal.git",
+      "status": "CLEAN (0 modifications, 0 untracked)"
+    },
+    "ShiftMgmt_V4": {
+      "head": "160940f9aaeb6696538447f83b44658073e382f0",
+      "branch": "main",
+      "status": "4 modified, 8 untracked (exact A2 v1 unaccepted working state)"
+    },
+    "GitHubRemoteBranches": {
+      "main": "c21aa263a02e57d57949bafc5aefe06aab582acd",
+      "work/phase3-2c-a2-v1-not-accepted": "2f51c11710f46c75a49f5715cc68d4752b53f8ca",
+      "work/phase3-2c-a2-v2-design": "95633915f015bde554480267f114428582143aae"
+    }
+  },
+  "verifierFiles": [
+    {
+      "file": "scripts/ui-checks/access-history.mjs",
+      "bytes": 29351,
+      "maxBytes": 30000,
+      "headroom": 649,
+      "sha256": "2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7",
+      "matchBaseline": true
+    },
+    {
+      "file": "scripts/ui-checks/access-history-shared.mjs",
+      "bytes": 29973,
+      "maxBytes": 30000,
+      "headroom": 27,
+      "sha256": "C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4",
+      "matchBaseline": true,
+      "frozenChunkBytes": 6575,
+      "frozenChunkSha256": "502F44C39A12311B81F5661C00B6CB448AFCD6201399774D24909ADD0F6A7EB1",
+      "matchFrozenChunk": true
+    },
+    {
+      "file": "scripts/ui-checks/access-history-positive.mjs",
+      "bytes": 22530,
+      "maxBytes": 30000,
+      "headroom": 7470,
+      "sha256": "77B3131220F578897630A9717ACFFC83437189FF2B2D80C13F51528DEE0BFE01",
+      "matchBaseline": true
+    },
+    {
+      "file": "scripts/ui-checks/access-history-negative.mjs",
+      "bytes": 27848,
+      "maxBytes": 30000,
+      "headroom": 2152,
+      "sha256": "F49C87B2411664EFE6B2EF6C1DDE60010FB3AD8FCE710533A8C410A925A73BD6",
+      "matchBaseline": true
+    }
+  ],
+  "environment": {
+    "os": "Windows 11 (build 26200, AMD64)",
+    "node": "v24.13.0 (C:\\Program Files\\nodejs\\node.exe)",
+    "npm": "11.6.2 (C:\\Program Files\\nodejs\\npm)",
+    "python": "3.9.13 (C:\\Users\\pangyo\\anaconda3\\python.exe)",
+    "playwright": "1.63.0",
+    "chrome": "155.0.8059.41 (C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe)",
+    "port18741": "FREE"
+  },
+  "contracts": {
+    "BASELINE_PATH": "EXISTS_AND_MATCHES",
+    "GATE_PATH": "EXISTS_AND_MATCHES",
+    "CONTRACT_PATH": "EXISTS_AND_MATCHES",
+    "EXECUTION_PATH": "EXISTS_AND_MATCHES"
+  },
+  "negativeVectors": {
+    "groupCount": 20,
+    "vectorCount": 112,
+    "duplicateCount": 0,
+    "allStatus": "UNPROVEN"
+  }
+}
