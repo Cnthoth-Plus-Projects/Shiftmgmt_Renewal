@@ -175,21 +175,16 @@ export class NormalHeldRouteController {
 }
 
 export function parseNormalBridgeQuery(request) {
-  try {
-    const postData = typeof request.postData === "function" ? request.postData() : null;
-    if (!postData) return null;
-    const parsed = JSON.parse(postData);
-    if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === "object" && parsed[0] !== null) {
-      const q = parsed[0];
-      const allowed = ["dateFrom", "dateTo", "loginId", "actionType", "keyword"];
-      const res = {};
-      for (const k of allowed) {
-        if (typeof q[k] === "string") res[k] = q[k];
-      }
-      return res;
-    }
-  } catch {}
-  return null;
+  if (typeof request?.postDataJSON !== "function") throw new Error("[NormalQuery] postDataJSON unavailable");
+  const parsed = request.postDataJSON();
+  if (!Array.isArray(parsed) || parsed.length > 1) throw new Error("[NormalQuery] invalid RPC argument array");
+  if (parsed.length === 0) return null;
+  const q = parsed[0], allowed = ["dateFrom", "dateTo", "loginId", "actionType", "keyword"];
+  if (!q || typeof q !== "object" || Array.isArray(q)) throw new Error("[NormalQuery] invalid query object");
+  for (const key of Object.keys(q)) {
+    if (!allowed.includes(key) || typeof q[key] !== "string") throw new Error("[NormalQuery] invalid query field: " + key);
+  }
+  return { ...q };
 }
 
 export async function performNormalLogin(page, targetUrl, creds, nextPassword = null) {
