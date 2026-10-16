@@ -5,3 +5,4 @@ ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs text eol=lf
 ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs text eol=lf
 ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs text eol=lf
 .ai/work/phase3-2c-a2-v2/probes/i3_reader_smoke_v2.mjs text eol=lf
+.ai/work/phase3-2c-a2-v2/probes/i3b_partial_checkpoint_smoke.mjs text eol=lf
