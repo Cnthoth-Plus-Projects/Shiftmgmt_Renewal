@@ -40,62 +40,62 @@ export function validateProcessReceipt(r) {
 }
 
 export class NormalAssertionCollector {
-  constructor(caseName, contract, state = null) {
-    this.caseName = caseName;
-    this.contract = contract;
-    this.state = state || { diagnostics: [] };
-    this.seenIds = new Set();
+ constructor(caseName, contract, state = null) {
+  this.caseName = caseName;
+  this.contract = contract;
+  this.state = state || { diagnostics: [] };
+  this.seenIds = new Set();
+ }
+
+ expectEqual(...args) {
+  let id, pointer, actual, expected;
+  if (args.length === 3) {
+   id = args[0]; expected = args[1]; actual = args[2]; pointer = null;
+  } else {
+   id = args[0]; pointer = args[1]; actual = args[2]; expected = args[3];
   }
+  if (this.seenIds.has(id)) throw new Error(`[Assertion] Duplicate ID: ${id}`);
+  this.seenIds.add(id);
+  if (actual === undefined || expected === undefined) throw new Error(`[Assertion ${id}] undefined`);
+  if (typeof actual === "number" && !Number.isFinite(actual)) throw new Error(`[Assertion ${id}] actual non-finite`);
+  if (typeof expected === "number" && !Number.isFinite(expected)) throw new Error(`[Assertion ${id}] expected non-finite`);
 
-  expectEqual(...args) {
-    let id, pointer, actual, expected;
-    if (args.length === 3) {
-      id = args[0]; expected = args[1]; actual = args[2]; pointer = null;
-    } else {
-      id = args[0]; pointer = args[1]; actual = args[2]; expected = args[3];
-    }
-    if (this.seenIds.has(id)) throw new Error(`[Assertion] Duplicate ID: ${id}`);
-    this.seenIds.add(id);
-    if (actual === undefined || expected === undefined) throw new Error(`[Assertion ${id}] undefined`);
-    if (typeof actual === "number" && !Number.isFinite(actual)) throw new Error(`[Assertion ${id}] actual non-finite`);
-    if (typeof expected === "number" && !Number.isFinite(expected)) throw new Error(`[Assertion ${id}] expected non-finite`);
+  const diag = { id, pointer, operator: "equal", actual: structuredClone(actual), expected: structuredClone(expected), tolerance: null, trusted: false };
+  this.state.diagnostics.push(diag);
+  assert.deepStrictEqual(actual, expected);
+ }
 
-    const diag = { id, pointer, operator: "equal", actual: structuredClone(actual), expected: structuredClone(expected), tolerance: null, trusted: false };
-    this.state.diagnostics.push(diag);
-    assert.deepStrictEqual(actual, expected);
+ expectNear(...args) {
+  let id, pointer, actual, expected, tolerance;
+  if (args.length === 4) {
+   id = args[0]; expected = args[1]; actual = args[2]; tolerance = args[3]; pointer = null;
+  } else {
+   id = args[0]; pointer = args[1]; actual = args[2]; expected = args[3]; tolerance = args[4] ?? 1;
   }
-
-  expectNear(...args) {
-    let id, pointer, actual, expected, tolerance;
-    if (args.length === 4) {
-      id = args[0]; expected = args[1]; actual = args[2]; tolerance = args[3]; pointer = null;
-    } else {
-      id = args[0]; pointer = args[1]; actual = args[2]; expected = args[3]; tolerance = args[4] ?? 1;
-    }
-    if (this.seenIds.has(id)) throw new Error(`[Assertion] Duplicate ID: ${id}`);
-    this.seenIds.add(id);
-    if (typeof tolerance !== "number" || !Number.isFinite(tolerance) || tolerance < 0 || tolerance > 1) {
-      throw new Error(`[Assertion ${id}] invalid tolerance: ${tolerance}`);
-    }
-    if (typeof actual !== "number" || !Number.isFinite(actual)) throw new Error(`[Assertion ${id}] actual non-finite`);
-    if (typeof expected !== "number" || !Number.isFinite(expected)) throw new Error(`[Assertion ${id}] expected non-finite`);
-
-    const diag = { id, pointer, operator: "near", actual, expected, tolerance, trusted: false };
-    this.state.diagnostics.push(diag);
-    if (Math.abs(actual - expected) > tolerance) {
-      throw new Error(`[Assertion ${id}] diff ${Math.abs(actual - expected)} > tol ${tolerance}`);
-    }
+  if (this.seenIds.has(id)) throw new Error(`[Assertion] Duplicate ID: ${id}`);
+  this.seenIds.add(id);
+  if (typeof tolerance !== "number" || !Number.isFinite(tolerance) || tolerance < 0 || tolerance > 1) {
+   throw new Error(`[Assertion ${id}] invalid tolerance: ${tolerance}`);
   }
+  if (typeof actual !== "number" || !Number.isFinite(actual)) throw new Error(`[Assertion ${id}] actual non-finite`);
+  if (typeof expected !== "number" || !Number.isFinite(expected)) throw new Error(`[Assertion ${id}] expected non-finite`);
 
-  validateRequiredCoverage() {
-    const required = (this.contract?.fullUi?.rules?.[this.caseName] || []).map(r => r.id);
-    const ids = this.state.diagnostics.map(d => d.id);
-    return { requiredIds: required, missing: required.slice(), extra: ids, duplicates: [] };
+  const diag = { id, pointer, operator: "near", actual, expected, tolerance, trusted: false };
+  this.state.diagnostics.push(diag);
+  if (Math.abs(actual - expected) > tolerance) {
+   throw new Error(`[Assertion ${id}] diff ${Math.abs(actual - expected)} > tol ${tolerance}`);
   }
+ }
 
-  toJSON() {
-    return this.state.diagnostics;
-  }
+ validateRequiredCoverage() {
+  const required = (this.contract?.fullUi?.rules?.[this.caseName] || []).map(r => r.id);
+  const ids = this.state.diagnostics.map(d => d.id);
+  return { requiredIds: required, missing: required.slice(), extra: ids, duplicates: [] };
+ }
+
+ toJSON() {
+  return this.state.diagnostics;
+ }
 }
 
 export class NormalHeldRouteController {
