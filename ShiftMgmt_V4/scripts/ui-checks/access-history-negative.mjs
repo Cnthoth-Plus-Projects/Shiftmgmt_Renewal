@@ -316,7 +316,7 @@ export function computeExpectedErrors(raw) {
   for (let n = 0; n < requests.length; n++) {
     const r = requests[n];
     seen[r.id] = r;
-    if (r.status < 400 && caseName === "errors" && r.url.includes("/api/access-logs:list")) {
+    if (r.status > 0 && r.status < 400 && caseName === "errors" && r.url.includes("/api/access-logs:list")) {
       classified.push({ kind: "requests", index: n, requestId: r.id, reason: "DATABASE_ERROR_FIXTURE" });
     }
   }
