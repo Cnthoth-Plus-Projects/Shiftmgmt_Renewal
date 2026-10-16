@@ -99,79 +99,79 @@ export class NormalAssertionCollector {
 }
 
 export class NormalHeldRouteController {
-  constructor(state = null, timeoutMs = 15000) {
-    this.state = state;
-    this.timeoutMs = timeoutMs;
-    this.started = false;
-    this.completed = false;
-    this.settled = false;
-    this.action = null;
-    this.routeError = null;
-    this.releaseOptions = null;
-    this.route = null;
-    this._startPromise = new Promise(r => this._startResolve = r);
-    this._releasePromise = new Promise(r => this._releaseResolve = r);
-    this._completePromise = new Promise(r => this._completeResolve = r);
-  }
+ constructor(state = null, timeoutMs = 15000) {
+  this.state = state;
+  this.timeoutMs = timeoutMs;
+  this.started = false;
+  this.completed = false;
+  this.settled = false;
+  this.action = null;
+  this.routeError = null;
+  this.releaseOptions = null;
+  this.route = null;
+  this._startPromise = new Promise(r => this._startResolve = r);
+  this._releasePromise = new Promise(r => this._releaseResolve = r);
+  this._completePromise = new Promise(r => this._completeResolve = r);
+ }
 
-  async handle(route, defaultOptions = null) {
-    this.route = route;
-    this.started = true;
-    this._startResolve();
-    try {
-      await this._releasePromise;
-      if (this.action === "abort") {
-        await route.abort();
-      } else {
-        const opts = this.releaseOptions || defaultOptions || { status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: [] }) };
-        await route.fulfill(opts);
-      }
-      this.completed = true;
-      this.settled = true;
-      this._completeResolve({ ok: true });
-    } catch (err) {
-      this.routeError = err;
-      this.completed = false;
-      this.settled = true;
-      this._completeResolve({ ok: false, error: err });
-    }
+ async handle(route, defaultOptions = null) {
+  this.route = route;
+  this.started = true;
+  this._startResolve();
+  try {
+   await this._releasePromise;
+   if (this.action === "abort") {
+    await route.abort();
+   } else {
+    const opts = this.releaseOptions || defaultOptions || { status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: [] }) };
+    await route.fulfill(opts);
+   }
+   this.completed = true;
+   this.settled = true;
+   this._completeResolve({ ok: true });
+  } catch (err) {
+   this.routeError = err;
+   this.completed = false;
+   this.settled = true;
+   this._completeResolve({ ok: false, error: err });
   }
+ }
 
-  isStarted() { return this.started; }
-  isCompleted() { return this.completed; }
-  isSettled() { return this.settled; }
+ isStarted() { return this.started; }
+ isCompleted() { return this.completed; }
+ isSettled() { return this.settled; }
 
-  async waitForStart(timeoutMs = this.timeoutMs) {
-    let timerHandle = null;
-    try {
-      await Promise.race([this._startPromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs); })]);
-    } finally {
-      if (timerHandle !== null) clearTimeout(timerHandle);
-    }
+ async waitForStart(timeoutMs = this.timeoutMs) {
+  let timerHandle = null;
+  try {
+   await Promise.race([this._startPromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs); })]);
+  } finally {
+   if (timerHandle !== null) clearTimeout(timerHandle);
   }
+ }
 
-  release(fulfillOptions = null) {
-    if (this.action !== null) return;
-    this.action = "fulfill";
-    this.releaseOptions = fulfillOptions;
-    this._releaseResolve();
-  }
+ release(fulfillOptions = null) {
+  if (this.action !== null) return;
+  this.action = "fulfill";
+  this.releaseOptions = fulfillOptions;
+  this._releaseResolve();
+ }
 
-  abort() {
-    if (this.action !== null) return;
-    this.action = "abort";
-    this._releaseResolve();
-  }
+ abort() {
+  if (this.action !== null) return;
+  this.action = "abort";
+  this._releaseResolve();
+ }
 
-  async waitForComplete(timeoutMs = this.timeoutMs) {
-    let timerHandle = null;
-    try {
-      const res = await Promise.race([this._completePromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs); })]);
-      if (!res?.ok) throw (res?.error || new Error("waitForComplete failed"));
-    } finally {
-      if (timerHandle !== null) clearTimeout(timerHandle);
-    }
+ async waitForComplete(timeoutMs = this.timeoutMs) {
+  let timerHandle = null;
+  try {
+   const res = await Promise.race([this._completePromise, new Promise((_, rej) => { timerHandle = setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs); })]);
+   if (!res?.ok) throw (res?.error || new Error("waitForComplete failed"));
+  } finally {
+   if (timerHandle !== null) clearTimeout(timerHandle);
   }
+ }
 }
 
 export function parseNormalBridgeQuery(request) {
