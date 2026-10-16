@@ -212,103 +212,103 @@ export async function performNormalLogin(page, targetUrl, creds, nextPassword = 
 }
 
 export function installNormalObserver({ context, caseName, contract, execution, nonceSha256, chromeInfo }) {
-  const repoRoot = fs.realpathSync(context.repository);
-  const runDir = context.runDir;
-  const contextSha256 = sha(JSON.stringify(context));
-  let reqSeq = 0;
+ const repoRoot = fs.realpathSync(context.repository);
+ const runDir = context.runDir;
+ const contextSha256 = sha(JSON.stringify(context));
+ let reqSeq = 0;
 
-  const state = {
-    schema: "shiftmgmt.normal.raw.v1",
-    case: caseName,
-    runId: path.basename(runDir),
-    contractSha256: CONTRACT_SHA256,
-    executionSha256: EXECUTION_SHA256,
-    contextSha256,
-    workerPid: process.pid,
-    phase: "scenario",
-    steps: { enteredAtMs: null, completedAtMs: null },
-    environment: {
-      viewport: [1440, 900],
-      origin: "http://127.0.0.1:18741",
-      chrome: { path: chromeInfo?.path || "", version: chromeInfo?.version || "" },
-      fontsReadyAtMs: null,
-      routes: []
-    },
-    auth: [],
-    requests: [],
-    rawErrors: { console: [], pageerror: [], requestfailed: [], badResponses: [] },
-    expectedErrors: [],
-    diagnostics: [],
-    resources: {
-      context: { acquiredAtMs: null, closeAttemptAtMs: null, closedAtMs: null, error: null },
-      browser: { acquiredAtMs: null, closeAttemptAtMs: null, closedAtMs: null, error: null }
-    },
-    captures: [],
-    runner: {
-      kind: ["errors", "session-expired"].includes(caseName) ? "owned-negative" : "protected-ui-check",
-      script: "",
-      scriptSha256: "",
-      returned: false,
-      manifest: null
-    },
-    errors: { primary: null, cleanup: [], evidence: [], unexpected: [] },
+ const state = {
+  schema: "shiftmgmt.normal.raw.v1",
+  case: caseName,
+  runId: path.basename(runDir),
+  contractSha256: CONTRACT_SHA256,
+  executionSha256: EXECUTION_SHA256,
+  contextSha256,
+  workerPid: process.pid,
+  phase: "scenario",
+  steps: { enteredAtMs: null, completedAtMs: null },
+  environment: {
+   viewport: [1440, 900],
+   origin: "http://127.0.0.1:18741",
+   chrome: { path: chromeInfo?.path || "", version: chromeInfo?.version || "" },
+   fontsReadyAtMs: null,
+   routes: []
+  },
+  auth: [],
+  requests: [],
+  rawErrors: { console: [], pageerror: [], requestfailed: [], badResponses: [] },
+  expectedErrors: [],
+  diagnostics: [],
+  resources: {
+   context: { acquiredAtMs: null, closeAttemptAtMs: null, closedAtMs: null, error: null },
+   browser: { acquiredAtMs: null, closeAttemptAtMs: null, closedAtMs: null, error: null }
+  },
+  captures: [],
+  runner: {
+   kind: ["errors", "session-expired"].includes(caseName) ? "owned-negative" : "protected-ui-check",
+   script: "",
+   scriptSha256: "",
+   returned: false,
+   manifest: null
+  },
+  errors: { primary: null, cleanup: [], evidence: [], unexpected: [] },
 
-    setPhase(p) { this.phase = p; },
-    nextRequestId() { return ++reqSeq; },
+  setPhase(p) { this.phase = p; },
+  nextRequestId() { return ++reqSeq; },
 
-    recordAuth(entry) {
-      this.auth.push({
-        operation: entry.operation,
-        loginId: entry.loginId || null,
-        userId: entry.userId || null,
-        role: entry.role || null,
-        ok: !!entry.ok,
-        passwordChangeRequired: entry.passwordChangeRequired ?? null,
-        timeMs: entry.timeMs || Date.now()
-      });
-    },
+  recordAuth(entry) {
+   this.auth.push({
+    operation: entry.operation,
+    loginId: entry.loginId || null,
+    userId: entry.userId || null,
+    role: entry.role || null,
+    ok: !!entry.ok,
+    passwordChangeRequired: entry.passwordChangeRequired ?? null,
+    timeMs: entry.timeMs || Date.now()
+   });
+  },
 
-    async fetch(url, options = {}) {
-      const id = this.nextRequestId();
-      const startedAtMs = Date.now();
-      const method = options.method || "GET";
-      let status = 0, ok = false, errorCode = null, data = null;
-      try {
-        const res = await fetch(url, options);
-        status = res.status;
-        ok = res.ok;
-        try {
-          data = await res.json();
-          if (data && typeof data === "object") {
-            errorCode = data.errorCode || null;
-            if (data.ok !== undefined) ok = !!data.ok;
-          }
-        } catch {}
-        if (caseName === "role-guard" && errorCode === "AUTH_FORBIDDEN") {
-          status = 403;
-          ok = false;
-        }
-        if (status >= 400) {
-          state.rawErrors.badResponses.push({ requestId: id, status, url, method, errorCode, timeMs: Date.now() });
-        }
-        return { status, ok, data, errorCode };
-      } finally {
-        state.requests.push({
-          id, source: "node-fetch", method, url, phase: state.phase, startedAtMs, endedAtMs: Date.now(), status, ok, errorCode, query: null
-        });
-      }
-    },
-
-    updatePartial() {
-      try {
-        writeAtomic(path.join(runDir, "normal-partial.json"), this);
-      } catch (e) {
-        try { writeAtomic(path.join(runDir, "normal-partial.fallback.json"), this); } catch {}
-      }
+  async fetch(url, options = {}) {
+   const id = this.nextRequestId();
+   const startedAtMs = Date.now();
+   const method = options.method || "GET";
+   let status = 0, ok = false, errorCode = null, data = null;
+   try {
+    const res = await fetch(url, options);
+    status = res.status;
+    ok = res.ok;
+    try {
+     data = await res.json();
+     if (data && typeof data === "object") {
+      errorCode = data.errorCode || null;
+      if (data.ok !== undefined) ok = !!data.ok;
+     }
+    } catch {}
+    if (caseName === "role-guard" && errorCode === "AUTH_FORBIDDEN") {
+     status = 403;
+     ok = false;
     }
-  };
+    if (status >= 400) {
+     state.rawErrors.badResponses.push({ requestId: id, status, url, method, errorCode, timeMs: Date.now() });
+    }
+    return { status, ok, data, errorCode };
+   } finally {
+    state.requests.push({
+     id, source: "node-fetch", method, url, phase: state.phase, startedAtMs, endedAtMs: Date.now(), status, ok, errorCode, query: null
+    });
+   }
+  },
 
-  return state;
+  updatePartial() {
+   try {
+    writeAtomic(path.join(runDir, "normal-partial.json"), this);
+   } catch (e) {
+    try { writeAtomic(path.join(runDir, "normal-partial.fallback.json"), this); } catch {}
+   }
+  }
+ };
+
+ return state;
 }
 
 export function computeExpectedErrors(raw) {
@@ -419,274 +419,274 @@ export function readNormalWorkerEvidence({ caseName, context, execution, contrac
 
 // CLI 진입점: errors / session-expired 실행
 const isDirectCli = Boolean(process.argv[1]) && (() => {
-  try {
-    return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
-  } catch (err) {
-    process.stderr.write(`[오류] CLI 진입 경로 해석 실패: ${err.message}\n`);
-    process.exit(1);
-  }
+ try {
+  return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
+ } catch (err) {
+  process.stderr.write(`[오류] CLI 진입 경로 해석 실패: ${err.message}\n`);
+  process.exit(1);
+ }
 })();
 
 if (isDirectCli) {
-  const rawArgs = process.argv.slice(2);
-  if (rawArgs.length !== 1 || !rawArgs[0].startsWith("--case=")) {
-    process.stderr.write("[오류] 정확히 단일 --case=<케이스> 인수가 필요합니다.\n");
-    process.exit(1);
+ const rawArgs = process.argv.slice(2);
+ if (rawArgs.length !== 1 || !rawArgs[0].startsWith("--case=")) {
+  process.stderr.write("[오류] 정확히 단일 --case=<케이스> 인수가 필요합니다.\n");
+  process.exit(1);
+ }
+
+ const caseArg = rawArgs[0].slice(7);
+ if (!caseArg || caseArg.trim() !== caseArg) {
+  process.stderr.write("[오류] 유효하지 않은 케이스명입니다.\n");
+  process.exit(1);
+ }
+
+ let contract, execution;
+ try {
+  contract = loadContract();
+  execution = loadExecution();
+ } catch (e) {
+  process.stderr.write(JSON.stringify({ status: "FAIL", code: "A1_LOCK_MISMATCH", case: caseArg, error: { message: e.message } }) + "\n");
+  process.exit(1);
+ }
+
+ const NEGATIVE_CASES = new Set(contract.privateCases?.["access-history-negative.mjs"] || ["errors", "session-expired"]);
+ if (!NEGATIVE_CASES.has(caseArg)) {
+  process.stderr.write(`[오류] 등록되지 않은 케이스: '${caseArg}'\n`);
+  process.exit(1);
+ }
+
+ const { context, nonceSha256 } = await performWorkerIpcHandshake(caseArg, contract);
+ const targetUrl = context.url;
+ const bootstrapFile = context.bootstrapFile;
+ const credentials = JSON.parse(fs.readFileSync(bootstrapFile, "utf8"));
+ const adminCreds = { ...credentials.credentials["user-admin"] };
+
+ const repoRoot = fs.realpathSync(context.repository);
+ const { findChrome } = await import(pathToFileURL(path.join(repoRoot, "scripts/lib/find-chrome.mjs")).href);
+ const { waitForFontsReady } = await import(pathToFileURL(path.join(repoRoot, "scripts/lib/ui-check.mjs")).href);
+ const chrome = findChrome();
+
+ const state = installNormalObserver({ context, caseName: caseArg, contract, execution, nonceSha256, chromeInfo: chrome });
+ state.runner.script = fileURLToPath(import.meta.url);
+ state.runner.scriptSha256 = sha(fs.readFileSync(state.runner.script));
+ state.steps.enteredAtMs = Date.now();
+ state.updatePartial();
+
+ const collector = new NormalAssertionCollector(caseArg, contract, state);
+
+ state.resources.browser.acquiredAtMs = Date.now();
+ const browser = await chromium.launch({ executablePath: chrome.path, headless: true });
+ state.resources.context.acquiredAtMs = Date.now();
+ const bCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+ const page = await bCtx.newPage();
+
+ page.on("pageerror", e => state.rawErrors.pageerror.push({ message: e.message, timeMs: Date.now() }));
+ page.on("console", m => {
+  if (m.type() === "error") {
+   state.rawErrors.console.push({ text: m.text(), url: m.location()?.url || "", timeMs: Date.now() });
   }
+ });
+ page.on("requestfailed", r => state.rawErrors.requestfailed.push(`${r.url()} (${r.failure()?.errorText ?? "unknown"})`));
 
-  const caseArg = rawArgs[0].slice(7);
-  if (!caseArg || caseArg.trim() !== caseArg) {
-    process.stderr.write("[오류] 유효하지 않은 케이스명입니다.\n");
-    process.exit(1);
+ let reqMonotonic = 0;
+ page.on("request", req => {
+  const u = req.url();
+  if (u.startsWith("http://127.0.0.1:18741/api/")) {
+   const id = state.nextRequestId();
+   req._customId = id;
+   const isLogList = u.includes("/api/access-logs:list") && !["role-guard", "session-expired"].includes(caseArg);
+   state.requests.push({
+    id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: Date.now(), status: 0, ok: true, errorCode: null, query: isLogList ? parseNormalBridgeQuery(req) : null
+   });
   }
+ });
 
-  let contract, execution;
-  try {
-    contract = loadContract();
-    execution = loadExecution();
-  } catch (e) {
-    process.stderr.write(JSON.stringify({ status: "FAIL", code: "A1_LOCK_MISMATCH", case: caseArg, error: { message: e.message } }) + "\n");
-    process.exit(1);
-  }
-
-  const NEGATIVE_CASES = new Set(contract.privateCases?.["access-history-negative.mjs"] || ["errors", "session-expired"]);
-  if (!NEGATIVE_CASES.has(caseArg)) {
-    process.stderr.write(`[오류] 등록되지 않은 케이스: '${caseArg}'\n`);
-    process.exit(1);
-  }
-
-  const { context, nonceSha256 } = await performWorkerIpcHandshake(caseArg, contract);
-  const targetUrl = context.url;
-  const bootstrapFile = context.bootstrapFile;
-  const credentials = JSON.parse(fs.readFileSync(bootstrapFile, "utf8"));
-  const adminCreds = { ...credentials.credentials["user-admin"] };
-
-  const repoRoot = fs.realpathSync(context.repository);
-  const { findChrome } = await import(pathToFileURL(path.join(repoRoot, "scripts/lib/find-chrome.mjs")).href);
-  const { waitForFontsReady } = await import(pathToFileURL(path.join(repoRoot, "scripts/lib/ui-check.mjs")).href);
-  const chrome = findChrome();
-
-  const state = installNormalObserver({ context, caseName: caseArg, contract, execution, nonceSha256, chromeInfo: chrome });
-  state.runner.script = fileURLToPath(import.meta.url);
-  state.runner.scriptSha256 = sha(fs.readFileSync(state.runner.script));
-  state.steps.enteredAtMs = Date.now();
-  state.updatePartial();
-
-  const collector = new NormalAssertionCollector(caseArg, contract, state);
-
-  state.resources.browser.acquiredAtMs = Date.now();
-  const browser = await chromium.launch({ executablePath: chrome.path, headless: true });
-  state.resources.context.acquiredAtMs = Date.now();
-  const bCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
-  const page = await bCtx.newPage();
-
-  page.on("pageerror", e => state.rawErrors.pageerror.push({ message: e.message, timeMs: Date.now() }));
-  page.on("console", m => {
-    if (m.type() === "error") {
-      state.rawErrors.console.push({ text: m.text(), url: m.location()?.url || "", timeMs: Date.now() });
-    }
-  });
-  page.on("requestfailed", r => state.rawErrors.requestfailed.push(`${r.url()} (${r.failure()?.errorText ?? "unknown"})`));
-
-  let reqMonotonic = 0;
-  page.on("request", req => {
-    const u = req.url();
-    if (u.startsWith("http://127.0.0.1:18741/api/")) {
-      const id = state.nextRequestId();
-      req._customId = id;
-      const isLogList = u.includes("/api/access-logs:list") && !["role-guard", "session-expired"].includes(caseArg);
-      state.requests.push({
-        id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: Date.now(), status: 0, ok: true, errorCode: null, query: isLogList ? parseNormalBridgeQuery(req) : null
-      });
-    }
-  });
-
-  page.on("response", async res => {
-    const u = res.url();
-    if (u.startsWith("http://127.0.0.1:18741/api/")) {
-      const match = state.requests.find(r => r.url === u && r.status === 0);
-      if (match) {
-        match.endedAtMs = Date.now();
-        match.status = res.status();
-        match.ok = res.ok();
-        try {
-          const body = await res.json();
-          if (body && typeof body === "object") {
-            if ("ok" in body) match.ok = !!body.ok;
-            match.errorCode = body.errorCode || null;
-            if (u.includes("/api/auth:")) {
-              const op = u.split("/api/auth:")[1];
-              if (["sign-in", "change-password", "get-session", "sign-out"].includes(op)) {
-                const d = body.data;
-                const prev = state.auth.at(-1);
-                if (op === "sign-out") {
-                  state.recordAuth({
-                    operation: op,
-                    loginId: prev?.loginId || null,
-                    userId: prev?.userId || null,
-                    role: prev?.role || null,
-                    ok: res.ok(),
-                    passwordChangeRequired: false,
-                    timeMs: match.endedAtMs
-                  });
-                } else if (d && (d.userId || d.user?.id)) {
-                  state.recordAuth({
-                    operation: op,
-                    loginId: d.loginId || d.user?.loginId || prev?.loginId || null,
-                    userId: d.userId || d.user?.id || prev?.userId || null,
-                    role: d.role || d.user?.role || prev?.role || null,
-                    ok: res.ok(),
-                    passwordChangeRequired: d.passwordChangeRequired ?? (d.user?.passwordChangeRequired ?? null),
-                    timeMs: match.endedAtMs
-                  });
-                }
-              }
-            }
-          }
-        } catch {}
-        if (res.status() >= 400) {
-          state.rawErrors.badResponses.push({
-            requestId: match.id, status: res.status(), url: u, method: match.method, errorCode: match.errorCode, timeMs: Date.now()
-          });
+ page.on("response", async res => {
+  const u = res.url();
+  if (u.startsWith("http://127.0.0.1:18741/api/")) {
+   const match = state.requests.find(r => r.url === u && r.status === 0);
+   if (match) {
+    match.endedAtMs = Date.now();
+    match.status = res.status();
+    match.ok = res.ok();
+    try {
+     const body = await res.json();
+     if (body && typeof body === "object") {
+      if ("ok" in body) match.ok = !!body.ok;
+      match.errorCode = body.errorCode || null;
+      if (u.includes("/api/auth:")) {
+       const op = u.split("/api/auth:")[1];
+       if (["sign-in", "change-password", "get-session", "sign-out"].includes(op)) {
+        const d = body.data;
+        const prev = state.auth.at(-1);
+        if (op === "sign-out") {
+         state.recordAuth({
+          operation: op,
+          loginId: prev?.loginId || null,
+          userId: prev?.userId || null,
+          role: prev?.role || null,
+          ok: res.ok(),
+          passwordChangeRequired: false,
+          timeMs: match.endedAtMs
+         });
+        } else if (d && (d.userId || d.user?.id)) {
+         state.recordAuth({
+          operation: op,
+          loginId: d.loginId || d.user?.loginId || prev?.loginId || null,
+          userId: d.userId || d.user?.id || prev?.userId || null,
+          role: d.role || d.user?.role || prev?.role || null,
+          ok: res.ok(),
+          passwordChangeRequired: d.passwordChangeRequired ?? (d.user?.passwordChangeRequired ?? null),
+          timeMs: match.endedAtMs
+         });
         }
+       }
       }
+     }
+    } catch {}
+    if (res.status() >= 400) {
+     state.rawErrors.badResponses.push({
+      requestId: match.id, status: res.status(), url: u, method: match.method, errorCode: match.errorCode, timeMs: Date.now()
+     });
     }
-  });
-
-  try {
-    if (caseArg === "errors") {
-      await performNormalLogin(page, targetUrl, adminCreds);
-
-      const held = new NormalHeldRouteController(state);
-      state.environment.routes.push({ url: "**/api/access-logs:list", timeMs: Date.now() });
-
-      let listCallCount = 0;
-      let primaryErr = null;
-      try {
-        await page.route("**/api/access-logs:list", async (r) => {
-          listCallCount++;
-          if (listCallCount === 1) {
-            await r.fulfill({
-              status: 200, contentType: "application/json",
-              body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-            });
-          } else {
-            await held.handle(r, {
-              status: 200, contentType: "application/json",
-              body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-            });
-          }
-        });
-
-        await page.getByRole("button", { name: "활동 이력", exact: true }).click();
-        await page.locator(".access-history-alert-container").waitFor();
-
-        const bannerCount = await page.locator(".access-history-alert-container .alert-danger, .access-history-alert-container [role='alert']").count();
-        collector.expectEqual("errors-alert-banner-rendered", "/errors/banner", bannerCount > 0, true);
-
-        const g2Count = await page.locator("#state-g2-empty").count();
-        collector.expectEqual("errors-g2-not-rendered", "/errors/g2", g2Count, 0);
-
-        const retryBtn = page.locator("#btn-retry-logs, #btn-retry-load-logs, .access-history-alert-container button").first();
-        await retryBtn.click();
-        await held.waitForStart();
-
-        const isDisabled = await retryBtn.evaluate(b => b.disabled).catch(() => true);
-        collector.expectEqual("errors-retry-native-disabled-true", "/errors/retryDisabled", isDisabled, true);
-
-        const beforeReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
-        await page.keyboard.press("Enter");
-        await page.keyboard.press("Space");
-        try { await retryBtn.evaluate(b => b.click()); } catch {}
-        const afterReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
-
-        collector.expectEqual("errors-retry-duplicate-clicks-single-request", "/errors/retryCount", afterReqCount - beforeReqCount <= 0, true);
-
-        held.release({
-          status: 200, contentType: "application/json",
-          body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-        });
-        await held.waitForComplete();
-
-        await waitForFontsReady(page, 15000);
-        state.environment.fontsReadyAtMs = Date.now();
-
-        const capPath = path.join(context.runDir, "normal-capture-errors-alert.png");
-        await page.screenshot({ path: capPath, fullPage: true });
-        const capBuf = fs.readFileSync(capPath);
-        state.captures.push({
-          id: "normal-capture-errors-alert", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
-        });
-      } catch (err) {
-        primaryErr = err;
-      } finally {
-        const cleanupErrors = [];
-        try {
-          if (held.isStarted() && !held.isSettled()) {
-            if (held.action === null) held.abort();
-            await held.waitForComplete(5000);
-          }
-        } catch (err) { cleanupErrors.push(err); }
-        if(held.routeError&&!cleanupErrors.includes(held.routeError))cleanupErrors.push(held.routeError);
-        try { await page.unroute("**/api/access-logs:list"); } catch (err) { cleanupErrors.push(err); }
-        if (cleanupErrors.length > 0 && state.errors) {
-          if (!Array.isArray(state.errors.cleanup)) state.errors.cleanup = [];
-          for (const ce of cleanupErrors) state.errors.cleanup.push({ message: ce.message, stack: ce.stack });
-        }
-        if (primaryErr) throw primaryErr;
-        if (cleanupErrors.length > 0) throw cleanupErrors[0];
-      }
-    } else if (caseArg === "session-expired") {
-      await performNormalLogin(page, targetUrl, adminCreds);
-
-      await page.getByRole("button", { name: "활동 이력", exact: true }).click();
-      await page.locator("#table-access-logs").waitFor();
-
-      const cookies = await bCtx.cookies();
-      const cookieHeader = cookies.map(c => `${c.name}=${c.value}`).join("; ");
-
-      const signOutRes = await state.fetch(`${targetUrl}api/auth:sign-out`, {
-        method: "POST",
-        headers: { Cookie: cookieHeader, "Content-Type": "application/json", Origin: targetUrl.slice(0, -1) },
-        body: JSON.stringify([])
-      });
-      collector.expectEqual("session-server-signout-ok", "/session/signOutOk", signOutRes.ok, true);
-      state.recordAuth({ operation: "sign-out", loginId: adminCreds.loginId, userId: "user-admin", role: "admin", ok: true, timeMs: Date.now() });
-
-      state.setPhase("session-refresh");
-      await page.locator("#btn-refresh-logs").click();
-      await page.locator("#login-id").waitFor({ timeout: 15000 });
-
-      const count401 = state.requests.filter(r => r.phase === "session-refresh" && r.status === 401 && r.url.includes("api/access-logs:list")).length;
-      collector.expectEqual("session-actual-401-count-exact-1", "/session/count401", count401, 1);
-      collector.expectEqual("session-login-screen-rendered", "/session/loginRendered", await page.locator("#login-id").count(), 1);
-      collector.expectEqual("session-table-dom-cleared", "/session/tableCleared", await page.locator("#table-access-logs").count(), 0);
-
-      state.setPhase("session-no-cookie");
-      const noCookieRes = await state.fetch(`${targetUrl}api/access-logs:list`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Origin: targetUrl.slice(0, -1) },
-        body: JSON.stringify([{}])
-      });
-      collector.expectEqual("session-no-cookie-rejected-401", "/session/noCookie401", noCookieRes.status === 401 && noCookieRes.errorCode === "AUTH_SESSION_REQUIRED", true);
-
-      await waitForFontsReady(page, 15000);
-      state.environment.fontsReadyAtMs = Date.now();
-
-      const capPath = path.join(context.runDir, "normal-capture-session-expired-login.png");
-      await page.screenshot({ path: capPath, fullPage: true });
-      const capBuf = fs.readFileSync(capPath);
-      state.captures.push({
-        id: "normal-capture-session-expired-login", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
-      });
-    }
-
-    state.runner.returned = true;
-  } finally {
-    state.resources.context.closeAttemptAtMs = Date.now();
-    try { await bCtx.close(); state.resources.context.closedAtMs = Date.now(); } catch (e) { state.resources.context.error = e.message; }
-    state.resources.browser.closeAttemptAtMs = Date.now();
-    try { await browser.close(); state.resources.browser.closedAtMs = Date.now(); } catch (e) { state.resources.browser.error = e.message; }
+   }
   }
-  publishNormalEvidence(state);
+ });
+
+ try {
+  if (caseArg === "errors") {
+   await performNormalLogin(page, targetUrl, adminCreds);
+
+   const held = new NormalHeldRouteController(state);
+   state.environment.routes.push({ url: "**/api/access-logs:list", timeMs: Date.now() });
+
+   let listCallCount = 0;
+   let primaryErr = null;
+   try {
+    await page.route("**/api/access-logs:list", async (r) => {
+     listCallCount++;
+     if (listCallCount === 1) {
+      await r.fulfill({
+       status: 200, contentType: "application/json",
+       body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+      });
+     } else {
+      await held.handle(r, {
+       status: 200, contentType: "application/json",
+       body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+      });
+     }
+    });
+
+    await page.getByRole("button", { name: "활동 이력", exact: true }).click();
+    await page.locator(".access-history-alert-container").waitFor();
+
+    const bannerCount = await page.locator(".access-history-alert-container .alert-danger, .access-history-alert-container [role='alert']").count();
+    collector.expectEqual("errors-alert-banner-rendered", "/errors/banner", bannerCount > 0, true);
+
+    const g2Count = await page.locator("#state-g2-empty").count();
+    collector.expectEqual("errors-g2-not-rendered", "/errors/g2", g2Count, 0);
+
+    const retryBtn = page.locator("#btn-retry-logs, #btn-retry-load-logs, .access-history-alert-container button").first();
+    await retryBtn.click();
+    await held.waitForStart();
+
+    const isDisabled = await retryBtn.evaluate(b => b.disabled).catch(() => true);
+    collector.expectEqual("errors-retry-native-disabled-true", "/errors/retryDisabled", isDisabled, true);
+
+    const beforeReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("Space");
+    try { await retryBtn.evaluate(b => b.click()); } catch {}
+    const afterReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
+
+    collector.expectEqual("errors-retry-duplicate-clicks-single-request", "/errors/retryCount", afterReqCount - beforeReqCount <= 0, true);
+
+    held.release({
+     status: 200, contentType: "application/json",
+     body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+    });
+    await held.waitForComplete();
+
+    await waitForFontsReady(page, 15000);
+    state.environment.fontsReadyAtMs = Date.now();
+
+    const capPath = path.join(context.runDir, "normal-capture-errors-alert.png");
+    await page.screenshot({ path: capPath, fullPage: true });
+    const capBuf = fs.readFileSync(capPath);
+    state.captures.push({
+     id: "normal-capture-errors-alert", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
+    });
+   } catch (err) {
+    primaryErr = err;
+   } finally {
+    const cleanupErrors = [];
+    try {
+     if (held.isStarted() && !held.isSettled()) {
+      if (held.action === null) held.abort();
+      await held.waitForComplete(5000);
+     }
+    } catch (err) { cleanupErrors.push(err); }
+    if(held.routeError&&!cleanupErrors.includes(held.routeError))cleanupErrors.push(held.routeError);
+    try { await page.unroute("**/api/access-logs:list"); } catch (err) { cleanupErrors.push(err); }
+    if (cleanupErrors.length > 0 && state.errors) {
+     if (!Array.isArray(state.errors.cleanup)) state.errors.cleanup = [];
+     for (const ce of cleanupErrors) state.errors.cleanup.push({ message: ce.message, stack: ce.stack });
+    }
+    if (primaryErr) throw primaryErr;
+    if (cleanupErrors.length > 0) throw cleanupErrors[0];
+   }
+  } else if (caseArg === "session-expired") {
+   await performNormalLogin(page, targetUrl, adminCreds);
+
+   await page.getByRole("button", { name: "활동 이력", exact: true }).click();
+   await page.locator("#table-access-logs").waitFor();
+
+   const cookies = await bCtx.cookies();
+   const cookieHeader = cookies.map(c => `${c.name}=${c.value}`).join("; ");
+
+   const signOutRes = await state.fetch(`${targetUrl}api/auth:sign-out`, {
+    method: "POST",
+    headers: { Cookie: cookieHeader, "Content-Type": "application/json", Origin: targetUrl.slice(0, -1) },
+    body: JSON.stringify([])
+   });
+   collector.expectEqual("session-server-signout-ok", "/session/signOutOk", signOutRes.ok, true);
+   state.recordAuth({ operation: "sign-out", loginId: adminCreds.loginId, userId: "user-admin", role: "admin", ok: true, timeMs: Date.now() });
+
+   state.setPhase("session-refresh");
+   await page.locator("#btn-refresh-logs").click();
+   await page.locator("#login-id").waitFor({ timeout: 15000 });
+
+   const count401 = state.requests.filter(r => r.phase === "session-refresh" && r.status === 401 && r.url.includes("api/access-logs:list")).length;
+   collector.expectEqual("session-actual-401-count-exact-1", "/session/count401", count401, 1);
+   collector.expectEqual("session-login-screen-rendered", "/session/loginRendered", await page.locator("#login-id").count(), 1);
+   collector.expectEqual("session-table-dom-cleared", "/session/tableCleared", await page.locator("#table-access-logs").count(), 0);
+
+   state.setPhase("session-no-cookie");
+   const noCookieRes = await state.fetch(`${targetUrl}api/access-logs:list`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: targetUrl.slice(0, -1) },
+    body: JSON.stringify([{}])
+   });
+   collector.expectEqual("session-no-cookie-rejected-401", "/session/noCookie401", noCookieRes.status === 401 && noCookieRes.errorCode === "AUTH_SESSION_REQUIRED", true);
+
+   await waitForFontsReady(page, 15000);
+   state.environment.fontsReadyAtMs = Date.now();
+
+   const capPath = path.join(context.runDir, "normal-capture-session-expired-login.png");
+   await page.screenshot({ path: capPath, fullPage: true });
+   const capBuf = fs.readFileSync(capPath);
+   state.captures.push({
+    id: "normal-capture-session-expired-login", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
+   });
+  }
+
+  state.runner.returned = true;
+ } finally {
+  state.resources.context.closeAttemptAtMs = Date.now();
+  try { await bCtx.close(); state.resources.context.closedAtMs = Date.now(); } catch (e) { state.resources.context.error = e.message; }
+  state.resources.browser.closeAttemptAtMs = Date.now();
+  try { await browser.close(); state.resources.browser.closedAtMs = Date.now(); } catch (e) { state.resources.browser.error = e.message; }
+ }
+ publishNormalEvidence(state);
 }
