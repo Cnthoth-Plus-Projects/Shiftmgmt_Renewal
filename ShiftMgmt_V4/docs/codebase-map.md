@@ -46,6 +46,10 @@
 | `scripts/ui-checks/ready.mjs` | 실제 준비 화면 접속·상태 확인→캡처→재로드→재확인·캡처 시나리오 |
 | `scripts/ui-checks/login.mjs` | 실제 Chrome 기반 로그인 흐름 및 L1~L5 검증 시나리오 스크립트 |
 | `scripts/ui-checks/shell.mjs` | 실제 Chrome 기반 역할별 셸 메뉴, 사이드바 접힘, 상태줄 검증 시나리오 스크립트 |
+| `scripts/ui-checks/access-history.mjs` | 실제 Chrome 기반 활동 이력 화면 G1(목록)·G2(빈 상태) 및 필터·권한 검증 시나리오 스크립트 |
+| `scripts/ui-checks/access-history-shared.mjs` | 활동 이력 검증 공통 모듈: 엄격 비교기, 고정 커버리지 계약, 도메인 정본 픽스처 및 Held 생명주기 관리 |
+| `scripts/ui-checks/access-history-positive.mjs` | 실제 Chrome 및 runScreenCheck 기반 활동 이력 정상 6개 케이스(목록·빈상태·필터·경합·권한가드 등) 실행 스크립트 |
+| `scripts/ui-checks/access-history-negative.mjs` | 실제 Chrome 기반 활동 이력 예상 오류 2개 케이스(조회 실패·세션 만료) 정밀 드라이버 스크립트 |
 
 ## 서버 (`src/main`)
 
@@ -113,6 +117,10 @@
 | `src/web/screens/login.ts` | 로그인 L1~L5 화면 렌더링, 폼 입력, 규칙 검증, 계정복구 처리 |
 | `src/web/screens/shell.ts` | 역할별 앱 셸, 메뉴 네비게이션, 사이드바 토글, 로그아웃 화면 |
 | `src/web/screens/status-bar.ts` | DB·동기화·대기파일·감시·업데이트 실제 API 상태줄 컴포넌트 |
+| `src/web/access-history.css` | 활동 이력 화면 전용 스타일시트(필터·테이블·빈 상태) |
+| `src/web/screens/access-history.ts` | 관리자 활동 이력 화면 렌더링, 필터링, G1 목록 및 G2 빈 상태 처리 |
+| `src/web/screens/access-history-model.ts` | 활동 이력 날짜 범위 검증, 배지 톤 매핑, 쿼리 구성 순수 모델 함수 |
+| `src/web/screens/access-history-model.test.ts` | 활동 이력 모델 날짜·윤년·정렬·배지 단위 시험 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 

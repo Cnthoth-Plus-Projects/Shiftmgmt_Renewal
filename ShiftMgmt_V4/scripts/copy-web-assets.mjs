@@ -45,6 +45,7 @@ copyInto(path.join(root, "src", "web", "styles.css"), webOut, "화면 CSS");
 copyInto(path.join(root, "src", "web", "login.css"), webOut, "로그인 CSS");
 copyInto(path.join(root, "src", "web", "shell.css"), webOut, "셸 CSS");
 copyInto(path.join(root, "src", "web", "home.css"), webOut, "홈 CSS");
+copyInto(path.join(root, "src", "web", "access-history.css"), webOut, "활동 이력 CSS");
 
 // 2) Pretendard — woff 항목을 뺀 생성본 + woff2 9개
 const pretendardDir = path.join(root, "node_modules", "pretendard", "dist", "web", "static");
