@@ -106,8 +106,15 @@ if (isDirectCli) {
           const id = state.nextRequestId();
           const isLogList = u.includes("/api/access-logs:list") && !["role-guard", "session-expired"].includes(caseArg);
           const observed = {
-            id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: null, status: 0, ok: false, errorCode: null, query: isLogList ? parseBridgeQuery(req) : null
+            id, source: "page", method: req.method(), url: u, phase: state.phase, startedAtMs: Date.now(), endedAtMs: null, status: 0, ok: false, errorCode: null, query: null
           };
+          if (isLogList) {
+            try { observed.query = parseBridgeQuery(req); }
+            catch (err) {
+              state.errors.unexpected.push({ code: "A2_BRIDGE_QUERY_INVALID", requestId: id,
+                errorName: err instanceof Error ? err.name : "Unknown", timeMs: Date.now() });
+            }
+          }
           state.requests.push(observed);
           requestByIdentity.set(req, observed);
         }
@@ -122,7 +129,7 @@ if (isDirectCli) {
           match.status = res.status();
           match.ok = res.ok();
           try {
-            await res.finished();
+            const responseFinishError = await res.finished(); if (responseFinishError) throw responseFinishError;
             const body = await res.json();
             match.endedAtMs ??= Date.now();
             if (body && typeof body === "object") {
@@ -495,6 +502,7 @@ if (isDirectCli) {
         state.errors.unexpected.push({ code: "A2_RESPONSE_DRAIN_TIMEOUT", timeMs: Date.now() });
         throw new Error("[A2] HTTP observations did not settle");
       }
+      if (state.errors.unexpected.length) throw new Error("[A2] Unhandled response or query error");
     },
   });
   } finally { state.updatePartial(); }
