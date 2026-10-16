@@ -105,55 +105,88 @@ if (isDirectCli) {
         }
       });
 
-      page.on("response", async res => {
-        const u = res.url();
-        if (u.startsWith("http://127.0.0.1:18741/api/")) {
-          const match = requestByIdentity.get(res.request());
-          if (match) {
-            match.endedAtMs = Date.now();
-            match.status = res.status();
-            match.ok = res.ok();
-            try {
-              const body = await res.json();
-              if (body && typeof body === "object") {
-                match.errorCode = body.errorCode || null;
-                if (u.includes("/api/auth:")) {
-                  const op = u.split("/api/auth:")[1];
-                  if (["sign-in", "change-password", "get-session", "sign-out"].includes(op)) {
-                    const d = body.data;
-                    const prev = state.auth.at(-1);
-                    if (op === "sign-out") {
-                      state.recordAuth({
-                        operation: op,
-                        loginId: prev?.loginId || null,
-                        userId: prev?.userId || null,
-                        role: prev?.role || null,
-                        ok: res.ok(),
-                        passwordChangeRequired: false,
-                        timeMs: match.endedAtMs
-                      });
-                    } else if (d && (d.userId || d.user?.id)) {
-                      state.recordAuth({
-                        operation: op,
-                        loginId: d.loginId || d.user?.loginId || prev?.loginId || null,
-                        userId: d.userId || d.user?.id || prev?.userId || null,
-                        role: d.role || d.user?.role || prev?.role || null,
-                        ok: res.ok(),
-                        passwordChangeRequired: d.passwordChangeRequired ?? (d.user?.passwordChangeRequired ?? null),
-                        timeMs: match.endedAtMs
-                      });
-                    }
+      const responseJobs = new Set();
+      page.on("response", res => {
+        const match = requestByIdentity.get(res.request());
+        if (!match) return;
+        const task = (async () => {
+          const u = match.url;
+          match.status = res.status();
+          match.ok = res.ok();
+          try {
+            await res.finished();
+            const body = await res.json();
+            match.endedAtMs ??= Date.now();
+            if (body && typeof body === "object") {
+              match.errorCode = body.errorCode || null;
+              if (u.includes("/api/auth:")) {
+                const op = u.split("/api/auth:")[1];
+                if (["sign-in", "change-password", "get-session", "sign-out"].includes(op)) {
+                  const d = body.data;
+                  const prev = state.auth.at(-1);
+                  if (op === "sign-out") {
+                    state.recordAuth({
+                      operation: op,
+                      loginId: prev?.loginId || null,
+                      userId: prev?.userId || null,
+                      role: prev?.role || null,
+                      ok: res.ok(),
+                      passwordChangeRequired: false,
+                      timeMs: match.endedAtMs
+                    });
+                  } else if (d && (d.userId || d.user?.id)) {
+                    state.recordAuth({
+                      operation: op,
+                      loginId: d.loginId || d.user?.loginId || prev?.loginId || null,
+                      userId: d.userId || d.user?.id || prev?.userId || null,
+                      role: d.role || d.user?.role || prev?.role || null,
+                      ok: res.ok(),
+                      passwordChangeRequired: d.passwordChangeRequired ?? (d.user?.passwordChangeRequired ?? null),
+                      timeMs: match.endedAtMs
+                    });
                   }
                 }
               }
-            } catch {}
-            if (res.status() >= 400) {
+            }
+          } catch (err) {
+            match.endedAtMs ??= Date.now();
+            match.ok = false;
+            match.errorCode ??= "A2_RESPONSE_BODY_FAILURE";
+            state.errors.unexpected.push({
+              code: "A2_RESPONSE_BODY_FAILURE", requestId: match.id,
+              errorName: err instanceof Error ? err.name : "Unknown", timeMs: match.endedAtMs
+            });
+          } finally {
+            match.endedAtMs ??= Date.now();
+            if (match.status >= 400) {
               state.rawErrors.badResponses.push({
-                requestId: match.id, status: res.status(), url: u, method: match.method, errorCode: match.errorCode, timeMs: Date.now()
+                requestId: match.id, status: match.status, url: u,
+                method: match.method, errorCode: match.errorCode, timeMs: match.endedAtMs
               });
             }
           }
-        }
+        })();
+        responseJobs.add(task);
+        void task.then(
+          () => responseJobs.delete(task),
+          err => {
+            responseJobs.delete(task);
+            state.errors.unexpected.push({
+              code: "A2_RESPONSE_HANDLER_FAILURE", requestId: match.id,
+              errorName: err instanceof Error ? err.name : "Unknown", timeMs: Date.now()
+            });
+          }
+        );
+      });
+      page.on("requestfailed", req => {
+        const match = requestByIdentity.get(req);
+        if (!match) return;
+        match.endedAtMs ??= Date.now();
+        match.ok = false;
+        match.errorCode ??= "A2_REQUEST_FAILED";
+        state.rawErrors.requestfailed.push({
+          requestId: match.id, code: "A2_REQUEST_FAILED", timeMs: match.endedAtMs
+        });
       });
 
       page.on("pageerror", e => state.rawErrors.pageerror.push({ message: e.message, timeMs: Date.now() }));
@@ -447,8 +480,12 @@ if (isDirectCli) {
         await capture("role-guard-operator-planner");
       }
       const drainLimit = Date.now() + 5000;
-      while (state.requests.some(r => r.status === 0) && Date.now() < drainLimit) {
+      while ((state.requests.some(r => r.status === 0 && r.endedAtMs === null) || responseJobs.size > 0) && Date.now() < drainLimit) {
         await page.waitForTimeout(100);
+      }
+      if (responseJobs.size > 0 || state.requests.some(r => r.status === 0 && r.endedAtMs === null)) {
+        state.errors.unexpected.push({ code: "A2_RESPONSE_DRAIN_TIMEOUT", timeMs: Date.now() });
+        throw new Error("[A2] HTTP observations did not settle");
       }
     },
   });
