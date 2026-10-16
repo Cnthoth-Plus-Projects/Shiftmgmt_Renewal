@@ -84,6 +84,12 @@ if (isDirectCli) {
     id: `access-history-${caseArg}`,
     url: targetUrl,
     steps: async ({ page, capture, waitForFontsReady }) => {
+      const vp = page.viewportSize();
+      if (!vp || !Number.isFinite(vp.width) || !Number.isFinite(vp.height)) {
+        throw new Error("[A2] Playwright viewport not measurable");
+      }
+      state.environment.viewport = [vp.width, vp.height];
+      state.environment.origin = new URL(page.url()).origin;
       // 페이지 request/response/console 이벤트 관측 바인딩
       const requestByIdentity = new WeakMap();
       page.on("request", req => {
