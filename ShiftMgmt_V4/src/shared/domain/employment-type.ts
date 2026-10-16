@@ -1,0 +1,82 @@
+const importedEmploymentTypeKeys = [
+  "고용형태",
+  "고용형태명",
+  "고용구분",
+  "고용구분명",
+  "직원구분",
+  "직원구분명",
+  "사원구분",
+  "사원구분명",
+  "근로형태",
+  "근로형태명"
+] as const;
+
+export const normalizeEmploymentTypeLabel = (value: string | null | undefined) => {
+  const normalized = value?.trim() ?? "";
+
+  if (!normalized) {
+    return "정규";
+  }
+
+  if (normalized.toUpperCase().includes("BP")) {
+    return "BP";
+  }
+
+  if (
+    normalized.includes("계약") ||
+    normalized.includes("파견") ||
+    normalized.includes("용역")
+  ) {
+    return "계약";
+  }
+
+  if (normalized.includes("정규")) {
+    return "정규";
+  }
+
+  return "정규";
+};
+
+export const isBpEmploymentType = (value: string | null | undefined) =>
+  normalizeEmploymentTypeLabel(value) === "BP";
+
+export const formatEmployeeDisplayName = (input: {
+  name?: string | null;
+  employmentType?: string | null;
+}) => {
+  const normalizedName = input.name?.trim() ?? "";
+
+  if (!normalizedName) {
+    return "";
+  }
+
+  return isBpEmploymentType(input.employmentType) ? `BP(${normalizedName})` : normalizedName;
+};
+
+export const isBpDisplayName = (value: string | null | undefined) => {
+  const normalized = value?.trim() ?? "";
+
+  if (!normalized) {
+    return false;
+  }
+
+  return normalized.toUpperCase() === "BP" || /^BP\s*\(.+\)$/i.test(normalized);
+};
+
+export const resolveImportedEmploymentType = (row: Record<string, unknown>) => {
+  for (const key of importedEmploymentTypeKeys) {
+    const value = row[key];
+
+    if (value === undefined || value === null) {
+      continue;
+    }
+
+    const normalized = String(value).trim();
+
+    if (normalized) {
+      return normalizeEmploymentTypeLabel(normalized);
+    }
+  }
+
+  return "정규";
+};

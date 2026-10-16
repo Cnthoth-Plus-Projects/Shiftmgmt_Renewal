@@ -1,0 +1,431 @@
+/* 로그인 및 인증 화면 스타일 (L1 ~ L5) */
+
+.login-container {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #E5E7EB;
+  padding: 24px;
+}
+
+.login-card {
+  width: 460px;
+  max-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 36px 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-header {
+  text-align: center;
+}
+
+.login-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-version {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-sub);
+  background: #E2E5EA;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-top: 6px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-input {
+  height: 38px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+}
+
+.form-input.error {
+  border-color: var(--danger);
+}
+
+.input-with-eye {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-eye .form-input {
+  width: 100%;
+  padding-right: 38px;
+}
+
+.btn-eye-toggle {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.btn-eye-toggle:hover {
+  color: var(--text);
+}
+
+.login-container .btn-primary,
+.login-container .btn-secondary {
+  font-size: 14px;
+}
+
+.login-submit-btn {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.login-footer-help {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.login-recovery-link {
+  color: var(--accent);
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 2px;
+  font-family: inherit;
+  text-decoration: underline;
+}
+
+.login-recovery-link:hover {
+  color: var(--accent-hover);
+}
+
+/* L2 에러 배너 */
+.error-banner {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.error-banner .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* L3 계정 잠김 */
+.lock-card-body {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.lock-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--danger-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--danger);
+}
+
+.lock-icon-wrapper .material-symbols-outlined {
+  font-size: 32px;
+}
+
+.lock-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lock-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.lock-contact {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.lock-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.lock-recovery-guide {
+  font-size: 12px;
+  color: var(--text-sub);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+/* L4 비밀번호 규칙 */
+.rule-list {
+  list-style: none;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-sub);
+}
+
+.rule-item.valid {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.rule-item.invalid {
+  color: var(--text-sub);
+}
+
+.rule-item .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.disabled-desc {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 2px;
+}
+
+.disabled-desc.policy-desc-hidden {
+  display: none;
+}
+
+/* L5 관리자 복구 */
+.recovery-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.recovery-icon-wrapper .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.recovery-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.recovery-btn-group button {
+  flex: 1;
+}
+
+.temp-password-box {
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 12px;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.temp-password-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+.temp-password-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.temp-password-sub {
+  font-size: 12px;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.recovery-header-icon-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.recovery-title {
+  font-size: 18px;
+}
+
+/* 비밀번호 변경 완료 안내 배너 (L1 - C31-03) */
+.password-changed-banner {
+  background: var(--success-bg);
+  border: 1px solid var(--success);
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--success);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.password-changed-banner .material-symbols-outlined {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* L4 세션 재확인 제한 화면 (C31-03) */
+.session-verify-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.session-verify-icon-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.session-verify-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D97706;
+}
+
+.session-verify-icon-wrapper .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.session-verify-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.session-verify-banner {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #92400E;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.session-verify-banner .material-symbols-outlined {
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #D97706;
+}
+
+.session-verify-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.session-verify-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.session-verify-actions button {
+  width: 100%;
+}

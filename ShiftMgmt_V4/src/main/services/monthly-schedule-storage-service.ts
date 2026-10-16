@@ -1,0 +1,292 @@
+import { randomUUID } from "node:crypto";
+
+import type { MonthlyScheduleUpsertInput } from "../../shared/bridge/contracts";
+import { formatEmployeeDisplayName } from "../../shared/domain/employment-type";
+import type { MonthlyScheduleItem, MonthlyScheduleRecord } from "../../shared/domain/model";
+import { resolveStoredDefaultDocumentTemplateVersion } from "./operations-storage-service";
+import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
+
+interface MonthlyScheduleRow {
+  id: string;
+  site_id: string;
+  site_name: string;
+  schedule_month: string;
+  pattern_id: string;
+  pattern_name: string;
+  generated_at: string;
+  generated_by: string;
+  template_version_id?: string | null;
+}
+
+interface MonthlyScheduleItemRow {
+  id: string;
+  schedule_id: string;
+  employee_id: string;
+  employee_code: string;
+  employee_name: string;
+  employee_employment_type: string;
+  employee_status: string;
+  employee_retire_date?: string | null;
+  team_label?: string | null;
+  sort_order?: number | null;
+  work_date: string;
+  duty_code: string;
+  start_time?: string | null;
+  end_time?: string | null;
+  break_minutes: number;
+}
+
+const shouldIncludeScheduleItem = (row: MonthlyScheduleItemRow) => {
+  if (row.employee_status !== "retired") {
+    return true;
+  }
+
+  if (!row.employee_retire_date) {
+    return false;
+  }
+
+  return row.work_date < row.employee_retire_date;
+};
+
+const toScheduleItem = (row: MonthlyScheduleItemRow): MonthlyScheduleItem => ({
+  id: row.id,
+  employeeId: row.employee_id,
+  employeeCode: row.employee_code,
+  employeeName: formatEmployeeDisplayName({
+    name: row.employee_name,
+    employmentType: row.employee_employment_type
+  }),
+  teamLabel: row.team_label ?? undefined,
+  sortOrder:
+    row.sort_order !== null && row.sort_order !== undefined ? Number(row.sort_order) : undefined,
+  workDate: row.work_date,
+  dutyCode: row.duty_code,
+  startTime: row.start_time ?? undefined,
+  endTime: row.end_time ?? undefined,
+  breakMinutes: Number(row.break_minutes)
+});
+
+const toScheduleRecord = (
+  row: MonthlyScheduleRow,
+  items: MonthlyScheduleItem[]
+): MonthlyScheduleRecord => ({
+  id: row.id,
+  siteId: row.site_id,
+  siteName: row.site_name,
+  scheduleMonth: row.schedule_month,
+  patternId: row.pattern_id,
+  patternName: row.pattern_name,
+  generatedAt: row.generated_at,
+  generatedBy: row.generated_by,
+  templateVersionId: row.template_version_id ?? undefined,
+  items
+});
+
+export const listStoredMonthlySchedules = (siteId?: string): MonthlyScheduleRecord[] => {
+  const database = getSqliteDatabase();
+
+  if (!database || !isSqliteStorageReady()) {
+    return [];
+  }
+
+  const scheduleRows = database.prepare(`
+    SELECT
+      monthly_schedules.*,
+      sites.name as site_name,
+      shift_patterns.name as pattern_name
+    FROM monthly_schedules
+    INNER JOIN sites
+      ON sites.id = monthly_schedules.site_id
+    INNER JOIN shift_patterns
+      ON shift_patterns.id = monthly_schedules.pattern_id
+    ${siteId ? "WHERE monthly_schedules.site_id = ?" : ""}
+    ORDER BY monthly_schedules.schedule_month DESC, monthly_schedules.generated_at DESC
+  `).all(...(siteId ? [siteId] : [])) as unknown as MonthlyScheduleRow[];
+
+  const itemRows = database.prepare(`
+    SELECT
+      monthly_schedule_items.*,
+      employees.employee_code,
+      employees.name as employee_name,
+      employees.employment_type as employee_employment_type,
+      employees.status as employee_status,
+      employees.retire_date as employee_retire_date
+    FROM monthly_schedule_items
+    INNER JOIN employees
+      ON employees.id = monthly_schedule_items.employee_id
+    ORDER BY monthly_schedule_items.work_date ASC, monthly_schedule_items.sort_order ASC, employees.employee_code ASC
+  `).all() as unknown as MonthlyScheduleItemRow[];
+
+  const itemsByScheduleId = new Map<string, MonthlyScheduleItem[]>();
+
+  itemRows.forEach((itemRow) => {
+    if (!shouldIncludeScheduleItem(itemRow)) {
+      return;
+    }
+
+    const currentItems = itemsByScheduleId.get(itemRow.schedule_id) ?? [];
+    currentItems.push(toScheduleItem(itemRow));
+    itemsByScheduleId.set(itemRow.schedule_id, currentItems);
+  });
+
+  return scheduleRows.map((row) => toScheduleRecord(row, itemsByScheduleId.get(row.id) ?? []));
+};
+
+// Raw items grouped by schedule_id WITHOUT the retired-visibility filter that listStoredMonthlySchedules
+// applies. Restore uses this to judge completeness/signature so a hidden (retired) null-time or
+// degenerate row is still detected and cleaned up, rather than being masked by the active-item view.
+export const listRawMonthlyScheduleItemsByScheduleId = (): Map<string, MonthlyScheduleItem[]> => {
+  const database = getSqliteDatabase();
+  const result = new Map<string, MonthlyScheduleItem[]>();
+
+  if (!database || !isSqliteStorageReady()) {
+    return result;
+  }
+
+  const itemRows = database.prepare(`
+    SELECT
+      monthly_schedule_items.*,
+      employees.employee_code,
+      employees.name as employee_name,
+      employees.employment_type as employee_employment_type,
+      employees.status as employee_status,
+      employees.retire_date as employee_retire_date
+    FROM monthly_schedule_items
+    INNER JOIN employees
+      ON employees.id = monthly_schedule_items.employee_id
+    ORDER BY monthly_schedule_items.work_date ASC, monthly_schedule_items.sort_order ASC, employees.employee_code ASC
+  `).all() as unknown as MonthlyScheduleItemRow[];
+
+  itemRows.forEach((itemRow) => {
+    const items = result.get(itemRow.schedule_id) ?? [];
+    items.push(toScheduleItem(itemRow));
+    result.set(itemRow.schedule_id, items);
+  });
+
+  return result;
+};
+
+export const saveStoredMonthlySchedule = (
+  input: MonthlyScheduleUpsertInput
+): MonthlyScheduleRecord => {
+  const database = getSqliteDatabase();
+
+  if (!database || !isSqliteStorageReady()) {
+    throw new Error("SQLite storage is not initialized.");
+  }
+
+  const existing = input.id
+    ? (database.prepare(`
+        SELECT *
+        FROM monthly_schedules
+        WHERE id = ?
+        LIMIT 1
+      `).get(input.id) as Record<string, unknown> | undefined)
+    : undefined;
+
+  const id = existing ? String(existing.id) : randomUUID();
+  const generatedAt = existing ? String(existing.generated_at) : new Date().toISOString();
+
+  const defaultTemplateVersionId =
+    input.templateVersionId ??
+    resolveStoredDefaultDocumentTemplateVersion("schedule")?.id ??
+    null;
+
+  const employeeRows = database.prepare(`
+    SELECT id, employee_code
+    FROM employees
+  `).all() as Array<{ id: string; employee_code: string }>;
+  const employeeMap = new Map(employeeRows.map((row) => [row.employee_code, row.id]));
+  const missingEmployeeCodes = Array.from(
+    new Set(
+      input.items
+        .map((item) => item.employeeCode)
+        .filter((employeeCode) => !employeeMap.has(employeeCode))
+    )
+  );
+
+  if (missingEmployeeCodes.length > 0) {
+    throw new Error(`직원 사번을 찾을 수 없습니다: ${missingEmployeeCodes.join(", ")}`);
+  }
+
+  const insertItem = database.prepare(`
+    INSERT INTO monthly_schedule_items (
+      id,
+      schedule_id,
+      employee_id,
+      team_label,
+      sort_order,
+      work_date,
+      duty_code,
+      start_time,
+      end_time,
+      break_minutes
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
+  database.exec("BEGIN");
+
+  try {
+    database.prepare(`
+      INSERT INTO monthly_schedules (
+        id,
+        site_id,
+        schedule_month,
+        pattern_id,
+        generated_at,
+        generated_by,
+        template_version_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        site_id = excluded.site_id,
+        schedule_month = excluded.schedule_month,
+        pattern_id = excluded.pattern_id,
+        generated_by = excluded.generated_by,
+        template_version_id = excluded.template_version_id
+    `).run(
+      id,
+      input.siteId,
+      input.scheduleMonth,
+      input.patternId,
+      generatedAt,
+      input.generatedBy,
+      defaultTemplateVersionId
+    );
+
+    database.prepare(`
+      DELETE FROM monthly_schedule_items
+      WHERE schedule_id = ?
+    `).run(id);
+
+    input.items.forEach((item) => {
+      insertItem.run(
+        randomUUID(),
+        id,
+        employeeMap.get(item.employeeCode)!,
+        item.teamLabel ?? null,
+        item.sortOrder ?? 0,
+        item.workDate,
+        item.dutyCode,
+        item.startTime ?? null,
+        item.endTime ?? null,
+        item.breakMinutes
+      );
+    });
+
+    database.exec("COMMIT");
+  } catch (error) {
+    database.exec("ROLLBACK");
+    throw error;
+  }
+
+  return listStoredMonthlySchedules(input.siteId).find((schedule) => schedule.id === id) as MonthlyScheduleRecord;
+};
+
+export const resetMonthlyScheduleStorageForTest = () => {
+  const database = getSqliteDatabase();
+
+  if (database && isSqliteStorageReady()) {
+    database.exec("DELETE FROM monthly_schedule_items;");
+    database.exec("DELETE FROM monthly_schedules;");
+  }
+};
