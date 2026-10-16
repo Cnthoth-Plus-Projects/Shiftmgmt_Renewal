@@ -627,6 +627,7 @@ if (isDirectCli) {
             await held.waitForComplete(5000);
           }
         } catch (err) { cleanupErrors.push(err); }
+        if(held.routeError&&!cleanupErrors.includes(held.routeError))cleanupErrors.push(held.routeError);
         try { await page.unroute("**/api/access-logs:list"); } catch (err) { cleanupErrors.push(err); }
         if (cleanupErrors.length > 0 && state.errors) {
           if (!Array.isArray(state.errors.cleanup)) state.errors.cleanup = [];
