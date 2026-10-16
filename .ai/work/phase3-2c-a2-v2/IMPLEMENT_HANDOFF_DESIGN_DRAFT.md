@@ -1,7 +1,7 @@
 # A2 v2 — 구현 패킷 발행 전 기술 설계 정본(초안)
 
 - **Action: DESIGN_REVIEW_ONLY** — 루트 `HANDOFF.md`의 Action을 변경하지 않으며, Gemini에게 제품 수정 권한을 부여하지 않음
-- **상태:** STATIC_DESIGN_PREPARED / REMOTE_CONTROL_RECONCILIATION_REQUIRED / RUNTIME_UNPROVEN
+- **상태:** STATIC_DESIGN_PREPARED / EOL_LOCK_RESOLVED_ON_WINDOWS / RUNTIME_UNPROVEN
 - **기준 repo:** `Cnthoth-Plus-Projects/Shiftmgmt_Renewal`
 - **제품 기준:** `work/phase3-2c-a2-v1-not-accepted` @ `2f51c11710f46c75a49f5715cc68d4752b53f8ca`
 - **main:** `c21aa263a02e57d57949bafc5aefe06aab582acd` 변경 없음
@@ -26,7 +26,7 @@
 
 ## 2. 순서와 검증 장벽
 
-1. **P0 원본 잠금:** GitHub 루트 계약 `execution.json`과 `baseline.json`은 기존 owner/shared의 잠긴 전체 SHA와 서로 다름. `PATH_SHA_AUDIT.md`의 직접 계산값과 전체 Windows path를 먼저 해결한다. 파일을 일괄 재해시/덮어쓰기 금지. 선택지: 로컬 exact-locked 역사 파일을 별도 증거로 확보해 source preserve하거나, 새로운 *버전 명시* A2 v2 control set을 Sol이 생성·봉인. 어느 경우든 이전 A1 v1 control은 불변. `Chrome 155.0.8059.40` 원 정책과 `.41` 현재 환경은 따로 v2 심사.
+1. **P0 원본 잠금 — 2026-10-16 원인 해결:** GitHub LF blob `execution.json`(9,753B), `baseline.json`(196,296B)이 Windows CRLF 체크아웃에서 각각 10,115B/199,973B가 되고 원 고정 SHA-256과 **100% 일치**함을 로컬 MEASURE_ONLY 및 Sol GitHub 독립 변환 SHA로 검증. `EOL_LOCK_RESOLUTION.md` 참조. **새 계약 복제·원 SHA 재봉인 불필요.** 실행 preflight는 실제 참조하는 Windows 전체 물리경로와 4계약 SHA 재검사, 다른 clone은 EOL/경로가 같다고 가정하지 말 것. `environment-policy.json`의 .40은 RECON metadata이고 활성 gate는 installed findChrome()과 raw 버전 일치 비교; .41 자체만으로 실패라고 판단하지 않음 (실행 검증은 별도).
 2. **P1 4개 SHA 고정:** 변경 시작 전 현재 제품 4개 전체 SHA 및 shared frozen fragment 6,575B SHA를 다시 계산. GitHub 단일 저장소에서 products under `ShiftMgmt_V4/`, contracts under `.ai/`; 기존 절대 로컬 물리경로를 혼동하지 않음.
 3. **P2 실제 false PASS 제거:** negative reader/partial/expectedError, positive observation/requests/capture, owner fail-first barrier 및 ACK를 별도 단계로 수정. 각 단계마다 A1 locked gate 회귀 확인.
 4. **P3 112개 원본 벡터:** `VECTOR_INJECTION_DESIGN_112.json`에서 `status=UNPROVEN`을 시작으로 실제 owned test tool이 각 원 ID/확장 target에 주입 → original receipt -> issuer raw source SHA -> verifier outcome을 기록. 실제 fault가 일어나지 않으면 해당 항목 `UNPROVEN`, 필수 사례는 FAIL.
@@ -47,9 +47,9 @@
 - [x] 모든 112 원 ID별 정확한 소스 anchor/절차/원 receipt 필드를 `VECTOR_INJECTION_DESIGN_112.json`에 구체화 — **정적 설계이지 실제 주입 PASS 아님**
 - [x] shared frozen 구간 밖만 대상으로 정확한 4개 기준 UTF-8 byte 규모/절감 후보를 계산 — **구현 코드의 최종 byte 수치 미검증**
 - [x] GitHub 현재 계약 4개의 전체 SHA 직접 재계산
-- [ ] **GitHub execution/baseline이 원 locked SHA와 다른 원인·정본 재조정** (`PATH_SHA_AUDIT.md`)
-- [ ] 새로운 v2 실행계약/환경 Chrome 지문·기존 절대경로 분리, A1 불변 보호 정책 확정
+- [x] **GitHub LF ↔ Windows CRLF EOL 차이를 메모리 SHA-256 변환 및 로컬 두 위치 실측으로 해결** (`EOL_LOCK_RESOLUTION.md`) — 원 계약/검증기 무수정
+- [ ] 신규 clone에서 기존 Windows 절대 경로 의존 실행·개발 브랜치 경로의 충돌 방지 전략을 구현 HANDOFF에 명시 (기존 로컬 물리경로에서의 현재 계약 SHA 확인은 완료). A1 불변 유지
 - [ ] 구현 파일별 순차 변경 예정 코드의 크기와 A1 회귀·syntax-only 통과를 격리 샘플에서 검증
 - [ ] 그 뒤에만 루트 `HANDOFF.md`를 append-only Log 보존 후 명시적 `Action: IMPLEMENT`로 발행
 
-**현재 결론:** 사용자에게 Windows CLI를 반복 호출시키지 않고 Sol이 GitHub 자료만으로 가능한 설계/해시 감사를 수행했다. 원격 계약 2개 불일치 및 실수행 환경 제약은 추측/보정하지 않고 차단한다. 이 문서만으로 Gemini가 코드 수정에 착수해서는 안 된다.
+**현재 결론:** GitHub raw LF와 Windows worktree CRLF 간 외관상 SHA mismatch 원인은 완전히 해소됨. 남은 것은 구현 실행 위치 분리/바이트 용량, 실제 Windows SDK/테스트 계측 및 A2 독립 수용 게이트다. 이 문서만으로 Gemini가 코드 수정에 착수해서는 안 된다.
