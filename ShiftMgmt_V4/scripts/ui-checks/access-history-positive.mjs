@@ -80,6 +80,7 @@ if (isDirectCli) {
   const collector = new AssertionCollector(caseArg, contract, state);
 
 
+  try {
   await runScreenCheck({
     id: `access-history-${caseArg}`,
     url: targetUrl,
@@ -489,6 +490,7 @@ if (isDirectCli) {
       }
     },
   });
+  } finally { state.updatePartial(); }
 
   state.resources.context.closedAtMs = Date.now();
   state.resources.context.closeAttemptAtMs = Date.now();
