@@ -79,8 +79,10 @@ foreach($p in $Paths) {
   if (-not (Test-Path -LiteralPath (Join-Path $Root $p) -PathType Leaf)) { throw "BLOCKED: missing $p" }
 }
 if (@(git -C $Root status --porcelain=v1).Count -ne 0) { throw 'BLOCKED: dirty before LF restore' }
-git -C $Root config --local core.autocrlf false
-if ($LASTEXITCODE -ne 0 -or (git -C $Root config --local --get core.autocrlf) -ne 'false') { throw 'BLOCKED: local autocrlf config' }
+$LocalAutocrlfBefore = git -C $Root config --local --get core.autocrlf
+$GlobalAutocrlfBefore = git -C $Root config --global --get core.autocrlf
+"core.autocrlf BEFORE local=$LocalAutocrlfBefore global=$GlobalAutocrlfBefore"
+# Do NOT change persistent local/global settings: only this checkout command overrides autocrlf.
 git -C $Root -c core.autocrlf=false restore --source=HEAD --worktree -- $Paths
 if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: 5-file LF restore failed' }
 if (@(git -C $Root status --porcelain=v1).Count -ne 0) { throw 'BLOCKED: tracked diff after LF restore' }
