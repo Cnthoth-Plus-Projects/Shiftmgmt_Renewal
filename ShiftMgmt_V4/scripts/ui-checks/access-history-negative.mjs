@@ -518,7 +518,7 @@ try{
   operation:op,loginId:op==="sign-out"?prev?.loginId||null:d.loginId||d.user?.loginId||prev?.loginId||null,
   userId:op==="sign-out"?prev?.userId||null:d.userId||d.user?.id||prev?.userId||null,
   role:op==="sign-out"?prev?.role||null:d.role||d.user?.role||prev?.role||null,
-  ok:res.ok(),passwordChangeRequired:op==="sign-out"?false:d.passwordChangeRequired??d.user?.passwordChangeRequired??null,
+  ok:item.ok,passwordChangeRequired:op==="sign-out"?false:d.passwordChangeRequired??d.user?.passwordChangeRequired??null,
   timeMs:item.endedAtMs
   });
  }
