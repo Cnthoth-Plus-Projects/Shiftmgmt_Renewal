@@ -1,0 +1,13 @@
+{
+  "verifiedAtUTC": "2026-09-07T03:59:32.359152+00:00",
+  "protectedCount": 44,
+  "changed": [],
+  "receivedPrefixIdentical": true,
+  "receivedSHA256": "4372e90f26a8ad6eb829c2f757f359d1b7a3782b999951f0e7941d11353b5515",
+  "receivedBytes": 8722,
+  "handoffSHA256": "ee199a6bccc7b99b717a1122d5c9a46f0515740a9d530a2dda4b9bf8223ead01",
+  "handoffBytes": 29165,
+  "replyLine": 88,
+  "decision": "DISAGREE",
+  "replyCopy": "Log/20260907_125300_0-18g-품질평가_Codex회신.md"
+}

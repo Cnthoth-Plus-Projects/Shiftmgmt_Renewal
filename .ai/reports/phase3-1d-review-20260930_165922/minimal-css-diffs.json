@@ -1,0 +1,14 @@
+{
+  "src/web/styles.css": {
+    "oldHashReproduced": true,
+    "oldSHA256": "0BC457E66BCDEEEEFD5D064C0151CF264A496B9C9B89C01F987C29931707AC84"
+  },
+  "src/web/login.css": {
+    "oldHashReproduced": true,
+    "oldSHA256": "21BF4A40938FAFCED90171E4EF8AF706702541DD19E9A7B5D80ED619EE9058A0"
+  },
+  "src/web/shell.css": {
+    "oldHashReproduced": true,
+    "oldSHA256": "F38F34DE03B75D635A417885B5033921300C6E506ED78D18EE202583B62C3F65"
+  }
+}

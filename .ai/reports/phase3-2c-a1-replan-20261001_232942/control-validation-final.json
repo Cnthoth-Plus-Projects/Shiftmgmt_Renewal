@@ -1,0 +1,99 @@
+[
+  {
+    "check": "compile",
+    "file": "gate-evidence.py",
+    "rc": 0
+  },
+  {
+    "check": "compile",
+    "file": "runtime-probes.py",
+    "rc": 0
+  },
+  {
+    "command": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-preload.mjs"
+    ],
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+    ],
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs"
+    ],
+    "rc": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--self-test"
+    ],
+    "rc": 0,
+    "stdout": "{\"status\": \"PASS\", \"result\": {\"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\", \"original\": {\"positiveComparisons\": 2, \"rejectedMutations\": 19, \"mutations\": [\"missing-id\", \"duplicate-id\", \"unknown-id\", \"viewport\", \"loginInputs\", \"fixtureRequestCount\", \"rawErrors\", \"constant-actual\", \"caller-tolerance\", \"caller-expected\", \"canonical-label-drift\", \"nonfinite-nan\", \"nonfinite-inf\", \"numeric-tolerance-2\", \"numeric-tolerance-4\", \"numeric-tolerance-nan\", \"date-133.5\", \"close-error\", \"truncated-png\"], \"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\"}, \"extraRejectedMutations\": [\"protected-executionError\", \"protected-manifestWriteError\", \"protected-consoleErrors\", \"protected-pageErrors\", \"protected-requestFailed\", \"protected-badResponses\", \"protected-cleanupErrors\", \"protected-extra-error-field\", \"recursive-nan\", \"numeric-bool\"]}}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs",
+      "--list"
+    ],
+    "rc": 0,
+    "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"cases\":[\"wrong-owner-pid\",\"wrong-worker-pid\",\"wrong-case\",\"wrong-nonce\",\"wrong-url\",\"sibling-run\",\"wrong-temp-root\",\"wrong-bootstrap\",\"wrong-contract-path\",\"wrong-contract-digest\",\"wrong-execution-path\",\"wrong-execution-digest\",\"no-run-approval\",\"wrong-run-nonce\"]}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs",
+      "--list"
+    ],
+    "rc": 0,
+    "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"semanticVectors\":[\"fixed-expectation\",\"unknown-id-field\",\"recursive-nan\",\"recursive-infinity\",\"immutable-actual-snapshot\",\"caller-extra-argument\"],\"realResourceVectors\":[\"context-close-throw-browser-still-closed\",\"browser-close-throw-first-error-preserved\"]}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-probes.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "LIST_ONLY_NOT_VALIDATED",
+      "--list"
+    ],
+    "rc": 0,
+    "stdout": "{\"proof\": \"PLAN_ONLY_NOT_RUN\", \"positiveCases\": [\"contract-core\", \"regression-shell\", \"regression-home\"], \"deferredCases\": [\"live-admin\", \"list-fixture\", \"empty-fixture\", \"filters\", \"errors\", \"stale-response\", \"role-guard\", \"session-expired\"], \"coreFaults\": [\"png-header-only\", \"png-crc\", \"duplicate-id\", \"missing-id\", \"extra-id\", \"caller-expected\", \"constant-actual\", \"raw-console\", \"raw-pageerror\", \"raw-requestfailed\", \"raw-http\", \"canonical-drift\", \"worker-close-receipt\", \"server-close-receipt\", \"server-close-not-observed\", \"final-write-denied\", \"server-spawn-error\", \"log-write-denied\", \"owner-bad-ack\", \"worker-no-ack\", \"worker-no-run\", \"gate-spawn-error\", \"gate-log-write-denied\"], \"regressionFaults\": [\"regression-no-evidence\"], \"malformedPublicCases\": 9}\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+    ],
+    "rc": 0,
+    "stdout": "",
+    "stderr": "",
+    "afterFiniteCloseGuard": true
+  }
+]

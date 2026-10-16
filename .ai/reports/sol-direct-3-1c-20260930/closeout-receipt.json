@@ -1,0 +1,29 @@
+{
+  "time": "2026-09-30T15:05:13.955996+09:00",
+  "assessmentArchive": "Log/20260930_150513_3-1c-Sol직접수정-ACCEPT_종결본.md",
+  "assessmentBytes": 20747,
+  "assessmentSHA256": "2000A80E8BB56A4F7E3A6065FA96748D7B4522F77128D2059A99602F7F9497CC",
+  "receivedArchiveVerified": true,
+  "updatedControls": {
+    "HANDOFF.md": {
+      "bytes": 20747,
+      "sha256": "2000A80E8BB56A4F7E3A6065FA96748D7B4522F77128D2059A99602F7F9497CC"
+    },
+    "TODO.md": {
+      "bytes": 297611,
+      "sha256": "CFB212EC113E40F7BFE13A19AF253D7D66067F08024BBD3B69B65E51B1854325"
+    },
+    ".ai/current-state.md": {
+      "bytes": 131435,
+      "sha256": "1ED09BA87360A8FE2B8EC4A27FC443781FFAE41A1D71552EA50D325CBAC49BC0"
+    },
+    ".ai/HARNESS.md": {
+      "bytes": 9347,
+      "sha256": "7856E7A72158423648FEAAD7935533C3B2D2AB6BCE2A4C7E21F3620939659805"
+    },
+    ".ai/harness.yaml": {
+      "bytes": 1597,
+      "sha256": "0067DE2A62643B0AE04614C2BBB94A1E8404AE070941703E949F84F170CAC52C"
+    }
+  }
+}

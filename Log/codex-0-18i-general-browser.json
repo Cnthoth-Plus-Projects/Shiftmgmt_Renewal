@@ -1,0 +1,5786 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "results": [
+    {
+      "batch": 1,
+      "file": "03-home-1.html",
+      "at": "2026-09-07T07:59:44.509Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 140건\":",
+        "- link \"실적 관리, 승인 대기 실적 140건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 73,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-h1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-h2",
+            "text": "140",
+            "title": "승인 대기 실적 140건",
+            "linkLabel": "실적 관리, 승인 대기 실적 140건",
+            "hidden": false
+          },
+          {
+            "state": "state-h3",
+            "text": "140",
+            "title": "승인 대기 실적 140건",
+            "linkLabel": "실적 관리, 승인 대기 실적 140건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-h1",
+            "target": "main-content-h1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1339,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 4
+          },
+          {
+            "state": "state-h2",
+            "target": "main-content-h2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1864,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 8
+          },
+          {
+            "state": "state-h3",
+            "target": "main-content-h3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1891,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 7
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-h1",
+          "target": "main-content-h1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1339,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 4,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── H1. 홈 — 기본 (오류 없음) (사용자) ──\n    본문으로 바로가기\n      \n        \n          \n   "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-h1",
+            "cls": "page-content",
+            "main": "main-content-h1",
+            "nav": false,
+            "dialog": null,
+            "text": "domain\n                  준비 (현재 배정 기준)\n                \n                4/5"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary btn-sm",
+            "main": "main-content-h1",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          }
+        },
+        {
+          "state": "state-h2",
+          "target": "main-content-h2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1864,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 8,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-h1",
+            "nav": false,
+            "dialog": null,
+            "text": "보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-h2",
+            "cls": "page-content",
+            "main": "main-content-h2",
+            "nav": false,
+            "dialog": null,
+            "text": "domain\n                  준비 (현재 배정 기준)\n                \n                4/5"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary btn-sm",
+            "main": "main-content-h2",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          }
+        },
+        {
+          "state": "state-h3",
+          "target": "main-content-h3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1891,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 7,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-h2",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-h3",
+            "cls": "page-content",
+            "main": "main-content-h3",
+            "nav": false,
+            "dialog": null,
+            "text": "domain\n                  준비 (현재 배정 기준)\n                \n                4/5"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary btn-sm",
+            "main": "main-content-h3",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "03-home-2.html",
+      "at": "2026-09-07T07:59:45.884Z",
+      "perfNames": [
+        "- link \"실적 관리\":",
+        "- link \"실적 관리\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 29,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": [
+          {
+            "state": "state-h4",
+            "target": "main-content-h4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1216,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          },
+          {
+            "state": "state-h5",
+            "target": "main-content-h5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1093,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-h4",
+          "target": "main-content-h4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1216,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── H4. 홈 — 할 일 없음 (사용자) ──\n    본문으로 바로가기\n      \n        \n          \n       "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-h4",
+            "cls": "page-content",
+            "main": "main-content-h4",
+            "nav": false,
+            "dialog": null,
+            "text": "domain\n                  준비 (현재 배정 기준)\n                \n                5/5"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary btn-sm",
+            "main": "main-content-h4",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          }
+        },
+        {
+          "state": "state-h5",
+          "target": "main-content-h5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1093,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-h4",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리 보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-h5",
+            "cls": "page-content",
+            "main": "main-content-h5",
+            "nav": false,
+            "dialog": null,
+            "text": "데이터 로딩 중"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-h5-check",
+            "cls": "btn-primary btn-sm",
+            "main": "main-content-h5",
+            "nav": false,
+            "dialog": null,
+            "text": "실적 관리에서 확인"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "05-sites-wizard-1.html",
+      "at": "2026-09-07T07:59:47.621Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 38,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-w1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-w2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-w1",
+            "target": "main-content-w1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 512,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 21
+          },
+          {
+            "state": "state-w2",
+            "target": "main-content-w2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 983,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 20
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-w1",
+          "target": "main-content-w1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 512,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 21,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w2",
+            "nav": false,
+            "dialog": null,
+            "text": "입력 검토"
+          },
+          "tab": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── W1. 근무지 관리 — 마법사 1-A 기본 설정 (계획 담당) ──본문으로 바로가기warning저장하지 않은 변경이 있습니다근무지"
+          },
+          "reachedByTab": false,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w1",
+            "cls": "page-content",
+            "main": "main-content-w1",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사1-A기본 설정1-B근무시간 설정1-C검토2조직 구성* 필수 입력 항목입니다근무지 이름 *고객사상태사용사용 안 함근무"
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "w1-site-name",
+            "cls": "form-input",
+            "main": "main-content-w1",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          }
+        },
+        {
+          "state": "state-w2",
+          "target": "main-content-w2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 983,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 20,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w1",
+            "nav": false,
+            "dialog": null,
+            "text": "다음: 근무시간 설정"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w2",
+            "cls": "page-content",
+            "main": "main-content-w2",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사● 저장되지 않음check기본 설정1-B근무시간 설정1-C검토2조직 구성근무지보라매 사업장변경│적용 시작일2025-0"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-w2",
+            "nav": false,
+            "dialog": null,
+            "text": "변경"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "05-sites-wizard-2.html",
+      "at": "2026-09-07T07:59:48.657Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 30,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-w3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-w4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-w3",
+            "target": "main-content-w3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 906,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 12
+          },
+          {
+            "state": "state-w4",
+            "target": "main-content-w4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 869,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 5
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-w3",
+          "target": "main-content-w3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 906,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 12,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w4",
+            "nav": false,
+            "dialog": null,
+            "text": "입력 검토"
+          },
+          "tab": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── W3. 근무지 관리 — 마법사 1-B 조별 개별 패턴 ON (계획 담당) ──본문으로 바로가기warning저장하지 않은 변경이 있"
+          },
+          "reachedByTab": false,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w3",
+            "cls": "page-content",
+            "main": "main-content-w3",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사● 저장되지 않음check기본 설정1-B근무시간 설정1-C검토2조직 구성근무지보라매 사업장변경│적용 시작일2025-0"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-w3",
+            "nav": false,
+            "dialog": null,
+            "text": "변경"
+          }
+        },
+        {
+          "state": "state-w4",
+          "target": "main-content-w4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 869,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 5,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w3",
+            "nav": false,
+            "dialog": null,
+            "text": "입력 검토"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w4",
+            "cls": "page-content",
+            "main": "main-content-w4",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사● 저장되지 않음check기본 설정1-B근무시간 설정1-C검토2조직 구성error하루 교대 횟수를 줄여 '석간'을 더"
+          },
+          "after": {
+            "tag": "DIV",
+            "id": "",
+            "cls": "w2-col",
+            "main": "main-content-w4",
+            "nav": false,
+            "dialog": null,
+            "text": "근무 유형 팔레트근무 2/2 · 휴무 1도트유형시간휴게주간09:00 - 18:0060분야간21:00 - 06:0060분석간사용불가13:"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "05-sites-wizard-3.html",
+      "at": "2026-09-07T07:59:50.390Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 69,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-w5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-w6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-w5",
+            "target": "main-content-w5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 792,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          },
+          {
+            "state": "state-w6",
+            "target": "main-content-w6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1002,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 27
+          },
+          {
+            "state": "state-w7",
+            "target": "main-content-w7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 308,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "BUTTON",
+        "id": "btn-leave-discard",
+        "cls": "btn-secondary",
+        "main": null,
+        "nav": false,
+        "dialog": "modal-leave-w7",
+        "text": "변경 버리고 나가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-w5",
+          "target": "main-content-w5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 792,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-leave-discard",
+            "cls": "btn-secondary",
+            "main": null,
+            "nav": false,
+            "dialog": "modal-leave-w7",
+            "text": "변경 버리고 나가기"
+          },
+          "tab": {
+            "tag": "BUTTON",
+            "id": "btn-leave-stay",
+            "cls": "btn-primary",
+            "main": null,
+            "nav": false,
+            "dialog": "modal-leave-w7",
+            "text": "계속 편집"
+          },
+          "reachedByTab": false,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w5",
+            "cls": "page-content",
+            "main": "main-content-w5",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사check기본 설정check근무시간 설정1-C검토2조직 구성기본 정보근무지 코드SITE-005근무지 이름보라매 사업장"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary",
+            "main": "main-content-w5",
+            "nav": false,
+            "dialog": null,
+            "text": "이전 단계"
+          }
+        },
+        {
+          "state": "state-w6",
+          "target": "main-content-w6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1002,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 27,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w5",
+            "nav": false,
+            "dialog": null,
+            "text": "다음 단계"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w6",
+            "cls": "page-content",
+            "main": "main-content-w6",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사check기본 설정check근무시간 설정check검토2조직 구성info배정 가능 인력을 조별로 드래그하여 배정하세요."
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-w6",
+            "nav": false,
+            "dialog": null,
+            "text": "일괄 설정"
+          }
+        },
+        {
+          "state": "state-w7",
+          "target": "main-content-w7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 308,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": true,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w6",
+            "nav": false,
+            "dialog": null,
+            "text": "완료"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w7",
+            "cls": "page-content",
+            "main": "main-content-w7",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사● 저장되지 않음check기본 설정1-B근무시간 설정1-C검토2조직 구성근무지보라매 사업장│적용 시작일2025-06-"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-leave-stay",
+            "cls": "btn-primary",
+            "main": null,
+            "nav": false,
+            "dialog": "modal-leave-w7",
+            "text": "계속 편집"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "05-sites-wizard-4.html",
+      "at": "2026-09-07T07:59:51.951Z",
+      "perfNames": [
+        "- link \"실적 관리\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 37,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-w9",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-w10",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-w8",
+            "target": "main-content-w8",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 71,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          },
+          {
+            "state": "state-w9",
+            "target": "main-content-w9",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 211,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 12
+          },
+          {
+            "state": "state-w10",
+            "target": "main-content-w10",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 217,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 4
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-w8",
+          "target": "main-content-w8",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 71,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── W8. 근무지 관리 — 마법사 로딩 (계획 담당) ──본문으로 바로가기home홈─ 준비 ─domain근무지 관리group인력 관리"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w8",
+            "cls": "page-content",
+            "main": "main-content-w8",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사1-A기본 설정1-B근무시간 설정1-C검토2조직 구성뒤로가기로딩 중에는 조작할 수 없습니다다음: 근무시간 설정"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary",
+            "main": "main-content-w8",
+            "nav": false,
+            "dialog": null,
+            "text": "뒤로가기"
+          }
+        },
+        {
+          "state": "state-w9",
+          "target": "main-content-w9",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 211,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 12,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w8",
+            "nav": false,
+            "dialog": null,
+            "text": "다음: 근무시간 설정"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w9",
+            "cls": "page-content",
+            "main": "main-content-w9",
+            "nav": false,
+            "dialog": null,
+            "text": "lock🔒 근무지를 등록·수정할 권한이 없습니다. 현재 권한(승인 담당)으로는 이 작업을 할 수 없습니다.근무지 등록 마법사1-A기본"
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "w9-site-name",
+            "cls": "form-input",
+            "main": "main-content-w9",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          }
+        },
+        {
+          "state": "state-w10",
+          "target": "main-content-w10",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 217,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 4,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-w9",
+            "nav": false,
+            "dialog": null,
+            "text": "다음: 근무시간 설정"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-w10",
+            "cls": "page-content",
+            "main": "main-content-w10",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 등록 마법사check기본 설정check근무시간 설정check검토2조직 구성조별 배정 보드 (저장 중)A조 (4/5)B조 (5/5"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary",
+            "main": "main-content-w10",
+            "nav": false,
+            "dialog": null,
+            "text": "이전 단계"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "08-performance-1.html",
+      "at": "2026-09-07T07:59:53.593Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 42,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-p1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-p2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-p3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-p1",
+            "target": "main-content-p1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 443,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 4
+          },
+          {
+            "state": "state-p2",
+            "target": "main-content-p2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 454,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          },
+          {
+            "state": "state-p3",
+            "target": "main-content-p3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 419,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 8
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-p1",
+          "target": "main-content-p1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 443,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 4,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── P1. 실적 관리 — ① 접수·복구 정상 (승인 담당) ──본문으로 바로가기home홈─ 준비 ─domain근무지 관리group인력"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p1",
+            "cls": "page-content",
+            "main": "main-content-p1",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건ch"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn active",
+            "main": "main-content-p1",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p2",
+          "target": "main-content-p2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 454,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-p1",
+            "nav": false,
+            "dialog": null,
+            "text": "시작 복구 다시 실행"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p2",
+            "cls": "page-content",
+            "main": "main-content-p2",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건pr"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn active",
+            "main": "main-content-p2",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p3",
+          "target": "main-content-p3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 419,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 8,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p2",
+            "nav": false,
+            "dialog": null,
+            "text": "③ 재승인·비교"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p3",
+            "cls": "page-content",
+            "main": "main-content-p3",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건er"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn active",
+            "main": "main-content-p3",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "08-performance-2.html",
+      "at": "2026-09-07T07:59:54.370Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 28,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-p4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-p5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-p4",
+            "target": "main-content-p4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1113,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 6
+          },
+          {
+            "state": "state-p5",
+            "target": "main-content-p5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 2841,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 9
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-p4",
+          "target": "main-content-p4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1113,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 6,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── P4. 실적 관리 — ① 고아 승인 안내 (승인 담당) ──\n    본문으로 바로가기\n      \n        \n        "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p4",
+            "cls": "page-content",
+            "main": "main-content-p4",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구\n                ② 승인 작업\n                ③ 재승인·비교\n              \n   "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn active",
+            "main": "main-content-p4",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p5",
+          "target": "main-content-p5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 2841,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 9,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-restart-recovery",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-p4",
+            "nav": false,
+            "dialog": null,
+            "text": "시작 복구 다시 실행"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p5",
+            "cls": "page-content",
+            "main": "main-content-p5",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구\n                ② 승인 작업\n                ③ 재승인·비교\n              \n   "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p5",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "08-performance-3.html",
+      "at": "2026-09-07T07:59:55.169Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 32,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-p6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-p7",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-p6",
+            "target": "main-content-p6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 2020,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 16
+          },
+          {
+            "state": "state-p7",
+            "target": "main-content-p7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 998,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 7
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-p6",
+          "target": "main-content-p6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 2020,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 16,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── P6. 실적 관리 — ② 승인 작업 · 기본 (승인 담당) ──\n    본문으로 바로가기home홈─ 준비 ─domain근무지 관리"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p6",
+            "cls": "page-content",
+            "main": "main-content-p6",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건넓게"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p6",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p7",
+          "target": "main-content-p7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 998,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 7,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "TR",
+            "id": "p6-row-2",
+            "cls": "selected",
+            "main": "main-content-p6",
+            "nav": false,
+            "dialog": null,
+            "text": "10034이수빈사원2025-05-28 (수)대기-연장-18:00-21:003.00 = 0.00+3.00+0.0012,000"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p7",
+            "cls": "page-content",
+            "main": "main-content-p7",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건ch"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p7",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 1,
+      "file": "08-performance-4.html",
+      "at": "2026-09-07T07:59:55.984Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리\":",
+        "- link \"실적 관리\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 41,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-p8",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-p8",
+            "target": "main-content-p8",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1761,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 15
+          },
+          {
+            "state": "state-p9",
+            "target": "main-content-p9",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 22,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          },
+          {
+            "state": "state-p10",
+            "target": "main-content-p10",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 387,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 14
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-p8",
+          "target": "main-content-p8",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1761,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 15,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── P8. 실적 관리 — ② 권한 없음 (사용자) ──본문으로 바로가기home홈─ 준비 ─domain근무지 관리group인력 관리─ "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p8",
+            "cls": "page-content",
+            "main": "main-content-p8",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 128건refresh재승인 필요 3건warning확인 필요 2건넓게"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p8",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p9",
+          "target": "main-content-p9",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 22,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "DIV",
+            "id": "",
+            "cls": "table-container",
+            "main": "main-content-p8",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지사번이름직급근무일상태경고구분근무코드시작-종료시간(총=기본+연장+야간)시급본사 (7)10012김도현사원2025-05-28 (수)승인"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p9",
+            "cls": "page-content",
+            "main": "main-content-p9",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p9",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        },
+        {
+          "state": "state-p10",
+          "target": "main-content-p10",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 387,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 14,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "DIV",
+            "id": "",
+            "cls": "table-container",
+            "main": "main-content-p9",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-p10",
+            "cls": "page-content",
+            "main": "main-content-p10",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구② 승인 작업③ 재승인·비교fact_check대기 실적 0건refresh재승인 필요 0건warning확인 필요 0건chec"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "tab-btn",
+            "main": "main-content-p10",
+            "nav": false,
+            "dialog": null,
+            "text": "① 접수·복구"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "00-shell-1.html",
+      "at": "2026-09-07T07:59:56.858Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 32,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-s1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-s2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-s3",
+            "text": "",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-s1",
+            "target": "main-content-s1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          },
+          {
+            "state": "state-s2",
+            "target": "main-content-s2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          },
+          {
+            "state": "state-s3",
+            "target": "main-content-s3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-s1",
+          "target": "main-content-s1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── S1. 셸 — 기본 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n          "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s1",
+            "cls": "page-content",
+            "main": "main-content-s1",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          }
+        },
+        {
+          "state": "state-s2",
+          "target": "main-content-s2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "user-info-btn btn-logout",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "logout로그아웃"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s2",
+            "cls": "page-content",
+            "main": "main-content-s2",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          }
+        },
+        {
+          "state": "state-s3",
+          "target": "main-content-s3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "user-info-btn btn-logout",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "logout로그아웃"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s3",
+            "cls": "page-content",
+            "main": "main-content-s3",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "00-shell-2.html",
+      "at": "2026-09-07T07:59:57.635Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 38,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-s4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-s5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-s6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-s4",
+            "target": "main-content-s4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          },
+          {
+            "state": "state-s5",
+            "target": "main-content-s5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          },
+          {
+            "state": "state-s6",
+            "target": "main-content-s6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": true,
+            "text": 0,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-s4",
+          "target": "main-content-s4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── S4. 셸 — 상태줄 툴팁 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n      "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s4",
+            "cls": "page-content",
+            "main": "main-content-s4",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          }
+        },
+        {
+          "state": "state-s5",
+          "target": "main-content-s5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "user-info-btn btn-logout",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "logout로그아웃"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s5",
+            "cls": "page-content",
+            "main": "main-content-s5",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-s5-status-restart",
+            "cls": "btn-secondary btn-sm",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "다시 시작"
+          }
+        },
+        {
+          "state": "state-s6",
+          "target": "main-content-s6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": true,
+          "text": 0,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-s5-status-restart",
+            "cls": "btn-secondary btn-sm",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "다시 시작"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-s6",
+            "cls": "page-content",
+            "main": "main-content-s6",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-s6-status-detail",
+            "cls": "btn-ghost btn-sm",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "[자세히 보기]"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "01-login-1.html",
+      "at": "2026-09-07T07:59:58.252Z",
+      "perfNames": [],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 4,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": []
+      },
+      "firstTab": null,
+      "skipResults": [],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "01-login-2.html",
+      "at": "2026-09-07T07:59:58.832Z",
+      "perfNames": [],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 10,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": []
+      },
+      "firstTab": null,
+      "skipResults": [],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "02-common-1.html",
+      "at": "2026-09-07T07:59:59.401Z",
+      "perfNames": [],
+      "staticData": {
+        "wrappers": 4,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 4,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": []
+      },
+      "firstTab": null,
+      "skipResults": [],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "02-common-2.html",
+      "at": "2026-09-07T07:59:59.964Z",
+      "perfNames": [],
+      "staticData": {
+        "wrappers": 5,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 7,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": []
+      },
+      "firstTab": null,
+      "skipResults": [],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "02-common-3.html",
+      "at": "2026-09-07T08:00:00.508Z",
+      "perfNames": [],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 1,
+        "iconLeaks": [],
+        "badges": [],
+        "skips": []
+      },
+      "firstTab": null,
+      "skipResults": [],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "04-sites-1.html",
+      "at": "2026-09-07T08:00:01.140Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 1,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 12,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-t1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-t1",
+            "target": "main-content-t1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 838,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 8
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-t1",
+          "target": "main-content-t1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 838,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 8,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── T1. 근무지 관리 — 목록 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n     "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-t1",
+            "cls": "page-content",
+            "main": "main-content-t1",
+            "nav": false,
+            "dialog": null,
+            "text": "전체 3\n                활성 2\n                준비 중 1\n              \n           "
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "",
+            "cls": "form-input",
+            "main": "main-content-t1",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 검색"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "04-sites-2.html",
+      "at": "2026-09-07T08:00:02.042Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 23,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-t3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-t4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-t3",
+            "target": "main-content-t3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 185,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 4
+          },
+          {
+            "state": "state-t4",
+            "target": "main-content-t4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 65,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-t3",
+          "target": "main-content-t3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 185,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 4,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── T3. 근무지 관리 — 검색 결과 없음 및 빈 상태 ──\n  본문으로 바로가기\n    \n      \n  \n    \n        "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-t3",
+            "cls": "page-content",
+            "main": "main-content-t3",
+            "nav": false,
+            "dialog": null,
+            "text": "검색 지우기\n            \n            add근무지 등록\n          \n          \n           "
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "",
+            "cls": "form-input",
+            "main": "main-content-t3",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 검색"
+          }
+        },
+        {
+          "state": "state-t4",
+          "target": "main-content-t4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 65,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary",
+            "main": "main-content-t3",
+            "nav": false,
+            "dialog": null,
+            "text": "검색 지우기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-t4",
+            "cls": "page-content",
+            "main": "main-content-t4",
+            "nav": false,
+            "dialog": null,
+            "text": "[보라매 사업장] 삭제 확인 열어 보기\n            데모용 — 실제로는 근무지 관리 화면의 [삭제]가 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-t4",
+            "cls": "btn-danger-ghost",
+            "main": "main-content-t4",
+            "nav": false,
+            "dialog": null,
+            "text": "[보라매 사업장] 삭제 확인 열어 보기"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "06-employees-1.html",
+      "at": "2026-09-07T08:00:02.799Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 35,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-e1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e9",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-e1",
+            "target": "main-content-e1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 780,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 12
+          },
+          {
+            "state": "state-e2",
+            "target": "main-content-e2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1755,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 17
+          },
+          {
+            "state": "state-e9",
+            "target": "main-content-e9",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1964,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 17
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-e1",
+          "target": "main-content-e1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 780,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 12,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── E1. 인력 관리 — 목록 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n      "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e1",
+            "cls": "page-content",
+            "main": "main-content-e1",
+            "nav": false,
+            "dialog": null,
+            "text": "전체 근무지보라매 사업장성수물류센터\n              재직휴직퇴직\n              \n            \n      "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-e1",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 필터"
+          }
+        },
+        {
+          "state": "state-e2",
+          "target": "main-content-e2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1755,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 17,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "TR",
+            "id": "",
+            "cls": "",
+            "main": "main-content-e1",
+            "nav": false,
+            "dialog": null,
+            "text": "50008이시온사원정규직\n    재직\n    2024-11-04보라매 사업장B조\n    12,000원"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e2",
+            "cls": "page-content",
+            "main": "main-content-e2",
+            "nav": false,
+            "dialog": null,
+            "text": "보라매 사업장\n              재직\n              \n            \n            전체 14명 중 8"
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-e2",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 필터"
+          }
+        },
+        {
+          "state": "state-e9",
+          "target": "main-content-e9",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1964,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 17,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-danger-ghost btn-sm",
+            "main": "main-content-e2",
+            "nav": false,
+            "dialog": null,
+            "text": "인력 삭제"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e9",
+            "cls": "page-content",
+            "main": "main-content-e9",
+            "nav": false,
+            "dialog": null,
+            "text": "보라매 사업장\n              재직\n              \n            \n            전체 14명 중 8"
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-e9",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 필터"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "06-employees-2.html",
+      "at": "2026-09-07T08:00:03.570Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 34,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-e3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-e3",
+            "target": "main-content-e3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 60,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-e4",
+            "target": "main-content-e4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 54,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-e5",
+            "target": "main-content-e5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1009,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 8
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-e3",
+          "target": "main-content-e3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 60,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── E3. 인력 관리 — 시급 등록 모달 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e3",
+            "cls": "page-content",
+            "main": "main-content-e3",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 등록 열어 보기\n            데모용 — 실제로는 인력 관리 우측 패널의 [시급 등록]이 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-e3",
+            "cls": "btn-primary",
+            "main": "main-content-e3",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 등록 열어 보기"
+          }
+        },
+        {
+          "state": "state-e4",
+          "target": "main-content-e4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 54,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-open-e3",
+            "cls": "btn-primary",
+            "main": "main-content-e3",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 등록 열어 보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e4",
+            "cls": "page-content",
+            "main": "main-content-e4",
+            "nav": false,
+            "dialog": null,
+            "text": "배정 열어 보기\n            데모용 — 실제로는 인력 관리 우측 패널의 [배정]이 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-e4",
+            "cls": "btn-primary",
+            "main": "main-content-e4",
+            "nav": false,
+            "dialog": null,
+            "text": "배정 열어 보기"
+          }
+        },
+        {
+          "state": "state-e5",
+          "target": "main-content-e5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1009,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 8,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-open-e4",
+            "cls": "btn-primary",
+            "main": "main-content-e4",
+            "nav": false,
+            "dialog": null,
+            "text": "배정 열어 보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e5",
+            "cls": "page-content",
+            "main": "main-content-e5",
+            "nav": false,
+            "dialog": null,
+            "text": "A조 안 순서 이동 (보라매 사업장)\n              4명 배정\n            \n            \n        "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm btn-up",
+            "main": "main-content-e5",
+            "nav": false,
+            "dialog": null,
+            "text": "위로 이동"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "06-employees-3.html",
+      "at": "2026-09-07T08:00:04.298Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 37,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-e6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e7",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-e8",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-e6",
+            "target": "main-content-e6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 67,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-e7",
+            "target": "main-content-e7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 118,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-e8",
+            "target": "main-content-e8",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 69,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-e6",
+          "target": "main-content-e6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 67,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── E6. 인력 관리 — 시급 일괄 업데이트 ──\n  본문으로 바로가기\n    \n    \n      \n  \n    \n         "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e6",
+            "cls": "page-content",
+            "main": "main-content-e6",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 일괄 업데이트 열어 보기\n            데모용 — 실제로는 인력 관리 상단의 [시급 일괄 업데이트]가 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-e6",
+            "cls": "btn-primary",
+            "main": "main-content-e6",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 일괄 업데이트 열어 보기"
+          }
+        },
+        {
+          "state": "state-e7",
+          "target": "main-content-e7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 118,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-open-e6",
+            "cls": "btn-primary",
+            "main": "main-content-e6",
+            "nav": false,
+            "dialog": null,
+            "text": "시급 일괄 업데이트 열어 보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e7",
+            "cls": "page-content",
+            "main": "main-content-e7",
+            "nav": false,
+            "dialog": null,
+            "text": "group_off\n            아직 등록된 인력이 없습니다\n            인력을 등록하면 근무지의 조에 배정하고 시급을"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-e7",
+            "nav": false,
+            "dialog": null,
+            "text": "person_add신규 인력 등록"
+          }
+        },
+        {
+          "state": "state-e8",
+          "target": "main-content-e8",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 69,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-e7",
+            "nav": false,
+            "dialog": null,
+            "text": "person_add신규 인력 등록"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-e8",
+            "cls": "page-content",
+            "main": "main-content-e8",
+            "nav": false,
+            "dialog": null,
+            "text": "신규 인력 등록 열어 보기\n            데모용 — 실제로는 인력 관리 상단과 빈 상태의 [신규 인력 등록]이 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-e8",
+            "cls": "btn-primary",
+            "main": "main-content-e8",
+            "nav": false,
+            "dialog": null,
+            "text": "신규 인력 등록 열어 보기"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "07-schedule-1.html",
+      "at": "2026-09-07T08:00:04.910Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 1,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 11,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-r1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-r1",
+            "target": "main-content-r1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1329,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 6
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-r1",
+          "target": "main-content-r1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1329,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 6,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── R1. 근무표 배포 — 선택 및 미리보기 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r1",
+            "cls": "page-content",
+            "main": "main-content-r1",
+            "nav": false,
+            "dialog": null,
+            "text": "보라매 사업장\n              2025년 06월\n              미리보기\n            \n           "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-r1",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 선택"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "07-schedule-2.html",
+      "at": "2026-09-07T08:00:05.625Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 23,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-r2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-r3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-r2",
+            "target": "main-content-r2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1736,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 7
+          },
+          {
+            "state": "state-r3",
+            "target": "main-content-r3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 506,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 5
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-r2",
+          "target": "main-content-r2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1736,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 7,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── R2. 근무표 배포 — 자동 경고 패널 펼침 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          ho"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r2",
+            "cls": "page-content",
+            "main": "main-content-r2",
+            "nav": false,
+            "dialog": null,
+            "text": "보라매 사업장\n              2025년 06월\n              미리보기\n            \n           "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-r2",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 선택"
+          }
+        },
+        {
+          "state": "state-r3",
+          "target": "main-content-r3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 506,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 5,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-ghost btn-sm",
+            "main": "main-content-r2",
+            "nav": false,
+            "dialog": null,
+            "text": "패널 접기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r3",
+            "cls": "page-content",
+            "main": "main-content-r3",
+            "nav": false,
+            "dialog": null,
+            "text": "판교 지원센터\n              2025년 06월\n              미리보기\n            \n           "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-r3",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 선택"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "07-schedule-3.html",
+      "at": "2026-09-07T08:00:06.404Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 4,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 44,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-r4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-r5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-r6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-r7",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-r4",
+            "target": "main-content-r4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 62,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-r5",
+            "target": "main-content-r5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 648,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 0
+          },
+          {
+            "state": "state-r6",
+            "target": "main-content-r6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 107,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-r7",
+            "target": "main-content-r7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1360,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 6
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-r4",
+          "target": "main-content-r4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 62,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── R4. 근무표 배포 — 배포 확인 위험 모달 ──\n  본문으로 바로가기\n    \n    \n      \n  \n    \n       "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r4",
+            "cls": "page-content",
+            "main": "main-content-r4",
+            "nav": false,
+            "dialog": null,
+            "text": "배포 확인 열어 보기\n            데모용 — 실제로는 근무표 배포 화면의 [배포 폴더로 게시]가 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-r4",
+            "cls": "btn-primary",
+            "main": "main-content-r4",
+            "nav": false,
+            "dialog": null,
+            "text": "배포 확인 열어 보기"
+          }
+        },
+        {
+          "state": "state-r5",
+          "target": "main-content-r5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 648,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 0,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-open-r4",
+            "cls": "btn-primary",
+            "main": "main-content-r4",
+            "nav": false,
+            "dialog": null,
+            "text": "배포 확인 열어 보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r5",
+            "cls": "page-content",
+            "main": "main-content-r5",
+            "nav": false,
+            "dialog": null,
+            "text": "근무표 배포 이력\n            전체 12건 중 6건 표시\n          \n\n          \n            \n  "
+          },
+          "after": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          }
+        },
+        {
+          "state": "state-r6",
+          "target": "main-content-r6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 107,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "user-info-btn btn-logout",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "logout로그아웃"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r6",
+            "cls": "page-content",
+            "main": "main-content-r6",
+            "nav": false,
+            "dialog": null,
+            "text": "event_busy\n            아직 배포한 근무표가 없습니다\n            근무지와 달을 선택해 근무표를 만들어 보세"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-r6",
+            "nav": false,
+            "dialog": null,
+            "text": "add_circle근무표 만들기"
+          }
+        },
+        {
+          "state": "state-r7",
+          "target": "main-content-r7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1360,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 6,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-r6",
+            "nav": false,
+            "dialog": null,
+            "text": "add_circle근무표 만들기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-r7",
+            "cls": "page-content",
+            "main": "main-content-r7",
+            "nav": false,
+            "dialog": null,
+            "text": "보라매 사업장\n              2025년 06월\n              미리보기\n            \n           "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-r7",
+            "nav": false,
+            "dialog": null,
+            "text": "근무지 선택"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "09-allowance-1.html",
+      "at": "2026-09-07T08:00:07.134Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 22,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-a1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-a2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-a1",
+            "target": "main-content-a1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 730,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 11
+          },
+          {
+            "state": "state-a2",
+            "target": "main-content-a2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1128,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-a1",
+          "target": "main-content-a1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 730,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 11,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── A1. 수당 관리 — 요약 및 결과표 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a1",
+            "cls": "page-content",
+            "main": "main-content-a1",
+            "nav": false,
+            "dialog": null,
+            "text": "2025년 05월\n              전체 근무지보라매 사업장\n            \n            description품"
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-a1",
+            "nav": false,
+            "dialog": null,
+            "text": "연월 선택"
+          }
+        },
+        {
+          "state": "state-a2",
+          "target": "main-content-a2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1128,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-a1",
+            "nav": false,
+            "dialog": null,
+            "text": "조기 지급"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a2",
+            "cls": "page-content",
+            "main": "main-content-a2",
+            "nav": false,
+            "dialog": null,
+            "text": "2025년 05월 수당 계산 결과 (4건)\n                품의 미리보기\n              \n            "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-a2",
+            "nav": false,
+            "dialog": null,
+            "text": "품의 미리보기"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "09-allowance-2.html",
+      "at": "2026-09-07T08:00:07.872Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 26,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-a3-a5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-a9",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-a3-a5",
+            "target": "main-content-a3-a5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 186,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          },
+          {
+            "state": "state-a9",
+            "target": "main-content-a9",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 186,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-a3-a5",
+          "target": "main-content-a3-a5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 186,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── A3·A4·A5. 수당 관리 — 품의 미리보기 / 조기지급 / 승인확인 ──\n  본문으로 바로가기\n    \n    \n      \n"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a3-a5",
+            "cls": "page-content",
+            "main": "main-content-a3-a5",
+            "nav": false,
+            "dialog": null,
+            "text": "품의 미리보기 열어 보기 (A3)\n              조기 지급일 지정 열어 보기 (A4)\n            \n        "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-a3",
+            "cls": "btn-primary",
+            "main": "main-content-a3-a5",
+            "nav": false,
+            "dialog": null,
+            "text": "품의 미리보기 열어 보기 (A3)"
+          }
+        },
+        {
+          "state": "state-a9",
+          "target": "main-content-a9",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 186,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "btn-open-a4",
+            "cls": "btn-secondary",
+            "main": "main-content-a3-a5",
+            "nav": false,
+            "dialog": null,
+            "text": "조기 지급일 지정 열어 보기 (A4)"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a9",
+            "cls": "page-content",
+            "main": "main-content-a9",
+            "nav": false,
+            "dialog": null,
+            "text": "품의 미리보기 열어 보기 (A3)\n              조기 지급일 지정 열어 보기 (A4)\n            \n        "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-a3-a9",
+            "cls": "btn-primary",
+            "main": "main-content-a9",
+            "nav": false,
+            "dialog": null,
+            "text": "품의 미리보기 열어 보기 (A3)"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "09-allowance-3.html",
+      "at": "2026-09-07T08:00:08.798Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 33,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-a6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-a7",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-a8",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-a6",
+            "target": "main-content-a6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 590,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          },
+          {
+            "state": "state-a7",
+            "target": "main-content-a7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 498,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          },
+          {
+            "state": "state-a8",
+            "target": "main-content-a8",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 120,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-a6",
+          "target": "main-content-a6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 590,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── A6. 수당 관리 — 출력 결과 패널 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a6",
+            "cls": "page-content",
+            "main": "main-content-a6",
+            "nav": false,
+            "dialog": null,
+            "text": "check_circle\n              \n                수당 품의 승인 완료\n                품의서"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-a6",
+            "nav": false,
+            "dialog": null,
+            "text": "닫기"
+          }
+        },
+        {
+          "state": "state-a7",
+          "target": "main-content-a7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 498,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-a6",
+            "nav": false,
+            "dialog": null,
+            "text": "닫기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a7",
+            "cls": "page-content",
+            "main": "main-content-a7",
+            "nav": false,
+            "dialog": null,
+            "text": "승인 6\n              대기 34\n              반려 0\n            \n            아래 표는 "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "filter-chip active",
+            "main": "main-content-a7",
+            "nav": false,
+            "dialog": null,
+            "text": "승인 6"
+          }
+        },
+        {
+          "state": "state-a8",
+          "target": "main-content-a8",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 120,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "filter-chip",
+            "main": "main-content-a7",
+            "nav": false,
+            "dialog": null,
+            "text": "반려 0"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-a8",
+            "cls": "page-content",
+            "main": "main-content-a8",
+            "nav": false,
+            "dialog": null,
+            "text": "receipt_long\n            이 달에는 계산된 수당이 없습니다\n            실적 관리에서 실적을 승인하면 수당"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-a8",
+            "nav": false,
+            "dialog": null,
+            "text": "fact_check실적 관리로 이동"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "10-dashboard-1.html",
+      "at": "2026-09-07T08:00:09.686Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 32,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-d1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-d2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-d3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-d1",
+            "target": "main-content-d1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1354,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          },
+          {
+            "state": "state-d2",
+            "target": "main-content-d2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 660,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 9
+          },
+          {
+            "state": "state-d3",
+            "target": "main-content-d3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 196,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-d1",
+          "target": "main-content-d1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1354,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── D1. 대시보드 — 기본 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n       "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-d1",
+            "cls": "page-content",
+            "main": "main-content-d1",
+            "nav": false,
+            "dialog": null,
+            "text": "필터:\n              2025년\n              05월\n              전체 근무지 · 구분 전체\n    "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-d1",
+            "nav": false,
+            "dialog": null,
+            "text": "차트 데이터 내보내기"
+          }
+        },
+        {
+          "state": "state-d2",
+          "target": "main-content-d2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 660,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 9,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-d1",
+            "nav": false,
+            "dialog": null,
+            "text": "보고서 내보내기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-d2",
+            "cls": "page-content",
+            "main": "main-content-d2",
+            "nav": false,
+            "dialog": null,
+            "text": "상세 필터 설정\n              ※ 변경 시 즉시 반영됩니다.\n            \n            \n         "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-d2",
+            "nav": false,
+            "dialog": null,
+            "text": "연도"
+          }
+        },
+        {
+          "state": "state-d3",
+          "target": "main-content-d3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 196,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "INPUT",
+            "id": "",
+            "cls": "",
+            "main": "main-content-d2",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-d3",
+            "cls": "page-content",
+            "main": "main-content-d3",
+            "nav": false,
+            "dialog": null,
+            "text": "2025년 03월\n            전체 근무지\n          \n\n          \n            analytics\n "
+          },
+          "after": {
+            "tag": "SELECT",
+            "id": "",
+            "cls": "form-select",
+            "main": "main-content-d3",
+            "nav": false,
+            "dialog": null,
+            "text": "조회 연월"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "11-operations-1.html",
+      "at": "2026-09-07T08:00:10.405Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 26,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-o1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-o2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-o1",
+            "target": "main-content-o1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 2089,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 31
+          },
+          {
+            "state": "state-o2",
+            "target": "main-content-o2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1223,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 20
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-o1",
+          "target": "main-content-o1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 2089,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 31,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── O1. 운영 관리 — 탭 경로 설정 ──\n  본문으로 바로가기warning저장하지 않은 변경이 있습니다'경로 설정' 탭을 편집 중"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o1",
+            "cls": "page-content",
+            "main": "main-content-o1",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o1",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        },
+        {
+          "state": "state-o2",
+          "target": "main-content-o2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1223,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 20,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "INPUT",
+            "id": "o1-chk-rest",
+            "cls": "",
+            "main": "main-content-o1",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o2",
+            "cls": "page-content",
+            "main": "main-content-o2",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o2",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "11-operations-2.html",
+      "at": "2026-09-07T08:00:11.409Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 36,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-o3",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-o4",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-o5",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-o3",
+            "target": "main-content-o3",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1878,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 23
+          },
+          {
+            "state": "state-o4",
+            "target": "main-content-o4",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 818,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 11
+          },
+          {
+            "state": "state-o5",
+            "target": "main-content-o5",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 769,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 12
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-o3",
+          "target": "main-content-o3",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1878,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 23,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── O3. 운영 관리 — 탭 요율 관리 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o3",
+            "cls": "page-content",
+            "main": "main-content-o3",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o3",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        },
+        {
+          "state": "state-o4",
+          "target": "main-content-o4",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 818,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 11,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-secondary btn-sm",
+            "main": "main-content-o3",
+            "nav": false,
+            "dialog": null,
+            "text": "영향 미리보기"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o4",
+            "cls": "page-content",
+            "main": "main-content-o4",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o4",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        },
+        {
+          "state": "state-o5",
+          "target": "main-content-o5",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 769,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 12,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-danger-ghost btn-sm",
+            "main": "main-content-o4",
+            "nav": false,
+            "dialog": null,
+            "text": "삭제"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o5",
+            "cls": "page-content",
+            "main": "main-content-o5",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o5",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "11-operations-3.html",
+      "at": "2026-09-07T08:00:13.020Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 3,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 37,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-o6",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-o7",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-o8",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-o6",
+            "target": "main-content-o6",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1789,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 22
+          },
+          {
+            "state": "state-o7",
+            "target": "main-content-o7",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 656,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          },
+          {
+            "state": "state-o8",
+            "target": "main-content-o8",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 843,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 2
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-o6",
+          "target": "main-content-o6",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1789,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 22,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── O6. 운영 관리 — 탭 양식 관리 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o6",
+            "cls": "page-content",
+            "main": "main-content-o6",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o6",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        },
+        {
+          "state": "state-o7",
+          "target": "main-content-o7",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 656,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-danger-ghost btn-sm",
+            "main": "main-content-o6",
+            "nav": false,
+            "dialog": null,
+            "text": "삭제"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o7",
+            "cls": "page-content",
+            "main": "main-content-o7",
+            "nav": false,
+            "dialog": null,
+            "text": "양식 수정 마법사: 문서 영역 조정과 저장 (근무표)\n              격자 상의 필수 문서 영역을 확인하고 저장하세요.\n   "
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o7",
+            "nav": false,
+            "dialog": null,
+            "text": "저장"
+          }
+        },
+        {
+          "state": "state-o8",
+          "target": "main-content-o8",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 843,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 2,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "INPUT",
+            "id": "o7-area-range",
+            "cls": "form-input",
+            "main": "main-content-o7",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o8",
+            "cls": "page-content",
+            "main": "main-content-o8",
+            "nav": false,
+            "dialog": null,
+            "text": "경로 설정\n      승인 폴더와 출력 경로 설정\n      설정\n    \n    \n      공휴일 관리\n      시스템 DB 공휴"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "",
+            "cls": "btn-primary",
+            "main": "main-content-o8",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "11-operations-4.html",
+      "at": "2026-09-07T08:00:14.482Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 1,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 14,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-o9-o10",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-o9-o10",
+            "target": "main-content-o9-o10",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 60,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 1
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-o9-o10",
+          "target": "main-content-o9-o10",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 60,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 1,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── O9·O10. 운영 관리 — DB복원 미리보기 및 확인 ──\n  본문으로 바로가기\n    \n    \n      \n  \n    \n "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-o9-o10",
+            "cls": "page-content",
+            "main": "main-content-o9-o10",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원 미리보기 열어 보기\n            데모용 — 실제로는 운영 관리 상단의 [DB복원]이 엽니다"
+          },
+          "after": {
+            "tag": "BUTTON",
+            "id": "btn-open-o9",
+            "cls": "btn-primary",
+            "main": "main-content-o9-o10",
+            "nav": false,
+            "dialog": null,
+            "text": "DB복원 미리보기 열어 보기"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    },
+    {
+      "batch": 2,
+      "file": "12-access-logs-1.html",
+      "at": "2026-09-07T08:00:15.889Z",
+      "perfNames": [
+        "- link \"실적 관리, 승인 대기 실적 128건\":",
+        "- link \"실적 관리, 승인 대기 실적 128건\":"
+      ],
+      "staticData": {
+        "wrappers": 2,
+        "duplicateIds": [],
+        "badRefs": [],
+        "icons": 25,
+        "iconLeaks": [],
+        "badges": [
+          {
+            "state": "state-g1",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          },
+          {
+            "state": "state-g2",
+            "text": "128",
+            "title": "승인 대기 실적 128건",
+            "linkLabel": "실적 관리, 승인 대기 실적 128건",
+            "hidden": false
+          }
+        ],
+        "skips": [
+          {
+            "state": "state-g1",
+            "target": "main-content-g1",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 1311,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 15
+          },
+          {
+            "state": "state-g2",
+            "target": "main-content-g2",
+            "tag": "MAIN",
+            "tabindex": "-1",
+            "nav": false,
+            "hidden": false,
+            "text": 288,
+            "clip": "rect(0px, 0px, 0px, 0px)",
+            "controls": 3
+          }
+        ]
+      },
+      "firstTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "text": "본문으로 바로가기"
+      },
+      "skipResults": [
+        {
+          "state": "state-g1",
+          "target": "main-content-g1",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 1311,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 15,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "BODY",
+            "id": "",
+            "cls": "",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "── G1. 활동 이력 — 목록 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n      "
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-g1",
+            "cls": "page-content",
+            "main": "main-content-g1",
+            "nav": false,
+            "dialog": null,
+            "text": "로그인, 화면 이동, 주요 업무 처리 기록을 날짜와 사용자 기준으로 조회합니다.\n          \n\n          \n       "
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "g1-start-date",
+            "cls": "form-input",
+            "main": "main-content-g1",
+            "nav": false,
+            "dialog": null,
+            "text": ""
+          }
+        },
+        {
+          "state": "state-g2",
+          "target": "main-content-g2",
+          "tag": "MAIN",
+          "tabindex": "-1",
+          "nav": false,
+          "hidden": false,
+          "text": 288,
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "controls": 3,
+          "closedW7BeforeTest": false,
+          "prior": {
+            "tag": "TR",
+            "id": "",
+            "cls": "",
+            "main": "main-content-g1",
+            "nav": false,
+            "dialog": null,
+            "text": "05-18 17:22\n  관리자 · admin\n  관리자\n  앱 설정 저장\n  -"
+          },
+          "tab": {
+            "tag": "A",
+            "id": "",
+            "cls": "skip-link",
+            "main": null,
+            "nav": false,
+            "dialog": null,
+            "text": "본문으로 바로가기"
+          },
+          "reachedByTab": true,
+          "enter": {
+            "tag": "MAIN",
+            "id": "main-content-g2",
+            "cls": "page-content",
+            "main": "main-content-g2",
+            "nav": false,
+            "dialog": null,
+            "text": "로그인, 화면 이동, 주요 업무 처리 기록을 날짜와 사용자 기준으로 조회합니다.\n          \n\n          \n       "
+          },
+          "after": {
+            "tag": "INPUT",
+            "id": "",
+            "cls": "form-input",
+            "main": "main-content-g2",
+            "nav": false,
+            "dialog": null,
+            "text": "이력 검색"
+          }
+        }
+      ],
+      "errors": [],
+      "consoleErrors": []
+    }
+  ]
+}

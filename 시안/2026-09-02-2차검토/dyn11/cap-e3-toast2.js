@@ -1,0 +1,1 @@
+(()=>{return '토스트='+getComputedStyle(document.getElementById('toast-e3')).display;})()

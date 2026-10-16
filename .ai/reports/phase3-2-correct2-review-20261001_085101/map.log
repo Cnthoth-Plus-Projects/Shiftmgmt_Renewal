@@ -1,0 +1,5 @@
+
+> shiftmgmt@0.1.0 validate:map
+> node scripts/validate-codebase-map.mjs
+
+CODEBASE_MAP_OK — 경로 87개 모두 존재합니다.

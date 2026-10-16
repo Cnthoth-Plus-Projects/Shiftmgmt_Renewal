@@ -1,0 +1,10 @@
+{
+  "rc": 1,
+  "ready": {
+    "error": "Exception calling \"Start\" with \"0\" argument(s): \"Access denied \"",
+    "ready": false
+  },
+  "stderr": "Exception calling \"Start\" with \"0\" argument(s): \"Access denied \"\r\n",
+  "pid": 52752,
+  "proof": "READ_ONLY_WMI_CAPABILITY_CHECK_NOT_SUT_RUNTIME"
+}

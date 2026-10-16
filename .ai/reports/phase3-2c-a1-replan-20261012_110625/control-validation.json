@@ -1,0 +1,137 @@
+{
+  "status": "PASS",
+  "time": "2026-10-12T02:39:57.173969+00:00",
+  "proof": "CONTROL_SYNTAX_PARSER_PLANS_AND_ACTUAL_OBSERVER_HEALTH_ONLY_NOT_A1_ACCEPTANCE",
+  "pythonCompiled": 3,
+  "commands": [
+    {
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\component-probes.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:55.937471+00:00",
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\ipc-probes.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.051914+00:00",
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\observer-canary.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.162817+00:00",
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-preload.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.270758+00:00",
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\gate-evidence.py",
+        "--execution-sha",
+        "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C",
+        "--self-test"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.481455+00:00",
+      "rc": 0,
+      "stdout": "{\"status\": \"PASS\", \"result\": {\"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\", \"original\": {\"positiveComparisons\": 2, \"rejectedMutations\": 19, \"mutations\": [\"missing-id\", \"duplicate-id\", \"unknown-id\", \"viewport\", \"loginInputs\", \"fixtureRequestCount\", \"rawErrors\", \"constant-actual\", \"caller-tolerance\", \"caller-expected\", \"canonical-label-drift\", \"nonfinite-nan\", \"nonfinite-inf\", \"numeric-tolerance-2\", \"numeric-tolerance-4\", \"numeric-tolerance-nan\", \"date-133.5\", \"close-error\", \"truncated-png\"], \"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\"}, \"extraRejectedMutations\": [\"protected-executionError\", \"protected-manifestWriteError\", \"protected-consoleErrors\", \"protected-pageErrors\", \"protected-requestFailed\", \"protected-badResponses\", \"protected-cleanupErrors\", \"protected-extra-error-field\", \"recursive-nan\", \"numeric-bool\", \"log-before-close\", \"log-boolean-time\", \"log-missing-stderr\", \"log-extra-finish\"]}}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-probes.py",
+        "--execution-sha",
+        "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C",
+        "--baseline-sha",
+        "PARSER_ONLY",
+        "--self-test"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.684399+00:00",
+      "rc": 0,
+      "stdout": "{\"proof\": \"PARSER_ONLY_NOT_SUT_EXECUTION\", \"validPreflight\": 1, \"rejectedPreflightMutations\": [[\"observerHealthy\", false], [\"sideEffectFree\", false], [\"rc\", 0], [\"timeout\", true], [\"errors\", \"\"], [\"errors\", \"{\\\"status\\\": \\\"FAIL\\\", \\\"code\\\": \\\"A1_LOCK_MISMATCH\\\", \\\"phase\\\": \\\"preflight\\\", \\\"case\\\": null, \\\"runId\\\": null, \\\"error\\\": {\\\"name\\\": \\\"Error\\\", \\\"message\\\": \\\"CLI rejected\\\", \\\"stack\\\": \\\"actual CLI error stack\\\"}}\"], [\"output\", \"{\\\"status\\\":\\\"PASS\\\"}\\n\"], [\"errors\", \"{\\\"status\\\": \\\"FAIL\\\", \\\"code\\\": \\\"A1_CLI_INVALID\\\", \\\"phase\\\": \\\"preflight\\\", \\\"case\\\": null, \\\"runId\\\": null, \\\"error\\\": {\\\"name\\\": \\\"Error\\\", \\\"message\\\": \\\"CLI rejected\\\", \\\"stack\\\": \\\"actual CLI error stack\\\"}}\\n{\\\"status\\\": \\\"FAIL\\\", \\\"code\\\": \\\"A1_CLI_INVALID\\\", \\\"phase\\\": \\\"preflight\\\", \\\"case\\\": null, \\\"runId\\\": null, \\\"error\\\": {\\\"name\\\": \\\"Error\\\", \\\"message\\\": \\\"CLI rejected\\\", \\\"stack\\\": \\\"actual CLI error stack\\\"}}\\n\"], [\"errors\", \"{\\\"status\\\": \\\"FAIL\\\", \\\"code\\\": \\\"A1_CLI_INVALID\\\", \\\"phase\\\": \\\"preflight\\\", \\\"case\\\": null, \\\"runId\\\": null, \\\"error\\\": {\\\"name\\\": \\\"Error\\\", \\\"message\\\": \\\"CLI rejected\\\", \\\"stack\\\": \\\"actual CLI error stack\\\"}}\\nunrelated fatal crash\\n\"], [\"output\", \"PASS\"]], \"earlyRemovalRejected\": true, \"unsettledRetainedLogRejected\": true}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-probes.py",
+        "--execution-sha",
+        "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C",
+        "--baseline-sha",
+        "PLAN_ONLY",
+        "--list"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:56.880103+00:00",
+      "rc": 0,
+      "stdout": "{\"proof\": \"PLAN_ONLY_NOT_RUN\", \"positiveCases\": [\"contract-core\", \"regression-shell\", \"regression-home\"], \"deferredCases\": [\"live-admin\", \"list-fixture\", \"empty-fixture\", \"filters\", \"errors\", \"stale-response\", \"role-guard\", \"session-expired\"], \"faults\": {\"png-header-only\": \"A1_GATE_REJECTED\", \"png-crc\": \"A1_GATE_REJECTED\", \"duplicate-id\": \"A1_GATE_REJECTED\", \"missing-id\": \"A1_GATE_REJECTED\", \"extra-id\": \"A1_GATE_REJECTED\", \"caller-expected\": \"A1_GATE_REJECTED\", \"constant-actual\": \"A1_GATE_REJECTED\", \"raw-console\": \"A1_GATE_REJECTED\", \"raw-pageerror\": \"A1_GATE_REJECTED\", \"raw-requestfailed\": \"A1_GATE_REJECTED\", \"raw-http\": \"A1_GATE_REJECTED\", \"canonical-drift\": \"A1_GATE_REJECTED\", \"worker-close-receipt\": \"A1_GATE_REJECTED\", \"server-close-receipt\": \"A1_GATE_REJECTED\", \"server-close-not-observed\": \"A1_CLOSE_UNVERIFIED\", \"final-write-denied\": \"A1_FINAL_WRITE_FAILED\", \"server-spawn-error\": \"A1_SERVER_SPAWN_FAILURE\", \"log-write-denied\": \"A1_LOG_WRITE_FAILED\", \"owner-bad-ack\": \"A1_ACK_INVALID\", \"worker-no-ack\": \"A1_ACK_TIMEOUT\", \"worker-no-run\": \"A1_WORKER_FAILED\", \"gate-spawn-error\": \"A1_GATE_SPAWN_FAILURE\", \"gate-log-write-denied\": \"A1_LOG_WRITE_FAILED\", \"regression-no-evidence\": \"A1_WORKER_FAILED\", \"worker-close-not-observed\": \"A1_CLOSE_UNVERIFIED\", \"worker-spawn-error\": \"A1_WORKER_SPAWN_FAILURE\", \"log-finish-not-observed\": \"A1_LOG_FINISH_UNVERIFIED\", \"late-log-error\": \"A1_LOG_WRITE_FAILED\", \"gate-response-case\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-runId\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-candidateSha256\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-executionSha256\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-checks\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-artifacts\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-acceptance\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-status\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-extra\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-extra-output\": \"A1_GATE_RESPONSE_MISMATCH\"}, \"malformedPublicCases\": 9, \"observerHealthMandatory\": true}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\ipc-probes.mjs",
+        "--list"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:57.004311+00:00",
+      "rc": 0,
+      "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"cases\":[\"wrong-owner-pid\",\"wrong-worker-pid\",\"wrong-case\",\"wrong-nonce\",\"wrong-url\",\"sibling-run\",\"wrong-temp-root\",\"wrong-bootstrap\",\"wrong-contract-path\",\"wrong-contract-digest\",\"wrong-execution-path\",\"wrong-execution-digest\",\"no-run-approval\",\"wrong-run-nonce\"]}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\component-probes.mjs",
+        "--list"
+      ],
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "time": "2026-10-12T02:39:57.118635+00:00",
+      "rc": 0,
+      "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"semanticVectors\":[\"fixed-expectation\",\"unknown-id-field\",\"recursive-nan\",\"recursive-infinity\",\"immutable-actual-snapshot\",\"caller-extra-argument\"],\"additionalTypedMutations\":18,\"invalidTopLevelInputs\":4,\"realResourceVectors\":[\"context-close-throw-browser-still-closed\",\"browser-close-throw-first-error-preserved\"]}\n",
+      "stderr": ""
+    }
+  ],
+  "observerReceipt": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261012_110625\\observer-selfcheck-result.json",
+  "observerReceiptSha256": "5F28B26C72EA48C7501C8BFBBD167AFAE1DA4E8E8C8C3ACE6C17AA052DBBB81D",
+  "observerExternalArtifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v3-selfcheck-824exbx3",
+  "actualControlChecks": 35,
+  "rejectedObservationCorruptions": 9,
+  "A1ImplementationExecuted": false,
+  "A1Accepted": false,
+  "productEditsBySol": 0
+}

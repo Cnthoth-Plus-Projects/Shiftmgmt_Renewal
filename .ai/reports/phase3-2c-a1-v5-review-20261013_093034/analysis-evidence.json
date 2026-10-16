@@ -1,0 +1,1802 @@
+{
+  "verdict": "FAILED",
+  "A1Accepted": false,
+  "originalRuntime": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-runtime-rttytl8r",
+    "status": "FAIL",
+    "records": 81,
+    "faults": 46,
+    "acceptedByUnchangedSuite": 44,
+    "messageMismatchCases": [
+      {
+        "case": "fault-worker-close-receipt",
+        "code": "A1_GATE_REJECTED",
+        "expected": "worker close not confirmed",
+        "actual": "Observation flag differs from callback ledger",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093637-s1GXBR\\adjudicator-stderr.log",
+        "allOtherOriginalNegativeChecksPass": true,
+        "rejectedByActualGate": true
+      },
+      {
+        "case": "fault-server-close-receipt",
+        "code": "A1_GATE_REJECTED",
+        "expected": "server close not confirmed",
+        "actual": "Observation flag differs from callback ledger",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093642-U4s54Z\\adjudicator-stderr.log",
+        "allOtherOriginalNegativeChecksPass": true,
+        "rejectedByActualGate": true
+      }
+    ],
+    "semanticActualGateRejections": 46,
+    "semanticRejectionsAreNotOriginalSuitePass": true
+  },
+  "submittedRuntime": {
+    "status": "FAIL",
+    "records": 81,
+    "failedNegatives": [
+      "fault-worker-close-receipt",
+      "fault-server-close-receipt"
+    ]
+  },
+  "originalChecks": {
+    "status": "ORIGINAL_CONTROLS_COMPLETE",
+    "records": [
+      {
+        "name": "scope-before",
+        "argv": [
+          "C:\\Users\\pangyo\\anaconda3\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+          "--scope"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 51088,
+        "start": "2026-10-13T00:33:38.039348+00:00",
+        "end": "2026-10-13T00:33:39.305295+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-before.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-before.stderr.txt",
+        "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "syntax-owner",
+        "argv": [
+          "node",
+          "--check",
+          "scripts/ui-checks/access-history.mjs"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 47740,
+        "start": "2026-10-13T00:33:39.308380+00:00",
+        "end": "2026-10-13T00:33:39.444048+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-owner.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-owner.stderr.txt",
+        "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "syntax-shared",
+        "argv": [
+          "node",
+          "--check",
+          "scripts/ui-checks/access-history-shared.mjs"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 48480,
+        "start": "2026-10-13T00:33:39.445023+00:00",
+        "end": "2026-10-13T00:33:39.569575+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-shared.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-shared.stderr.txt",
+        "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "typecheck",
+        "argv": [
+          "cmd",
+          "/d",
+          "/c",
+          "npm.cmd",
+          "run",
+          "typecheck"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 40000,
+        "start": "2026-10-13T00:33:39.570575+00:00",
+        "end": "2026-10-13T00:33:48.849638+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\typecheck.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\typecheck.stderr.txt",
+        "stdoutSha256": "EB0C68245B291B33DD886D88F9CFB76DECBF3D9E93BDBDEA5666CE1D4BA515B3",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "lint",
+        "argv": [
+          "cmd",
+          "/d",
+          "/c",
+          "npm.cmd",
+          "run",
+          "lint"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 7112,
+        "start": "2026-10-13T00:33:48.863620+00:00",
+        "end": "2026-10-13T00:33:58.199376+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\lint.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\lint.stderr.txt",
+        "stdoutSha256": "B92339FEA803D807646646FB0E22CAC4EB843FF070538A93238E12277095B326",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "map",
+        "argv": [
+          "cmd",
+          "/d",
+          "/c",
+          "npm.cmd",
+          "run",
+          "validate:map"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 48868,
+        "start": "2026-10-13T00:33:58.214667+00:00",
+        "end": "2026-10-13T00:33:59.059038+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\map.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\map.stderr.txt",
+        "stdoutSha256": "0D9C0EBE7374C43D8C81DAF6296B8568875FFE7E0FC9D9307243A19CEEE4D793",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "diff-check",
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 46956,
+        "start": "2026-10-13T00:33:59.072563+00:00",
+        "end": "2026-10-13T00:33:59.298825+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\diff-check.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\diff-check.stderr.txt",
+        "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stderrSha256": "1E26F689A6DBB704CA2667251360782B369BAF48FDB216A21A1D31EB99CB5D84"
+      },
+      {
+        "name": "build",
+        "argv": [
+          "cmd",
+          "/d",
+          "/c",
+          "npm.cmd",
+          "run",
+          "build"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 516,
+        "start": "2026-10-13T00:33:59.311381+00:00",
+        "end": "2026-10-13T00:34:10.591909+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\build.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\build.stderr.txt",
+        "stdoutSha256": "F983FCC063573D8BFFBA51A93DB3BD4A3E0B1828464E318A24ECF2CCCC7B3184",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "focused-tests",
+        "argv": [
+          "cmd",
+          "/d",
+          "/c",
+          "npx.cmd",
+          "vitest",
+          "run",
+          "src/web/screens/access-history-model.test.ts",
+          "src/main/services/access-log-service.test.ts",
+          "src/main/http/route-registry.test.ts",
+          "--maxWorkers=1",
+          "--minWorkers=1"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 36092,
+        "start": "2026-10-13T00:34:10.606105+00:00",
+        "end": "2026-10-13T00:34:18.125734+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\focused-tests.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\focused-tests.stderr.txt",
+        "stdoutSha256": "9341834F5DC09F34DD790EAA926102DBDD90F56860D3F25E743760C7D380D40F",
+        "stderrSha256": "0BF96813602508B32E27B92FE53D2E97190B6C93443B7F5B055BF75D0C427E6E"
+      },
+      {
+        "name": "gate-parser",
+        "argv": [
+          "C:\\Users\\pangyo\\anaconda3\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+          "--self-test"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 11840,
+        "start": "2026-10-13T00:34:18.149331+00:00",
+        "end": "2026-10-13T00:34:18.412084+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\gate-parser.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\gate-parser.stderr.txt",
+        "stdoutSha256": "072B084CD9B615BF7196EAE6E73AE5BD834F12F14C726857BD76904791779B3C",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "runtime-parser",
+        "argv": [
+          "C:\\Users\\pangyo\\anaconda3\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+          "--self-test"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 33496,
+        "start": "2026-10-13T00:34:18.427224+00:00",
+        "end": "2026-10-13T00:34:18.668356+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\runtime-parser.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\runtime-parser.stderr.txt",
+        "stdoutSha256": "E7478F28E1741653490EC75C97E73729C5CD0E5CF069BDAF73D712A74D754739",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "actual-runtime-original-controls",
+        "argv": [
+          "C:\\Users\\pangyo\\anaconda3\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 50628,
+        "start": "2026-10-13T00:34:18.681528+00:00",
+        "end": "2026-10-13T00:39:48.577675+00:00",
+        "rc": 1,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stderr.txt",
+        "stdoutSha256": "B83C3C317115C311EA99ECA77C66EA32940E31637AD04E986DE5601234E59993",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "ipc-suite",
+        "argv": [
+          "node",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\ipc-probes.mjs"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 49116,
+        "start": "2026-10-13T00:39:48.634780+00:00",
+        "end": "2026-10-13T00:40:05.045544+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stderr.txt",
+        "stdoutSha256": "E3BA13DC687A5E0AFB29644FB6B63E2EA6F5D29E8FFA9ED0E602C7F654F9EF56",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "component-suite",
+        "argv": [
+          "node",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\component-probes.mjs",
+          "--core-manifest",
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093437-8mpzkP\\owner-final.json",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 44292,
+        "start": "2026-10-13T00:40:05.060933+00:00",
+        "end": "2026-10-13T00:40:11.009584+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\component-suite.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\component-suite.stderr.txt",
+        "stdoutSha256": "477738C394D5274EF4BFD0FBFB1665CA542004454BDB9A2A164E7B8C76BA247A",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "partial-suite",
+        "argv": [
+          "node",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\partial-probes.mjs"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 12692,
+        "start": "2026-10-13T00:40:11.026211+00:00",
+        "end": "2026-10-13T00:40:24.028169+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\partial-suite.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\partial-suite.stderr.txt",
+        "stdoutSha256": "E466149D48D636DBFF6C7636AC428D3695CD71756AB5F21068FBBFD46454631D",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      {
+        "name": "scope-after",
+        "argv": [
+          "C:\\Users\\pangyo\\anaconda3\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+          "--execution-sha",
+          "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "--baseline-sha",
+          "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+          "--scope"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 28260,
+        "start": "2026-10-13T00:40:24.042724+00:00",
+        "end": "2026-10-13T00:40:25.023440+00:00",
+        "rc": 0,
+        "timeout": false,
+        "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stdout.txt",
+        "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stderr.txt",
+        "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+        "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    ],
+    "runtimeSummary": {
+      "status": "FAIL",
+      "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-runtime-rttytl8r",
+      "faults": 46,
+      "acceptance": "A1_RUNTIME_SUBSET_ONLY_NOT_A2_B"
+    },
+    "runtimeAcceptance": false,
+    "productEditsBySol": 0,
+    "A1Accepted": false
+  },
+  "spawnErrorFirstStack": [
+    {
+      "kind": "server",
+      "failurePath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093702-V8PWDh\\owner-failure.json",
+      "primary": {
+        "code": "A1_SERVER_SPAWN_FAILURE",
+        "phase": "server-spawn",
+        "name": "Error",
+        "message": "server spawn",
+        "stack": "Error: server spawn\n    at fail (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:97:43)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:241:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+      },
+      "actualSpawnError": {
+        "name": "Error",
+        "message": "spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-executable.exe ENOENT",
+        "stack": "Error: spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-executable.exe ENOENT\n    at ChildProcess._handle.onexit (node:internal/child_process:286:19)\n    at onErrorNT (node:internal/child_process:484:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)"
+      },
+      "actualSpawnErrorLostAsPrimary": true,
+      "actualMissingExitPreserved": true
+    },
+    {
+      "kind": "worker",
+      "failurePath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093745-QHnm0e\\owner-failure.json",
+      "primary": {
+        "code": "A1_WORKER_SPAWN_FAILURE",
+        "phase": "worker-spawn",
+        "name": "Error",
+        "message": "worker spawn",
+        "stack": "Error: worker spawn\n    at fail (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:97:43)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:279:24\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+      },
+      "actualSpawnError": {
+        "name": "Error",
+        "message": "spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-worker.exe ENOENT",
+        "stack": "Error: spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-worker.exe ENOENT\n    at ChildProcess._handle.onexit (node:internal/child_process:286:19)\n    at onErrorNT (node:internal/child_process:484:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)"
+      },
+      "actualSpawnErrorLostAsPrimary": true,
+      "actualMissingExitPreserved": true
+    },
+    {
+      "kind": "gate",
+      "failurePath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093723-Lx4qDX\\owner-failure.json",
+      "primary": {
+        "code": "A1_GATE_SPAWN_FAILURE",
+        "phase": "gate-spawn",
+        "name": "Error",
+        "message": "gate spawn",
+        "stack": "Error: gate spawn\n    at fail (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:97:43)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:437:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+      },
+      "actualSpawnError": {
+        "name": "Error",
+        "message": "spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-gate.exe ENOENT",
+        "stack": "Error: spawn C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\sol-a1-no-such-gate.exe ENOENT\n    at ChildProcess._handle.onexit (node:internal/child_process:286:19)\n    at onErrorNT (node:internal/child_process:484:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)"
+      },
+      "actualSpawnErrorLostAsPrimary": true,
+      "actualMissingExitPreserved": true
+    }
+  ],
+  "captures": [
+    {
+      "case": "contract-core",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093437-8mpzkP\\core-capture.png",
+      "bytes": 25688,
+      "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093444-10C15Z\\regression-capture-admin-expanded.png",
+      "bytes": 84793,
+      "sha256": "101C1845BA67D0457BAB483AFFE63BBAFB76CBC4CE578A8E013A9E2DC230C797",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093444-10C15Z\\regression-capture-admin-collapsed.png",
+      "bytes": 72929,
+      "sha256": "1AB51E32BD972E3864C06C4819308D5A2A545BCA4889796D0F6AAD3F14069522",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093444-10C15Z\\regression-capture-watch-stopped.png",
+      "bytes": 65243,
+      "sha256": "6FB1BBF4EB46D0C3FEB228135728439694B14E68EB960FEF708CA66A4D48A3A8",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093444-10C15Z\\regression-capture-operator.png",
+      "bytes": 78594,
+      "sha256": "F87D75DBD81C06872891CF32C4783B66AD5C28F78B6F73B10C23E2D1B10E75F6",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-home",
+      "observed": false,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261013-093452-fCgefj\\regression-capture-home-live-admin.png",
+      "bytes": 84634,
+      "sha256": "17A226A0CBB6853ED20E3BFA5AEA1DAA730C405E9AB27FB6A3120EC88872C967",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "contract-core",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093459-vRoaD0\\core-capture.png",
+      "bytes": 25688,
+      "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093506-KB38ZJ\\regression-capture-admin-expanded.png",
+      "bytes": 84621,
+      "sha256": "D983BC4292632E859FF190EF5B11C0E30BD647F08C58953D4E2CE2A3A5952D20",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093506-KB38ZJ\\regression-capture-admin-collapsed.png",
+      "bytes": 72734,
+      "sha256": "EBC8FE27AF4777A0E9F2F8ACF638B6C3C3DDF7859B42121FD3027027D69180BA",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093506-KB38ZJ\\regression-capture-watch-stopped.png",
+      "bytes": 65063,
+      "sha256": "E3E9A8149AA36D5C04B6D1E72DD5CB34FA45355BCB2D9955167A5647B785AB7E",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093506-KB38ZJ\\regression-capture-operator.png",
+      "bytes": 78416,
+      "sha256": "4B0BE8CA9FE04CCE60AB35005FBFE0DBAEC25F603DF1D9C331268AA0F01D363B",
+      "dimensions": [
+        1440,
+        900
+      ]
+    },
+    {
+      "case": "regression-home",
+      "observed": true,
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261013-093514-pCimoC\\regression-capture-home-live-admin.png",
+      "bytes": 84363,
+      "sha256": "47CD3AB12673E335C1E1BE0075B185E0FC2D65A2F4FE2911A0C75E912AF07759",
+      "dimensions": [
+        1440,
+        900
+      ]
+    }
+  ],
+  "observedCandidateWriteEvents": [
+    {
+      "case": "contract-core",
+      "events": [
+        {
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093459-vRoaD0\\owner-candidate.json",
+          "type": "file-write",
+          "schema": 3,
+          "mode": "observe-positive",
+          "session": "c255643cee3b41a88db2b0300fb6c9ab",
+          "timeMs": 1791851702494,
+          "pid": 1748,
+          "seq": 37,
+          "previousEventSha": "3E419BA2B977F7612E4E75D487D48992F501469CEC23336FF6F04051CFA87A32",
+          "canonical": "{\"path\":\"C:\\\\Projects\\\\Active\\\\ShiftMgmt_V4\\\\artifacts\\\\captures\\\\phase3\\\\access-history-contract-core\\\\run-20261013-093459-vRoaD0\\\\owner-candidate.json\",\"type\":\"file-write\",\"schema\":3,\"mode\":\"observe-positive\",\"session\":\"c255643cee3b41a88db2b0300fb6c9ab\",\"timeMs\":1791851702494,\"pid\":1748,\"seq\":37,\"previousEventSha\":\"3E419BA2B977F7612E4E75D487D48992F501469CEC23336FF6F04051CFA87A32\"}",
+          "eventSha256": "3ED75A0E6C5839FA64891E741011B81A190E1C2897685481FA81F7399E0B9857"
+        }
+      ]
+    },
+    {
+      "case": "regression-shell",
+      "events": [
+        {
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261013-093506-KB38ZJ\\owner-candidate.json",
+          "type": "file-write",
+          "schema": 3,
+          "mode": "observe-positive",
+          "session": "0f64ce46e5e74c958df00f6aa1cb4f66",
+          "timeMs": 1791851711472,
+          "pid": 50928,
+          "seq": 37,
+          "previousEventSha": "9A42515DBD025CF952BA17389E3B279B7FBC1AAAB0564A3924E9637B006BDE5E",
+          "canonical": "{\"path\":\"C:\\\\Projects\\\\Active\\\\ShiftMgmt_V4\\\\artifacts\\\\captures\\\\phase3\\\\access-history-regression-shell\\\\run-20261013-093506-KB38ZJ\\\\owner-candidate.json\",\"type\":\"file-write\",\"schema\":3,\"mode\":\"observe-positive\",\"session\":\"0f64ce46e5e74c958df00f6aa1cb4f66\",\"timeMs\":1791851711472,\"pid\":50928,\"seq\":37,\"previousEventSha\":\"9A42515DBD025CF952BA17389E3B279B7FBC1AAAB0564A3924E9637B006BDE5E\"}",
+          "eventSha256": "33D37533A93B5AC3C8E01722F6439F70B31932D44B8D8D372C14724907004A82"
+        }
+      ]
+    },
+    {
+      "case": "regression-home",
+      "events": [
+        {
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261013-093514-pCimoC\\owner-candidate.json",
+          "type": "file-write",
+          "schema": 3,
+          "mode": "observe-positive",
+          "session": "addc1e74e67e40c7b31c50b7ae968ef1",
+          "timeMs": 1791851718055,
+          "pid": 16592,
+          "seq": 37,
+          "previousEventSha": "A6D0F8B44A0DF3B75B233C28510A12B10FF574ACF24CF842B71D2BE6D6E207C3",
+          "canonical": "{\"path\":\"C:\\\\Projects\\\\Active\\\\ShiftMgmt_V4\\\\artifacts\\\\captures\\\\phase3\\\\access-history-regression-home\\\\run-20261013-093514-pCimoC\\\\owner-candidate.json\",\"type\":\"file-write\",\"schema\":3,\"mode\":\"observe-positive\",\"session\":\"addc1e74e67e40c7b31c50b7ae968ef1\",\"timeMs\":1791851718055,\"pid\":16592,\"seq\":37,\"previousEventSha\":\"A6D0F8B44A0DF3B75B233C28510A12B10FF574ACF24CF842B71D2BE6D6E207C3\"}",
+          "eventSha256": "067C8A5B943632DD9A3590E7145B9925872E41781E1B5296056158FB08699815"
+        }
+      ]
+    }
+  ],
+  "actualExtraOwner": {
+    "status": "ACTUAL_OWNER_FAILURES_REPRODUCED",
+    "results": [
+      {
+        "mode": "gate-timestamp-regression",
+        "finding": "OWNER_PUBLISHES_PASS_WITH_INVALID_GATE_CLOCK_FIXED_FINAL_REJECTS",
+        "owner": {
+          "name": "gate-timestamp-regression",
+          "argv": [
+            "node",
+            "--import",
+            "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/runtime-preload.mjs",
+            "scripts/ui-checks/access-history.mjs",
+            "--case=contract-core"
+          ],
+          "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "pid": 32244,
+          "session": "c6639a3afeb24fdb859f066fc3211234",
+          "mode": "gate-timestamp-regression",
+          "start": "2026-10-13T00:41:54.131384+00:00",
+          "end": "2026-10-13T00:41:59.455356+00:00",
+          "rc": 0,
+          "timeout": false,
+          "stdout": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\gate-timestamp-regression.stdout.txt",
+          "stderr": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\gate-timestamp-regression.stderr.txt",
+          "output": "{\"status\":\"PASS\",\"case\":\"contract-core\",\"runId\":\"run-20261013-094154-9xFgOa\",\"manifestPath\":\"C:\\\\Projects\\\\Active\\\\ShiftMgmt_V4\\\\artifacts\\\\captures\\\\phase3\\\\access-history-contract-core\\\\run-20261013-094154-9xFgOa\\\\owner-final.json\",\"exitCode\":0,\"stageSlice\":\"A1\",\"acceptance\":\"A1_PREREQUISITE_ONLY\"}\n",
+          "errors": "",
+          "observerHealthy": true,
+          "eventCount": 54,
+          "sideEffectFree": false,
+          "failureCode": null,
+          "quiescenceObserved": true,
+          "quiescenceError": null,
+          "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\gate-timestamp-regression.events.jsonl",
+          "faultTriggered": true
+        },
+        "actualFinal": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094154-9xFgOa\\owner-final.json",
+        "callbackScalarTime": 1791852119163,
+        "closeTime": 1791852119413,
+        "independentReceiptError": "Actual callback array order invalid",
+        "fixedFinal": {
+          "name": "gate-timestamp-regression-fixed-final",
+          "argv": [
+            "C:\\Users\\pangyo\\anaconda3\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+            "--execution-sha",
+            "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+            "--baseline-sha",
+            "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+            "--final",
+            "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094154-9xFgOa\\owner-final.json"
+          ],
+          "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "pid": 11908,
+          "session": "19e4524ef4cc41198ee316a2cf7e5b58",
+          "mode": null,
+          "start": "2026-10-13T00:41:59.510109+00:00",
+          "end": "2026-10-13T00:42:00.881030+00:00",
+          "rc": 1,
+          "timeout": false,
+          "stdout": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\gate-timestamp-regression-fixed-final.stdout.txt",
+          "stderr": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\gate-timestamp-regression-fixed-final.stderr.txt",
+          "output": "",
+          "errors": "{\"status\": \"FAIL\", \"error\": \"Actual callback array order invalid\"}\n",
+          "failureCode": null,
+          "eventsPath": null,
+          "faultTriggered": false
+        }
+      },
+      {
+        "mode": "worker-ledger-scalar-mismatch",
+        "finding": "PRE_REMOVAL_LEDGER_MISMATCH_NOT_DETECTED_TEMP_DELETED_BEFORE_GATE_REJECTION",
+        "owner": {
+          "name": "worker-ledger-scalar-mismatch",
+          "argv": [
+            "node",
+            "--import",
+            "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/runtime-preload.mjs",
+            "scripts/ui-checks/access-history.mjs",
+            "--case=contract-core"
+          ],
+          "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "pid": 29940,
+          "session": "3577598ffa3c415388ab37245a446a71",
+          "mode": "worker-ledger-scalar-mismatch",
+          "start": "2026-10-13T00:42:00.897434+00:00",
+          "end": "2026-10-13T00:42:05.772513+00:00",
+          "rc": 1,
+          "timeout": false,
+          "stdout": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\worker-ledger-scalar-mismatch.stdout.txt",
+          "stderr": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\worker-ledger-scalar-mismatch.stderr.txt",
+          "output": "",
+          "errors": "{\"status\":\"FAIL\",\"code\":\"A1_GATE_REJECTED\",\"phase\":\"adjudicator-verdict\",\"case\":\"contract-core\",\"runId\":\"run-20261013-094201-2iL1jz\",\"error\":{\"name\":\"Error\",\"message\":\"gate reject: {\\\"status\\\": \\\"FAIL\\\", \\\"error\\\": \\\"Published stream observation differs from callback\\\"}\",\"stack\":\"Error: gate reject: {\\\"status\\\": \\\"FAIL\\\", \\\"error\\\": \\\"Published stream observation differs from callback\\\"}\\n    at fail (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:97:43)\\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:450:58\"}}\n",
+          "observerHealthy": true,
+          "eventCount": 55,
+          "sideEffectFree": false,
+          "failureCode": "A1_GATE_REJECTED",
+          "quiescenceObserved": true,
+          "quiescenceError": null,
+          "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40\\worker-ledger-scalar-mismatch.events.jsonl",
+          "faultTriggered": true
+        },
+        "failurePath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094201-2iL1jz\\owner-failure.json",
+        "failure": {
+          "schema": "shiftmgmt.verifier.evidence.v1",
+          "stage": "foundation",
+          "stageSlice": "A1",
+          "case": "contract-core",
+          "runId": "run-20261013-094201-2iL1jz",
+          "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+          "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+          "status": "FAIL",
+          "exitCode": 1,
+          "owner": {
+            "pid": 29940,
+            "nodePath": "C:\\Program Files\\nodejs\\node.exe",
+            "nonceSha256": "DD1D52028EA8AB3ACEFBE059685E6AA10C9D02084EABD8BB48116E550F80DD8E",
+            "context": {
+              "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+              "url": "http://127.0.0.1:18741/",
+              "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094201-2iL1jz",
+              "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t3rZY5",
+              "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t3rZY5\\data\\bootstrap-credentials.json",
+              "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+              "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+              "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+              "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+            }
+          },
+          "server": {
+            "pid": 17752,
+            "exitCode": null,
+            "exitSignal": "SIGTERM",
+            "closeCode": null,
+            "closeSignal": "SIGTERM",
+            "exitSeen": true,
+            "closeSeen": true,
+            "aliveAfterClose": false,
+            "createdAtMs": 1791852121451,
+            "exitAtMs": 1791852124475,
+            "closeAtMs": 1791852124475,
+            "logsSettled": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logCloseSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishAtMs": {
+              "stdout": 1791852124542,
+              "stderr": 1791852124542
+            },
+            "logCloseAtMs": {
+              "stdout": 1791852124543,
+              "stderr": 1791852124543
+            },
+            "callbackEvents": [
+              {
+                "event": "spawn",
+                "timeMs": 1791852121451,
+                "stream": null,
+                "pid": 17752,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "exit",
+                "timeMs": 1791852124475,
+                "stream": null,
+                "pid": 17752,
+                "code": null,
+                "signal": "SIGTERM",
+                "error": null
+              },
+              {
+                "event": "close",
+                "timeMs": 1791852124475,
+                "stream": null,
+                "pid": 17752,
+                "code": null,
+                "signal": "SIGTERM",
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852124542,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852124542,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852124543,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852124543,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              }
+            ]
+          },
+          "worker": {
+            "pid": 10440,
+            "exitCode": 0,
+            "exitSignal": null,
+            "closeCode": 0,
+            "closeSignal": null,
+            "exitSeen": true,
+            "closeSeen": true,
+            "aliveAfterClose": false,
+            "createdAtMs": 1791852122459,
+            "exitAtMs": 1791852124450,
+            "closeAtMs": 1791852124450,
+            "logsSettled": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logCloseSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishAtMs": {
+              "stdout": 1791852124512,
+              "stderr": 1791852124512
+            },
+            "logCloseAtMs": {
+              "stdout": 1791852124513,
+              "stderr": 1791852124513
+            },
+            "callbackEvents": [
+              {
+                "event": "spawn",
+                "timeMs": 1791852122459,
+                "stream": null,
+                "pid": 10440,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "exit",
+                "timeMs": 1791852124450,
+                "stream": null,
+                "pid": 10440,
+                "code": 0,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "close",
+                "timeMs": 1791852124450,
+                "stream": null,
+                "pid": 10440,
+                "code": 0,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852125512,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852124512,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852124513,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852124513,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              }
+            ],
+            "parentPid": 29940,
+            "nonceSha256": "DD1D52028EA8AB3ACEFBE059685E6AA10C9D02084EABD8BB48116E550F80DD8E",
+            "contextAck": true,
+            "runAuthorized": true,
+            "ackReceipt": {
+              "packet": {
+                "type": "worker-ack",
+                "protocol": 2,
+                "case": "contract-core",
+                "ownerPid": 29940,
+                "workerPid": 10440,
+                "nonce": "D43C82A62CEEA39E785CD3D4E36A8D9DB3D1E16057E07551D794C3A2DCA4178B",
+                "contextSha256": "4B869125811E922BAA09D42C969F2A3E19C71C3AEF795C9CA1E5B8716EBED754"
+              },
+              "receivedAtMs": 1791852122920
+            },
+            "argv": [
+              "C:\\Program Files\\nodejs\\node.exe",
+              "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+              "--case=contract-core"
+            ]
+          },
+          "adjudicator": {
+            "pid": 48724,
+            "exitCode": 1,
+            "exitSignal": null,
+            "closeCode": 1,
+            "closeSignal": null,
+            "exitSeen": true,
+            "closeSeen": true,
+            "aliveAfterClose": false,
+            "createdAtMs": 1791852124612,
+            "exitAtMs": 1791852125730,
+            "closeAtMs": 1791852125730,
+            "logsSettled": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logCloseSeen": {
+              "stdout": true,
+              "stderr": true
+            },
+            "logFinishAtMs": {
+              "stdout": 1791852125730,
+              "stderr": 1791852125730
+            },
+            "logCloseAtMs": {
+              "stdout": 1791852125730,
+              "stderr": 1791852125731
+            },
+            "callbackEvents": [
+              {
+                "event": "spawn",
+                "timeMs": 1791852124612,
+                "stream": null,
+                "pid": 48724,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "exit",
+                "timeMs": 1791852125730,
+                "stream": null,
+                "pid": 48724,
+                "code": 1,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "close",
+                "timeMs": 1791852125730,
+                "stream": null,
+                "pid": 48724,
+                "code": 1,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852125730,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-finish",
+                "timeMs": 1791852125730,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852125730,
+                "stream": "stdout",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              },
+              {
+                "event": "log-close",
+                "timeMs": 1791852125731,
+                "stream": "stderr",
+                "pid": null,
+                "code": null,
+                "signal": null,
+                "error": null
+              }
+            ]
+          },
+          "raw": null,
+          "checks": [
+            {
+              "id": "CORE-01",
+              "sourceArtifact": "core-observations",
+              "pointer": "/viewport",
+              "actual": [
+                1440,
+                900
+              ]
+            },
+            {
+              "id": "CORE-02",
+              "sourceArtifact": "core-observations",
+              "pointer": "/origin",
+              "actual": "http://127.0.0.1:18741/"
+            },
+            {
+              "id": "CORE-03",
+              "sourceArtifact": "core-observations",
+              "pointer": "/loginInputs",
+              "actual": {
+                "id": {
+                  "count": 1,
+                  "visible": true
+                },
+                "password": {
+                  "count": 1,
+                  "visible": true
+                }
+              }
+            },
+            {
+              "id": "CORE-04",
+              "sourceArtifact": "core-observations",
+              "pointer": "/fixtureLabels",
+              "actual": [
+                {
+                  "actionType": "performance-approve",
+                  "label": "실적 승인"
+                },
+                {
+                  "actionType": "performance-reapprove",
+                  "label": "실적 승인 확정"
+                },
+                {
+                  "actionType": "performance-hide-approved",
+                  "label": "승인완료 목록삭제"
+                },
+                {
+                  "actionType": "schedule-publish",
+                  "label": "근무표 배포"
+                },
+                {
+                  "actionType": "sign-in",
+                  "label": "로그인"
+                },
+                {
+                  "actionType": "route-view",
+                  "label": "화면 이동"
+                },
+                {
+                  "actionType": "performance-reject",
+                  "label": "실적 반려"
+                },
+                {
+                  "actionType": "site-save",
+                  "label": "근무지 저장"
+                }
+              ]
+            },
+            {
+              "id": "CORE-05",
+              "sourceArtifact": "core-observations",
+              "pointer": "/fixtureRequestCount",
+              "actual": 0
+            },
+            {
+              "id": "CORE-06",
+              "sourceArtifact": "core-observations",
+              "pointer": "/rawErrors",
+              "actual": {
+                "console": [],
+                "pageerror": [],
+                "requestfailed": [],
+                "badResponses": []
+              }
+            },
+            {
+              "id": "CORE-07",
+              "sourceArtifact": "core-observations",
+              "pointer": "/chrome",
+              "actual": {
+                "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                "version": "155.0.8059.40",
+                "browserVersion": "155.0.8059.39"
+              }
+            },
+            {
+              "id": "CORE-08",
+              "sourceArtifact": "core-observations",
+              "pointer": "/resources",
+              "actual": [
+                {
+                  "kind": "browser",
+                  "id": "browser-1",
+                  "events": [
+                    {
+                      "state": "created",
+                      "timeMs": 1791852123380
+                    },
+                    {
+                      "state": "close-start",
+                      "timeMs": 1791852124184
+                    },
+                    {
+                      "state": "closed",
+                      "timeMs": 1791852124344
+                    }
+                  ]
+                },
+                {
+                  "kind": "context",
+                  "id": "context-1",
+                  "events": [
+                    {
+                      "state": "created",
+                      "timeMs": 1791852123397
+                    },
+                    {
+                      "state": "close-start",
+                      "timeMs": 1791852124174
+                    },
+                    {
+                      "state": "closed",
+                      "timeMs": 1791852124184
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "CORE-09",
+              "sourceArtifact": "core-observations",
+              "pointer": "/captureId",
+              "actual": "core-capture"
+            }
+          ],
+          "workerPartialPath": null,
+          "cleanup": {
+            "tempRemoved": true
+          },
+          "errors": {
+            "primary": {
+              "code": "A1_GATE_REJECTED",
+              "phase": "adjudicator-verdict",
+              "name": "Error",
+              "message": "gate reject: {\"status\": \"FAIL\", \"error\": \"Published stream observation differs from callback\"}",
+              "stack": "Error: gate reject: {\"status\": \"FAIL\", \"error\": \"Published stream observation differs from callback\"}\n    at fail (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:97:43)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:450:58"
+            },
+            "cleanup": [],
+            "evidence": [],
+            "unexpected": []
+          }
+        },
+        "independentReceiptError": "Published stream observation differs from callback",
+        "deletedOwnedTemp": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t3rZY5"
+      }
+    ],
+    "retention": "Keep exact controlled run and own fixtures; no foreign cleanup"
+  },
+  "actualExtraPrivate": {
+    "status": "ACTUAL_V5_FAILURES_REPRODUCED",
+    "proof": "ACTUAL_PRIVATE_WORKER_WITH_HEALTHY_FAULT_DELIVERY_NOT_ACCEPTANCE",
+    "results": [
+      {
+        "mode": "repository-realpath-failure",
+        "finding": "VALID_ACK_RUN_REPOSITORY_PREPARATION_FAILURE_WITHOUT_PARTIAL",
+        "argv": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 48524,
+        "startMs": 1791852126022,
+        "endMs": 1791852126550,
+        "exit": {
+          "code": 1,
+          "signal": null,
+          "timeMs": 1791852126548
+        },
+        "timedOut": false,
+        "ack": {
+          "type": "worker-ack",
+          "protocol": 2,
+          "case": "contract-core",
+          "ownerPid": 13392,
+          "workerPid": 48524,
+          "nonce": "9dd869bad4b75b0da1d957396a313fa5ccd166840c5d6fa21f1e1d46c5ad83cd",
+          "contextSha256": "AF7B301CBA92857F878B6F29262DBEE228272C1C2F6E24CE8CF49726E8E6DC6C"
+        },
+        "stdout": "",
+        "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v5-extra-Wu48jM\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_REPOSITORY_REALPATH_FAILURE_AFTER_RUN\",\"stack\":\"Error: SOL_CORE_REPOSITORY_REALPATH_FAILURE_AFTER_RUN\\n    at fs.realpathSync (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs:63:191)\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:447:19)\\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\"}}\n",
+        "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-private-6ICtbt\\repository-realpath-failure.events.jsonl",
+        "partialPath": null,
+        "partial": null,
+        "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-Wu48jM",
+        "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-43zFfY"
+      },
+      {
+        "mode": "request-then-viewport-null",
+        "finding": "ONE_ACTUAL_FIXTURE_REQUEST_PUBLISHED_AS_ZERO_IN_FAILURE_RAW_AND_CHECK",
+        "argv": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 19556,
+        "startMs": 1791852126553,
+        "endMs": 1791852128080,
+        "exit": {
+          "code": 1,
+          "signal": null,
+          "timeMs": 1791852128078
+        },
+        "timedOut": false,
+        "ack": {
+          "type": "worker-ack",
+          "protocol": 2,
+          "case": "contract-core",
+          "ownerPid": 13392,
+          "workerPid": 19556,
+          "nonce": "1b334caa4d200245a519eb79455f7d5114e2d19a73070dbbc107c100f42354a2",
+          "contextSha256": "B5BE5D8BF0E708C5FB9C415710FE51095485173122825336AC54D45F13F30CC0"
+        },
+        "stdout": "",
+        "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v5-extra-8qxXjT\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_VIEWPORT_NULL\",\"stack\":\"Error: SOL_CORE_VIEWPORT_NULL\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:508:13)\\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5\"}}\n",
+        "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-private-6ICtbt\\request-then-viewport-null.events.jsonl",
+        "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-8qxXjT\\core-partial.json",
+        "partial": {
+          "status": "FAIL",
+          "case": "contract-core",
+          "runId": "run-sol-a1v5-extra-8qxXjT",
+          "context": {
+            "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+            "url": "http://127.0.0.1:18741/",
+            "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-8qxXjT",
+            "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t1HcoV",
+            "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t1HcoV\\data\\bootstrap-credentials.json",
+            "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+            "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+            "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+            "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+          },
+          "worker": {
+            "pid": 19556,
+            "parentPid": 13392,
+            "nonceSha256": "B7BE210439F5100D0F63435DDC78670339E407D4A5E532F13534B1732A54E1E3"
+          },
+          "raw": {
+            "viewport": null,
+            "origin": "http://127.0.0.1:18741/",
+            "loginInputs": {
+              "id": {
+                "count": 1,
+                "visible": true
+              },
+              "password": {
+                "count": 1,
+                "visible": true
+              }
+            },
+            "fixtureLabels": [
+              {
+                "actionType": "performance-approve",
+                "label": "실적 승인"
+              },
+              {
+                "actionType": "performance-reapprove",
+                "label": "실적 승인 확정"
+              },
+              {
+                "actionType": "performance-hide-approved",
+                "label": "승인완료 목록삭제"
+              },
+              {
+                "actionType": "schedule-publish",
+                "label": "근무표 배포"
+              },
+              {
+                "actionType": "sign-in",
+                "label": "로그인"
+              },
+              {
+                "actionType": "route-view",
+                "label": "화면 이동"
+              },
+              {
+                "actionType": "performance-reject",
+                "label": "실적 반려"
+              },
+              {
+                "actionType": "site-save",
+                "label": "근무지 저장"
+              }
+            ],
+            "canonicalLabels": {
+              "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\shared\\domain\\access-log.js",
+              "bytes": 3575,
+              "sha256": "D873CF5FF4FFEB34CB2AC1E44A60D5E63E41AEB4992A043361AACF4B5F97D81B",
+              "labels": {
+                "sign-in": "로그인",
+                "sign-in-failed": "로그인 실패",
+                "password-change": "비밀번호 변경",
+                "account-recovery": "계정 복구",
+                "account-recovery-key-rotate": "계정복구키 발급",
+                "sign-out": "로그아웃",
+                "route-view": "화면 이동",
+                "app-update-check": "업데이트 확인",
+                "app-update-download": "업데이트 다운로드",
+                "app-update-install": "업데이트 적용",
+                "release-notes-view": "패치노트 확인",
+                "dashboard-export": "대시보드 출력",
+                "employee-save": "인력 저장",
+                "employee-delete": "인력 삭제",
+                "employee-wage-save": "시급 저장",
+                "employee-wage-close": "시급 종료",
+                "employee-assignment-save": "배정 저장",
+                "employee-assignment-close": "배정 종료",
+                "employee-assignment-reorder": "배정 순서 변경",
+                "employee-wage-bulk-apply": "시급 일괄 적용",
+                "site-save": "근무지 저장",
+                "site-delete": "근무지 삭제",
+                "app-settings-save": "앱 설정 저장",
+                "database-backup-run": "DB 수동 백업",
+                "database-migration-preview": "DB 복원 미리보기",
+                "database-migration-update": "DB 복원 반영",
+                "file-watch-restart": "파일 감시 재시작",
+                "file-watch-stop": "파일 감시 중지",
+                "holiday-fetch": "공휴일 불러오기",
+                "holiday-save": "공휴일 등록",
+                "holiday-rename": "공휴일 수정",
+                "holiday-delete": "공휴일 삭제",
+                "holiday-replace": "공휴일 일괄 반영",
+                "allowance-rate-save": "요율 저장",
+                "allowance-rate-delete": "요율 삭제",
+                "user-save": "사용자 저장",
+                "user-delete": "사용자 삭제",
+                "site-name-save": "사이트 명 저장",
+                "site-name-delete": "사이트 명 삭제",
+                "template-inspect": "양식 검증",
+                "template-preview": "양식 미리보기",
+                "template-save": "양식 등록",
+                "template-approve": "양식 승인",
+                "template-set-default": "기본 양식 지정",
+                "template-file-name-update": "출력 파일명 규칙 저장",
+                "template-delete": "양식 삭제",
+                "layout-save": "문서 레이아웃 저장",
+                "layout-reset": "문서 레이아웃 초기화",
+                "layout-preview": "문서 레이아웃 미리보기",
+                "shift-pattern-import": "근무패턴 분석",
+                "shift-pattern-save": "근무패턴 저장",
+                "shift-pattern-deactivate": "근무패턴 비활성화",
+                "schedule-save": "근무표 저장",
+                "schedule-preview": "근무표 미리보기",
+                "schedule-export": "근무표 생성",
+                "schedule-publish": "근무표 배포",
+                "performance-approve": "실적 승인",
+                "performance-reapprove": "실적 승인 확정",
+                "performance-reject": "실적 반려",
+                "performance-hide-approved": "승인완료 목록삭제",
+                "performance-return-to-pending": "승인대기로 되돌리기",
+                "performance-open-file": "원본 파일 열기",
+                "allowance-calculate": "수당 계산",
+                "allowance-approve": "수당 승인",
+                "allowance-reject": "수당 반려",
+                "allowance-early-payout": "선지급 지정",
+                "allowance-export": "품의 출력",
+                "allowance-proposal-preview": "품의 미리보기",
+                "allowance-proposal-approve": "품의 승인"
+              }
+            },
+            "fixtureRequestCount": 0,
+            "rawErrors": {
+              "console": [],
+              "pageerror": [],
+              "requestfailed": [],
+              "badResponses": []
+            },
+            "chrome": {
+              "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+              "version": "155.0.8059.40",
+              "browserVersion": "155.0.8059.39"
+            },
+            "resources": [
+              {
+                "kind": "browser",
+                "id": "browser-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791852127476
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791852127893
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791852128058
+                  }
+                ]
+              },
+              {
+                "kind": "context",
+                "id": "context-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791852127490
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791852127883
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791852127893
+                  }
+                ]
+              }
+            ],
+            "captureId": null
+          },
+          "checks": [
+            {
+              "id": "CORE-02",
+              "sourceArtifact": "core-observations",
+              "pointer": "/origin",
+              "actual": "http://127.0.0.1:18741/"
+            },
+            {
+              "id": "CORE-03",
+              "sourceArtifact": "core-observations",
+              "pointer": "/loginInputs",
+              "actual": {
+                "id": {
+                  "count": 1,
+                  "visible": true
+                },
+                "password": {
+                  "count": 1,
+                  "visible": true
+                }
+              }
+            },
+            {
+              "id": "CORE-04",
+              "sourceArtifact": "core-observations",
+              "pointer": "/fixtureLabels",
+              "actual": [
+                {
+                  "actionType": "performance-approve",
+                  "label": "실적 승인"
+                },
+                {
+                  "actionType": "performance-reapprove",
+                  "label": "실적 승인 확정"
+                },
+                {
+                  "actionType": "performance-hide-approved",
+                  "label": "승인완료 목록삭제"
+                },
+                {
+                  "actionType": "schedule-publish",
+                  "label": "근무표 배포"
+                },
+                {
+                  "actionType": "sign-in",
+                  "label": "로그인"
+                },
+                {
+                  "actionType": "route-view",
+                  "label": "화면 이동"
+                },
+                {
+                  "actionType": "performance-reject",
+                  "label": "실적 반려"
+                },
+                {
+                  "actionType": "site-save",
+                  "label": "근무지 저장"
+                }
+              ]
+            },
+            {
+              "id": "CORE-05",
+              "sourceArtifact": "core-observations",
+              "pointer": "/fixtureRequestCount",
+              "actual": 0
+            },
+            {
+              "id": "CORE-06",
+              "sourceArtifact": "core-observations",
+              "pointer": "/rawErrors",
+              "actual": {
+                "console": [],
+                "pageerror": [],
+                "requestfailed": [],
+                "badResponses": []
+              }
+            },
+            {
+              "id": "CORE-07",
+              "sourceArtifact": "core-observations",
+              "pointer": "/chrome",
+              "actual": {
+                "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                "version": "155.0.8059.40",
+                "browserVersion": "155.0.8059.39"
+              }
+            },
+            {
+              "id": "CORE-08",
+              "sourceArtifact": "core-observations",
+              "pointer": "/resources",
+              "actual": [
+                {
+                  "kind": "browser",
+                  "id": "browser-1",
+                  "events": [
+                    {
+                      "state": "created",
+                      "timeMs": 1791852127476
+                    },
+                    {
+                      "state": "close-start",
+                      "timeMs": 1791852127893
+                    },
+                    {
+                      "state": "closed",
+                      "timeMs": 1791852128058
+                    }
+                  ]
+                },
+                {
+                  "kind": "context",
+                  "id": "context-1",
+                  "events": [
+                    {
+                      "state": "created",
+                      "timeMs": 1791852127490
+                    },
+                    {
+                      "state": "close-start",
+                      "timeMs": 1791852127883
+                    },
+                    {
+                      "state": "closed",
+                      "timeMs": 1791852127893
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "errors": {
+            "primary": {
+              "code": "A1_WORKER_FAILED",
+              "phase": "execution",
+              "name": "Error",
+              "message": "SOL_CORE_VIEWPORT_NULL",
+              "stack": "Error: SOL_CORE_VIEWPORT_NULL\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:508:13)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5",
+              "timeMs": 1791852127883
+            },
+            "cleanup": [],
+            "evidence": [],
+            "unexpected": []
+          }
+        },
+        "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-8qxXjT",
+        "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t1HcoV"
+      },
+      {
+        "mode": "canonical-import-failure",
+        "finding": "ACQUIRED_CANONICAL_BYTES_METADATA_LOST_AFTER_IMPORT_FAILURE",
+        "argv": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core"
+        ],
+        "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+        "pid": 12508,
+        "startMs": 1791852128083,
+        "endMs": 1791852128580,
+        "exit": {
+          "code": 1,
+          "signal": null,
+          "timeMs": 1791852128577
+        },
+        "timedOut": false,
+        "ack": {
+          "type": "worker-ack",
+          "protocol": 2,
+          "case": "contract-core",
+          "ownerPid": 13392,
+          "workerPid": 12508,
+          "nonce": "886c4bf14fa43e98da241448d9409cfaae065e128e0b5fc7745b4914d4b38461",
+          "contextSha256": "62EE6563879C5612769CE0904A3361E97A361DF7084B26F1DE202F6B5D3DBA70"
+        },
+        "stdout": "",
+        "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v5-extra-AgwE0t\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\",\"stack\":\"Error: SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\\n    at Module._load (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs:69:289)\\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\\n    at require (node:internal/modules/helpers:152:16)\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:463:22)\\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\"}}\n",
+        "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-private-6ICtbt\\canonical-import-failure.events.jsonl",
+        "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-AgwE0t\\core-partial.json",
+        "partial": {
+          "status": "FAIL",
+          "case": "contract-core",
+          "runId": "run-sol-a1v5-extra-AgwE0t",
+          "context": {
+            "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+            "url": "http://127.0.0.1:18741/",
+            "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-AgwE0t",
+            "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-8C8aM4",
+            "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-8C8aM4\\data\\bootstrap-credentials.json",
+            "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+            "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+            "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+            "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+          },
+          "worker": {
+            "pid": 12508,
+            "parentPid": 13392,
+            "nonceSha256": "B029C1920D77348C16141CDB0D65239BF446261F06ACA8F9AC3A651C82005A27"
+          },
+          "raw": {
+            "viewport": null,
+            "origin": null,
+            "loginInputs": null,
+            "fixtureLabels": null,
+            "canonicalLabels": null,
+            "fixtureRequestCount": null,
+            "rawErrors": {
+              "console": [],
+              "pageerror": [],
+              "requestfailed": [],
+              "badResponses": []
+            },
+            "chrome": null,
+            "resources": [],
+            "captureId": null
+          },
+          "checks": [
+            {
+              "id": "CORE-06",
+              "sourceArtifact": "core-observations",
+              "pointer": "/rawErrors",
+              "actual": {
+                "console": [],
+                "pageerror": [],
+                "requestfailed": [],
+                "badResponses": []
+              }
+            },
+            {
+              "id": "CORE-08",
+              "sourceArtifact": "core-observations",
+              "pointer": "/resources",
+              "actual": []
+            }
+          ],
+          "errors": {
+            "primary": {
+              "code": "A1_WORKER_FAILED",
+              "phase": "execution",
+              "name": "Error",
+              "message": "SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES",
+              "stack": "Error: SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\n    at Module._load (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v5-review-20261013_093034/partial-preload.mjs:69:289)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:463:22)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)",
+              "timeMs": 1791852128558
+            },
+            "cleanup": [],
+            "evidence": [],
+            "unexpected": []
+          }
+        },
+        "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-AgwE0t",
+        "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-8C8aM4"
+      }
+    ],
+    "retention": "Retain exact created artifacts and fixtures; no foreign/historical cleanup"
+  },
+  "partialSuite": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-partial-OkjBXb",
+    "status": "PASS",
+    "modes": 7
+  },
+  "port18741Free": true,
+  "productEditsBySol": 0,
+  "full919Rerun": false,
+  "A2Accepted": false,
+  "BAuthorized": false,
+  "retention": "Retain own current artifacts/fault fixtures; no foreign/historical deletion"
+}

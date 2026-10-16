@@ -1,0 +1,8 @@
+
+PASS: [UI 검증 성공: access-history-sol-unregistered-case]
+- 대상 주소: http://127.0.0.1:63836/
+- 크롬: C:\Program Files\Google\Chrome\Application\chrome.exe (판 154.0.8037.58)
+- 뷰포트: 1440x900 (fullPage)
+- 캡처 산출물 (0개):
+- manifest: artifacts/captures/phase3/access-history-sol-unregistered-case/run-20261001-162038-h1B7YK/manifest.json
+- 콘솔/페이지/요청/HTTP/정리 오류: 0건

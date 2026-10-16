@@ -1,0 +1,189 @@
+{
+  "chromeVersion": "154.0.8037.58",
+  "browserVersion": "154.0.8037.58",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "groups": [
+    {
+      "name": "badge-design-and-long-row",
+      "status": "PASS",
+      "actual": {
+        "hideBadge": {
+          "class": "access-history-badge badge-danger",
+          "bg": "rgb(252, 235, 233)",
+          "color": "rgb(192, 57, 43)"
+        },
+        "normalRow": {
+          "height": 40,
+          "width": 1170,
+          "fontSize": "14px"
+        },
+        "longRow": {
+          "height": 40,
+          "width": 1170,
+          "fontSize": "14px"
+        },
+        "dateInput": {
+          "height": 34,
+          "width": 132,
+          "fontSize": "14px"
+        },
+        "headers": [
+          {
+            "text": "활동시간",
+            "height": 40,
+            "width": 130,
+            "fontSize": "12px"
+          },
+          {
+            "text": "사용자",
+            "height": 40,
+            "width": 140,
+            "fontSize": "12px"
+          },
+          {
+            "text": "권한",
+            "height": 40,
+            "width": 100,
+            "fontSize": "12px"
+          },
+          {
+            "text": "액션내용",
+            "height": 40,
+            "width": 160,
+            "fontSize": "12px"
+          },
+          {
+            "text": "상세",
+            "height": 40,
+            "width": 640,
+            "fontSize": "12px"
+          }
+        ],
+        "tableAccessibleLabel": "활동 이력 목록",
+        "tableLabelledby": null,
+        "caption": null,
+        "detailFullTextLength": 1216,
+        "detailTitleLength": 1216
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\design-long-row.png"
+    },
+    {
+      "name": "settled-old-rows-during-debounce",
+      "status": "FAIL",
+      "actual": {
+        "oldRows": 1,
+        "count": "검색 입력 중…",
+        "loading": 0
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\settled-old-rows-during-debounce.png"
+    },
+    {
+      "name": "invalid-date-during-loading",
+      "status": "PASS",
+      "actual": {
+        "loadingBeforeRelease": 0,
+        "loadingAfterRelease": 0,
+        "count": "-",
+        "dateError": "조회 시작일이 조회 종료일보다 늦을 수 없습니다.",
+        "refreshNativeDisabled": false
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\invalid-date-loading-left.png"
+    },
+    {
+      "name": "stale-success-during-debounce",
+      "status": "PASS",
+      "actual": {
+        "staleVisibleWithinDebounce": false,
+        "observedAfterMs": 192,
+        "count": "검색 입력 중…",
+        "keyword": "new-keyword"
+      }
+    },
+    {
+      "name": "stale-auth-during-debounce",
+      "status": "PASS",
+      "actual": {
+        "loginDisplayed": false,
+        "activityDisplayed": true
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\stale-auth-incorrect-login.png"
+    },
+    {
+      "name": "refresh-does-not-cancel-debounce",
+      "status": "PASS",
+      "actual": {
+        "matchingRequests": 1,
+        "requests": [
+          {
+            "query": {
+              "dateFrom": "2026-09-01",
+              "dateTo": "2026-09-30",
+              "keyword": "one-refresh"
+            },
+            "time": 1790776183510
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-retry-pending-duplicate",
+      "status": "PROBE_ERROR",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '사용자 목록 재시도', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled type=\"button\" id=\"btn-retry-users\" class=\"btn-secondary btn-sm\">사용자 목록 재시도</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    55 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "name": "keyboard-invalid-lock",
+      "status": "PASS",
+      "actual": {
+        "focused": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "outline": "2px",
+        "requests": 0
+      }
+    },
+    {
+      "name": "role-guard-three-real-sessions",
+      "status": "PASS",
+      "actual": [
+        {
+          "role": "operator",
+          "menu": 0,
+          "autoLogs": 0,
+          "autoUsers": 0,
+          "logsDenied": true,
+          "usersDenied": true,
+          "logsDataAbsent": true,
+          "usersDataAbsent": true
+        },
+        {
+          "role": "planner",
+          "menu": 0,
+          "autoLogs": 0,
+          "autoUsers": 0,
+          "logsDenied": true,
+          "usersDenied": true,
+          "logsDataAbsent": true,
+          "usersDataAbsent": true
+        },
+        {
+          "role": "reviewer",
+          "menu": 0,
+          "autoLogs": 0,
+          "autoUsers": 0,
+          "logsDenied": true,
+          "usersDenied": true,
+          "logsDataAbsent": true,
+          "usersDataAbsent": true
+        }
+      ]
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "requestFailures": [],
+  "responses": [],
+  "finished": "2026-09-30T13:50:19.368Z"
+}

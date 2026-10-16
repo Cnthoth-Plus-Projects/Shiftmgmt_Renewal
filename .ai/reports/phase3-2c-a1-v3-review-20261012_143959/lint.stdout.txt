@@ -1,0 +1,18 @@
+
+> shiftmgmt@0.1.0 lint
+> eslint "src/**/*.ts"
+
+
+C:\Projects\Active\ShiftMgmt_V4\src\main\services\allowance-document-export-service.ts
+  320:9  warning  'startDate' is assigned a value but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  501:7  warning  'captureWorksheetRowStyleRange' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Projects\Active\ShiftMgmt_V4\src\main\services\file-watch-runtime-service.ts
+  20:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\Active\ShiftMgmt_V4\src\shared\bridge\contracts.ts
+  37:45  warning  'TimeRange' is defined but never used. Allowed unused vars must match /^_/u                     @typescript-eslint/no-unused-vars
+  46:3   warning  'AllowanceHistoryStatusFilter' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 5 problems (0 errors, 5 warnings)
+

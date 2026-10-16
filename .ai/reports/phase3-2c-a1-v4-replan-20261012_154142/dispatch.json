@@ -1,0 +1,34 @@
+{
+  "status": "READY_TO_CODE_USER_RELAY_PENDING",
+  "time": "2026-10-12 16:30:41 KST",
+  "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_154142_3-2c-A1-v3-Sol-FAILED_次패킷전보존본.md",
+  "received": {
+    "bytes": 16738,
+    "sha256": "2AE144A6A5B564E1545D38A774DF83581D7C379C91E7A95E3B456A938E741E41"
+  },
+  "sentArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_163041_3-2c-A1-v4-Sol-to-Gemini_IMPLEMENT_발송본.md",
+  "handoff": {
+    "bytes": 30443,
+    "sha256": "85131CE23EAF5D7366542A2EB850B72251A743FC9FF27E9EDEE151E4E5FA91FF"
+  },
+  "requestBodyBytes": 29144,
+  "requestBodySha256": "2BBF10614CC2A7AC8BC89566D80741EBBEB988EBD457204DAB051040D3F6133A",
+  "baseline": {
+    "bytes": 71400,
+    "sha256": "86F9EEF2D499B88CD9717BE40C2E14139B57422A69C7CDEF5B5476F2D063B208"
+  },
+  "execution": {
+    "bytes": 5544,
+    "sha256": "BF35D6B048B436DCEDEB297E2751A2ED5E5F4804C2546FEBAB5EB19BBF76B280"
+  },
+  "gate": {
+    "bytes": 25751,
+    "sha256": "21D88C1662D2EE87D89BFA22332255466BEBE6E3C84F2B15E57AB4BB64314B84"
+  },
+  "controlFiles": 62,
+  "productEditsBySol": 0,
+  "A1Accepted": false,
+  "GeminiImplementationRun": false,
+  "priorCorrectionsExhausted": 2,
+  "counterReset": 0
+}

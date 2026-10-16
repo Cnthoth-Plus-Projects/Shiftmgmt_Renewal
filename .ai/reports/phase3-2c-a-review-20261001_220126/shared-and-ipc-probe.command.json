@@ -1,0 +1,15 @@
+{
+  "name": "shared-and-ipc-probe",
+  "command": [
+    "node",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-foundation-probes\\run-sol-shared-script-ae0g2b3q\\shared-and-ipc-probe.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:16:27.227512+00:00",
+  "pid": 50128,
+  "rc": 0,
+  "end": "2026-10-01T13:16:29.357398+00:00",
+  "elapsedSeconds": 2.125,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\shared-and-ipc-probe.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\shared-and-ipc-probe.stderr.txt"
+}

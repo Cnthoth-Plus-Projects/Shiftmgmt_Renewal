@@ -1,0 +1,44 @@
+{
+  "name": "actual-core",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=contract-core"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:06:22.427533+00:00",
+  "pid": 43276,
+  "rc": 0,
+  "end": "2026-10-01T13:07:54.966176+00:00",
+  "elapsedSeconds": 92.531,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core.stderr.txt",
+  "ownerFinal": {
+    "label": "access-history-contract-core",
+    "status": "PASS",
+    "exitCode": 0,
+    "tempCleaned": true,
+    "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-220622-5NxZB9\\owner-final.json"
+  },
+  "checker": {
+    "name": "actual-core-check",
+    "command": [
+      "python",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+      "--contract-sha",
+      "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "--baseline-sha",
+      "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+      "--core",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-220622-5NxZB9\\owner-final.json"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:07:54.968867+00:00",
+    "pid": 13432,
+    "rc": 0,
+    "end": "2026-10-01T13:07:56.151009+00:00",
+    "elapsedSeconds": 1.187,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core-check.stderr.txt"
+  }
+}

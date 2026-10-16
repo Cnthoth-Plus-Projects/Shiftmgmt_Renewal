@@ -1,0 +1,1 @@
+(()=>{var t=document.getElementById('e8-type');t.value='BP(외부인력)';t.dispatchEvent(new Event('change',{bubbles:true}));return 'ok';})()

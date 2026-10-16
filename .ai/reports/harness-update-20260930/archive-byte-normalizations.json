@@ -1,0 +1,30 @@
+[
+  {
+    "Path": "scripts/Sync-HarnessClients.ps1",
+    "OriginalBytes": 11470,
+    "CanonicalBytes": 11251,
+    "CanonicalBlobSha1": "9d330f4c02764894ff9c22afdc31f8f77fc28cd2",
+    "Method": "CRLF-to-LF; exact GitHub tree blob SHA verified before write"
+  },
+  {
+    "Path": "scripts/Test-HarnessRuntime.ps1",
+    "OriginalBytes": 9358,
+    "CanonicalBytes": 9179,
+    "CanonicalBlobSha1": "7a4c3b942b0c744b8570c2527343d0585ed9ebc6",
+    "Method": "CRLF-to-LF; exact GitHub tree blob SHA verified before write"
+  },
+  {
+    "Path": "scripts/_Harness.Common.ps1",
+    "OriginalBytes": 14616,
+    "CanonicalBytes": 14291,
+    "CanonicalBlobSha1": "4343393d28bdacfd212643838a5d7abf2d3bb78d",
+    "Method": "CRLF-to-LF; exact GitHub tree blob SHA verified before write"
+  },
+  {
+    "Path": "scripts/_Harness.Runtime.ps1",
+    "OriginalBytes": 41913,
+    "CanonicalBytes": 41075,
+    "CanonicalBlobSha1": "ab0c2ad634eb068daf3ab6c66223fa89ffafed8d",
+    "Method": "CRLF-to-LF; exact GitHub tree blob SHA verified before write"
+  }
+]

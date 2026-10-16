@@ -1,0 +1,66 @@
+--- received-baseline
++++ sol-verified-helper
+@@ -45,9 +45,9 @@
+   if(role==='admin'){
+    const desc=await page.locator('#l4-btn-submit').getAttribute('aria-describedby');
+    check('L4-lock-described',!!desc,desc,'aria-describedby -> visible reason');
+-   check('L4-lock-focusable',!await page.locator('#l4-btn-submit').isDisabled(),await page.locator('#l4-btn-submit').isDisabled(),'validation lock remains keyboard focusable');
++   await page.locator('#l4-confirm-pw').focus();await page.keyboard.press('Tab');await page.keyboard.press('Tab');const tabLock=await page.locator('#l4-btn-submit').evaluate(el=>({nativeDisabled:el.disabled,focused:document.activeElement===el,outline:getComputedStyle(el).outline}));check('L4-lock-focusable',!tabLock.nativeDisabled&&tabLock.focused,tabLock,'native disabled=false; actual Tab -> button, accent 2px ring');
+    let changeRequests=0;const onChange=r=>{if(r.url().endsWith('/api/auth:change-password'))changeRequests++;};page.on('request',onChange);
+-   const probeLock=async()=>{const start=changeRequests;const btn=page.locator('#l4-btn-submit'),box=await btn.boundingBox();await page.mouse.click(box.x+box.width/2,box.y+box.height/2);if(!await btn.isDisabled()){await btn.focus();await page.keyboard.press('Space');await page.keyboard.press('Enter');}await page.locator('#l4-confirm-pw').press('Enter');await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));return{newRequests:changeRequests-start,ariaDisabled:await btn.getAttribute('aria-disabled'),nativeDisabled:await btn.isDisabled()};};
++   const probeLock=async()=>{const start=changeRequests;const btn=page.locator('#l4-btn-submit'),box=await btn.boundingBox();await page.mouse.click(box.x+box.width/2,box.y+box.height/2);if(!await btn.evaluate(el=>el.disabled)){await btn.focus();await page.keyboard.press('Space');await page.keyboard.press('Enter');}await page.locator('#l4-confirm-pw').press('Enter');await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));return{newRequests:changeRequests-start,ariaDisabled:await btn.getAttribute('aria-disabled'),nativeDisabled:await btn.evaluate(el=>el.disabled)};};
+    await page.locator('#l4-current-pw').fill(cred.password);await page.locator('#l4-new-pw').fill('short');await page.locator('#l4-confirm-pw').fill('short');
+    const weak=await probeLock();check('L4-weak-password-blocked',weak.newRequests===0&&weak.ariaDisabled==='true',weak,'weak input: click/Space/Enter/form Enter cannot call change API; native-disabled keyboard activation unavailable is recorded separately');
+    await page.locator('#l4-new-pw').fill(next);await page.locator('#l4-confirm-pw').fill(next+'x');
+@@ -56,7 +56,7 @@
+   }
+   await page.locator('#l4-current-pw').fill(cred.password);await page.locator('#l4-new-pw').fill(next);await page.locator('#l4-confirm-pw').fill(next);
+   check(role+'-L4-valid-enabled',!await page.locator('#l4-btn-submit').isDisabled(),await page.locator('#l4-btn-submit').isDisabled(),false);
+-  await page.locator('#l4-confirm-pw').press('Enter');nextPasswords[role]=next;
++  if(role==='admin'){const label=phase;let requests=0;const onChange=r=>{if(r.url().endsWith('/api/auth:change-password'))requests++;};page.on('request',onChange);let release;const held=new Promise(r=>release=r);let entered;const reached=new Promise(r=>entered=r);await page.route('**/api/auth:change-password',async route=>{entered();await held;await route.continue();});await page.locator('#l4-confirm-pw').press('Enter');await reached;const pending=await page.locator('#l4-btn-submit').evaluate(el=>({nativeDisabled:el.disabled,ariaDisabled:el.getAttribute('aria-disabled'),empty:[...document.querySelectorAll('#l4-current-pw,#l4-new-pw,#l4-confirm-pw')].every(i=>i.value==='')}));await page.locator('#l4-confirm-pw').press('Enter');await page.evaluate(()=>document.querySelector('#l4-btn-submit').click());check('L4-pending-single-submit',pending.nativeDisabled&&pending.empty&&requests===1,{...pending,requests},'native disabled, fields cleared, double submit count1');release();await page.unroute('**/api/auth:change-password');await page.waitForSelector('.header-bar');page.off('request',onChange);}else{await page.locator('#l4-confirm-pw').press('Enter');}nextPasswords[role]=next;
+  }
+  await waitHome(page);
+ }
+@@ -65,7 +65,7 @@
+  const context=await browser.newContext({viewport:report.viewport});const page=await context.newPage();watch(page);
+  await group('login-design-keyboard',async()=>{
+   await page.goto(info.url);await page.locator('#login-id').waitFor();await page.evaluate(()=>document.fonts.ready);
+-  const m=await metrics(page,['body','.login-container','.login-card','.form-input','.btn-primary','.login-title']);report.measurements.login=m;
++  const m=await metrics(page,['body','.login-container','.login-card','.form-input','.btn-primary','.login-title','.btn-eye-toggle']);report.measurements.login=m;
+   check('L1-background',m['.login-container'].background==='rgb(229, 231, 235)',m['.login-container'].background,'#E5E7EB');
+   check('L1-card-width',m['.login-card'].width===460,m['.login-card'].width,460);
+   check('L1-card-border',m['.login-card'].border==='rgb(226, 229, 234)',m['.login-card'].border,'#E2E5EA');
+@@ -81,13 +81,13 @@
+   check('L1-eye-space',await page.locator('#login-password').getAttribute('type')==='text',await page.locator('#login-password').getAttribute('type'),'text');
+   await page.keyboard.press('Enter');check('L1-eye-enter',await page.locator('#login-password').getAttribute('type')==='password',await page.locator('#login-password').getAttribute('type'),'password');
+   await page.keyboard.press('Escape');check('L1-escape-stable',await page.locator('#login-id').isVisible(),true,'full-page stays mounted; no dialog');
+-  await capture(page,'login-L1');
++  const eyeStyle=m['.btn-eye-toggle'];check('static-eye-radius',eyeStyle.radius==='6px',eyeStyle.radius,'6px');report.measurements.iconFont=await page.locator('.btn-eye-toggle .material-symbols-outlined').evaluate(el=>({font:getComputedStyle(el).fontFamily,width:el.getBoundingClientRect().width,loaded:document.fonts.check('24px "Material Symbols Outlined"'),text:el.textContent}));await capture(page,'login-L1');
+   await page.locator('#login-id').fill('sol-nonexistent-account');await page.locator('#login-password').fill('invalid');await page.locator('#login-password').press('Enter');
+   await page.getByRole('alert').waitFor();check('L2-enter-error-alert',true,await page.getByRole('alert').innerText(),'visible login failure alert');await capture(page,'login-L2');
+  });
+  await group('admin-login-shell-home',async()=>{
+   await login(page,bootstrap.credentials['user-admin'],'admin');
+-  const m=await metrics(page,['body','.sidebar','.header-bar','.footer-statusbar','.page-content','.progress-card','.section-card','.role-badge']);report.measurements.admin=m;
++  const m=await metrics(page,['body','.sidebar','.header-bar','.footer-statusbar','.page-content','.progress-card','.section-card','.role-badge','.header-title','.btn-sidebar-toggle']);report.measurements.admin=m;
+   check('shell-sidebar-expanded',m['.sidebar'].width===220,m['.sidebar'].width,220);
+   check('shell-header-height',m['.header-bar'].height===56,m['.header-bar'].height,56);
+   check('shell-footer-height',m['.footer-statusbar'].height===32,m['.footer-statusbar'].height,32);
+@@ -95,7 +95,7 @@
+   const tokens=await page.evaluate(()=>{const s=getComputedStyle(document.documentElement);return Object.fromEntries(['--bg','--line','--text','--text-sub','--accent-hover','--success-bg'].map(k=>[k,s.getPropertyValue(k).trim()]));});report.measurements.rootTokens=tokens;
+   for(const[k,v]of Object.entries({'--bg':'#F4F5F7','--line':'#E2E5EA','--text':'#1F2430','--text-sub':'#4B5563','--accent-hover':'#32479B','--success-bg':'#E8F5EE'}))check('token-'+k,tokens[k]?.toUpperCase()===v,tokens[k],v);
+   check('home-cards-flat',m['.progress-card'].radius==='6px'&&m['.progress-card'].shadow==='none'&&m['.section-card'].radius==='6px'&&m['.section-card'].shadow==='none',{progress:m['.progress-card'],section:m['.section-card']},'6px/no shadow');
+-  await capture(page,'admin-home');
++  check('static-sidebar-radius',m['.btn-sidebar-toggle'].radius==='6px',m['.btn-sidebar-toggle'].radius,'6px');check('static-header-title',m['.header-title'].fontSize==='20px'&&m['.header-title'].fontWeight==='600',m['.header-title'],'20px/600');await capture(page,'admin-home');
+   await page.reload();await waitHome(page);await page.keyboard.press('Tab');const first=await focused(page);
+   check('shell-first-tab-skip',first.class==='skip-link',first,'본문 바로가기');
+   await page.keyboard.press('Enter');const enter=await focused(page);await page.keyboard.press('Tab');const next=await focused(page);report.measurements.skip={first,enter,next};
+@@ -123,7 +123,7 @@
+   await page.keyboard.press('Tab');const first=await focused(page);await page.keyboard.press('Enter');await page.waitForURL('**/#main-content');
+   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const enter=await focused(page);await page.keyboard.press('Tab');const next=await focused(page);report.measurements.skip.withAction={first,enter,next};
+   check('shell-skip-passes-nav-header',enter.id==='main-content'||next.insideMain||next.id==='btn-restart-watch',{enter,next},'Tab after skip reaches main action or footer, bypassing sidebar/header');
+-  const m=(await metrics(page,['#btn-restart-watch']))['#btn-restart-watch'];report.measurements.restart=m;check('watch-restart-font-min12',parseFloat(m.fontSize)>=12,m.fontSize,'>=12px');await capture(page,'admin-watch-stopped');
++  const m=(await metrics(page,['#btn-restart-watch']))['#btn-restart-watch'];report.measurements.restart=m;check('watch-restart-font-min12',parseFloat(m.fontSize)>=12,m.fontSize,'>=12px');check('static-restart-radius',m.radius==='6px',m.radius,'6px');await capture(page,'admin-watch-stopped');
+   const restart=page.locator('#btn-restart-watch');await restart.focus();await page.keyboard.press('Enter');await page.waitForFunction(()=>document.querySelector('#sb-watch')?.textContent.includes('폴더 감시 중'));
+   check('admin-watch-enter-restarted',true,'폴더 감시 중','actual API success');
+   for(const role of ['planner','reviewer']){

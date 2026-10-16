@@ -1,0 +1,66 @@
+{
+  "time": "2026-10-12T02:41:02.871629+00:00",
+  "verdict": "CONTROL_READY_AND_IMPLEMENT_PACKET_PREPARED_NOT_A1_ACCEPTED",
+  "sourceBeforeAfterEqual": true,
+  "oldControlsUnchanged": true,
+  "handoffArchiveVerified": true,
+  "scope": {
+    "status": "PASS",
+    "result": {
+      "files": 341,
+      "protected": 339,
+      "dirtyPaths": 12,
+      "changedAllowed": []
+    }
+  },
+  "dispatch": {
+    "time": "2026-10-12T11:40:59.910199+09:00",
+    "action": "IMPLEMENT",
+    "status": "READY_TO_CODE_USER_RELAY_PENDING",
+    "handoff": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 29694,
+    "sha256": "50E6BD64DC574C16D3D4DBB25164DF2D1AB9B3CFA99FFC23BC52C7B6BD641F38",
+    "requestBodyBytes": 28253,
+    "requestBodySha256": "75E2768175B2324F27DA9966E6F3828E81024CE69B4051E4A5E24A7F9B6AEE3E",
+    "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_110625_3-2c-A1-Sol-REPLAN_수신검수결과보존본.md",
+    "receivedBytes": 19905,
+    "receivedSha256": "F437B387C5F8F0EA33EBCF0BF4C1FE9558F33FDBE31F86348358572953311007",
+    "outgoingArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_114303_3-2c-A1-v3-Sol-IMPLEMENT_최종발송원본.md",
+    "baselinePath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\baseline.json",
+    "baselineSha256": "8E24BC378E4FCA093A36AB902F04C92BD09567B78F7995AA030A60B5634C22E6",
+    "executionSha256": "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C",
+    "gateSha256": "0464704230DE376908ADB910F821E3F015870733347A5C749ED2930C734FAA4A",
+    "sourceFiles": 341,
+    "protectedFiles": 339,
+    "allowed": [
+      "scripts/ui-checks/access-history.mjs",
+      "scripts/ui-checks/access-history-shared.mjs"
+    ],
+    "controlFilesLocked": 43,
+    "productEditsBySol": 0,
+    "implementationExecuted": false,
+    "A1Accepted": false,
+    "A2Accepted": false,
+    "BAuthorized": false,
+    "retryHistory": {
+      "sameClass": "R32C-06",
+      "priorCorrectionsExhausted": 2,
+      "resetAllowed": false,
+      "newPacketKind": "IMPLEMENT; execution strategy replacement"
+    },
+    "controlValidation": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261012_110625\\control-validation.json",
+    "priorPreparedPacket": {
+      "bytes": 29577,
+      "sha256": "DB5B8E7E0C2631FD52C3DD9A36E9F28B7A13AA4A334F831FD828D6331564192D",
+      "baselineSha256": "150C04602C0FA592D5FE23BFF65BE1C8C9CD30ED86F50EA7D0AA0C5448B1975D",
+      "outgoingArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_114059_3-2c-A1-v3-Sol-IMPLEMENT_발송원본.md"
+    },
+    "preRelayClarification": "CORE-03 loginInputs exact count/visible only; no added product requirement"
+  },
+  "actualControlChecks": 35,
+  "rejectedObservationCorruptions": 9,
+  "newImplementationExecuted": false,
+  "productEditsBySol": 0,
+  "remaining": "Gemini implementation then Sol actual independent A1 review; A2/B/full release not accepted",
+  "preRelaySpecificationCorrected": true
+}

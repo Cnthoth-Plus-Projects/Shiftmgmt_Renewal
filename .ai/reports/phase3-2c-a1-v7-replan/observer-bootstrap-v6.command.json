@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\observer-selfcheck.py",
+    "--bootstrap-v6"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 47148,
+  "startUtc": "2026-10-13T04:33:23.078456+00:00",
+  "endUtc": "2026-10-13T04:33:42.907286+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-bootstrap-v6.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-bootstrap-v6.stderr.txt",
+  "stdoutSha256": "71FC59479557AAF85104207C44370FE5CB69FCA2A36EE712FC5889E8E666B280",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

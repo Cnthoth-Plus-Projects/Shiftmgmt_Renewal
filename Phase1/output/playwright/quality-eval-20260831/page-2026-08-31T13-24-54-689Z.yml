@@ -1,0 +1,393 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e3]: ── H1. 홈 — 기본 (오류 없음) (사용자) ──
+    - generic [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - complementary [ref=f2e6]:
+          - generic [ref=f2e7]:
+            - generic [ref=f2e8]: domain
+            - generic [ref=f2e9]: 근무 관리 시스템
+          - list [ref=f2e10]:
+            - listitem [ref=f2e11]:
+              - link "홈" [ref=f2e12] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e13]: home
+            - listitem [ref=f2e15]: ─ 준비 ─
+            - listitem [ref=f2e16]:
+              - link "근무지 관리" [ref=f2e17] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e18]: domain
+            - listitem [ref=f2e20]:
+              - link "인력 관리" [ref=f2e21] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e22]: group
+            - listitem [ref=f2e24]: ─ 운영 ─
+            - listitem [ref=f2e25]:
+              - link "근무표 배포" [ref=f2e26] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e27]: calendar_month
+            - listitem [ref=f2e29]:
+              - link "실적 관리 128" [ref=f2e30] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e31]: fact_check
+                - generic [ref=f2e32]: 실적 관리
+                - generic [ref=f2e33]: "128"
+            - listitem [ref=f2e34]: ─ 정산 ─
+            - listitem [ref=f2e35]:
+              - link "수당 관리" [ref=f2e36] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e37]: payments
+            - listitem [ref=f2e39]:
+              - link "대시보드" [ref=f2e40] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e41]: monitoring
+        - generic [ref=f2e43]:
+          - banner [ref=f2e44]:
+            - heading "홈" [level=1] [ref=f2e45]
+            - generic [ref=f2e46]:
+              - generic [ref=f2e47]: 사용자
+              - button "김지현" [ref=f2e48] [cursor=pointer]:
+                - generic [ref=f2e49]: person
+              - button "도움말" [ref=f2e51] [cursor=pointer]:
+                - generic [ref=f2e52]: help
+              - button "로그아웃" [ref=f2e54] [cursor=pointer]:
+                - generic [ref=f2e55]: logout
+          - main [ref=f2e57]:
+            - region "월별 업무 진행 현황" [ref=f2e58]:
+              - generic [ref=f2e59]:
+                - generic [ref=f2e60]:
+                  - generic [ref=f2e61]: 준비 (현재 배정 기준)
+                  - generic [ref=f2e62]: 4/5 근무지
+                - progressbar "준비 진행률 80%" [ref=f2e63]
+                - paragraph [ref=f2e65]: 이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.
+              - generic [ref=f2e66]:
+                - generic [ref=f2e67]:
+                  - generic [ref=f2e68]: 운영
+                  - generic [ref=f2e69]: 7/10 단계
+                - progressbar "운영 진행률 70%" [ref=f2e70]
+              - generic [ref=f2e72]:
+                - generic [ref=f2e73]:
+                  - generic [ref=f2e74]: 월 정산
+                  - generic [ref=f2e75]: 0/3 단계
+                - progressbar "월 정산 진행률 0%" [ref=f2e76]
+            - region [ref=f2e77]:
+              - generic [ref=f2e78]:
+                - heading "이번 달 대기 실적 현황" [level=2] [ref=f2e79]
+                - button "실적 관리에서 확인" [ref=f2e80] [cursor=pointer]
+              - generic [ref=f2e82]:
+                - generic [ref=f2e83]:
+                  - generic [ref=f2e84]: 대기 실적 그룹
+                  - generic [ref=f2e85]: 3개
+                - generic [ref=f2e86]:
+                  - generic [ref=f2e87]: 승인 대기 실적
+                  - generic [ref=f2e88]: 128건
+                - generic [ref=f2e89]:
+                  - generic [ref=f2e90]: 재승인 필요
+                  - generic [ref=f2e91]: 3건
+                - generic [ref=f2e92]:
+                  - generic [ref=f2e93]: 확인 필요
+                  - generic [ref=f2e94]: 2건
+            - region [ref=f2e95]:
+              - heading "지금 해야 할 일" [level=2] [ref=f2e97]
+              - generic [ref=f2e98]:
+                - generic [ref=f2e99]:
+                  - generic [ref=f2e100]:
+                    - generic [ref=f2e101]: fact_check
+                    - text: 대기 실적 128건
+                  - button "보기" [ref=f2e103] [cursor=pointer]
+                - generic [ref=f2e104]:
+                  - generic [ref=f2e105]:
+                    - generic [ref=f2e106]: calendar_month
+                    - text: 5월 근무표 미배포 — 지사 C
+                  - button "보기" [ref=f2e108] [cursor=pointer]
+                - generic [ref=f2e109]:
+                  - generic [ref=f2e110]:
+                    - generic [ref=f2e111]: payments
+                    - text: 대기 수당 34건
+                  - button "보기" [ref=f2e113] [cursor=pointer]
+      - contentinfo [ref=f2e114]:
+        - generic [ref=f2e115]: DB 연결됨
+        - generic [ref=f2e118]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f2e120]: 대기 파일 3개
+        - generic [ref=f2e122]: 최신
+        - generic [ref=f2e124]: v2.3.1
+  - generic [ref=f2e126]:
+    - generic [ref=f2e127]: ── H2. 홈 — 문제 있음 (사용자) ──
+    - generic [ref=f2e128]:
+      - generic [ref=f2e129]:
+        - complementary [ref=f2e130]:
+          - generic [ref=f2e131]:
+            - generic [ref=f2e132]: domain
+            - generic [ref=f2e133]: 근무 관리 시스템
+          - list [ref=f2e134]:
+            - listitem [ref=f2e135]:
+              - link "홈" [ref=f2e136] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e137]: home
+            - listitem [ref=f2e139]: ─ 준비 ─
+            - listitem [ref=f2e140]:
+              - link "근무지 관리" [ref=f2e141] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e142]: domain
+            - listitem [ref=f2e144]:
+              - link "인력 관리" [ref=f2e145] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e146]: group
+            - listitem [ref=f2e148]: ─ 운영 ─
+            - listitem [ref=f2e149]:
+              - link "근무표 배포" [ref=f2e150] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e151]: calendar_month
+            - listitem [ref=f2e153]:
+              - link "실적 관리 140" [ref=f2e154] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e155]: fact_check
+                - generic [ref=f2e156]: 실적 관리
+                - generic [ref=f2e157]: "140"
+            - listitem [ref=f2e158]: ─ 정산 ─
+            - listitem [ref=f2e159]:
+              - link "수당 관리" [ref=f2e160] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e161]: payments
+            - listitem [ref=f2e163]:
+              - link "대시보드" [ref=f2e164] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e165]: monitoring
+        - generic [ref=f2e167]:
+          - banner [ref=f2e168]:
+            - heading "홈" [level=1] [ref=f2e169]
+            - generic [ref=f2e170]:
+              - generic [ref=f2e171]: 사용자
+              - button "김지현" [ref=f2e172] [cursor=pointer]:
+                - generic [ref=f2e173]: person
+              - button "도움말" [ref=f2e175] [cursor=pointer]:
+                - generic [ref=f2e176]: help
+              - button "로그아웃" [ref=f2e178] [cursor=pointer]:
+                - generic [ref=f2e179]: logout
+          - main [ref=f2e181]:
+            - region "월별 업무 진행 현황" [ref=f2e182]:
+              - generic [ref=f2e183]:
+                - generic [ref=f2e184]:
+                  - generic [ref=f2e185]: 준비 (현재 배정 기준)
+                  - generic [ref=f2e186]: 4/5 근무지
+                - progressbar "준비 진행률 80%" [ref=f2e187]
+                - paragraph [ref=f2e189]: 이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.
+              - generic [ref=f2e190]:
+                - generic [ref=f2e191]:
+                  - generic [ref=f2e192]: 운영
+                  - generic [ref=f2e193]: 7/10 단계
+                - progressbar "운영 진행률 70%" [ref=f2e194]
+              - generic [ref=f2e196]:
+                - generic [ref=f2e197]:
+                  - generic [ref=f2e198]: 월 정산
+                  - generic [ref=f2e199]: 0/3 단계
+                - progressbar "월 정산 진행률 0%" [ref=f2e200]
+            - region [ref=f2e201]:
+              - generic [ref=f2e202]:
+                - heading "이번 달 대기 실적 현황" [level=2] [ref=f2e203]
+                - button "실적 관리에서 확인" [ref=f2e204] [cursor=pointer]
+              - generic [ref=f2e206]:
+                - generic [ref=f2e207]:
+                  - generic [ref=f2e208]: 대기 실적 그룹
+                  - generic [ref=f2e209]: 4개
+                - generic [ref=f2e210]:
+                  - generic [ref=f2e211]: 승인 대기 실적
+                  - generic [ref=f2e212]: 140건
+                - generic [ref=f2e213]:
+                  - generic [ref=f2e214]: 재승인 필요
+                  - generic [ref=f2e215]: 3건
+                - generic [ref=f2e216]:
+                  - generic [ref=f2e217]: 확인 필요
+                  - generic [ref=f2e218]: 2건
+              - generic [ref=f2e219]:
+                - generic [ref=f2e220]:
+                  - generic [ref=f2e221]: warning
+                  - generic [ref=f2e222]: 근무지 연결 불가 1개 (성수물류센터)
+                - generic [ref=f2e223]:
+                  - generic [ref=f2e224]: warning
+                  - generic [ref=f2e225]: 중복 이름으로 연결 불확정 1개 (지사 B)
+            - region [ref=f2e226]:
+              - heading "지금 해야 할 일" [level=2] [ref=f2e228]
+              - generic [ref=f2e229]:
+                - generic [ref=f2e230]:
+                  - generic [ref=f2e231]:
+                    - generic [ref=f2e232]: fact_check
+                    - text: 대기 실적 140건
+                  - button "보기" [ref=f2e234] [cursor=pointer]
+                - generic [ref=f2e235]:
+                  - generic [ref=f2e236]:
+                    - generic [ref=f2e237]: calendar_month
+                    - text: 5월 근무표 미배포 — 지사 C
+                  - button "보기" [ref=f2e239] [cursor=pointer]
+                - generic [ref=f2e240]:
+                  - generic [ref=f2e241]:
+                    - generic [ref=f2e242]: error
+                    - text: 파일 해석 실패 1건
+                  - button "원인 보기" [ref=f2e244] [cursor=pointer]
+                - generic [ref=f2e245]:
+                  - generic [ref=f2e246]:
+                    - generic [ref=f2e247]: refresh
+                    - text: 시작 시 자동 복구 실패 — 4월
+                  - button "다시 시도" [ref=f2e249] [cursor=pointer]
+                - generic [ref=f2e250]:
+                  - generic [ref=f2e251]:
+                    - generic [ref=f2e252]: payments
+                    - text: 대기 수당 34건
+                  - button "보기" [ref=f2e254] [cursor=pointer]
+                - generic [ref=f2e255]:
+                  - generic [ref=f2e256]:
+                    - generic [ref=f2e257]: warning
+                    - text: 근무지 연결 불가 1개
+                  - button "실적 관리에서 확인" [ref=f2e259] [cursor=pointer]
+                - generic [ref=f2e260]:
+                  - generic [ref=f2e261]:
+                    - generic [ref=f2e262]: warning
+                    - text: 중복 이름으로 연결 불확정 1개
+                  - button "실적 관리에서 확인" [ref=f2e264] [cursor=pointer]
+      - contentinfo [ref=f2e265]:
+        - generic [ref=f2e266]: DB 연결됨
+        - generic [ref=f2e269]: "최근 인테이크: 오류 1건"
+        - generic [ref=f2e271]: 대기 파일 5개
+        - generic [ref=f2e273]: 최신
+        - generic [ref=f2e275]: v2.3.1
+  - generic [ref=f2e277]:
+    - generic [ref=f2e278]: ── H3. 홈 — 처리 중 (사용자) ──
+    - generic [ref=f2e279]:
+      - generic [ref=f2e280]:
+        - complementary [ref=f2e281]:
+          - generic [ref=f2e282]:
+            - generic [ref=f2e283]: domain
+            - generic [ref=f2e284]: 근무 관리 시스템
+          - list [ref=f2e285]:
+            - listitem [ref=f2e286]:
+              - link "홈" [ref=f2e287] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e288]: home
+            - listitem [ref=f2e290]: ─ 준비 ─
+            - listitem [ref=f2e291]:
+              - link "근무지 관리" [ref=f2e292] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e293]: domain
+            - listitem [ref=f2e295]:
+              - link "인력 관리" [ref=f2e296] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e297]: group
+            - listitem [ref=f2e299]: ─ 운영 ─
+            - listitem [ref=f2e300]:
+              - link "근무표 배포" [ref=f2e301] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e302]: calendar_month
+            - listitem [ref=f2e304]:
+              - link "실적 관리 140" [ref=f2e305] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e306]: fact_check
+                - generic [ref=f2e307]: 실적 관리
+                - generic [ref=f2e308]: "140"
+            - listitem [ref=f2e309]: ─ 정산 ─
+            - listitem [ref=f2e310]:
+              - link "수당 관리" [ref=f2e311] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e312]: payments
+            - listitem [ref=f2e314]:
+              - link "대시보드" [ref=f2e315] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f2e316]: monitoring
+        - generic [ref=f2e318]:
+          - banner [ref=f2e319]:
+            - heading "홈" [level=1] [ref=f2e320]
+            - generic [ref=f2e321]:
+              - generic [ref=f2e322]: 사용자
+              - button "김지현" [ref=f2e323] [cursor=pointer]:
+                - generic [ref=f2e324]: person
+              - button "도움말" [ref=f2e326] [cursor=pointer]:
+                - generic [ref=f2e327]: help
+              - button "로그아웃" [ref=f2e329] [cursor=pointer]:
+                - generic [ref=f2e330]: logout
+          - main [ref=f2e332]:
+            - region "월별 업무 진행 현황" [ref=f2e333]:
+              - generic [ref=f2e334]:
+                - generic [ref=f2e335]:
+                  - generic [ref=f2e336]: 준비 (현재 배정 기준)
+                  - generic [ref=f2e337]: 4/5 근무지
+                - progressbar "준비 진행률 80%" [ref=f2e338]
+                - paragraph [ref=f2e340]: 이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.
+              - generic [ref=f2e341]:
+                - generic [ref=f2e342]:
+                  - generic [ref=f2e343]: 운영
+                  - generic [ref=f2e344]: 7/10 단계
+                - progressbar "운영 진행률 70%" [ref=f2e345]
+              - generic [ref=f2e347]:
+                - generic [ref=f2e348]:
+                  - generic [ref=f2e349]: 월 정산
+                  - generic [ref=f2e350]: 0/3 단계
+                - progressbar "월 정산 진행률 0%" [ref=f2e351]
+            - region [ref=f2e352]:
+              - generic [ref=f2e353]:
+                - heading "이번 달 대기 실적 현황" [level=2] [ref=f2e354]
+                - button "실적 관리에서 확인" [ref=f2e355] [cursor=pointer]
+              - generic [ref=f2e357]:
+                - generic [ref=f2e358]:
+                  - generic [ref=f2e359]: 대기 실적 그룹
+                  - generic [ref=f2e360]: 4개
+                - generic [ref=f2e361]:
+                  - generic [ref=f2e362]: 승인 대기 실적
+                  - generic [ref=f2e363]: 140건
+                - generic [ref=f2e364]:
+                  - generic [ref=f2e365]: 재승인 필요
+                  - generic [ref=f2e366]: 3건
+                - generic [ref=f2e367]:
+                  - generic [ref=f2e368]: 확인 필요
+                  - generic [ref=f2e369]: 2건
+              - generic [ref=f2e370]:
+                - generic [ref=f2e371]:
+                  - generic [ref=f2e372]: warning
+                  - generic [ref=f2e373]: 근무지 연결 불가 1개 (성수물류센터)
+                - generic [ref=f2e374]:
+                  - generic [ref=f2e375]: warning
+                  - generic [ref=f2e376]: 중복 이름으로 연결 불확정 1개 (지사 B)
+            - region [ref=f2e377]:
+              - heading "지금 해야 할 일" [level=2] [ref=f2e379]
+              - generic [ref=f2e380]:
+                - generic [ref=f2e381]:
+                  - generic [ref=f2e382]:
+                    - generic [ref=f2e383]: fact_check
+                    - text: 대기 실적 140건
+                  - button "보기" [ref=f2e385] [cursor=pointer]
+                - generic [ref=f2e386]:
+                  - generic [ref=f2e387]:
+                    - generic [ref=f2e388]: calendar_month
+                    - text: 5월 근무표 미배포 — 지사 C
+                  - button "보기" [ref=f2e390] [cursor=pointer]
+                - generic [ref=f2e391]:
+                  - generic [ref=f2e392]:
+                    - generic [ref=f2e393]: error
+                    - text: 파일 해석 실패 1건
+                  - button "원인 보기" [ref=f2e395] [cursor=pointer]
+                - generic [ref=f2e396]:
+                  - generic [ref=f2e397]:
+                    - generic [ref=f2e398]: progress_activity
+                    - text: 시작 시 자동 복구 실패 — 4월
+                  - generic [ref=f2e400]:
+                    - generic [ref=f2e401]: progress_activity
+                    - text: 처리 중…
+                - generic [ref=f2e402]:
+                  - generic [ref=f2e403]:
+                    - generic [ref=f2e404]: payments
+                    - text: 대기 수당 34건
+                  - button "보기" [ref=f2e406] [cursor=pointer]
+                - generic [ref=f2e407]:
+                  - generic [ref=f2e408]:
+                    - generic [ref=f2e409]: warning
+                    - text: 근무지 연결 불가 1개
+                  - button "실적 관리에서 확인" [ref=f2e411] [cursor=pointer]
+                - generic [ref=f2e412]:
+                  - generic [ref=f2e413]:
+                    - generic [ref=f2e414]: warning
+                    - text: 중복 이름으로 연결 불확정 1개
+                  - button "실적 관리에서 확인" [ref=f2e416] [cursor=pointer]
+      - contentinfo [ref=f2e417]:
+        - generic [ref=f2e418]: DB 연결됨
+        - generic [ref=f2e421]: "최근 인테이크: 오류 1건"
+        - generic [ref=f2e423]: 대기 파일 5개
+        - generic [ref=f2e425]: 최신
+        - generic [ref=f2e427]: v2.3.1

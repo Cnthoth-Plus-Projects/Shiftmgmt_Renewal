@@ -1,0 +1,46 @@
+{
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\baseline.json": {
+    "bytes": 68576,
+    "sha256": "8E24BC378E4FCA093A36AB902F04C92BD09567B78F7995AA030A60B5634C22E6"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\component-probes.mjs": {
+    "bytes": 6384,
+    "sha256": "7A5C242D0EE6429743D38D923ACF053D6D746D43EF889D9AB9B40942691942EC"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\execution.json": {
+    "bytes": 5092,
+    "sha256": "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\frozen-shared.json": {
+    "bytes": 7433,
+    "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\gate-evidence.py": {
+    "bytes": 21988,
+    "sha256": "0464704230DE376908ADB910F821E3F015870733347A5C749ED2930C734FAA4A"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\ipc-probes.mjs": {
+    "bytes": 13805,
+    "sha256": "DCC854B033C134017D1135B5C07FD6DBEE162B4393958B1B0A76400AC1B50F7E"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\observer-canary.mjs": {
+    "bytes": 3307,
+    "sha256": "91436F247FD06E4A05936CCBB4A630B44B613ABDEC032C74294F41862EE6E299"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\observer-selfcheck.py": {
+    "bytes": 11866,
+    "sha256": "0B5D754F4A61B4004E77F64F84C466109C99E6922DA5DB8BA05E77C287E6EDE0"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-preload.mjs": {
+    "bytes": 14396,
+    "sha256": "B2E4FCA5ABCB47506658786BCA0261359E444437E6D8D7954429DFC8FDAB5A8F"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-probes.py": {
+    "bytes": 19264,
+    "sha256": "41256EBDC133F549B47FC5E80547861722A9446F0AF2C15C7B08173319D53247"
+  },
+  "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\STRATEGY.md": {
+    "bytes": 14207,
+    "sha256": "636B31777C98D75757184A4491E45C8BD9C416C1146539A3051EC34272E1F86C"
+  }
+}

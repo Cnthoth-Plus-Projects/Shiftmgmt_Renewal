@@ -1,0 +1,34 @@
+{
+  "records": [
+    {
+      "pid": 15700,
+      "synthetic": true,
+      "purpose": "test verifier rejection of unexpected browser errors",
+      "temps": [],
+      "serverPid": null,
+      "consoleErrors": [
+        "SOL_VERIFIER_FAULT_CONSOLE"
+      ],
+      "pageErrors": [
+        "SOL_VERIFIER_FAULT_PAGE",
+        "SOL_VERIFIER_FAULT_PAGE"
+      ]
+    },
+    {
+      "pid": 51420,
+      "synthetic": true,
+      "purpose": "test verifier rejection of unexpected browser errors",
+      "temps": [
+        "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-TPzC34"
+      ],
+      "serverPid": 30216,
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ],
+  "ownedTempsRemoved": true,
+  "runnerPortClosed": true,
+  "ownedServerPIDs": [
+    30216
+  ]
+}

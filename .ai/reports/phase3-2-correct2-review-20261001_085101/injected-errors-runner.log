@@ -1,0 +1,11 @@
+{"label":"access-history-list-fixture","status":"FAIL","exitCode":1,"tempCleaned":true}
+file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162
+    if (!pass) throw new Error(`[Assertion 실패: ${name}] exp=${JSON.stringify(expected)} act=${JSON.stringify(actual)}`);
+                     ^
+
+Error: [Assertion 실패: unexpected-browser-errors-0] exp=0 act=3
+    at assert (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162:22)
+    at runWorker (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:484:5)
+    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:592:3
+
+Node.js v24.13.0

@@ -1,0 +1,36 @@
+### 14:33:20 S1 skip-link 평소 숨김(전 상태) + 첫 Tab 표시(첫 상태)
+03-home-1 rest=["state-h1:24x16:숨김","state-h2:24x16:숨김","state-h3:24x16:숨김"] tab=
+03-home-2 rest=["state-h4:24x16:숨김","state-h5:24x16:숨김"] tab=
+05-sites-wizard-1 rest=["state-w1:24x16:숨김","state-w2:24x16:숨김"] tab=
+05-sites-wizard-2 rest=["state-w3:24x16:숨김","state-w4:24x16:숨김"] tab=
+05-sites-wizard-3 rest=["state-w5:24x16:숨김","state-w6:24x16:숨김","state-w7:24x16:숨김"] tab={"first":"btn-secondary","w":137,"h":31,"relTop":523,"relLeft":706,"shown":true,"href":null,"target":false}
+05-sites-wizard-4 rest=["state-w8:24x16:숨김","state-w9:24x16:숨김","state-w10:24x16:숨김"] tab=
+08-performance-1 rest=["state-p1:24x16:숨김","state-p2:24x16:숨김","state-p3:24x16:숨김"] tab=
+08-performance-2 rest=["state-p4:24x16:숨김","state-p5:24x16:숨김"] tab=
+08-performance-3 rest=["state-p6:24x16:숨김","state-p7:24x16:숨김"] tab=
+08-performance-4 rest=["state-p8:24x16:숨김","state-p9:24x16:숨김","state-p10:24x16:숨김"] tab=
+00-shell-1 rest=["state-s1:24x16:숨김","state-s2:24x16:숨김","state-s3:24x16:숨김"] tab=
+00-shell-2 rest=["state-s4:24x16:숨김","state-s5:24x16:숨김","state-s6:24x16:숨김"] tab=
+04-sites-1 rest=["state-t1:24x16:숨김"] tab=
+04-sites-2 rest=["state-t3:24x16:숨김","state-t4:24x16:숨김"] tab=
+06-employees-1 rest=["state-e1:24x16:숨김","state-e2:24x16:숨김","state-e9:24x16:숨김"] tab=
+06-employees-2 rest=["state-e3:24x16:숨김","state-e4:24x16:숨김","state-e5:24x16:숨김"] tab=
+06-employees-3 rest=["state-e6:24x16:숨김","state-e7:24x16:숨김","state-e8:24x16:숨김"] tab=
+07-schedule-1 rest=["state-r1:24x16:숨김"] tab=
+07-schedule-2 rest=["state-r2:24x16:숨김","state-r3:24x16:숨김"] tab=
+07-schedule-3 rest=["state-r4:24x16:숨김","state-r5:24x16:숨김","state-r6:24x16:숨김","state-r7:24x16:숨김"] tab=
+09-allowance-1 rest=["state-a1:24x16:숨김","state-a2:24x16:숨김"] tab=
+09-allowance-2 rest=["state-a3-a5:24x16:숨김","state-a9:24x16:숨김"] tab=
+09-allowance-3 rest=["state-a6:24x16:숨김","state-a7:24x16:숨김","state-a8:24x16:숨김"] tab=
+10-dashboard-1 rest=["state-d1:24x16:숨김","state-d2:24x16:숨김","state-d3:24x16:숨김"] tab=
+11-operations-1 rest=["state-o1:24x16:숨김","state-o2:24x16:숨김"] tab=
+11-operations-2 rest=["state-o3:24x16:숨김","state-o4:24x16:숨김","state-o5:24x16:숨김"] tab=
+11-operations-3 rest=["state-o6:24x16:숨김","state-o7:24x16:숨김","state-o8:24x16:숨김"] tab=
+11-operations-4 rest=["state-o9-o10:24x16:숨김"] tab=
+12-access-logs-1 rest=["state-g1:24x16:숨김","state-g2:24x16:숨김"] tab=
+### 14:34:14 S2 P5 · S3 P6/P8/P10 · S4 P3
+{"ovX":"auto","cont":"1200/1178","scroll":true,"rows":[40,40,40,40,40],"lastColRightBeforeScroll":1200,"afterScrollWithin":true,"main":"1220/1220","cols":21}
+[{"id":"state-p6","tb":"1180/1178","main":"1220/1220","search":120,"actions":644,"rows15":15}]
+[{"id":"state-p8","tb":"1180/1178","main":"1220/1220","search":120,"actions":644,"rows15":15},{"id":"state-p10","tb":"1180/1178","main":"1220/1220","search":120,"actions":644,"rows15":null}]
+{"cards":[583,583],"wrap":"549/549","tableW":549,"rowH":[40],"cells":["1:41","실적_보라매사업장_2025:224","05-28 14:20:91","필수 시트 누락 (실적데이:194"],"p1cards":[583,583]}
+### 끝 14:34:18

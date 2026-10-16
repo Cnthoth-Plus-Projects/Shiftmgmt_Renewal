@@ -1,0 +1,20 @@
+{
+  "scope": "CONTROL_PACKET_REVIEW_ONLY_NOT_IMPLEMENTATION_ACCEPTANCE",
+  "economy": "Luna mechanical read-only inventory",
+  "balancedFallback": "Terra unavailable; gpt-6-sol medium read-only bounded review",
+  "authority": "Sol independently checked sources/hashes and all final edits",
+  "resolved": [
+    "Use current A1 manifest for SUT helper test, not historical run",
+    "Observe preflight spawn/directory/file/fetch side effects including port preflight",
+    "Actual candidate fault must trigger and external gate reject intended defect",
+    "Regression workers must report no IPC ACK/RUN",
+    "Actual safe Node diagnostics observe Chrome spawn before RUN; observation channel checked with owned offline Chrome",
+    "Bound supervisor close waits and stop unverified instead of continuing or claiming cleanup"
+  ],
+  "limitations": [
+    "Parser/list proof is not A1 SUT acceptance",
+    "Native Windows process-start subscription access denied; only sanitized standard Node child_process diagnostic channel used",
+    "Normal8 login/partial and remaining original A negative obligations remain A2",
+    "New Gemini implementation and runtime suites not run"
+  ]
+}

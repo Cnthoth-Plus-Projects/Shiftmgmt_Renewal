@@ -1,0 +1,25 @@
+{
+  "rc": 0,
+  "url": "http://127.0.0.1:63836/",
+  "childPid": 3752,
+  "requests": [
+    {
+      "method": "GET",
+      "url": "/api/health"
+    },
+    {
+      "method": "GET",
+      "url": "/"
+    },
+    {
+      "method": "GET",
+      "url": "/favicon.ico"
+    }
+  ],
+  "assertions": [],
+  "stdout": "\nPASS: [UI 검증 성공: access-history-sol-unregistered-case]\n- 대상 주소: http://127.0.0.1:63836/\n- 크롬: C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe (판 154.0.8037.58)\n- 뷰포트: 1440x900 (fullPage)\n- 캡처 산출물 (0개):\n- manifest: artifacts/captures/phase3/access-history-sol-unregistered-case/run-20261001-162038-h1B7YK/manifest.json\n- 콘솔/페이지/요청/HTTP/정리 오류: 0건\n",
+  "stderr": "",
+  "ownDirectory": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\worker-probe-Iqh4VN",
+  "ownServerClosed": true,
+  "bootstrapRemoved": true
+}

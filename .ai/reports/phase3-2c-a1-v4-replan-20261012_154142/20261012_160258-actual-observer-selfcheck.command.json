@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-B",
+    "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\contracts\\phase3-2c-a1-v4\\observer-selfcheck.py"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 29536,
+  "start": "2026-10-12T07:03:00.851167+00:00",
+  "end": "2026-10-12T07:03:16.377263+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_160258-actual-observer-selfcheck.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_160258-actual-observer-selfcheck.stderr.txt",
+  "stdoutSha256": "2B19478941B19951628C3AAFE141280C08CD8739E5845A793E72F9CC5B69803D",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

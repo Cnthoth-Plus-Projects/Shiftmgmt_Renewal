@@ -1,0 +1,23 @@
+{
+  "name": "focused-tests",
+  "argv": [
+    "npx.cmd",
+    "vitest",
+    "run",
+    "src/web/screens/access-history-model.test.ts",
+    "src/main/services/access-log-service.test.ts",
+    "src/main/http/route-registry.test.ts",
+    "--maxWorkers=1",
+    "--minWorkers=1"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 13476,
+  "start": "2026-10-12T08:57:08.851262+00:00",
+  "end": "2026-10-12T08:57:16.458089+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\focused-tests.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\focused-tests.stderr.txt",
+  "stdoutSha256": "1BAF67CA53BB2F4B9F2BCEBC2A00E039802A95403AC0DF89C8E294887AF79175",
+  "stderrSha256": "42EC291F1E09271BDDD5D9D58FA7D621A8D8494B248574CBDC4E6A639FBE21A1"
+}

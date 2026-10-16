@@ -1,0 +1,64 @@
+{
+  "verdict": "FAILED",
+  "A1Accepted": false,
+  "findings": [
+    {
+      "id": "A1V6-01",
+      "severity": "blocking",
+      "requirements": [
+        "E6-02",
+        "E6-04"
+      ],
+      "type": "actual_controlled_runtime",
+      "source": "scripts/ui-checks/access-history.mjs:74-77, 99-102, 126-130, 378-402, 450-461",
+      "observed": "3 controlled child/log errors after cached successful receipts still produce owner PASS/RC0 and fixed final gate PASS/RC0. Before-removal case observes actual error seq45 then removal seq47. Gate child/log cases observe removal seq44 then actual error seq56. primaryError is populated by callbacks but successful publications force primary=null and reuse stale cached receipts.",
+      "evidence": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-extra-owner-resume2-5au8312e\\extra-result.json"
+    },
+    {
+      "id": "A1V6-02",
+      "severity": "blocking",
+      "requirements": [
+        "E6-02",
+        "E6-04"
+      ],
+      "type": "actual_controlled_runtime",
+      "source": "scripts/ui-checks/access-history.mjs:234, 462-480",
+      "observed": "Controlled late server child error plus separately mismatched gate response produces owner RC1 and original primary stack, but failure.server.callbackEvents reuses earlier seven-event success cache and omits actual eighth error callback. Failure raw/checks/acquisition binding still preserved.",
+      "evidence": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-extra-owner-resume2-5au8312e\\late-child-gate-failure.finding.json"
+    },
+    {
+      "id": "A1V6-03",
+      "severity": "blocking_requirement_gap",
+      "requirements": [
+        "E6-02"
+      ],
+      "type": "actual_pure_guard_not_owner_runtime",
+      "source": "scripts/ui-checks/access-history.mjs:176-216",
+      "observed": "Actual extracted owner guard accepts noninteger PID and four extra stream-map key vectors; fixed evidence-v6.py process_receipt(success=True) rejects all five. No actual OS fractional PID or full owner false PASS is claimed for these pure vectors.",
+      "evidence": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-result.json"
+    },
+    {
+      "id": "A1V6-T01",
+      "severity": "control_coverage_gap",
+      "requirements": [
+        "E6-07"
+      ],
+      "owner": "Sol",
+      "type": "original_controls_pass_but_insufficient",
+      "observed": "Sealed runtime51/parser43/ordering13 controls pass but omit post-cache late callbacks and current-live vs cached callback equality. Fixed final gate accepts all three late-error successes because missing observed callbacks never enter the candidate. Original quiescence checker also does not compare late child errors against cached receipts.",
+      "evidence": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-extra-owner-resume2-5au8312e\\extra-result.json"
+    },
+    {
+      "id": "A1V6-R01",
+      "severity": "response_contract_gap",
+      "requirements": [
+        "E6-08"
+      ],
+      "type": "measured_reply_discrepancy",
+      "observed": "Gemini claims E6-08 and all requirements PASS, but reports owner +234/-262 and shared +23/-22 instead of measured owner +249/-277 across14 hunks, shared +25/-24 across7 hunks. Reply omits per-command PID/UTC start/end and exact full command arguments; actual artifact suites exist and pass, and reported source bytes/SHA are correct.",
+      "evidence": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\initial-evidence.json"
+    }
+  ],
+  "productEditsBySol": 0,
+  "counterReset": 0
+}

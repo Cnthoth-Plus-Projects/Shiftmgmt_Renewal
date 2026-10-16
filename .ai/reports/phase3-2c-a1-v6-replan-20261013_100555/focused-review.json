@@ -1,0 +1,18 @@
+{
+  "time": "2026-10-13 10:45:59 KST",
+  "boundary": "Sol controls only; internal evidence review independently checked by Sol",
+  "closed": [
+    "Six observed role/stream reads mandatory, sync+async observed, actual settlement before each read",
+    "Owner failures bind first actual acquired raw/checks/acquisition and partial path; later fault rewrite does not replace original"
+  ],
+  "actualProof": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-selfcheck-vm84rdbr",
+    "actualControlChecks": 45,
+    "rejectedCorruptions": 9,
+    "bootstrapMode": true,
+    "runtimeRejectsBootstrap": true
+  },
+  "parserNegative": 13,
+  "residual": "Future v6 SUT must independently pass all required tests; controls do not accept A1",
+  "A1Accepted": false
+}

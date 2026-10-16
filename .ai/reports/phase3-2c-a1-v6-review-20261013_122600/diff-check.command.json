@@ -1,0 +1,18 @@
+{
+  "name": "diff-check",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 31192,
+  "start": "2026-10-13T03:29:59.110922+00:00",
+  "end": "2026-10-13T03:29:59.326590+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\diff-check.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\diff-check.stderr.txt",
+  "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+  "stderrSha256": "1E26F689A6DBB704CA2667251360782B369BAF48FDB216A21A1D31EB99CB5D84"
+}

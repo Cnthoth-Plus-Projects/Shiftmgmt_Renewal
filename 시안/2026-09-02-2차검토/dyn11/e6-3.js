@@ -1,0 +1,3 @@
+(()=>{function H(e){return e?Math.round(e.getBoundingClientRect().height):null}function vis(e){return !!e&&getComputedStyle(e).display!=='none'}
+var m=document.getElementById('modal-e6'),c=document.getElementById('modal-e6-confirm'),ap=document.getElementById('btn-apply-e6-confirm');
+return '실행 후 → E6='+vis(m)+' 확인모달='+vis(c)+' 포커스='+document.activeElement.id+' app-body aria-hidden='+document.querySelector('#e6-app-window .app-body').getAttribute('aria-hidden')+' 적용 라벨='+ap.textContent+' disabled='+ap.disabled;})()

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\contracts\\phase3-2c-a1-v4\\partial-probes.mjs",
+    "--legacy-control-check"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 41748,
+  "start": "2026-10-12T07:15:52.295021+00:00",
+  "end": "2026-10-12T07:16:00.586403+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_161552-actual-legacy-partial-coverage.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_161552-actual-legacy-partial-coverage.stderr.txt",
+  "stdoutSha256": "47F9423CE56EF4311F61BF0CA3722F99AFB67AFE7FAF6AE1743CE992871F4201",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

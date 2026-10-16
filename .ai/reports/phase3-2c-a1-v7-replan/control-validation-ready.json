@@ -1,0 +1,532 @@
+{
+  "status": "PASS",
+  "proof": "SOL_V7_FINAL_CONTROL_VALIDATION_ONLY_NOT_PRODUCT_ACCEPTANCE",
+  "A1Accepted": false,
+  "productEditsBySol": 0,
+  "syntax": [
+    "evidence-v7.py",
+    "gate-evidence.py",
+    "lifecycle-probes.py",
+    "observer-selfcheck.py",
+    "replay-v6.py",
+    "runtime-probes.py",
+    "component-probes.mjs",
+    "ipc-probes.mjs",
+    "lifecycle-canary.mjs",
+    "lifecycle-extension.mjs",
+    "lifecycle-preload.mjs",
+    "observer-canary.mjs",
+    "partial-preload.mjs",
+    "partial-probes.mjs",
+    "runtime-preload.mjs",
+    "implementation-checks.py"
+  ],
+  "plans": {
+    "runtime": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "positiveCases": [
+        "contract-core",
+        "regression-shell",
+        "regression-home"
+      ],
+      "deferredCases": [
+        "live-admin",
+        "list-fixture",
+        "empty-fixture",
+        "filters",
+        "errors",
+        "stale-response",
+        "role-guard",
+        "session-expired"
+      ],
+      "faults": {
+        "png-header-only": "A1_GATE_REJECTED",
+        "png-crc": "A1_GATE_REJECTED",
+        "duplicate-id": "A1_GATE_REJECTED",
+        "missing-id": "A1_GATE_REJECTED",
+        "extra-id": "A1_GATE_REJECTED",
+        "caller-expected": "A1_GATE_REJECTED",
+        "constant-actual": "A1_GATE_REJECTED",
+        "raw-console": "A1_GATE_REJECTED",
+        "raw-pageerror": "A1_GATE_REJECTED",
+        "raw-requestfailed": "A1_GATE_REJECTED",
+        "raw-http": "A1_GATE_REJECTED",
+        "canonical-drift": "A1_GATE_REJECTED",
+        "worker-close-receipt": "A1_GATE_REJECTED",
+        "server-close-receipt": "A1_GATE_REJECTED",
+        "server-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "final-write-denied": "A1_FINAL_WRITE_FAILED",
+        "server-spawn-error": "A1_SERVER_SPAWN_FAILURE",
+        "log-write-denied": "A1_LOG_WRITE_FAILED",
+        "owner-bad-ack": "A1_ACK_INVALID",
+        "worker-no-ack": "A1_ACK_TIMEOUT",
+        "worker-no-run": "A1_WORKER_FAILED",
+        "gate-spawn-error": "A1_GATE_SPAWN_FAILURE",
+        "gate-log-write-denied": "A1_LOG_WRITE_FAILED",
+        "regression-no-evidence": "A1_WORKER_FAILED",
+        "worker-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "worker-spawn-error": "A1_WORKER_SPAWN_FAILURE",
+        "log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "late-log-error": "A1_LOG_WRITE_FAILED",
+        "gate-response-case": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-runId": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-candidateSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-executionSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-checks": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-artifacts": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-acceptance": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-status": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra-output": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-outer-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "gate-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "gate-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "owner-extra-ack": "A1_ACK_INVALID",
+        "timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "server-timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "gate-timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "worker-ledger-scalar-mismatch": "A1_LIFECYCLE_INVALID",
+        "gate-ledger-scalar-mismatch": "A1_LIFECYCLE_INVALID",
+        "owner-candidate-write-denied": "A1_CANDIDATE_WRITE_FAILED"
+      },
+      "malformedPublicCases": 9,
+      "observerHealthMandatory": true
+    },
+    "ipc": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "cases": [
+        "wrong-protocol",
+        "wrong-owner-pid",
+        "wrong-worker-pid",
+        "wrong-case",
+        "wrong-nonce",
+        "wrong-url",
+        "sibling-run",
+        "wrong-temp-root",
+        "wrong-bootstrap",
+        "wrong-contract-path",
+        "wrong-contract-digest",
+        "wrong-execution-path",
+        "wrong-execution-digest",
+        "no-run-approval",
+        "wrong-run-nonce",
+        "extra-packet-key",
+        "extra-context-key",
+        "extra-registration-key",
+        "extra-run-key"
+      ]
+    },
+    "component": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "semanticVectors": [
+        "fixed-expectation",
+        "unknown-id-field",
+        "recursive-nan",
+        "recursive-infinity",
+        "immutable-actual-snapshot",
+        "caller-extra-argument"
+      ],
+      "additionalTypedMutations": 32,
+      "invalidTopLevelInputs": 4,
+      "realResourceVectors": [
+        "context-close-throw-browser-still-closed",
+        "browser-close-throw-first-error-preserved"
+      ]
+    },
+    "partial": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "modes": [
+        "capture-failure",
+        "context-close-failure",
+        "partial-write-failure",
+        "measured-viewport",
+        "measured-origin",
+        "viewport-null",
+        "canonical-missing",
+        "repository-realpath-failure",
+        "request-then-viewport-null",
+        "canonical-import-failure",
+        "route-install-failure"
+      ],
+      "bootstrapModes": [
+        "repository-realpath-failure",
+        "request-then-viewport-null",
+        "canonical-import-failure",
+        "route-install-failure"
+      ]
+    },
+    "lifecycle": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "modes": [
+        "late-worker-child-before-remove",
+        "late-server-child-before-remove",
+        "late-worker-log-before-remove",
+        "late-server-log-before-remove",
+        "late-worker-child-gate",
+        "late-server-child-gate",
+        "late-worker-log-gate",
+        "late-server-log-gate",
+        "late-worker-child-final",
+        "late-server-child-final",
+        "late-gate-child-final",
+        "late-server-log-final",
+        "late-gate-log-final",
+        "late-server-child-double",
+        "late-server-child-gate-mismatch"
+      ],
+      "guardInvalid": 5,
+      "parserNegative": 15
+    }
+  },
+  "gateParser": {
+    "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+    "original": {
+      "positiveComparisons": 2,
+      "rejectedMutations": 19,
+      "mutations": [
+        "missing-id",
+        "duplicate-id",
+        "unknown-id",
+        "viewport",
+        "loginInputs",
+        "fixtureRequestCount",
+        "rawErrors",
+        "constant-actual",
+        "caller-tolerance",
+        "caller-expected",
+        "canonical-label-drift",
+        "nonfinite-nan",
+        "nonfinite-inf",
+        "numeric-tolerance-2",
+        "numeric-tolerance-4",
+        "numeric-tolerance-nan",
+        "date-133.5",
+        "close-error",
+        "truncated-png"
+      ],
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    },
+    "extraRejectedMutations": [
+      "protected-executionError",
+      "protected-manifestWriteError",
+      "protected-consoleErrors",
+      "protected-pageErrors",
+      "protected-requestFailed",
+      "protected-badResponses",
+      "protected-cleanupErrors",
+      "protected-extra-error-field",
+      "recursive-nan",
+      "numeric-bool",
+      "log-before-close",
+      "log-boolean-time",
+      "log-missing-stderr",
+      "log-extra-finish",
+      "stdout-logFinishSeen-missing",
+      "stdout-logFinishSeen-false",
+      "stdout-logCloseSeen-missing",
+      "stdout-logCloseSeen-false",
+      "stdout-close-null",
+      "stdout-close-bool",
+      "stdout-close-zero",
+      "stdout-close-before-finish",
+      "stdout-close-nan",
+      "stderr-logFinishSeen-missing",
+      "stderr-logFinishSeen-false",
+      "stderr-logCloseSeen-missing",
+      "stderr-logCloseSeen-false",
+      "stderr-close-null",
+      "stderr-close-bool",
+      "stderr-close-zero",
+      "stderr-close-before-finish",
+      "stderr-close-nan",
+      "logFinishSeen-extra",
+      "logCloseSeen-extra",
+      "logCloseAtMs-extra"
+    ],
+    "v7ReceiptRules": {
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+      "positives": 10,
+      "rejected": [
+        "missing-callbackEvents",
+        "missing-exitCode",
+        "missing-exitSignal",
+        "missing-closeCode",
+        "missing-closeSignal",
+        "missing-createdAtMs",
+        "missing-exitAtMs",
+        "missing-closeAtMs",
+        "missing-logFinishSeen",
+        "missing-logCloseSeen",
+        "missing-logFinishAtMs",
+        "missing-logCloseAtMs",
+        "rewritten-createdAtMs",
+        "rewritten-exitAtMs",
+        "rewritten-closeAtMs",
+        "rewritten-logFinishAtMs-stdout",
+        "rewritten-logFinishAtMs-stderr",
+        "rewritten-logCloseAtMs-stdout",
+        "rewritten-logCloseAtMs-stderr",
+        "rewritten-exit-False",
+        "rewritten-exit-1",
+        "rewritten-exit-0",
+        "event-extra",
+        "event-duplicate",
+        "event-order-0",
+        "event-order-3",
+        "clock-regression-success",
+        "spawn-error-fabricated-zero",
+        "acquired-empty",
+        "acquired-extra",
+        "acquired-value-rewritten",
+        "ack-extra",
+        "ack-bad-binding",
+        "acquisition-missing-fixtureRows",
+        "acquisition-missing-fixtureRequests",
+        "acquisition-missing-routeInstalled",
+        "acquisition-empty",
+        "premature-count-zero",
+        "actual-request-lost",
+        "boolean-route-install",
+        "request-extra-key",
+        "prepared-label-rewritten",
+        "canonical-byte-bool"
+      ],
+      "rejectedCount": 43
+    }
+  },
+  "runtimeParser": {
+    "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+    "validPreflight": 1,
+    "rejectedPreflightMutations": [
+      [
+        "observerHealthy",
+        false
+      ],
+      [
+        "sideEffectFree",
+        false
+      ],
+      [
+        "rc",
+        0
+      ],
+      [
+        "timeout",
+        true
+      ],
+      [
+        "errors",
+        ""
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_LOCK_MISMATCH\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}"
+      ],
+      [
+        "output",
+        "{\"status\":\"PASS\"}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\nunrelated fatal crash\n"
+      ],
+      [
+        "output",
+        "PASS"
+      ]
+    ],
+    "earlyRemovalRejected": true,
+    "unsettledRetainedLogRejected": true,
+    "richFailurePositive": 1,
+    "richFailureRejected": [
+      "missing-pid",
+      "missing-exitCode",
+      "missing-exitSeen",
+      "missing-closeSeen",
+      "missing-aliveAfterClose",
+      "missing-createdAtMs",
+      "missing-exitAtMs",
+      "missing-closeAtMs",
+      "missing-logsSettled",
+      "missing-logFinishSeen",
+      "missing-logCloseSeen",
+      "missing-logFinishAtMs",
+      "missing-logCloseAtMs",
+      "missing-exitSignal",
+      "missing-closeCode",
+      "missing-closeSignal",
+      "missing-callbackEvents",
+      "fabricated-logFinish-time",
+      "fabricated-logClose-time"
+    ],
+    "observationRules": {
+      "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+      "orderingPublicationPositive": 1,
+      "coreBindingPositives": 2,
+      "rejectedCount": 13,
+      "rejected": [
+        "no-reads",
+        "missing-stderr-read",
+        "missing-child-close",
+        "missing-log-close",
+        "early-read",
+        "direct-candidate-write",
+        "missing-rename-completion",
+        "early-rename",
+        "wrong-stage",
+        "lost-raw",
+        "lost-checks",
+        "lost-acquisition",
+        "lost-partial-path"
+      ]
+    }
+  },
+  "observerSummary": {
+    "status": "PASS",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-selfcheck-ulsr_88n",
+    "actualControlChecks": 45,
+    "rejectedCorruptions": 9,
+    "proof": "BOOTSTRAP_V6_CONTROL_ONLY_NOT_V7_ACCEPTANCE",
+    "bootstrapMode": true,
+    "runtimeRejectsBootstrap": true
+  },
+  "guardReplay": {
+    "status": "PASS",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-lifecycle-bwjaebu3",
+    "proof": "EXACT_V6_PURE_GUARD_GAPS_REDETECTED_NOT_V7_ACCEPTANCE",
+    "invalidRejected": 0,
+    "invalidAccepted": 5
+  },
+  "retainedV6Replay": {
+    "status": "PASS",
+    "proof": "RETAINED_EXACT_V6_ARTIFACT_REPLAY_NOT_NEW_RUNTIME_NOT_V7_ACCEPTANCE",
+    "rejected": [
+      {
+        "mode": "late-child-before-removal",
+        "reason": "Late error may not publish successful manifest",
+        "originalOwnerRc": 0,
+        "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-124441-3jfwBK\\owner-final.json"
+      },
+      {
+        "mode": "late-child-gate",
+        "reason": "Late error may not publish successful manifest",
+        "originalOwnerRc": 0,
+        "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-124449-7vROp9\\owner-final.json"
+      },
+      {
+        "mode": "late-log-gate",
+        "reason": "Late error may not publish successful manifest",
+        "originalOwnerRc": 0,
+        "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-124456-YTpOKl\\owner-final.json"
+      },
+      {
+        "mode": "late-child-gate-failure",
+        "reason": "Failure snapshot omits original late callback",
+        "originalOwnerRc": 1,
+        "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-124503-m3P3mo\\owner-failure.json"
+      }
+    ],
+    "currentSourceHashes": {
+      "access-history.mjs": "9E735F3ED1C8DD46D200AED10F53FE5256DFC2459BE87CFFF6C1D5E5F73C4313",
+      "access-history-shared.mjs": "38D3AF668282BC5B184A59815D5C0726D6F296C5906E428BD7543C4E7CCF7280"
+    }
+  },
+  "lifecycleSummary": {
+    "status": "PASS",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-lifecycle-o5rwariz",
+    "cases": 15,
+    "proof": "ACTUAL_CONTROL_CANARIES_ONLY_NOT_SUT_ACCEPTANCE",
+    "parserRejected": 15
+  },
+  "currentSourceUnchanged": true,
+  "historicalControlsUnchanged": 69,
+  "balancedReview": "Terra unavailable -> gpt-6-sol read-only review; root applied spawned-actor wording and self-contained guard extraction contract",
+  "initialDevelopmentCanaries": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-lifecycle-8jrmuhyi",
+  "controlHashes": {
+    "component-probes.mjs": "39C4559D712665C4B56E1BD4870F556A22DB722C7D0BC97BCE18E3C1E9F14B62",
+    "evidence-v7.py": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03",
+    "execution.json": "3BEACF9A206E550A765E9040EA6FE49BF510740D9A9A8D57C82F08A6EF1A13B9",
+    "frozen-shared.json": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA",
+    "gate-evidence.py": "3F58D07C17DC0980EBF950FCDA5AA39A13DA3F16BCAD4010F497DE436C0A5291",
+    "ipc-probes.mjs": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B",
+    "lifecycle-canary.mjs": "C73768F302AE40AA4E7572972C92CF7482F33576C0227FD02BBF16ED7BDA1DAB",
+    "lifecycle-extension.mjs": "E700B3CA2B50FEF8C3D32A018B88C04B88CCC630C4C1474E38987DDBB566E36D",
+    "lifecycle-preload.mjs": "0372FE03729F23B8A5E9436E2AFF3A898DD723AF8FDDB729042F4C7547095C49",
+    "lifecycle-probes.py": "0985EE5280D9E0044920528EBCFF2388013D396C0E8875DE025DD515EC72B2FD",
+    "observer-canary.mjs": "3C5CC18435FB06E5A7DB7701426C11947853DD6B5647A9BE9A37BE552C10B6FF",
+    "observer-selfcheck.py": "376AF09920F46305CD2A4FDB4116DB5C8CDA777E2B58D2F2F44DBFA0C16FA786",
+    "partial-preload.mjs": "1F1EAE161E3386B108740A9185229FDDFAD7B79EEC5A5E42F6451FA4DD55809B",
+    "partial-probes.mjs": "81600E6C56BB09F02A384B4330A91639815D4904C24D703844F83BE9DC89B240",
+    "replay-v6.py": "C402297B5CD74478BC306907032AD036A4884EA01B9A8844CCE24168CE646E3E",
+    "runtime-preload.mjs": "90DFF6BD959035EA1CF3AAF10B51CE91D96995525CDA56A42CE7CEAE946C99EE",
+    "runtime-probes.py": "BA60E7F5AC583FB87BAB819E4BD7FD0F9991C9DC45779D9BCF18C27BE6FDB538",
+    "STRATEGY.md": "FAE231D6D81E58D7FAF52BCFA02E48320ED88419A96C82011E6F9D066600E14F",
+    "implementation-checks.py": "792E2840BF08E6D02DAE3DFA346A0C9C24595AFE8B46F0688CCB2135BD66C963"
+  },
+  "independentControlReviewFixes": [
+    "post-removal preserved candidate publication",
+    "completed final temporary write before delivery",
+    "second original error in unexpected ledger",
+    "closed actor/kind/stage exact",
+    "old partial bootstrap disabled; actual11 unchanged"
+  ],
+  "lifecyclePlan": {
+    "proof": "PLAN_ONLY_NOT_RUN",
+    "modes": [
+      "late-worker-child-before-remove",
+      "late-server-child-before-remove",
+      "late-worker-log-before-remove",
+      "late-server-log-before-remove",
+      "late-worker-child-gate",
+      "late-server-child-gate",
+      "late-worker-log-gate",
+      "late-server-log-gate",
+      "late-worker-child-final",
+      "late-server-child-final",
+      "late-gate-child-final",
+      "late-server-log-final",
+      "late-gate-log-final",
+      "late-server-child-double",
+      "late-server-child-gate-mismatch"
+    ],
+    "guardInvalid": 5,
+    "parserNegative": 15
+  },
+  "lifecycleParserRejected": [
+    "rc0",
+    "timeout",
+    "observer-unhealthy",
+    "owner-pass-output",
+    "missing-delivery",
+    "missing-observed-error",
+    "missing-cache-proof",
+    "wrong-delivery-stage",
+    "missing-exact-owned-temp",
+    "primary-stack",
+    "stale-success-failure-snapshot",
+    "false-temp-removed",
+    "missing-post-removal-candidate",
+    "missing-final-stage-write",
+    "missing-second-original-error"
+  ],
+  "deltaChanges": [
+    "STRATEGY.md",
+    "lifecycle-probes.py"
+  ],
+  "unchangedEvidenceReused": [
+    "observer45/corruptions9",
+    "gate parser43/legacy35/original19",
+    "runtime parser13",
+    "pure actualv6 gap5",
+    "retained actualv6 replay4"
+  ],
+  "normalizedFrom": "control-validation-final.json (earlier retained plan alias14 replaced by final command plan15)",
+  "implementationDriverSyntax": "PASS (execution deferred until Gemini implements)"
+}

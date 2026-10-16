@@ -1,0 +1,108 @@
+## 0-18e 전/후 (④ Claude 대행, 2026-09-07 12:21:13) — 전 = 1차 승인본(스냅샷-1차-승인본) / 2차 스냅샷15차, 후 = 현재 = 스냅샷16차
+### 1차 10 — sha256sum 전
+c8042dc8797e90123caae5abcbd29b493017c18bf81c750a06ada43ca25bd1bf *03-home-1.html
+a52eeb3627e7f224ff318909d711788a24d0341e2fc207eb41dc2c128edfa259 *03-home-2.html
+6858d2880a2ca08fcd20be270f0ae61c74fca264c9f32b8cf4a9405ed104027d *05-sites-wizard-1.html
+7ed38ed41a35c9c6d06dbe794a29a93ad515262f10e89ef66caee1580be20404 *05-sites-wizard-2.html
+333b21931c03f6a03cffe63e489be67811e1f3b7da1e588e73eebcd28e82daab *05-sites-wizard-3.html
+2d774f7ebb2b3d864977fe7bc21acd3fa479bcbf67637a3f155525301fd1240b *05-sites-wizard-4.html
+f6303ad65cd181c4d0fa7288880ba6f6995b784951671d0a91b9d1a7816bd911 *08-performance-1.html
+58478bb5957b558265a17369264ba3cf8618b4a86ec31007e97f9d384efa433b *08-performance-2.html
+e046444e217b1245857060717bbc600b2dc3fa0f8fd00a74b61d0107ccb818fb *08-performance-3.html
+9d5894352b63d60a68dea1cc036a4aadaaf9e332724b41f45686959222fe0888 *08-performance-4.html
+### 1차 10 — sha256sum 후
+c581a9876501f4f745c6fe54438531523e0b8e10e75ae5f9ffa5280ce842fbb1 *03-home-1.html
+8b7969abc28b93bd4f9319c481eea310c5e19159ffbaf4282f47f614f184aad7 *03-home-2.html
+fbb91cb8e29b79043ac373199e2b91f804caef6c5e8b9fe6eaf408b003442f29 *05-sites-wizard-1.html
+94c6fc126d73e8c52b9f26fdef5cd2b8a0e7f5be4aa641e9fafa092195aa00c1 *05-sites-wizard-2.html
+447c457cd78e62ffee9f13c2e95406a1d9c48302539d31b837e8b1e38e9de083 *05-sites-wizard-3.html
+8a8c39f0df1974130974e2030e3a90b8b1e50733032c4234a7c3786f9eb3a77c *05-sites-wizard-4.html
+65a41c621c14634d2c3d8bb3042a5090a13538b13cbc558ebb9bc68008a68e33 *08-performance-1.html
+3ea8669b370b593a06cbb297e137487a8146aede5f6a2295cea29a8b45c9dcc2 *08-performance-2.html
+164b17937cc3a1cf94733fffaed54809898d2cf744c3a77651b9202400193c7d *08-performance-3.html
+ead1b2090b1f5aff856fd4085c8e9b2bd4a0885f1239db1022eec3c3698b1797 *08-performance-4.html
+### 2차 24 — sha256sum 전 (스냅샷15차)
+bc8ef64c165c60b8abd363b54f252cab6e07384b354c35135be1e22054d2e6f6 *00-shell-1.html
+c568933d99bf9885389a0d2873bfadc12dcfd1472c155f94b5fd0a0eec4e1eae *00-shell-2.html
+9f01bd521acf43fac241604975e350454917aa7a209609ab1736771ef2b54912 *01-login-1.html
+25bcc173d29e45c3355a974d0c48b12215041ffd690cd695e40ecba61bd45e3e *01-login-2.html
+b18a34d0b7b93cc9680f4f46d9f97d4cb5a5e358d9f14ff2d7fd2ca55e72783f *02-common-1.html
+dca0de51dec0b98ae7432aae037fc170b024ea3f675be1bb66dddb77c521a15d *02-common-2.html
+3633a423253d65013429b10d0ddd9a09bc56ef3c43e47bcfed846ff3699ceb77 *02-common-3.html
+8281614e2c42d642f4c5653813f33fa8cc5ccb2a5f270f64eedafd2aa38af439 *04-sites-1.html
+f5cb0c7c3fb17cb46af2717ed42e75ec7592b8c122f59887f63bc3eb1be67eae *04-sites-2.html
+55ce9acc24588926ca32d04630a5b34e950e520fcadaebd234873f8255ef9127 *06-employees-1.html
+47da71c37fdbe1359b2cba58c9fe27ad61bf46f09fc6987b8831a6c3e2a9df9e *06-employees-2.html
+03e78127478e802b0ae028f17718769db407fc90aabf69e2b8bae9f4575a9347 *06-employees-3.html
+e838f20f508b06bbad4ed58fe8d56824b37b3b2fa71b7f15dce8d641dc039578 *07-schedule-1.html
+1db8d2a91a3ed25590aecd3299a7e7d2a3041c951bb5a34ee25ae64d4841e588 *07-schedule-2.html
+e4f705ddb04daece3ed6ba86e03662c5184102789c1d6a8ee62da3a0f4e0bb33 *07-schedule-3.html
+c92e06941a7af33bf5d39ecf30bf94c3b7548fc0c9af38494a07645a2fbbaf3f *09-allowance-1.html
+7e6ec842fe2b260cf06ecc593dee969a29b4c760fe79174614efd963fd0e3a5a *09-allowance-2.html
+3758487216aee5fbc61a7dafe08c12edf7e51719585e681427fcb85d0512fb59 *09-allowance-3.html
+770a9ff6c5b8ee75d6480cdd4d14067f362bf1d8db4a898aedecef6d792e8ecc *10-dashboard-1.html
+728a934a4056b5c5f9d670f0f44f5c1cd61d10be31d5d4d85835b346e716cdc5 *11-operations-1.html
+86525c8c3cd0a665dff6530b0b13dccd4ab1c86afe14e5bfa3df8c53a5d3ebd2 *11-operations-2.html
+4c9c77b315a9da766eb4701fe85e00fd1b7d606b0e81d86ef02fe3870e2aaff1 *11-operations-3.html
+f407447f207323ebaee7af662d556221abcc81f15bcd5a619192d4119083606a *11-operations-4.html
+2515e02cd1b375af03d5c7068834d1dd84ee5e73fdd1231cbe6191d3544e073a *12-access-logs-1.html
+### 2차 24 — sha256sum 후
+e694ba57db26c5e852a72b4dee83aa9bd2f014d5984f0fb2134a8233ebd6298a *00-shell-1.html
+d9fbee7d2e7f1c5421a3782ee0ef7ba3bd5d5c049363d83b481d398b46e989a9 *00-shell-2.html
+d9294bd934e8625db60bf4b50c26ed92cfc801710ebe7199baef79481a726cdf *01-login-1.html
+f4a42028d8b0105975164cf27d5a1375bc3e1ff007bbbc6fedcf23933b37b902 *01-login-2.html
+d774066b0391cb4cfc36c73a591a424a4d564efc5a80f200529b66aff8c7ff09 *02-common-1.html
+fb2e1493a9f93312f783b8d6e329a535d5888fb33b76a34cf55ba9d1c2add8dd *02-common-2.html
+27e6858f36b0b7e2b6e223cc802e85ebd164907f3807525de3dcea85b81b6b4d *02-common-3.html
+3aa0aaf4b0cd6f42b95600da11b8c671203ab9dd6a7d6c49d007a1018be27308 *04-sites-1.html
+872b45576e34aeb40d6d57e31a2b2bbb926e7be93205eecd307db30ab37c2e27 *04-sites-2.html
+8f7e7dc70b5e7f671ad5f44b5ee57cf631546a01986c09d7d535358aadad0d7e *06-employees-1.html
+a2776f62e9d7303b71a402ae07c316b019c2dbc0bfd092589648be1dc63f323a *06-employees-2.html
+dd8c14a745741f3d0175e30ba41a02b0f3639c37f85c8c07d9289e835950d39e *06-employees-3.html
+f9187e3498600f7eb92322f34c6aa6f65934f337b0981d0b583ce97a6791085c *07-schedule-1.html
+37cfbd99497d57186a82d085a27fffad38dacc0e05f755494abc9a4628e73bea *07-schedule-2.html
+c83a9c9112f84b538f0e26aa3ef6acd3206000de4de0c29d68932a824aecbd80 *07-schedule-3.html
+c57f399ef250acba4f4ffc845c0b41e0656ea4e37bc39470e8fdcd269699790f *09-allowance-1.html
+4ca3d078c334a16441f3aea41a60a063b6bd6d580799edf3bf75e4e39988fc32 *09-allowance-2.html
+91eb2952f66328f84d20b8805b90bcea99142cc4a03c8d8185e0ef865ba41733 *09-allowance-3.html
+fc627ac148a53d07f6ae8f30b3271ec9a1b70ce0b7bdd392e3a5b713fb005ee4 *10-dashboard-1.html
+979c089cdfa3129ded1889edd93a1a06c1d464b1c8bd00e1653791a1e0e13db7 *11-operations-1.html
+89f4a339c3c2be48f6bddb3e8a68b7e2e1724fd83b40df346945ed77aea3c667 *11-operations-2.html
+07d37963d79d163e6c44c81540f51fcfc32636551a553f60ea32833f8c5ca556 *11-operations-3.html
+87986a653254e51526596673516c6b1fc17f2632d971803a6e9bc51caf9fe334 *11-operations-4.html
+2d95b847b7b6529a7d69e9c18d3fdd765cfd0fdbdb16567e768e7647d89bc08a *12-access-logs-1.html
+### 바이트 전/후 · diff hunk 수(줄 단위, 한 줄 파일은 1)
+1차 03-home-1.html 44697 → 48607 B, hunks=41
+1차 03-home-2.html 28592 → 31252 B, hunks=22
+1차 05-sites-wizard-1.html 50422 → 56491 B, hunks=11
+1차 05-sites-wizard-2.html 42519 → 48741 B, hunks=11
+1차 05-sites-wizard-3.html 51164 → 57944 B, hunks=1
+1차 05-sites-wizard-4.html 28122 → 33369 B, hunks=5
+1차 08-performance-1.html 28468 → 31504 B, hunks=9
+1차 08-performance-2.html 30529 → 33140 B, hunks=19
+1차 08-performance-3.html 49906 → 61164 B, hunks=43
+1차 08-performance-4.html 36074 → 38283 B, hunks=6
+2차 00-shell-1.html 23649 → 27560 B, hunks=19
+2차 00-shell-2.html 32520 → 36431 B, hunks=21
+2차 01-login-1.html 9884 → 9884 B, hunks=2
+2차 01-login-2.html 12663 → 12663 B, hunks=2
+2차 02-common-1.html 21015 → 21017 B, hunks=9
+2차 02-common-2.html 18530 → 18529 B, hunks=4
+2차 02-common-3.html 18062 → 18061 B, hunks=4
+2차 04-sites-1.html 25201 → 28901 B, hunks=13
+2차 04-sites-2.html 24344 → 28304 B, hunks=18
+2차 06-employees-1.html 32217 → 48349 B, hunks=17
+2차 06-employees-2.html 38858 → 42769 B, hunks=21
+2차 06-employees-3.html 46096 → 50007 B, hunks=24
+2차 07-schedule-1.html 37685 → 41076 B, hunks=11
+2차 07-schedule-2.html 45623 → 49274 B, hunks=15
+2차 07-schedule-3.html 28717 → 58567 B, hunks=22
+2차 09-allowance-1.html 31656 → 32302 B, hunks=16
+2차 09-allowance-2.html 26762 → 46843 B, hunks=22
+2차 09-allowance-3.html 26521 → 30432 B, hunks=19
+2차 10-dashboard-1.html 33110 → 37021 B, hunks=19
+2차 11-operations-1.html 43941 → 49124 B, hunks=18
+2차 11-operations-2.html 48018 → 52292 B, hunks=22
+2차 11-operations-3.html 43754 → 49226 B, hunks=23
+2차 11-operations-4.html 27024 → 30968 B, hunks=18
+2차 12-access-logs-1.html 26635 → 30348 B, hunks=23

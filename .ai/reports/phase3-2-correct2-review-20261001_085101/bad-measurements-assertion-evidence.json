@@ -1,0 +1,100 @@
+{
+  "runDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-09-30T23-56-10-305Z",
+  "injected": [
+    {
+      "pid": 49572,
+      "synthetic": true,
+      "description": "DOM measurement and accessible name faults to check assertions",
+      "measurements": [
+        {
+          "dateWidth": 90,
+          "dateHeight": 24,
+          "tableName": "SOL_BAD_ACCESSIBLE_NAME"
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "name": "xss-blocked",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "name": "table-aria-label",
+      "expected": "활동 이력 목록",
+      "actual": "SOL_BAD_ACCESSIBLE_NAME",
+      "pass": true
+    },
+    {
+      "name": "date-132x34",
+      "expected": true,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "row-height-40",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "th-widths",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "hide-approved-danger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "publish-info",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "rows-200-then-201",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "rows-201-loaded",
+      "expected": 201,
+      "actual": 201,
+      "pass": true
+    },
+    {
+      "name": "unexpected-browser-errors-0",
+      "expected": 0,
+      "actual": 0,
+      "pass": true,
+      "unexpectedErrors": []
+    }
+  ],
+  "manifest": {
+    "status": "PASS",
+    "id": "list-fixture",
+    "timestamp": "2026-09-30T23:56:15.255Z",
+    "chrome": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "version": "154.0.8037.58"
+    },
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "rawErrors": {
+      "console": [],
+      "pageerror": [],
+      "requestfailed": [],
+      "badResponses": []
+    },
+    "assertionsCount": 10
+  }
+}

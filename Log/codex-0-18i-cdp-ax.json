@@ -1,0 +1,701 @@
+{
+  "at": "2026-09-07T08:04:25.668Z",
+  "results": [
+    {
+      "file": "03-home-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 182824
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 140건",
+          "backendDOMNodeId": 182984
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 140건",
+          "backendDOMNodeId": 183176
+        }
+      ]
+    },
+    {
+      "file": "03-home-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리",
+          "backendDOMNodeId": 183505
+        },
+        {
+          "name": "실적 관리",
+          "backendDOMNodeId": 183651
+        }
+      ]
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 184267
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 184479
+        }
+      ]
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 185699
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 186204
+        }
+      ]
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 187103
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 187351
+        }
+      ]
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리",
+          "backendDOMNodeId": 188171
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 188292
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 188442
+        }
+      ]
+    },
+    {
+      "file": "08-performance-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 188836
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 188972
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 189107
+        }
+      ]
+    },
+    {
+      "file": "08-performance-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 189539
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 189660
+        }
+      ]
+    },
+    {
+      "file": "08-performance-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 190474
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 190972
+        }
+      ]
+    },
+    {
+      "file": "08-performance-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 191735
+        },
+        {
+          "name": "실적 관리",
+          "backendDOMNodeId": 192155
+        },
+        {
+          "name": "실적 관리",
+          "backendDOMNodeId": 192248
+        }
+      ]
+    },
+    {
+      "file": "00-shell-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 192512
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 192598
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 192673
+        }
+      ]
+    },
+    {
+      "file": "00-shell-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 192921
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 192885
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 193102
+        }
+      ]
+    },
+    {
+      "file": "04-sites-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 193320
+        }
+      ]
+    },
+    {
+      "file": "04-sites-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 193656
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 193738
+        }
+      ]
+    },
+    {
+      "file": "06-employees-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 194279
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 194504
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 194754
+        }
+      ]
+    },
+    {
+      "file": "06-employees-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 195182
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 195292
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 195419
+        }
+      ]
+    },
+    {
+      "file": "06-employees-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 195753
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 196001
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 196078
+        }
+      ]
+    },
+    {
+      "file": "07-schedule-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 196699
+        }
+      ]
+    },
+    {
+      "file": "07-schedule-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 197400
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 197775
+        }
+      ]
+    },
+    {
+      "file": "07-schedule-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 198338
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 198424
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 198543
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 198619
+        }
+      ]
+    },
+    {
+      "file": "09-allowance-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 199198
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 199389
+        }
+      ]
+    },
+    {
+      "file": "09-allowance-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 199638
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 199779
+        }
+      ]
+    },
+    {
+      "file": "09-allowance-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 200218
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 200304
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 200458
+        }
+      ]
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 200771
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 200930
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 201057
+        }
+      ]
+    },
+    {
+      "file": "11-operations-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 201470
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 201711
+        }
+      ]
+    },
+    {
+      "file": "11-operations-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 202342
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 202584
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 202766
+        }
+      ]
+    },
+    {
+      "file": "11-operations-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 203251
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 203465
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 203568
+        }
+      ]
+    },
+    {
+      "file": "11-operations-4.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 203799
+        }
+      ]
+    },
+    {
+      "file": "12-access-logs-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "links": [
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 204295
+        },
+        {
+          "name": "실적 관리, 승인 대기 실적 128건",
+          "backendDOMNodeId": 204532
+        }
+      ]
+    }
+  ],
+  "shell": [
+    {
+      "file": "00-shell-1.html",
+      "id": "main-content-s1",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s1",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s1>\nAncestor with aria-hidden: <main.page-content#main-content-s1>"
+      ]
+    },
+    {
+      "file": "00-shell-1.html",
+      "id": "main-content-s2",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s2",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s2>\nAncestor with aria-hidden: <main.page-content#main-content-s2>"
+      ]
+    },
+    {
+      "file": "00-shell-1.html",
+      "id": "main-content-s3",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s3",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s3>\nAncestor with aria-hidden: <main.page-content#main-content-s3>"
+      ]
+    },
+    {
+      "file": "00-shell-2.html",
+      "id": "main-content-s4",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s4",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s4>\nAncestor with aria-hidden: <main.page-content#main-content-s4>"
+      ]
+    },
+    {
+      "file": "00-shell-2.html",
+      "id": "main-content-s5",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s5",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "BUTTON",
+        "id": "btn-s5-status-restart",
+        "cls": "btn-secondary btn-sm",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s5>\nAncestor with aria-hidden: <main.page-content#main-content-s5>"
+      ]
+    },
+    {
+      "file": "00-shell-2.html",
+      "id": "main-content-s6",
+      "axBeforeFocus": [
+        {
+          "ignored": true,
+          "role": "none",
+          "ignoredReasons": [
+            {
+              "name": "ariaHiddenElement",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          ]
+        }
+      ],
+      "axAfterFocus": [
+        {
+          "ignored": false,
+          "role": "main",
+          "name": ""
+        }
+      ],
+      "focused": {
+        "tag": "MAIN",
+        "id": "main-content-s6",
+        "hidden": "true"
+      },
+      "afterTab": {
+        "tag": "BUTTON",
+        "id": "btn-s6-status-detail",
+        "cls": "btn-ghost btn-sm",
+        "nav": false
+      },
+      "warnings": [
+        "Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.\nElement with focus: <main.page-content#main-content-s6>\nAncestor with aria-hidden: <main.page-content#main-content-s6>"
+      ]
+    }
+  ]
+}

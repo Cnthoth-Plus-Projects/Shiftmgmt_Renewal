@@ -1,0 +1,16 @@
+{
+  "name": "typecheck",
+  "command": [
+    "npm.cmd",
+    "run",
+    "typecheck"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:06:22.584233+00:00",
+  "pid": 27820,
+  "rc": 0,
+  "end": "2026-10-01T13:06:31.056298+00:00",
+  "elapsedSeconds": 8.469,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\typecheck.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\typecheck.stderr.txt"
+}

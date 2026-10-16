@@ -1,0 +1,31 @@
+{"name": "late-worker-child-before-remove", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-worker-child-before-remove", "accepted": true, "reason": null}
+{"name": "late-server-child-before-remove", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-child-before-remove", "accepted": true, "reason": null}
+{"name": "late-worker-log-before-remove", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-worker-log-before-remove", "accepted": true, "reason": null}
+{"name": "late-server-log-before-remove", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-log-before-remove", "accepted": true, "reason": null}
+{"name": "late-worker-child-gate", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-worker-child-gate", "accepted": true, "reason": null}
+{"name": "late-server-child-gate", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-child-gate", "accepted": true, "reason": null}
+{"name": "late-worker-log-gate", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-worker-log-gate", "accepted": true, "reason": null}
+{"name": "late-server-log-gate", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-log-gate", "accepted": true, "reason": null}
+{"name": "late-worker-child-final", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-worker-child-final", "accepted": true, "reason": null}
+{"name": "late-server-child-final", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-child-final", "accepted": true, "reason": null}
+{"name": "late-gate-child-final", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-gate-child-final", "accepted": true, "reason": null}
+{"name": "late-server-log-final", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-log-final", "accepted": true, "reason": null}
+{"name": "late-gate-log-final", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-gate-log-final", "accepted": true, "reason": null}
+{"name": "late-server-child-double", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-child-double", "accepted": true, "reason": null}
+{"name": "late-server-child-gate-mismatch", "rc": 1, "observerHealthy": true, "timeout": false}
+{"mode": "late-server-child-gate-mismatch", "accepted": true, "reason": null}
+{"status": "PASS", "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-lifecycle-o5rwariz", "cases": 15, "proof": "ACTUAL_CONTROL_CANARIES_ONLY_NOT_SUT_ACCEPTANCE", "parserRejected": 15}

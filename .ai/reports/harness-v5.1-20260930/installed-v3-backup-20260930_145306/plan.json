@@ -1,0 +1,551 @@
+{
+  "schema_version": "1.0",
+  "kind": "harness-change-plan",
+  "overall": "READY_WITH_WARNINGS",
+  "checked_at": "2026-08-25T12:02:48.4467081+09:00",
+  "harness_root": "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness",
+  "tools_root": "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+  "blocks": [],
+  "findings": [
+    {
+      "area": "host",
+      "item": "PowerShell",
+      "value": "Desktop 5.1.26100.9168",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "host",
+      "item": "pwsh (PS7)",
+      "value": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "host",
+      "item": "LanguageMode",
+      "value": 0,
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "host",
+      "item": "ExecutionPolicy(유효)",
+      "value": "Bypass",
+      "status": "OK",
+      "note": "설치 명령은 -ExecutionPolicy Bypass 로 실행하므로 정책을 영구 변경할 필요가 없다."
+    },
+    {
+      "area": "host",
+      "item": "관리자 권한",
+      "value": false,
+      "status": "INFO",
+      "note": "설치에 관리자 권한은 필요하지 않다."
+    },
+    {
+      "area": "encoding",
+      "item": "ANSI 코드페이지",
+      "value": "949",
+      "status": "WARN",
+      "note": "BOM 없는 .ps1 은 이 코드페이지로 디코딩되어 비ASCII 문자가 깨진다. 하네스는 모든 .ps1 을 UTF-8 BOM 으로 관리한다."
+    },
+    {
+      "area": "encoding",
+      "item": "OEM 코드페이지",
+      "value": "949",
+      "status": "INFO",
+      "note": "네이티브 CLI stdout 캡처 시 이 값이 적용된다."
+    },
+    {
+      "area": "path",
+      "item": "USERPROFILE",
+      "value": "C:\\Users\\pangyo",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "path",
+      "item": "LOCALAPPDATA",
+      "value": "C:\\Users\\pangyo\\AppData\\Local",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "path",
+      "item": "긴 경로 지원",
+      "value": false,
+      "status": "INFO",
+      "note": "node_modules 는 경로가 깊다. 도구 루트를 짧은 경로에 두는 것이 안전하다."
+    },
+    {
+      "area": "toolchain",
+      "item": "Node.js",
+      "value": "24.13.0  (C:\\Program Files\\nodejs\\node.exe)",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "toolchain",
+      "item": "npm",
+      "value": "11.6.2",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "toolchain",
+      "item": "git",
+      "value": "git version 2.52.0.windows.1",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "tools_root",
+      "item": "해석된 위치",
+      "value": "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "tools_root",
+      "item": "AI_HARNESS_TOOLS_ROOT (User)",
+      "value": null,
+      "status": "INFO",
+      "note": ""
+    },
+    {
+      "area": "harness",
+      "item": "HARNESS_ROOT",
+      "value": "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "harness",
+      "item": "저장소 권한",
+      "value": "위험: PangyoCCC\\CodexSandboxUsers [Modify, Synchronize]; S-1-5-21-1709181912-1684840006-1445655560-214140758 [Modify, Synchronize]",
+      "status": "WARN",
+      "note": "다른 로컬 사용자가 하네스 스크립트와 정책을 바꿀 수 있다. 실행되는 코드를 바꿀 수 있다는 뜻이다."
+    },
+    {
+      "area": "harness",
+      "item": "git 저장소",
+      "value": "예",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "harness",
+      "item": "core.hooksPath",
+      "value": ".githooks",
+      "status": "OK",
+      "note": ""
+    },
+    {
+      "area": "runtime",
+      "item": "선언된 공용 런타임",
+      "value": "google-workspace",
+      "status": "INFO",
+      "note": ""
+    },
+    {
+      "area": "runtime",
+      "item": "google-workspace",
+      "value": "미설치",
+      "status": "INFO",
+      "note": "Google Workspace MCP (공용 머신 런타임)"
+    },
+    {
+      "area": "runtime",
+      "item": "google-workspace 자격증명 파일",
+      "value": "없음",
+      "status": "INFO",
+      "note": "최초 로그인이 필요하다: workflows/GOOGLE_WORKSPACE_SETUP.md"
+    },
+    {
+      "area": "client",
+      "item": "AGY (Google Antigravity)",
+      "value": "설치됨 (C:\\Users\\pangyo\\AppData\\Local\\agy\\bin\\agy.exe)",
+      "status": "OK",
+      "note": "하네스 서버 미등록"
+    },
+    {
+      "area": "client",
+      "item": "AGY (Google Antigravity) 도구 통제",
+      "value": "차단 불가 — 미등록",
+      "status": "INFO",
+      "note": "risk=high 런타임이 등록돼 있지 않아 지금은 노출이 없다."
+    },
+    {
+      "area": "client",
+      "item": "Claude Code",
+      "value": "설치됨 (C:\\Users\\pangyo\\AppData\\Roaming\\npm\\claude.cmd)",
+      "status": "OK",
+      "note": "하네스 서버 미등록"
+    },
+    {
+      "area": "client",
+      "item": "OpenAI Codex CLI",
+      "value": "설치됨 (C:\\Users\\pangyo\\AppData\\Roaming\\npm\\codex.cmd)",
+      "status": "OK",
+      "note": "하네스 서버 미등록"
+    },
+    {
+      "area": "client",
+      "item": "OpenAI Codex CLI CODEX_HOME",
+      "value": "C:\\Users\\pangyo\\AppData\\Roaming\\orca\\codex-runtime-home\\home",
+      "status": "WARN",
+      "note": "설정 홈이 재정의되어 있다. 설정 파일 경로를 가정하는 검사는 이 환경에서 틀린 답을 준다."
+    },
+    {
+      "area": "client",
+      "item": "OpenAI Codex CLI 관리형 설정 홈",
+      "value": ".orca-config-settings-baseline.json, .orca-hook-trust-provenance.json",
+      "status": "WARN",
+      "note": "외부 도구가 이 설정 파일을 소유한다. 하네스가 넣은 MCP 등록이 나중에 지워질 수 있으므로, 작업 시작 시 등록 상태를 다시 확인해야 한다."
+    }
+  ],
+  "limitations": [
+    {
+      "client": "agy",
+      "runtime_id": "google-workspace",
+      "id": "no_per_tool_policy",
+      "severity": "high",
+      "what": "도구 단위 차단·승인 수단이 없다",
+      "why": "도구 관련 플래그는 --dangerously-skip-permissions(전부 자동 승인) 하나뿐이고, ~/.gemini/config/mcp_config.json 은 서버별 command/args/env/disabled 만 받으며, ~/.gemini/antigravity-cli/settings.json 에도 도구 정책 키가 없다 (2026-08-23 확인).",
+      "consequence": "매니페스트의 tool_policy.deny 가 강제되지 않는다. 통제 단위는 서버 전체 on/off 뿐이다. AGY 를 --dangerously-skip-permissions 로 띄우면 되돌릴 수 없는 도구도 확인 없이 실행된다.",
+      "options": [
+        {
+          "id": "disable_until_needed",
+          "recommended": true,
+          "label": "등록은 하되 평소에는 꺼 둔다",
+          "how": "agy mcp disable google-workspace      # 쓸 때만: agy mcp enable google-workspace",
+          "effect": "평소 노출이 0 이 된다. 필요할 때 한 줄로 켜고 끈다. 켜 둔 동안은 여전히 무방비다. 적용하면 진단이 '차단 불가 — 꺼 둠'(OK) 으로 바뀌고 정합 행렬에도 표시된다."
+        },
+        {
+          "id": "skip_registration",
+          "recommended": false,
+          "label": "이 클라이언트에는 등록하지 않는다",
+          "how": "계획 파일에서 client.register:agy:google-workspace 의 enabled 를 false 로 바꾼다",
+          "effect": "AGY 에서 이 능력을 쓸 수 없다. 다른 클라이언트는 영향 없다."
+        },
+        {
+          "id": "narrow_profile",
+          "recommended": false,
+          "label": "권한 범위를 줄인 별도 프로필로 등록한다",
+          "how": "매니페스트의 parameters.services 를 줄인 값으로 재인증한 프로필을 만들어 그것으로 등록한다. 활성 서비스가 곧 OAuth 스코프이므로 애초에 위험 도구가 존재하지 않게 된다",
+          "effect": "가장 확실하다. 대신 프로필과 재인증이 하나 더 늘어난다."
+        },
+        {
+          "id": "accept",
+          "recommended": false,
+          "label": "알고 그대로 쓴다",
+          "how": "-IAcceptRisk 로 등록한다",
+          "effect": "deny 목록은 문서로만 남는다. 원장에 tool_policy_enforceable=false 로 기록된다."
+        }
+      ]
+    },
+    {
+      "client": "claude",
+      "runtime_id": "google-workspace",
+      "id": "scoped_deny_keeps_schema",
+      "severity": "medium",
+      "what": "도구 단위 deny 는 실행만 막고 컨텍스트는 줄이지 않는다",
+      "why": "permissions.deny 에 mcp__google-workspace__{tool} 을 넣으면 호출은 차단되지만 도구 스키마는 모델 컨텍스트에 그대로 남는다. 컨텍스트가 실제로 줄어드는 것은 서버 전체를 지정한 bare deny(mcp__google-workspace)뿐이다.",
+      "consequence": "위험 도구를 막아도 토큰은 계속 쓴다. 이 런타임은 도구가 80개가 넘어 무시할 수 없는 양이다.",
+      "options": [
+        {
+          "id": "per_project_disable",
+          "recommended": true,
+          "label": "관련 없는 프로젝트에서는 서버째 끈다",
+          "how": "해당 프로젝트에서 /mcp 토글 (~/.claude.json 의 disabledMcpServers)",
+          "effect": "그 프로젝트에서 스키마가 사라져 토큰이 실제로 줄어든다. 필요한 프로젝트에서는 그대로 쓴다."
+        },
+        {
+          "id": "tool_deny_only",
+          "recommended": false,
+          "label": "실행 차단만 하고 토큰은 감수한다",
+          "how": ".claude/settings.json 의 permissions.deny 에 mcp__google-workspace__<tool>",
+          "effect": "위험 도구는 못 부른다. 스키마는 남는다."
+        }
+      ]
+    },
+    {
+      "client": "codex",
+      "runtime_id": "google-workspace",
+      "id": "no_scope_flag",
+      "severity": "medium",
+      "what": "등록 범위를 고를 수 없다. 항상 전역이다",
+      "why": "codex mcp add 에 scope 플래그가 없다. 프로젝트별 .codex/config.toml 은 신뢰된 프로젝트에서만 읽히고 수동 편집이 필요하다.",
+      "consequence": "한 번 등록하면 모든 프로젝트에서 이 서버가 보인다. 프로젝트 단위로 켜고 끌 수 없다.",
+      "options": [
+        {
+          "id": "accept_global",
+          "recommended": true,
+          "label": "전역 등록을 받아들이고 도구 정책으로 통제한다",
+          "how": "$CODEX_HOME/config.toml 의 mcp_servers.google-workspace.disabled_tools 로 위험 도구 제거, default_tools_approval_mode = \"writes\" 로 쓰기 승인",
+          "effect": "Codex 의 도구 필터는 모델용 목록 생성 전에 적용되므로 컨텍스트도 실제로 줄어든다."
+        },
+        {
+          "id": "skip_registration",
+          "recommended": false,
+          "label": "등록하지 않는다",
+          "how": "계획 파일에서 client.register:codex:google-workspace 의 enabled 를 false 로 바꾼다",
+          "effect": "Codex 에서 이 능력을 쓸 수 없다."
+        }
+      ]
+    },
+    {
+      "client": "codex",
+      "runtime_id": "google-workspace",
+      "id": "config_may_be_externally_owned",
+      "severity": "medium",
+      "what": "제3의 도구가 설정 파일을 소유하면 등록이 조용히 지워진다",
+      "why": "이 PC 에서 실제로 일어났다. 다계정 래퍼(orca)가 CODEX_HOME 을 재정의하고 config.toml 을 재작성하면서 [mcp_servers] 블록을 지웠다. 14:54 등록 확인 -> 16:15 소실.",
+      "consequence": "등록했다고 계속 등록된 상태로 남지 않는다. 원장과 실제가 갈라진다.",
+      "options": [
+        {
+          "id": "recheck_each_session",
+          "recommended": true,
+          "label": "작업 시작 시 정합을 확인한다",
+          "how": ".\\scripts\\Sync-HarnessClients.ps1",
+          "effect": "지워졌으면 unregistered 로 잡힌다. 재등록 명령도 함께 나온다."
+        },
+        {
+          "id": "skip_registration",
+          "recommended": false,
+          "label": "등록하지 않는다",
+          "how": "계획 파일에서 client.register:codex:google-workspace 의 enabled 를 false 로 바꾼다",
+          "effect": "사라질 등록을 관리하지 않아도 된다."
+        }
+      ]
+    }
+  ],
+  "plan": [
+    {
+      "step_id": "toolsroot.create",
+      "kind": "dir-create",
+      "action": "도구 루트 생성",
+      "target": "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+      "current": "없음",
+      "proposed": "디렉터리 생성 + ACL 제한",
+      "risk": "low",
+      "note": "",
+      "optional": false,
+      "enabled": true,
+      "depends_on": [],
+      "command_line": "",
+      "payload": {
+        "path": "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+        "restrict_acl": true
+      },
+      "undo": null,
+      "limitations": []
+    },
+    {
+      "step_id": "harness.acl:C:\\Users\\pangyo\\AppData\\Local\\AI-Harness",
+      "kind": "acl-set",
+      "action": "하네스 저장소 ACL 제한",
+      "target": "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness",
+      "current": "PangyoCCC\\CodexSandboxUsers [Modify, Synchronize]; S-1-5-21-1709181912-1684840006-1445655560-214140758 [Modify, Synchronize]",
+      "proposed": "소유자 / SYSTEM / Administrators 만",
+      "risk": "medium",
+      "note": "C: 바로 아래 폴더는 Authenticated Users 쓰기 권한을 상속받는다. 하네스가 거기 있으면 실행되는 코드가 무방비다.",
+      "optional": false,
+      "enabled": true,
+      "depends_on": [],
+      "command_line": "",
+      "payload": {
+        "path": "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness",
+        "disable_inheritance": true
+      },
+      "undo": null,
+      "limitations": []
+    },
+    {
+      "step_id": "runtime.install:google-workspace",
+      "kind": "exec",
+      "action": "런타임 설치",
+      "target": "google-workspace",
+      "current": "미설치",
+      "proposed": "v3.4.4 를 C:\\Users\\pangyo\\AppData\\Local\\AI-Tools 에",
+      "risk": "low",
+      "note": "이 능력이 필요할 때만 설치하면 된다. 설치하지 않아도 하네스는 정상 동작한다.",
+      "optional": true,
+      "enabled": false,
+      "depends_on": [
+        "toolsroot.create"
+      ],
+      "command_line": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Install-HarnessRuntime.ps1 -RuntimeId google-workspace -ToolsRoot C:\\Users\\pangyo\\AppData\\Local\\AI-Tools -Adopt -EnsureOnly",
+      "payload": {
+        "file": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "arguments": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Install-HarnessRuntime.ps1",
+          "-RuntimeId",
+          "google-workspace",
+          "-ToolsRoot",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+          "-Adopt",
+          "-EnsureOnly"
+        ]
+      },
+      "undo": null,
+      "limitations": []
+    },
+    {
+      "step_id": "client.register:agy:google-workspace",
+      "kind": "exec",
+      "action": "클라이언트 등록",
+      "target": "agy <- google-workspace",
+      "current": "미등록",
+      "proposed": "google-workspace 를 scope= 로 등록",
+      "risk": "medium",
+      "note": "risk=high 런타임이다. 등록하면 이 클라이언트의 모든 프로젝트에서 도구가 보인다.  [risk=high — 명령에 -IAcceptRisk 가 들어 있다. 차단 도구: delete_email, empty_trash, batch_delete, remove_permission]",
+      "optional": true,
+      "enabled": false,
+      "depends_on": [
+        "runtime.install:google-workspace"
+      ],
+      "command_line": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1 -RuntimeId google-workspace -Client agy -ToolsRoot C:\\Users\\pangyo\\AppData\\Local\\AI-Tools -Force -IAcceptRisk",
+      "payload": {
+        "file": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "arguments": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1",
+          "-RuntimeId",
+          "google-workspace",
+          "-Client",
+          "agy",
+          "-ToolsRoot",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+          "-Force",
+          "-IAcceptRisk"
+        ],
+        "diff": {
+          "kind": "registration",
+          "runtime_id": "google-workspace",
+          "client_id": "agy"
+        }
+      },
+      "undo": {
+        "kind": "exec",
+        "file": "C:\\Users\\pangyo\\AppData\\Local\\agy\\bin\\agy.exe",
+        "arguments": [
+          "mcp",
+          "remove",
+          "google-workspace"
+        ],
+        "command_line": "agy mcp remove google-workspace"
+      },
+      "limitations": []
+    },
+    {
+      "step_id": "client.register:claude:google-workspace",
+      "kind": "exec",
+      "action": "클라이언트 등록",
+      "target": "claude <- google-workspace",
+      "current": "미등록",
+      "proposed": "google-workspace 를 scope=user 로 등록",
+      "risk": "medium",
+      "note": "risk=high 런타임이다. 등록하면 이 클라이언트의 모든 프로젝트에서 도구가 보인다.  [risk=high — 명령에 -IAcceptRisk 가 들어 있다. 차단 도구: delete_email, empty_trash, batch_delete, remove_permission]",
+      "optional": true,
+      "enabled": false,
+      "depends_on": [
+        "runtime.install:google-workspace"
+      ],
+      "command_line": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1 -RuntimeId google-workspace -Client claude -ToolsRoot C:\\Users\\pangyo\\AppData\\Local\\AI-Tools -Force -IAcceptRisk",
+      "payload": {
+        "file": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "arguments": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1",
+          "-RuntimeId",
+          "google-workspace",
+          "-Client",
+          "claude",
+          "-ToolsRoot",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+          "-Force",
+          "-IAcceptRisk"
+        ],
+        "diff": {
+          "kind": "registration",
+          "runtime_id": "google-workspace",
+          "client_id": "claude"
+        }
+      },
+      "undo": {
+        "kind": "exec",
+        "file": "C:\\Users\\pangyo\\AppData\\Roaming\\npm\\claude.cmd",
+        "arguments": [
+          "mcp",
+          "remove",
+          "google-workspace",
+          "-s",
+          "user"
+        ],
+        "command_line": "claude mcp remove google-workspace -s user"
+      },
+      "limitations": []
+    },
+    {
+      "step_id": "client.register:codex:google-workspace",
+      "kind": "exec",
+      "action": "클라이언트 등록",
+      "target": "codex <- google-workspace",
+      "current": "미등록",
+      "proposed": "google-workspace 를 scope= 로 등록",
+      "risk": "medium",
+      "note": "risk=high 런타임이다. 등록하면 이 클라이언트의 모든 프로젝트에서 도구가 보인다.  [risk=high — 명령에 -IAcceptRisk 가 들어 있다. 차단 도구: delete_email, empty_trash, batch_delete, remove_permission]",
+      "optional": true,
+      "enabled": false,
+      "depends_on": [
+        "runtime.install:google-workspace"
+      ],
+      "command_line": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1 -RuntimeId google-workspace -Client codex -ToolsRoot C:\\Users\\pangyo\\AppData\\Local\\AI-Tools -Force -IAcceptRisk",
+      "payload": {
+        "file": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "arguments": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Harness\\scripts\\Register-HarnessRuntimeClient.ps1",
+          "-RuntimeId",
+          "google-workspace",
+          "-Client",
+          "codex",
+          "-ToolsRoot",
+          "C:\\Users\\pangyo\\AppData\\Local\\AI-Tools",
+          "-Force",
+          "-IAcceptRisk"
+        ],
+        "diff": {
+          "kind": "registration",
+          "runtime_id": "google-workspace",
+          "client_id": "codex"
+        }
+      },
+      "undo": {
+        "kind": "exec",
+        "file": "C:\\Users\\pangyo\\AppData\\Roaming\\npm\\codex.cmd",
+        "arguments": [
+          "mcp",
+          "remove",
+          "google-workspace"
+        ],
+        "command_line": "codex mcp remove google-workspace"
+      },
+      "limitations": []
+    }
+  ]
+}

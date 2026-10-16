@@ -1,0 +1,48 @@
+{
+  "contractCases": 11,
+  "coreIds": 9,
+  "fullIds": 87,
+  "uniqueIds": true,
+  "canonicalCompiledImportRC": 0,
+  "canonicalMapCount": 69,
+  "canonicalEight": [
+    {
+      "actionType": "performance-approve",
+      "label": "실적 승인"
+    },
+    {
+      "actionType": "performance-reapprove",
+      "label": "실적 승인 확정"
+    },
+    {
+      "actionType": "performance-hide-approved",
+      "label": "승인완료 목록삭제"
+    },
+    {
+      "actionType": "schedule-publish",
+      "label": "근무표 배포"
+    },
+    {
+      "actionType": "sign-in",
+      "label": "로그인"
+    },
+    {
+      "actionType": "route-view",
+      "label": "화면 이동"
+    },
+    {
+      "actionType": "performance-reject",
+      "label": "실적 반려"
+    },
+    {
+      "actionType": "site-save",
+      "label": "근무지 저장"
+    }
+  ],
+  "compiledBytes": 3575,
+  "compiledSha256": "D873CF5FF4FFEB34CB2AC1E44A60D5E63E41AEB4992A043361AACF4B5F97D81B",
+  "windowsReadOnlyAbsentPidCheck": true,
+  "sourceProductEdits": 0,
+  "scopePreviouslyRC": 0,
+  "blockedIssues": []
+}

@@ -1,0 +1,8 @@
+{"mode":"capture-failure","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852012716}}
+{"mode":"context-close-failure","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852014805}}
+{"mode":"partial-write-failure","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852016848}}
+{"mode":"measured-viewport","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852019044}}
+{"mode":"measured-origin","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852021168}}
+{"mode":"viewport-null","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852023023}}
+{"mode":"canonical-missing","accepted":true,"detectedRegression":false,"exit":{"code":1,"signal":null,"timeMs":1791852023772}}
+{"status":"PASS","artifact":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-partial-OkjBXb","modes":7}

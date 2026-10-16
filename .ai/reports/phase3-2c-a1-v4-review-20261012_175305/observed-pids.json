@@ -1,0 +1,1502 @@
+{
+  "43876": [
+    {
+      "ended": "2026-10-12T08:58:10.422872+00:00",
+      "source": "scope-before"
+    },
+    {
+      "ended": "2026-10-12T08:59:45.403561+00:00",
+      "source": "fault-missing-id"
+    }
+  ],
+  "19780": [
+    {
+      "ended": "2026-10-12T08:58:26.565802+00:00",
+      "source": "fresh-observer-selfcheck"
+    }
+  ],
+  "43620": [
+    {
+      "ended": "2026-10-12T08:58:31.861985+00:00",
+      "source": "positive-contract-core"
+    }
+  ],
+  "21900": [
+    {
+      "ended": "2026-10-12T08:58:33.197852+00:00",
+      "source": "positive-final-contract-core"
+    }
+  ],
+  "45256": [
+    {
+      "ended": "2026-10-12T08:58:39.909286+00:00",
+      "source": "positive-regression-shell"
+    }
+  ],
+  "39700": [
+    {
+      "ended": "2026-10-12T08:58:40.995231+00:00",
+      "source": "positive-final-regression-shell"
+    }
+  ],
+  "37844": [
+    {
+      "ended": "2026-10-12T08:58:46.701062+00:00",
+      "source": "positive-regression-home"
+    }
+  ],
+  "42908": [
+    {
+      "ended": "2026-10-12T08:58:47.886766+00:00",
+      "source": "positive-final-regression-home"
+    },
+    {
+      "ended": 1791795574511,
+      "source": "fault-png-crc/actual-child-close"
+    }
+  ],
+  "29168": [
+    {
+      "ended": "2026-10-12T08:58:53.739216+00:00",
+      "source": "observed-positive-contract-core"
+    }
+  ],
+  "15980": [
+    {
+      "ended": 1791795531876,
+      "source": "observed-positive-contract-core/actual-child-close"
+    }
+  ],
+  "41596": [
+    {
+      "ended": 1791795531906,
+      "source": "observed-positive-contract-core/actual-child-close"
+    }
+  ],
+  "41524": [
+    {
+      "ended": 1791795533689,
+      "source": "observed-positive-contract-core/actual-child-close"
+    }
+  ],
+  "43176": [
+    {
+      "ended": "2026-10-12T08:58:55.354641+00:00",
+      "source": "observed-positive-final-contract-core"
+    }
+  ],
+  "7252": [
+    {
+      "ended": "2026-10-12T08:59:02.673023+00:00",
+      "source": "observed-positive-regression-shell"
+    }
+  ],
+  "44400": [
+    {
+      "ended": 1791795541287,
+      "source": "observed-positive-regression-shell/actual-child-close"
+    }
+  ],
+  "29540": [
+    {
+      "ended": 1791795541333,
+      "source": "observed-positive-regression-shell/actual-child-close"
+    }
+  ],
+  "25860": [
+    {
+      "ended": 1791795542622,
+      "source": "observed-positive-regression-shell/actual-child-close"
+    }
+  ],
+  "15268": [
+    {
+      "ended": "2026-10-12T08:59:03.681256+00:00",
+      "source": "observed-positive-final-regression-shell"
+    }
+  ],
+  "36464": [
+    {
+      "ended": "2026-10-12T08:59:08.836202+00:00",
+      "source": "observed-positive-regression-home"
+    }
+  ],
+  "18332": [
+    {
+      "ended": 1791795547541,
+      "source": "observed-positive-regression-home/actual-child-close"
+    }
+  ],
+  "9328": [
+    {
+      "ended": 1791795547575,
+      "source": "observed-positive-regression-home/actual-child-close"
+    }
+  ],
+  "4644": [
+    {
+      "ended": 1791795548792,
+      "source": "observed-positive-regression-home/actual-child-close"
+    }
+  ],
+  "20224": [
+    {
+      "ended": "2026-10-12T08:59:14.875671+00:00",
+      "source": "observed-positive-final-regression-home"
+    }
+  ],
+  "24016": [
+    {
+      "ended": "2026-10-12T08:59:15.345648+00:00",
+      "source": "stage-live-admin"
+    }
+  ],
+  "42728": [
+    {
+      "ended": "2026-10-12T08:59:15.890770+00:00",
+      "source": "stage-list-fixture"
+    }
+  ],
+  "32992": [
+    {
+      "ended": "2026-10-12T08:59:16.415823+00:00",
+      "source": "stage-empty-fixture"
+    }
+  ],
+  "5240": [
+    {
+      "ended": "2026-10-12T08:59:16.914065+00:00",
+      "source": "stage-filters"
+    }
+  ],
+  "6788": [
+    {
+      "ended": "2026-10-12T08:59:17.399172+00:00",
+      "source": "stage-errors"
+    }
+  ],
+  "17352": [
+    {
+      "ended": "2026-10-12T08:59:17.876372+00:00",
+      "source": "stage-stale-response"
+    }
+  ],
+  "42868": [
+    {
+      "ended": "2026-10-12T08:59:18.367315+00:00",
+      "source": "stage-role-guard"
+    }
+  ],
+  "37160": [
+    {
+      "ended": "2026-10-12T08:59:18.847427+00:00",
+      "source": "stage-session-expired"
+    },
+    {
+      "ended": 1791795621384,
+      "source": "fault-raw-http/actual-child-close"
+    }
+  ],
+  "44272": [
+    {
+      "ended": "2026-10-12T08:59:19.327814+00:00",
+      "source": "malformed-1"
+    }
+  ],
+  "26472": [
+    {
+      "ended": "2026-10-12T08:59:19.818965+00:00",
+      "source": "malformed-2"
+    },
+    {
+      "ended": 1791795614657,
+      "source": "fault-raw-requestfailed/actual-child-close"
+    }
+  ],
+  "44716": [
+    {
+      "ended": "2026-10-12T08:59:20.308450+00:00",
+      "source": "malformed-3"
+    }
+  ],
+  "1952": [
+    {
+      "ended": "2026-10-12T08:59:20.781880+00:00",
+      "source": "malformed-4"
+    }
+  ],
+  "33744": [
+    {
+      "ended": "2026-10-12T08:59:21.259082+00:00",
+      "source": "malformed-5"
+    }
+  ],
+  "14816": [
+    {
+      "ended": "2026-10-12T08:59:21.733711+00:00",
+      "source": "malformed-6"
+    }
+  ],
+  "36316": [
+    {
+      "ended": "2026-10-12T08:59:22.228827+00:00",
+      "source": "malformed-7"
+    }
+  ],
+  "16072": [
+    {
+      "ended": "2026-10-12T08:59:22.727948+00:00",
+      "source": "malformed-8"
+    }
+  ],
+  "14220": [
+    {
+      "ended": "2026-10-12T08:59:23.229663+00:00",
+      "source": "malformed-9"
+    }
+  ],
+  "43692": [
+    {
+      "ended": "2026-10-12T08:59:28.696754+00:00",
+      "source": "fault-png-header-only"
+    }
+  ],
+  "6356": [
+    {
+      "ended": 1791795566913,
+      "source": "fault-png-header-only/actual-child-close"
+    }
+  ],
+  "13428": [
+    {
+      "ended": 1791795566940,
+      "source": "fault-png-header-only/actual-child-close"
+    }
+  ],
+  "33832": [
+    {
+      "ended": 1791795568652,
+      "source": "fault-png-header-only/actual-child-close"
+    }
+  ],
+  "28524": [
+    {
+      "ended": "2026-10-12T08:59:34.552846+00:00",
+      "source": "fault-png-crc"
+    }
+  ],
+  "38400": [
+    {
+      "ended": 1791795572852,
+      "source": "fault-png-crc/actual-child-close"
+    },
+    {
+      "ended": 1791795599109,
+      "source": "fault-constant-actual/actual-child-close"
+    }
+  ],
+  "34592": [
+    {
+      "ended": 1791795572878,
+      "source": "fault-png-crc/actual-child-close"
+    }
+  ],
+  "22144": [
+    {
+      "ended": "2026-10-12T08:59:40.071983+00:00",
+      "source": "fault-duplicate-id"
+    }
+  ],
+  "26328": [
+    {
+      "ended": 1791795578653,
+      "source": "fault-duplicate-id/actual-child-close"
+    }
+  ],
+  "22000": [
+    {
+      "ended": 1791795578683,
+      "source": "fault-duplicate-id/actual-child-close"
+    }
+  ],
+  "36448": [
+    {
+      "ended": 1791795580024,
+      "source": "fault-duplicate-id/actual-child-close"
+    }
+  ],
+  "15336": [
+    {
+      "ended": 1791795583938,
+      "source": "fault-missing-id/actual-child-close"
+    }
+  ],
+  "25780": [
+    {
+      "ended": 1791795583962,
+      "source": "fault-missing-id/actual-child-close"
+    }
+  ],
+  "45620": [
+    {
+      "ended": 1791795585354,
+      "source": "fault-missing-id/actual-child-close"
+    }
+  ],
+  "34224": [
+    {
+      "ended": "2026-10-12T08:59:50.675787+00:00",
+      "source": "fault-extra-id"
+    }
+  ],
+  "45144": [
+    {
+      "ended": 1791795589353,
+      "source": "fault-extra-id/actual-child-close"
+    }
+  ],
+  "38152": [
+    {
+      "ended": 1791795589374,
+      "source": "fault-extra-id/actual-child-close"
+    }
+  ],
+  "30360": [
+    {
+      "ended": 1791795590634,
+      "source": "fault-extra-id/actual-child-close"
+    }
+  ],
+  "26528": [
+    {
+      "ended": "2026-10-12T08:59:55.792414+00:00",
+      "source": "fault-caller-expected"
+    }
+  ],
+  "20948": [
+    {
+      "ended": 1791795594455,
+      "source": "fault-caller-expected/actual-child-close"
+    }
+  ],
+  "16668": [
+    {
+      "ended": 1791795594480,
+      "source": "fault-caller-expected/actual-child-close"
+    }
+  ],
+  "35148": [
+    {
+      "ended": 1791795595752,
+      "source": "fault-caller-expected/actual-child-close"
+    },
+    {
+      "ended": 1791795609458,
+      "source": "fault-raw-pageerror/actual-child-close"
+    }
+  ],
+  "32380": [
+    {
+      "ended": "2026-10-12T09:00:00.352302+00:00",
+      "source": "fault-constant-actual"
+    }
+  ],
+  "20568": [
+    {
+      "ended": 1791795599132,
+      "source": "fault-constant-actual/actual-child-close"
+    }
+  ],
+  "41540": [
+    {
+      "ended": 1791795600298,
+      "source": "fault-constant-actual/actual-child-close"
+    },
+    {
+      "ended": 1791795614689,
+      "source": "fault-raw-requestfailed/actual-child-close"
+    }
+  ],
+  "16664": [
+    {
+      "ended": "2026-10-12T09:00:05.559353+00:00",
+      "source": "fault-raw-console"
+    }
+  ],
+  "30520": [
+    {
+      "ended": 1791795604125,
+      "source": "fault-raw-console/actual-child-close"
+    }
+  ],
+  "19740": [
+    {
+      "ended": 1791795604155,
+      "source": "fault-raw-console/actual-child-close"
+    }
+  ],
+  "19764": [
+    {
+      "ended": 1791795605507,
+      "source": "fault-raw-console/actual-child-close"
+    }
+  ],
+  "15604": [
+    {
+      "ended": "2026-10-12T09:00:10.850301+00:00",
+      "source": "fault-raw-pageerror"
+    },
+    {
+      "ended": "2026-10-12T09:01:39.960523+00:00",
+      "source": "fault-worker-spawn-error"
+    },
+    {
+      "ended": 1791795712347,
+      "source": "fault-gate-response-case/actual-child-close"
+    }
+  ],
+  "8720": [
+    {
+      "ended": 1791795609434,
+      "source": "fault-raw-pageerror/actual-child-close"
+    }
+  ],
+  "25472": [
+    {
+      "ended": 1791795610795,
+      "source": "fault-raw-pageerror/actual-child-close"
+    }
+  ],
+  "45976": [
+    {
+      "ended": "2026-10-12T09:00:16.137363+00:00",
+      "source": "fault-raw-requestfailed"
+    }
+  ],
+  "10932": [
+    {
+      "ended": 1791795616078,
+      "source": "fault-raw-requestfailed/actual-child-close"
+    }
+  ],
+  "12120": [
+    {
+      "ended": "2026-10-12T09:00:21.427521+00:00",
+      "source": "fault-raw-http"
+    }
+  ],
+  "18448": [
+    {
+      "ended": 1791795620044,
+      "source": "fault-raw-http/actual-child-close"
+    }
+  ],
+  "5932": [
+    {
+      "ended": 1791795620081,
+      "source": "fault-raw-http/actual-child-close"
+    },
+    {
+      "ended": 1791795650634,
+      "source": "fault-final-write-denied/actual-child-close"
+    }
+  ],
+  "17800": [
+    {
+      "ended": "2026-10-12T09:00:26.436346+00:00",
+      "source": "fault-canonical-drift"
+    }
+  ],
+  "18764": [
+    {
+      "ended": 1791795625058,
+      "source": "fault-canonical-drift/actual-child-close"
+    }
+  ],
+  "22476": [
+    {
+      "ended": 1791795625084,
+      "source": "fault-canonical-drift/actual-child-close"
+    }
+  ],
+  "37532": [
+    {
+      "ended": 1791795626379,
+      "source": "fault-canonical-drift/actual-child-close"
+    }
+  ],
+  "12928": [
+    {
+      "ended": "2026-10-12T09:00:31.562283+00:00",
+      "source": "fault-worker-close-receipt"
+    }
+  ],
+  "43872": [
+    {
+      "ended": 1791795630171,
+      "source": "fault-worker-close-receipt/actual-child-close"
+    }
+  ],
+  "20580": [
+    {
+      "ended": 1791795630196,
+      "source": "fault-worker-close-receipt/actual-child-close"
+    }
+  ],
+  "45852": [
+    {
+      "ended": 1791795631504,
+      "source": "fault-worker-close-receipt/actual-child-close"
+    }
+  ],
+  "10504": [
+    {
+      "ended": "2026-10-12T09:00:36.807044+00:00",
+      "source": "fault-server-close-receipt"
+    }
+  ],
+  "36092": [
+    {
+      "ended": 1791795635533,
+      "source": "fault-server-close-receipt/actual-child-close"
+    }
+  ],
+  "3092": [
+    {
+      "ended": 1791795635559,
+      "source": "fault-server-close-receipt/actual-child-close"
+    }
+  ],
+  "22692": [
+    {
+      "ended": 1791795636767,
+      "source": "fault-server-close-receipt/actual-child-close"
+    }
+  ],
+  "41140": [
+    {
+      "ended": "2026-10-12T09:00:46.596533+00:00",
+      "source": "fault-server-close-not-observed"
+    }
+  ],
+  "38744": [
+    {
+      "ended": 1791795640453,
+      "source": "fault-server-close-not-observed/actual-child-close"
+    }
+  ],
+  "35308": [
+    {
+      "ended": 1791795640475,
+      "source": "fault-server-close-not-observed/actual-child-close"
+    }
+  ],
+  "17616": [
+    {
+      "ended": "2026-10-12T09:00:52.553234+00:00",
+      "source": "fault-final-write-denied"
+    }
+  ],
+  "10180": [
+    {
+      "ended": 1791795650606,
+      "source": "fault-final-write-denied/actual-child-close"
+    }
+  ],
+  "19912": [
+    {
+      "ended": 1791795652488,
+      "source": "fault-final-write-denied/actual-child-close"
+    }
+  ],
+  "31440": [
+    {
+      "ended": "2026-10-12T09:00:53.326095+00:00",
+      "source": "fault-server-spawn-error"
+    }
+  ],
+  "4400": [
+    {
+      "ended": "2026-10-12T09:00:57.466741+00:00",
+      "source": "fault-log-write-denied"
+    }
+  ],
+  "42952": [
+    {
+      "ended": 1791795657320,
+      "source": "fault-log-write-denied/actual-child-close"
+    }
+  ],
+  "45268": [
+    {
+      "ended": 1791795657372,
+      "source": "fault-log-write-denied/actual-child-close"
+    }
+  ],
+  "17464": [
+    {
+      "ended": "2026-10-12T09:00:59.809005+00:00",
+      "source": "fault-owner-bad-ack"
+    }
+  ],
+  "45644": [
+    {
+      "ended": 1791795659608,
+      "source": "fault-owner-bad-ack/actual-child-close"
+    }
+  ],
+  "25928": [
+    {
+      "ended": 1791795659709,
+      "source": "fault-owner-bad-ack/actual-child-close"
+    }
+  ],
+  "25252": [
+    {
+      "ended": "2026-10-12T09:01:06.718033+00:00",
+      "source": "fault-worker-no-ack"
+    }
+  ],
+  "17596": [
+    {
+      "ended": 1791795666522,
+      "source": "fault-worker-no-ack/actual-child-close"
+    }
+  ],
+  "43852": [
+    {
+      "ended": 1791795666621,
+      "source": "fault-worker-no-ack/actual-child-close"
+    }
+  ],
+  "34260": [
+    {
+      "ended": "2026-10-12T09:01:14.205368+00:00",
+      "source": "fault-worker-no-run"
+    }
+  ],
+  "38144": [
+    {
+      "ended": 1791795674048,
+      "source": "fault-worker-no-run/actual-child-close"
+    }
+  ],
+  "29068": [
+    {
+      "ended": 1791795674100,
+      "source": "fault-worker-no-run/actual-child-close"
+    }
+  ],
+  "49740": [
+    {
+      "ended": "2026-10-12T09:01:18.990334+00:00",
+      "source": "fault-gate-spawn-error"
+    }
+  ],
+  "49752": [
+    {
+      "ended": 1791795678739,
+      "source": "fault-gate-spawn-error/actual-child-close"
+    }
+  ],
+  "49648": [
+    {
+      "ended": 1791795678767,
+      "source": "fault-gate-spawn-error/actual-child-close"
+    }
+  ],
+  "50980": [
+    {
+      "ended": "2026-10-12T09:01:25.471129+00:00",
+      "source": "fault-gate-log-write-denied"
+    },
+    {
+      "ended": 1791795721563,
+      "source": "fault-gate-response-candidateSha256/actual-child-close"
+    }
+  ],
+  "51188": [
+    {
+      "ended": 1791795683317,
+      "source": "fault-gate-log-write-denied/actual-child-close"
+    },
+    {
+      "ended": 1791795692038,
+      "source": "fault-worker-close-not-observed/actual-child-close"
+    }
+  ],
+  "51084": [
+    {
+      "ended": 1791795683345,
+      "source": "fault-gate-log-write-denied/actual-child-close"
+    }
+  ],
+  "50072": [
+    {
+      "ended": 1791795685411,
+      "source": "fault-gate-log-write-denied/actual-child-close"
+    }
+  ],
+  "49700": [
+    {
+      "ended": "2026-10-12T09:01:27.951979+00:00",
+      "source": "fault-regression-no-evidence"
+    }
+  ],
+  "50392": [
+    {
+      "ended": 1791795687803,
+      "source": "fault-regression-no-evidence/actual-child-close"
+    }
+  ],
+  "31412": [
+    {
+      "ended": 1791795687861,
+      "source": "fault-regression-no-evidence/actual-child-close"
+    }
+  ],
+  "50584": [
+    {
+      "ended": "2026-10-12T09:01:38.275153+00:00",
+      "source": "fault-worker-close-not-observed"
+    }
+  ],
+  "49652": [
+    {
+      "ended": 1791795697099,
+      "source": "fault-worker-close-not-observed/actual-child-close"
+    }
+  ],
+  "50372": [
+    {
+      "ended": 1791795699864,
+      "source": "fault-worker-spawn-error/actual-child-close"
+    }
+  ],
+  "28988": [
+    {
+      "ended": "2026-10-12T09:01:43.650876+00:00",
+      "source": "fault-log-finish-not-observed"
+    }
+  ],
+  "29004": [
+    {
+      "ended": 1791795703510,
+      "source": "fault-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "50456": [
+    {
+      "ended": 1791795703532,
+      "source": "fault-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "50188": [
+    {
+      "ended": "2026-10-12T09:01:47.321807+00:00",
+      "source": "fault-late-log-error"
+    }
+  ],
+  "50692": [
+    {
+      "ended": 1791795707165,
+      "source": "fault-late-log-error/actual-child-close"
+    }
+  ],
+  "51116": [
+    {
+      "ended": 1791795707188,
+      "source": "fault-late-log-error/actual-child-close"
+    }
+  ],
+  "16696": [
+    {
+      "ended": "2026-10-12T09:01:52.401707+00:00",
+      "source": "fault-gate-response-case"
+    },
+    {
+      "ended": 1791795734585,
+      "source": "fault-gate-response-checks/actual-child-close"
+    }
+  ],
+  "47800": [
+    {
+      "ended": 1791795710774,
+      "source": "fault-gate-response-case/actual-child-close"
+    }
+  ],
+  "50612": [
+    {
+      "ended": 1791795710798,
+      "source": "fault-gate-response-case/actual-child-close"
+    }
+  ],
+  "50492": [
+    {
+      "ended": "2026-10-12T09:01:57.641268+00:00",
+      "source": "fault-gate-response-runId"
+    }
+  ],
+  "50688": [
+    {
+      "ended": 1791795715826,
+      "source": "fault-gate-response-runId/actual-child-close"
+    }
+  ],
+  "50924": [
+    {
+      "ended": 1791795715847,
+      "source": "fault-gate-response-runId/actual-child-close"
+    }
+  ],
+  "8372": [
+    {
+      "ended": 1791795717586,
+      "source": "fault-gate-response-runId/actual-child-close"
+    }
+  ],
+  "50944": [
+    {
+      "ended": "2026-10-12T09:02:03.446376+00:00",
+      "source": "fault-gate-response-candidateSha256"
+    }
+  ],
+  "50608": [
+    {
+      "ended": 1791795721534,
+      "source": "fault-gate-response-candidateSha256/actual-child-close"
+    }
+  ],
+  "50440": [
+    {
+      "ended": 1791795723397,
+      "source": "fault-gate-response-candidateSha256/actual-child-close"
+    }
+  ],
+  "50816": [
+    {
+      "ended": "2026-10-12T09:02:09.039167+00:00",
+      "source": "fault-gate-response-executionSha256"
+    }
+  ],
+  "50764": [
+    {
+      "ended": 1791795727224,
+      "source": "fault-gate-response-executionSha256/actual-child-close"
+    }
+  ],
+  "50524": [
+    {
+      "ended": 1791795727251,
+      "source": "fault-gate-response-executionSha256/actual-child-close"
+    }
+  ],
+  "50588": [
+    {
+      "ended": 1791795728984,
+      "source": "fault-gate-response-executionSha256/actual-child-close"
+    }
+  ],
+  "47576": [
+    {
+      "ended": "2026-10-12T09:02:14.632255+00:00",
+      "source": "fault-gate-response-checks"
+    }
+  ],
+  "6876": [
+    {
+      "ended": 1791795732805,
+      "source": "fault-gate-response-checks/actual-child-close"
+    }
+  ],
+  "6196": [
+    {
+      "ended": 1791795732832,
+      "source": "fault-gate-response-checks/actual-child-close"
+    }
+  ],
+  "50684": [
+    {
+      "ended": "2026-10-12T09:02:20.885580+00:00",
+      "source": "fault-gate-response-artifacts"
+    }
+  ],
+  "50616": [
+    {
+      "ended": 1791795738900,
+      "source": "fault-gate-response-artifacts/actual-child-close"
+    }
+  ],
+  "23992": [
+    {
+      "ended": 1791795738933,
+      "source": "fault-gate-response-artifacts/actual-child-close"
+    }
+  ],
+  "50960": [
+    {
+      "ended": 1791795740833,
+      "source": "fault-gate-response-artifacts/actual-child-close"
+    }
+  ],
+  "10608": [
+    {
+      "ended": "2026-10-12T09:02:26.616617+00:00",
+      "source": "fault-gate-response-acceptance"
+    }
+  ],
+  "49712": [
+    {
+      "ended": 1791795744756,
+      "source": "fault-gate-response-acceptance/actual-child-close"
+    }
+  ],
+  "34228": [
+    {
+      "ended": 1791795744782,
+      "source": "fault-gate-response-acceptance/actual-child-close"
+    }
+  ],
+  "49584": [
+    {
+      "ended": 1791795746567,
+      "source": "fault-gate-response-acceptance/actual-child-close"
+    }
+  ],
+  "9068": [
+    {
+      "ended": "2026-10-12T09:02:32.405096+00:00",
+      "source": "fault-gate-response-status"
+    }
+  ],
+  "18512": [
+    {
+      "ended": 1791795750424,
+      "source": "fault-gate-response-status/actual-child-close"
+    }
+  ],
+  "18088": [
+    {
+      "ended": 1791795750455,
+      "source": "fault-gate-response-status/actual-child-close"
+    },
+    {
+      "ended": 1791795965779,
+      "source": "ipc/wrong-run-nonce"
+    }
+  ],
+  "27360": [
+    {
+      "ended": 1791795752354,
+      "source": "fault-gate-response-status/actual-child-close"
+    }
+  ],
+  "2300": [
+    {
+      "ended": "2026-10-12T09:02:37.757618+00:00",
+      "source": "fault-gate-response-extra"
+    }
+  ],
+  "29664": [
+    {
+      "ended": 1791795756142,
+      "source": "fault-gate-response-extra/actual-child-close"
+    },
+    {
+      "ended": 1791795976153,
+      "source": "partial-suite/capture-failure"
+    }
+  ],
+  "50600": [
+    {
+      "ended": 1791795756166,
+      "source": "fault-gate-response-extra/actual-child-close"
+    }
+  ],
+  "16388": [
+    {
+      "ended": 1791795757710,
+      "source": "fault-gate-response-extra/actual-child-close"
+    },
+    {
+      "ended": "2026-10-12T09:10:08.809300+00:00",
+      "source": "timestamp-regression"
+    },
+    {
+      "ended": "2026-10-12T09:10:08.809300+00:00",
+      "source": "extra-timestamp-regression.command.json"
+    }
+  ],
+  "50568": [
+    {
+      "ended": "2026-10-12T09:02:43.188020+00:00",
+      "source": "fault-gate-response-extra-output"
+    }
+  ],
+  "28916": [
+    {
+      "ended": 1791795761420,
+      "source": "fault-gate-response-extra-output/actual-child-close"
+    }
+  ],
+  "49968": [
+    {
+      "ended": 1791795761445,
+      "source": "fault-gate-response-extra-output/actual-child-close"
+    }
+  ],
+  "38196": [
+    {
+      "ended": 1791795763132,
+      "source": "fault-gate-response-extra-output/actual-child-close"
+    }
+  ],
+  "2248": [
+    {
+      "ended": "2026-10-12T09:02:48.932317+00:00",
+      "source": "fault-gate-response-outer-extra"
+    }
+  ],
+  "12476": [
+    {
+      "ended": 1791795767116,
+      "source": "fault-gate-response-outer-extra/actual-child-close"
+    }
+  ],
+  "48136": [
+    {
+      "ended": 1791795767145,
+      "source": "fault-gate-response-outer-extra/actual-child-close"
+    }
+  ],
+  "30196": [
+    {
+      "ended": 1791795768881,
+      "source": "fault-gate-response-outer-extra/actual-child-close"
+    }
+  ],
+  "48428": [
+    {
+      "ended": "2026-10-12T09:02:58.808244+00:00",
+      "source": "fault-log-close-not-observed"
+    }
+  ],
+  "27408": [
+    {
+      "ended": 1791795772673,
+      "source": "fault-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "49384": [
+    {
+      "ended": 1791795772697,
+      "source": "fault-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "46248": [
+    {
+      "ended": "2026-10-12T09:03:08.416437+00:00",
+      "source": "fault-server-log-close-not-observed"
+    }
+  ],
+  "33684": [
+    {
+      "ended": 1791795782279,
+      "source": "fault-server-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "14788": [
+    {
+      "ended": 1791795782307,
+      "source": "fault-server-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "17544": [
+    {
+      "ended": "2026-10-12T09:03:19.780123+00:00",
+      "source": "fault-gate-log-close-not-observed"
+    }
+  ],
+  "49148": [
+    {
+      "ended": 1791795792063,
+      "source": "fault-gate-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "47924": [
+    {
+      "ended": 1791795792089,
+      "source": "fault-gate-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "50648": [
+    {
+      "ended": 1791795793719,
+      "source": "fault-gate-log-close-not-observed/actual-child-close"
+    }
+  ],
+  "50668": [
+    {
+      "ended": "2026-10-12T09:03:23.617591+00:00",
+      "source": "fault-server-log-finish-not-observed"
+    }
+  ],
+  "50768": [
+    {
+      "ended": 1791795803478,
+      "source": "fault-server-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "16520": [
+    {
+      "ended": 1791795803507,
+      "source": "fault-server-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "47584": [
+    {
+      "ended": "2026-10-12T09:03:37.411116+00:00",
+      "source": "fault-gate-log-finish-not-observed"
+    }
+  ],
+  "8640": [
+    {
+      "ended": 1791795807280,
+      "source": "fault-gate-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "22952": [
+    {
+      "ended": 1791795807304,
+      "source": "fault-gate-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "47480": [
+    {
+      "ended": 1791795817358,
+      "source": "fault-gate-log-finish-not-observed/actual-child-close"
+    }
+  ],
+  "47808": [
+    {
+      "ended": "2026-10-12T09:03:39.302927+00:00",
+      "source": "lock-protected-read"
+    }
+  ],
+  "20636": [
+    {
+      "ended": "2026-10-12T09:03:39.836058+00:00",
+      "source": "lock-frozen-read"
+    }
+  ],
+  "30932": [
+    {
+      "ended": "2026-10-12T09:03:40.349519+00:00",
+      "source": "lock-control-read"
+    }
+  ],
+  "49716": [
+    {
+      "ended": "2026-10-12T09:03:41.371314+00:00",
+      "source": "scope-after"
+    }
+  ],
+  "22712": [
+    {
+      "ended": "2026-10-12T09:10:02.168304+00:00",
+      "source": "owner-extra-ack"
+    },
+    {
+      "ended": "2026-10-12T09:10:02.168304+00:00",
+      "source": "extra-owner-extra-ack.command.json"
+    }
+  ],
+  "46432": [
+    {
+      "ended": 1791796200561,
+      "source": "owner-extra-ack/actual-child-close"
+    }
+  ],
+  "45264": [
+    {
+      "ended": 1791796200584,
+      "source": "owner-extra-ack/actual-child-close"
+    }
+  ],
+  "24964": [
+    {
+      "ended": 1791796202122,
+      "source": "owner-extra-ack/actual-child-close"
+    }
+  ],
+  "20752": [
+    {
+      "ended": 1791796207193,
+      "source": "timestamp-regression/actual-child-close"
+    }
+  ],
+  "48696": [
+    {
+      "ended": 1791796207216,
+      "source": "timestamp-regression/actual-child-close"
+    }
+  ],
+  "25660": [
+    {
+      "ended": 1791796208764,
+      "source": "timestamp-regression/actual-child-close"
+    }
+  ],
+  "24720": [
+    {
+      "ended": "2026-10-12T08:57:08.836738+00:00",
+      "source": "build.command.json"
+    }
+  ],
+  "2072": [
+    {
+      "ended": "2026-10-12T09:02:21.581589+00:00",
+      "source": "collector-extra.command.json"
+    }
+  ],
+  "1140": [
+    {
+      "ended": "2026-10-12T09:06:13.929282+00:00",
+      "source": "component-suite.command.json"
+    }
+  ],
+  "45496": [
+    {
+      "ended": "2026-10-12T08:56:58.883149+00:00",
+      "source": "diff-check.command.json"
+    }
+  ],
+  "43996": [
+    {
+      "ended": "2026-10-12T09:10:03.628905+00:00",
+      "source": "extra-owner-extra-ack-fixed-final.command.json"
+    }
+  ],
+  "48532": [
+    {
+      "ended": "2026-10-12T09:12:46.734617+00:00",
+      "source": "extra-private-null-and-early.command.json"
+    }
+  ],
+  "7172": [
+    {
+      "ended": "2026-10-12T09:10:10.186891+00:00",
+      "source": "extra-timestamp-regression-fixed-final.command.json"
+    }
+  ],
+  "13476": [
+    {
+      "ended": "2026-10-12T08:57:16.458089+00:00",
+      "source": "focused-tests.command.json"
+    }
+  ],
+  "44596": [
+    {
+      "ended": "2026-10-12T09:06:07.908188+00:00",
+      "source": "ipc-suite.command.json"
+    }
+  ],
+  "30616": [
+    {
+      "ended": "2026-10-12T08:56:57.853051+00:00",
+      "source": "lint.command.json"
+    }
+  ],
+  "15232": [
+    {
+      "ended": "2026-10-12T08:56:58.669003+00:00",
+      "source": "map.command.json"
+    }
+  ],
+  "50656": [
+    {
+      "ended": "2026-10-12T09:06:23.969611+00:00",
+      "source": "partial-suite.command.json"
+    }
+  ],
+  "11884": [
+    {
+      "ended": "2026-10-12T09:03:41.405339+00:00",
+      "source": "runtime-suite.command.json"
+    }
+  ],
+  "43108": [
+    {
+      "ended": "2026-10-12T08:56:39.195262+00:00",
+      "source": "scope-before.command.json"
+    }
+  ],
+  "9544": [
+    {
+      "ended": "2026-10-12T08:56:39.314850+00:00",
+      "source": "syntax-owner.command.json"
+    }
+  ],
+  "23404": [
+    {
+      "ended": "2026-10-12T08:56:39.433025+00:00",
+      "source": "syntax-shared.command.json"
+    }
+  ],
+  "19384": [
+    {
+      "ended": "2026-10-12T08:56:48.378893+00:00",
+      "source": "typecheck.command.json"
+    }
+  ],
+  "47244": [
+    {
+      "ended": 1791795978331,
+      "source": "partial-suite/context-close-failure"
+    }
+  ],
+  "28804": [
+    {
+      "ended": 1791795980046,
+      "source": "partial-suite/partial-write-failure"
+    }
+  ],
+  "31752": [
+    {
+      "ended": 1791795981996,
+      "source": "partial-suite/measured-viewport"
+    }
+  ],
+  "50640": [
+    {
+      "ended": 1791795983953,
+      "source": "partial-suite/measured-origin"
+    }
+  ],
+  "49108": [
+    {
+      "ended": 1791796366091,
+      "source": "extra-private-null-and-early/measured-viewport"
+    }
+  ],
+  "20804": [
+    {
+      "ended": 1791796366718,
+      "source": "extra-private-null-and-early/canonical-missing"
+    }
+  ],
+  "36352": [
+    {
+      "ended": 1791795953367,
+      "source": "ipc/port-preflight"
+    }
+  ],
+  "17892": [
+    {
+      "ended": 1791795953884,
+      "source": "ipc/wrong-protocol"
+    }
+  ],
+  "50912": [
+    {
+      "ended": 1791795954349,
+      "source": "ipc/wrong-owner-pid"
+    }
+  ],
+  "20628": [
+    {
+      "ended": 1791795954833,
+      "source": "ipc/wrong-worker-pid"
+    }
+  ],
+  "9084": [
+    {
+      "ended": 1791795955301,
+      "source": "ipc/wrong-case"
+    }
+  ],
+  "46616": [
+    {
+      "ended": 1791795955783,
+      "source": "ipc/wrong-nonce"
+    }
+  ],
+  "33156": [
+    {
+      "ended": 1791795956275,
+      "source": "ipc/wrong-url"
+    }
+  ],
+  "18612": [
+    {
+      "ended": 1791795956824,
+      "source": "ipc/sibling-run"
+    }
+  ],
+  "33488": [
+    {
+      "ended": 1791795957299,
+      "source": "ipc/wrong-temp-root"
+    }
+  ],
+  "48432": [
+    {
+      "ended": 1791795957769,
+      "source": "ipc/wrong-bootstrap"
+    }
+  ],
+  "46780": [
+    {
+      "ended": 1791795958242,
+      "source": "ipc/wrong-contract-path"
+    }
+  ],
+  "44324": [
+    {
+      "ended": 1791795958720,
+      "source": "ipc/wrong-contract-digest"
+    }
+  ],
+  "46516": [
+    {
+      "ended": 1791795959216,
+      "source": "ipc/wrong-execution-path"
+    }
+  ],
+  "45580": [
+    {
+      "ended": 1791795959704,
+      "source": "ipc/wrong-execution-digest"
+    }
+  ],
+  "46772": [
+    {
+      "ended": 1791795965249,
+      "source": "ipc/no-run-approval"
+    }
+  ],
+  "29000": [
+    {
+      "ended": 1791795966330,
+      "source": "ipc/extra-packet-key"
+    }
+  ],
+  "47592": [
+    {
+      "ended": 1791795966855,
+      "source": "ipc/extra-context-key"
+    }
+  ],
+  "30980": [
+    {
+      "ended": 1791795967380,
+      "source": "ipc/extra-registration-key"
+    }
+  ],
+  "50208": [
+    {
+      "ended": 1791795967891,
+      "source": "ipc/extra-run-key"
+    }
+  ]
+}

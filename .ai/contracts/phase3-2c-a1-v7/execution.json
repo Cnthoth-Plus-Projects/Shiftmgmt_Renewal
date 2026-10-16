@@ -1,0 +1,281 @@
+{
+  "executionVersion": 7,
+  "authority": "Sol; Gemini read-only",
+  "stageSlice": "A1",
+  "acceptance": "A1 prerequisite only; all A2 normal8/A-N obligations and B87 remain unaccepted",
+  "originalRulesVersion": 1,
+  "originalContractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+  "originalContractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+  "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "url": "http://127.0.0.1:18741/",
+  "publicCases": [
+    "contract-core",
+    "live-admin",
+    "list-fixture",
+    "empty-fixture",
+    "filters",
+    "errors",
+    "stale-response",
+    "role-guard",
+    "session-expired",
+    "regression-shell",
+    "regression-home"
+  ],
+  "enabledCases": [
+    "contract-core",
+    "regression-shell",
+    "regression-home"
+  ],
+  "deferredCases": [
+    "live-admin",
+    "list-fixture",
+    "empty-fixture",
+    "filters",
+    "errors",
+    "stale-response",
+    "role-guard",
+    "session-expired"
+  ],
+  "allowed": [
+    "scripts/ui-checks/access-history.mjs",
+    "scripts/ui-checks/access-history-shared.mjs"
+  ],
+  "maxVerifierBytes": 30000,
+  "regressions": {
+    "regression-shell": {
+      "script": "scripts/ui-checks/shell.mjs",
+      "id": "shell",
+      "artifactRoot": "artifacts/captures/phase3/shell",
+      "captures": [
+        "admin-expanded",
+        "admin-collapsed",
+        "watch-stopped",
+        "operator"
+      ],
+      "checkIds": [
+        "REGSHELL-01",
+        "REGSHELL-02",
+        "REGSHELL-03"
+      ],
+      "extraArgs": [],
+      "artifacts": [
+        "server-stdout",
+        "server-stderr",
+        "worker-stdout",
+        "worker-stderr",
+        "regression-observations",
+        "regression-manifest",
+        "regression-capture-admin-expanded",
+        "regression-capture-admin-collapsed",
+        "regression-capture-watch-stopped",
+        "regression-capture-operator"
+      ]
+    },
+    "regression-home": {
+      "script": "scripts/ui-checks/home.mjs",
+      "id": "home-live-admin",
+      "artifactRoot": "artifacts/captures/phase3/home-live-admin",
+      "captures": [
+        "home-live-admin"
+      ],
+      "checkIds": [
+        "REGHOME-01",
+        "REGHOME-02",
+        "REGHOME-03"
+      ],
+      "extraArgs": [
+        "--case=live-admin"
+      ],
+      "artifacts": [
+        "server-stdout",
+        "server-stderr",
+        "worker-stdout",
+        "worker-stderr",
+        "regression-observations",
+        "regression-manifest",
+        "regression-capture-home-live-admin"
+      ]
+    }
+  },
+  "deadlinesMs": {
+    "readiness": 30000,
+    "contextAck": 5000,
+    "runAuthorization": 5000,
+    "contractCore": 90000,
+    "regressionShell": 120000,
+    "regressionHome": 180000,
+    "gracefulClose": 5000,
+    "forcedClose": 5000,
+    "logFinish": 5000,
+    "adjudicator": 15000
+  },
+  "retryHistory": {
+    "sameClass": "R32C-06",
+    "priorCorrectionsExhausted": 2,
+    "resetAllowed": false,
+    "newPacketKind": "IMPLEMENT; execution strategy replacement"
+  },
+  "retainedA2Obligations": [
+    "Restore genuine login flow/first failure for normal8",
+    "Persist partial observations/checks/errors/cleanup on every case failure",
+    "Remove constant retry/verdict and preserve all raw unexpected errors",
+    "All original A-N01..20 subcases before A acceptance"
+  ],
+  "retainedBObligations": {
+    "fullUiRequiredIds": 87,
+    "authorized": false
+  },
+  "frozenSharedPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\frozen-shared.json",
+  "frozenSharedSha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA",
+  "ipcProtocol": 2,
+  "coreHelpers": [
+    "collectCoreChecks",
+    "settleOwnedResources"
+  ],
+  "runtimeFaultsRequired": 51,
+  "controlHealthRequired": true,
+  "exactFailureCodesRequired": true,
+  "ownerFailureCodes": [
+    "A1_CLI_INVALID",
+    "A1_LOCK_MISMATCH",
+    "A1_PORT_BUSY",
+    "A1_SERVER_SPAWN_FAILURE",
+    "A1_WORKER_SPAWN_FAILURE",
+    "A1_ACK_INVALID",
+    "A1_ACK_TIMEOUT",
+    "A1_WORKER_FAILED",
+    "A1_GATE_REJECTED",
+    "A1_GATE_SPAWN_FAILURE",
+    "A1_GATE_RESPONSE_MISMATCH",
+    "A1_LOG_WRITE_FAILED",
+    "A1_LOG_FINISH_UNVERIFIED",
+    "A1_CLOSE_UNVERIFIED",
+    "A1_FINAL_WRITE_FAILED",
+    "A1_DEFERRED",
+    "A1_LOG_CLOSE_UNVERIFIED",
+    "A1_LIFECYCLE_INVALID",
+    "A1_CANDIDATE_WRITE_FAILED"
+  ],
+  "pythonExecutable": "C:\\Users\\pangyo\\anaconda3\\python.exe",
+  "privateWorkerFailureCodes": [
+    "A1_IPC_REJECTED",
+    "A1_RUN_TIMEOUT",
+    "A1_RUN_INVALID"
+  ],
+  "terminalReceiptContract": "FAIL: one JSON line on stderr, empty stdout; deferred: one BLOCKED_STAGE JSON line on stdout, empty stderr; PASS: one JSON line on stdout",
+  "observedPositiveCasesRequired": 3,
+  "observerSelfcheckRequired": {
+    "actualControlChecks": 45,
+    "rejectedCorruptions": 9,
+    "hashBinding": [
+      "observer-selfcheck.py",
+      "observer-canary.mjs",
+      "runtime-preload.mjs"
+    ]
+  },
+  "preflightLockProbesRequired": 3,
+  "partialProbesRequired": [
+    "capture-failure",
+    "context-close-failure",
+    "partial-write-failure",
+    "measured-viewport",
+    "measured-origin",
+    "viewport-null",
+    "canonical-missing",
+    "repository-realpath-failure",
+    "request-then-viewport-null",
+    "canonical-import-failure",
+    "route-install-failure"
+  ],
+  "processReceiptExtension": {
+    "logCloseSeen": {
+      "stdout": true,
+      "stderr": true
+    },
+    "logCloseAtMs": "actual per-stream finite positive timestamp; >= own finish; never fabricated",
+    "logFinishSeen": {
+      "stdout": true,
+      "stderr": true
+    },
+    "callbackEvents": {
+      "exactKeys": [
+        "event",
+        "timeMs",
+        "stream",
+        "pid",
+        "code",
+        "signal",
+        "error"
+      ],
+      "successEventCount": 7,
+      "source": "actual callback payload; no clamping or fallback"
+    },
+    "exitSignal": "actual exit callback signal or null",
+    "closeCode": "actual close callback integer code or null",
+    "closeSignal": "actual close callback signal or null"
+  },
+  "componentTypedMutationsRequired": 32,
+  "privateIpcCasesRequired": 19,
+  "negativeMeasurementProbesRequired": 2,
+  "callbackEventsRequired": true,
+  "exactAckReceiptRequired": true,
+  "acquiredPartialChecksRequired": true,
+  "ackReceipt": {
+    "exactKeys": [
+      "packet",
+      "receivedAtMs"
+    ],
+    "packetExactKeys": [
+      "type",
+      "protocol",
+      "case",
+      "ownerPid",
+      "workerPid",
+      "nonce",
+      "contextSha256"
+    ],
+    "source": "actual message clone; extra keys retained in failure"
+  },
+  "partialAcquisition": {
+    "exactKeys": [
+      "fixtureRows",
+      "fixtureRequests",
+      "routeInstalled"
+    ],
+    "initial": {
+      "fixtureRows": null,
+      "fixtureRequests": [],
+      "routeInstalled": false
+    },
+    "count": "null until route installation succeeds; actual length updated in handler before fulfill"
+  },
+  "guardedProcessReceiptRequired": true,
+  "atomicCandidateRequired": true,
+  "settledLogHashOrderRequired": true,
+  "partialAcquisitionRequired": true,
+  "ownerProcessFlow": [
+    "WORKER_SETTLED",
+    "SERVER_SETTLED",
+    "PROCESS_RECEIPTS_VALID",
+    "ARTIFACTS_HASHED",
+    "TEMP_REMOVE_COMPLETED",
+    "CANDIDATE_ATOMIC",
+    "GATE_SETTLED",
+    "GATE_RECEIPT_VALID",
+    "GATE_RESPONSE_BOUND",
+    "FINAL_ATOMIC",
+    "PASS"
+  ],
+  "lateCallbackProbesRequired": 15,
+  "guardParityInvalidRequired": 5,
+  "lateCallbackBarriersRequired": [
+    "AFTER_CACHE",
+    "AFTER_PORT_AWAIT_BEFORE_REMOVE",
+    "AFTER_REMOVE",
+    "CANDIDATE_STAGE_BEFORE_RENAME",
+    "BEFORE_GATE_SPAWN",
+    "AFTER_GATE_AWAITS",
+    "FINAL_STAGE_BEFORE_RENAME"
+  ],
+  "failureUsesCurrentProcessSnapshot": true
+}

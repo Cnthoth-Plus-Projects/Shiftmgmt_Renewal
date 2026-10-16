@@ -1,0 +1,265 @@
+{
+  "timestamp": "2026-09-07T06:03:41.881Z",
+  "viewport": "1440x900",
+  "tool": "local Node Playwright Chromium",
+  "results": [
+    {
+      "file": "08-performance-1.html",
+      "main": {
+        "width": 1220,
+        "height": 812,
+        "scrollWidth": 1220,
+        "clientWidth": 1220
+      },
+      "toolbars": [],
+      "searches": [],
+      "rowHeights": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "cards": [
+        {
+          "width": 583,
+          "height": 305.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        },
+        {
+          "width": 583,
+          "height": 305.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        },
+        {
+          "width": 583,
+          "height": 187.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        },
+        {
+          "width": 583,
+          "height": 187.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        }
+      ]
+    },
+    {
+      "file": "08-performance-2.html",
+      "main": {
+        "width": 1220,
+        "height": 812,
+        "scrollWidth": 1220,
+        "clientWidth": 1220
+      },
+      "toolbars": [],
+      "searches": [
+        {
+          "width": 200,
+          "cssWidth": "200px"
+        },
+        {
+          "width": 286,
+          "cssWidth": "286px"
+        }
+      ],
+      "rowHeights": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "cards": [
+        {
+          "width": 583,
+          "height": 225.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        },
+        {
+          "width": 583,
+          "height": 225.5,
+          "scrollWidth": 581,
+          "clientWidth": 581
+        }
+      ],
+      "p5": {
+        "wrapper": {
+          "width": 1180,
+          "height": 283,
+          "scrollWidth": 1200,
+          "clientWidth": 1178
+        },
+        "scrollLeft": 22,
+        "lastRight": 1418.44,
+        "wrapperRight": 1420
+      }
+    },
+    {
+      "file": "08-performance-3.html",
+      "main": {
+        "width": 1220,
+        "height": 812,
+        "scrollWidth": 1220,
+        "clientWidth": 1220
+      },
+      "toolbars": [
+        {
+          "width": 1180,
+          "height": 56,
+          "scrollWidth": 1178,
+          "clientWidth": 1178
+        }
+      ],
+      "searches": [
+        {
+          "width": 170,
+          "cssWidth": "170px"
+        },
+        {
+          "width": 100,
+          "cssWidth": "100px"
+        },
+        {
+          "width": 85,
+          "cssWidth": "85px"
+        },
+        {
+          "width": 120,
+          "cssWidth": "120px"
+        }
+      ],
+      "rowHeights": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "cards": []
+    },
+    {
+      "file": "08-performance-4.html",
+      "main": {
+        "width": 1220,
+        "height": 812,
+        "scrollWidth": 1220,
+        "clientWidth": 1220
+      },
+      "toolbars": [
+        {
+          "width": 1180,
+          "height": 56,
+          "scrollWidth": 1178,
+          "clientWidth": 1178
+        },
+        {
+          "width": 1180,
+          "height": 56,
+          "scrollWidth": 1178,
+          "clientWidth": 1178
+        }
+      ],
+      "searches": [
+        {
+          "width": 170,
+          "cssWidth": "170px"
+        },
+        {
+          "width": 100,
+          "cssWidth": "100px"
+        },
+        {
+          "width": 85,
+          "cssWidth": "85px"
+        },
+        {
+          "width": 120,
+          "cssWidth": "120px"
+        },
+        {
+          "width": 170,
+          "cssWidth": "170px"
+        },
+        {
+          "width": 100,
+          "cssWidth": "100px"
+        },
+        {
+          "width": 85,
+          "cssWidth": "85px"
+        },
+        {
+          "width": 120,
+          "cssWidth": "120px"
+        }
+      ],
+      "rowHeights": [
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "cards": []
+    }
+  ]
+}

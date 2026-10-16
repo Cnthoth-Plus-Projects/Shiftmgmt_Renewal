@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 11-operations-4.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+  --line: #E2E5EA;
+  --line-strong: #848A93;
+  --text: #1F2430;
+  --text-sub: #4B5563;
+  --accent: #3E56B6;
+  --row-selected: #EEF1FB;
+  --badge-approved-text: #1E7A46;
+  --badge-approved-bg: #E8F5EE;
+  --badge-pending-text: #4B5563;
+  --badge-pending-bg: #F1F2F4;
+  --badge-rejected-text: #C0392B;
+  --badge-rejected-bg: #FCEBE9;
+  --badge-reapproved-text: #A05200;
+  --badge-reapproved-bg: #FDF3E4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+  background: #E5E7EB;
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 32px;
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  user-select: none;
+}
+.icon-18 { font-size: 18px; width: 18px; height: 18px; }
+.icon-40 { font-size: 40px; width: 40px; height: 40px; }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.state-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1440px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.status-label-bar {
+  height: 36px;
+  background: #E2E5EA;
+  color: #4B5563;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  border-bottom: 1px solid #D1D5DB;
+}
+.app-window {
+  width: 1440px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  position: relative;
+}
+.app-body {
+  display: flex;
+  flex: 1;
+  height: calc(900px - 32px);
+  overflow: hidden;
+}
+.sidebar {
+  width: 220px;
+  background: #FFFFFF;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+.nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.sidebar.collapsed .nav-group-header { text-align: center; padding: 8px 0 4px; font-size: 12px; }
+.nav-item {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text);
+  text-decoration: none;
+  gap: 10px;
+  font-size: 14px;
+  position: relative;
+  white-space: nowrap;
+}
+.sidebar.collapsed .nav-item { justify-content: center; padding: 0; gap: 0; }
+.sidebar.collapsed .nav-item span:not(.material-symbols-outlined):not(.nav-dot-badge) { display: none; }
+.nav-item:hover { background: #F8F9FA; }
+.nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  line-height: 1;
+}
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 1220px;
+  overflow: hidden;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed + .main-wrapper {
+  width: 1376px;
+}
+.header-bar {
+  height: 56px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 12px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; align-items: center; gap: 8px; }
+.btn-sidebar-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text);
+}
+.btn-sidebar-toggle:hover { background: #F4F5F7; }
+.header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+.header-title { font-size: 20px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.header-user-actions { display: flex; align-items: center; gap: 12px; }
+.role-badge {
+  background: #EEF1FB;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid #D5DCF5;
+}
+.user-info-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-sub);
+  font-size: 13px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.page-content {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer-statusbar {
+  height: 32px;
+  background: #FFFFFF;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--text-sub);
+  width: 1440px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-right: 1px solid var(--line);
+  height: 100%;
+}
+.status-cell:first-child { padding-left: 0; }
+.status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+.status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+.status-dot-red { width: 8px; height: 8px; background: #C0392B; border-radius: 50%; display: inline-block; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary:hover { background: #32479B; }
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-secondary:hover { background: #F8F9FA; border-color: var(--line-strong); }
+.btn-danger {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: 1px solid #C0392B;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-danger:hover { background: #A93226; }
+.btn-ghost {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-ghost:hover { background: rgba(0,0,0,0.05); }
+.btn-sm { padding: 4px 8px; font-size: 12px; }
+
+[aria-disabled="true"], button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.form-input, .form-select {
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: #FFFFFF;
+  color: var(--text);
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(62,86,182,0.15);
+}
+.disabled-desc {
+  font-size: 12px;
+  color: #C0392B;
+  display: block;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  background: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 850px;
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+.modal-footer {
+  padding: 12px 20px;
+  background: #F8F9FA;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.box-blue-info {
+  background: #EEF1FB;
+  border: 1px solid #C9D4F4;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.box-red-danger {
+  background: #FCEBE9;
+  border: 1px solid #E0B4B0;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #C0392B;
+  line-height: 1.4;
+}
+
+.table-data, .table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table-data th, .table-data td, .table-custom th, .table-custom td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  height: 40px;
+  min-height: 40px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.table-data th, .table-custom th {
+  background: #F8F9FA;
+  font-weight: 600;
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.table-data tbody tr:hover { background: #F8F9FA; cursor: pointer; }
+.table-data tbody tr.selected { background: var(--row-selected); font-weight: 500; }
+
+.filter-chip-group { display: flex; gap: 6px; align-items: center; }
+.filter-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  color: var(--text-sub);
+  cursor: pointer;
+}
+.filter-chip.active {
+  background: #EEF1FB;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-pending { background: var(--badge-pending-bg); color: var(--badge-pending-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-info { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 600px;
+  gap: 16px;
+  margin: 40px auto;
+}
+.empty-illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #EEF1FB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.demo-caption {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+
+</style>
+</head>
+<body>
+
+<div class="state-wrapper" id="state-o9-o10">
+  <div class="status-label-bar">── O9·O10. 운영 관리 — DB복원 미리보기 및 확인 ──</div>
+  <div class="app-window" id="ops4-app-window">
+    <div class="sr-only" role="status" aria-live="polite" id="live-o10"></div>
+    <div class="app-body">
+      
+  <aside class="sidebar ">
+    <ul class="nav-list" style="padding-top: 12px;">
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+          <li class="nav-group-header">─ 준비 ─</li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+          <li class="nav-group-header">─ 운영 ─</li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 128건">128</span></a></li>
+          <li class="nav-group-header">─ 정산 ─</li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          <li class="nav-group-header">─ 관리 ─</li>
+          <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">settings</span><span>운영 관리</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">history</span><span>활동 이력</span></a></li>
+        </ul>
+  </aside>
+      <div class="main-wrapper">
+        
+  <header class="header-bar">
+    <div class="header-left">
+      <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="header-divider"></div>
+      <h1 class="header-title">운영 관리</h1>
+    </div>
+    <div class="header-user-actions">
+      <span class="role-badge">관리자</span>
+      <button type="button" class="user-info-btn">
+        <span class="material-symbols-outlined icon-18" aria-hidden="true">person</span>
+        <span>admin</span>
+      </button>
+    </div>
+  </header>
+        <main class="page-content">
+          <div style="background:#FFF;border:1px solid var(--line);border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+            <button type="button" class="btn-primary" id="btn-open-o9" style="width:fit-content;">DB복원 미리보기 열어 보기</button>
+            <span class="demo-caption">데모용 — 실제로는 운영 관리 상단의 [DB복원]이 엽니다</span>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+  <footer class="footer-statusbar">
+    <div class="status-cell" title="데이터 폴더 연결됨"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div><div class="status-cell" title="마지막 처리 완료 시각"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="status-cell" title="대기 폴더 파일 수"><span>대기 파일 3개</span></div><div class="status-cell" title="승인 대기 폴더 자동 감시"><span>폴더 감시 실행 중</span></div><div class="status-cell" title="현재 버전 최신 여부"><span>최신</span></div><div class="status-cell" title="버전 정보"><span>v2.3.1</span></div>
+  </footer>
+  </div>
+
+  <div class="modal-overlay" id="modal-o9" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-o9-title" tabindex="-1">
+    <div class="modal-box" style="width: 900px; max-height: 820px;">
+      <div class="modal-header">
+        <h2 id="modal-o9-title" class="modal-title">DB복원 미리보기</h2>
+        <button type="button" class="btn-ghost btn-sm" id="btn-close-o9-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto;gap:14px;">
+        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;">
+          <div style="background:#F8F9FA;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:12px;">
+            <div style="color:var(--text-sub);">복원 유형</div>
+            <div style="font-weight:700;font-size:14px;">JSON 백업</div>
+          </div>
+          <div style="background:#F8F9FA;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:12px;">
+            <div style="color:var(--text-sub);">대상 파일</div>
+            <div style="font-weight:700;font-size:14px;">backup_2025-05-19.json</div>
+          </div>
+          <div style="background:#F8F9FA;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:12px;">
+            <div style="color:var(--text-sub);">미리보기 시각</div>
+            <div style="font-weight:700;font-size:14px;">05-20 14:30 (경고 0건)</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:13px;color:var(--text-sub);margin-bottom:6px;">
+            현재 저장된 자료 현황과 되돌린 뒤 반영될 현황을 비교합니다.
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;margin-bottom:6px;">
+            <span>현황 비교 (18개 항목 전량)</span>
+            <span style="color:#C0392B;">18개 항목 중 4개 감소</span>
+          </div>
+          <table class="table-custom">
+            <thead>
+              <tr><th>항목</th><th>현재</th><th>DB복원 후</th></tr>
+            </thead>
+            <tbody>
+              
+<tr><td>근무지</td><td>3</td><td>3</td></tr>
+<tr><td>인력</td><td>22</td><td>22</td></tr>
+<tr><td>활성 배정</td><td>22</td><td>22</td></tr>
+<tr><td>종료 배정</td><td>4</td><td>4</td></tr>
+<tr style="color:#C0392B;font-weight:600;background:#FFF8F8;"><td>시급 이력</td><td>26</td><td>25 (1 감소)</td></tr>
+<tr><td>패턴</td><td>3</td><td>3</td></tr>
+<tr><td>공휴일 캘린더</td><td>1</td><td>1</td></tr>
+<tr><td>공휴일 항목</td><td>18</td><td>18</td></tr>
+<tr><td>요율 버전</td><td>1</td><td>1</td></tr>
+<tr><td>요율 항목</td><td>15</td><td>15</td></tr>
+<tr><td>사용자</td><td>4</td><td>4</td></tr>
+<tr><td>양식 버전</td><td>4</td><td>4</td></tr>
+<tr><td>양식 이력</td><td>9</td><td>9</td></tr>
+<tr style="color:#C0392B;font-weight:600;background:#FFF8F8;"><td>실적 파일</td><td>42</td><td>41 (1 감소)</td></tr>
+<tr style="color:#C0392B;font-weight:600;background:#FFF8F8;"><td>실적 행</td><td>4,120</td><td>4,098 (22 감소)</td></tr>
+<tr style="color:#C0392B;font-weight:600;background:#FFF8F8;"><td>승인 이력</td><td>1,893</td><td>1,880 (13 감소)</td></tr>
+<tr><td>수당 계산</td><td>1,893</td><td>1,880</td></tr>
+<tr><td>문서 출력 이력</td><td>12</td><td>12</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-close-o9">취소</button>
+        <button type="button" class="btn-primary" id="btn-goto-o10">다음: 확인</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-o10" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-o10-title" tabindex="-1">
+    <div class="modal-box" style="width: 420px;">
+      <div class="modal-header">
+        <h2 id="modal-o10-title" class="modal-title" style="color:#C0392B;">데이터베이스 복원 확인</h2>
+        <button type="button" class="btn-ghost btn-sm" id="btn-close-o10-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight:700;font-size:15px;color:var(--text);">데이터베이스를 교체할까요?</div>
+        <div class="box-red-danger">
+          교체하면 현재 데이터가 백업 후 통째로 바뀝니다. 되돌리려면 백업 파일로 다시 교체해야 합니다.
+        </div>
+        <div style="font-size:12px;color:var(--text-sub);">
+          ※ 실행 전 현재 DB를 JSON·Excel로 자동 백업합니다.
+        </div>
+        <div style="margin-top:6px;">
+          <label class="form-label" for="o10-confirm-input">확인 문구 입력 (<strong>교체</strong> 입력 시 활성화)</label>
+          <input type="text" class="form-input" id="o10-confirm-input" placeholder="'교체'를 입력하세요" style="width:100%;">
+        </div>
+        <div class="disabled-desc" id="o10-exec-desc" style="margin-top:4px;">확인 문구 '교체'를 입력해야 실행할 수 있습니다.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-cancel-o10">취소</button>
+        <button type="button" class="btn-danger" id="btn-exec-o10" aria-disabled="true" aria-describedby="o10-exec-desc">교체 실행</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var appWin = btn.closest('.app-window');
+      if (!appWin) return;
+      var sidebar = appWin.querySelector('.sidebar');
+      if (!sidebar) return;
+      var isCollapsed = sidebar.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+      var navTexts = sidebar.querySelectorAll('.nav-item span:not(.material-symbols-outlined):not(.nav-dot-badge)');
+      navTexts.forEach(function(el) {
+        if (isCollapsed) {
+          el.setAttribute('aria-hidden', 'true');
+          if (!el.classList.contains('nav-badge')) el.parentElement.setAttribute('title', el.textContent.trim());
+        } else {
+          el.removeAttribute('aria-hidden');
+          el.parentElement.removeAttribute('title');
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('[aria-disabled="true"]').forEach(function(el) {
+    el.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); });
+    el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); } });
+  });
+})();
+</script>
+
+<script>
+(function() {
+  var appWin = document.getElementById('ops4-app-window');
+  var modalO9 = document.getElementById('modal-o9');
+  var modalO10 = document.getElementById('modal-o10');
+
+  var btnOpenO9 = document.getElementById('btn-open-o9');
+  var btnCloseO9X = document.getElementById('btn-close-o9-x');
+  var btnCloseO9 = document.getElementById('btn-close-o9');
+  var btnGotoO10 = document.getElementById('btn-goto-o10');
+
+  var btnCloseO10X = document.getElementById('btn-close-o10-x');
+  var btnCancelO10 = document.getElementById('btn-cancel-o10');
+  var btnExecO10 = document.getElementById('btn-exec-o10');
+  var inputO10 = document.getElementById('o10-confirm-input');
+
+  var opener = null;
+
+  function openModal(modal, e) {
+    if (e) opener = e.currentTarget;
+    modal.style.display = 'flex';
+    var appBody = appWin.querySelector('.app-body');
+    var headerBar = appWin.querySelector('.header-bar');
+    if (appBody) appBody.setAttribute('aria-hidden', 'true');
+    if (headerBar) headerBar.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-hidden');
+    var btn = modal.querySelector('.btn-secondary') || modal.querySelector('button');
+    if (btn) btn.focus();
+  }
+
+  var processing = false;
+  function closeModal(modal) {
+    if (processing) return;
+    modal.style.display = 'none';
+    var appBody = appWin.querySelector('.app-body');
+    var headerBar = appWin.querySelector('.header-bar');
+    if (appBody) appBody.removeAttribute('aria-hidden');
+    if (headerBar) headerBar.removeAttribute('aria-hidden');
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  if (btnOpenO9) btnOpenO9.addEventListener('click', function(e) { openModal(modalO9, e); });
+  if (btnCloseO9X) btnCloseO9X.addEventListener('click', function() { closeModal(modalO9); });
+  if (btnCloseO9) btnCloseO9.addEventListener('click', function() { closeModal(modalO9); });
+
+  if (btnGotoO10) {
+    btnGotoO10.addEventListener('click', function() {
+      modalO9.style.display = 'none';
+      modalO10.style.display = 'flex';
+      if (btnCancelO10) btnCancelO10.focus();
+    });
+  }
+
+  function backToO9() {
+    if (processing) return;
+    modalO10.style.display = 'none';
+    modalO9.style.display = 'flex';
+    if (btnGotoO10) btnGotoO10.focus();
+  }
+  if (btnCloseO10X) btnCloseO10X.addEventListener('click', backToO9);
+  if (btnCancelO10) btnCancelO10.addEventListener('click', backToO9);
+
+  if (inputO10 && btnExecO10) {
+    var descO10 = document.getElementById('o10-exec-desc');
+    inputO10.addEventListener('input', function() {
+      if (inputO10.value.trim() === '교체') {
+        btnExecO10.removeAttribute('aria-disabled');
+        btnExecO10.removeAttribute('aria-describedby');
+        if (descO10) descO10.style.display = 'none';
+      } else {
+        btnExecO10.setAttribute('aria-disabled', 'true');
+        btnExecO10.setAttribute('aria-describedby', 'o10-exec-desc');
+        if (descO10) descO10.style.display = 'block';
+      }
+    });
+
+    btnExecO10.addEventListener('click', function() {
+      if (btnExecO10.getAttribute('aria-disabled') === 'true') return;
+      processing = true;
+      var origLabel = btnExecO10.textContent;
+      if (btnCloseO10X) btnCloseO10X.disabled = true;
+      if (btnCancelO10) btnCancelO10.disabled = true;
+      btnExecO10.disabled = true;
+      btnExecO10.textContent = '복원 중...';
+      var liveO10 = document.getElementById('live-o10'); if (liveO10) liveO10.textContent = '처리 중: 복원 중...';
+      modalO10.focus();
+      setTimeout(function() {
+        processing = false;
+        if (btnCloseO10X) btnCloseO10X.disabled = false;
+        if (btnCancelO10) btnCancelO10.disabled = false;
+        btnExecO10.disabled = false;
+        btnExecO10.textContent = origLabel;
+        modalO10.style.display = 'none';
+        var appBody = appWin.querySelector('.app-body');
+        var headerBar = appWin.querySelector('.header-bar');
+        if (appBody) appBody.removeAttribute('aria-hidden');
+        if (headerBar) headerBar.removeAttribute('aria-hidden');
+        if (opener) { opener.focus(); opener = null; }
+      }, 800);
+    });
+  }
+
+  [modalO9, modalO10].forEach(function(m) {
+    m.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (processing) return;
+        if (m === modalO10) backToO9();
+        else closeModal(m);
+        return;
+      }
+      if (processing && e.key === 'Tab') { e.preventDefault(); return; }
+      if (e.key === 'Tab') {
+        var f = m.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+        } else {
+          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

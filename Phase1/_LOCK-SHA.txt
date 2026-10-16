@@ -1,0 +1,191 @@
+Phase 1-1 정본 LOCK — 2026-09-08 16:45 (Codex ③ 4차 AGREE 2026-09-08 16:28)
+- 수신원본: Log/20260908_164140_1-1-셋업지시서검증4차_codex-AGREE_수신원본.md  476de461d2897184c73b438bfefe5bb8ba826802ea5e01fbcce1962c2dd7ccad  102,481 B
+- Codex 증거: Log/20260908_162853_1-1-셋업지시서검증4차_codex-증거.md  b41184e9f37e3e92cb121e9fe66a9753cac3a1258e9a229783161227175caa85  4,170 B
+
+파일 · LOCK 전 SHA-256 · LOCK 후 SHA-256
+01-1-1-셋업-지시서-v1.3.md
+  LOCK 전  c945e1bc9c2efe9f5a87897c0b445b1517a455af13257ef7519a5a1e45411f2f  55,042 B   (Codex 4차 판정본)
+  LOCK 후  84754423989d44d8b7970d5d171b55765c55ef9edd8ad3ece10c538b5317a4b3  55,599 B   (머리말 「상태」 줄만 🔓→🔒, 본문 무변경)
+02-창구-계약표-111-v0.2.md
+  ebd4fb3ed104701112ee760a06b50ba3ca1d9b2c5fb4953a39cb40552879f3ef  25,943 B   (변경 없음 — 추출기 산출물이라 LOCK 표기는 이 파일에만 둔다)
+extract-contract-table-v0.2.py
+  91a033fc623f10a1d00da957e37832f9657cab2231855b734b427849b53b8265  8,177 B   (변경 없음)
+
+개정 규칙(LOCK 규칙): 내용을 고치려면 판본을 올리고(v1.4 / v0.3) 상태를 🔓로 내린 뒤 근거 줄을 적고 Codex 재검증 AGREE 뒤 다시 LOCK한다. 발송된 HANDOFF의 부록은 LOCK 후 본문과 글자 단위로 같다.
+
+검산(Git Bash): sha256sum -c 로 확인
+84754423989d44d8b7970d5d171b55765c55ef9edd8ad3ece10c538b5317a4b3 *01-1-1-셋업-지시서-v1.3.md
+ebd4fb3ed104701112ee760a06b50ba3ca1d9b2c5fb4953a39cb40552879f3ef *02-창구-계약표-111-v0.2.md
+91a033fc623f10a1d00da957e37832f9657cab2231855b734b427849b53b8265 *extract-contract-table-v0.2.py
+
+
+==============================================================================
+Phase 1-2 정본 LOCK — 2026-09-10 12:52 (Codex ③ 6차 AGREE 2026-09-10 12:45)
+- 수신원본: Log/20260910_125000_1-2-지시서검증6차_codex-AGREE_수신원본.md  6ec10d9caed872c374dff1e0ec6ec7954768aba8b018ad9a245997c4157d8ebb  65,828 B
+- Codex 보존 수신본: Log/20260910_124010_1-2-지시서검증6차_수신원본.md  3167c841c53c25aa9489bd7b9bb37f23c2a8c53880bf74fae63732e9e3983bb6  61,983 B
+  = 내 발송본 Log/20260910_123000_1-2-지시서검증6차_발송본.md 와 바이트 동일 · 회신 칸 위 본문 1~681행 무수정
+- 검증 회차: ③ 1차 DISAGREE(필수 6) -> 2차 DISAGREE(조건 3) -> 3차 DISAGREE(조건 1+문서 2)
+  -> 4차 DISAGREE(문서 1) -> 5차 DISAGREE(명령 표기 1) -> 6차 **AGREE**
+
+파일 · LOCK 전 SHA-256 · LOCK 후 SHA-256
+03-1-2-로직복사-지시서-v1.3.md
+  LOCK 전  664c44741fb12c234f32b255a6f9f2b0aaf071d65ed580f8f70463761f125d76  30,089 B   (Codex 6차 판정본 = 발송본 부록 A)
+  LOCK 후  2779ca12aace062488455121205563a3a853e575ff420ccd2d747ed7a0276df8  30,496 B   (머리말 「상태」 줄만 🔓->🔒, 본문 무변경 — 스크립트로 검산)
+04-1-2-복사대상-목록-v0.2.md
+  47e31c0290a94798cd0eb95a7af0e252f35e7ee17b2c39e13cf1a916aee3d428  19,854 B   (변경 없음 — 생성기 산출물)
+gen-copylist.py
+  9d6f5335d8447c0527cb2d405f02b156d00029f60a3c855ebeff6cab8d5dceb5  10,815 B   (변경 없음)
+verify-copy.py  v0.4
+  4419edd61bde3d0fa5dc76dcbb3b79c95097687aad605531005507f1bf335a7b  10,189 B   (변경 없음 — rename 방어 --no-renames+-z · 경로별 상태 고정 · 작업 트리 청결)
+
+개정 규칙(LOCK 규칙): 내용을 고치려면 판본을 올리고(v1.4 / v0.3 / v0.5) 상태를 🔓로 내린 뒤
+근거 줄을 적고 Codex 재검증 AGREE 뒤 다시 LOCK한다.
+※ 발송본 부록 A 는 **LOCK 전 판정본**과 글자 단위로 같다(LOCK 후와는 상태 줄 1줄만 다르다).
+
+검산(Git Bash): sha256sum -c 로 확인
+2779ca12aace062488455121205563a3a853e575ff420ccd2d747ed7a0276df8 *03-1-2-로직복사-지시서-v1.3.md
+47e31c0290a94798cd0eb95a7af0e252f35e7ee17b2c39e13cf1a916aee3d428 *04-1-2-복사대상-목록-v0.2.md
+9d6f5335d8447c0527cb2d405f02b156d00029f60a3c855ebeff6cab8d5dceb5 *gen-copylist.py
+
+
+==============================================================================
+Phase 1-3 전체 설계 v1.0 + S1 Gemini 구현 패킷 v1.0 LOCK — 2026-09-13 16:09 KST
+(Sol xhigh 통합 설계 · Luna economy 기계 검산 PASS · Terra balanced 설계 재검토 PASS)
+- V4 구현 기준: main / e6216958956e8bc7d207435b6577d4b5accb7f82 / clean
+- 받은 1-2 종결본 보존: Log/20260913_160939_1-2-종결_Sol회신본.md
+  fb11bdca034ff4147313062a4726f48b6d1d9dcfefd96584addecb72b74dedbb  15,444 B
+- S1 발송본 보존: Log/20260913_160939_1-3-S1-Gemini-구현_발송본.md
+  dcfc3e97002209ff15884363ae0fe4fcc288103c2160979e9e29cd4be9d7625c  26,716 B
+
+파일 · LOCK SHA-256
+05-1-3-통신담당-설계지시서-v1.0.md
+  682f8998b84afa6d1cafe978159641b0c2911f2add6ef918594e348dac087fe9  23,904 B
+06-1-3-S1-Gemini-구현패킷-v1.0.md
+  dcfc3e97002209ff15884363ae0fe4fcc288103c2160979e9e29cd4be9d7625c  26,716 B
+
+고정 범위: 111행 메타계약, S1/S2/S3 분할, 세션·HTTP 상태·활동 기록,
+비활성 업데이트, dashboard export 특례, Windows PowerShell 5.1 FIFO 대화상자,
+수명주기 소유권, S1 닫힌 allowlist, R1~R10과 N1~N13.
+개정 규칙: 내용을 고치려면 판본을 올리고 상태를 🔓로 내린 뒤 다시 검증한다.
+
+검산(Git Bash): sha256sum -c 로 확인
+682f8998b84afa6d1cafe978159641b0c2911f2add6ef918594e348dac087fe9 *05-1-3-통신담당-설계지시서-v1.0.md
+dcfc3e97002209ff15884363ae0fe4fcc288103c2160979e9e29cd4be9d7625c *06-1-3-S1-Gemini-구현패킷-v1.0.md
+4419edd61bde3d0fa5dc76dcbb3b79c95097687aad605531005507f1bf335a7b *verify-copy.py
+
+
+==============================================================================
+Phase 1-2 v1.4 + 검사기 v0.6 LOCK — 2026-09-13 15:16 KST
+(Sol xhigh ⑥ 3차 전환 검증 AGREE · 판정 항목 ①~④ 전건)
+- 수신원본: Log/20260913_151133_1-2-품질평가3차_legacy수신원본.md
+  1fbce2206428d33fe11a8a983cff4360aeb882c27771201764a494ffa176e1ed  12,330 B
+  = 수신 시 HANDOFF.md 와 SHA-256·바이트 동일 확인
+- 검증 범위: TODO.md:207 포인터·정본 명령·성공 조건, 역사/조건부 수치 분류,
+  v1.4 근거 인용, 산출물 SHA·바이트, V4 HEAD·clean status
+- 구현 게이트 전체 재실행 없음(직전 ⑥ 판정이 명시한 최소 재제출 범위 유지)
+
+파일 · LOCK 전 SHA-256 · LOCK 후 SHA-256
+03-1-2-로직복사-지시서-v1.4.md
+  LOCK 전  347df320287ad5c3a55fcdba35677b71265e96eda3b8b3d57b654ce5574363d7  41,646 B
+  LOCK 후  97de3e5e77cbff6c9df14f6e00012f262a2c46eb00021270a56ed13913d036ad  41,652 B
+  (머리말 상태 줄만 재검증 대기 -> 확정으로 변경, 본문 무변경)
+verify-copy.py  v0.6
+  LOCK 전  5feb807ec44dd730e6146a676888d1cd96fab758ff31c002872577aa477228d1  20,308 B
+  LOCK 후  5feb807ec44dd730e6146a676888d1cd96fab758ff31c002872577aa477228d1  20,308 B
+  (내용 변경 없음)
+04-1-2-복사대상-목록-v0.2.md
+  47e31c0290a94798cd0eb95a7af0e252f35e7ee17b2c39e13cf1a916aee3d428  19,854 B  (변경 없음)
+gen-copylist.py
+  9d6f5335d8447c0527cb2d405f02b156d00029f60a3c855ebeff6cab8d5dceb5  10,815 B  (변경 없음)
+
+개정 규칙: v1.4 또는 v0.6 내용을 고치려면 판본을 올리고 상태를 🔓로 내린 뒤
+근거와 검증 결과를 받아 다시 LOCK한다. 기존 LOCK 기록은 수정하지 않는다.
+
+검산(Git Bash): sha256sum -c 로 확인
+97de3e5e77cbff6c9df14f6e00012f262a2c46eb00021270a56ed13913d036ad *03-1-2-로직복사-지시서-v1.4.md
+5feb807ec44dd730e6146a676888d1cd96fab758ff31c002872577aa477228d1 *verify-copy.py
+47e31c0290a94798cd0eb95a7af0e252f35e7ee17b2c39e13cf1a916aee3d428 *04-1-2-복사대상-목록-v0.2.md
+9d6f5335d8447c0527cb2d405f02b156d00029f60a3c855ebeff6cab8d5dceb5 *gen-copylist.py
+
+
+==============================================================================
+Phase 1-3 S2 보정 1차 패킷 LOCK — 2026-09-13 19:03 KST
+(Sol xhigh 독립 재현·40 handler 전수대조 · Luna economy 검산 PASS · Terra balanced 설계 검토 PASS)
+- S1 기준: ShiftMgmt_V4 main / 7acd06e8162777804b05c6f8f72cabdd652a9d17
+- S2 원 패킷: 07-1-3-S2-Gemini-구현패킷-v1.0.md
+  fbdf1159b62a7cae300bb8bfcfcddcd7e5a762890b57a40ce97d016218fbaff5  21,513 B
+- S2 BLOCKED 수신원본: Log/20260913_185017_1-3-S2-Gemini-BLOCKED_수신원본.md
+  2cc723c9ca7b8d7a5800b370e572cd2515199cb7c15a5010fa6815e3eff5b197  25,207 B
+- 수신 요청 본문은 S2 원 패킷의 ## 회신 위 본문과 글자 단위 동일.
+
+파일 · LOCK SHA-256
+08-1-3-S2-Gemini-보정패킷-v1.0.md
+  417d3e78ac873d26334d23fd4e3cb700b2c3aaaa944034106c5036126f6ad4d9  18,118 B
+- 발송본: Log/20260913_190302_1-3-S2-보정1-Gemini_발송본.md
+  417d3e78ac873d26334d23fd4e3cb700b2c3aaaa944034106c5036126f6ad4d9  18,118 B
+
+보정 결함군: C1 core 시험 aggregate 충돌, C2 활동 수치 27→25,
+C3 40개 정상 dispatch/activity/dataDir/dialog/cleanup 시험 공백,
+C4 실제 S3 계약 채널 HTTP 404와 Operations 비배열 HTTP 400 증거 공백.
+개정 규칙: 내용을 고치려면 판본을 올리고 상태를 🔓로 내린 뒤 다시 검증한다.
+
+검산(Git Bash): sha256sum -c 로 확인
+417d3e78ac873d26334d23fd4e3cb700b2c3aaaa944034106c5036126f6ad4d9 *08-1-3-S2-Gemini-보정패킷-v1.0.md
+
+
+==============================================================================
+Phase 1-3 S2 보정 2차 패킷 LOCK — 2026-09-13 19:50 KST
+(Sol xhigh 독립 재검증 REJECT · Luna economy 기계 검산 PASS · Terra balanced 시험 설계 검토 ACCEPT)
+- V4 기준: main / 43532a63d52150b01ed10add4b0de0127ea65d61 / clean
+- 보정 1차 런타임/전체 게이트: 40 handler 의미 유지, 57/57 tests 및 7개 gate RC 0
+- 보정 1차 수신원본: Log/20260913_193843_1-3-S2-보정1-Gemini-IMPLEMENTED_수신원본.md
+  377c407690e72f20d85db81f8ade608c4d49569f813bee00d7cb8ab854016ca5  23,997 B
+  = 교체 전 HANDOFF.md와 SHA-256·바이트 동일 확인
+- 수신 요청 본문은 보정 1차 패킷의 ## 회신 위 본문과 글자 단위 동일.
+
+파일 · LOCK SHA-256
+09-1-3-S2-Gemini-보정2차패킷-v1.0.md
+  fb2cd7702f681150efde661ed9ea68141ec278c61b317999c40d59cdabd0d2b7  28,189 B
+- 발송본: Log/20260913_195028_1-3-S2-보정2-Gemini_발송본.md
+  fb2cd7702f681150efde661ed9ea68141ec278c61b317999c40d59cdabd0d2b7  28,189 B
+- HANDOFF.md 배치본도 같은 SHA-256·바이트.
+
+반려 결함군: 40 channel service/effect 독립 증거, activity 25 actionType/details literal,
+dialog 5 request 전체 외형, dataDir 12 case 격리, migration preview/update 양쪽 cleanup,
+CN4 handler service 0, 보정 1차 시작 SHA 4/6 불일치 ACK.
+수정 허용: ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts 정확히 1개.
+같은 결함군 보정 한도: 이번이 Gemini 2차/마지막. 재발하면 Sol 재설계.
+개정 규칙: 내용을 고치려면 판본을 올리고 상태를 🔓로 내린 뒤 다시 검증한다.
+
+검산(Git Bash): sha256sum -c 로 확인
+fb2cd7702f681150efde661ed9ea68141ec278c61b317999c40d59cdabd0d2b7 *09-1-3-S2-Gemini-보정2차패킷-v1.0.md
+
+
+==============================================================================
+Phase 1-3 S2 Operations 구현·시험 LOCK — 2026-09-13 21:25 KST
+(Gemini 보정 2차 IMPLEMENTED · Sol xhigh 독립 검증 AGREE · Luna economy 검산 PASS · Terra balanced 의미 검토 ACCEPT)
+- V4 승인 기준: main / 37b21a2287e582dd99200a2dfdf3f73567bac14d / clean
+- parent: 43532a63d52150b01ed10add4b0de0127ea65d61
+- commit 변경: M src/main/http/routes/operations-routes.test.ts 정확히 1개
+- runtime operations-routes.ts 불변:
+  80463bdf909b65e02a8496a062050a709826f40251f5f7cf37bc17fe66ae67d9  27,791 B
+- 최종 operations-routes.test.ts:
+  939c66a19ab22e9f195ddc8a72023b9e4ca91546101f3c4cea2fe86b61644464  60,480 B
+
+- 수신원본: Log/20260913_212032_1-3-S2-보정2-Gemini-IMPLEMENTED_수신원본.md
+  e6da82a42fe79297a4107ac3507b536f50bb5ef491f0bc94a05acf5ba91cb19e  34,568 B
+  = 교체 전 HANDOFF.md와 SHA-256·바이트 동일 확인
+- Sol 검증 결과 정본: 10-1-3-S2-Sol-검증결과-v1.0.md
+  da24b70f43a46a5bbd7aded30c185b4a028f674b1fe747e28e444ba3ad122bb8  5,984 B
+- 회신본: Log/20260913_212558_1-3-S2-보정2-Sol-AGREE_회신본.md
+  da24b70f43a46a5bbd7aded30c185b4a028f674b1fe747e28e444ba3ad122bb8  5,984 B
+- HANDOFF.md 배치본도 같은 SHA-256·바이트.
+
+독립 게이트: focused Operations 18/18, 전체 10 files·64/64,
+typecheck/lint/build/map 60/smoke 72/diff-check/protected-diff/release-check RC 0,
+최종 worktree clean. lint는 기존 warning 7, 신규 0.
+LOCK 범위: S2 Operations 40 runtime 및 보정 2차 시험 증거.
+다음: S3 workforce 25 + performance 16 + allowance 13 구현 패킷 설계.
+
+검산(Git Bash): sha256sum -c 로 확인
+da24b70f43a46a5bbd7aded30c185b4a028f674b1fe747e28e444ba3ad122bb8 *10-1-3-S2-Sol-검증결과-v1.0.md

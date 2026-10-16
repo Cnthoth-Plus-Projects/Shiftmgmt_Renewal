@@ -1,0 +1,1747 @@
+{
+  "time": "2026-09-30 17:22:44 KST",
+  "head": "2d97d9bb3dc649f8c40c0d1d0cfc9fdeae0df283",
+  "branch": "main",
+  "status": [
+    " M docs/codebase-map.md",
+    " M package-lock.json",
+    " M package.json",
+    " M scripts/copy-web-assets.mjs",
+    " M scripts/smoke-require.mjs",
+    " M scripts/verify-v3-json-migration.mjs",
+    " M src/main/http/route-registry.test.ts",
+    " M src/main/http/route-registry.ts",
+    " M src/main/http/routes/core-routes.test.ts",
+    " M src/main/http/routes/core-routes.ts",
+    " M src/main/http/routes/operations-routes.test.ts",
+    " M src/main/http/routes/operations-routes.ts",
+    " M src/main/http/session.test.ts",
+    " M src/main/http/session.ts",
+    " M src/main/server.test.ts",
+    " M src/main/server.ts",
+    " M src/main/services/allowance-document-export-service.test.ts",
+    " M src/main/services/allowance-document-export-service.ts",
+    " M src/main/services/allowance-document-pdf-service.test.ts",
+    " M src/main/services/allowance-document-pdf-service.ts",
+    " M src/main/services/database-backup-service.test.ts",
+    " M src/main/services/database-backup-service.ts",
+    " M src/main/services/database-file-policy-service.test.ts",
+    " M src/main/services/database-file-policy-service.ts",
+    " M src/main/services/database-migration-service.test.ts",
+    " M src/main/services/database-migration-service.ts",
+    "D  src/main/services/database-powershell-diagnostic-service.test.ts",
+    "D  src/main/services/database-powershell-diagnostic-service.ts",
+    " M src/main/services/document-brand-logo-service.ts",
+    " M src/main/services/operations-storage-service.ts",
+    " M src/main/services/performance-file-intake-service.test.ts",
+    " M src/main/services/schedule-plan-adapter.test.ts",
+    " M src/main/services/schedule-plan-adapter.ts",
+    " M src/main/services/schedule-plan-export-service.test.ts",
+    " M src/main/services/schedule-plan-export-service.ts",
+    " M src/main/services/schedule-plan-template-service.ts",
+    " M src/main/services/schedule-return-performance-parser.test.ts",
+    " M src/main/services/schedule-return-performance-parser.ts",
+    " M src/shared/bridge/channel-contracts.test.ts",
+    " M src/shared/bridge/channel-contracts.ts",
+    " M src/shared/bridge/contracts.ts",
+    " M src/shared/domain/access-log.ts",
+    " M src/shared/domain/allowance-workflow.ts",
+    " M src/shared/domain/database-migration.test.ts",
+    " M src/shared/domain/database-migration.ts",
+    " M src/web/app.ts",
+    " M src/web/bridge/app-bridge.test.ts",
+    " M src/web/index.html",
+    " M src/web/styles.css",
+    " D vendor/electron-compat/index.d.ts",
+    " D vendor/electron-compat/index.js",
+    " D vendor/electron-compat/package.json",
+    "?? scripts/clean-server-build.mjs",
+    "?? scripts/generate-built-in-excel-layouts.mjs",
+    "?? scripts/lib/ui-check.mjs",
+    "?? scripts/ui-checks/home.mjs",
+    "?? scripts/ui-checks/login.mjs",
+    "?? scripts/ui-checks/ready.mjs",
+    "?? scripts/ui-checks/shell.mjs",
+    "?? src/main/services/built-in-excel-layout-service.test.ts",
+    "?? src/main/services/built-in-excel-layout-service.ts",
+    "?? src/main/services/dashboard-chart-export-service.test.ts",
+    "?? src/main/services/dashboard-chart-export-service.ts",
+    "?? src/main/services/document-brand-logo-service.test.ts",
+    "?? src/main/services/document-layout-definition-service.test.ts",
+    "?? src/main/services/document-layout-definition-service.ts",
+    "?? src/main/services/document-layout-excel-render-service.test.ts",
+    "?? src/main/services/document-layout-excel-render-service.ts",
+    "?? src/main/services/document-layout-preview-artifact-service.test.ts",
+    "?? src/main/services/document-layout-preview-artifact-service.ts",
+    "?? src/main/services/document-layout-preview-service.test.ts",
+    "?? src/main/services/document-layout-preview-service.ts",
+    "?? src/main/services/document-layout-storage-service.test.ts",
+    "?? src/main/services/document-layout-storage-service.ts",
+    "?? src/main/services/document-layouts/attachment1.json",
+    "?? src/main/services/document-layouts/attachment2.json",
+    "?? src/main/services/document-layouts/proposal.json",
+    "?? src/main/services/document-layouts/schedule-template1.json",
+    "?? src/main/services/document-layouts/schedule-template2.json",
+    "?? src/main/services/installed-chrome-pdf-service.test.ts",
+    "?? src/main/services/installed-chrome-pdf-service.ts",
+    "?? src/shared/domain/document-layout.ts",
+    "?? src/test-utils/document-layout-semantic-snapshot.ts",
+    "?? src/web/home.css",
+    "?? src/web/login.css",
+    "?? src/web/screens/home-model.test.ts",
+    "?? src/web/screens/home-model.ts",
+    "?? src/web/screens/home.ts",
+    "?? src/web/screens/login.ts",
+    "?? src/web/screens/shell.ts",
+    "?? src/web/screens/status-bar.ts",
+    "?? src/web/shell.css"
+  ],
+  "statusSHA256": "8D4954EE16CAAFDFD5B908D58E42CAF962316D539AAA3DB742DD3B366982D08B",
+  "productFiles": {
+    ".gitignore": "AF2E46A3A33AC3AEEDF19BD573B5ADD6B7A6C7F1C37D03F78B30D04370F7B36B",
+    "README.md": "08FA6E3C8B5E142A88314C8F6C85ACF391ACA8C63AD48E5DD96C0C269D7AA277",
+    "VERSION": "E9DD8507F4BF0C6F42458E41AEA833AD0BD3F6127272335EEE9BF4D58541ED67",
+    "build/installer-update-data.ps1": "F61AB24D11B98518BC0C53FFD2591D94CE87AD0C6146FC7D3D2C7181592869A4",
+    "docs/api-convention.md": "E177DCF684B76E8CF7AC1074AF67F906AF66637D70EAC18708C66F9F379D7C97",
+    "docs/codebase-map.md": "AEDCD1B4E40DB2FA02712E246CC0CF3D3D9FCE1DED8C3088CFBE94E010A1DCB6",
+    "eslint.config.mjs": "DDE60037BCFA2382793E8F6702B819239CB0E28080A9D7CE3C62DC2C5BD3E744",
+    "package-lock.json": "E60FE10E0AC19014C7EC5FBC18444E07511F429BA1A9638C7BE6D91DFA372743",
+    "package.json": "162CDF6506031A846F6489BDF35CBDB86B099A659761472EFB1DE191045860E9",
+    "scripts/capture-screen.mjs": "D594E7529F2B7653642D004B0765E6721B68817ED5A74134F47E9C8F2559F4E1",
+    "scripts/copy-web-assets.mjs": "F935ED8190F71A18E92714819A3C9C5634757D5EFCE30536EFCA2DB5CB8A5650",
+    "scripts/dev.mjs": "77A0B916937185E38390F6E833D96B0104FD83FE301CCE0C1D6421E8D5160B39",
+    "scripts/issue-account-recovery-key.mjs": "36B0526C6754252BFDDB5C93B134C54BAB5F9C1B1AE7C9A2469C6CBDD935053D",
+    "scripts/lib/find-chrome.mjs": "0EF7158EF9657BA3246E05C0662F2A60729C43F75E2E975E0A5C6591AC4A34D9",
+    "scripts/lib/release-publish-helpers.cjs": "5ABA70811610F78D2E7DDF32C4C427E3C45DB7037C438C8B00D55CAAA8EE035B",
+    "scripts/release-check.mjs": "24E9D5CE66AB79D510DB6D260215AAFB494D359FFECCB595B646CD594CACCEB3",
+    "scripts/smoke-require.mjs": "713FE80E3BB50705278EC7F85397C0971DD63309941E0EA2F28222ABDD4F0FEB",
+    "scripts/validate-codebase-map.mjs": "9B8BAA501ACE2AABC56304B43415A92378B03745FB73E73664AD925AE13B0019",
+    "scripts/verify-v3-json-migration.mjs": "AEA45B3DE715E2DFD876CC258B6BA4302D8121745B6CC01D0A2EF10B5F79A7A3",
+    "scripts/windows-dialog.ps1": "19C1A720E40888F60B80EF6FAA48C081F9213CB6AE7A8D9853F4D83F3BF23E52",
+    "src/main/http/api-types.ts": "2811C48DCA521E8B667A0467B8C75EF8D4CD5CE4DBD3AC42CFB1D8F23DCFE8F1",
+    "src/main/http/dialog-bridge.test.ts": "1DD97B514553D2EEA7D0046E318B5B8E068FA777076AACBCFD634F71F195D5A3",
+    "src/main/http/dialog-bridge.ts": "1ABD5701788AD94031A68A917DEB1D42212C73BA5DD9FD01DD4BE57522EC2C52",
+    "src/main/http/guards.ts": "EE9B5C4102AED5ED0B4B41D0172A9251DB4EDAEA7799DDADD75FD0728332DC2A",
+    "src/main/http/health.ts": "9E9F0E117CE30FF40A700AEBDA8F60F38BE7F9024A3E616F40692709361AACAB",
+    "src/main/http/json.ts": "1E7B68CD1C4D6D5CED926420E2BBB5EE8B7FE22B67D14454CCD9483D5CD111D6",
+    "src/main/http/route-registry.test.ts": "3DAF6CCC789A4FE71DC147AB7A48DD1398B1F8280DD9CAD38BF45455C7CA2AAB",
+    "src/main/http/route-registry.ts": "DC9E1CFCC556917E52AF28362D29C910932AD3FB7FACC763E13B959EA875D1C5",
+    "src/main/http/router.ts": "DE6F11D2CB0549FB1813F2D992391C97FB66EF268FB8C55CAD278F73F1861223",
+    "src/main/http/routes/allowance-routes.test.ts": "CFDDF5963052B09C27E2A5E064017A915E726E06577F99E03C60D5F5AB186B33",
+    "src/main/http/routes/allowance-routes.ts": "F761D2EACCC26C9F3EDBC801688A308C4CF6194BF6B7FCB1ADCE70E3F2BF8B9E",
+    "src/main/http/routes/core-routes.test.ts": "91619650024C977320515DB75AEBB0009AC8504134F7370631B863A2C946BA03",
+    "src/main/http/routes/core-routes.ts": "D8D806F66F15BE739E335B8BE62F6ED7B0ED581698D726BB03EC3A273D05BA82",
+    "src/main/http/routes/index.ts": "1B0D2B6F4D9AB5D126133111B34171216E1176586993C0D1AFC30828D919B3DA",
+    "src/main/http/routes/operations-routes.test.ts": "8F93F4BE9E9E28E2C078FBB55C03520D5F728B68F11B319441D5B944184D7482",
+    "src/main/http/routes/operations-routes.ts": "471B4CD59AA6DC1F8659749FD05CDB6525CE0CA8D390C497ABE204AE05875787",
+    "src/main/http/routes/performance-routes.test.ts": "1551C785B5325E11AC3233FD1D7D2CCE36977404E76F06BAE0F6A69D39920E34",
+    "src/main/http/routes/performance-routes.ts": "6FB3FFF06D10A64769E5515993C99BABA62304BB4D92F29F159678ACA0589103",
+    "src/main/http/routes/workforce-routes.test.ts": "07D9C813C8D88ACF602419FA51B2A387F974341A5A30EAD307D6DDF0BA8ABF87",
+    "src/main/http/routes/workforce-routes.ts": "DEE10839E87C5020ED5F73788E95E68E09107A4FA74E5BC1939B56A77D79B654",
+    "src/main/http/security-headers.ts": "E196A82993A9945BB63C906CF9FC2A11F03F1D7D666DD1DD1E3DCAEDBFE5FF17",
+    "src/main/http/session.test.ts": "6C8BF746BD6B91DF31AA37A222527F740E8366A2D0C1CCCE0413DC5BEC62EC60",
+    "src/main/http/session.ts": "C748AB13BD1B31499420381DF759F24BF26DA84A4CDABCC20F98154FA9B1C681",
+    "src/main/http/static-files.test.ts": "E5819E14C7B049E3D87A849E01C3477EBB4E0A4A620B0B060EAEC07CFCD086F4",
+    "src/main/http/static-files.ts": "D0FDB600BE42C205729236C7DCCE67489CDE8CECAD07DA168DCCD54C37072167",
+    "src/main/ipc/ipc-handler-helpers.test.ts": "5AD8517A2877760BDAFC9DE96827912D30294F7AF47CC823BB66A14AEF50A426",
+    "src/main/ipc/ipc-handler-helpers.ts": "76D0FC29E9E346F13546D38836662C3D17AAFB8AD20D46A08E0FAC4874B72554",
+    "src/main/runtime.test.ts": "CA3B1AC15076F5DB04776D6F631544944CE92970DCF690943A9213E150C3AAE2",
+    "src/main/runtime.ts": "2C622FC6308F8BED939165043C3430FD2EEF1D42348D69DFEB84809BFD96F143",
+    "src/main/server.test.ts": "3D4FBB5446CB2C66D6CEF81F7B1132EE1F747D407B64B756D86EB18C71856BD1",
+    "src/main/server.ts": "DDDF194B881FDA4AEFC0B0BBAFEA6A481491E747F8B90C48ACABD5946D11118E",
+    "src/main/services/access-log-service.test.ts": "5EB6EBFF943C47F8F9ACAD48C091D6BFF04A27D3A59D9332C5C6504F073A9A0D",
+    "src/main/services/access-log-service.ts": "324F6B0F8F4BA3B9F48288BBE0288961C789A9312833730730E2C8AA5A9A4F38",
+    "src/main/services/account-recovery-maintenance-script.test.ts": "B9E8DB0F4A0C33A294CB0683A0677C89AF2CD92E381AD05778D97512580450E0",
+    "src/main/services/account-recovery-service.test.ts": "B3DD31DD70ED5BB5501477154C8336E79122BAAF58A8F62BADE2FB5642674D6D",
+    "src/main/services/account-recovery-service.ts": "BBA5AA9BEE02FAFC39BE01F2AF39ECCF65341FA6668FAE3FCD7B5243BBF2A090",
+    "src/main/services/allowance-approval-service.test.ts": "EAB544EB06D179030FCE184656A3AEECF686A3D5B942A015FB2FC741030F7BD2",
+    "src/main/services/allowance-approval-service.ts": "C2953991E6B409FD8E55737C5925153CD8E144DBB0BE72412B238FBB7C7ED015",
+    "src/main/services/allowance-document-export-history-service.ts": "F190C5E8B36B719FA7A99A0125764439545DCE5B062964C27F74972938E48383",
+    "src/main/services/allowance-document-export-service.test.ts": "886CEA90EDC5F795A2327016E1FD22B15515A9851BC53271D51FEB81F40E2130",
+    "src/main/services/allowance-document-export-service.ts": "C2F523C99C6ACF42EADFAEA718C6D4CCEA67072E2E27885E12EDF6BD150A4EC4",
+    "src/main/services/allowance-document-pdf-service.test.ts": "02AB947ACE4643663F075D407C459F4251D5268406FF84FDBEB969418B85CB01",
+    "src/main/services/allowance-document-pdf-service.ts": "895259205EDBB727DF202CC11BC069CDA96F72D73FDCB3A049920C8FE217BF6C",
+    "src/main/services/allowance-preview-service.test.ts": "4BCF7BA74AA8779E6CBC048A83DC8D5F677E5BA46BE23D4DE799137DCAAAA2EF",
+    "src/main/services/allowance-preview-service.ts": "69EDFECBC6FE7170118AF758C52A455ACA47C0017559E9482141A4DC534F5450",
+    "src/main/services/allowance-proposal-approval-service.test.ts": "79C7AA5D6F9AF8B7C47B13B449FC4E686EAC5F54F95CE0C1234E0B32C2D05872",
+    "src/main/services/allowance-proposal-approval-service.ts": "578AFEEE7E2A2746A51169893D68E632F4560D135F64D258D63606A3059B3C78",
+    "src/main/services/app-settings-service.test.ts": "321ABB668F73750239CADABC2402FBF5374D8C05891B6B635A4B46DA31373AC8",
+    "src/main/services/app-settings-service.ts": "29FE87EDC1D00C8C27C9AF8B0F89CA5C99E6EF819D4AB4CC32BBEAF00CDB0EB1",
+    "src/main/services/app-settings-storage-service.test.ts": "5CD8BF8DB2BBD384052D6C334B7F9B2623D7063C2A3B35F680B2329E2DC78636",
+    "src/main/services/app-settings-storage-service.ts": "5263B343E8A5E87A73C29EE0F3A87C8A27B178650859356D7FA72AA500D732D9",
+    "src/main/services/approved-allowance-calculation-service.test.ts": "34C6582EDD8EB0CEB954C9B77A821FB9B73A74F9BF46CE195249C8A8867BD37F",
+    "src/main/services/approved-allowance-calculation-service.ts": "EB99CB512F2DCAE4A96698C3C57B5CF2D285D44E8E9CA35C98181D53A9D0CBF5",
+    "src/main/services/approved-allowance-rate-selection.test.ts": "54B7A263E9DA8CA73547A66F284DA453EF4E855895017AFF7565A0C1D787FC57",
+    "src/main/services/attachment1-rank-master-data.test.ts": "14573CABA9D979C6C00CF18E6CF5B30234A1FD905C80223813EEEF6FACB34078",
+    "src/main/services/attachment1-rank-name-fallback.test.ts": "2F7E687F93682B9C1376248334897B561F68D2302DF1471BBFD76D17D77B62BB",
+    "src/main/services/attachment1-rank-pdf-column.test.ts": "779B15489E4A52C1F3A62503F9584D1BA1E4080E3F3F18A3D2A6AD2601FC64FD",
+    "src/main/services/attachment1-rank-shipped-defect.test.ts": "C0F58C645C032140C20D3CE8CAD6169416FDC86A43AC28C4572C39B9D33A7E02",
+    "src/main/services/auth-bootstrap-service.test.ts": "90DF54678DE3B66059F730F40BE1CB3A73B67EC85D506F4B4CC989880F825E46",
+    "src/main/services/auth-bootstrap-service.ts": "A908A8ACD6C8D018AEB0A02D3DAAF7196FE3DB008CF479242E9666B15C6B16BE",
+    "src/main/services/auth-password-service.test.ts": "2301C69444A49B4A8512E2D802CD139931CB937CFEC2B883BE02016EA0955A5C",
+    "src/main/services/auth-password-service.ts": "C7962B3B328FE120DFE1E3C3828F8DEF9116B76C9E932D16E971634592A430A9",
+    "src/main/services/auth-seed-users.ts": "83951C2D57BCC534E55C8A55A8E4C7F1BCC050269335A172E19AA01150125ECE",
+    "src/main/services/auth-service.test.ts": "A107781FC2A80BC705BEEBACAB2F4E9102958DCC6F633E36855FAB40572C7EB7",
+    "src/main/services/auth-service.ts": "FF27AE01B3FD3B12BA0116D6E4F746F274D932561C193BF7A32948B2C4403F3F",
+    "src/main/services/boramae-holiday-weekday-diagnosis.test.ts": "BCE380AD250E89D028E2138CCE378DDB7B4D8B4D783E3BA6CE29001AE78B5CE7",
+    "src/main/services/boramae-holiday-weekend-crosscheck.test.ts": "3CA726F5F02F546393E20651B901370C65035AD2D4FE81655947B5CA120CA214",
+    "src/main/services/changed-slot-priority-rule.test.ts": "9820A8B84AD5217979014C2F213959354A8E371291FDD8097877B2120681B429",
+    "src/main/services/database-backup-service.test.ts": "A012E70F17FAFB09030FDBD760F37FAC30E6953F276812D77F5EFD39AFADB693",
+    "src/main/services/database-backup-service.ts": "E429FF69F069BF33264FCE17C566558530852D0D7B2550946FEA13B2CECC29CE",
+    "src/main/services/database-file-policy-service.test.ts": "0337FC4F4C47A2CF33EC6305C5D8D248F1ADE691AA8099D6E735B96AF932BD2E",
+    "src/main/services/database-file-policy-service.ts": "771DFF1A109D46C0210F2F1C13CFBB6546B96C38E5EE6C326DF178C264697EBB",
+    "src/main/services/database-migration-service.test.ts": "C931D5222A43F2EBDA5E3C2BC291BC5E7915913422FC83367986EEBBBB3EEF04",
+    "src/main/services/database-migration-service.ts": "AFE1B6A61B26203868D6753F0915EA5025B3EE0FAE09B59C243966D3FEA5B902",
+    "src/main/services/database-replacement-service.test.ts": "C772BEEDB3B66FDD6F47376C7A0132D3DA2ECFFEA8025D4F5E5D99257C289911",
+    "src/main/services/database-replacement-service.ts": "D13190A9BA4336E1E120282F19E45E45A77286A6712A5821618311FF1A213D43",
+    "src/main/services/document-brand-logo-service.ts": "9EB5CE05F25DBC9107A402C923105B7246AE1E5969BDFA98F2253212CA6CCA4F",
+    "src/main/services/document-template-canvas-service.test.ts": "57A431E076F5CE03412665BB2B614F850E5CEBABD3F671282C272D717571E762",
+    "src/main/services/document-template-canvas-service.ts": "176E200DD1D3E1484935450787DB891022F1BCD470F3D601EF08F78DEC07FC53",
+    "src/main/services/document-template-management-service.test.ts": "44F70D50E25689CD8A664491CDAC3D7EE8C96BB9731A02375B3489787DD4B4E5",
+    "src/main/services/document-template-management-service.ts": "CDD4CE16EB56E146738915EC3C24536B8A7E3BE1725C976A953F0ED74BC2042A",
+    "src/main/services/document-template-output-file-name-service.ts": "93471079CE0D926A6F044BED3769CD8772FF5BA263C8E918E2F68B0719BC1732",
+    "src/main/services/document-template-preview-service.test.ts": "9D9D6235332FF7DFF52A6F972CD00F5CE7B711170C0EA1B89E4918D8BC37ED14",
+    "src/main/services/document-template-preview-service.ts": "5948164D4F2762872398C20C96A98A97BA48BED5F70587B8B475937F6EE54617",
+    "src/main/services/document-template-profile-service.ts": "432A0224DA5A6689360BB44D5DC493AE3C5487A36A6DC76F6AF19246623E55E3",
+    "src/main/services/document-template-source-path-service.test.ts": "D87B27CA0DCB974D555E24D28FA93AC111F4A370655184D67E68B837DCD0108D",
+    "src/main/services/document-template-source-path-service.ts": "470D83FD966DEC1437292355894392938CF00E82FF870A4D6355C0FD77BBDCAE",
+    "src/main/services/document-template-style-apply-service.test.ts": "0A1A9C735F82401F76F5AE543CC902305706B027801790A63A44018C46E10118",
+    "src/main/services/document-template-style-apply-service.ts": "61D79B7F403C0248E3CC4A90B536977694986FB8C1893B7CFB8A53E668AE85FC",
+    "src/main/services/dongjak-hong-yuseong-verification.test.ts": "747A79725FFEC68F4DAF5E31B03AF65BAD466262F249684B37F5A5547B67786D",
+    "src/main/services/employee-history-service.test.ts": "5BB2FD627D0CDAA821AAD60707B11D2F2022D6AEF3CC38B276CD7559DCA6AE76",
+    "src/main/services/employee-history-service.ts": "C4116B45F5707AA585A5790451A32336C8E17AF39549BBDE8432BC03013F8BA2",
+    "src/main/services/employee-storage-service.test.ts": "0FBD3237300B5B625748F7E9BDFA2ADDB44704EC4F34B69CA1C0775E69DDA1FB",
+    "src/main/services/employee-storage-service.ts": "F2B7DFD7A63D0139FDCA568D15D155B27BB9FCF75AE65CEDCCB0530256595BAE",
+    "src/main/services/excel-import-gap-campaign.test.ts": "EFA688F26215E29B1E05C9408AE201755952D40122EC680D26E620BB6F0A0B6A",
+    "src/main/services/excel-import-stress-campaign.test.ts": "FF518A3440CAE46C0DF7D05CCDFD17822C836243BCA508894B874F68E89B618D",
+    "src/main/services/excel-template-parser.test.ts": "0810C7207FA8FC3EDBA57F905C859C1AB3E02783BDA1B59A61AAB4F040905E82",
+    "src/main/services/excel-template-parser.ts": "DD490308AA035D0BABCE6D9998C1C387FEE05AED7E6AC65BF7115B3AA32C4CD0",
+    "src/main/services/file-watch-runtime-service.test.ts": "DCEF395FA5D00C6289B0683803F8C1F03DD57B1CFC1828755C86E2893D5F972A",
+    "src/main/services/file-watch-runtime-service.ts": "245F26BD04073FB2196BE4AAB5310CE34F834FE1333FC09A03CB2DC1AE4B844C",
+    "src/main/services/file-watch-service.test.ts": "86DBFC5C17CED1F44F5255385A816C169B1BDB358820FB0C73EF6C1DA361D4D0",
+    "src/main/services/file-watch-service.ts": "06C52E4F230A714F46E840A91A46269547691085718EC85FBFE6F836BD2B6645",
+    "src/main/services/holiday-allbase-followups.test.ts": "803497911485D087DF0FFCE9DC48BA9BBC7628F1863DD8A70E2E815E1F56E187",
+    "src/main/services/holiday-api-service.test.ts": "2712B3F62A11F5E2B1C8D8D2EDD8B20A0223CDDC64976A2015CFBF8319026B63",
+    "src/main/services/holiday-api-service.ts": "FB42BD9CF2B70CCB2F94644CEF67F17B7E6D33A3E104A6EDCDA205DA504DE873",
+    "src/main/services/holiday-none-regular-credit.test.ts": "7EAA7DEDB06C22EA4B6F0A0E90FEE2F41644DCEB7478F09E1B5313C3CB557515",
+    "src/main/services/holiday-substitute-cancellation-fix.test.ts": "301BA884B1ACE4A03C8856DAA969B45BFA925A5742BC3F940351E58E55CCFB7A",
+    "src/main/services/holiday-substitute-redesign.test.ts": "D99FD21ED0DC1616E92A49B2C6D1C8556BBBD8EC2A4E17A2F53D5EFAB992338E",
+    "src/main/services/installer-update-data-script.test.ts": "7E1C76302AAE94F2A0E718429BBED13CF91BDD00CAB0496C8B87EB0A00703C56",
+    "src/main/services/ipc-auth-guard-service.test.ts": "650905C716BB6FE2F41E7CB12033A139484925987AEFB394FB762410D4EF5A89",
+    "src/main/services/ipc-auth-guard-service.ts": "3E38398D8BE039799E036294AEF01CF6043047D815941BBB2884C7D62850D5A6",
+    "src/main/services/monthly-schedule-restore-service.test.ts": "802DA6C37CF37D234C0062EA7BFC112773C80D484BEDE2389CB8D4EEB77DFEA5",
+    "src/main/services/monthly-schedule-restore-service.ts": "166E362101CE59FF52325DEC8CE5AD3ECB2EB8C97181D8192655E14516E4DB89",
+    "src/main/services/monthly-schedule-storage-service.test.ts": "EDA8E83250E01E2849438BABA2B4EE6113870B76E0652FFD1608B31AFD4E621D",
+    "src/main/services/monthly-schedule-storage-service.ts": "4BB8568D40685627EE8C50D57F2AEFCFBE5A67D7BE27EE37BC1BAF1CC83C0C1D",
+    "src/main/services/operations-storage-service.test.ts": "3ED99F368DF8D5EC3949E6BF1FB408B754B17857ACDB7D4C54CA70F912A5D532",
+    "src/main/services/operations-storage-service.ts": "B67134AE95DA3CCE943E1A9A596539E569AAD70DF0E7DE460E298A5E8D1ACD68",
+    "src/main/services/performance-approval-flow-service.test.ts": "104A5B31813FE1A562242E1E9075C5A49A84A219D3CEC667CC88173C23AE4F06",
+    "src/main/services/performance-approval-flow-service.ts": "B705AA7D3F010C3DDBC095EA11494A6148541B80C7ED948D0C1C3A5D95E00B60",
+    "src/main/services/performance-approval-resolution-service.test.ts": "496C56AABDE39CDF33E44E837F305E40DEE3F5C52E5A633F12E33265B0FFC260",
+    "src/main/services/performance-approval-resolution-service.ts": "141C94C44832578796770946FCD4F68D16D9931FEE5CA1CF5A6550D4421F7FFF",
+    "src/main/services/performance-approval-service.test.ts": "263D6BB03B234A11D13CF192642D1D4BF2576FB5AF9BD7294638FA9A199D2C34",
+    "src/main/services/performance-approval-service.ts": "84619CEB3446DBE612BCBE19B0CB4CD4457E190357EF9C6970EB9D6A1F5CC0AD",
+    "src/main/services/performance-approval-snapshot-service.ts": "D1115B009B47BDE0E49E7DB1FFBA635BD7FE18EC80B2765BFA41D9C030BEB7A9",
+    "src/main/services/performance-approved-row-management-service.test.ts": "769D7043E2D06A7847DAF3E04D55ACB4E5365EC7B78167C5E4BA76E376EEF816",
+    "src/main/services/performance-approved-row-management-service.ts": "FAEAB34D3B4237F00A73BFAC7742CF19AFD6A319C33E61BE6D491D73AD5AF007",
+    "src/main/services/performance-approved-row-visibility-service.ts": "69318D5A5FF97EE627FBC611E96666D936DBD51BD8AEF9907D6ED27F2881F512",
+    "src/main/services/performance-archive-retention-service.test.ts": "D63FEC63C4E22A2391B18CD8EE6591ACAA78FF66A36F5236AD5C9293B3B38056",
+    "src/main/services/performance-archive-retention-service.ts": "0652DCF9746228FBAB875C9127D78E1D2D82C0EE57C01B6771478FAF12B2A979",
+    "src/main/services/performance-file-archive-service.ts": "A68CDD1A82E9143F60F9311859D967C8EA2ABC7586028843D42F4D0BCA5CD1B0",
+    "src/main/services/performance-file-case-normalization.test.ts": "747890B83F4D12D3AC2012E6C77EFAB27D9CD9CAA459757833B3611E3A3AAC00",
+    "src/main/services/performance-file-intake-service.test.ts": "CEE10CBA7276497A163FDFB2AEE7491F10F114E5C1DF1E96D8107F8CA242DBDD",
+    "src/main/services/performance-file-intake-service.ts": "D0FE5110CC78691891B6C1C866D726553CE99D7F3D23A0DCADAC15D4A36C5628",
+    "src/main/services/performance-file-metadata-service.test.ts": "F598866CD8F4C6F31AC6B93D4B7B4BA4986E10A14974036233042F9B6CFF1DA3",
+    "src/main/services/performance-file-metadata-service.ts": "7ABEB4392CB9E1148A044FE3A39498800C3E69E347FF484D6E468FA5935B5AA0",
+    "src/main/services/performance-file-storage-service.test.ts": "38C2BFF645DE36392CBB0C3CCBBF31CE3A78FF622C6E1D4ACC790DCC88B9FF54",
+    "src/main/services/performance-file-storage-service.ts": "DDDC00DDF09860CA1B0F78EE51C1CC4C22E62EEEC21073889052D76349DC8F3A",
+    "src/main/services/performance-holiday-gap-service.test.ts": "A8FC7861291F6B9F2DA3DDE450C4138380B3F75A77947FB1E4A17C77EA3A59B5",
+    "src/main/services/performance-holiday-gap-service.ts": "C28BB6A556E7CF58F577B2328330AAA8862E42A51512D864EE056AFDF75134E7",
+    "src/main/services/performance-legacy-name-normalization-service.test.ts": "B635E01F3A2AB7D6CABA60882191BDDDA8CC9251EE5F449F1EBA9F8FC4541A45",
+    "src/main/services/performance-legacy-name-normalization-service.ts": "9F28A853C72D34E82AC1D53D99C6E4D43AB0BEEFE9818F4D5B382C0B2649E2DF",
+    "src/main/services/performance-management-service.test.ts": "737B4A58C4B4DE361EE30B124E7D650751FF0CB9D393269C8C7271E69C84B48F",
+    "src/main/services/performance-management-service.ts": "8BAEDB9D4133397FDCE108E036C5A962029E7A9A194BFEE1917FCC31720CF8BC",
+    "src/main/services/performance-orphan-file-healing-service.test.ts": "4C140B2A7EAA635C1E70C7626C932B8D7C178D1F1FF78DD64D256983F407D151",
+    "src/main/services/performance-orphan-file-healing-service.ts": "E63993F4A1AF5CE326DC954CEC4963D1EF607ED19A129CF23ED52FB4FAF0B40A",
+    "src/main/services/performance-overtime-repair-service.test.ts": "CC07F696ADB3D3BDCE37057E12233BB9E73065C2BD56CF81F4D76E3CD51291F2",
+    "src/main/services/performance-overtime-repair-service.ts": "72C774A55FCA37412AFC1A77AD574977C61FE4B2CA2D42733D7258B05A12ED50",
+    "src/main/services/performance-queue-service.test.ts": "9D7CA8AF4294E9CFDAA6E3CC720E46B99029F7A670770C12423779A334D71461",
+    "src/main/services/performance-queue-service.ts": "5D83657CFF86BD535F98CCF1878E961CC15869D5E725420DDE4B9761CC52B576",
+    "src/main/services/performance-startup-recovery-service.ts": "EBD4E5B031E442BA90BC689C48E6A16475DB58093BD12A39E4BE844BE85606FD",
+    "src/main/services/performance-startup-recovery-status-service.ts": "00FC9C15CB3D2CB4523E4015D14D23183C4AD18FD59CCF2050E561245C08F4D9",
+    "src/main/services/performance-test-helpers.ts": "25837DC1E6BC0D0685C54AB58449C474B6F1E4B4852EE0EFB18EA87176D0ED07",
+    "src/main/services/proposal-template-layout.ts": "5C0603D41DB3D69AAFB4A5692364E8A5229A20ED309000264A4604E583A71FBD",
+    "src/main/services/release-history-service.test.ts": "C254F0A8DA7658C13B13F84A01287C6021BE3FE325202FB9EAAA88F34418168A",
+    "src/main/services/release-history-service.ts": "EC2B648CE2D8452F43F9CAE4223BD54875D78346040582DEB2CCD156DED0802C",
+    "src/main/services/release-publish-helpers.test.ts": "E25C19702D3C1052366483CF26238F02972EAE5EFC8770C40131A5F5FB66984E",
+    "src/main/services/schedule-plan-adapter.test.ts": "7BF95939214FED132CAB9F98C51649F019229D94DD076439C2DF473D0CEEBE82",
+    "src/main/services/schedule-plan-adapter.ts": "36B7CCE3D7BF0F9B03A6CC5AEA99F7CE714C4253D5B7D66188703D669984430F",
+    "src/main/services/schedule-plan-export-history-service.test.ts": "8CF397A2895D3242B3EBB5F0CF969811089F324BFEE6DF521B0F1547A76AA2AD",
+    "src/main/services/schedule-plan-export-history-service.ts": "796C8FF5E70531ECF7341E35353FD7C2866A81EBC90FFEFC6E47EC5F2D739E9E",
+    "src/main/services/schedule-plan-export-service.test.ts": "3B1528EABEF172BF722A59E17495887DD8DF7C3C82DC20D01A1E7B07D82E4553",
+    "src/main/services/schedule-plan-export-service.ts": "E74890B221ED12EEEBDBB1E528BFD8C3509A0501135C6BD5FA1B0361BF156592",
+    "src/main/services/schedule-plan-preview-service.test.ts": "4A046AFF42DA3712223A08204D2CC2FF0365D146B75F37435E1729C2BCF9D7AE",
+    "src/main/services/schedule-plan-preview-service.ts": "544C9046B3BB577C9667B6E6E174D378148D1CB924826D99FAF194B1C0D3B0F6",
+    "src/main/services/schedule-plan-publish-service.test.ts": "F1CCCEA1693468E845B52102CC91A67AAF96A9B230C543D015D4EF507BF858BE",
+    "src/main/services/schedule-plan-publish-service.ts": "576A8FAB996F678ACEC0A666600ABD46AF1FB0A704AB492CE7D44F765A44AB09",
+    "src/main/services/schedule-plan-team-member-order.test.ts": "F2357ED1DF80F9A09C0C0E4F09B6B7A3E6B8370BC49C3DE16E45EB56B6E65D12",
+    "src/main/services/schedule-plan-template-service.ts": "A3D2F99D93AAE75C1854FE0B26B452565185EBBB0A428FA9C3BB53618EFB0FA7",
+    "src/main/services/schedule-return-performance-parser.test.ts": "4119B76B8F0F3BA4478ABB26708C602464943FA612EB570FA681693EB139A1C5",
+    "src/main/services/schedule-return-performance-parser.ts": "5F3D26DE70037D99F4602A4C72DCB5617B96B240AEE2B9F6349556CCEE6042A4",
+    "src/main/services/shift-pattern-storage-service.test.ts": "429ECE493F84192DE641EE430406612698DFEA0A2A0C8E5146D1A73A4E06AB51",
+    "src/main/services/shift-pattern-storage-service.ts": "8C874A94ADC51BAB354592FEDBB56F1368063BFCD2DC321BE776DEA11570AFF3",
+    "src/main/services/site-pattern-extraction-service.test.ts": "E437EE2D7CDEF7C3B792AD0A0F29446CF35FEF4B4C74F593F260047C3585BA4D",
+    "src/main/services/site-pattern-extraction-service.ts": "491999CE4E48735B24E61FE7E10F8F28E7D94FF7944FA395A072D1268159FEE6",
+    "src/main/services/site-storage-service.test.ts": "85EFAD2AC1F5EA200C60E647AFEB7602BD8DB03BCA977A178C3E7BA052497675",
+    "src/main/services/site-storage-service.ts": "9C86FE5D9EF405FF36442E5D3D2B310A2EA972EDF27260AFF7068E33DFC5ABF8",
+    "src/main/services/sqlite-storage-service.test.ts": "2478959D4B1D800D3FDAF775123B5B75A68FB408A6DCE98B5D1576872FB90579",
+    "src/main/services/sqlite-storage-service.ts": "0090AE4B06D77BBE95DC57CE3E13CEC718549D099A8F7B06F5B778652EC03D4B",
+    "src/main/services/substitute-allowance-team-policy.test.ts": "8B65F9A647884941921D177A3DF7A64C164F8784A0636871B1EEE021B7D370BD",
+    "src/main/services/template-management-workflow.test.ts": "1C1AB89A0C212E37DFD2AA3F5F785CE5E98396403A86C6DC5A234C4838FE2703",
+    "src/main/services/workforce-wage-bulk-update-service.test.ts": "29DBFBB03168C5F971FA9D1649FD8DF8E418A4D1E0F1CFC6AFC7C431F3378B02",
+    "src/main/services/workforce-wage-bulk-update-service.ts": "5DA6A3D908328C3C6D9202FEF6EBF4B993FAF464187075F3AF5FB06501CEF84D",
+    "src/renderer/assets/brand-logo-clean.png": "48D24D72B6360738B30BBCB324914F20867993A4DA2B571C2138A521266CFA85",
+    "src/shared/bridge/channel-contracts.test.ts": "A7BD8575E6E00FE2C4B7283FBD93E4ED3985C2A07B66AEC47665045BF5EE85C9",
+    "src/shared/bridge/channel-contracts.ts": "84977FBD5AF8E2468F514574606A4DB6DDC24361C0A9997F66C19D2866498A11",
+    "src/shared/bridge/contracts.ts": "6CDD89F98A917326F479A6C10E11416D555141347ED0FF01CACD6EFDCA900503",
+    "src/shared/config/app-brand.ts": "8CA87A0D76C1A5E1A309E549143D3C7135388267BEB512B1B2556825CEA32015",
+    "src/shared/config/auth-password-policy.ts": "56E372B74D404D5FC8952D6833BFA0482EAA717930919D9301BA3AC3902D0553",
+    "src/shared/config/auth-session-policy.ts": "5F8F9898B2FB5CCD340DBFD68E02F0E33DFFD785E09A7882CED8A5F9C564368D",
+    "src/shared/config/routes.ts": "18479C1AACC6C96D7EE139089E53EAD69861B2792D1003A8A38E54B3631C0BBF",
+    "src/shared/domain/access-log.ts": "525E2F622A9E1D7CF11791A3268E4953F7EE90DB3B15DD45ED03EED9501BB196",
+    "src/shared/domain/allowance-document.test.ts": "C794B31A72569EA5EE7B16FB896D146DEB9A12C0F15D50A429E03973A807798A",
+    "src/shared/domain/allowance-document.ts": "198759C66173541A8524F56B3853C232D1935E5724900925F19EBC8414CB07B2",
+    "src/shared/domain/allowance-rate-fixtures.ts": "5EC8EE9C816D44105073114EE1DD13F7F4DF7DA591DD5E41BA9596C503C7B22B",
+    "src/shared/domain/allowance-rate-impact.test.ts": "9771582B4A907356CE039AD121C96354A1B4AB99E1BF5D3D167DDB462D6D9E7E",
+    "src/shared/domain/allowance-rate-impact.ts": "BE47027B492FDCDC7D178AC43A84262BB7160A4230489204BD62A08FAD623ABE",
+    "src/shared/domain/allowance-rate-matrix.ts": "F31156ECAFE465F0534BCE498DA8739D4423DFD346B10816C68A7C5D4A0309A6",
+    "src/shared/domain/allowance-rate-service.test.ts": "03CC4ACC41604193DBDAA142ECE1E0E18781153EC65DAF9E24A2415695FCA77E",
+    "src/shared/domain/allowance-rate-service.ts": "436AFD8D052DB633152AC288E8591F6D76619F1BBA1A92B7EA54BADBE8829AF2",
+    "src/shared/domain/allowance-service.test.ts": "9B5DAA3771270F370E9186C4D493F08A9F8F5B01A56D18EB5A536176E4A4DA75",
+    "src/shared/domain/allowance-service.ts": "0454B1455121DBE203B222F5AC0C1CE00C503AA54B99AA21026F0FDD756C0C07",
+    "src/shared/domain/allowance-workflow.ts": "4789403069983965A3F9B047ABE82D8F65C61F15358F356E2F59FD8C806CE74D",
+    "src/shared/domain/app-update.ts": "7241D88DC8B464C523C927B2FD1E2AB16AEE10620503D4CC4BD322AFB3286A7E",
+    "src/shared/domain/authorization.test.ts": "700193D99D15402BAAD1D1A284F52BEB40646EC26E470C14837DF401C27C75E3",
+    "src/shared/domain/authorization.ts": "786291B7156890FA3B4EA458CB00140CF22EE23B1ADF4AEB1917BD1906044526",
+    "src/shared/domain/boramae-holiday-verify-adversarial.test.ts": "6DF0092FD7752F107EEEC75D0F848EBF1D4091D9B84BF33FF1BE246919515AB7",
+    "src/shared/domain/calculation-fixtures.ts": "7F9E54962C865F7942572BE066C5156EF21D0AE77BB326D587F29CD7C7BA673B",
+    "src/shared/domain/calculation.test.ts": "70D3C6D6A67568393F3B139E745324657E6827A32F2A8572572C092A6CB23A2E",
+    "src/shared/domain/calculation.ts": "2A366BAF35902F5D5F07E8CD128BF7FD4E8645ED863E2A4E24429D50FBE09B28",
+    "src/shared/domain/changed-slot-priority-policy.test.ts": "AE45C75077936D4CDE067C9EC38C98DEB9FC75D62628F78A354819579E778537",
+    "src/shared/domain/changed-slot-priority-policy.ts": "8FA4C6537DC893171EC381C18E8B4A7CBDAB228D1239C9470ABDB4691E8A1F39",
+    "src/shared/domain/database-migration.test.ts": "5DE1EF2162FAAF8BCA09D617678F7DD354E81357402C495D13F6F07F9560F9F7",
+    "src/shared/domain/database-migration.ts": "A38D57D176A801F77D3BD87F38F5628953B1413F786B04BE783930460B915851",
+    "src/shared/domain/document-template.ts": "42EE2762DF3F22EBCA1EE8A39134115436DD9484C3D5A984B9BCD009EEEC5060",
+    "src/shared/domain/duty-type-catalog.test.ts": "1A80E5BEFDE386681C56D5CB1EBE7D7E6AD716F7AFDE5D16C113260A785A2D46",
+    "src/shared/domain/duty-type-catalog.ts": "E29D53EA5B4202E6454BCE9345330AA855EDDEE58AC200F03D18337582FE5660",
+    "src/shared/domain/employee-rank.test.ts": "5697308D40E633CF81C36290E9C40645703919FD2C5CF87F10DC5559AB5BDA46",
+    "src/shared/domain/employee-rank.ts": "1370D798A371960520314BB69DDB60EA708EE9A1E492B25F0FE62798C8F89DCD",
+    "src/shared/domain/employment-type.test.ts": "E49633C52005FFBE7AB22DB2CDD46EA52AADD9152AB3A50A0CB897A915CC7CE1",
+    "src/shared/domain/employment-type.ts": "7FFE1DC598CA0E85665C40C714539FB8D3A2D35BA6169F87660F414E95CDA948",
+    "src/shared/domain/model.ts": "BFA6DA06B38B9FB373729AF0E05819E20B7ED022505B2D09969665F8F90E2722",
+    "src/shared/domain/monthly-schedule-draft.test.ts": "E95788DD1A59EC2B6776D00141D1E2919E2A1482EAD9EA2607E028D151123AF2",
+    "src/shared/domain/monthly-schedule-draft.ts": "0AAB6049C87BBA5346ACC1E29D4D552D184686D14F95E9A5FEA80A5490E8EBC2",
+    "src/shared/domain/performance-file.test.ts": "A8DA7C2D60E3F8D2F70DC065D41C0574824CE5F5D5CFE7881A4D89C11F8F1BCC",
+    "src/shared/domain/performance-file.ts": "E659B7FF2958823703124C4E6BC8B344E243D1660F7567EF9FAEE15BBD918396",
+    "src/shared/domain/rotation-index.test.ts": "786C57B3988A8B57FB45F70F6CDBDFFC78987E703753E657F71EC9A07C59D8C1",
+    "src/shared/domain/rotation-index.ts": "57EB7DD97FD804C8EF6CF4666A887ADC5ACEF72D038598C64BAFA4185000DB3E",
+    "src/shared/domain/rounding.test.ts": "BBD0FA8B0B76958FEB11E206336F6A3740D2EF0B80677A2B2726B70148C8D95D",
+    "src/shared/domain/rounding.ts": "BA1004DE89A8963CDF7BCF4E28E7797CF5692C7471584EFF1E1B100CA5C9AED3",
+    "src/shared/domain/schedule-plan.ts": "CBBC43344D3AFBA9786E6BC6208F13A2E5213D8B8D146B882571B63F29FA6691",
+    "src/shared/domain/schedule-rule-warning.test.ts": "6E72D053558FD9B90326686CA45079DD6B0EA0D748F42386423746F9A15E78AD",
+    "src/shared/domain/schedule-rule-warning.ts": "4E9938945A522891BA78460B97F9F1B697D7DEEE5C4D2228E16F096ACBE7D0B8",
+    "src/shared/domain/shift-pattern-compression.test.ts": "0334AA34A0B8F5B14498D14B5CDC7DB2AEBD4EBCD8BB0B5D1B7F17678282D629",
+    "src/shared/domain/shift-pattern-compression.ts": "5FB2CAAE9AFF96A656E59C3F570E709AAE357414421C6E6D889C9373C6C5E627",
+    "src/shared/domain/shift-pattern-rotation-rules.test.ts": "96358B8E3594F6CA824B2CFDF7598B62504C6141646CFDC5566A72C1542FD0F8",
+    "src/shared/domain/shift-pattern-version.test.ts": "676D135098500C97BF4AA4AE36AD199A16D7CD1721B9CCE2F87B7C851A9183F9",
+    "src/shared/domain/shift-pattern-version.ts": "0922644266FBC9569FB2EF34FA5A8813B943704962943E20BCA2848BFD4150C5",
+    "src/shared/domain/site-pattern-detection.test.ts": "C56209285A716FFEBC9CA410786A2A6098C66A0FB7AD280917BC64158CD6127B",
+    "src/shared/domain/site-pattern-detection.ts": "8BFA0708ECBFD4F0AD14B61210AD87632953510309F31343EFA9F473B316F14B",
+    "src/shared/domain/six-team-two-cycle-feasibility.test.ts": "4ED2F733E2560FB9CDCDF758C86C851A11BA4525922AC826CC497726613102A9",
+    "src/shared/domain/substitute-allowance-policy.test.ts": "7F08D3D51180394D276171B4E2F5686012C09E410D699431BFAE62FFDA695DC2",
+    "src/shared/domain/substitute-allowance-policy.ts": "8EF1A77751AE82964324707C7AF201870A56BA6AF6C7D6E2A72C03C853556192",
+    "src/shared/domain/team-label.test.ts": "9DBD571CCE07ADFD87DF5A9884682810233C7AA1E163FCC6BBC916530CB1CCEB",
+    "src/shared/domain/team-label.ts": "8CAC6370B0A50D7504934EA1C51583CA163240D08EF4B7F35379A9A092E00206",
+    "src/shared/domain/team-membership.test.ts": "A1858EA6D4FD50186D5ED3F421EA496BF2541E6801ECDAD5354CBA2E6A1A1C72",
+    "src/shared/domain/team-membership.ts": "953C7A811C7F16A53E038B9BF4A75AF6F679CC578EDFB7F2FE8F7EA483DC130B",
+    "src/shared/domain/team-work-type.test.ts": "A9875C826684AE88E3D7E6A9B0D8A062AC950C0A114ED916C97495FF2CCCAE79",
+    "src/shared/domain/team-work-type.ts": "46731F28FA9087084B0D83B4D76F09154807AFB193465F2D958316E17FA45B50",
+    "src/shared/lib/excel-column.test.ts": "E975000CEC150AA7FE8D0E9FAE8A0382893FC7F9DBBE35D34BF52D068476816C",
+    "src/shared/lib/excel-column.ts": "B34A927412E1AE41EE3AB949193828A70342995B0F832F1BAE777612FEEAA030",
+    "src/shared/lib/formatCurrency.test.ts": "6EF2E566AF102F418BF37E1D0FABAF3EB38559EB3BE35CC56642F727D3BCC333",
+    "src/shared/lib/formatCurrency.ts": "F0AC2B331720DA945DD42BFEF24D128D81BBD1AEA98069A562E65B9FFDB2C1AE",
+    "src/shared/lib/local-date.ts": "1DF3C73EB70B89D858595A3AC67C5955039EA4EC7566D8AB071176A856016A94",
+    "src/web/app.ts": "43E89426C0C56230D62939285E66CAFA7E54E270608267082849230B046EB431",
+    "src/web/bridge/app-bridge.test.ts": "C056F38D4ECA7D465A8F3B5A5647C3C01011645A8E8A1B4582B3C7B6F8663C52",
+    "src/web/bridge/app-bridge.ts": "EF175FDBAEA8657304AB1642CCCC520CEE3D753DB558D38FAAFCC2BFA49500B1",
+    "src/web/index.html": "46AC431700DDEC0FB5EF728FCD34BF6A056F5E557EF332367A4395C713999F29",
+    "src/web/styles.css": "8C212AB3F65A7CCAD8514F27A13394AFE750FF320D7EFF263640A97398BEFAFF",
+    "test-fixtures/legacy-resources/release-history/v0.4.5/RELEASE_MANIFEST.json": "B65F333A937D77F1C70756C6246495F63EB144D7E7B1D8A28A995D5EF31BA9D8",
+    "test-fixtures/legacy-resources/release-history/v0.4.6/RELEASE_MANIFEST.json": "D37E306A7363D6392EB6F728E6FD9A4327C16EF3F65E6197D112BC5A9AA9995B",
+    "tsconfig.browser.json": "44972CFA55468D3DBA24C7F7E507907E5A3252DCD4B4B5E48033D3477FBEAF3F",
+    "tsconfig.server.json": "7D87224B9914AEB7B8BE8FC9E4ED228E55479F25D600D098A0F8A15F3C11B7B5",
+    "vitest.config.ts": "2ACC4FB32998B74161F8938E41C4321A9B7116F6CDBF13714AC162BB2E406C6A",
+    "vitest.setup.ts": "66B81AA9919013C8A4B368424AA27AC07179802DAB23FBB999D7B6C3EB410AF2",
+    "scripts/clean-server-build.mjs": "D007B05BBF5DC8E580A33863938D5D5F43EE0800C2FFA199BE49F232EB84D2E1",
+    "scripts/generate-built-in-excel-layouts.mjs": "B2C5F946F8D791C699B3E7844688038D2AA507C5FF32A77B303C8C47B981F774",
+    "scripts/lib/ui-check.mjs": "91921E353C05ADEE41D4AA725164146F058A02831EDFE77C919E3B68B897266E",
+    "scripts/ui-checks/login.mjs": "F6A33A9584D4443AEECE9A552802A231097D699D5D8392CC121A2D695B81EE35",
+    "scripts/ui-checks/ready.mjs": "5B0BBBB07023684882E483BE5287A40C9D1FDE46572AC64DD4C1AA859C5D9350",
+    "scripts/ui-checks/shell.mjs": "671A061547168ED1059FDE751C0E86992B14280BDC30BD0A0E6FA34A0D492403",
+    "src/main/services/built-in-excel-layout-service.test.ts": "6618E5EFC644493B64813D5C6F107ACB6EE1665CBF1D8331FBF0B490E88E4C0B",
+    "src/main/services/built-in-excel-layout-service.ts": "77E6F9348A6C5AB6B2D46C89F54896D9A2D78C151EE76AD53493235C06F71748",
+    "src/main/services/dashboard-chart-export-service.test.ts": "6D183613EEBD20937EA6247DB26C86189BC99DEBC6D51E9380945F52A3AE66AD",
+    "src/main/services/dashboard-chart-export-service.ts": "9BEB03D5143E6677D9A478378862BBF319A72BC5D58FAB9F17822F96C2223C45",
+    "src/main/services/document-brand-logo-service.test.ts": "4A4E9737093C60035B7675BA382E11CF8F4F31056045DA70FD08029E58D7BBD2",
+    "src/main/services/document-layout-definition-service.test.ts": "41D54918DD55A2275D833F5C709998483A52F7496345F7BDB77E290E83B72AC4",
+    "src/main/services/document-layout-definition-service.ts": "16DB58CDDCBF88AE857B86643225AE33B779607A015917BD4AE0EB7C23358B44",
+    "src/main/services/document-layout-excel-render-service.test.ts": "6522F0B975E966C8E20D076F1BC01EAD9233C0873B311855FDF4FB48F559C4F8",
+    "src/main/services/document-layout-excel-render-service.ts": "30304FE89BCC563714FE9C7603CA82630F72AEE42C6BAF98771EACA306BB9B0A",
+    "src/main/services/document-layout-preview-artifact-service.test.ts": "05244594E34D596989C0D7FF3802E2C8CCF4443EE119FEAE0C10A18687CD204B",
+    "src/main/services/document-layout-preview-artifact-service.ts": "5EB9940F6B62C2A95A31D12FE9162A8E2FCA2BC775C943169A679FDD10BAB2C9",
+    "src/main/services/document-layout-preview-service.test.ts": "9ADF996B32A70943648B3752213295AD968522CF38CA8B4D35501BFF5148E282",
+    "src/main/services/document-layout-preview-service.ts": "6EA4FF4482AD819B0CE85AAEB8984BA147A26E55EE933428F5F354CA8E2CCD10",
+    "src/main/services/document-layout-storage-service.test.ts": "9BC1CA6C9CCBB78E0E1186E6F83D6EA9284895A2EACB0B82571DC01A4580C3FE",
+    "src/main/services/document-layout-storage-service.ts": "1A2E105830081A79828E19194920C039FD44357E496D1806555FF268FAC0A41D",
+    "src/main/services/document-layouts/attachment1.json": "7988109B857399EAD2C35352AF99B04A7F28F46812295E646E373C63537DCC16",
+    "src/main/services/document-layouts/attachment2.json": "9BD0CC8102C0B9E229C8A16C48F4BFFC5BD3053A90C47BAB144142D648BEB3F0",
+    "src/main/services/document-layouts/proposal.json": "0C55DCA2688A724EE3D91F07B089ADF497D3D9A651ED439726D56D53AC2EFF3D",
+    "src/main/services/document-layouts/schedule-template1.json": "61A5914B221F374A8AE16BD17BCE9D35D9F834C6083BF99D1243C39E4531BC60",
+    "src/main/services/document-layouts/schedule-template2.json": "4FE3A7D7D408229322BA4645A74838620F454110F477BAEFC2CAD7886730FDE4",
+    "src/main/services/installed-chrome-pdf-service.test.ts": "786F7C094C878E7816C73EDAEE35197F3894F06E1E328BADF1DE4F90EF5EBE42",
+    "src/main/services/installed-chrome-pdf-service.ts": "CF845EB5472A1AAD75776255BF6D2CF40646A95EB8918E0326AF53A94A0AFFB1",
+    "src/shared/domain/document-layout.ts": "682539197F0A64CF8D1F62CA3A01D44664A9E6564663FFFA3D22D3E4D1FCB898",
+    "src/test-utils/document-layout-semantic-snapshot.ts": "6574881CE8F29C699EF969F8D234C2B5667CDA73ED1DD306B40EBB490137AF20",
+    "src/web/home.css": "1AA323A7F2375AB874A66EFFA7E7176B1EC938670F2DE0CC5A482EBF07913DE8",
+    "src/web/login.css": "911232494F3A56738E82DC9F710301B2FF79E0F791AA4FF40671B8DCD1FD8931",
+    "src/web/screens/home-model.test.ts": "C1532B7A94464D3980339DFEBC8B0CA5B77B17C3105F224A3D7086666B6DE484",
+    "src/web/screens/home-model.ts": "6A063074796B389F5AA8FE2294D67D7DB537B41AB22598924378FD1275389658",
+    "src/web/screens/login.ts": "D0D176C8CD833BCB1FF137A2635BE15AEAB793EC881B9B30C99783CE0CCAFC67",
+    "src/web/screens/shell.ts": "1ED9A6D8D84E9B55C577ED646AAE9B90446C8CF5D385692B014D29A1F0BD955D",
+    "src/web/screens/status-bar.ts": "0F007B1D2F21E1C0372AEB8845D5E74B45BAA4AF352CB35F748149ED92054A02",
+    "src/web/shell.css": "DD708E050907ACB4EF48E70B15EAE8B18D1F342A928C1709681D670DB7D4BC67",
+    "scripts/ui-checks/home.mjs": "2791E3FF6A67069213B48940728018C1329065B9487EFDE9E3064589950A74ED",
+    "src/web/screens/home.ts": "4F7E3D0CE51D23E55451C3A2E136F87B678D45BDAF001E828A5B42917C485865"
+  },
+  "checkedFiles": 324,
+  "changedByGemini": [
+    {
+      "path": "src/web/styles.css",
+      "bytes": 3303,
+      "beforeSHA256": "0BC457E66BCDEEEEFD5D064C0151CF264A496B9C9B89C01F987C29931707AC84",
+      "afterSHA256": "8C212AB3F65A7CCAD8514F27A13394AFE750FF320D7EFF263640A97398BEFAFF"
+    },
+    {
+      "path": "scripts/ui-checks/login.mjs",
+      "bytes": 33821,
+      "beforeSHA256": "9F6830E4BF055B40EB35EDF3CB84633892EFEFE5FF9FBAB8C01307A44CE43BBB",
+      "afterSHA256": "F6A33A9584D4443AEECE9A552802A231097D699D5D8392CC121A2D695B81EE35"
+    },
+    {
+      "path": "src/web/login.css",
+      "bytes": 7082,
+      "beforeSHA256": "21BF4A40938FAFCED90171E4EF8AF706702541DD19E9A7B5D80ED619EE9058A0",
+      "afterSHA256": "911232494F3A56738E82DC9F710301B2FF79E0F791AA4FF40671B8DCD1FD8931"
+    },
+    {
+      "path": "src/web/screens/login.ts",
+      "bytes": 30897,
+      "beforeSHA256": "899BC679D84CBEC8C9A88CDA15F1BAA5FA7ED8840201C3A462D4D67B0A487A80",
+      "afterSHA256": "D0D176C8CD833BCB1FF137A2635BE15AEAB793EC881B9B30C99783CE0CCAFC67"
+    },
+    {
+      "path": "src/web/shell.css",
+      "bytes": 5539,
+      "beforeSHA256": "F38F34DE03B75D635A417885B5033921300C6E506ED78D18EE202583B62C3F65",
+      "afterSHA256": "DD708E050907ACB4EF48E70B15EAE8B18D1F342A928C1709681D670DB7D4BC67"
+    }
+  ],
+  "protected319Unchanged": true,
+  "changedBySol": 0,
+  "canonicalAndRules": {
+    "12-능력-매트릭스.md": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794",
+    "11-디자인-요청서.md": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73",
+    "10-화면설계-초안.md": "DF99AF07C33F09DBE90410D255562891D73282132349ED8B35BC48156801CD08",
+    "시안/2026-09-06-최종정리/05-디자인-시스템-확정본-v1.3.md": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4",
+    "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-1.html": "C8042DC8797E90123CAAE5ABCBD29B493017C18BF81C750A06ADA43CA25BD1BF",
+    "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-2.html": "A52EEB3627E7F224FF318909D711788A24D0341E2FC207EB41DC2C128EDFA259",
+    "AGENTS.md": "71EF3E3DEF51DEEE5E15D15DBFBA1CF0366311466DC7BF0087829F477A27326D",
+    "PROTOCOL.md": "11E1C4DC06D81E4BCD35D232DABB66869945A5A187431C0500CEB00DE1FCBC8B",
+    "GEMINI.md": "8B1D2FA9681A392685B3A2D9D3C5EE406179658DB84FA88E9743409249F43E4D",
+    "CLAUDE.md": "6564441C6E530C6F452954EF11BF030CDCFC58EDBEFC113E2BCC26181753289F",
+    "07-invariants-and-pitfalls.md": "076A3DD8B96A19BF35652AC4D33808FE4B8B3C42A2D4EC1416EB6CFC5C14C0CF",
+    "시안/2026-09-02-2차검토/스냅샷19차/2차/01-login-1.html": "D9294BD934E8625DB60BF4B50C26ED92CFC801710EBE7199BAEF79481A726CDF",
+    "시안/2026-09-02-2차검토/스냅샷19차/2차/01-login-2.html": "F4A42028D8B0105975164CF27D5A1375BC3E1FF007BBBC6FEDCF23933B37B902",
+    "시안/2026-09-02-2차검토/스냅샷19차/2차/00-shell-1.html": "13662ACB30005ACE6F8B802DDC28CED68ACD343BB27A0702E64242C80D6644D1",
+    "시안/2026-09-02-2차검토/스냅샷19차/2차/00-shell-2.html": "2745AE05BB39DC6D5A42A43E94ECCBB43FF2F21A5C465158DA5A92AFD7BBEB67"
+  },
+  "integration": {
+    "directory": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z",
+    "summary": {
+      "passed": 83,
+      "failed": 0,
+      "groupsCompleted": 8,
+      "groupsFailed": 0,
+      "unexpectedErrors": 0,
+      "captures": 15
+    },
+    "captures": [
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/login-L1.png",
+        "bytes": 22565,
+        "sha256": "FCBFE8416D1D325B10D2D33EB1D56B587A9A9B8B446DA386EDAB968DD75B880D"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/login-L2.png",
+        "bytes": 27040,
+        "sha256": "F71F06AD1AEDE11CAF9135E84C0A8D83AC74DA055E4A5AB45FFDEFC8AF585D44"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-L4-lock.png",
+        "bytes": 32033,
+        "sha256": "422EBD6AFFF9F4AC2E8DE826E4788CCC9362C7C9F8F6B71C71999BADF9018FB8"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-home.png",
+        "bytes": 83470,
+        "sha256": "39B4F4A8C5920ABBCA1CB3BDDD6CACCFB9C7B0AAD0D94A0F7D9F049273A52F89"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-shell-collapsed.png",
+        "bytes": 72938,
+        "sha256": "BCEC728A77C048296C0E56715EDB98A2202D9B1D41ABCE6E96268A2BEE111E8B"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-menu-placeholder.png",
+        "bytes": 62686,
+        "sha256": "DD582FE7566D274A96562E4F262F44AA2C8C5C3620D9E574634C13B560A00FAA"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-home-1024.png",
+        "bytes": 73975,
+        "sha256": "D523F7A8794D4970E88FB27C0A9710BE0D1ADE190A6B9C0199EA05E4535B253B"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/admin-watch-stopped.png",
+        "bytes": 78106,
+        "sha256": "E081DA33A25ED528F7C8A9E9D49FA139849B838507F6A51BC63C85F0F8E6F156"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/session-expired.png",
+        "bytes": 22428,
+        "sha256": "E5A2F4C07506124BEB392A74F29266D5ACC5C35CBBEFA05FD3E85A1DCFED2CB0"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/operator-home.png",
+        "bytes": 79027,
+        "sha256": "8538C5F2C9998F8136BDCAFDD5A8F2428721FE0C706DCE77E8FB95373EAFF4FF"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/planner-home.png",
+        "bytes": 70776,
+        "sha256": "232B32E3D9CC377991F15C540C653F1909324E704CACE72B64D85074A3960393"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/reviewer-home.png",
+        "bytes": 79676,
+        "sha256": "5BC7800BCFA47AA74385E836541795BA979D1CEE2543A79DFFEC425E2F2B65E2"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/reference-login.png",
+        "bytes": 56209,
+        "sha256": "58C857A4103ABCBC7183F99D4635EB1B9DBFE4D4198C468892991EDD19124780"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/reference-shell.png",
+        "bytes": 68889,
+        "sha256": "AC7EBE039A2A6AE303FDBCB05F2F71AD31E5B26199BF677676DB6BB903485D92"
+      },
+      {
+        "path": ".ai/reports/phase3-1d-review-20260930_165922/run-2026-09-30T08-09-41-644Z/reference-home.png",
+        "bytes": 190386,
+        "sha256": "8ECFF98CA74080AFB416584BCC99DAE1C1087A9F470B609E61972C5DF39240AA"
+      }
+    ],
+    "resultsSHA256": "9FC2A58FD5BD6D595A1833CD5CE5506877A20794FCF5CB105FE6CCB426DEE51B"
+  },
+  "uiResults": ".ai/reports/phase3-1d-review-20260930_165922/ui-results-all-2026-09-30T08-09-41-368Z.json",
+  "ui": [
+    {
+      "label": "home-empty-fixture",
+      "started": "2026-09-30T08:09:41.451Z",
+      "finished": "2026-09-30T08:09:46.042Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=empty-fixture"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-170943-Y3CqL1/manifest.json",
+          "status": "PASS",
+          "captures": 3
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-empty-fixture/run-20260930-170943-Y3CqL1/manifest.json",
+      "manifestSHA256": "95028E3E60E150CCCFD4A67EE0D0B57B850AE04A1159D312FE4E470EC47B4FDB",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-170943-Y3CqL1/home-empty-fixture.png",
+          "bytes": 73433,
+          "sha256": "DC80AECA4955122EC56D5FE1D60A4C8D55D8B68E83B3A1D4EA1DEC6C5A88398A"
+        },
+        {
+          "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-170943-Y3CqL1/home-refresh-pending-success.png",
+          "bytes": 48746,
+          "sha256": "4013B0D7440D420998F3C4901812E83A8E85B36B23B52D9832432E26E3AB03D2"
+        },
+        {
+          "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-170943-Y3CqL1/home-refresh-pending-error.png",
+          "bytes": 48740,
+          "sha256": "9A1FFD3F6E2F56225BF494153A7C3D10349C767D4A789BAED1CFD5AE7821B78E"
+        }
+      ]
+    },
+    {
+      "label": "home-stale-retry-action",
+      "started": "2026-09-30T08:09:46.155Z",
+      "finished": "2026-09-30T08:10:03.464Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=stale-retry-action"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-170948-oVnEYS/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-170948-oVnEYS/manifest.json",
+      "manifestSHA256": "DBDAA41FE735FD67B9C5C6F53DE53C337AE3C75447D31AFDA17454DDCAEAB875",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-170948-oVnEYS/home-stale-retry-action.png",
+          "bytes": 61926,
+          "sha256": "7E53EC380E393FE403ADB682EE4C6BBE72F190368DF34CE4F3DFF6943E11682D"
+        },
+        {
+          "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-170948-oVnEYS/home-retry-recovery-lifetime.png",
+          "bytes": 82195,
+          "sha256": "7661BBE3E57624383333B4CC9AC6D0211BAF95FC2B6080CB92887244C2A9B2FF"
+        }
+      ]
+    },
+    {
+      "label": "home-stale-watch-action",
+      "started": "2026-09-30T08:10:03.540Z",
+      "finished": "2026-09-30T08:10:19.635Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=stale-watch-action"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-171005-glVgff/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-171005-glVgff/manifest.json",
+      "manifestSHA256": "D5D7BD8A88FC51FE1490BEB43591D8C2F0FEA588630EC469E510442615A375FA",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-171005-glVgff/home-stale-watch-action.png",
+          "bytes": 63516,
+          "sha256": "6A4F8CD17B3090C2B2850A5BA196CE4A79A095E3A83167887E9617DD2B2E763C"
+        },
+        {
+          "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-171005-glVgff/home-restart-watch-lifetime.png",
+          "bytes": 82384,
+          "sha256": "22DF8FDBAE4D0346F54EB83D3819E2B987570F87321386B0DD58C2ED2BE12871"
+        }
+      ]
+    },
+    {
+      "label": "home-live-admin",
+      "started": "2026-09-30T08:10:19.720Z",
+      "finished": "2026-09-30T08:10:23.040Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=live-admin"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-live-admin/run-20260930-171021-kpZRYt/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-live-admin/run-20260930-171021-kpZRYt/manifest.json",
+      "manifestSHA256": "8FEADED3B7848D7C09C99104AF04527A97914B165B2DBF292AF2F282A76DCF59",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-live-admin/run-20260930-171021-kpZRYt/home-live-admin.png",
+          "bytes": 83297,
+          "sha256": "43A00F9319E5B3433504E4240B5612F9525A61EC4D02B77E1A1768D3530142F3"
+        }
+      ]
+    },
+    {
+      "label": "home-operator-fixture",
+      "started": "2026-09-30T08:10:23.134Z",
+      "finished": "2026-09-30T08:10:26.535Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=operator-fixture"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-171024-v13xyr/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-operator-fixture/run-20260930-171024-v13xyr/manifest.json",
+      "manifestSHA256": "8AF5909D1870C8D66F80823E0F237ACD2DD59627460F04A8C9CBA096297C7978",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-171024-v13xyr/home-operator-fixture.png",
+          "bytes": 78778,
+          "sha256": "5152784E36BC8E0D8DC1B75F62A20331CB1C700CB1637A48D00E333F309F47C8"
+        }
+      ]
+    },
+    {
+      "label": "home-loading-error",
+      "started": "2026-09-30T08:10:26.581Z",
+      "finished": "2026-09-30T08:10:29.929Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=loading-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-loading-error/run-20260930-171028-dImmFk/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-loading-error/run-20260930-171028-dImmFk/manifest.json",
+      "manifestSHA256": "3A9140B7348C40A7E359CE5A953E03BFAF70128B92D2FA8ACF54052F423BE19A",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-loading-error/run-20260930-171028-dImmFk/home-loading-error.png",
+          "bytes": 66702,
+          "sha256": "A620EF0CB1C320391C73A0EAEA64113915AFBD36D523894F6F3BFB2CC422FEB6"
+        }
+      ]
+    },
+    {
+      "label": "home-stale-response",
+      "started": "2026-09-30T08:10:30.009Z",
+      "finished": "2026-09-30T08:10:34.189Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=stale-response"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-response/run-20260930-171031-tnL1Xd/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-stale-response/run-20260930-171031-tnL1Xd/manifest.json",
+      "manifestSHA256": "9F83DACDC37769DA55EBDF87FCF7DD92A7B18DDC70F7690923722F14EF73CE45",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-stale-response/run-20260930-171031-tnL1Xd/home-stale-response.png",
+          "bytes": 73433,
+          "sha256": "DC80AECA4955122EC56D5FE1D60A4C8D55D8B68E83B3A1D4EA1DEC6C5A88398A"
+        }
+      ]
+    },
+    {
+      "label": "home-admin-action",
+      "started": "2026-09-30T08:10:34.245Z",
+      "finished": "2026-09-30T08:10:37.824Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=admin-action"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-admin-action/run-20260930-171035-mFEKGI/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-admin-action/run-20260930-171035-mFEKGI/manifest.json",
+      "manifestSHA256": "B04A691726956CABBC4BF2ACD79CB4076200CB977C58E5342F0D39B638CF9E08",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-admin-action/run-20260930-171035-mFEKGI/home-admin-action.png",
+          "bytes": 77562,
+          "sha256": "F14272970E0BB2187ABE866DE4412D09FAFEA1FC3C6EBD9D9C1195CA31B2C1DD"
+        }
+      ]
+    },
+    {
+      "label": "home-employees-error",
+      "started": "2026-09-30T08:10:37.906Z",
+      "finished": "2026-09-30T08:10:41.214Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=employees-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-employees-error/run-20260930-171039-QByset/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-employees-error/run-20260930-171039-QByset/manifest.json",
+      "manifestSHA256": "B55D9A8F2853E0BBEA72A82C8F045CFE4EE020819AA6B3436E755129103C57A5",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-employees-error/run-20260930-171039-QByset/home-employees-error.png",
+          "bytes": 75852,
+          "sha256": "CE25B31479BD84441AB17FC535D54F77F1D7C5E0F02A45833C7ED3F6E1A2E672"
+        }
+      ]
+    },
+    {
+      "label": "home-sites-error",
+      "started": "2026-09-30T08:10:41.267Z",
+      "finished": "2026-09-30T08:10:44.563Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=sites-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-sites-error/run-20260930-171043-n2SSIq/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-sites-error/run-20260930-171043-n2SSIq/manifest.json",
+      "manifestSHA256": "34DC4554380A6E0464867D63A0456C8ADD38B0568639AACFD58B806DBEDC1FAF",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-sites-error/run-20260930-171043-n2SSIq/home-sites-error.png",
+          "bytes": 82040,
+          "sha256": "A4E08B6401216C395801250D3AC91A46F1403A0175F3B9E53D19012F68B115DD"
+        }
+      ]
+    },
+    {
+      "label": "home-sync-error",
+      "started": "2026-09-30T08:10:44.625Z",
+      "finished": "2026-09-30T08:10:47.910Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=sync-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-sync-error/run-20260930-171046-4YiU7i/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-sync-error/run-20260930-171046-4YiU7i/manifest.json",
+      "manifestSHA256": "91FD382881AF37A0C7C286F908A637FCFE35BDBED0FDD0D82CB9ADF861691E4F",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-sync-error/run-20260930-171046-4YiU7i/home-sync-error.png",
+          "bytes": 68948,
+          "sha256": "788ABEFEB2E7C1D2653ABCE2AA09E73D7C710C55794557FDA8DBDA7C4F540DE9"
+        }
+      ]
+    },
+    {
+      "label": "home-recovery-error",
+      "started": "2026-09-30T08:10:47.981Z",
+      "finished": "2026-09-30T08:10:51.158Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=recovery-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-171049-EbDCQf/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-recovery-error/run-20260930-171049-EbDCQf/manifest.json",
+      "manifestSHA256": "D7A991F14DCF4DF5A2AD1AFF2FE1CF8FAD03CE07FE438E96CDFC89E1D263AE01",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-171049-EbDCQf/home-recovery-error.png",
+          "bytes": 79319,
+          "sha256": "133CDCFFFB7B768DD573C9D4482CCAC22C6E019037220BCF7A1B0C86F1CE8E83"
+        }
+      ]
+    },
+    {
+      "label": "home-watch-error",
+      "started": "2026-09-30T08:10:51.235Z",
+      "finished": "2026-09-30T08:10:55.309Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/home.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=watch-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/home-watch-error/run-20260930-171052-XMjpts/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/home-watch-error/run-20260930-171052-XMjpts/manifest.json",
+      "manifestSHA256": "F91FDEB94ECF8B992DC0B3B63977B5169DCCC7C0D1CA74058D6985E302C77870",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/home-watch-error/run-20260930-171052-XMjpts/home-watch-error.png",
+          "bytes": 79711,
+          "sha256": "DBC3DC8DF5CFEA9EDBAF65AD387DD40956A627D4A1B58C005231A210F1565F63"
+        }
+      ]
+    },
+    {
+      "label": "login-flow",
+      "started": "2026-09-30T08:10:55.396Z",
+      "finished": "2026-09-30T08:11:00.032Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=flow"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/manifest.json",
+          "status": "PASS",
+          "captures": 4
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/manifest.json",
+      "manifestSHA256": "087546AA70C47D085CD634397E323158A217819BE14958427C38668736B5DA48",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/login-initial.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/login-failure.png",
+          "bytes": 30889,
+          "sha256": "4300AF201F7DA1986698B8EF862EC105C33740FF9B8456900333012486FA1D6C"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/password-change.png",
+          "bytes": 33960,
+          "sha256": "469DD1CF1C8683E51258263E491EE4D44A21115E507CD5524A480013B88CD9BA"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171057-U127jP/logout.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        }
+      ]
+    },
+    {
+      "label": "login-locked",
+      "started": "2026-09-30T08:11:00.136Z",
+      "finished": "2026-09-30T08:11:05.261Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=locked"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171101-HCyHue/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171101-HCyHue/manifest.json",
+      "manifestSHA256": "D4D15B6E6DDED019C7FF6AE8618B814F4C6D4A75BC321D837A3A118A58B2D460",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171101-HCyHue/account-locked.png",
+          "bytes": 25407,
+          "sha256": "4EBA129870CE6AC04999DAAFF1E00A6D3E40181DC52596F9EAA3AD87362AFB45"
+        }
+      ]
+    },
+    {
+      "label": "login-recovery",
+      "started": "2026-09-30T08:11:05.327Z",
+      "finished": "2026-09-30T08:11:09.562Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=recovery"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171107-G0N67l/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171107-G0N67l/manifest.json",
+      "manifestSHA256": "D43CFCE7588B04634E5E05C46D514FCE241CA552AD40F0908E87BDD5DF4ADC66",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171107-G0N67l/recovery-form.png",
+          "bytes": 22496,
+          "sha256": "C61D4A5D266E1A839F7057AB80DF3A74ACF4D5B85BE2A924BA9BDF0F94FFFE20"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171107-G0N67l/recovery-temp-password-redacted.png",
+          "bytes": 38066,
+          "sha256": "8277B4E378B50B8580DDA22BBF779B9A506118DBED601D84D2A397BF61CCB855"
+        }
+      ]
+    },
+    {
+      "label": "login-session-error",
+      "started": "2026-09-30T08:11:09.614Z",
+      "finished": "2026-09-30T08:11:12.822Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=session-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171111-93smwV/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171111-93smwV/manifest.json",
+      "manifestSHA256": "5D0AB4C1F3357009EED6A5539253AD83A420BB57608BD0255AE163951197DB92",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171111-93smwV/session-error-retry.png",
+          "bytes": 16389,
+          "sha256": "B2F9A3AD99B11C1AAEB2C366E589ECD45F770412F14DC4F99F9CBC0078F1EF85"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171111-93smwV/session-error-recovered.png",
+          "bytes": 25688,
+          "sha256": "001AEA516DB0332D93A93A31FDFCCF41F31B82F3AA3744E00FECD5E714CBE283"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-null",
+      "started": "2026-09-30T08:11:12.876Z",
+      "finished": "2026-09-30T08:11:16.688Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-null"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171114-5OPJwI/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171114-5OPJwI/manifest.json",
+      "manifestSHA256": "68A0B72C2DC128AA55667C1778107FB5D62222D37BBC2D0181ABEFA6D1A5E260",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171114-5OPJwI/post-change-null-l1.png",
+          "bytes": 32980,
+          "sha256": "8232A9635C9521159CCE2E2869735784F2AB942C77FF86572B579D5E9C91DAB6"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-error",
+      "started": "2026-09-30T08:11:16.781Z",
+      "finished": "2026-09-30T08:11:20.518Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171118-34Xg1S/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171118-34Xg1S/manifest.json",
+      "manifestSHA256": "663347B342C7AAC0ADBC9818D5F92DF84241216BD0D4B30DA76059C9AE4E7C88",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171118-34Xg1S/post-change-error-view.png",
+          "bytes": 31614,
+          "sha256": "76476C39C3FD786CCFDAEB536046BDAF7B1D78E3D410D39C67FECF0952A453D4"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-race-success",
+      "started": "2026-09-30T08:11:20.577Z",
+      "finished": "2026-09-30T08:11:24.349Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-race-success"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171122-VAqY6E/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171122-VAqY6E/manifest.json",
+      "manifestSHA256": "5D11891B07F593D61EF4158E5B395CC7EAA14BCD9BC9BDAD2655CA4B029DF8CA",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171122-VAqY6E/post-change-race-success.png",
+          "bytes": 32592,
+          "sha256": "C99047CEA20F4D1E8430C7526BAD1C85394B75A9A95B461FC9747B038FC76B7C"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-race-null",
+      "started": "2026-09-30T08:11:24.394Z",
+      "finished": "2026-09-30T08:11:28.197Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-race-null"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171126-4FwSOa/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171126-4FwSOa/manifest.json",
+      "manifestSHA256": "8188D14D953D88B2439E60B6BB63DCC07EC711746162B1A314F088C432E265D0",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171126-4FwSOa/post-change-race-null.png",
+          "bytes": 32592,
+          "sha256": "C99047CEA20F4D1E8430C7526BAD1C85394B75A9A95B461FC9747B038FC76B7C"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-race-error",
+      "started": "2026-09-30T08:11:28.285Z",
+      "finished": "2026-09-30T08:11:32.250Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-race-error"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171130-jhxbh9/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171130-jhxbh9/manifest.json",
+      "manifestSHA256": "14B1F49070FC458FBEBA8C88CA13B18C88667273077C3B2251750F3D47C0F227",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171130-jhxbh9/post-change-race-error.png",
+          "bytes": 32592,
+          "sha256": "C99047CEA20F4D1E8430C7526BAD1C85394B75A9A95B461FC9747B038FC76B7C"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-race-login",
+      "started": "2026-09-30T08:11:32.308Z",
+      "finished": "2026-09-30T08:11:36.168Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-race-login"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171134-fT4wV0/manifest.json",
+          "status": "PASS",
+          "captures": 1
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171134-fT4wV0/manifest.json",
+      "manifestSHA256": "A582F92CF536A44B47A9D1BF56182330E436FB1838E9DD89D2161A58B6338785",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171134-fT4wV0/post-change-race-login-l1.png",
+          "bytes": 32965,
+          "sha256": "95DBDBB6D513680E5556F8CFD4C4FAE525581484B77FEB8BB1411CBA914721F9"
+        }
+      ]
+    },
+    {
+      "label": "login-post-change-first-held",
+      "started": "2026-09-30T08:11:36.225Z",
+      "finished": "2026-09-30T08:11:40.104Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/login.mjs",
+        "http://127.0.0.1:18739/",
+        "--case=post-change-first-held"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171137-v2akmJ/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/login/run-20260930-171137-v2akmJ/manifest.json",
+      "manifestSHA256": "AB15C5BEB4B559FE6391E6247C1F27C3EC6CE4AB04EF5AFD46B88C7538424AA0",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171137-v2akmJ/post-change-first-held-checking.png",
+          "bytes": 19652,
+          "sha256": "D619B251515D740CAB068826CB6D3B3F09081DA894BC626B0589104810D3BB92"
+        },
+        {
+          "path": "artifacts/captures/phase3/login/run-20260930-171137-v2akmJ/post-change-first-held-shell.png",
+          "bytes": 83338,
+          "sha256": "8D5182F677D8F73D75AFFF6C25430EE951D69F50C6A060042E678BBDCAB10111"
+        }
+      ]
+    },
+    {
+      "label": "shell-default",
+      "started": "2026-09-30T08:11:40.196Z",
+      "finished": "2026-09-30T08:11:45.568Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/shell.mjs",
+        "http://127.0.0.1:18739/"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/manifest.json",
+          "status": "PASS",
+          "captures": 4
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/manifest.json",
+      "manifestSHA256": "6F6CCB13B888624CC8FE4F129D608F2B17A2885653745749C5027DBB1B2A2040",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/admin-expanded.png",
+          "bytes": 83527,
+          "sha256": "92217499D1414A5413F063B0694B373FC311800825A50FFB9D65188DB242733F"
+        },
+        {
+          "path": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/admin-collapsed.png",
+          "bytes": 72737,
+          "sha256": "0D1ABF5D32EF484953B06565F43D9E222B993A08C6B3C9A7EC4D1E38244D663A"
+        },
+        {
+          "path": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/watch-stopped.png",
+          "bytes": 63511,
+          "sha256": "510517425C77926F80812ACF64E4E9631F684ACE5048103BDCAD9FB868BE8336"
+        },
+        {
+          "path": "artifacts/captures/phase3/shell/run-20260930-171141-qx8RkU/operator.png",
+          "bytes": 78940,
+          "sha256": "8AD19462FA3924D963DC7932B9C4CCEEF8541B58063BE12CA463334842A5121A"
+        }
+      ]
+    },
+    {
+      "label": "ready-default",
+      "started": "2026-09-30T08:11:45.627Z",
+      "finished": "2026-09-30T08:11:48.769Z",
+      "command": [
+        "node",
+        "scripts/ui-checks/ready.mjs",
+        "http://127.0.0.1:18739/"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "tempCleaned": true,
+      "manifests": [
+        {
+          "path": "artifacts/captures/phase3/ready/run-20260930-171147-DThewZ/manifest.json",
+          "status": "PASS",
+          "captures": 2
+        }
+      ],
+      "manifest": "artifacts/captures/phase3/ready/run-20260930-171147-DThewZ/manifest.json",
+      "manifestSHA256": "BC9640D7D3ED7AA0161D4C1E663034D8C1C504D4E9AA9EFE6F131B80E88B1699",
+      "captures": [
+        {
+          "path": "artifacts/captures/phase3/ready/run-20260930-171147-DThewZ/ready.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        },
+        {
+          "path": "artifacts/captures/phase3/ready/run-20260930-171147-DThewZ/after-reload.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        }
+      ]
+    }
+  ],
+  "actionMatrices": [
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-170948-oVnEYS/action-assertions.json",
+      "sha256": "7347787FEACC7586D47DC85E2C71BB456DBB11A7EF27276883CBD5C7119C6A29",
+      "assertions": [
+        {
+          "kind": "retry-recovery",
+          "scenario": "live",
+          "outcome": "success",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "live",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "live",
+          "outcome": "auth",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "live",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "refresh",
+          "outcome": "success",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "refresh",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "refresh",
+          "outcome": "auth",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "refresh",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "leave",
+          "outcome": "success",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "leave",
+          "outcome": "failure",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "leave",
+          "outcome": "auth",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "leave",
+          "outcome": "network",
+          "requests": 1,
+          "expectedNetworkFailures": 1,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "failure-refresh",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "retry-recovery",
+          "scenario": "failure-refresh",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        }
+      ]
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-171005-glVgff/action-assertions.json",
+      "sha256": "AA0A9F6A79BDC656023B15768DE68CDE91B479CD51038F47019A30031601D436",
+      "assertions": [
+        {
+          "kind": "restart-watch",
+          "scenario": "live",
+          "outcome": "success",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "live",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "live",
+          "outcome": "auth",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "live",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "refresh",
+          "outcome": "success",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "refresh",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "refresh",
+          "outcome": "auth",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "refresh",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "leave",
+          "outcome": "success",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "leave",
+          "outcome": "failure",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "leave",
+          "outcome": "auth",
+          "requests": 1,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "leave",
+          "outcome": "network",
+          "requests": 1,
+          "expectedNetworkFailures": 1,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "failure-refresh",
+          "outcome": "failure",
+          "requests": 2,
+          "expectedNetworkFailures": 0,
+          "result": "PASS"
+        },
+        {
+          "kind": "restart-watch",
+          "scenario": "failure-refresh",
+          "outcome": "network",
+          "requests": 2,
+          "expectedNetworkFailures": 2,
+          "result": "PASS"
+        }
+      ]
+    }
+  ],
+  "static": [
+    {
+      "label": "typecheck",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run typecheck"
+      ],
+      "start": "2026-09-30T17:03:27.748975",
+      "end": "2026-09-30T17:03:36.003670",
+      "exitCode": 0
+    },
+    {
+      "label": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "scripts/ui-checks/login.mjs"
+      ],
+      "start": "2026-09-30T17:03:36.005207",
+      "end": "2026-09-30T17:03:36.135748",
+      "exitCode": 0
+    },
+    {
+      "label": "lint",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run lint"
+      ],
+      "start": "2026-09-30T17:03:36.137253",
+      "end": "2026-09-30T17:03:43.785636",
+      "exitCode": 0
+    },
+    {
+      "label": "map",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run validate:map"
+      ],
+      "start": "2026-09-30T17:03:43.786891",
+      "end": "2026-09-30T17:03:44.648568",
+      "exitCode": 0
+    },
+    {
+      "label": "diffcheck",
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-30T17:03:44.649550",
+      "end": "2026-09-30T17:03:45.228926",
+      "exitCode": 0
+    }
+  ],
+  "build": {
+    "command": "npm run build",
+    "start": "2026-09-30T17:07:56.949600",
+    "end": "2026-09-30T17:08:07.631833",
+    "exitCode": 0
+  },
+  "unitTests": {
+    "command": "npm test",
+    "start": "2026-09-30T17:01:49.894778",
+    "end": "2026-09-30T17:06:27.941416",
+    "exitCode": 0,
+    "log": ".ai\\reports\\phase3-1d-review-20260930_165922\\full-test.log"
+  },
+  "cleanup": [
+    {
+      "info": "server-info.first-sol-run.json",
+      "cleanup": "server-cleanup.first-sol-run.json",
+      "time": "2026-09-30T08:07:54.012Z",
+      "tempDataCleaned": true,
+      "serverStopped": true,
+      "pathAbsent": true
+    },
+    {
+      "info": "server-info.json",
+      "cleanup": "server-cleanup.json",
+      "time": "2026-09-30T08:11:42.019Z",
+      "tempDataCleaned": true,
+      "serverStopped": true,
+      "pathAbsent": true
+    }
+  ],
+  "testBrowserProcessesRemaining": 0
+}

@@ -1,0 +1,4 @@
+
+> shiftmgmt@0.1.0 typecheck
+> tsc --noEmit -p tsconfig.server.json && tsc --noEmit -p tsconfig.browser.json
+

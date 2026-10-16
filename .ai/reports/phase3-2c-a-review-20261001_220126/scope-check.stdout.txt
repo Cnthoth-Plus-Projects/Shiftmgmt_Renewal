@@ -1,0 +1,1 @@
+{"status": "PASS", "result": {"files": 341, "protected": 337, "dirtyPaths": 12, "changedAllowed": ["scripts/ui-checks/access-history-negative.mjs", "scripts/ui-checks/access-history-positive.mjs", "scripts/ui-checks/access-history-shared.mjs", "scripts/ui-checks/access-history.mjs"]}}

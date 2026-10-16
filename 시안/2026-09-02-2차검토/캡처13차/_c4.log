@@ -1,0 +1,4 @@
+C4 실행→처리 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-c4 취소dis=false
+C4 실행→처리 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-c4 취소dis=false

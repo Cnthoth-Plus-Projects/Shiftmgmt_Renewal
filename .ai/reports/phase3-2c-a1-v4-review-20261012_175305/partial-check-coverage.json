@@ -1,0 +1,85 @@
+[
+  {
+    "mode": "capture-failure",
+    "suiteAccepted": true,
+    "availableIds": [
+      "CORE-01",
+      "CORE-02",
+      "CORE-03",
+      "CORE-04",
+      "CORE-05",
+      "CORE-06",
+      "CORE-07",
+      "CORE-08"
+    ],
+    "actualChecks": [],
+    "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-aWeyjf\\core-partial.json"
+  },
+  {
+    "mode": "context-close-failure",
+    "suiteAccepted": true,
+    "availableIds": [
+      "CORE-01",
+      "CORE-02",
+      "CORE-03",
+      "CORE-04",
+      "CORE-05",
+      "CORE-06",
+      "CORE-07",
+      "CORE-08",
+      "CORE-09"
+    ],
+    "actualChecks": [],
+    "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-Oo1FCG\\core-partial.json"
+  },
+  {
+    "mode": "partial-write-failure",
+    "suiteAccepted": true,
+    "availableIds": [
+      "CORE-01",
+      "CORE-02",
+      "CORE-03",
+      "CORE-04",
+      "CORE-05",
+      "CORE-06",
+      "CORE-07",
+      "CORE-08"
+    ],
+    "actualChecks": [],
+    "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-PuCUuQ\\core-partial.fallback.json"
+  },
+  {
+    "mode": "measured-viewport",
+    "suiteAccepted": true,
+    "availableIds": [
+      "CORE-01",
+      "CORE-02",
+      "CORE-03",
+      "CORE-04",
+      "CORE-05",
+      "CORE-06",
+      "CORE-07",
+      "CORE-08",
+      "CORE-09"
+    ],
+    "actualChecks": [],
+    "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-DW4tSR\\core-partial.json"
+  },
+  {
+    "mode": "measured-origin",
+    "suiteAccepted": true,
+    "availableIds": [
+      "CORE-01",
+      "CORE-02",
+      "CORE-03",
+      "CORE-04",
+      "CORE-05",
+      "CORE-06",
+      "CORE-07",
+      "CORE-08",
+      "CORE-09"
+    ],
+    "actualChecks": [],
+    "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-9HePYO\\core-partial.json"
+  }
+]

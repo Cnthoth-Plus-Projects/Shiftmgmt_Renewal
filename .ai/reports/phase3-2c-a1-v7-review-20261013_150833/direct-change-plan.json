@@ -1,0 +1,19 @@
+{
+  "before": {
+    "bytes": 29998,
+    "sha256": "F1C51C85F969D56EDF1AD264088D6E6271702AC1395940AB2BA22BBE397292EC"
+  },
+  "after": {
+    "bytes": 29736,
+    "sha256": "803C53C05E509D0BF95FFB3880F449B6AD48A559B2F790C096103D27CFFC0564"
+  },
+  "bytesDelta": -262,
+  "changedProductFiles": [
+    "scripts/ui-checks/access-history.mjs"
+  ],
+  "hunks": 6,
+  "added": 23,
+  "removed": 19,
+  "lineEndingsPreserved": true,
+  "v8Created": false
+}

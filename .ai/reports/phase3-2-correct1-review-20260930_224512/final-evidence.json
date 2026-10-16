@@ -1,0 +1,471 @@
+{
+  "time": "2026-09-30 23:05:10 KST",
+  "verdict": "CORRECT_2",
+  "received": {
+    "time": "2026-09-30T22:45:12.859760+09:00",
+    "reviewDirectory": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512",
+    "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_224512_3-2b-CORRECT1-Gemini_수신원본.md",
+    "sha256": "35C5D75650FEE1E99FFEC731CB7921B8B096E93AF7BAE5763D2CCDD7C8E97E8C",
+    "bytes": 44538,
+    "correctionBaseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-20260930_214222\\baseline.json"
+  },
+  "transitionArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_230510_3-2b-CORRECT1-Gemini_CORRECT2전환보존.md",
+  "closeout": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_230510_3-2b-CORRECT1-Sol-CORRECT2_독립검증종결본.md",
+  "closeoutMetadata": {
+    "bytes": 5588,
+    "sha256": "B52F56D92C575214CAE438307A8061954FCF642411533333F68A216FB987881A"
+  },
+  "sourceChangesBySol": 0,
+  "product338Unchanged": true,
+  "head": "160940f9aaeb6696538447f83b44658073e382f0",
+  "status": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "protected333BeforeTransitionUnchanged": true,
+  "canonical14BeforeTransitionUnchanged": true,
+  "static": [
+    {
+      "name": "typecheck",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run typecheck"
+      ],
+      "start": "2026-09-30T22:47:14.068849",
+      "end": "2026-09-30T22:47:21.804108",
+      "exitCode": 0
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "scripts/ui-checks/access-history.mjs"
+      ],
+      "start": "2026-09-30T22:47:21.805593",
+      "end": "2026-09-30T22:47:21.930268",
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run lint"
+      ],
+      "start": "2026-09-30T22:47:21.930939",
+      "end": "2026-09-30T22:47:29.292931",
+      "exitCode": 0
+    },
+    {
+      "name": "map",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run validate:map"
+      ],
+      "start": "2026-09-30T22:47:29.294450",
+      "end": "2026-09-30T22:47:30.127027",
+      "exitCode": 0
+    },
+    {
+      "name": "focused-tests",
+      "command": [
+        "cmd",
+        "/c",
+        "npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1"
+      ],
+      "start": "2026-09-30T22:47:30.128028",
+      "end": "2026-09-30T22:47:35.265284",
+      "exitCode": 0
+    },
+    {
+      "name": "diffcheck",
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-30T22:47:35.266770",
+      "end": "2026-09-30T22:47:35.500284",
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run build"
+      ],
+      "start": "2026-09-30T22:47:35.501663",
+      "end": "2026-09-30T22:47:45.762376",
+      "exitCode": 0
+    }
+  ],
+  "independentFocusedTests": {
+    "files": 3,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullTests": {
+    "status": "GEMINI_SELF_REPORTED_NOT_INDEPENDENTLY_RERUN",
+    "reportedFiles": 133,
+    "reportedTests": 919
+  },
+  "probes": {
+    "chromeVersion": "154.0.8037.58",
+    "browserVersion": "154.0.8037.58",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "groups": [
+      {
+        "name": "badge-design-and-long-row",
+        "status": "PASS",
+        "actual": {
+          "hideBadge": {
+            "class": "access-history-badge badge-danger",
+            "bg": "rgb(252, 235, 233)",
+            "color": "rgb(192, 57, 43)"
+          },
+          "normalRow": {
+            "height": 40,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "longRow": {
+            "height": 40,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "dateInput": {
+            "height": 34,
+            "width": 132,
+            "fontSize": "14px"
+          },
+          "headers": [
+            {
+              "text": "활동시간",
+              "height": 40,
+              "width": 130,
+              "fontSize": "12px"
+            },
+            {
+              "text": "사용자",
+              "height": 40,
+              "width": 140,
+              "fontSize": "12px"
+            },
+            {
+              "text": "권한",
+              "height": 40,
+              "width": 100,
+              "fontSize": "12px"
+            },
+            {
+              "text": "액션내용",
+              "height": 40,
+              "width": 160,
+              "fontSize": "12px"
+            },
+            {
+              "text": "상세",
+              "height": 40,
+              "width": 640,
+              "fontSize": "12px"
+            }
+          ],
+          "tableAccessibleLabel": "활동 이력 목록",
+          "tableLabelledby": null,
+          "caption": null,
+          "detailFullTextLength": 1216,
+          "detailTitleLength": 1216
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\design-long-row.png"
+      },
+      {
+        "name": "settled-old-rows-during-debounce",
+        "status": "FAIL",
+        "actual": {
+          "oldRows": 1,
+          "count": "검색 입력 중…",
+          "loading": 0
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\settled-old-rows-during-debounce.png"
+      },
+      {
+        "name": "invalid-date-during-loading",
+        "status": "PASS",
+        "actual": {
+          "loadingBeforeRelease": 0,
+          "loadingAfterRelease": 0,
+          "count": "-",
+          "dateError": "조회 시작일이 조회 종료일보다 늦을 수 없습니다.",
+          "refreshNativeDisabled": false
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\invalid-date-loading-left.png"
+      },
+      {
+        "name": "stale-success-during-debounce",
+        "status": "PASS",
+        "actual": {
+          "staleVisibleWithinDebounce": false,
+          "observedAfterMs": 190,
+          "count": "검색 입력 중…",
+          "keyword": "new-keyword"
+        }
+      },
+      {
+        "name": "stale-auth-during-debounce",
+        "status": "PASS",
+        "actual": {
+          "loginDisplayed": false,
+          "activityDisplayed": true
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\stale-auth-incorrect-login.png"
+      },
+      {
+        "name": "refresh-does-not-cancel-debounce",
+        "status": "PASS",
+        "actual": {
+          "matchingRequests": 1,
+          "requests": [
+            {
+              "query": {
+                "dateFrom": "2026-09-01",
+                "dateTo": "2026-09-30",
+                "keyword": "one-refresh"
+              },
+              "time": 1790776494061
+            }
+          ]
+        }
+      },
+      {
+        "name": "users-retry-pending-duplicate",
+        "status": "PASS",
+        "actual": {
+          "userCalls": 1,
+          "logCalls": 1,
+          "refreshNativeDisabled": true,
+          "retryNativeDisabled": true
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\users-retry-duplicate.png"
+      },
+      {
+        "name": "keyboard-invalid-lock",
+        "status": "PASS",
+        "actual": {
+          "focused": true,
+          "disabled": false,
+          "ariaDisabled": "true",
+          "outline": "2px",
+          "requests": 0
+        }
+      },
+      {
+        "name": "role-guard-three-real-sessions",
+        "status": "PASS",
+        "actual": [
+          {
+            "role": "operator",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "planner",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "reviewer",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          }
+        ]
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "responses": [],
+    "finished": "2026-09-30T13:55:00.203Z"
+  },
+  "syntheticVerifierErrors": {
+    "synthetic": true,
+    "purpose": "test verifier rejection of unexpected browser errors",
+    "temps": [
+      "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-6VjoH1"
+    ],
+    "serverPid": null,
+    "consoleErrors": [
+      "SOL_VERIFIER_FAULT_CONSOLE"
+    ],
+    "pageErrors": [
+      "SOL_VERIFIER_FAULT_PAGE",
+      "SOL_VERIFIER_FAULT_PAGE"
+    ]
+  },
+  "syntheticVerifierRun": {
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2-correct1-review-20260930_224512/inject-ui-errors.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "syntheticVerifierFault": true,
+    "exitCode": 0,
+    "stdout": "{\"label\":\"access-history-list-fixture\",\"status\":\"PASS\",\"exitCode\":0,\"tempCleaned\":true}\n",
+    "stderr": ""
+  },
+  "syntheticVerifierCleanup": {
+    "allOwnedTempsRemoved": true,
+    "runnerPortClosed": true,
+    "consoleErrors": 1,
+    "pageErrors": 2
+  },
+  "cliResults": [
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "--case=sol-unknown-case"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 알 수 없는 케이스입니다: 'sol-unknown-case'. 허용 목록: live-admin, list-fixture, empty-fixture, filters, errors, stale-response, role-guard, session-expired, regression-shell, regression-home\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "--case="
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] --case= 값이 비어 있습니다.\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "--case=live-admin",
+        "--extra-flag"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 단일 --case=<케이스> 인수만 허용됩니다: --case=live-admin --extra-flag\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "--case=live-admin",
+        "--case=filters"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 단일 --case=<케이스> 인수만 허용됩니다: --case=live-admin --case=filters\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "http://127.0.0.1:18741/"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 유효하지 않은 인수 형식입니다: 'http://127.0.0.1:18741/' (--case=<케이스> 필요)\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "http://localhost:18741/"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 유효하지 않은 인수 형식입니다: 'http://localhost:18741/' (--case=<케이스> 필요)\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/ui-checks/access-history.mjs",
+        "https://example.invalid/"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "[CLI 인수 오류] 유효하지 않은 인수 형식입니다: 'https://example.invalid/' (--case=<케이스> 필요)\n"
+    }
+  ],
+  "providedActionEvidence": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\provided-action-evidence.json",
+  "ownedServerCleanup": {
+    "time": "2026-09-30T13:55:58.909Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  },
+  "firstPassCleanup": {
+    "time": "2026-09-30T13:52:52.437Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  },
+  "browserClosed": true,
+  "mcpBrowserClosed": true,
+  "controlFirstFailuresPreserved": true,
+  "defectStatus": {
+    "R32C-01": "PARTIAL",
+    "R32C-02": "RESOLVED",
+    "R32C-03": "RESOLVED",
+    "R32C-04": "RESOLVED",
+    "R32C-05": "RESOLVED",
+    "R32C-06": "PARTIAL_ACCEPTANCE_BLOCKER"
+  },
+  "correctionAttempt": 2,
+  "correctionAllowed": [
+    "src/web/screens/access-history.ts",
+    "scripts/ui-checks/access-history.mjs"
+  ],
+  "correctionProtected": 336,
+  "canonicalCount": 14,
+  "baseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-20260930_230510\\baseline.json",
+  "baselineMetadata": {
+    "bytes": 142898,
+    "sha256": "EFC540FF593B76D55784BD578B40FEEB4D1CA838A797749FF9928CFEE70E5DDE"
+  },
+  "outgoing": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_230510_3-2b-Sol-CORRECT2_발송본.md",
+  "handoffMetadata": {
+    "bytes": 30225,
+    "sha256": "D36EC26D6D9DA2D72B6EEC90433D9A03199E038E5AE15FD533E7EC5178CC532E"
+  },
+  "accepted": false,
+  "commitPushDeployment": false,
+  "todoChangedOnlyAfterCloseout": true
+}

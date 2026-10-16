@@ -1,0 +1,10 @@
+{
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=sol-unknown-case"
+  ],
+  "exitCode": 0,
+  "expected": "nonzero before creating resources",
+  "claimedCaseDoesNotExist": true
+}

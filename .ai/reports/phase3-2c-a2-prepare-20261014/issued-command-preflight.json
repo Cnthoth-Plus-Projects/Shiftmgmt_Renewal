@@ -1,0 +1,56 @@
+{
+  "proof": "SEALED_SCOPE_AND_PLANS_ONLY_NOT_IMPLEMENTATION",
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\gate-evidence.py",
+        "--execution-sha",
+        "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+        "--baseline-sha",
+        "D305FE700885F4F3BD640FC021E6F545B684E46E2630CDB993A4A8173E7C1A03",
+        "--scope"
+      ],
+      "rc": 0,
+      "stdout": "{\"status\": \"PASS\", \"result\": {\"files\": 341, \"protected\": 337, \"dirtyPaths\": 12, \"changedAllowed\": []}}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\runtime-probes.py",
+        "--execution-sha",
+        "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+        "--baseline-sha",
+        "D305FE700885F4F3BD640FC021E6F545B684E46E2630CDB993A4A8173E7C1A03",
+        "--list"
+      ],
+      "rc": 0,
+      "stdout": "{\"proof\": \"PLAN_ONLY_NOT_RUN\", \"positiveCases\": [\"contract-core\", \"live-admin\", \"list-fixture\", \"empty-fixture\", \"filters\", \"errors\", \"stale-response\", \"role-guard\", \"session-expired\", \"regression-shell\", \"regression-home\"], \"deferredCases\": [], \"faults\": {\"png-header-only\": \"A1_GATE_REJECTED\", \"png-crc\": \"A1_GATE_REJECTED\", \"duplicate-id\": \"A1_GATE_REJECTED\", \"missing-id\": \"A1_GATE_REJECTED\", \"extra-id\": \"A1_GATE_REJECTED\", \"caller-expected\": \"A1_GATE_REJECTED\", \"constant-actual\": \"A1_GATE_REJECTED\", \"raw-console\": \"A1_GATE_REJECTED\", \"raw-pageerror\": \"A1_GATE_REJECTED\", \"raw-requestfailed\": \"A1_GATE_REJECTED\", \"raw-http\": \"A1_GATE_REJECTED\", \"canonical-drift\": \"A1_GATE_REJECTED\", \"worker-close-receipt\": \"A1_GATE_REJECTED\", \"server-close-receipt\": \"A1_GATE_REJECTED\", \"server-close-not-observed\": \"A1_CLOSE_UNVERIFIED\", \"final-write-denied\": \"A1_FINAL_WRITE_FAILED\", \"server-spawn-error\": \"A1_SERVER_SPAWN_FAILURE\", \"log-write-denied\": \"A1_LOG_WRITE_FAILED\", \"owner-bad-ack\": \"A1_ACK_INVALID\", \"worker-no-ack\": \"A1_ACK_TIMEOUT\", \"worker-no-run\": \"A1_WORKER_FAILED\", \"gate-spawn-error\": \"A1_GATE_SPAWN_FAILURE\", \"gate-log-write-denied\": \"A1_LOG_WRITE_FAILED\", \"regression-no-evidence\": \"A1_WORKER_FAILED\", \"worker-close-not-observed\": \"A1_CLOSE_UNVERIFIED\", \"worker-spawn-error\": \"A1_WORKER_SPAWN_FAILURE\", \"log-finish-not-observed\": \"A1_LOG_FINISH_UNVERIFIED\", \"late-log-error\": \"A1_LOG_WRITE_FAILED\", \"gate-response-case\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-runId\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-candidateSha256\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-executionSha256\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-checks\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-artifacts\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-acceptance\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-status\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-extra\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-extra-output\": \"A1_GATE_RESPONSE_MISMATCH\", \"gate-response-outer-extra\": \"A1_GATE_RESPONSE_MISMATCH\", \"log-close-not-observed\": \"A1_LOG_CLOSE_UNVERIFIED\", \"server-log-close-not-observed\": \"A1_LOG_CLOSE_UNVERIFIED\", \"gate-log-close-not-observed\": \"A1_LOG_CLOSE_UNVERIFIED\", \"server-log-finish-not-observed\": \"A1_LOG_FINISH_UNVERIFIED\", \"gate-log-finish-not-observed\": \"A1_LOG_FINISH_UNVERIFIED\", \"owner-extra-ack\": \"A1_ACK_INVALID\", \"timestamp-regression\": \"A1_LIFECYCLE_INVALID\", \"server-timestamp-regression\": \"A1_LIFECYCLE_INVALID\", \"gate-timestamp-regression\": \"A1_LIFECYCLE_INVALID\", \"worker-ledger-scalar-mismatch\": \"A1_LIFECYCLE_INVALID\", \"gate-ledger-scalar-mismatch\": \"A1_LIFECYCLE_INVALID\", \"owner-candidate-write-denied\": \"A1_CANDIDATE_WRITE_FAILED\"}, \"malformedPublicCases\": 9, \"observerHealthMandatory\": true}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\normal-probes.py",
+        "--execution-sha",
+        "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+        "--baseline-sha",
+        "D305FE700885F4F3BD640FC021E6F545B684E46E2630CDB993A4A8173E7C1A03",
+        "--list"
+      ],
+      "rc": 0,
+      "stdout": "{\"proof\": \"PLAN_ONLY_NOT_RUN\", \"cases\": [\"live-admin\", \"list-fixture\", \"empty-fixture\", \"filters\", \"errors\", \"stale-response\", \"role-guard\", \"session-expired\"], \"expectedOwnerRC\": 1, \"expectedStatus\": \"FAIL_INCOMPLETE\"}\n",
+      "stderr": ""
+    }
+  ]
+}

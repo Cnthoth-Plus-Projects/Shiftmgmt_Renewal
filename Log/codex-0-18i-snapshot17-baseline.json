@@ -1,0 +1,206 @@
+[
+  {
+    "file": "03-home-1.html",
+    "batch": "1차",
+    "sha": "832d2b997e04a8335b35ab57c774eb9b216d8a626f8328ed6fda44da4d39d6c6",
+    "matches_last_review": true
+  },
+  {
+    "file": "03-home-2.html",
+    "batch": "1차",
+    "sha": "3a38dc89a0e3d2624b3e3a9e05bb86af2a4281b60b2c913e1d1099dbc79f86e3",
+    "matches_last_review": true
+  },
+  {
+    "file": "05-sites-wizard-1.html",
+    "batch": "1차",
+    "sha": "18a56e6310441cc02ba5ccd3c1ee67adbdb212fcfed658a145181725fda215e2",
+    "matches_last_review": true
+  },
+  {
+    "file": "05-sites-wizard-2.html",
+    "batch": "1차",
+    "sha": "0201bcdaca4fcf97f221e5104b16a2c9911e4d7bc365a3138a31f1a39816ad59",
+    "matches_last_review": true
+  },
+  {
+    "file": "05-sites-wizard-3.html",
+    "batch": "1차",
+    "sha": "c706015d419f790b5cc635b4fd5e6712636e7f4e8b1cc42dd7f40fd36e0f5d72",
+    "matches_last_review": true
+  },
+  {
+    "file": "05-sites-wizard-4.html",
+    "batch": "1차",
+    "sha": "6e7dc210f6e77fea76a2122eabd90d0dae975dc4a2613313737c55dd459a620f",
+    "matches_last_review": true
+  },
+  {
+    "file": "08-performance-1.html",
+    "batch": "1차",
+    "sha": "f32a49bec567c6f541a01a7912ee6b0b0ae0bd36b97257f383d270cb3a16337e",
+    "matches_last_review": true
+  },
+  {
+    "file": "08-performance-2.html",
+    "batch": "1차",
+    "sha": "978f71ed7b1d66ea940896adfeea59d400c4ec4f17ba1e5eb693781d554fcb8f",
+    "matches_last_review": true
+  },
+  {
+    "file": "08-performance-3.html",
+    "batch": "1차",
+    "sha": "f03adbee54df7216fb79d94ef3cde415444f510277458139c51ca160683b7179",
+    "matches_last_review": true
+  },
+  {
+    "file": "08-performance-4.html",
+    "batch": "1차",
+    "sha": "bbb6f4c0216ae54842b10e19a1ee25d0eab2efa964e07ab578bb4bfa8fc87623",
+    "matches_last_review": true
+  },
+  {
+    "file": "00-shell-1.html",
+    "batch": "2차",
+    "sha": "198004951bfa114ae4435dbf015a341919cbf7a4e9cb61ea74fd01a9d30deb4f",
+    "matches_last_review": true
+  },
+  {
+    "file": "00-shell-2.html",
+    "batch": "2차",
+    "sha": "a0ec5f2064a0eac88224e0110bf4b1f4171fdaaaf48ca5701d8565cab3e5ffef",
+    "matches_last_review": true
+  },
+  {
+    "file": "01-login-1.html",
+    "batch": "2차",
+    "sha": "d9294bd934e8625db60bf4b50c26ed92cfc801710ebe7199baef79481a726cdf",
+    "matches_last_review": true
+  },
+  {
+    "file": "01-login-2.html",
+    "batch": "2차",
+    "sha": "f4a42028d8b0105975164cf27d5a1375bc3e1ff007bbbc6fedcf23933b37b902",
+    "matches_last_review": true
+  },
+  {
+    "file": "02-common-1.html",
+    "batch": "2차",
+    "sha": "d774066b0391cb4cfc36c73a591a424a4d564efc5a80f200529b66aff8c7ff09",
+    "matches_last_review": true
+  },
+  {
+    "file": "02-common-2.html",
+    "batch": "2차",
+    "sha": "fb2e1493a9f93312f783b8d6e329a535d5888fb33b76a34cf55ba9d1c2add8dd",
+    "matches_last_review": true
+  },
+  {
+    "file": "02-common-3.html",
+    "batch": "2차",
+    "sha": "27e6858f36b0b7e2b6e223cc802e85ebd164907f3807525de3dcea85b81b6b4d",
+    "matches_last_review": true
+  },
+  {
+    "file": "04-sites-1.html",
+    "batch": "2차",
+    "sha": "94b5f60d5fc8343e4c83edd1059798aa2f87f99cdd0ebd2a54122b6da9fcadeb",
+    "matches_last_review": true
+  },
+  {
+    "file": "04-sites-2.html",
+    "batch": "2차",
+    "sha": "105f912971ed9341d013454c093c5a27fcbaee5a1432d3203a89751fc436ada3",
+    "matches_last_review": true
+  },
+  {
+    "file": "06-employees-1.html",
+    "batch": "2차",
+    "sha": "4a6a7a54c2f7a5f87ae205f01cd4c8fa7a486df455cf0ae4b568271aa8cb0445",
+    "matches_last_review": true
+  },
+  {
+    "file": "06-employees-2.html",
+    "batch": "2차",
+    "sha": "2f5c2303247d4ccf0eb0569c7add19990a6cf9e6d7883f7f5aab7d60210ffb6c",
+    "matches_last_review": true
+  },
+  {
+    "file": "06-employees-3.html",
+    "batch": "2차",
+    "sha": "4ceb96f091799eb927da258e743c7ebc73a54760e2728437bf12be8a01868977",
+    "matches_last_review": true
+  },
+  {
+    "file": "07-schedule-1.html",
+    "batch": "2차",
+    "sha": "27452e109b026f73eb8db904cdc2e0579b19970a7d4304b8d2586b8fd445b3eb",
+    "matches_last_review": true
+  },
+  {
+    "file": "07-schedule-2.html",
+    "batch": "2차",
+    "sha": "f6b8dba4f01707a13ab49598f520497b2133bc66dcdcced47e7b8441796bbfb1",
+    "matches_last_review": true
+  },
+  {
+    "file": "07-schedule-3.html",
+    "batch": "2차",
+    "sha": "4832f32c73b8b9ac79a65b31424117a57b2256a5276b16d8d46ed88e0dfc0ac7",
+    "matches_last_review": true
+  },
+  {
+    "file": "09-allowance-1.html",
+    "batch": "2차",
+    "sha": "f3a2c79231561e288f0c66adba85e2839ddd4697d1e61871a2f70bbdc32717fe",
+    "matches_last_review": true
+  },
+  {
+    "file": "09-allowance-2.html",
+    "batch": "2차",
+    "sha": "b1cb2490a423173f1c2a69affa854e5152a95e0f61f9cb835b924d6159cb75ca",
+    "matches_last_review": true
+  },
+  {
+    "file": "09-allowance-3.html",
+    "batch": "2차",
+    "sha": "46ca89980d78e7a07bc93983bad84c273ac7c746afef7ea46dfbfb7f20063084",
+    "matches_last_review": true
+  },
+  {
+    "file": "10-dashboard-1.html",
+    "batch": "2차",
+    "sha": "22578a69c55fa1612e146ae55604bfde817b7b1e17c9178dfac8999785654dc5",
+    "matches_last_review": true
+  },
+  {
+    "file": "11-operations-1.html",
+    "batch": "2차",
+    "sha": "d6e0bf63bff491ed3ea4fd95f9c42253231de5033470531c941558bd3ec69a1a",
+    "matches_last_review": true
+  },
+  {
+    "file": "11-operations-2.html",
+    "batch": "2차",
+    "sha": "1d44fd9d0e3269fbf10c67f9e56d20ab8ae4cd999034947e767c64627b012785",
+    "matches_last_review": true
+  },
+  {
+    "file": "11-operations-3.html",
+    "batch": "2차",
+    "sha": "ecb01b6df84b6e0e53f189ff0e2b9d4d4896c12f4a7da1a7a4ddae1ea7edbab1",
+    "matches_last_review": true
+  },
+  {
+    "file": "11-operations-4.html",
+    "batch": "2차",
+    "sha": "5ec8457def72ca792718c37e5d253447acf34d4cbdde84d2ce3a5a88e058905b",
+    "matches_last_review": true
+  },
+  {
+    "file": "12-access-logs-1.html",
+    "batch": "2차",
+    "sha": "7b6180852a26fdeed9ac8c9ceb0756a46b481a1d96a616b467cb5a2ad0a6da42",
+    "matches_last_review": true
+  }
+]

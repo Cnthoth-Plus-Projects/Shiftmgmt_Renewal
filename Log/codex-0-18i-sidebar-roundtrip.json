@@ -1,0 +1,3116 @@
+{
+  "testedAt": "2026-09-07T08:09:51.508Z",
+  "results": [
+    {
+      "file": "03-home-1.html",
+      "id": "state-h1",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "03-home-1.html",
+      "id": "state-h2",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 34.40625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 28.40625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 34.40625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "03-home-1.html",
+      "id": "state-h3",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 34.40625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 28.40625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "140",
+              "title": "승인 대기 실적 140건",
+              "width": 34.40625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 140건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "03-home-2.html",
+      "id": "state-h4",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "03-home-2.html",
+      "id": "state-h5",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "id": "state-w1",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "id": "state-w2",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "id": "state-w3",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "id": "state-w4",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "id": "state-w5",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "id": "state-w6",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "id": "state-w8",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "id": "state-w9",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "id": "state-w10",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-1.html",
+      "id": "state-p1",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-1.html",
+      "id": "state-p2",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-1.html",
+      "id": "state-p3",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-2.html",
+      "id": "state-p4",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-2.html",
+      "id": "state-p5",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-3.html",
+      "id": "state-p6",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-3.html",
+      "id": "state-p7",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-4.html",
+      "id": "state-p8",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 28.15625,
+              "height": 14
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": [
+            {
+              "text": "128",
+              "title": "승인 대기 실적 128건",
+              "width": 34.15625,
+              "height": 16
+            }
+          ]
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리, 승인 대기 실적 128건\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-4.html",
+      "id": "state-p9",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    },
+    {
+      "file": "08-performance-4.html",
+      "id": "state-p10",
+      "before": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "collapsed": {
+        "data": {
+          "sidebarWidth": 64,
+          "mainWidth": 1376,
+          "hidden": null,
+          "expanded": "false",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            },
+            {
+              "hidden": "true",
+              "height": 1,
+              "font": "0px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "restored": {
+        "data": {
+          "sidebarWidth": 220,
+          "mainWidth": 1220,
+          "hidden": null,
+          "expanded": "true",
+          "current": 1,
+          "groups": [
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            },
+            {
+              "hidden": null,
+              "height": 34,
+              "font": "12px"
+            }
+          ],
+          "badges": []
+        },
+        "links": [
+          "- link \"홈\":",
+          "- link \"근무지 관리\":",
+          "- link \"인력 관리\":",
+          "- link \"근무표 배포\":",
+          "- link \"실적 관리\":",
+          "- link \"수당 관리\":",
+          "- link \"대시보드\":"
+        ]
+      },
+      "menuNamesSame": true
+    }
+  ]
+}

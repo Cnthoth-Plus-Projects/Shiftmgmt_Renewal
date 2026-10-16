@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\runtime-probes.py",
+    "--execution-sha",
+    "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA",
+    "--baseline-sha",
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "--self-test"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 20388,
+  "start": "2026-10-13T01:40:44.286353+00:00",
+  "end": "2026-10-13T01:40:44.520565+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-parser.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-parser.stderr.txt",
+  "stdoutSha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

@@ -1,0 +1,1 @@
+[CLI 인수 오류] 유효하지 않은 케이스: 'sol-unknown-case'. 허용 목록: live-admin, list-fixture, empty-fixture, filters, errors, stale-response, role-guard, session-expired, regression-shell, regression-home

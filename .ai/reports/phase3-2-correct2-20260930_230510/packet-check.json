@@ -1,0 +1,15 @@
+{
+  "packetArchiveIdentical": true,
+  "packetMetadataMatches": true,
+  "baselineHashMatches": true,
+  "product338Unchanged": true,
+  "protected336Count": true,
+  "canonical14Unchanged": true,
+  "exactAllowedTwo": true,
+  "status9Unchanged": true,
+  "visibleReply": true,
+  "allStableIDs": true,
+  "noStaleFivePermission": true,
+  "sourceChangesBySol": 0,
+  "issues": []
+}

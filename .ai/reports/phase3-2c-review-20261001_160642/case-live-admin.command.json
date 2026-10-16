@@ -1,0 +1,16 @@
+{
+  "name": "case-live-admin",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=live-admin"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:13:04.923347+00:00",
+  "pid": 27876,
+  "rc": 0,
+  "end": "2026-10-01T07:13:09.964681+00:00",
+  "elapsedSeconds": 5.047,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-live-admin.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-live-admin.stderr.txt"
+}

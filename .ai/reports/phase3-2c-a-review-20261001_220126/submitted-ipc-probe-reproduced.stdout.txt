@@ -1,0 +1,3 @@
+case 불일치 RC: 1 거부확인: true
+ownerPid 불일치 RC: 1 거부확인: true
+contractSha256 불일치 RC: 1 거부확인: false

@@ -1,0 +1,512 @@
+- generic [ref=f12e1]:
+  - generic [ref=f12e2]:
+    - generic [ref=f12e3]: ── W5. 근무지 관리 — 마법사 1-C 검토 (계획 담당) ──
+    - generic [ref=f12e4]:
+      - generic [ref=f12e5]:
+        - complementary [ref=f12e6]:
+          - generic [ref=f12e7]:
+            - generic [ref=f12e8]: domain
+            - generic [ref=f12e9]: 근무 관리 시스템
+          - list [ref=f12e10]:
+            - listitem [ref=f12e11]:
+              - link "홈" [ref=f12e12] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e13]: home
+            - listitem [ref=f12e15]: ─ 준비 ─
+            - listitem [ref=f12e16]:
+              - link "근무지 관리" [ref=f12e17] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e18]: domain
+            - listitem [ref=f12e20]:
+              - link "인력 관리" [ref=f12e21] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e22]: group
+            - listitem [ref=f12e24]: ─ 운영 ─
+            - listitem [ref=f12e25]:
+              - link "근무표 배포" [ref=f12e26] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e27]: calendar_month
+            - listitem [ref=f12e29]:
+              - link "실적 관리 128" [ref=f12e30] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e31]: fact_check
+                - generic [ref=f12e32]: 실적 관리
+                - generic [ref=f12e33]: "128"
+            - listitem [ref=f12e34]: ─ 정산 ─
+            - listitem [ref=f12e35]:
+              - link "수당 관리" [ref=f12e36] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e37]: payments
+            - listitem [ref=f12e39]:
+              - link "대시보드" [ref=f12e40] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e41]: monitoring
+        - generic [ref=f12e43]:
+          - banner [ref=f12e44]:
+            - heading "근무지 관리" [level=1] [ref=f12e45]
+            - generic [ref=f12e46]:
+              - generic [ref=f12e47]: 계획 담당
+              - button "김지현" [ref=f12e48] [cursor=pointer]:
+                - generic [ref=f12e49]: person
+              - button "도움말" [ref=f12e51] [cursor=pointer]:
+                - generic [ref=f12e52]: help
+              - button "로그아웃" [ref=f12e54] [cursor=pointer]:
+                - generic [ref=f12e55]: logout
+          - main [ref=f12e57]:
+            - generic [ref=f12e58]:
+              - generic [ref=f12e59]: 근무지 등록 마법사
+              - generic "등록 단계" [ref=f12e60]:
+                - generic [ref=f12e61]:
+                  - generic [ref=f12e62]: ✓
+                  - generic [ref=f12e63]: 기본 설정
+                - generic [ref=f12e65]:
+                  - generic [ref=f12e66]: ✓
+                  - generic [ref=f12e67]: 근무시간 설정
+                - generic [ref=f12e69]:
+                  - generic [ref=f12e70]: 1-C
+                  - generic [ref=f12e71]: 검토
+                - generic [ref=f12e73]:
+                  - generic [ref=f12e74]: "2"
+                  - generic [ref=f12e75]: 조직 구성
+            - generic [ref=f12e76]:
+              - generic [ref=f12e77]:
+                - generic [ref=f12e78]: 기본 정보
+                - generic [ref=f12e79]:
+                  - generic [ref=f12e80]:
+                    - generic [ref=f12e81]: 근무지 코드
+                    - generic [ref=f12e82]: SITE-005
+                  - generic [ref=f12e83]:
+                    - generic [ref=f12e84]: 근무지 이름
+                    - generic [ref=f12e85]: 보라매 사업장
+                  - generic [ref=f12e86]:
+                    - generic [ref=f12e87]: 고객사
+                    - generic [ref=f12e88]: ㈜한빛에프엠
+                  - generic [ref=f12e89]:
+                    - generic [ref=f12e90]: 상태
+                    - generic [ref=f12e91]: 사용
+                  - generic [ref=f12e92]:
+                    - generic [ref=f12e93]: 적용 시작일
+                    - generic [ref=f12e94]: 2025-06-01 (일)
+                  - generic [ref=f12e95]:
+                    - generic [ref=f12e96]: 조 / 묶음 개수
+                    - generic [ref=f12e97]: 4개 조 / 2개 묶음
+                  - generic [ref=f12e98]:
+                    - generic [ref=f12e99]: 별도 근무 (Pool)
+                    - generic [ref=f12e100]: 22:00 ~ 06:00
+                - generic [ref=f12e101]: 근무 유형 상세
+                - table [ref=f12e102]:
+                  - rowgroup [ref=f12e103]:
+                    - row [ref=f12e104]:
+                      - columnheader "유형" [ref=f12e105]
+                      - columnheader "시작" [ref=f12e106]
+                      - columnheader "종료" [ref=f12e107]
+                      - columnheader "휴게" [ref=f12e108]
+                  - rowgroup [ref=f12e109]:
+                    - row [ref=f12e110]:
+                      - cell [ref=f12e111]:
+                        - strong [ref=f12e112]: 주간
+                      - cell "09:00" [ref=f12e113]
+                      - cell "18:00" [ref=f12e114]
+                      - cell "60분" [ref=f12e115]
+                    - row [ref=f12e116]:
+                      - cell [ref=f12e117]:
+                        - strong [ref=f12e118]: 야간
+                      - cell "21:00" [ref=f12e119]
+                      - cell "06:00" [ref=f12e120]
+                      - cell "60분" [ref=f12e121]
+                    - row [ref=f12e122]:
+                      - cell [ref=f12e123]:
+                        - strong [ref=f12e124]: 석간
+                      - cell "13:00" [ref=f12e125]
+                      - cell "22:00" [ref=f12e126]
+                      - cell "60분" [ref=f12e127]
+                    - row [ref=f12e128]:
+                      - cell [ref=f12e129]:
+                        - strong [ref=f12e130]: 휴무
+                      - cell "-" [ref=f12e131]
+                      - cell "-" [ref=f12e132]
+                      - cell "-" [ref=f12e133]
+              - generic [ref=f12e134]:
+                - generic [ref=f12e135]: 묶음별 설정 요약
+                - generic [ref=f12e136]:
+                  - generic [ref=f12e137]:
+                    - generic [ref=f12e138]: 운영 교대조
+                    - generic [ref=f12e139]: 3회 교대 (2025-06-01 시작)
+                  - generic [ref=f12e140]:
+                    - generic [ref=f12e141]: 야간 전담조
+                    - generic [ref=f12e142]: 2회 교대 (2025-06-01 시작)
+                - generic [ref=f12e143]: 패턴 미리보기
+                - table [ref=f12e144]:
+                  - rowgroup [ref=f12e145]:
+                    - row [ref=f12e146]:
+                      - columnheader "조" [ref=f12e147]
+                      - columnheader "1일차" [ref=f12e148]
+                      - columnheader "2일차" [ref=f12e149]
+                      - columnheader "3일차" [ref=f12e150]
+                      - columnheader "4일차" [ref=f12e151]
+                  - rowgroup [ref=f12e152]:
+                    - row [ref=f12e153]:
+                      - cell [ref=f12e154]:
+                        - strong [ref=f12e155]: A조
+                      - cell "주간" [ref=f12e156]
+                      - cell "야간" [ref=f12e157]
+                      - cell "석간" [ref=f12e158]
+                      - cell "휴무" [ref=f12e159]
+                    - row [ref=f12e160]:
+                      - cell [ref=f12e161]:
+                        - strong [ref=f12e162]: B조
+                      - cell "야간" [ref=f12e163]
+                      - cell "석간" [ref=f12e164]
+                      - cell "휴무" [ref=f12e165]
+                      - cell "주간" [ref=f12e166]
+                    - row [ref=f12e167]:
+                      - cell [ref=f12e168]:
+                        - strong [ref=f12e169]: C조
+                      - cell "- (미배정)" [ref=f12e170]
+                    - row [ref=f12e171]:
+                      - cell [ref=f12e172]:
+                        - strong [ref=f12e173]: D조
+                      - cell "휴무" [ref=f12e174]
+                      - cell "주간" [ref=f12e175]
+                      - cell "야간" [ref=f12e176]
+                      - cell "석간" [ref=f12e177]
+              - generic [ref=f12e178]:
+                - generic [ref=f12e179]:
+                  - generic [ref=f12e180]: 검증 결과
+                  - generic [ref=f12e181]: 오류 2건 · 확인 5건
+                - generic [ref=f12e182]:
+                  - generic [ref=f12e183]:
+                    - generic [ref=f12e184]: error
+                    - generic [ref=f12e185]: C조에 배정된 패턴 묶음이 없습니다.
+                  - generic [ref=f12e186]: 조별 개별 패턴이 ON 상태이나 C조에 패턴이 설정되지 않았습니다.
+                - generic [ref=f12e187]:
+                  - generic [ref=f12e188]:
+                    - generic [ref=f12e189]: error
+                    - generic [ref=f12e190]: A조와 B조가 같은 패턴 묶음을 쓰고 있습니다.
+                  - generic [ref=f12e191]: 회전 교대조 설정 규칙에 따라 독립된 패턴 배정이 필요합니다.
+                - generic [ref=f12e192]: "※ 전제: 조별 개별 패턴 ON · C조 활성 · 회전 교대조"
+                - generic [ref=f12e193]: 확인 목록 (5건 완료)
+                - generic [ref=f12e194]:
+                  - generic [ref=f12e195]:
+                    - generic [ref=f12e196]: check_circle
+                    - generic [ref=f12e197]: 근무지 이름이 입력됐습니다 (보라매 사업장)
+                  - generic [ref=f12e198]:
+                    - generic [ref=f12e199]: check_circle
+                    - generic [ref=f12e200]: 설정 적용 시작일이 유효합니다 (2025-06-01)
+                  - generic [ref=f12e201]:
+                    - generic [ref=f12e202]: check_circle
+                    - generic [ref=f12e203]: "조 개수가 범위 안입니다 (4개조: 2~8 범위)"
+                  - generic [ref=f12e204]:
+                    - generic [ref=f12e205]: check_circle
+                    - generic [ref=f12e206]: 근무 유형 설정이 완료됐습니다 (3개 근무형)
+                  - generic [ref=f12e207]:
+                    - generic [ref=f12e208]: check_circle
+                    - generic [ref=f12e209]: 조별 시작 위치가 유효합니다 (0~3 숫자)
+            - generic [ref=f12e210]:
+              - button "이전 단계" [ref=f12e211] [cursor=pointer]
+              - generic [ref=f12e212]:
+                - generic [ref=f12e213]: 오류 2건을 해결해야 다음 단계로 갈 수 있습니다
+                - button "다음 단계" [disabled] [ref=f12e214]
+      - contentinfo [ref=f12e215]:
+        - generic [ref=f12e216]: DB 연결됨
+        - generic [ref=f12e219]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f12e221]: 대기 파일 3개
+        - generic [ref=f12e223]: 최신
+        - generic [ref=f12e225]: v2.3.1
+  - generic [ref=f12e227]:
+    - generic [ref=f12e228]: ── W6. 근무지 관리 — 마법사 2단계 조직 구성 (계획 담당) ──
+    - generic [ref=f12e229]:
+      - generic [ref=f12e230]:
+        - complementary [ref=f12e231]:
+          - generic [ref=f12e232]:
+            - generic [ref=f12e233]: domain
+            - generic [ref=f12e234]: 근무 관리 시스템
+          - list [ref=f12e235]:
+            - listitem [ref=f12e236]:
+              - link "홈" [ref=f12e237] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e238]: home
+            - listitem [ref=f12e240]: ─ 준비 ─
+            - listitem [ref=f12e241]:
+              - link "근무지 관리" [ref=f12e242] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e243]: domain
+            - listitem [ref=f12e245]:
+              - link "인력 관리" [ref=f12e246] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e247]: group
+            - listitem [ref=f12e249]: ─ 운영 ─
+            - listitem [ref=f12e250]:
+              - link "근무표 배포" [ref=f12e251] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e252]: calendar_month
+            - listitem [ref=f12e254]:
+              - link "실적 관리 128" [ref=f12e255] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e256]: fact_check
+                - generic [ref=f12e257]: 실적 관리
+                - generic [ref=f12e258]: "128"
+            - listitem [ref=f12e259]: ─ 정산 ─
+            - listitem [ref=f12e260]:
+              - link "수당 관리" [ref=f12e261] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e262]: payments
+            - listitem [ref=f12e264]:
+              - link "대시보드" [ref=f12e265] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e266]: monitoring
+        - generic [ref=f12e268]:
+          - banner [ref=f12e269]:
+            - heading "근무지 관리" [level=1] [ref=f12e270]
+            - generic [ref=f12e271]:
+              - generic [ref=f12e272]: 계획 담당
+              - button "김지현" [ref=f12e273] [cursor=pointer]:
+                - generic [ref=f12e274]: person
+              - button "도움말" [ref=f12e276] [cursor=pointer]:
+                - generic [ref=f12e277]: help
+              - button "로그아웃" [ref=f12e279] [cursor=pointer]:
+                - generic [ref=f12e280]: logout
+          - main [ref=f12e282]:
+            - generic [ref=f12e283]:
+              - generic [ref=f12e284]: 근무지 등록 마법사
+              - generic "등록 단계" [ref=f12e285]:
+                - generic [ref=f12e286]:
+                  - generic [ref=f12e287]: ✓
+                  - generic [ref=f12e288]: 기본 설정
+                - generic [ref=f12e290]:
+                  - generic [ref=f12e291]: ✓
+                  - generic [ref=f12e292]: 근무시간 설정
+                - generic [ref=f12e294]:
+                  - generic [ref=f12e295]: ✓
+                  - generic [ref=f12e296]: 검토
+                - generic [ref=f12e298]:
+                  - generic [ref=f12e299]: "2"
+                  - generic [ref=f12e300]: 조직 구성
+            - generic [ref=f12e301]:
+              - generic [ref=f12e302]:
+                - generic [ref=f12e303]: info
+                - generic [ref=f12e304]: 배정 가능 인력을 조별로 드래그하여 배정하세요. 정원을 초과할 수 없으며, 배정 시작일을 설정해야 합니다.
+              - generic [ref=f12e305]:
+                - generic [ref=f12e306]: 배정 시작일
+                - generic [ref=f12e307]: 2025-06-01 (일)
+                - button "일괄 설정" [ref=f12e308] [cursor=pointer]
+                - generic [ref=f12e309]: ※ 모든 조의 배정 시작일을 동일하게 설정합니다.
+            - generic [ref=f12e310]:
+              - generic [ref=f12e311]:
+                - generic [ref=f12e312]:
+                  - generic [ref=f12e313]: 배정 가능 인력
+                  - generic [ref=f12e315] [cursor=pointer]:
+                    - checkbox "배정 완료 제외" [ref=f12e316]
+                    - generic [ref=f12e317]: 배정 완료 제외
+                - table [ref=f12e318]:
+                  - rowgroup [ref=f12e319]:
+                    - row [ref=f12e320]:
+                      - columnheader "이름" [ref=f12e321]
+                      - columnheader "사번" [ref=f12e322]
+                      - columnheader "직급" [ref=f12e323]
+                      - columnheader "상태" [ref=f12e324]
+                  - rowgroup [ref=f12e325]:
+                    - row [ref=f12e326]:
+                      - cell "박성진" [ref=f12e327]
+                      - cell "50001" [ref=f12e328]
+                      - cell "사원" [ref=f12e329]
+                      - cell "배정(A조)" [ref=f12e330]
+                    - row [ref=f12e331]:
+                      - cell "이상민" [ref=f12e332]
+                      - cell "50002" [ref=f12e333]
+                      - cell "대리" [ref=f12e334]
+                      - cell "배정(A조)" [ref=f12e335]
+                    - row [ref=f12e336]:
+                      - cell "김하늘" [ref=f12e337]
+                      - cell "50003" [ref=f12e338]
+                      - cell "사원" [ref=f12e339]
+                      - cell "배정(A조)" [ref=f12e340]
+                    - row [ref=f12e341]:
+                      - cell "최우진" [ref=f12e342]
+                      - cell "50004" [ref=f12e343]
+                      - cell "사원" [ref=f12e344]
+                      - cell "배정(A조)" [ref=f12e345]
+                    - row [ref=f12e346]:
+                      - cell "정해린" [ref=f12e347]
+                      - cell "50005" [ref=f12e348]
+                      - cell "사원" [ref=f12e349]
+                      - cell "배정(B조)" [ref=f12e350]
+                    - row [ref=f12e351]:
+                      - cell "김태우" [ref=f12e352]
+                      - cell "50006" [ref=f12e353]
+                      - cell "사원" [ref=f12e354]
+                      - cell "배정(B조)" [ref=f12e355]
+                    - row [ref=f12e356]:
+                      - cell "오현석" [ref=f12e357]
+                      - cell "50007" [ref=f12e358]
+                      - cell "사원" [ref=f12e359]
+                      - cell "배정(B조)" [ref=f12e360]
+                    - row [ref=f12e361]:
+                      - cell "이시온" [ref=f12e362]
+                      - cell "50008" [ref=f12e363]
+                      - cell "사원" [ref=f12e364]
+                      - cell "배정(B조)" [ref=f12e365]
+                    - row [ref=f12e366]:
+                      - cell "조한별" [ref=f12e367]
+                      - cell "50009" [ref=f12e368]
+                      - cell "과장" [ref=f12e369]
+                      - cell "배정(B조)" [ref=f12e370]
+                    - row [ref=f12e371]:
+                      - cell "백민수" [ref=f12e372]
+                      - cell "50010" [ref=f12e373]
+                      - cell "대리" [ref=f12e374]
+                      - cell "배정(C조)" [ref=f12e375]
+                    - row [ref=f12e376]:
+                      - cell "유지선" [ref=f12e377]
+                      - cell "50011" [ref=f12e378]
+                      - cell "사원" [ref=f12e379]
+                      - cell "배정(C조)" [ref=f12e380]
+                    - row [ref=f12e381]:
+                      - cell "정민호" [ref=f12e382]
+                      - cell "50012" [ref=f12e383]
+                      - cell "과장" [ref=f12e384]
+                      - cell "배정(C조)" [ref=f12e385]
+                - generic [ref=f12e386]:
+                  - generic [ref=f12e387]: 18명 중 1-12 표시
+                  - generic [ref=f12e388]:
+                    - generic [ref=f12e389]: "[1]"
+                    - generic [ref=f12e390]: "2"
+              - generic [ref=f12e391]:
+                - generic [ref=f12e392]: 조별 배정 보드 (4개 조)
+                - generic [ref=f12e393]:
+                  - generic [ref=f12e394]:
+                    - generic [ref=f12e395]:
+                      - generic [ref=f12e396]: A조 (4/5명)
+                      - button "조 설정" [ref=f12e397] [cursor=pointer]
+                    - generic [ref=f12e398]: 박성진(사원), 이상민(대리), 김하늘(사원), 최우진(사원)
+                    - generic [ref=f12e399]: 여기에 인력을 드래그하세요
+                  - generic [ref=f12e400]:
+                    - generic [ref=f12e401]:
+                      - generic [ref=f12e402]: B조 (5/5명) 정원 참
+                      - button "조 설정" [ref=f12e403] [cursor=pointer]
+                    - generic [ref=f12e404]: 정해린(사원), 김태우(사원), 오현석(사원), 이시온(사원), 조한별(과장)
+                  - generic [ref=f12e405]:
+                    - generic [ref=f12e406]:
+                      - generic [ref=f12e407]: C조 (3/5명)
+                      - button "조 설정" [ref=f12e408] [cursor=pointer]
+                    - generic [ref=f12e409]: 백민수(대리), 유지선(사원), 정민호(과장)
+                    - generic [ref=f12e410]: 여기에 인력을 드래그하세요
+                  - generic [ref=f12e411]:
+                    - generic [ref=f12e412]:
+                      - generic [ref=f12e413]: D조 (2/5명)
+                      - button "조 설정" [ref=f12e414] [cursor=pointer]
+                    - generic [ref=f12e415]: 한지우(사원), 최민서(차장)
+                    - generic [ref=f12e416]: 여기에 인력을 드래그하세요
+                - generic [ref=f12e417]: "미배정 인력: 강래오(사원), 임수아(사원), 문지훈(사원), 서연우(사원)"
+            - generic [ref=f12e418]:
+              - generic [ref=f12e419]:
+                - button "이전 단계" [ref=f12e420] [cursor=pointer]
+                - button "입력 다시 검토" [ref=f12e421] [cursor=pointer]
+              - generic [ref=f12e422]:
+                - generic [ref=f12e423]: 완료 후 이동할 수 있습니다
+                - button "근무표로 이동" [disabled] [ref=f12e424]
+                - button "완료" [ref=f12e425] [cursor=pointer]
+      - contentinfo [ref=f12e426]:
+        - generic [ref=f12e427]: DB 연결됨
+        - generic [ref=f12e430]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f12e432]: 대기 파일 3개
+        - generic [ref=f12e434]: 최신
+        - generic [ref=f12e436]: v2.3.1
+      - dialog [ref=f12e515]:
+        - generic [ref=f12e516]:
+          - generic [ref=f12e517]:
+            - heading "조 설정 (A조)" [level=2] [ref=f12e518]
+            - button "닫기" [ref=f12e519] [cursor=pointer]:
+              - generic [ref=f12e520]: close
+          - generic [ref=f12e522]:
+            - generic [ref=f12e523]:
+              - text: 표시 이름
+              - textbox [active] [ref=f12e524]: A조
+            - generic [ref=f12e525]:
+              - text: 근무 유형
+              - combobox [ref=f12e526]:
+                - option "교대조" [selected]
+                - option "주간고정조"
+                - option "Pool"
+            - generic [ref=f12e527]:
+              - generic [ref=f12e528]: 사용 여부
+              - generic [ref=f12e529] [cursor=pointer]:
+                - checkbox [checked]
+            - generic [ref=f12e532]:
+              - generic [ref=f12e533]: 정원 (명)
+              - generic [ref=f12e534]:
+                - button "−" [ref=f12e535] [cursor=pointer]
+                - generic [ref=f12e536]: "5"
+                - button "+" [ref=f12e537] [cursor=pointer]
+          - generic [ref=f12e538]:
+            - button "적용" [ref=f12e539] [cursor=pointer]
+            - button "취소" [ref=f12e540] [cursor=pointer]
+  - generic [ref=f12e438]:
+    - generic [ref=f12e439]: ── W7. 근무지 관리 — 이탈 확인 모달 (계획 담당) ──
+    - generic [ref=f12e440]:
+      - generic [ref=f12e441]:
+        - complementary [ref=f12e442]:
+          - generic [ref=f12e443]:
+            - generic [ref=f12e444]: domain
+            - generic [ref=f12e445]: 근무 관리 시스템
+          - list [ref=f12e446]:
+            - listitem [ref=f12e447]:
+              - link "홈" [ref=f12e448] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e449]: home
+            - listitem [ref=f12e451]: ─ 준비 ─
+            - listitem [ref=f12e452]:
+              - link "근무지 관리" [ref=f12e453] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e454]: domain
+            - listitem [ref=f12e456]:
+              - link "인력 관리" [ref=f12e457] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e458]: group
+            - listitem [ref=f12e460]: ─ 운영 ─
+            - listitem [ref=f12e461]:
+              - link "근무표 배포" [ref=f12e462] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e463]: calendar_month
+            - listitem [ref=f12e465]:
+              - link "실적 관리 128" [ref=f12e466] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e467]: fact_check
+                - generic [ref=f12e468]: 실적 관리
+                - generic [ref=f12e469]: "128"
+            - listitem [ref=f12e470]: ─ 정산 ─
+            - listitem [ref=f12e471]:
+              - link "수당 관리" [ref=f12e472] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e473]: payments
+            - listitem [ref=f12e475]:
+              - link "대시보드" [ref=f12e476] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f12e477]: monitoring
+        - generic [ref=f12e479]:
+          - banner [ref=f12e480]:
+            - heading "근무지 관리" [level=1] [ref=f12e481]
+            - generic [ref=f12e482]:
+              - generic [ref=f12e483]: 계획 담당
+              - button "김지현" [ref=f12e484] [cursor=pointer]:
+                - generic [ref=f12e485]: person
+          - main [ref=f12e487]:
+            - generic [ref=f12e488]:
+              - generic [ref=f12e489]: 근무지 등록 마법사
+              - generic [ref=f12e490]: ● 저장되지 않음
+      - dialog [ref=f12e491]:
+        - generic [ref=f12e492]:
+          - heading "저장하지 않은 변경이 있습니다" [level=2] [ref=f12e494]:
+            - generic [ref=f12e495]: warning
+          - generic [ref=f12e497]:
+            - paragraph [ref=f12e498]: 근무지 '보라매 사업장'의 근무시간 설정을 편집 중입니다.
+            - paragraph [ref=f12e499]: 지금 나가면 변경 내용이 사라집니다.
+          - generic [ref=f12e500]:
+            - button "계속 편집" [ref=f12e501] [cursor=pointer]
+            - button "변경 버리고 나가기" [ref=f12e502] [cursor=pointer]
+      - contentinfo [ref=f12e503]:
+        - generic [ref=f12e504]: DB 연결됨
+        - generic [ref=f12e507]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f12e509]: 대기 파일 3개
+        - generic [ref=f12e511]: 최신
+        - generic [ref=f12e513]: v2.3.1

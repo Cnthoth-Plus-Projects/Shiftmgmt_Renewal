@@ -1,0 +1,47 @@
+### 16:34:05 A. 00-shell-1 S1 ☰ 접힘 그룹 머리
+{"side":64,"hid":4,"visText":0,"h1":1}
+{"side":220,"hid":0}
+### B. 11-operations-1 O1 이탈 모달 / O2 토스트
+{"open":"flex","focus":"계속 편집","bodyHidden":"true","hdrHidden":"true","direct":true,"clip":"600/600","w":600,"btnRows":1}
+{"trapFocus":"계속 편집","inModal":true}
+{"afterEsc":"none","focus":"user-info-btn btn-logout","bodyHidden":null,"hdrHidden":null,"inputKept":"C:\\연장근무실적\\대기-수정"}
+{"toast":null,"role":null,"modal":"none","url":"HTML/11-operations-1.html"}
+{"o2toast":"로그인 화면으로 이동합니다","o2modal":0}
+### C. 11-operations-3 O7 이탈 모달
+{"open":"flex","focus":"계속 편집","direct":true,"title":"저장하지 않은 변경이 있습니다"}
+{"afterEsc":"none","focus":"user-info-btn btn-logout"}
+{"toast":"로그인 화면으로 이동합니다"}
+### D. 09-allowance-2 A-4 요약 · 13모달 회귀(A5 Esc→A3, A3 닫기→opener) · A9 잠금·왕복
+{"a5":"flex","summary":"2025년 05월 · 보라매 사업장 · 4건(정규 3 · 조기 1) · 합계 369,000원","expected":"2025년 05월 · 보라매 사업장 · 4건(정규 3 · 조기 1) · 합계 369,000원","ok":true,"btns":3}
+{"a5":"none","a3":"flex","focus":"btn-goto-a5"}
+{"a3":"none","focus":"btn-open-a3","hdrHidden":null}
+{"a3a9":"flex","role":"사용자","lock":{"id":"btn-goto-a5-a9","ad":"true","desc":"품의 승인 권한이 필요합니다 (현재 권한: 사용자)","click":true,"enter":true,"space":true},"a5a9":"none","descVisible":true}
+{"afterRealClick_a5a9":"none","a3a9":"flex"}
+{"a3a9":"none","focus":"btn-open-a3-a9","origA3":"none"}
+{"a4a9":"none","focus":"btn-open-a4-a9","role":"사용자","origA4":"none","dupIds":0}
+### E. 06-employees-1 E9 잠금 5 (3입력)
+[{"id":"btn-e2-new-e9","ad":"true","desc":"인력 등록 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true},{"id":"btn-e9-wage","ad":"true","desc":"시급 등록 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true},{"id":"btn-e9-assign","ad":"true","desc":"배정 변경 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true},{"id":"btn-e9-unassign","ad":"true","desc":"배정 변경 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true},{"id":"btn-e9-delete","ad":"true","desc":"인력 삭제 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true}]
+{"role":"승인 담당","modalsOpen":0,"e2search":"","e2rows":10,"e9DeleteClass":"btn-danger-ghost btn-sm"}
+### F. 07-schedule-3 R7 잠금 2 (3입력) · 원본 표본
+{"locks":[{"id":"btn-r7-excel","ad":"true","desc":"근무표 배포 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true},{"id":"btn-r7-publish","ad":"true","desc":"근무표 배포 권한이 필요합니다 (현재 권한: 승인 담당)","click":true,"enter":true,"space":true}],"role":"승인 담당","account":"이정호","preview":null,"rows":14,"dateCols":10,"label":"── R7. 근무표 배포 — 선택 및 미리보기 (승인 담당) ──","cell13":"13px","menu":7,"hdrHidden":null}
+{"modalsOpen":0,"r4Modal":"none"}
+### G. 11-operations-4 A-4 O10 요약
+{"o10":"flex","summary":"대상 파일 backup_2025-05-19.json · 미리보기 05-20 14:30 (경고 0건) · 18개 항목 중 4개 감소","ok":true,"exec":"true","btns":3}
+{"o10":"none","o9":"flex"}
+### H. 04-sites-1 T2 900 · skip-link 첫 Tab
+{"firstTab":"skip-link","top":64}
+{"open":"flex","w":900,"clip":"900/900","sh":"501/501","hdrHidden":"true","logoutReachable":false}
+{"t2":"none","focus":"btn-open-t2"}
+### I. 모달 전수 강제 열기 잘림(폭 변경 16 + 이탈 2 + 복제)
+02-common-1: modal-c1:400 clip0 sh176/176 rows1 | modal-c2:400 clip0 sh264/264 rows1 | modal-c3:400 clip0 sh250/250 rows1 | modal-c4:400 clip0 sh320/320 rows1
+04-sites-1: modal-t2:900 clip0 sh501/501 rows1
+04-sites-2: modal-t4:400 clip0 sh283/283 rows1
+06-employees-2: modal-e3:600 clip0 sh448/448 rows1 | modal-e4:600 clip0 sh362/362 rows1
+06-employees-3: modal-e6:900 clip0 sh800/800 rows1 | modal-e6-confirm:400 clip0 sh301/301 rows1 | modal-e8:600 clip0 sh592/592 rows1
+07-schedule-3: modal-r4:400 clip0 sh304/304 rows1
+09-allowance-2: modal-a3:900 clip0 sh418/418 rows1 | modal-a4:600 clip0 sh248/248 rows1 | modal-a5:400 clip0 sh282/282 rows1 | modal-a3-a9:900 clip0 sh418/418 rows1 | modal-a4-a9:600 clip0 sh248/248 rows1 | modal-a5-a9:400 clip0 sh282/282 rows1
+11-operations-4: modal-o9:900 clip0 sh820/820 rows1 | modal-o10:400 clip0 sh419/419 rows1
+11-operations-1: modal-leave-o1:600 clip0 sh255/255 rows1
+11-operations-3: modal-leave-o7:600 clip0 sh255/255 rows1
+00-shell-2: modal-s6-update:600 clip0 sh433/433 rows1
+### 끝 16:35:11

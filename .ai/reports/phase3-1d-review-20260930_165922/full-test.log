@@ -1,0 +1,595 @@
+
+> shiftmgmt@0.1.0 test
+> vitest run --maxWorkers=1 --minWorkers=1
+
+
+ RUN  v3.2.7 C:/Projects/Active/ShiftMgmt_V4
+
+(node:44812) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-return-performance-parser.test.ts (35 tests) 27031ms
+   ✓ schedule-return-performance-parser > should parse template2 returned workbooks using the shifted row sections  652ms
+   ✓ schedule-return-performance-parser > should parse Hong Gil-dong placeholder with a changed worker as legal holiday work  642ms
+   ✓ schedule-return-performance-parser > should keep worksheet site name when a returned file has a duplicate name suffix  838ms
+   ✓ schedule-return-performance-parser > should parse site-first file names while using the worksheet site name  845ms
+   ✓ schedule-return-performance-parser > should normalize duplicate suffixes from the worksheet site name  742ms
+   ✓ schedule-return-performance-parser > should use the worksheet site name when the file name does not contain identity metadata  740ms
+   ✓ schedule-return-performance-parser > should preserve bare trailing digits in parsed site names  774ms
+   ✓ schedule-return-performance-parser > should prefer the parsed file site name when the worksheet site name was edited  777ms
+   ✓ schedule-return-performance-parser > should change the holiday source signature when the stored schedule source changes  856ms
+   ✓ schedule-return-performance-parser > should use the returned duty column time before the replacement worker own schedule  767ms
+   ✓ schedule-return-performance-parser > should use the duty code slot time for an unscheduled changed worker on a holiday row  780ms
+   ✓ schedule-return-performance-parser > should fall back to the duty-code slot time for a real holiday worker missing from the schedule  781ms
+   ✓ schedule-return-performance-parser > should warn when falling back to the replacement worker own schedule  730ms
+   ✓ schedule-return-performance-parser > should skip BP workers that are shown only for schedule visibility  767ms
+   ✓ schedule-return-performance-parser > should skip a Hong Gil-dong duty slot when the actual worker is explicitly None  781ms
+   ✓ schedule-return-performance-parser > should use the duty code slot time for an empty original substitute slot  814ms
+   ✓ schedule-return-performance-parser > should skip legal holiday work for a real scheduled worker when the actual worker is explicitly None  830ms
+   ✓ schedule-return-performance-parser > should skip legal holiday work when the returned change table marks the actual worker as None  823ms
+   ✓ schedule-return-performance-parser > should parse a manually filled empty duty slot on a holiday row  691ms
+   ✓ schedule-return-performance-parser > should parse an after-only worker in an empty holiday duty slot  753ms
+   ✓ schedule-return-performance-parser > should keep rows visible with row alerts when the stored monthly schedule is missing  682ms
+   ✓ schedule-return-performance-parser > should calculate past performance for an archived retired employee  683ms
+   ✓ schedule-return-performance-parser > should keep Pool substitute workers in history without making them payable  640ms
+   ✓ schedule-return-performance-parser > should resolve same-name workers by site before applying employee-code based checks  745ms
+   ✓ schedule-return-performance-parser > should keep returned schedule workers available from the hire date  712ms
+   ✓ schedule-return-performance-parser > should block same-name workers when the employee code cannot be resolved  687ms
+   ✓ schedule-return-performance-parser > should add error alerts when one employee code has overlapping work times  778ms
+   ✓ schedule-return-performance-parser > should mark Pool holiday and overtime rows as non-payable without missing wage errors  730ms
+   ✓ schedule-return-performance-parser > should filter out non-BP rows without employee code and add an aggregated warning  783ms
+   ✓ schedule-return-performance-parser > should not treat an employee as Pool when past Pool assignment has ended and current duty date is in a normal team  843ms
+   ✓ schedule-return-performance-parser > should treat worker as normal when normal assignment starts on the pool assignment end_date (endDate exclusive)  727ms
+   ✓ schedule-return-performance-parser > should not treat worker as pool when pool assignment exists at another site on the same date  775ms
+   ✓ schedule-return-performance-parser > N1~N5: invalid metadata / missing fields / unknown revision / mismatch fail-closed matrix (Phase 2.5-4 R2/T5)  1055ms
+   ✓ schedule-return-performance-parser > N6: parser-critical header / DATE / merge / row-height 변조 fail-closed matrix (Phase 2.5-4 R4/T5)  990ms
+   ✓ schedule-return-performance-parser > N7: legacy 정상 허용 vs metadata 제거된 shifted workbook 거절 (Phase 2.5-4 R5/T5)  819ms
+(node:44480) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-management-service.test.ts (21 tests) 16938ms
+   ✓ performance-management-service > should group pending rows by site and sort them by work date before team label  679ms
+   ✓ performance-management-service > should keep work date as the primary sort key when team labels would sort differently  542ms
+   ✓ performance-management-service > should recover team labels for existing stored rows without a persisted team label  538ms
+   ✓ performance-management-service > should default the overview to pending rows instead of loading approved archives  681ms
+   ✓ performance-management-service > should require a schedule month before listing approved archives  753ms
+   ✓ performance-management-service > should not show stale pending rows when the workbook is no longer in the pending folder  810ms
+   ✓ performance-management-service > should reparse rejected pending files instead of reusing stale stored entries  858ms
+   ✓ performance-management-service > should keep pool substitute rows visible while excluding them from payable approval  726ms
+   ✓ performance-management-service > should surface reapproval candidates when a changed file is re-staged after approval  922ms
+   ✓ performance-management-service > should surface reapproval when a holiday source edit changes payable minutes  905ms
+   ✓ performance-management-service > should reparse unchanged pending files on explicit refresh so stored schedule time changes are reflected  853ms
+   ✓ performance-management-service > should keep already approved rows visible in pending view and open comparison even without content changes  1007ms
+   ✓ performance-management-service > should not surface a reapproval summary when a restaged pending file has identical approved content  1061ms
+   ✓ performance-management-service > should mark individually re-approved rows as completed in pending view  920ms
+   ✓ performance-management-service > should keep a finalized file moved back into pending out of reapproval when content is unchanged  1049ms
+   ✓ performance-management-service > should keep the approved view limited to approved archive rows when an approved file is re-staged into pending  830ms
+   ✓ performance-management-service > should keep reapproval file summary available in pending view even before individual reapproval  903ms
+   ✓ performance-management-service > should block pending approval when no hourly rate is applicable on the work date  671ms
+   ✓ performance-management-service > should show the approved manual hourly rate without missing-wage alerts after approval  732ms
+   ✓ performance-management-service > should keep approved snapshot data visible even if the archived file is re-read with missing hourly rate alerts  761ms
+   ✓ performance-management-service > should treat Pool legal-holiday and overtime rows as non-payable rather than approved ghosts in approved folder and prevent approval in pending (P2-6-D6)  736ms
+(node:47252) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-file-intake-service.test.ts (23 tests) 18365ms
+   ✓ performance-file-intake-service > should sync a returned schedule workbook into sqlite and parse per-entry rows  662ms
+   ✓ performance-file-intake-service > should remove the stored pending detail by file path when the watch remove event arrives  542ms
+   ✓ performance-file-intake-service > should backfill approved snapshots with source signatures when approved files are reparsed  578ms
+   ✓ performance-file-intake-service > should reparse unchanged approved files when legacy snapshots are missing source signatures  733ms
+   ✓ performance-file-intake-service > should restore missing monthly schedules from exported plans before reparsing returned files  832ms
+   ✓ performance-file-intake-service > should restore missing monthly schedules using archived historical employees  905ms
+   ✓ performance-file-intake-service > should restore missing monthly schedules using historical assignments after transfer  832ms
+   ✓ performance-file-intake-service > should restore shift times for a pattern that uses non-D/E/N duty codes (A/B/C 3교대)  837ms
+   ✓ performance-file-intake-service > skips workers whose grid position has no usable pattern time and surfaces an unresolved-duty warning  704ms
+   ✓ performance-file-intake-service > keeps a partially-restored month eligible for re-restore and replaces (not duplicates) it once the pattern resolves  946ms
+   ✓ performance-file-intake-service > re-restores a legacy 'system-restore' schedule that still carries null-time rows (0.4.23 upgrade self-heal)  885ms
+   ✓ performance-file-intake-service > flips a stuck partial marker to full when the unresolved worker no longer appears in the export roster  723ms
+   ✓ performance-file-intake-service > re-restores a 'system-restore' row whose only item is a degenerate window (phantom 24h shift)  767ms
+   ✓ performance-file-intake-service > re-restores to correct a partial row whose only drift is team/sort metadata  751ms
+   ✓ performance-file-intake-service > self-heals a hidden retired worker's null-time row that the active-item view would mask as complete  754ms
+   ✓ performance-file-intake-service > should backfill approved snapshot source signatures during startup recovery without navigation  883ms
+   ✓ performance-file-intake-service > should rebaseline approved holiday snapshots after restoring monthly schedules  1003ms
+   ✓ performance-file-intake-service > should surface a startup recovery status when an exported schedule cannot be restored  769ms
+   ✓ performance-file-intake-service > should limit pending sync to the selected nested year and month folder  714ms
+   ✓ performance-file-intake-service > should report an issue when a pending Excel file does not match the returned schedule format  701ms
+   ✓ performance-file-intake-service > should reparse known changed files during full-period sync even after the new file limit is reached  1066ms
+   ✓ performance-file-intake-service > should prune missing pending files during full-period sync even when new files exceed the parse limit  981ms
+   ✓ performance-file-intake-service > N8: metadata/revision/structure 오류 파일 인테이크 시 issue 생성 및 저장 실적 0건 원자성 (Phase 2.5-4 R8/T6)  796ms
+(node:16024) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-approval-flow-service.test.ts (16 tests) 12883ms
+   ✓ performance-approval-flow-service > should approve a single row while keeping the file pending until all rows are processed  741ms
+   ✓ performance-approval-flow-service > should ignore pool substitute rows for approval progress and allowance results  596ms
+   ✓ performance-approval-flow-service > should still block an identical duplicate approval for the same entry  540ms
+   ✓ performance-approval-flow-service > should allow reapproval for the same pending entry when a manual hourly rate is newly assigned  694ms
+   ✓ performance-approval-flow-service > should archive the file and mark it effective after every parsed row is approved  847ms
+   ✓ performance-approval-flow-service > should not create a reapproval record when identical approved content is restaged  864ms
+   ✓ performance-approval-flow-service > should keep a fully re-approved pending file in place until the operator finalizes it  1000ms
+   ✓ performance-approval-flow-service > should detect an approved archive even when legacy schedule keys include directory suffixes  945ms
+   ✓ performance-approval-flow-service > should block finalize when some reapproval rows were not individually re-approved  922ms
+   ✓ performance-approval-flow-service > should allow reapproval with a manually assigned hourly rate and keep the note in approval history  707ms
+   ✓ performance-approval-flow-service > should allow reapproval with a manual hourly rate even when the restaged row reports missing wage information  1067ms
+   ✓ performance-approval-flow-service > should re-enable approval for a hand-moved orphan whose approved source is gone  951ms
+   ✓ performance-approval-flow-service > should block returning a file to pending when it is not currently approved  697ms
+   ✓ performance-approval-flow-service > should cleanly return an approved file to pending and wipe its prior approvals  733ms
+   ✓ performance-approval-flow-service > should block finalizing a first-time file over an existing approved copy of the same schedule  849ms
+   ✓ performance-approval-flow-service > should block approving non-payable performance entries (Pool / BP / unassigned code)  731ms
+(node:10380) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/allowance-document-export-service.test.ts (23 tests) 11223ms
+   ✓ allowance-document-export-service > should generate proposal, attachment1, and attachment2 files from an approved calculation  772ms
+   ✓ allowance-document-export-service > should keep customer name in proposal when the template file name is customized  741ms
+   ✓ allowance-document-export-service > should resolve customer name when the stored site name differs only by spacing  919ms
+   ✓ allowance-document-export-service > should keep the compact attachment1 early payout block when no early payout rows exist  1168ms
+   ✓ allowance-document-export-service > should separate early payout rows into proposal section 3 and exclude them from section 2 totals  1148ms
+   ✓ allowance-document-export-service > should place early payout proposal headers below a spliced regular summary total row  992ms
+   ✓ allowance-document-export-service > should export without a merge collision when both regular and early-payout summaries overflow the template capacity (spliceRows insert)  1278ms
+   ✓ allowance-document-export-service > should export proposal, attachment1, and attachment2 XLSX files even when all template sourcePaths do not exist (N3)  958ms
+   ✓ allowance-document-export-service > should exclude Pool, BP, and unassigned non-BP employees from allowance approval and document export, keeping only valid assigned employees (N5)  968ms
+   ✓ allowance-document-export-service > should apply customized saved layout definitions and handle duplicate output filenames with _dup01  1033ms
+   ✓ allowance-document-export-service > E1 검증: proposal, attachment1, attachment2 실제 writer의 definition 생략 결과와 explicit 기본 definition 결과의 full semantic parity (100% 일치)  304ms
+(node:46844) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/database-migration-service.test.ts (38 tests) 9955ms
+   ✓ database-migration-service > should replace the current sqlite database with a json backup while preserving current settings  326ms
+   ✓ database-migration-service > should preserve approval and audit history tables across a backup→restore round trip  350ms
+   ✓ database-migration-service > N5: should succeed when preview onPreviewSuccess callback records access_logs before token issuance  344ms
+   ✓ database-migration-service > N8: should safely remove unassigned non-BP entry and update performance_files metadata  397ms
+   ✓ database-migration-service > C01: should preserve existing operating settings (patch note/skip version/existing marker) and restore business rule keys from JSON  628ms
+   ✓ database-migration-service > C01: should NOT create optional operating keys when absent from target device DB  513ms
+   ✓ database-migration-service > C01: should generate new reparse marker when policy date is changed  499ms
+   ✓ database-migration-service > C02: should verify 40 tables / 456 columns contract against isolated DB PRAGMA table_info  1832ms
+   ✓ database-migration-service > C02: should block execution with modified corrupted backup file via previewToken SHA mismatch and preserve live DB and pre-backup  309ms
+   ✓ database-migration-service > C03: should reject restore if live database is modified before runDatabaseMigrationUpdate call  329ms
+   ✓ database-migration-service > C03: should abort restore if live database is modified during pre-backup await and preserve inserted rows  323ms
+(node:50008) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/excel-import-gap-campaign.test.ts (17 tests) 8215ms
+   ✓ excel-import gap campaign — 실적 파서 가드 > drops a holiday row whose date cell lost the pink fill (with pink control row)  707ms
+   ✓ excel-import gap campaign — 실적 파서 가드 > creates a zero-minute entry with a warning for out-of-range overtime clock values  779ms
+   ✓ excel-import gap campaign — 실적 파서 가드 > ignores Excel lock files and non-Excel files, and errors on unknown grid layouts  796ms
+   ✓ excel-import gap campaign — 근무표 복구·패턴 한도 > restore reads only 변경전 columns — a name in 변경후 must be ignored  888ms
+   ✓ excel-import gap campaign — 근무표 복구·패턴 한도 > restore drops a grid name that matches two different employees  893ms
+   ✓ excel-import gap campaign — 승인 흐름 후속 > holds the auto-archive when a registered holiday has no rows at all  857ms
+   ✓ excel-import gap campaign — 승인 흐름 후속 > archives normally when the registered holiday date is accounted for by any row  841ms
+   ✓ excel-import gap campaign — 승인 흐름 후속 > blocks reapproval of an entry whose allowance passed proposal approval  1132ms
+ ✓ src/main/services/installed-chrome-pdf-service.test.ts (16 tests) 3751ms
+   ✓ installed-chrome-pdf-service > 실제 Chrome을 통해 HTML을 %PDF- 바이트로 정상 렌더링한다 (T4)  1493ms
+   ✓ installed-chrome-pdf-service > 외부 네트워크 요청(http/https)은 차단된다 (N7)  1119ms
+(node:46784) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/document-layout-preview-service.test.ts (8 tests) 5451ms
+   ✓ document-layout-preview-service > should generate a valid readable XLSX workbook for all 5 Excel layout keys  418ms
+   ✓ document-layout-preview-service > E2 검증: 5개 레이아웃 키 전체에 대해 동일 초안 2회 실행 시 semantic snapshot 100% 일치 (결정성 검증)  1417ms
+   ✓ document-layout-preview-service > should generate 3 valid readable PDF artifacts for proposal-pdf layout key (T7, T10)  2218ms
+   ✓ document-layout-preview-service > should generate 1 valid readable PDF artifact for dashboard-report-pdf layout key (T7, T10)  1259ms
+(node:43404) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/allowance-approval-service.test.ts (8 tests) 6437ms
+   ✓ allowance-approval-service > should reject a site from allowance management and move the approved performance file back to pending  889ms
+   ✓ allowance-approval-service > should move a pending performance file to approved when approving allowance results  575ms
+   ✓ allowance-approval-service > should keep site rejection when the approved performance file is missing  564ms
+   ✓ allowance-approval-service > should require a comment when a site rejection syncs performance back to pending  728ms
+   ✓ allowance-approval-service > should block site rejection when a proposal-approved row exists in the same site closeout  796ms
+   ✓ allowance-approval-service > should reapprove a rejected pending file and recreate pending allowance rows for the current cycle  826ms
+   ✓ allowance-approval-service > should recognize an externally returned approved file as a rejected reapproval cycle  924ms
+   ✓ allowance-approval-service > should keep legal holiday rows available across repeated reject and reapproval cycles  1133ms
+(node:50716) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-plan-export-service.test.ts (10 tests) 6604ms
+   ✓ schedule-plan-export-service > should export a template1 schedule workbook file from stored monthly data  536ms
+   ✓ schedule-plan-export-service > should export a template2 schedule workbook using the selected layout  466ms
+   ✓ schedule-plan-export-service > should apply the same DD일 format to previous-month dates in the left calendar  753ms
+   ✓ schedule-plan-export-service > should export template1 without sourcePath, apply modifications, and parse identically via return parser  562ms
+   ✓ schedule-plan-export-service > should export template2 without sourcePath, apply modifications, and parse identically via return parser  694ms
+   ✓ schedule-plan-export-service > should throw an error and prevent file creation when duty code E is included in template2  432ms
+   ✓ schedule-plan-export-service > should use the stored schedule export directory when no output override is provided  594ms
+   ✓ schedule-plan-export-service > should apply active saved layout modifications and handle duplicate output filenames with _dup01  856ms
+   ✓ schedule-plan-export-service > 조정된 template1 및 template2 레이아웃 export 후 return parser 왕복 parity (Phase 2.5-4 R7/T4)  1075ms
+   ✓ schedule-plan-export-service > export 후 더 새 레이아웃 revision 활성화 시에도 과거 배포 파일은 당시 판으로 파싱 불변 (Phase 2.5-4 R2/T4)  635ms
+(node:41620) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/substitute-allowance-team-policy.test.ts (6 tests) 4643ms
+   ✓ substitute allowance team policy > should exclude a day-fixed team substitute once the policy date is set  679ms
+   ✓ substitute allowance team policy > should keep paying a rotating team substitute  561ms
+   ✓ substitute allowance team policy > should re-judge already parsed pending files after the policy date is set  593ms
+   ✓ substitute allowance team policy > should keep a day-fixed substitute payable while the policy date is not reached  549ms
+   ✓ substitute allowance team policy > should treat the covered shift as the substitute's own duty only when the duty code matches  1476ms
+   ✓ substitute allowance team policy > should keep the existing pool exclusion even without a policy date  785ms
+(node:47356) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/document-layout-preview-artifact-service.test.ts (7 tests) 4189ms
+   ✓ document-layout-preview-artifact-service > 정상 생성: 실제 기본 5종 통합 create/resolve 및 중첩 상대 경로·ZIP 서명 검증  373ms
+   ✓ document-layout-preview-artifact-service > PDF layout keys(proposal-pdf, dashboard-report-pdf) 정상 미리보기 생성 및 resolve (T7)  3743ms
+(node:44988) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/approved-allowance-calculation-service.test.ts (9 tests) 4611ms
+   ✓ approved-allowance-calculation-service > should calculate an approved overtime entry from the approval snapshot  723ms
+   ✓ approved-allowance-calculation-service > should return the stored calculation for duplicate runs of the same approved entry  559ms
+   ✓ approved-allowance-calculation-service > should persist the calculation summary and line items in sqlite  560ms
+   ✓ approved-allowance-calculation-service > should refresh the latest allowance result when an entry is re-approved  983ms
+   ✓ approved-allowance-calculation-service > should persist the early payout date for an allowance calculation  915ms
+   ✓ approved-allowance-calculation-service > DEC-001 direct calculation entry point regression (P2-6-D6) > should preserve existing calculation record without deleting or recalculating when already present  868ms
+(node:50424) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/dashboard-chart-export-service.test.ts (12 tests) 4363ms
+   ✓ dashboard-chart-export-service > should export dashboard chart and report as PDF using installed Chrome (R9, R11)  3063ms
+(node:44772) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/auth-service.test.ts (11 tests) 3578ms
+   ✓ auth-service > should rotate the bootstrap password after a successful password change  497ms
+   ✓ auth-service > should retire the seeded bootstrap file entry after the first password change  355ms
+   ✓ auth-service > should lock the account after too many invalid attempts and unlock after the window  421ms
+   ✓ auth-service > should clear prior failure counts after a successful login  303ms
+   ✓ auth-service > should reject non-active users even when the password matches  355ms
+   ✓ auth-service > should clear the session on sign out  341ms
+(node:43116) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/operations-storage-service.test.ts (10 tests) 2635ms
+   ✓ operations-storage-service > should create, update, and delete stored operation users  512ms
+(node:46684) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/excel-import-stress-campaign.test.ts (5 tests) 2635ms
+   ✓ excel-import stress campaign > parses a returned workbook with the overtime table filled to capacity (62 rows)  749ms
+   ✓ excel-import stress campaign > parses 31 consecutive pink holiday rows credited via 홍길동 slots  673ms
+   ✓ excel-import stress campaign > caps full-period scans at 20 newly parsed files and finishes the rest next run  725ms
+   ✓ excel-import stress campaign > analyzes a 90-day / 24-worker roster and detects the 12-day cycle  455ms
+(node:45500) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-queue-service.test.ts (4 tests) 2448ms
+   ✓ performance-queue-service > should list queued returned schedule files with month and site metadata  680ms
+   ✓ performance-queue-service > should resolve queued file detail by the generated file id  537ms
+   ✓ performance-queue-service > should map approved lookup to approvedDir/YYYY-MM and parse archived files  612ms
+   ✓ performance-queue-service > should recover a stale pending row even when a legacy approved status was left behind  619ms
+(node:50776) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/allowance-document-pdf-service.test.ts (16 tests) 2108ms
+   ✓ allowance-document-pdf-service > writes 3 allowance PDF documents atomically using installed Chrome  2067ms
+ ✓ src/main/services/schedule-plan-adapter.test.ts (9 tests) 2068ms
+   ✓ inspectSchedulePlanTemplate > E1 검증: schedule template1 및 template2에 대해 definition 생략과 explicit 기본 definition의 actual output full semantic parity (100% 일치)  843ms
+   ✓ inspectSchedulePlanTemplate > strict metadata 구조 검증 및 reference workbook protected structure matrix (Phase 2.5-4 R4/R5/T3)  781ms
+(node:51140) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/main/services/attachment1-rank-master-data.test.ts > 별첨1 직급 공백 재현 > HOP 1-4: a populated 직급 survives master -> entry -> approval -> allowance_calculations -> 별첨1 D column
+[HOP1 parsed entry employeeRank] ["사원","사원","사원"]
+[HOP3 allowance_calculations.employee_rank] [{"employee_code":"EMP-PF-T1-H","employee_rank":"사원"},{"employee_code":"EMP-PF-T1-S2","employee_rank":"사원"},{"employee_code":"EMP-PF-T1-O","employee_rank":"사원"}]
+[HOP4 별첨1 B/C/D] [{"code":"EMP-PF-T1-S2","name":"다온","rank":"사원"},{"code":"EMP-PF-T1-O","name":"마루","rank":"사원"},{"code":"EMP-PF-T1-H","name":"가람","rank":"사원"}]
+
+stdout | src/main/services/attachment1-rank-master-data.test.ts > 별첨1 직급 공백 재현 > HOP 4: a blank 직급 on the employee master makes the 별첨1 직급 column render '-' for every row, and re-filling the master rank fixes it on re-export with no re-approval
+[BLANK HOP1 parsed entry employeeRank] [null,null,null]
+[BLANK HOP3 allowance_calculations.employee_rank] [{"employee_rank":null}]
+[BLANK HOP4 별첨1 B/C/D] [{"code":"EMP-PF-T1-S2","name":"다온","rank":"-"},{"code":"EMP-PF-T1-O","name":"마루","rank":"-"},{"code":"EMP-PF-T1-H","name":"가람","rank":"-"}]
+
+stdout | src/main/services/attachment1-rank-master-data.test.ts > 별첨1 직급 공백 재현 > HOP 4: a blank 직급 on the employee master makes the 별첨1 직급 column render '-' for every row, and re-filling the master rank fixes it on re-export with no re-approval
+[REPAIRED HOP4 별첨1 B/C/D] [{"code":"EMP-PF-T1-S2","name":"다온","rank":"과장"},{"code":"EMP-PF-T1-O","name":"마루","rank":"과장"},{"code":"EMP-PF-T1-H","name":"가람","rank":"과장"}]
+
+ ✓ src/main/services/attachment1-rank-master-data.test.ts (3 tests) 1611ms
+   ✓ 별첨1 직급 공백 재현 > HOP 1-4: a populated 직급 survives master -> entry -> approval -> allowance_calculations -> 별첨1 D column  837ms
+   ✓ 별첨1 직급 공백 재현 > HOP 4: a blank 직급 on the employee master makes the 별첨1 직급 column render '-' for every row, and re-filling the master rank fixes it on re-export with no re-approval  772ms
+(node:39824) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/holiday-substitute-cancellation-fix.test.ts (3 tests) 1708ms
+   ✓ 휴일 대체/크레딧 결함 회귀 가드 (적대검증 2026-06-15) > (A) 한 사람이 같은 휴일에 두 자리면, 대체된 자리만 취소되고 직접 근무한 자리는 살아남는다  671ms
+   ✓ 휴일 대체/크레딧 결함 회귀 가드 (적대검증 2026-06-15) > (B) None 자리 직접근무자가 같은 날 다른 사람을 대체해도, 두 건 모두 남고(조용한 누락 없음) 시간이 겹치면 충돌 경고로 드러난다  528ms
+   ✓ 휴일 대체/크레딧 결함 회귀 가드 (적대검증 2026-06-15) > (C) 동명이인이 같은 휴일에 함께 있어 사번을 확정할 수 없으면 휴일 실적은 제거되고 대체 실적만 반영된다  508ms
+(node:49632) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/attachment1-rank-shipped-defect.test.ts (2 tests) 1510ms
+   ✓ 별첨1 직급 — 0.5.3 사번 대조 결함 > 직급을 채워도 인력 사번에 공백이 붙어 있으면 0.5.3은 못 찾고, 지금 판은 찾아 낸다  862ms
+   ✓ 별첨1 직급 — 0.5.3 사번 대조 결함 > 퇴사로 삭제 처리된 인력도 그 달 문서에는 직급이 찍힌다  647ms
+(node:51112) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/allowance-proposal-approval-service.test.ts (2 tests) 1525ms
+   ✓ allowance-proposal-approval-service > should review allowances, preview the proposal, and finalize proposal approval with backup  841ms
+   ✓ allowance-proposal-approval-service > should roll back proposal approval DB changes when finalization fails after export and backup  683ms
+(node:12036) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/document-template-management-service.test.ts (7 tests) 1414ms
+   ✓ document-template-management-service > should inspect a supported schedule template and persist it as pending  318ms
+(node:16188) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/shift-pattern-storage-service.test.ts (15 tests) 1437ms
+ ✓ src/main/services/installer-update-data-script.test.ts (1 test) 1210ms
+   ✓ installer-update-data.ps1 > backs up and restores the packaged user data directory  1209ms
+(node:46504) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/document-layout-storage-service.test.ts (13 tests) 1479ms
+ ✓ src/main/services/built-in-excel-layout-service.test.ts (8 tests) 1435ms
+   ✓ built-in-excel-layout-service > should match template1 sample static layout with dynamic values scrubbed  521ms
+   ✓ built-in-excel-layout-service > should match template2 sample static layout with dynamic values scrubbed  434ms
+(node:49624) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-approved-row-management-service.test.ts (2 tests) 1283ms
+   ✓ performance-approved-row-management-service > blocks hiding approved rows that already have allowance history  687ms
+   ✓ performance-approved-row-management-service > hides only the approved list row when no allowance history is linked  595ms
+(node:48488) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/changed-slot-priority-rule.test.ts (2 tests) 1252ms
+   ✓ 변경후 우선 규칙 — 적용 시작일 이전(옛 규칙 유지) > credits the 변경전 worker and ignores 변경후, exactly as before  682ms
+   ✓ 변경후 우선 규칙 — 적용 시작일 이후 > credits whoever is written into 변경후, whatever 변경전 says  569ms
+(node:46768) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/employee-history-service.test.ts (11 tests) 1173ms
+(node:31996) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/employee-storage-service.test.ts (12 tests) 1228ms
+(node:44468) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-plan-preview-service.test.ts (4 tests) 1159ms
+   ✓ schedule-plan-preview-service > should build a template1 preview from a stored monthly schedule  311ms
+   ✓ schedule-plan-preview-service > should build a template2 preview with day, night, and off slots  301ms
+(node:33432) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-plan-team-member-order.test.ts (3 tests) 1117ms
+   ✓ schedule plan export — team member row order > publishes team members in the arranged order, leader first — not Korean alphabetical  565ms
+(node:37540) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/attachment1-rank-name-fallback.test.ts (1 test) 1031ms
+   ✓ 별첨1 직급 - 사번을 못 찾을 때 이름으로 보조 조회 > resolves 직급 by name when the approved row's 사번 is a placeholder, but not for a 동명이인  1030ms
+(node:38864) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/account-recovery-service.test.ts (3 tests) 1158ms
+   ✓ account-recovery-service > should reset the admin account after repeated invalid sign-in attempts with a valid recovery key  491ms
+   ✓ account-recovery-service > should lock recovery attempts after repeated invalid keys  410ms
+ ✓ src/main/services/document-layout-excel-render-service.test.ts (18 tests) 987ms
+   ✓ document-layout-excel-render-service > E1 검증: 5개 기본 키 full semantic parity 검증 (기본 정의 적용 시 셀/서식/병합/행열/설정/이미지 100% 불변)  538ms
+(node:48084) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-plan-publish-service.test.ts (2 tests) 992ms
+   ✓ schedule-plan-publish-service > should copy an exported schedule file into the approved directory  545ms
+   ✓ schedule-plan-publish-service > should avoid overwriting an existing file in the approved directory  445ms
+(node:26632) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-holiday-gap-service.test.ts (8 tests) 873ms
+(node:17992) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/main/services/dongjak-hong-yuseong-verification.test.ts > 동작국사 홍길동→유성 치환 슬롯 실데이터 검증 > A/B/C 패턴 근무표가 사라졌다 복원돼도 유성의 치환 실적이 0분이 아니라 420분·양수 원으로 산출된다
+
+==================== 동작국사 홍길동→유성 치환 슬롯 실검증 ====================
+사이트: 동작국사 / 월: 2026-03 / 패턴: ABCX (A/B/C, 그리드 D/E/N)
+
+[복원 전 — 근무표 사라진 상태(버그 재현)]
+  · 유성 치환 실적 : 0분
+  · 한가람 휴일 실적: 0분
+
+[복원 후 — A/B/C→D/E/N 시간대 분류 성공]
+  · 복원 스케줄 수  : 1건, 미해결 경고: 0건
+  · 유성 치환 실적  : 420분 (홍길동 B/저녁 14:00-22:00 슬롯 크레딧)
+      └ 수당(시급 12,900원 × 420분 × 1.5 ÷ 60) = 135,450원
+  · 한가람 휴일 실적: 660분 (전부 기본근로)
+      └ 수당(기본 660×1.5) = 217,800원
+===============================================================================
+
+
+ ✓ src/main/services/dongjak-hong-yuseong-verification.test.ts (1 test) 784ms
+   ✓ 동작국사 홍길동→유성 치환 슬롯 실데이터 검증 > A/B/C 패턴 근무표가 사라졌다 복원돼도 유성의 치환 실적이 0분이 아니라 420분·양수 원으로 산출된다  783ms
+(node:46296) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > A. 기본 공휴일 달력 시드 내용 (전역)
+[A] 2026 달력 수: 1
+[A] 2026 공휴일 목록: ["2026-01-01","2026-03-01","2026-05-05"]
+[A] 2025 달력 수: 0
+[A] 2027 달력 수: 0
+
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > B. 같은 근무·같은 시간인데 달력에 날짜가 없으면 평일(weekday-overtime)로 계산된다
+[B-1] 달력 미등록: weekday-overtime / 평_연장근로수당 / breakdown = {"totalWorkMinutes":480,"baseWorkMinutes":0,"overtimeMinutes":480,"nightMinutes":0,"holidayMinutes":0,"substituteMinutes":0} / lines = [{"allowanceCode":"overtime","workMinutes":480,"multiplier":1.5,"amount":156000}] / 합계 = 156000
+
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > B. 같은 근무·같은 시간인데 달력에 날짜가 없으면 평일(weekday-overtime)로 계산된다
+[B-2] 달력 등록후: holiday-overtime / 휴_연장근로수당 / breakdown = {"totalWorkMinutes":480,"baseWorkMinutes":0,"overtimeMinutes":480,"nightMinutes":0,"holidayMinutes":480,"substituteMinutes":0} / lines = [] / 합계 = 0
+
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > B. 같은 근무·같은 시간인데 달력에 날짜가 없으면 평일(weekday-overtime)로 계산된다
+[B-3] 달력 고친 뒤 같은 승인건 재실행: weekday-overtime / 합계 = 156000 / 계산id 동일 = true
+
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > D. 그리드 분홍칠로 뽑힌 행(workType=holiday)은 달력과 무관하게 법정공휴일로 계산된다
+[D] 달력 미등록 + workType=holiday: legal-holiday / 법정공휴일 / breakdown = {"totalWorkMinutes":480,"baseWorkMinutes":480,"overtimeMinutes":0,"nightMinutes":0,"holidayMinutes":480,"substituteMinutes":0} / lines = [{"allowanceCode":"base","workMinutes":480,"multiplier":1.5,"amount":156000}] / 합계 = 156000
+
+stdout | src/main/services/boramae-holiday-weekday-diagnosis.test.ts > 보라매DC 휴일→평일 추출 진단 > C. 근무지 패턴이 '평·휴 통합(unified)'이면 공휴일에도 평일 근무시간이 나온다
+[C] unified(통합) 근무시간: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+[C] split(분리)+달력등록 근무시간: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+[C] split(분리)+달력누락 근무시간: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+
+ ✓ src/main/services/boramae-holiday-weekday-diagnosis.test.ts (4 tests) 810ms
+(node:49700) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/monthly-schedule-storage-service.test.ts (3 tests) 775ms
+(node:48884) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-overtime-repair-service.test.ts (1 test) 730ms
+   ✓ performance-overtime-repair-service > repairs stored overtime approvals and allowance calculations that were saved with base minutes  729ms
+(node:1840) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/holiday-substitute-redesign.test.ts (1 test) 656ms
+   ✓ 휴일 대체근무 재설계 — 이중계산 차단 / 변경후 BP 스킵 / 평일 불변 > 휴일 대체표 실명 대체자는 본표 원근무자를 취소하고 단건만 남기며, 변경후 BP는 스킵, 평일 대체는 불변  655ms
+(node:30444) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/holiday-none-regular-credit.test.ts (1 test) 707ms
+   ✓ 요건1 — 변경전 None은 빈칸처럼 변경후 근무자를 살린다 > 같은 휴일 행에서 변경전 None+변경후 실명 / 빈칸+변경후 실명 / 실명 단독이 모두 파싱된다  707ms
+(node:47012) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/database-backup-service.test.ts (4 tests) 625ms
+(node:40252) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/template-management-workflow.test.ts (1 test) 526ms
+   ✓ template-management workflow > should import, save, approve, preview, and export a schedule template end-to-end  526ms
+(node:50956) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/site-storage-service.test.ts (5 tests) 507ms
+(node:43688) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/main/services/boramae-holiday-weekend-crosscheck.test.ts > 적대검증: 주말(토·일) 경로는 공휴일 달력과 무관하다 > E. 요일 확인 + 달력이 비어 있어도 토·일은 휴일 근무시간이 나온다 (split)
+[E] 2026-09-25 = 금요일
+[E] 2026-09-26 = 토요일
+[E] 2026-09-27 = 일요일
+[E] split + 달력비움 금요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+[E] split + 달력비움 토요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+[E] split + 달력비움 일요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-27","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+
+stdout | src/main/services/boramae-holiday-weekend-crosscheck.test.ts > 적대검증: 주말(토·일) 경로는 공휴일 달력과 무관하다 > F. 토요일에 평일 시간이 나오는 유일한 이유는 unified 이며, 달력을 채워도 안 고쳐진다
+[F] unified + 달력비움 토요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+[F] unified + 달력에 토요일 등록: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+
+stdout | src/main/services/boramae-holiday-weekend-crosscheck.test.ts > 적대검증: 주말(토·일) 경로는 공휴일 달력과 무관하다 > G. '평일 공휴일을 휴일로' 토글을 꺼도 토·일은 휴일 시간이다
+[G] 토글 off, 토요일, 달력비움 → 휴일시간? true
+[G] 토글 off, 금요일, 달력에 등록 → 휴일시간? false
+
+stdout | src/main/services/boramae-holiday-weekend-crosscheck.test.ts > 적대검증: 주말(토·일) 경로는 공휴일 달력과 무관하다 > H. 그런데 수당 계산 쪽은 토요일을 휴일로 안 본다 (두 축의 정의가 다름)
+[H] 2026 시드 달력: ["2026-01-01","2026-03-01","2026-05-05"]
+[H] 토요일 연장근무 수당 분류: weekday-overtime / 평_연장근로수당 / holidayMinutes = 0 / 합계 = 156000
+
+ ✓ src/main/services/boramae-holiday-weekend-crosscheck.test.ts (4 tests) 527ms
+(node:38072) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-archive-retention-service.test.ts (4 tests) 421ms
+(node:36788) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-file-storage-service.test.ts (4 tests) 416ms
+(node:27160) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/app-settings-storage-service.test.ts (3 tests) 355ms
+(node:32172) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-orphan-file-healing-service.test.ts (3 tests) 304ms
+(node:23712) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/workforce-wage-bulk-update-service.test.ts (2 tests) 284ms
+(node:20516) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/file-watch-runtime-service.test.ts (2 tests) 227ms
+ ✓ src/main/http/dialog-bridge.test.ts (4 tests) 253ms
+(node:2184) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/document-template-preview-service.test.ts (2 tests) 215ms
+(node:48440) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/account-recovery-maintenance-script.test.ts (1 test) 212ms
+(node:46284) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-file-case-normalization.test.ts (2 tests) 190ms
+(node:49644) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-legacy-name-normalization-service.test.ts (2 tests) 180ms
+(node:43932) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/sqlite-storage-service.test.ts (4 tests) 124ms
+(node:38036) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/schedule-plan-export-history-service.test.ts (1 test) 116ms
+(node:32032) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/static-files.test.ts (5 tests) 114ms
+(node:45524) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/performance-approval-service.test.ts (4 tests) 108ms
+(node:50004) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+서버 실행 중 — http://127.0.0.1:55924 · 판 0.1.0 · Node v24.13.0 · 데이터 폴더: C:\Projects\Active\ShiftMgmt_V4\data
+ ✓ src/main/server.test.ts (13 tests) 75ms
+ ✓ src/main/services/excel-template-parser.test.ts (3 tests) 104ms
+ ✓ src/main/services/document-layout-definition-service.test.ts (20 tests) 83ms
+ ✓ src/main/services/site-pattern-extraction-service.test.ts (4 tests) 78ms
+(node:9504) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/routes/core-routes.test.ts (3 tests) 44ms
+ ✓ src/main/services/auth-password-service.test.ts (3 tests) 53ms
+(node:41580) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/routes/operations-routes.test.ts (18 tests) 38ms
+(node:21472) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/access-log-service.test.ts (1 test) 28ms
+ ✓ src/shared/domain/monthly-schedule-draft.test.ts (20 tests) 23ms
+ ✓ src/main/services/auth-bootstrap-service.test.ts (4 tests) 23ms
+ ✓ src/web/screens/home-model.test.ts (12 tests) 21ms
+ ✓ src/main/services/release-publish-helpers.test.ts (3 tests) 10ms
+ ✓ src/web/bridge/app-bridge.test.ts (6 tests) 15ms
+(node:38896) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/attachment1-rank-pdf-column.test.ts (4 tests) 16ms
+ ✓ src/shared/domain/schedule-rule-warning.test.ts (2 tests) 17ms
+ ✓ src/shared/domain/shift-pattern-rotation-rules.test.ts (6 tests) 15ms
+ ✓ src/shared/domain/six-team-two-cycle-feasibility.test.ts (5 tests) 14ms
+(node:28996) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/routes/performance-routes.test.ts (5 tests) 13ms
+(node:49076) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/routes/workforce-routes.test.ts (4 tests) 14ms
+ ✓ src/main/services/holiday-api-service.test.ts (1 test) 10ms
+ ✓ src/shared/domain/shift-pattern-version.test.ts (10 tests) 12ms
+ ✓ src/main/services/database-file-policy-service.test.ts (6 tests) 10ms
+(node:25960) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/routes/allowance-routes.test.ts (6 tests) 10ms
+ ✓ src/main/services/release-history-service.test.ts (3 tests) 13ms
+(node:44448) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/runtime.test.ts (1 test) 7ms
+(node:46084) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/session.test.ts (7 tests) 7ms
+stdout | src/shared/domain/boramae-holiday-verify-adversarial.test.ts > 적대 검증: 조사자가 안 친 분기 > E1. 토·일은 공휴일 달력이 완전히 비어 있어도 휴일 근무시간이 나온다
+[E1] split + 달력 완전 비움 + 토요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+[E1] split + 달력 완전 비움 + 일요일: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-27","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+[E1] shouldUseHolidayTimes(split, 토, 빈달력) = true
+
+stdout | src/shared/domain/boramae-holiday-verify-adversarial.test.ts > 적대 검증: 조사자가 안 친 분기 > E2. split이고 달력에도 있는데 휴일 시간칸이 비면 조용히 평일 시간으로 폴백한다
+[E2] split + 달력등록 + 휴일시간칸 빔 (금): {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+[E2] split + 휴일시간칸 빔 (토): {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+
+stdout | src/shared/domain/boramae-holiday-verify-adversarial.test.ts > 적대 검증: 조사자가 안 친 분기 > E3. split이고 달력에도 있는데 '평일 공휴일도 휴일로' 토글이 꺼져 있으면 평일 시간
+[E3] split + 달력등록 + 토글 false (금, 평일공휴일): {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-25","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+[E3] split + 토글 false (토): {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"21:00","breakMinutes":90}
+
+stdout | src/shared/domain/boramae-holiday-verify-adversarial.test.ts > 적대 검증: 조사자가 안 친 분기 > E4. unified면 토·일에도 평일 시간 (unified가 최우선 관문인 건 사실)
+[E4] unified + 달력에 토요일까지 등록: {"teamLabel":"A조","employeeCode":"EMP-001","employeeName":"김철수","workDate":"2026-09-26","dutyCode":"D","startTime":"09:00","endTime":"18:00","breakMinutes":60}
+
+ ✓ src/shared/domain/boramae-holiday-verify-adversarial.test.ts (4 tests) 7ms
+ ✓ src/shared/domain/duty-type-catalog.test.ts (21 tests) 7ms
+ ✓ src/shared/domain/shift-pattern-compression.test.ts (11 tests) 6ms
+ ✓ src/main/services/performance-file-metadata-service.test.ts (3 tests) 5ms
+ ✓ src/main/services/allowance-preview-service.test.ts (2 tests) 5ms
+ ✓ src/main/ipc/ipc-handler-helpers.test.ts (15 tests) 6ms
+ ✓ src/main/services/database-replacement-service.test.ts (5 tests) 6ms
+ ✓ src/shared/bridge/channel-contracts.test.ts (7 tests) 5ms
+ ✓ src/main/services/document-template-canvas-service.test.ts (3 tests) 5ms
+ ✓ src/main/services/document-brand-logo-service.test.ts (3 tests) 4ms
+ ✓ src/shared/domain/allowance-service.test.ts (8 tests) 5ms
+ ✓ src/shared/domain/calculation.test.ts (19 tests) 4ms
+ ✓ src/main/services/document-template-style-apply-service.test.ts (1 test) 4ms
+(node:42056) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/http/route-registry.test.ts (3 tests) 5ms
+(node:45516) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/monthly-schedule-restore-service.test.ts (20 tests) 4ms
+ ✓ src/shared/domain/site-pattern-detection.test.ts (4 tests) 4ms
+ ✓ src/shared/domain/rotation-index.test.ts (11 tests) 3ms
+ ✓ src/main/services/performance-approval-resolution-service.test.ts (11 tests) 3ms
+ ✓ src/shared/domain/team-membership.test.ts (5 tests) 3ms
+ ✓ src/shared/domain/team-work-type.test.ts (4 tests) 3ms
+ ✓ src/shared/domain/performance-file.test.ts (7 tests) 3ms
+ ✓ src/shared/lib/excel-column.test.ts (5 tests) 3ms
+ ✓ src/main/services/ipc-auth-guard-service.test.ts (10 tests) 3ms
+ ✓ src/main/services/file-watch-service.test.ts (6 tests) 3ms
+ ✓ src/main/services/document-template-source-path-service.test.ts (3 tests) 3ms
+ ✓ src/shared/domain/allowance-rate-impact.test.ts (2 tests) 3ms
+ ✓ src/main/services/holiday-allbase-followups.test.ts (6 tests) 3ms
+ ✓ src/shared/domain/substitute-allowance-policy.test.ts (8 tests) 4ms
+ ✓ src/main/services/app-settings-service.test.ts (3 tests) 3ms
+ ✓ src/shared/domain/authorization.test.ts (5 tests) 3ms
+ ✓ src/shared/domain/team-label.test.ts (4 tests) 3ms
+ ✓ src/shared/domain/employment-type.test.ts (5 tests) 2ms
+ ✓ src/shared/domain/changed-slot-priority-policy.test.ts (4 tests) 2ms
+ ✓ src/shared/domain/rounding.test.ts (6 tests) 3ms
+ ✓ src/shared/domain/database-migration.test.ts (4 tests) 2ms
+ ✓ src/shared/domain/employee-rank.test.ts (2 tests) 2ms
+ ✓ src/shared/lib/formatCurrency.test.ts (2 tests) 2ms
+(node:14488) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/main/services/approved-allowance-rate-selection.test.ts (3 tests) 2ms
+ ✓ src/shared/domain/allowance-rate-service.test.ts (3 tests) 2ms
+ ✓ src/shared/domain/allowance-document.test.ts (2 tests) 2ms
+
+ Test Files  132 passed (132)
+      Tests  912 passed (912)
+   Start at  17:01:51
+   Duration  276.16s (transform 2.41s, setup 367ms, collect 37.49s, tests 196.78s, environment 17ms, prepare 12.86s)
+

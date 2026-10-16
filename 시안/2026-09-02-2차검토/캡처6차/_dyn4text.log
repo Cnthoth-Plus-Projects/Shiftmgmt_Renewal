@@ -1,0 +1,72 @@
+=============== R1·N11 셸 19파일: 그룹 머리·배지·아이콘·☰·역할 칩 (상태별) ===============
+state-s1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-s2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=사용자 user=person 김지현
+state-s3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리 payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-s4 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-s5 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-s6 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈*^ domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-t1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리*^ group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-t3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리*^ group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-t4 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리*^ group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e4 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e5 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-e6 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-e7 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리*^ calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r4 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r5 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-r6 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포*^ fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=계획 담당 user=person 박은영
+state-a1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-a2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-a3-a5 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-a6 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-a7 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-a8 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리*^ monitoring:대시보드 | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-d1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드*^ | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-d2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드*^ | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-d3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드*^ | ☰=메뉴 접기/펼치기 | chip=승인 담당 user=person 이정호
+state-o1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o3 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o4 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o5 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o6 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o7 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o8 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-o9-o10 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리*^ history:활동 이력 | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-g1 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력*^ | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+state-g2 heads=─ 준비 ─/─ 운영 ─/─ 정산 ─/─ 관리 ─ | items=home:홈 domain:근무지 관리 group:인력 관리 calendar_month:근무표 배포 fact_check:실적 관리[128|승인 대기 실적 128건] payments:수당 관리 monitoring:대시보드 settings:운영 관리 history:활동 이력*^ | ☰=메뉴 접기/펼치기 | chip=관리자 user=person admin
+=============== R6·H1 상태줄 title 전수 (00-shell-1/2) ===============
+state-s1(6) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [폴더 감시 실행 중|승인 대기 폴더 자동 감시] [최신|현재 버전 최신 여부] [v2.3.1|버전 정보]
+state-s2(5) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [최신|현재 버전 최신 여부] [v2.3.1|버전 정보]
+state-s3(5) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [최신|현재 버전 최신 여부] [v2.3.1|버전 정보]
+state-s4(6) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [폴더 감시 실행 중|승인 대기 폴더 자동 감시] [최신|현재 버전 최신 여부] [v2.3.1|버전 정보]
+state-s5(6) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 05-20 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [폴더 감시 중단됨 다시 시작|승인 대기 폴더 자동 감시] [최신|현재 버전 최신 여부] [v2.3.1|버전 정보]
+state-s6(5) [DB 연결됨|데이터 폴더 연결됨] [최근 인테이크: 마지막 처리 완료 14:32|마지막 처리 완료 시각] [대기 파일 3개|대기 폴더 파일 수] [↑ 업데이트 가능 v2.4.0 [자세히 보기]|현재 버전 최신 여부] [v2.3.1|버전 정보]
+=============== R3·H3 S5/S6 셀 버튼 px · 처리 중 · S6 상태줄 opener 왕복 ===============
+S5 띠 12px → 다시 시작하는 중... disabled=true / 셀 12px → 다시 시작하는 중... disabled=true | S6 셀 [자세히 보기] fs=12px open=true focusIn=true ✕→focusBack=true | 밴드 [업데이트]→다운로드 중 | 모달 [다운로드]→다운로드 중 disabled=true
+=============== R2 01-login-1 L1~L3 ===============
+L1 shell=0 cardW=460 labels=로그인 ID,비밀번호 inputs=text(로그인 ID를 입력하세요) border=rgb(132, 138, 147) ; password(비밀번호를 입력하세요) border=rgb(132, 138, 147) btns=visibility|로그인 <12px=0
+   text: ── L1. 로그인 — 초기 ── 근무 관리 시스템 v2.3.1 로그인 ID 비밀번호 visibility 로그인 비밀번호를 잊은 경우 관리자에게 문의하세요.
+L2 shell=0 cardW=460 labels=로그인 ID,비밀번호 inputs=text=kimjihyun border=rgb(192, 57, 43) ; password=wrongpassword border=rgb(192, 57, 43) btns=visibility|로그인 <12px=0
+   text: ── L2. 로그인 — 인증 실패 ── 근무 관리 시스템 v2.3.1 error 로그인 ID 또는 비밀번호가 올바르지 않습니다. 로그인 ID 비밀번호 visibility 로그인 비밀번호를 잊은 경우 관리자에게 문의하세요.
+L3 shell=0 cardW=460 labels= inputs= btns=로그인 화면으로 돌아가기|[계정복구] <12px=0
+   text: ── L3. 로그인 — 계정 잠김 ── lock 계정이 잠겼습니다 비밀번호를 여러 번 잘못 입력해 계정이 잠겼습니다. 약 30분 후에 다시 시도해 주세요. 즉시 해제가 필요하면 관리자에게 문의하세요. 로그인 화면으로 돌아가기 관리자 계정이 잠긴 경우 계정복구키로 복구할 수 있습니다. [계정복구]
+L1 눈 토글: password(비밀번호 표시) → text(비밀번호 숨기기) | 체크박스=0 | 일러스트(L3)=1
+=============== R2 01-login-2 L4·L5 ===============
+L4 shell=0 cardW=460 labels=현재 비밀번호,새 비밀번호,새 비밀번호 확인 inputs=password;password;password btns=visibility|visibility|visibility|비밀번호 변경[a-dis] rules=check_circle 8자 이상(rgb(30, 122, 70))
+   text: ── L4. 로그인 — 비밀번호 변경 ── 근무 관리 시스템 v2.3.1 비밀번호 변경이 필요합니다 현재 비밀번호 visibility 새 비밀번호 visibility check_circle 8자 이상 check_circle 영문 대문자 포함 check_circle 영문 소문자 포함 radio_button_unchecked 숫자 포함 radio_button_unchecked 특수문자 포함 새 비밀번호 확인 visibility 모든 비밀번호 규칙을 충족해야 변경할 수 있습니다. 비밀번호 변경
+L5 shell=0 cardW=460 labels=계정복구키 inputs=password(계정복구키를 입력하세요) btns=visibility|취소|확인 rules=
+   text: ── L5. 로그인 — 관리자 복구키 ── key 관리자 복구키 입력 복구키는 시스템 설치 시 발급되며, 관리자만 보관하고 있습니다. 계정복구키 visibility 취소 확인
+L4 게이트 초기 aria-disabled=true 사유=모든 비밀번호 규칙을 충족해야 변경할 수 있습니다. fs=12px | 전부충족+일치: null 사유=(숨김) | 불일치: true 사유=새로운 비밀번호 확인이 일치하지 않습니다. fs=12px | 미충족: true 사유=모든 비밀번호 규칙을 충족해야 변경할 수 있습니다. fs=12px | 차단 클릭→ label=비밀번호 변경
+L5 빈값 [확인]→ 오류="계정복구키를 입력해주세요." vis=true fs=12px | 입력 필드 수=1 눈 토글=1
+=============== N5·N11 G1·O4 권한 열 · R4 O2/O3 ===============
+G1 권한 열: 관리자,승인 담당,승인 담당,계획 담당,계획 담당,사용자,사용자,관리자 | 행h=56
+O4 권한 열: 관리자,사용자,계획 담당,승인 담당 | O3 카드: 없음
+O2 발췌: "전체 18건 중 8건 표시" fs=12px vis=true | 행=8
+DONE

@@ -1,0 +1,18 @@
+{
+  "name": "faults-duplicate-core-ids-contract-core",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=contract-core"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:11:24.255356+00:00",
+  "pid": 29956,
+  "rc": 0,
+  "end": "2026-10-01T13:11:27.763676+00:00",
+  "elapsedSeconds": 3.5,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-duplicate-core-ids-contract-core.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-duplicate-core-ids-contract-core.stderr.txt"
+}

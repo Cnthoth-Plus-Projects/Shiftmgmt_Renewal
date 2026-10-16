@@ -1,0 +1,12 @@
+{
+  "time": "2026-10-12T15:01:44.286108+09:00",
+  "verdict": "FAILED",
+  "acceptance": "A1_NOT_ACCEPTED",
+  "received": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_143959_3-2c-A1-v3-Gemini_수신원본.md",
+  "closingArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_150144_3-2c-A1-v3-Sol-FAILED_독립검수종결본.md",
+  "handoff": {
+    "bytes": 16738,
+    "sha256": "2AE144A6A5B564E1545D38A774DF83581D7C379C91E7A95E3B456A938E741E41"
+  },
+  "controlsUnchangedBeforeClose": true
+}

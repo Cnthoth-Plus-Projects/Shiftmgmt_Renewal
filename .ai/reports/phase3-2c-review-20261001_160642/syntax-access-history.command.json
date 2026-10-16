@@ -1,0 +1,16 @@
+{
+  "name": "syntax-access-history",
+  "command": [
+    "node",
+    "--check",
+    "scripts/ui-checks/access-history.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:11:19.191298+00:00",
+  "pid": 896,
+  "rc": 0,
+  "end": "2026-10-01T07:11:19.330991+00:00",
+  "elapsedSeconds": 0.125,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\syntax-access-history.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\syntax-access-history.stderr.txt"
+}

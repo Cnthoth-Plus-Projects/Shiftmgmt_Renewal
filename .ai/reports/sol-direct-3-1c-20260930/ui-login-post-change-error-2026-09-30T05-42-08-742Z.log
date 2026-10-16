@@ -1,0 +1,9 @@
+
+PASS: [UI 검증 성공: login]
+- 대상 주소: http://127.0.0.1:18739/
+- 크롬: C:\Program Files\Google\Chrome\Application\chrome.exe (판 154.0.8037.58)
+- 뷰포트: 1440x900 (fullPage)
+- 캡처 산출물 (1개):
+  * post-change-error-view: artifacts/captures/phase3/login/run-20260930-144343-bygLuG/post-change-error-view.png
+- manifest: artifacts/captures/phase3/login/run-20260930-144343-bygLuG/manifest.json
+- 콘솔/페이지/요청/HTTP/정리 오류: 0건

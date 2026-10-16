@@ -1,0 +1,342 @@
+[
+  {
+    "batch": "1차",
+    "file": "03-home-1.html",
+    "beforeSHA": "c8042dc8797e90123caae5abcbd29b493017c18bf81c750a06ada43ca25bd1bf",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "c581a9876501f4f745c6fe54438531523e0b8e10e75ae5f9ffa5280ce842fbb1",
+    "matchesSnapshot": true,
+    "beforeBytes": 44697,
+    "afterBytes": 48607
+  },
+  {
+    "batch": "1차",
+    "file": "03-home-2.html",
+    "beforeSHA": "a52eeb3627e7f224ff318909d711788a24d0341e2fc207eb41dc2c128edfa259",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "8b7969abc28b93bd4f9319c481eea310c5e19159ffbaf4282f47f614f184aad7",
+    "matchesSnapshot": true,
+    "beforeBytes": 28592,
+    "afterBytes": 31252
+  },
+  {
+    "batch": "1차",
+    "file": "05-sites-wizard-1.html",
+    "beforeSHA": "6858d2880a2ca08fcd20be270f0ae61c74fca264c9f32b8cf4a9405ed104027d",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "fbb91cb8e29b79043ac373199e2b91f804caef6c5e8b9fe6eaf408b003442f29",
+    "matchesSnapshot": true,
+    "beforeBytes": 50422,
+    "afterBytes": 56491
+  },
+  {
+    "batch": "1차",
+    "file": "05-sites-wizard-2.html",
+    "beforeSHA": "7ed38ed41a35c9c6d06dbe794a29a93ad515262f10e89ef66caee1580be20404",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "94c6fc126d73e8c52b9f26fdef5cd2b8a0e7f5be4aa641e9fafa092195aa00c1",
+    "matchesSnapshot": true,
+    "beforeBytes": 42519,
+    "afterBytes": 48741
+  },
+  {
+    "batch": "1차",
+    "file": "05-sites-wizard-3.html",
+    "beforeSHA": "333b21931c03f6a03cffe63e489be67811e1f3b7da1e588e73eebcd28e82daab",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "447c457cd78e62ffee9f13c2e95406a1d9c48302539d31b837e8b1e38e9de083",
+    "matchesSnapshot": true,
+    "beforeBytes": 51164,
+    "afterBytes": 57944
+  },
+  {
+    "batch": "1차",
+    "file": "05-sites-wizard-4.html",
+    "beforeSHA": "2d774f7ebb2b3d864977fe7bc21acd3fa479bcbf67637a3f155525301fd1240b",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "8a8c39f0df1974130974e2030e3a90b8b1e50733032c4234a7c3786f9eb3a77c",
+    "matchesSnapshot": true,
+    "beforeBytes": 28122,
+    "afterBytes": 33369
+  },
+  {
+    "batch": "1차",
+    "file": "08-performance-1.html",
+    "beforeSHA": "f6303ad65cd181c4d0fa7288880ba6f6995b784951671d0a91b9d1a7816bd911",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "65a41c621c14634d2c3d8bb3042a5090a13538b13cbc558ebb9bc68008a68e33",
+    "matchesSnapshot": true,
+    "beforeBytes": 28468,
+    "afterBytes": 31504
+  },
+  {
+    "batch": "1차",
+    "file": "08-performance-2.html",
+    "beforeSHA": "58478bb5957b558265a17369264ba3cf8618b4a86ec31007e97f9d384efa433b",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "3ea8669b370b593a06cbb297e137487a8146aede5f6a2295cea29a8b45c9dcc2",
+    "matchesSnapshot": true,
+    "beforeBytes": 30529,
+    "afterBytes": 33140
+  },
+  {
+    "batch": "1차",
+    "file": "08-performance-3.html",
+    "beforeSHA": "e046444e217b1245857060717bbc600b2dc3fa0f8fd00a74b61d0107ccb818fb",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "164b17937cc3a1cf94733fffaed54809898d2cf744c3a77651b9202400193c7d",
+    "matchesSnapshot": true,
+    "beforeBytes": 49906,
+    "afterBytes": 61164
+  },
+  {
+    "batch": "1차",
+    "file": "08-performance-4.html",
+    "beforeSHA": "9d5894352b63d60a68dea1cc036a4aadaaf9e332724b41f45686959222fe0888",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "ead1b2090b1f5aff856fd4085c8e9b2bd4a0885f1239db1022eec3c3698b1797",
+    "matchesSnapshot": true,
+    "beforeBytes": 36074,
+    "afterBytes": 38283
+  },
+  {
+    "batch": "2차",
+    "file": "00-shell-1.html",
+    "beforeSHA": "bc8ef64c165c60b8abd363b54f252cab6e07384b354c35135be1e22054d2e6f6",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "e694ba57db26c5e852a72b4dee83aa9bd2f014d5984f0fb2134a8233ebd6298a",
+    "matchesSnapshot": true,
+    "beforeBytes": 23649,
+    "afterBytes": 27560
+  },
+  {
+    "batch": "2차",
+    "file": "00-shell-2.html",
+    "beforeSHA": "c568933d99bf9885389a0d2873bfadc12dcfd1472c155f94b5fd0a0eec4e1eae",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "d9fbee7d2e7f1c5421a3782ee0ef7ba3bd5d5c049363d83b481d398b46e989a9",
+    "matchesSnapshot": true,
+    "beforeBytes": 32520,
+    "afterBytes": 36431
+  },
+  {
+    "batch": "2차",
+    "file": "01-login-1.html",
+    "beforeSHA": "9f01bd521acf43fac241604975e350454917aa7a209609ab1736771ef2b54912",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "d9294bd934e8625db60bf4b50c26ed92cfc801710ebe7199baef79481a726cdf",
+    "matchesSnapshot": true,
+    "beforeBytes": 9884,
+    "afterBytes": 9884
+  },
+  {
+    "batch": "2차",
+    "file": "01-login-2.html",
+    "beforeSHA": "25bcc173d29e45c3355a974d0c48b12215041ffd690cd695e40ecba61bd45e3e",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "f4a42028d8b0105975164cf27d5a1375bc3e1ff007bbbc6fedcf23933b37b902",
+    "matchesSnapshot": true,
+    "beforeBytes": 12663,
+    "afterBytes": 12663
+  },
+  {
+    "batch": "2차",
+    "file": "02-common-1.html",
+    "beforeSHA": "b18a34d0b7b93cc9680f4f46d9f97d4cb5a5e358d9f14ff2d7fd2ca55e72783f",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "d774066b0391cb4cfc36c73a591a424a4d564efc5a80f200529b66aff8c7ff09",
+    "matchesSnapshot": true,
+    "beforeBytes": 21015,
+    "afterBytes": 21017
+  },
+  {
+    "batch": "2차",
+    "file": "02-common-2.html",
+    "beforeSHA": "dca0de51dec0b98ae7432aae037fc170b024ea3f675be1bb66dddb77c521a15d",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "fb2e1493a9f93312f783b8d6e329a535d5888fb33b76a34cf55ba9d1c2add8dd",
+    "matchesSnapshot": true,
+    "beforeBytes": 18530,
+    "afterBytes": 18529
+  },
+  {
+    "batch": "2차",
+    "file": "02-common-3.html",
+    "beforeSHA": "3633a423253d65013429b10d0ddd9a09bc56ef3c43e47bcfed846ff3699ceb77",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "27e6858f36b0b7e2b6e223cc802e85ebd164907f3807525de3dcea85b81b6b4d",
+    "matchesSnapshot": true,
+    "beforeBytes": 18062,
+    "afterBytes": 18061
+  },
+  {
+    "batch": "2차",
+    "file": "04-sites-1.html",
+    "beforeSHA": "8281614e2c42d642f4c5653813f33fa8cc5ccb2a5f270f64eedafd2aa38af439",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "3aa0aaf4b0cd6f42b95600da11b8c671203ab9dd6a7d6c49d007a1018be27308",
+    "matchesSnapshot": true,
+    "beforeBytes": 25201,
+    "afterBytes": 28901
+  },
+  {
+    "batch": "2차",
+    "file": "04-sites-2.html",
+    "beforeSHA": "f5cb0c7c3fb17cb46af2717ed42e75ec7592b8c122f59887f63bc3eb1be67eae",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "872b45576e34aeb40d6d57e31a2b2bbb926e7be93205eecd307db30ab37c2e27",
+    "matchesSnapshot": true,
+    "beforeBytes": 24344,
+    "afterBytes": 28304
+  },
+  {
+    "batch": "2차",
+    "file": "06-employees-1.html",
+    "beforeSHA": "55ce9acc24588926ca32d04630a5b34e950e520fcadaebd234873f8255ef9127",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "8f7e7dc70b5e7f671ad5f44b5ee57cf631546a01986c09d7d535358aadad0d7e",
+    "matchesSnapshot": true,
+    "beforeBytes": 32217,
+    "afterBytes": 48349
+  },
+  {
+    "batch": "2차",
+    "file": "06-employees-2.html",
+    "beforeSHA": "47da71c37fdbe1359b2cba58c9fe27ad61bf46f09fc6987b8831a6c3e2a9df9e",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "a2776f62e9d7303b71a402ae07c316b019c2dbc0bfd092589648be1dc63f323a",
+    "matchesSnapshot": true,
+    "beforeBytes": 38858,
+    "afterBytes": 42769
+  },
+  {
+    "batch": "2차",
+    "file": "06-employees-3.html",
+    "beforeSHA": "03e78127478e802b0ae028f17718769db407fc90aabf69e2b8bae9f4575a9347",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "dd8c14a745741f3d0175e30ba41a02b0f3639c37f85c8c07d9289e835950d39e",
+    "matchesSnapshot": true,
+    "beforeBytes": 46096,
+    "afterBytes": 50007
+  },
+  {
+    "batch": "2차",
+    "file": "07-schedule-1.html",
+    "beforeSHA": "e838f20f508b06bbad4ed58fe8d56824b37b3b2fa71b7f15dce8d641dc039578",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "f9187e3498600f7eb92322f34c6aa6f65934f337b0981d0b583ce97a6791085c",
+    "matchesSnapshot": true,
+    "beforeBytes": 37685,
+    "afterBytes": 41076
+  },
+  {
+    "batch": "2차",
+    "file": "07-schedule-2.html",
+    "beforeSHA": "1db8d2a91a3ed25590aecd3299a7e7d2a3041c951bb5a34ee25ae64d4841e588",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "37cfbd99497d57186a82d085a27fffad38dacc0e05f755494abc9a4628e73bea",
+    "matchesSnapshot": true,
+    "beforeBytes": 45623,
+    "afterBytes": 49274
+  },
+  {
+    "batch": "2차",
+    "file": "07-schedule-3.html",
+    "beforeSHA": "e4f705ddb04daece3ed6ba86e03662c5184102789c1d6a8ee62da3a0f4e0bb33",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "c83a9c9112f84b538f0e26aa3ef6acd3206000de4de0c29d68932a824aecbd80",
+    "matchesSnapshot": true,
+    "beforeBytes": 28717,
+    "afterBytes": 58567
+  },
+  {
+    "batch": "2차",
+    "file": "09-allowance-1.html",
+    "beforeSHA": "c92e06941a7af33bf5d39ecf30bf94c3b7548fc0c9af38494a07645a2fbbaf3f",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "c57f399ef250acba4f4ffc845c0b41e0656ea4e37bc39470e8fdcd269699790f",
+    "matchesSnapshot": true,
+    "beforeBytes": 31656,
+    "afterBytes": 32302
+  },
+  {
+    "batch": "2차",
+    "file": "09-allowance-2.html",
+    "beforeSHA": "7e6ec842fe2b260cf06ecc593dee969a29b4c760fe79174614efd963fd0e3a5a",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "4ca3d078c334a16441f3aea41a60a063b6bd6d580799edf3bf75e4e39988fc32",
+    "matchesSnapshot": true,
+    "beforeBytes": 26762,
+    "afterBytes": 46843
+  },
+  {
+    "batch": "2차",
+    "file": "09-allowance-3.html",
+    "beforeSHA": "3758487216aee5fbc61a7dafe08c12edf7e51719585e681427fcb85d0512fb59",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "91eb2952f66328f84d20b8805b90bcea99142cc4a03c8d8185e0ef865ba41733",
+    "matchesSnapshot": true,
+    "beforeBytes": 26521,
+    "afterBytes": 30432
+  },
+  {
+    "batch": "2차",
+    "file": "10-dashboard-1.html",
+    "beforeSHA": "770a9ff6c5b8ee75d6480cdd4d14067f362bf1d8db4a898aedecef6d792e8ecc",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "fc627ac148a53d07f6ae8f30b3271ec9a1b70ce0b7bdd392e3a5b713fb005ee4",
+    "matchesSnapshot": true,
+    "beforeBytes": 33110,
+    "afterBytes": 37021
+  },
+  {
+    "batch": "2차",
+    "file": "11-operations-1.html",
+    "beforeSHA": "728a934a4056b5c5f9d670f0f44f5c1cd61d10be31d5d4d85835b346e716cdc5",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "979c089cdfa3129ded1889edd93a1a06c1d464b1c8bd00e1653791a1e0e13db7",
+    "matchesSnapshot": true,
+    "beforeBytes": 43941,
+    "afterBytes": 49124
+  },
+  {
+    "batch": "2차",
+    "file": "11-operations-2.html",
+    "beforeSHA": "86525c8c3cd0a665dff6530b0b13dccd4ab1c86afe14e5bfa3df8c53a5d3ebd2",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "89f4a339c3c2be48f6bddb3e8a68b7e2e1724fd83b40df346945ed77aea3c667",
+    "matchesSnapshot": true,
+    "beforeBytes": 48018,
+    "afterBytes": 52292
+  },
+  {
+    "batch": "2차",
+    "file": "11-operations-3.html",
+    "beforeSHA": "4c9c77b315a9da766eb4701fe85e00fd1b7d606b0e81d86ef02fe3870e2aaff1",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "07d37963d79d163e6c44c81540f51fcfc32636551a553f60ea32833f8c5ca556",
+    "matchesSnapshot": true,
+    "beforeBytes": 43754,
+    "afterBytes": 49226
+  },
+  {
+    "batch": "2차",
+    "file": "11-operations-4.html",
+    "beforeSHA": "f407447f207323ebaee7af662d556221abcc81f15bcd5a619192d4119083606a",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "87986a653254e51526596673516c6b1fc17f2632d971803a6e9bc51caf9fe334",
+    "matchesSnapshot": true,
+    "beforeBytes": 27024,
+    "afterBytes": 30968
+  },
+  {
+    "batch": "2차",
+    "file": "12-access-logs-1.html",
+    "beforeSHA": "2515e02cd1b375af03d5c7068834d1dd84ee5e73fdd1231cbe6191d3544e073a",
+    "beforeMatchesLastReview": true,
+    "afterSHA": "2d95b847b7b6529a7d69e9c18d3fdd765cfd0fdbdb16567e768e7647d89bc08a",
+    "matchesSnapshot": true,
+    "beforeBytes": 26635,
+    "afterBytes": 30348
+  }
+]

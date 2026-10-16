@@ -1,0 +1,40 @@
+{
+  "submittedGeminiVerdict": "NOT_ACCEPTED_REQUIREMENT_GAPS",
+  "finalVerdict": "ACCEPTED_A1_AFTER_SOL_DIRECT_FIX",
+  "findings": [
+    {
+      "id": "A1V7-01",
+      "requirement": "E7-02",
+      "before": "checkBarrier invokes toManifestRecord again after successful cache; controlled helper calls snapshot1",
+      "after": "direct live scalar/map/callback comparisons using node:util isDeepStrictEqual; helper snapshotcalls0",
+      "kind": "actual extracted helper + source review; no full-owner false PASS claim",
+      "status": "FIXED_BY_SOL"
+    },
+    {
+      "id": "A1V7-02",
+      "requirement": "E7-04",
+      "before": "four false/missing/extra/partial logsSettled records accepted by success guard",
+      "after": "four rejected; exact own maps and true settlement required",
+      "kind": "actual extracted success guard, not full owner run",
+      "status": "FIXED_BY_SOL"
+    },
+    {
+      "id": "A1V7-03",
+      "requirement": "E7-03/06",
+      "before": "stop rejection skips settleLogs and drops cleanup error; first stream.end exception skips second stream",
+      "after": "both operations/streams independently attempted; original stack retained; two real owner endthrow failures close both streams, retain temp/core proof, no candidate/final",
+      "kind": "actual helper fixtures + explicit real owner stream exceptions",
+      "status": "FIXED_BY_SOL"
+    },
+    {
+      "id": "A1V7-04",
+      "requirement": "E7-02/06",
+      "before": "finish/close listeners use on despite once contract",
+      "after": "finish/close once; error/log-error remain on for every occurrence",
+      "kind": "source and regression verification",
+      "status": "FIXED_BY_SOL"
+    }
+  ],
+  "originalSubmittedSuitesPassPreserved": true,
+  "v8Created": false
+}

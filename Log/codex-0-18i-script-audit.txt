@@ -1,0 +1,9 @@
+0-18i script-body audit (snapshot17 -> current, 2026-09-07)
+Extraction: each HTML <script>...</script> body compared byte-for-byte, per file and block.
+Second batch (24 files): 24/24 files identical script bodies; 0 differing blocks.
+First batch (10 files): 9/10 files identical; only 08-performance-3.html differs, with exactly 2 source lines in script block 0:
+  script source line 147: append parent aria-label using n
+  script source line 236: append parent aria-label using sampleBadge
+No other script body differences, including script blocks in all 34 files.
+Mixed-content completeness: full git diff -U0 was scanned as complete removed/added line pairs, then every changed line was classified by content. The two inline P6 lines above are mixed JS statements and were explicitly classified as P6; they are not omitted by a script-only or added-line regex. No unmatched changed line remained.
+Snapshot17 hash comparison: current vs snapshot17 differs in exactly 29 files and matches in 5 (02-common-1/2/3, 01-login-1/2). Snapshot18 manifest/current comparison: 34/34 match.

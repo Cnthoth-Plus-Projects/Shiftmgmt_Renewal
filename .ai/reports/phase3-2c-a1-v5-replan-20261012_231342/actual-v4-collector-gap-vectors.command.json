@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\component-gap-replay.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 37932,
+  "start": "2026-10-12T14:47:09.561757+00:00",
+  "end": "2026-10-12T14:47:10.664916+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-collector-gap-vectors.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-collector-gap-vectors.stderr.txt",
+  "stdoutSha256": "9F1E7E1E85D752D146780092D4552ABC5F0CB2E7DE6FACF51707778F439F166B",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

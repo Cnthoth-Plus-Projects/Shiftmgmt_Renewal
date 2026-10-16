@@ -1,0 +1,28 @@
+{
+  "time": "2026-09-30 17:22:44 KST",
+  "verdict": "ACCEPTED",
+  "received": {
+    "receivedBytes": 27981,
+    "receivedSHA256": "6F13A7C552E849D76099719560DAD684A969B10C79334E9517702E0F897A3375",
+    "archive": "Log\\20260930_165922_3-1d-Gemini-IMPLEMENTED_수신원본.md",
+    "reportDir": ".ai\\reports\\phase3-1d-review-20260930_165922"
+  },
+  "assessmentArchive": "Log\\20260930_172244_3-1d-Sol-ACCEPTED_검증종결본.md",
+  "assessmentSHA256": "36BE38A0329A60CEDCBE82C0A143E0C74040F1F3D7FBD14853AF44F80FFEDE95",
+  "assessmentBytes": 13565,
+  "finalEvidenceSHA256": "F3CAD36A0A56BE1CCEFE3373677E5734BC86F27633B09017C99A45383C8ECCE9",
+  "productChangesBySol": 0,
+  "integration": {
+    "passed": 83,
+    "failed": 0,
+    "groupsCompleted": 8,
+    "groupsFailed": 0,
+    "unexpectedErrors": 0,
+    "captures": 15
+  },
+  "fullTests": 912,
+  "uiScenarios": 26,
+  "uiCaptures": 40,
+  "actionAssertions": 28,
+  "next": "3-1e commit and user confirmation"
+}

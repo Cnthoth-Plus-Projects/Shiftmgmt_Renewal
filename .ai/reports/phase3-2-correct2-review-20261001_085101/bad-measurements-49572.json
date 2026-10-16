@@ -1,0 +1,12 @@
+{
+  "pid": 49572,
+  "synthetic": true,
+  "description": "DOM measurement and accessible name faults to check assertions",
+  "measurements": [
+    {
+      "dateWidth": 90,
+      "dateHeight": 24,
+      "tableName": "SOL_BAD_ACCESSIBLE_NAME"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "chromeVersion": "154.0.8037.58",
+  "viewport": "1440x900",
+  "fixtureBoundary": "HTTP responses via actual browser bridge",
+  "backendAuthVerified": false,
+  "sourceProductWrites": 0,
+  "previousFixed": 7,
+  "remainingFailures": 5,
+  "results": [
+    {
+      "name": "employees-fail",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "text": "domain\n준비 (현재 배정 기준)\n근무지별 재직 인원을 불러오지 못했습니다.",
+        "errorBanner": 1
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "sites-fail",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "text": "calendar_month\n운영\n근무지 목록을 불러오지 못해 운영 현황을 확인할 수 없습니다.",
+        "errorBanner": 1
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "sync-fail",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "emptyTodos": 0,
+        "errorRows": 1
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "recovery-fail",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "emptyTodos": 0,
+        "errorRows": 1
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "watch-fail",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "emptyTodos": 0,
+        "errorRows": 1
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "late-retry-auth",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "expiredCalls": 0,
+        "text": "홈 이탈 후 새 화면"
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "late-watch-auth",
+      "kind": "previous-defect-fixed",
+      "requirementSatisfied": true,
+      "observed": {
+        "expiredCalls": 0,
+        "text": "홈 이탈 후 새 화면"
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "pending-refresh-retry",
+      "kind": "remaining-defect",
+      "requirementSatisfied": false,
+      "observed": {
+        "disabledBeforeRelease": true,
+        "disabledAfterSettled": true,
+        "text": "처리 중…",
+        "expiredCalls": 0,
+        "busy": false
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "pending-refresh-watch",
+      "kind": "remaining-defect",
+      "requirementSatisfied": false,
+      "observed": {
+        "disabledBeforeRelease": true,
+        "disabledAfterSettled": true,
+        "text": "처리 중…",
+        "expiredCalls": 0,
+        "busy": false
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "timer-refresh-retry",
+      "kind": "remaining-defect",
+      "requirementSatisfied": false,
+      "observed": {
+        "disabledBeforeRelease": true,
+        "disabledAfterSettled": true,
+        "text": "처리 중…",
+        "expiredCalls": 0,
+        "busy": true
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "timer-refresh-watch",
+      "kind": "remaining-defect",
+      "requirementSatisfied": false,
+      "observed": {
+        "disabledBeforeRelease": true,
+        "disabledAfterSettled": true,
+        "text": "처리 중…",
+        "expiredCalls": 0,
+        "busy": true
+      },
+      "consoleOrPageErrors": []
+    },
+    {
+      "name": "h4-refresh-pending",
+      "kind": "remaining-defect",
+      "requirementSatisfied": false,
+      "observed": {
+        "emptyTodosWhilePending": 1,
+        "ariaBusyWhilePending": 0
+      },
+      "consoleOrPageErrors": []
+    }
+  ]
+}

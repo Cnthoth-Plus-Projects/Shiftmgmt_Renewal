@@ -1,0 +1,13 @@
+######## OLD
+E8 라벨 순서=사원번호/이름/고용형태/직급/연락처/입사일/근무지/조/통상시급
+소스 순서(WorkforceManagementScreen.tsx 2130-2266, 읽기전용 상태 제외)=사원번호/고용형태/직급/이름/연락처/입사일/근무지/조/통상시급
+일치=false
+for=e8-code/e8-name/e8-type/e8-rank/e8-contact/e8-hire/e8-site/e8-team/e8-rate
+탭 순서(input/select id)=e8-code/e8-name/e8-type/e8-rank/e8-contact/e8-hire/e8-site/e8-team/e8-rate
+######## CUR
+E8 라벨 순서=사원번호/고용형태/직급/이름/연락처/입사일/근무지/조/통상시급
+소스 순서(WorkforceManagementScreen.tsx 2130-2266, 읽기전용 상태 제외)=사원번호/고용형태/직급/이름/연락처/입사일/근무지/조/통상시급
+일치=true
+for=e8-code/e8-type/e8-rank/e8-name/e8-contact/e8-hire/e8-site/e8-team/e8-rate
+탭 순서(input/select id)=e8-code/e8-type/e8-rank/e8-name/e8-contact/e8-hire/e8-site/e8-team/e8-rate
+DONE

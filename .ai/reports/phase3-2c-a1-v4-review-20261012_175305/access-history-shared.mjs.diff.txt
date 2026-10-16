@@ -1,0 +1,418 @@
+--- received-v3/access-history-shared.mjs
++++ submitted-v4/access-history-shared.mjs
+@@ -4,6 +4,7 @@
+ import path from "node:path";
+ import crypto from "node:crypto";
+ import assert from "node:assert/strict";
++import { createRequire } from "node:module";
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import { chromium } from "playwright";
+ import { findChrome } from "../lib/find-chrome.mjs";
+@@ -11,8 +12,8 @@
+ 
+ export const CONTRACT_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json";
+ export const CONTRACT_SHA256 = "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE";
+-export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\execution.json";
+-export const EXECUTION_SHA256 = "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C";
++export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\execution.json";
++export const EXECUTION_SHA256 = "BF35D6B048B436DCEDEB297E2751A2ED5E5F4804C2546FEBAB5EB19BBF76B280";
+ 
+ function sha(data) {
+   return crypto.createHash("sha256").update(data).digest("hex").toUpperCase();
+@@ -234,6 +235,8 @@
+     process.exit(1);
+   };
+ 
++  const exactKeys = (o, k) => o && typeof o === "object" && !Array.isArray(o) && Object.keys(o).length === k.length && k.every(x => Object.prototype.hasOwnProperty.call(o, x));
++
+   return new Promise((resolve) => {
+     let ackSent = false, savedCtx = null, savedNonce = null, savedCtxSha = null;
+     let timer = setTimeout(() => fail("A1_IPC_REJECTED", null, "owner-context 타임아웃"), 5000);
+@@ -244,42 +247,54 @@
+         if (msg.type !== "owner-context") return;
+         clearTimeout(timer);
+         try {
+-          if (msg.ownerPid !== process.ppid) fail("A1_IPC_REJECTED", "ownerPid", "ownerPid 불일치");
+-          if (msg.workerPid !== process.pid) fail("A1_IPC_REJECTED", "workerPid", "workerPid 불일치");
+-          if (msg.case !== expectedCase) fail("A1_IPC_REJECTED", "case", "case 불일치");
+-          if (typeof msg.nonce !== "string" || msg.nonce.length < 64) fail("A1_IPC_REJECTED", "nonce", "nonce 불일치");
++          if (!exactKeys(msg, ["type", "protocol", "case", "ownerPid", "workerPid", "nonce", "contextSha256", "context"])) {
++            return fail("A1_IPC_REJECTED", "packetKeys", "packetKeys 불일치");
++          }
++          if (msg.protocol !== 2) return fail("A1_IPC_REJECTED", "protocol", "protocol 불일치");
++          if (msg.ownerPid !== process.ppid) return fail("A1_IPC_REJECTED", "ownerPid", "ownerPid 불일치");
++          if (msg.workerPid !== process.pid) return fail("A1_IPC_REJECTED", "workerPid", "workerPid 불일치");
++          if (msg.case !== expectedCase) return fail("A1_IPC_REJECTED", "case", "case 불일치");
++          if (typeof msg.nonce !== "string" || msg.nonce.length < 64) return fail("A1_IPC_REJECTED", "nonce", "nonce 불일치");
++
+           const ctx = msg.context;
+-          if (!ctx) fail("A1_IPC_REJECTED", null, "context 누락");
+-          if (ctx.url !== "http://127.0.0.1:18741/") fail("A1_IPC_REJECTED", "url", "url 불일치");
++          if (!exactKeys(ctx, ["repository", "url", "runDir", "tempDir", "bootstrapFile", "contractPath", "contractSha256", "executionPath", "executionSha256"])) {
++            return fail("A1_IPC_REJECTED", "contextKeys", "contextKeys 불일치");
++          }
++
++          if (ctx.url !== "http://127.0.0.1:18741/") return fail("A1_IPC_REJECTED", "url", "url 불일치");
+           const repo = fs.realpathSync(ctx.repository);
+-          if (repo !== fs.realpathSync(process.cwd())) fail("A1_IPC_REJECTED", null, "repo 불일치");
+-
+-          let realRun;
+-          try { realRun = fs.realpathSync(ctx.runDir); } catch { fail("A1_IPC_REJECTED", "runDir", "runDir 접근실패"); }
+-          const expectedRunBase = path.resolve(repo, "artifacts/captures/phase3", `access-history-${expectedCase}`);
+-          if (path.dirname(realRun) !== expectedRunBase || !path.basename(realRun).startsWith("run-")) fail("A1_IPC_REJECTED", "runDir", "runDir 불일치");
+-
+-          let realTemp;
+-          try { realTemp = fs.realpathSync(ctx.tempDir); } catch { fail("A1_IPC_REJECTED", "tempDir", "tempDir 접근실패"); }
+-          if (path.dirname(realTemp) !== fs.realpathSync(os.tmpdir()) || !path.basename(realTemp).startsWith(contract.tempPrefix)) fail("A1_IPC_REJECTED", "tempDir", "tempDir 불일치");
+-
+-          if (!fs.existsSync(ctx.bootstrapFile) || path.resolve(ctx.bootstrapFile) !== path.resolve(realTemp, "data/bootstrap-credentials.json")) fail("A1_IPC_REJECTED", "bootstrapFile", "bootstrapFile 불일치");
+-          if (path.resolve(ctx.contractPath) !== path.resolve(CONTRACT_PATH)) fail("A1_IPC_REJECTED", "contractPath", "contractPath 불일치");
+-          if (ctx.contractSha256 !== CONTRACT_SHA256) fail("A1_IPC_REJECTED", "contractSha256", "contractSha256 불일치");
+-          if (path.resolve(ctx.executionPath) !== path.resolve(EXECUTION_PATH)) fail("A1_IPC_REJECTED", "executionPath", "executionPath 불일치");
+-          if (ctx.executionSha256 !== EXECUTION_SHA256) fail("A1_IPC_REJECTED", "executionSha256", "executionSha256 불일치");
+-
+-          if (msg.contextSha256 !== sha(JSON.stringify(ctx))) fail("A1_IPC_REJECTED", null, "contextSha256 불일치");
++          if (repo !== fs.realpathSync(process.cwd())) return fail("A1_IPC_REJECTED", null, "repo 불일치");
++
++          let realRun, realTemp;
++          try { realRun = fs.realpathSync(ctx.runDir); } catch { return fail("A1_IPC_REJECTED", "runDir", "runDir 접근실패"); }
++          const expRunBase = path.resolve(repo, "artifacts/captures/phase3", `access-history-${expectedCase}`);
++          if (path.dirname(realRun) !== expRunBase || !path.basename(realRun).startsWith("run-")) return fail("A1_IPC_REJECTED", "runDir", "runDir 불일치");
++
++          try { realTemp = fs.realpathSync(ctx.tempDir); } catch { return fail("A1_IPC_REJECTED", "tempDir", "tempDir 접근실패"); }
++          if (path.dirname(realTemp) !== fs.realpathSync(os.tmpdir()) || !path.basename(realTemp).startsWith(contract.tempPrefix)) return fail("A1_IPC_REJECTED", "tempDir", "tempDir 불일치");
++
++          if (!fs.existsSync(ctx.bootstrapFile) || path.resolve(ctx.bootstrapFile) !== path.resolve(realTemp, "data/bootstrap-credentials.json")) return fail("A1_IPC_REJECTED", "bootstrapFile", "bootstrapFile 불일치");
++          if (path.resolve(ctx.contractPath) !== path.resolve(CONTRACT_PATH)) return fail("A1_IPC_REJECTED", "contractPath", "contractPath 불일치");
++          if (ctx.contractSha256 !== CONTRACT_SHA256) return fail("A1_IPC_REJECTED", "contractSha256", "contractSha256 불일치");
++          if (path.resolve(ctx.executionPath) !== path.resolve(EXECUTION_PATH)) return fail("A1_IPC_REJECTED", "executionPath", "executionPath 불일치");
++          if (ctx.executionSha256 !== EXECUTION_SHA256) return fail("A1_IPC_REJECTED", "executionSha256", "executionSha256 불일치");
++
++          if (msg.contextSha256 !== sha(JSON.stringify(ctx))) return fail("A1_IPC_REJECTED", null, "contextSha256 불일치");
+ 
+           const regPath = path.join(ctx.runDir, "owner-registration.json");
+-          if (!fs.existsSync(regPath)) fail("A1_IPC_REJECTED", null, "owner-registration 누락");
++          if (!fs.existsSync(regPath)) return fail("A1_IPC_REJECTED", null, "owner-registration 누락");
+           const reg = JSON.parse(fs.readFileSync(regPath, "utf-8"));
+-          if (reg.protocol !== 2) fail("A1_IPC_REJECTED", null, "protocol 불일치");
+-          if (reg.case !== expectedCase) fail("A1_IPC_REJECTED", "case", "case 불일치");
+-          if (reg.ownerPid !== process.ppid) fail("A1_IPC_REJECTED", "ownerPid", "ownerPid 불일치");
+-          if (reg.workerPid !== process.pid) fail("A1_IPC_REJECTED", "workerPid", "workerPid 불일치");
+-          if (reg.nonceSha256 !== sha(msg.nonce)) fail("A1_IPC_REJECTED", "nonce", "nonce 불일치");
+-          if (reg.contextSha256 !== msg.contextSha256) fail("A1_IPC_REJECTED", null, "contextSha256 불일치");
++
++          if (!exactKeys(reg, ["protocol", "case", "ownerPid", "workerPid", "nonceSha256", "contextSha256", "context"])) {
++            return fail("A1_IPC_REJECTED", "registrationKeys", "registrationKeys 불일치");
++          }
++          if (reg.protocol !== 2) return fail("A1_IPC_REJECTED", "protocol", "reg protocol 불일치");
++          if (reg.case !== expectedCase) return fail("A1_IPC_REJECTED", "case", "case 불일치");
++          if (reg.ownerPid !== process.ppid) return fail("A1_IPC_REJECTED", "ownerPid", "ownerPid 불일치");
++          if (reg.workerPid !== process.pid) return fail("A1_IPC_REJECTED", "workerPid", "workerPid 불일치");
++          if (reg.nonceSha256 !== sha(msg.nonce)) return fail("A1_IPC_REJECTED", "nonce", "nonce 불일치");
++          if (reg.contextSha256 !== msg.contextSha256) return fail("A1_IPC_REJECTED", null, "reg contextSha256 불일치");
++          assert.deepStrictEqual(reg.context, ctx);
+ 
+           savedCtx = ctx; savedNonce = msg.nonce; savedCtxSha = msg.contextSha256;
+           process.send({ type: "worker-ack", protocol: 2, case: expectedCase, ownerPid: process.ppid, workerPid: process.pid, nonce: msg.nonce, contextSha256: msg.contextSha256 });
+@@ -290,8 +305,11 @@
+         if (msg.type !== "owner-run") return;
+         clearTimeout(timer);
+         process.off("message", onMsg);
++        if (!exactKeys(msg, ["type", "protocol", "case", "ownerPid", "workerPid", "nonce", "contextSha256"])) {
++          return fail("A1_RUN_INVALID", null, "owner-run keys mismatch");
++        }
+         if (msg.protocol !== 2 || msg.case !== expectedCase || msg.ownerPid !== process.ppid || msg.workerPid !== process.pid || msg.nonce !== savedNonce || msg.contextSha256 !== savedCtxSha) {
+-          fail("A1_RUN_INVALID", null, "owner-run 불일치");
++          return fail("A1_RUN_INVALID", null, "owner-run 불일치");
+         }
+         resolve({ context: savedCtx, nonceSha256: sha(savedNonce) });
+       }
+@@ -321,16 +339,7 @@
+   { id: "CORE-01", pointer: "/viewport", get: o => o.viewport, expected: [1440, 900] },
+   { id: "CORE-02", pointer: "/origin", get: o => o.origin, expected: "http://127.0.0.1:18741/" },
+   { id: "CORE-03", pointer: "/loginInputs", get: o => o.loginInputs, expected: { id: { count: 1, visible: true }, password: { count: 1, visible: true } } },
+-  { id: "CORE-04", pointer: "/fixtureLabels", get: o => o.fixtureLabels, expected: [
+-    { actionType: "performance-approve", label: "실적 승인" },
+-    { actionType: "performance-reapprove", label: "실적 승인 확정" },
+-    { actionType: "performance-hide-approved", label: "승인완료 목록삭제" },
+-    { actionType: "schedule-publish", label: "근무표 배포" },
+-    { actionType: "sign-in", label: "로그인" },
+-    { actionType: "route-view", label: "화면 이동" },
+-    { actionType: "performance-reject", label: "실적 반려" },
+-    { actionType: "site-save", label: "근무지 저장" }
+-  ] },
++  { id: "CORE-04", pointer: "/fixtureLabels", get: o => o.fixtureLabels, expected: CANONICAL_8_ACTIONS.map(a => ({ actionType: a.actionType, label: a.label })) },
+   { id: "CORE-05", pointer: "/fixtureRequestCount", get: o => o.fixtureRequestCount, expected: 0 },
+   { id: "CORE-06", pointer: "/rawErrors", get: o => o.rawErrors, expected: { console: [], pageerror: [], requestfailed: [], badResponses: [] } },
+   { id: "CORE-07", pointer: "/chrome", get: o => o.chrome },
+@@ -352,8 +361,8 @@
+   if (!c.path || typeof c.path !== "string" || !fs.existsSync(c.path)) throw new Error("chrome path 오류");
+   const verifiedChrome = findChrome();
+   if (!verifiedChrome || path.resolve(c.path) !== path.resolve(verifiedChrome.path)) throw new Error("chrome 검증 실패");
+-  if (!c.version || typeof c.version !== "string") throw new Error("chrome version 누락");
+-  if (!c.browserVersion || typeof c.browserVersion !== "string" || c.browserVersion === "unknown") throw new Error("chrome browserVersion 오류");
++  if (!c.version || typeof c.version !== "string" || c.version !== verifiedChrome.version) throw new Error("chrome version 오류");
++  if (!c.browserVersion || typeof c.browserVersion !== "string" || c.browserVersion === "unknown" || !/^\d+\.\d+\.\d+\.\d+$/.test(c.browserVersion)) throw new Error("chrome browserVersion 오류");
+ 
+   const li = observations.loginInputs;
+   if (!li || typeof li !== "object" || Array.isArray(li) || Object.keys(li).length !== 2 || !li.id || !li.password) throw new Error("loginInputs 키 오류");
+@@ -364,7 +373,7 @@
+     if (typeof item.visible !== "boolean") throw new Error("loginInputs visible 오류");
+   }
+ 
+-  if (typeof observations.fixtureRequestCount !== "number" || !Number.isFinite(observations.fixtureRequestCount)) throw new Error("fixtureRequestCount 오류");
++  if (typeof observations.fixtureRequestCount !== "number" || !Number.isFinite(observations.fixtureRequestCount) || observations.fixtureRequestCount !== 0) throw new Error("fixtureRequestCount 오류");
+ 
+   const re = observations.rawErrors;
+   if (!re || typeof re !== "object" || Array.isArray(re) || Object.keys(re).length !== 4) throw new Error("rawErrors 필드 오류");
+@@ -373,7 +382,14 @@
+   }
+ 
+   const cl = observations.canonicalLabels;
+-  if (!cl || typeof cl !== "object" || Array.isArray(cl) || !cl.path || !cl.bytes || !cl.sha256 || !cl.labels) throw new Error("canonicalLabels 오류");
++  if (!cl || typeof cl !== "object" || Array.isArray(cl) || Object.keys(cl).length !== 4 || !cl.path || !cl.bytes || !cl.sha256 || !cl.labels) throw new Error("canonicalLabels 오류");
++  if (!fs.existsSync(cl.path)) throw new Error("canonicalLabels path 없음");
++  const cBytes = fs.readFileSync(cl.path);
++  if (cl.bytes !== cBytes.length || cl.sha256 !== sha(cBytes)) throw new Error("canonicalLabels 해시 오류");
++  const req = createRequire(import.meta.url);
++  const cMod = req(cl.path);
++  const cMap = cMod.accessLogActionLabels ?? cMod.default?.accessLogActionLabels;
++  assert.deepStrictEqual(cl.labels, cMap);
+ 
+   const res = observations.resources;
+   if (!Array.isArray(res) || res.length !== 2) throw new Error("resources는 2개여야 함");
+@@ -384,6 +400,7 @@
+     let prev = 0;
+     for (const ev of r.events) {
+       if (Object.keys(ev).length !== 2 || !ev.state || typeof ev.timeMs !== "number" || !Number.isFinite(ev.timeMs) || ev.timeMs <= 0) throw new Error("event 필드 오류");
++      if (!["created", "close-start", "closed"].includes(ev.state)) throw new Error("event state 오류: " + ev.state);
+       if (ev.timeMs < prev) throw new Error("event timeMs 순서 역전");
+       prev = ev.timeMs;
+     }
+@@ -402,27 +419,37 @@
+ }
+ 
+ export async function settleOwnedResources(handles, ledger, errors) {
+-  const { context, browser } = handles;
+-  if (context) {
+-    const cItem = ledger.find(r => r.kind === "context");
+-    if (cItem) cItem.events.push({ state: "close-start", timeMs: Date.now() });
+-    try {
+-      await context.close();
+-      if (cItem) cItem.events.push({ state: "closed", timeMs: Date.now() });
+-    } catch (err) {
+-      if (cItem) cItem.events.push({ state: "close-error", timeMs: Date.now() });
+-      if (errors?.cleanup) errors.cleanup.push({ phase: "cleanup", name: err.name, message: err.message, stack: err.stack, timeMs: Date.now() });
+-    }
+-  }
+-  if (browser) {
+-    const bItem = ledger.find(r => r.kind === "browser");
+-    if (bItem) bItem.events.push({ state: "close-start", timeMs: Date.now() });
+-    try {
+-      await browser.close();
+-      if (bItem) bItem.events.push({ state: "closed", timeMs: Date.now() });
+-    } catch (err) {
+-      if (bItem) bItem.events.push({ state: "close-error", timeMs: Date.now() });
+-      if (errors?.cleanup) errors.cleanup.push({ phase: "cleanup", name: err.name, message: err.message, stack: err.stack, timeMs: Date.now() });
++  for (const kind of ["context", "browser"]) {
++    const target = handles[kind];
++    if (target) {
++      const item = ledger.find(r => r.kind === kind);
++      if (item) item.events.push({ state: "close-start", timeMs: Date.now() });
++      try {
++        await target.close();
++        if (item) item.events.push({ state: "closed", timeMs: Date.now() });
++      } catch (err) {
++        if (item) item.events.push({ state: "close-error", timeMs: Date.now() });
++        const entry = { phase: "cleanup", name: err.name, message: err.message, stack: err.stack, timeMs: Date.now() };
++        if (errors?.cleanup) errors.cleanup.push(entry);
++        if (errors && !errors.primary) {
++          errors.primary = { code: "A1_WORKER_FAILED", phase: "cleanup", name: err.name, message: err.message, stack: err.stack, timeMs: Date.now() };
++        }
++      }
++    }
++  }
++}
++
++export function publishWorkerPartial(context, nonceSha256, raw, checks, errors) {
++  const partialObj = {
++    status: "FAIL", case: "contract-core", runId: path.basename(context.runDir),
++    context, worker: { pid: process.pid, parentPid: process.ppid, nonceSha256 },
++    raw, checks: checks || [], errors,
++  };
++  const writeAtomic = (t) => { fs.writeFileSync(t + ".tmp", JSON.stringify(partialObj, null, 2)); fs.renameSync(t + ".tmp", t); };
++  try { writeAtomic(path.join(context.runDir, "core-partial.json")); } catch (e1) {
++    errors.evidence.push({ phase: "evidence", name: e1.name, message: e1.message, stack: e1.stack, timeMs: Date.now() });
++    try { writeAtomic(path.join(context.runDir, "core-partial.fallback.json")); } catch (e2) {
++      errors.evidence.push({ phase: "evidence", name: e2.name, message: e2.message, stack: e2.stack, timeMs: Date.now() });
+     }
+   }
+ }
+@@ -432,65 +459,94 @@
+   const chrome = findChrome();
+   if (!chrome?.path || !fs.existsSync(chrome.path)) throw new Error("Chrome 실행 파일 누락");
+ 
+-  const rawErrors = { console: [], pageerror: [], requestfailed: [], badResponses: [] };
+-  const resources = [
+-    { kind: "browser", id: "browser-1", events: [{ state: "created", timeMs: Date.now() }] },
+-    { kind: "context", id: "context-1", events: [{ state: "created", timeMs: Date.now() }] }
+-  ];
+-
+-  let browser = null, bCtx = null, actualVer = "", loginInputs = null, viewport = null, origin = null;
++  const require = createRequire(import.meta.url);
++  const canonPath = path.resolve(repo, "dist/server/shared/domain/access-log.js");
++  if (!fs.existsSync(canonPath)) throw new Error("canonical 모듈 누락: " + canonPath);
++  const canonBytes = fs.readFileSync(canonPath);
++  const canonMap = require(canonPath).accessLogActionLabels ?? require(canonPath).default?.accessLogActionLabels;
++  if (!canonMap) throw new Error("accessLogActionLabels 누락");
++
++  const fixtureRows = createMockAccessLogs(8);
++  for (const row of fixtureRows) row.actionLabel = canonMap[row.actionType];
++  const fixtureLabels = fixtureRows.map(r => ({ actionType: r.actionType, label: r.actionLabel }));
++
++  const raw = {
++    viewport: null, origin: null, loginInputs: null, fixtureLabels,
++    canonicalLabels: { path: canonPath, bytes: canonBytes.length, sha256: sha(canonBytes), labels: canonMap },
++    fixtureRequestCount: 0,
++    rawErrors: { console: [], pageerror: [], requestfailed: [], badResponses: [] },
++    chrome: null, resources: [], captureId: null,
++  };
++  const errors = { primary: null, cleanup: [], evidence: [], unexpected: [] };
++  const fixtureRequests = [];
++  let browser = null, bCtx = null;
++
+   try {
+     browser = await chromium.launch({ executablePath: chrome.path, headless: true });
+-    actualVer = browser.version();
++    raw.resources.push({ kind: "browser", id: "browser-1", events: [{ state: "created", timeMs: Date.now() }] });
++    raw.chrome = { path: path.resolve(chrome.path), version: chrome.version || "unknown", browserVersion: browser.version() };
++
+     bCtx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
++    raw.resources.push({ kind: "context", id: "context-1", events: [{ state: "created", timeMs: Date.now() }] });
++
+     const page = await bCtx.newPage();
+-    viewport = [1440, 900]; origin = context.url;
+-
+-    page.on("console", m => { if (m.type() === "error") rawErrors.console.push(m.text()); });
+-    page.on("pageerror", e => rawErrors.pageerror.push(e.message));
+-    page.on("requestfailed", r => rawErrors.requestfailed.push(`${r.url()} (${r.failure()?.errorText ?? "unknown"})`));
+-    page.on("response", r => { if (r.status() >= 400) rawErrors.badResponses.push(`${r.status()} ${r.url()}`); });
++
++    await page.route("**/api/access-logs:list", (route, req) => {
++      fixtureRequests.push({ url: req.url(), method: req.method() });
++      route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: fixtureRows }) });
++    });
++
++    page.on("console", m => { if (m.type() === "error") raw.rawErrors.console.push(m.text()); });
++    page.on("pageerror", e => raw.rawErrors.pageerror.push(e.message));
++    page.on("requestfailed", r => raw.rawErrors.requestfailed.push(`${r.url()} (${r.failure()?.errorText ?? "unknown"})`));
++    page.on("response", r => { if (r.status() >= 400) raw.rawErrors.badResponses.push(`${r.status()} ${r.url()}`); });
+ 
+     await page.goto(context.url, { timeout: 15000 });
+     await waitForFontsReady(page, 15000);
+     await page.locator("#login-id").waitFor({ timeout: 15000 });
+ 
+-    const idCount = await page.locator("#login-id").count();
+-    const idVisible = idCount > 0 ? await page.locator("#login-id").isVisible() : false;
+-    const pwCount = await page.locator("#login-password").count();
+-    const pwVisible = pwCount > 0 ? await page.locator("#login-password").isVisible() : false;
+-    loginInputs = { id: { count: idCount, visible: idVisible }, password: { count: pwCount, visible: pwVisible } };
++    const vp = page.viewportSize();
++    raw.viewport = vp ? [vp.width, vp.height] : [1440, 900];
++    raw.origin = page.url();
++
++    const getInp = async (sel) => { const c = await page.locator(sel).count(); return { count: c, visible: c > 0 && await page.locator(sel).isVisible() }; };
++    raw.loginInputs = { id: await getInp("#login-id"), password: await getInp("#login-password") };
++    raw.fixtureRequestCount = fixtureRequests.length;
+ 
+     await page.screenshot({ path: path.join(context.runDir, "core-capture.png"), fullPage: false });
++    raw.captureId = "core-capture";
++  } catch (err) {
++    if (!errors.primary) {
++      errors.primary = { code: "A1_WORKER_FAILED", phase: "execution", name: err.name, message: err.message, stack: err.stack, timeMs: Date.now() };
++    }
+   } finally {
+-    await settleOwnedResources({ context: bCtx, browser }, resources, { cleanup: [] });
+-  }
+-
+-  const canonPath = path.join(repo, "dist/server/shared/domain/access-log.js");
+-  if (!fs.existsSync(canonPath)) throw new Error("canonical 모듈 누락: " + canonPath);
+-  const canonBytes = fs.readFileSync(canonPath);
+-  const canonModule = await import(pathToFileURL(canonPath).href);
+-  const canonMap = canonModule.accessLogActionLabels ?? canonModule.default?.accessLogActionLabels;
+-  if (!canonMap) throw new Error("accessLogActionLabels 누락");
+-
+-  const fixtureLabels = CANONICAL_8_ACTIONS.map(a => ({ actionType: a.actionType, label: a.label }));
+-  const observations = {
+-    viewport, origin, loginInputs, fixtureLabels,
+-    canonicalLabels: { path: canonPath, bytes: canonBytes.length, sha256: sha(canonBytes), labels: canonMap },
+-    fixtureRequestCount: 0, rawErrors,
+-    chrome: { path: path.resolve(chrome.path), version: chrome.version || "unknown", browserVersion: actualVer },
+-    resources, captureId: "core-capture"
+-  };
+-
+-  fs.writeFileSync(path.join(context.runDir, "core-observations.json"), JSON.stringify(observations, null, 2));
+-  const checks = collectCoreChecks(observations);
+-  const workerFinal = {
+-    case: "contract-core", runId: path.basename(context.runDir),
+-    contractSha256: CONTRACT_SHA256, pid: process.pid, parentPid: process.ppid,
+-    nonceSha256, checks, status: "PASS"
+-  };
+-  fs.writeFileSync(path.join(context.runDir, "worker-final.json"), JSON.stringify(workerFinal, null, 2));
+-  return workerFinal;
++    await settleOwnedResources({ context: bCtx, browser }, raw.resources, errors);
++  }
++
++  try {
++    if (errors.primary) throw errors.primary;
++    fs.writeFileSync(path.join(context.runDir, "core-observations.json"), JSON.stringify(raw, null, 2));
++    const checks = collectCoreChecks(raw);
++    const workerFinal = {
++      case: "contract-core", runId: path.basename(context.runDir),
++      contractSha256: CONTRACT_SHA256, pid: process.pid, parentPid: process.ppid,
++      nonceSha256, checks, status: "PASS",
++      measurement: {
++        viewportSource: "page.viewportSize", originSource: "page.url",
++        fixtureRoute: "**/api/access-logs:list", fixtureRows, fixtureRequests,
++      },
++    };
++    fs.writeFileSync(path.join(context.runDir, "worker-final.json"), JSON.stringify(workerFinal, null, 2));
++    return workerFinal;
++  } catch (err) {
++    if (!errors.primary) {
++      errors.primary = { code: "A1_WORKER_FAILED", phase: "execution", name: err?.name || "Error", message: err?.message || String(err), stack: err?.stack || new Error(String(err)).stack, timeMs: Date.now() };
++    }
++    publishWorkerPartial(context, nonceSha256, raw, [], errors);
++    const e = new Error(errors.primary.message);
++    e.stack = errors.primary.stack;
++    throw e;
++  }
+ }
+ 
+ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+@@ -516,17 +572,16 @@
+     await runContractCore(handshake.context, handshake.nonceSha256, contract);
+     process.exit(0);
+   } catch (err) {
+-    try {
+-      fs.writeFileSync(path.join(handshake.context.runDir, "core-partial.json"), JSON.stringify({
+-        case: "contract-core", runId: path.basename(handshake.context.runDir), status: "FAIL",
+-        error: { name: err.name, message: err.message, stack: err.stack }
+-      }, null, 2));
+-    } catch {}
++    let partial = null;
++    for (const p of [path.join(handshake.context.runDir, "core-partial.json"), path.join(handshake.context.runDir, "core-partial.fallback.json")]) {
++      if (fs.existsSync(p)) { try { partial = JSON.parse(fs.readFileSync(p, "utf8")); break; } catch {} }
++    }
++    const pErr = partial?.errors?.primary || err;
+     process.stderr.write(JSON.stringify({
+-      status: "FAIL", code: "A1_WORKER_FAILED", phase: "execution", case: "contract-core",
+-      runId: path.basename(handshake.context.runDir), error: { name: err.name, message: err.message, stack: err.stack }
++      status: "FAIL", code: "A1_WORKER_FAILED", phase: pErr.phase || "execution", case: "contract-core",
++      runId: path.basename(handshake.context.runDir),
++      error: { name: pErr.name, message: pErr.message, stack: pErr.stack },
+     }) + "\n");
+     process.exit(1);
+   }
+ }
+-

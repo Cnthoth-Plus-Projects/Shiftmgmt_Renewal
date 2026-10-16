@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\partial-probes.mjs",
+    "--bootstrap-v4"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 30636,
+  "start": "2026-10-12T14:36:32.827592+00:00",
+  "end": "2026-10-12T14:36:45.070989+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-partial-coverage.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-partial-coverage.stderr.txt",
+  "stdoutSha256": "CD50FCA9A831723B364322131BF78E7CFB7ADB93383497EC9D4FFAE1D25170DC",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

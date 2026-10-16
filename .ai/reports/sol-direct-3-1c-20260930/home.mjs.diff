@@ -1,0 +1,206 @@
+--- scripts/ui-checks/home.mjs.before
++++ scripts/ui-checks/home.mjs
+@@ -5,7 +5,7 @@
+ // 케이스: live-admin | operator-fixture | empty-fixture | loading-error | stale-response | admin-action
+ //
+ import os from "node:os";
+-import { existsSync, readFileSync, realpathSync } from "node:fs";
++import { existsSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+ import path from "node:path";
+ import { runScreenCheck, validateTargetUrl } from "../lib/ui-check.mjs";
+ 
+@@ -152,6 +152,144 @@
+         throw new Error(`[위반] 미구현 화면 이동 버튼이 렌더링되었습니다: '${text}'`);
+       }
+     }
++  }
++}
++
++// 실제 세션과 HTTP 응답 경계만 사용해 두 액션의 수명/재시도를 확인한다.
++async function verifyActionLifetime(page, kind, capture) {
++  const recovery = kind === "retry-recovery";
++  const selector = recovery ? "#btn-retry-recovery" : "#home-btn-restart-watch";
++  const channel = recovery ? "performance:retry-startup-recovery" : "operations:restart-file-watch";
++  const otherChannel = recovery ? "operations:restart-file-watch" : "performance:retry-startup-recovery";
++  const otherSelector = recovery ? "#home-btn-restart-watch" : "#btn-retry-recovery";
++  const assertions = [];
++  let expectedNetwork = false;
++  let networkFailures = 0;
++  const requestListeners = page.listeners("requestfailed");
++  const consoleListeners = page.listeners("console");
++  page.removeAllListeners("requestfailed");
++  page.removeAllListeners("console");
++  page.on("requestfailed", (request) => {
++    if (expectedNetwork && decodeURIComponent(new URL(request.url()).pathname) === `/api/${channel}`) {
++      networkFailures++;
++    } else for (const listener of requestListeners) listener(request);
++  });
++  page.on("console", (message) => {
++    const location = message.location().url;
++    if (expectedNetwork && message.type() === "error" && message.text().includes("net::ERR_FAILED") &&
++      location && decodeURIComponent(new URL(location).pathname) === `/api/${channel}`) return;
++    for (const listener of consoleListeners) listener(message);
++  });
++  try {
++    const scenarios = ["live", "refresh", "leave", "failure-refresh"];
++    for (const scenario of scenarios) {
++      const outcomes = scenario === "failure-refresh" ? ["failure", "network"] : ["success", "failure", "auth", "network"];
++      for (const outcome of outcomes) {
++        await page.unrouteAll({ behavior: "wait" });
++        expectedNetwork = outcome === "network";
++        networkFailures = 0;
++        let release;
++        let started;
++        const held = new Promise((resolve) => { release = resolve; });
++        const requested = new Promise((resolve) => { started = resolve; });
++        let requests = 0;
++        const recoveryState = { hasRun: true, completedAt: new Date().toISOString(), restoredScheduleCount: 0,
++          skippedScheduleCount: 0, approvedSyncIssueCount: 1, issues: ["검증용 복구 실패"] };
++        const watchState = { isRunning: false, pendingDir: "/fixture-pending", approvedDir: "/fixture-approved", recentEvents: [] };
++        await page.route("**/api/*", async (route) => {
++          const current = decodeURIComponent(new URL(route.request().url()).pathname).slice(5);
++          if (current === "performance:get-startup-recovery-status" || current === "operations:get-file-watch-status") {
++            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true,
++              data: current === "performance:get-startup-recovery-status" ? recoveryState : watchState }) });
++          } else if (current === otherChannel) {
++            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true,
++              data: recovery ? watchState : recoveryState }) });
++          } else if (current === channel) {
++            requests++;
++            started();
++            await held;
++            if (outcome === "network") await route.abort("failed");
++            else await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(
++              outcome === "success" ? { ok: true, data: recovery ? recoveryState : watchState } :
++                { ok: false, errorCode: outcome === "auth" ? "AUTH_SESSION_REQUIRED" : "FIXTURE_ACTION_FAILURE",
++                  message: "검증용 액션 실패" }) });
++          } else await route.continue();
++        });
++        await page.goto(targetUrl);
++        await page.locator(".btn-logout").waitFor({ state: "visible" });
++        await page.locator(selector).waitFor({ state: "visible" });
++        await page.evaluate(() => {
++          window.homeAuthTransitions = 0;
++          let visible = false;
++          window.homeAuthObserver?.disconnect();
++          window.homeAuthObserver = new MutationObserver(() => {
++            const next = !!document.querySelector("#login-id");
++            if (next && !visible) window.homeAuthTransitions++;
++            visible = next;
++          });
++          window.homeAuthObserver.observe(document.body, { childList: true, subtree: true });
++        });
++        const oldButton = await page.locator(selector).elementHandle();
++        await page.locator(selector).focus();
++        await page.keyboard.press("Enter");
++        await requested;
++        await oldButton.evaluate((button) => button.click());
++        if (requests !== 1 || !(await oldButton.evaluate((button) => button.disabled))) {
++          throw new Error(`${kind}/${scenario}/${outcome}: 중복 요청 또는 잠금 실패`);
++        }
++        try {
++          if (scenario === "refresh") {
++            // 다른 실제 액션의 성공은 같은 HomeScreen.refresh()를 호출한다.
++            // 사이드바 홈 클릭은 기존 HomeScreen을 destroy/remount하므로 별개의 수명이다.
++            await page.locator(otherSelector).click();
++            await oldButton.waitForElementState("hidden");
++            await page.locator(selector).waitFor({ state: "visible" });
++            if (!(await page.locator(selector).isDisabled())) throw new Error("진행 중 요청의 새 버튼 잠금 누락");
++          } else if (scenario === "leave") {
++            await page.getByRole("button", { name: "근무 현황", exact: true }).click();
++            await page.locator(".notice-banner").waitFor({ state: "visible" });
++          }
++          release();
++          if (scenario === "leave") {
++            await page.waitForTimeout(250);
++            if (!(await page.locator(".notice-banner").isVisible()) || await page.locator("#login-id").count()) {
++              throw new Error("홈 이탈 뒤 늦은 결과가 현재 화면을 변경함");
++            }
++          } else if (scenario === "live" && outcome === "auth") {
++            await page.locator("#login-id").waitFor({ state: "visible" });
++            if (await page.evaluate(() => window.homeAuthTransitions) !== 1) throw new Error("살아 있는 AUTH 전환은 1회여야 함");
++          } else {
++            await page.waitForFunction((s) => {
++              const button = document.querySelector(s);
++              return button && !button.disabled;
++            }, selector);
++            if (scenario === "failure-refresh") {
++              await page.locator(otherSelector).click();
++              await page.locator(selector).waitFor({ state: "visible" });
++              await page.waitForTimeout(2100);
++              if (!(await page.locator(selector).isEnabled())) throw new Error("실패 후 refresh 버튼의 영구 잠금");
++            }
++            if (await page.locator("#login-id").count()) throw new Error("오래된 AUTH가 세션을 변경함");
++            await page.locator(selector).click();
++            await page.waitForTimeout(150);
++            if (requests !== 2) throw new Error("현재 버튼으로 재시도 요청을 보낼 수 없음");
++          }
++          if (scenario === "refresh" || scenario === "leave") {
++            const old = await oldButton.evaluate((button) => ({ connected: button.isConnected, text: button.textContent, disabled: button.disabled }));
++            if (old.connected || old.text !== "처리 중…" || !old.disabled) throw new Error("분리된 이전 버튼을 변경함");
++          }
++          if (outcome === "network" && networkFailures !== requests) throw new Error("의도된 네트워크 실패 요청수 불일치");
++          assertions.push({ kind, scenario, outcome, requests, expectedNetworkFailures: networkFailures, result: "PASS" });
++        } finally { release(); }
++      }
++    }
++    const imagePath = await capture(`home-${kind}-lifetime`);
++    writeFileSync(path.join(path.dirname(imagePath), "action-assertions.json"), JSON.stringify({ fixtureBoundary: "HTTP responses", realSession: true, assertions }, null, 2));
++  } finally {
++    page.removeAllListeners("requestfailed");
++    page.removeAllListeners("console");
++    for (const listener of requestListeners) page.on("requestfailed", listener);
++    for (const listener of consoleListeners) page.on("console", listener);
+   }
+ }
+ 
+@@ -373,6 +511,33 @@
+ 
+         // 캡처
+         await capture("home-empty-fixture");
++
++        // 이미 H4인 화면에서도 refresh가 시작되면 이전 성공 표시를 즉시 제거한다.
++        for (const fail of [false, true]) {
++          let release;
++          let started;
++          const held = new Promise((resolve) => { release = resolve; });
++          const requested = new Promise((resolve) => { started = resolve; });
++          const handler = async (route) => {
++            started();
++            await held;
++            await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(
++              fail ? { ok: false, errorCode: "FIXTURE_SYNC_ERROR", message: "검증용 조회 실패" } :
++                { ok: true, data: { status: "idle", issueCount: 0, message: "" } }) });
++          };
++          await page.route("**/api/performance:get-sync-state", handler);
++          await page.getByRole("button", { name: "홈", exact: true }).click();
++          await requested;
++          try {
++            if (await page.locator("#section-empty-todos").count() || !(await page.locator('[aria-busy="true"]').count())) {
++              throw new Error("refresh 대기 중 이전 H4 표시 또는 H5 누락");
++            }
++            await capture(fail ? "home-refresh-pending-error" : "home-refresh-pending-success");
++          } finally { release(); }
++          await page.locator(fail ? "#todo-item-sync-error" : "#section-empty-todos").waitFor({ state: "visible" });
++          if (fail && await page.locator("#section-empty-todos").count()) throw new Error("refresh 실패 뒤 H4 표시");
++          await page.unroute("**/api/performance:get-sync-state", handler);
++        }
+       },
+     });
+   } else if (currentCase === "loading-error") {
+@@ -854,6 +1019,7 @@
+ 
+         // 8. 캡처
+         await capture("home-stale-retry-action");
++        await verifyActionLifetime(page, "retry-recovery", capture);
+       },
+     });
+   } else if (currentCase === "stale-watch-action") {
+@@ -931,6 +1097,7 @@
+ 
+         // 8. 캡처
+         await capture("home-stale-watch-action");
++        await verifyActionLifetime(page, "restart-watch", capture);
+       },
+     });
+   } else {

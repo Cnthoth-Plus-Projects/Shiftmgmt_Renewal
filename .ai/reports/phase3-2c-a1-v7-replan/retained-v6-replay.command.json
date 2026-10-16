@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\replay-v6.py"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 42548,
+  "startUtc": "2026-10-13T04:33:44.224888+00:00",
+  "endUtc": "2026-10-13T04:33:44.479716+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\retained-v6-replay.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\retained-v6-replay.stderr.txt",
+  "stdoutSha256": "8517734FAB9991F27F3B6976E67DD1D96DCBFBB5AFFF1F0087D441B18DF01121",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

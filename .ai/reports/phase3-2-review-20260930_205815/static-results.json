@@ -1,0 +1,81 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run typecheck"
+    ],
+    "start": "2026-09-30T21:01:55.558359",
+    "end": "2026-09-30T21:02:02.970449",
+    "exitCode": 0
+  },
+  {
+    "name": "syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/access-history.mjs"
+    ],
+    "start": "2026-09-30T21:02:02.971448",
+    "end": "2026-09-30T21:02:03.097726",
+    "exitCode": 0
+  },
+  {
+    "name": "lint",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run lint"
+    ],
+    "start": "2026-09-30T21:02:03.097726",
+    "end": "2026-09-30T21:02:08.888252",
+    "exitCode": 0
+  },
+  {
+    "name": "map",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run validate:map"
+    ],
+    "start": "2026-09-30T21:02:08.888252",
+    "end": "2026-09-30T21:02:09.723640",
+    "exitCode": 0
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "cmd",
+      "/c",
+      "npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1"
+    ],
+    "start": "2026-09-30T21:02:09.723640",
+    "end": "2026-09-30T21:02:14.395538",
+    "exitCode": 0
+  },
+  {
+    "name": "diffcheck",
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+      "diff",
+      "--check"
+    ],
+    "start": "2026-09-30T21:02:14.395538",
+    "end": "2026-09-30T21:02:14.598277",
+    "exitCode": 0
+  },
+  {
+    "name": "build",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run build"
+    ],
+    "start": "2026-09-30T21:02:14.598277",
+    "end": "2026-09-30T21:02:23.505119",
+    "exitCode": 0
+  }
+]

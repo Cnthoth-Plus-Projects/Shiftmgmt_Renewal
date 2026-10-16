@@ -1,0 +1,31 @@
+{
+  "started": "2026-09-30T05:35:04.089Z",
+  "serverExit": null,
+  "bootstrapExists": false,
+  "files": [
+    "data",
+    "data\\imports",
+    "data\\shiftmgmt.sqlite",
+    "data\\shiftmgmt.sqlite-shm",
+    "data\\shiftmgmt.sqlite-wal",
+    "data\\imports\\approved",
+    "data\\imports\\pending"
+  ],
+  "serverOutput": [
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    "GET /api/health 200",
+    "POST /api/auth:get-session 200",
+    ""
+  ]
+}

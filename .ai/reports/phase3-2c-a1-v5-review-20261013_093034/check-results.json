@@ -1,0 +1,359 @@
+{
+  "status": "ORIGINAL_CONTROLS_COMPLETE",
+  "records": [
+    {
+      "name": "scope-before",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+        "--scope"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 51088,
+      "start": "2026-10-13T00:33:38.039348+00:00",
+      "end": "2026-10-13T00:33:39.305295+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-before.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-before.stderr.txt",
+      "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "syntax-owner",
+      "argv": [
+        "node",
+        "--check",
+        "scripts/ui-checks/access-history.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 47740,
+      "start": "2026-10-13T00:33:39.308380+00:00",
+      "end": "2026-10-13T00:33:39.444048+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-owner.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-owner.stderr.txt",
+      "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "syntax-shared",
+      "argv": [
+        "node",
+        "--check",
+        "scripts/ui-checks/access-history-shared.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 48480,
+      "start": "2026-10-13T00:33:39.445023+00:00",
+      "end": "2026-10-13T00:33:39.569575+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-shared.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\syntax-shared.stderr.txt",
+      "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "typecheck",
+      "argv": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm.cmd",
+        "run",
+        "typecheck"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 40000,
+      "start": "2026-10-13T00:33:39.570575+00:00",
+      "end": "2026-10-13T00:33:48.849638+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\typecheck.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\typecheck.stderr.txt",
+      "stdoutSha256": "EB0C68245B291B33DD886D88F9CFB76DECBF3D9E93BDBDEA5666CE1D4BA515B3",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "lint",
+      "argv": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm.cmd",
+        "run",
+        "lint"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 7112,
+      "start": "2026-10-13T00:33:48.863620+00:00",
+      "end": "2026-10-13T00:33:58.199376+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\lint.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\lint.stderr.txt",
+      "stdoutSha256": "B92339FEA803D807646646FB0E22CAC4EB843FF070538A93238E12277095B326",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "map",
+      "argv": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm.cmd",
+        "run",
+        "validate:map"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 48868,
+      "start": "2026-10-13T00:33:58.214667+00:00",
+      "end": "2026-10-13T00:33:59.059038+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\map.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\map.stderr.txt",
+      "stdoutSha256": "0D9C0EBE7374C43D8C81DAF6296B8568875FFE7E0FC9D9307243A19CEEE4D793",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 46956,
+      "start": "2026-10-13T00:33:59.072563+00:00",
+      "end": "2026-10-13T00:33:59.298825+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\diff-check.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\diff-check.stderr.txt",
+      "stdoutSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stderrSha256": "1E26F689A6DBB704CA2667251360782B369BAF48FDB216A21A1D31EB99CB5D84"
+    },
+    {
+      "name": "build",
+      "argv": [
+        "cmd",
+        "/d",
+        "/c",
+        "npm.cmd",
+        "run",
+        "build"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 516,
+      "start": "2026-10-13T00:33:59.311381+00:00",
+      "end": "2026-10-13T00:34:10.591909+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\build.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\build.stderr.txt",
+      "stdoutSha256": "F983FCC063573D8BFFBA51A93DB3BD4A3E0B1828464E318A24ECF2CCCC7B3184",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "focused-tests",
+      "argv": [
+        "cmd",
+        "/d",
+        "/c",
+        "npx.cmd",
+        "vitest",
+        "run",
+        "src/web/screens/access-history-model.test.ts",
+        "src/main/services/access-log-service.test.ts",
+        "src/main/http/route-registry.test.ts",
+        "--maxWorkers=1",
+        "--minWorkers=1"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 36092,
+      "start": "2026-10-13T00:34:10.606105+00:00",
+      "end": "2026-10-13T00:34:18.125734+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\focused-tests.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\focused-tests.stderr.txt",
+      "stdoutSha256": "9341834F5DC09F34DD790EAA926102DBDD90F56860D3F25E743760C7D380D40F",
+      "stderrSha256": "0BF96813602508B32E27B92FE53D2E97190B6C93443B7F5B055BF75D0C427E6E"
+    },
+    {
+      "name": "gate-parser",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+        "--self-test"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 11840,
+      "start": "2026-10-13T00:34:18.149331+00:00",
+      "end": "2026-10-13T00:34:18.412084+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\gate-parser.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\gate-parser.stderr.txt",
+      "stdoutSha256": "072B084CD9B615BF7196EAE6E73AE5BD834F12F14C726857BD76904791779B3C",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "runtime-parser",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+        "--self-test"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 33496,
+      "start": "2026-10-13T00:34:18.427224+00:00",
+      "end": "2026-10-13T00:34:18.668356+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\runtime-parser.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\runtime-parser.stderr.txt",
+      "stdoutSha256": "E7478F28E1741653490EC75C97E73729C5CD0E5CF069BDAF73D712A74D754739",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "actual-runtime-original-controls",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 50628,
+      "start": "2026-10-13T00:34:18.681528+00:00",
+      "end": "2026-10-13T00:39:48.577675+00:00",
+      "rc": 1,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stderr.txt",
+      "stdoutSha256": "B83C3C317115C311EA99ECA77C66EA32940E31637AD04E986DE5601234E59993",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "ipc-suite",
+      "argv": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\ipc-probes.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 49116,
+      "start": "2026-10-13T00:39:48.634780+00:00",
+      "end": "2026-10-13T00:40:05.045544+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stderr.txt",
+      "stdoutSha256": "E3BA13DC687A5E0AFB29644FB6B63E2EA6F5D29E8FFA9ED0E602C7F654F9EF56",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "component-suite",
+      "argv": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\component-probes.mjs",
+        "--core-manifest",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093437-8mpzkP\\owner-final.json",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 44292,
+      "start": "2026-10-13T00:40:05.060933+00:00",
+      "end": "2026-10-13T00:40:11.009584+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\component-suite.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\component-suite.stderr.txt",
+      "stdoutSha256": "477738C394D5274EF4BFD0FBFB1665CA542004454BDB9A2A164E7B8C76BA247A",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "partial-suite",
+      "argv": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\partial-probes.mjs"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 12692,
+      "start": "2026-10-13T00:40:11.026211+00:00",
+      "end": "2026-10-13T00:40:24.028169+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\partial-suite.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\partial-suite.stderr.txt",
+      "stdoutSha256": "E466149D48D636DBFF6C7636AC428D3695CD71756AB5F21068FBBFD46454631D",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "scope-after",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+        "--execution-sha",
+        "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+        "--baseline-sha",
+        "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+        "--scope"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 28260,
+      "start": "2026-10-13T00:40:24.042724+00:00",
+      "end": "2026-10-13T00:40:25.023440+00:00",
+      "rc": 0,
+      "timeout": false,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stderr.txt",
+      "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  ],
+  "runtimeSummary": {
+    "status": "FAIL",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-runtime-rttytl8r",
+    "faults": 46,
+    "acceptance": "A1_RUNTIME_SUBSET_ONLY_NOT_A2_B"
+  },
+  "runtimeAcceptance": false,
+  "productEditsBySol": 0,
+  "A1Accepted": false
+}

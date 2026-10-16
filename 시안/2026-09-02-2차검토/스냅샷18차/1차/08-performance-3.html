@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>근무 관리 시스템 — 시안 08-performance-3.html</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><style>
+    :root { --bg: #F4F5F7; --surface: #FFFFFF; --line: #E2E5EA; --line-strong: #848A93; --text: #1F2430; --text-sub: #4B5563; --accent: #3E56B6; --row-selected: #EEF1FB; --badge-approved-text: #1E7A46; --badge-approved-bg: #E8F5EE; --badge-pending-text: #4B5563; --badge-pending-bg: #F1F2F4; --badge-rejected-text: #C0392B; --badge-rejected-bg: #FCEBE9; --badge-reapproved-text: #A05200; --badge-reapproved-bg: #FDF3E4; --badge-holiday-text: #7A3E9D; --badge-holiday-bg: #F5EDFA; --badge-locked-text: #4B5563; --badge-locked-bg: #EBEDF0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif; background: #E5E7EB; color: var(--text); line-height: 1.5; font-size: 14px; display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 32px; }
+    .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 20px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; width: 20px; height: 20px; overflow: hidden; user-select: none; }
+    .icon-18 { font-size: 18px; width: 18px; height: 18px; }
+    .icon-spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .state-wrapper { display: flex; flex-direction: column; width: 1440px; background: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+    .status-label-bar { height: 36px; background: #E2E5EA; color: #4B5563; font-size: 12px; font-weight: 600; display: flex; align-items: center; padding-left: 16px; border-bottom: 1px solid #D1D5DB; }
+    .app-window { width: 1440px; height: 900px; display: flex; flex-direction: column; background: var(--bg); position: relative; }
+    .app-body { display: flex; flex: 1; height: calc(900px - 32px); overflow: hidden; }
+    
+    .sidebar { width: 220px; background: #FFFFFF; border-right: 1px solid var(--line); display: flex; flex-direction: column; flex-shrink: 0; }
+    .nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+    .nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+    .nav-item { height: 44px; display: flex; align-items: center; padding: 0 16px; color: var(--text); text-decoration: none; gap: 10px; font-size: 14px; position: relative; }
+    .nav-item:hover { background: #F8F9FA; }
+    .nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+    .nav-badge { margin-left: auto; background: var(--accent); color: #FFFFFF; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 12px; line-height: 1; }
+
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; width: 1220px; overflow: hidden; }
+    .header-bar { height: 56px; background: #FFFFFF; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 12px; flex-shrink: 0; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .btn-sidebar-toggle{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--text)}
+    .btn-sidebar-toggle:hover { background: #F1F2F4; }
+    .app-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; }
+    .app-title { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+    .header-title{font-size:20px;font-weight:600;color:var(--text);white-space:nowrap}
+    .header-user-actions { display: flex; align-items: center; gap: 12px; }
+    .role-badge { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid #D5DCF5; }
+    .user-info-btn { display: flex; align-items: center; gap: 4px; color: var(--text-sub); font-size: 13px; text-decoration: none; background: none; border: none; cursor: pointer; }
+    
+    .page-content { width: 1220px; height: 812px; padding: 8px 20px 10px 20px; overflow-y: hidden; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box; }
+
+    /* C4 박스 탭 헤더 줄 (48px) */
+    .tabs-header-bar { height: 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); flex-shrink: 0; padding: 0 4px; }
+    .tabs-group { display: flex; gap: 4px; align-items: center; }
+    .tab-btn{height:40px;background:#F1F2F4;border:1px solid transparent;border-radius:6px;font-size:13px;color:var(--text-sub);padding:0 14px;cursor:pointer;font-weight:400;display:inline-flex;align-items:center}
+    .tab-btn.active { background: var(--accent); color: #FFFFFF; font-weight: 600; border-color: var(--accent); }
+
+    .summary-chips-wrap { display: flex; align-items: center; gap: 8px; }
+    .chip { height: 32px; background: #F1F2F4; color: var(--text-sub); font-size: 12px; font-weight: 600; padding: 0 10px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px; }
+    .chip strong { font-size: 14px; font-weight: 700; margin-left: 2px; }
+    .chip-accent { background: #EEF1FB; color: var(--accent); }
+    .chip-warning { background: #FCF6E0; color: #8A6D00; }
+
+    .density-toggle { display: flex; border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; margin-left: 8px; }
+    .density-btn { background: #FFFFFF; border: none; font-size:12px; padding: 3px 6px; cursor: pointer; color: var(--text-sub); }
+    .density-btn.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+
+    .summary-collapsed-bar { height: 40px; background: #E8F5EE; border: 1px solid #C2E7D0; color: #1E7A46; border-radius: 6px; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 600; gap: 6px; flex-shrink: 0; }
+    .toolbar-bar { height: 56px; display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 0 12px; gap: 12px; flex-shrink: 0; }
+    .filter-group { display: flex; align-items: center; gap: 8px; flex: 1; }
+    .filter-input { height: 32px; border: 1px solid var(--line-strong); border-radius: 4px; padding: 0 8px; font-size: 12px; background: #FFFFFF; }
+    .actions-group { display: flex; align-items: center; gap: 6px; }
+    .disabled-reasons-bar { display: flex; gap: 16px; font-size: 12px; color: #4B5563; padding: 0 4px; flex-shrink: 0; }
+    
+    .btn-primary { background: var(--accent); color: #FFFFFF; border: 1px solid var(--accent); padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .btn-primary:hover { background: #32479B; }
+    .btn-secondary { background: #FFFFFF; color: var(--text); border: 1px solid var(--line-strong); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .btn-secondary:hover { background: #F8F9FA; }
+    
+    .table-detail-wrapper { display: flex; gap: 10px; height: 642px; }
+    .table-container { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; overflow-y: auto; height: 642px; flex-shrink: 0; }
+    .grid-table { width: 100%; min-width: 1140px; border-collapse: collapse; font-size: 14px; }
+    .grid-table th { background: #F8F9FA; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); height: 40px; padding: 0 8px; font-size: 12px; text-align: left; font-weight: 600; color: var(--text-sub); position: sticky; top: 0; z-index: 10; }
+    .grid-table td { border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); padding: 0 8px; height: 40px; white-space: nowrap; }
+    .grid-table.dense th { height: 32px; padding: 0 6px; font-size: 12px; }
+    .grid-table.dense td { height: 32px; padding: 0 6px; font-size: 14px; }
+    .grid-table tr:hover td { background: #F8F9FA; }
+    .grid-table tr.selected td { background: var(--row-selected) !important; font-weight: 500; }
+    .grid-table tr:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .group-cell { background: #F8F9FA; font-weight: 600; color: var(--text); vertical-align: middle; text-align: center; }
+    .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 600; line-height: 1.2; }
+    .badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-text); }
+    .badge-pending { background: var(--badge-pending-bg); color: var(--badge-pending-text); }
+    .badge-rejected { background: var(--badge-rejected-bg); color: var(--badge-rejected-text); }
+    .badge-reapproved { background: var(--badge-reapproved-bg); color: var(--badge-reapproved-text); }
+    .badge-holiday { background: var(--badge-holiday-bg); color: var(--badge-holiday-text); }
+    .badge-locked { background: var(--badge-locked-bg); color: var(--badge-locked-text); display: inline-flex; align-items: center; gap: 2px; }
+    [aria-disabled="true"] { opacity: 0.45; cursor: default !important; }
+    
+    .detail-panel { width: 360px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex-shrink: 0; }
+    .detail-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 6px; font-size: 14px; font-weight: 600; }
+    .detail-section { font-size:12px; display: flex; flex-direction: column; gap: 3px; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
+    .detail-sec-title { font-weight: 600; color: var(--text); }
+    .detail-row { color: var(--text-sub); }
+    
+    .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal-box { width: 600px; background: #FFFFFF; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: flex; flex-direction: column; overflow: hidden; }
+    .modal-header { padding: 14px 18px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .modal-body { padding: 18px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+    .modal-footer { padding: 10px 18px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 8px; background: #F8F9FA; }
+    
+    .footer-statusbar { height: 32px; background: #FFFFFF; border-top: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; font-size: 12px; color: var(--text-sub); width: 1440px; box-sizing: border-box; flex-shrink: 0; }
+    .status-cell { display: flex; align-items: center; gap: 6px; padding: 0 12px; border-right: 1px solid var(--line); height: 100%; }
+    .status-cell:first-child { padding-left: 0; }
+    .status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+    .status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+  
+/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */
+.user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px}
+.skip-link{position:absolute;left:8px;top:8px;z-index:1300;background:var(--accent);color:#FFF;padding:8px 12px;border-radius:6px;font-size:13px;text-decoration:none;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip-link:focus{width:auto;height:auto;overflow:visible;clip:auto;outline:2px solid #FFF}
+.sidebar.collapsed .nav-group-header{height:1px;margin:8px 12px;padding:0;background:var(--line);font-size:0;overflow:hidden}
+/* 0-18 소급(v1.9) B-7 64px 접힘 — 2차 00-shell-1과 같은 규칙, 메뉴 글자는 시각만 숨김(접근 가능한 이름 유지), 배지는 모서리 표시 */
+.sidebar{transition:width .15s ease}
+.sidebar.collapsed{width:64px}
+.sidebar.collapsed .nav-item{justify-content:center;padding:0;gap:0}
+.sidebar.collapsed .nav-item>span:not(.material-symbols-outlined):not(.nav-badge){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sidebar.collapsed .nav-badge{position:absolute;top:3px;right:3px;margin:0;padding:1px 5px}
+.sidebar.collapsed+.main-wrapper{width:1376px}
+.demo-toast{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#1F2430;color:#FFF;font-size:13px;padding:10px 16px;border-radius:6px;z-index:1200;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style></head><body><div class="state-wrapper" id="state-p6"><div class="status-label-bar">
+      ── P6. 실적 관리 — ② 승인 작업 · 기본 (승인 담당) ──
+    </div><div class="app-window"><a class="skip-link" href="#main-content-p6">본문으로 바로가기</a><div id="p6-aria-live" class="sr-only" role="status" aria-live="polite"></div><div class="app-body" id="main-state-p6"><aside class="sidebar"><nav aria-label="주 메뉴"><ul class="nav-list" style="padding-top: 12px;"><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li><li class="nav-group-header">─ 준비 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li><li class="nav-group-header">─ 운영 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li><li><a href="#" class="nav-item active" aria-current="page" aria-label="실적 관리, 승인 대기 실적 128건"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" id="p6-sidebar-badge" title="승인 대기 실적 128건">128</span></a></li><li class="nav-group-header">─ 정산 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li></ul></nav></aside><div class="main-wrapper"><header class="header-bar"><div class="header-left"><button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button><div class="header-divider" aria-hidden="true"></div><h1 class="header-title">실적 관리</h1></div><div class="header-user-actions"><span class="role-badge">승인 담당</span><span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span><button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button></div></header><main class="page-content" id="main-content-p6" tabindex="-1"><div class="tabs-header-bar"><div class="tabs-group"><button type="button" class="tab-btn">① 접수·복구</button><button type="button" class="tab-btn active">② 승인 작업</button><button type="button" class="tab-btn">③ 재승인·비교</button></div><div class="summary-chips-wrap"><span class="chip chip-accent" id="p6-chip-pending"><span class="material-symbols-outlined icon-18" aria-hidden="true">fact_check</span><span>대기 실적 <strong>128</strong>건</span></span><span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">refresh</span><span>재승인 필요 <strong>3</strong>건</span></span><span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>확인 필요 <strong>2</strong>건</span></span><div class="density-toggle" role="group" aria-label="밀도 선택"><button type="button" class="density-btn active" id="btn-density-wide">넓게</button><button type="button" class="density-btn" id="btn-density-dense">좁게</button></div></div></div><div class="summary-collapsed-bar"><span class="material-symbols-outlined" aria-hidden="true">check_circle</span><span>✓ 접수·복구 정상 — 최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="toolbar-bar"><div class="filter-group"><input type="text" class="filter-input" aria-label="기간" value="2025-05-01 ~ 2025-05-31" style="width: 170px;" readonly><select class="filter-input" aria-label="근무지" style="width: 100px;"><option>전체 근무지</option><option>본사</option><option>지사 A</option><option>지사 B</option></select><select class="filter-input" aria-label="상태" style="width: 85px;"><option>전체 상태</option><option>대기</option><option>승인</option><option>반려</option></select><input type="text" class="filter-input" aria-label="검색" placeholder="사번, 이름, 근무일, 경고 내용" style="flex: 1; min-width: 120px; width: 120px;"></div><div class="actions-group"><button type="button" class="btn-primary" id="btn-approve-single">승인</button><span id="p6-approve-desc" style="display:none;font-size:12px;color:#C0392B;">선택한 행은 이미 승인되었습니다</span><button type="button" class="btn-secondary" id="btn-reject-single">반려</button><button type="button" class="btn-secondary" id="btn-approve-file">파일 전체 승인</button><button type="button" class="btn-secondary" aria-disabled="true" aria-describedby="desc-revert-btn-p6">승인대기로 되돌리기</button><button type="button" class="btn-secondary" aria-disabled="true" aria-describedby="desc-hide-btn-p6">목록에서 숨기기</button><button type="button" class="btn-secondary">원본 엑셀 열기 ↗</button></div></div><div class="disabled-reasons-bar"><span id="desc-revert-btn-p6">※ 승인대기로 되돌리기: 승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다.</span><span id="desc-hide-btn-p6">※ 목록에서 숨기기: 승인완료 보관본만 목록에서 숨길 수 있습니다.</span></div><div class="table-detail-wrapper"><div class="table-container" id="p6-table-wrap" style="flex: 1;"><table class="grid-table" id="p6-table" role="grid" aria-colcount="12"><thead><tr><th style="width: 75px;">근무지</th><th style="width: 55px;">사번</th><th style="width: 60px;">이름</th><th style="width: 45px;">직급</th><th style="width: 105px;">근무일</th><th style="width: 75px;">상태</th><th style="width: 60px;">경고</th><th style="width: 65px;">구분</th><th style="width: 70px; min-width: 70px; white-space: nowrap;">근무코드</th><th style="width: 90px;">시작-종료</th><th style="width: 185px;">시간(총=기본+연장+야간)</th><th style="width: 65px;">시급</th></tr></thead><tbody id="p6-tbody"><tr tabindex="-1" aria-selected="false"><td data-col="site" class="group-cell" rowspan="7">본사 (7)</td><td data-col="emp">10012</td><td data-col="name">김도현</td><td data-col="rank">사원</td><td data-col="date">2025-05-28 (수)</td><td data-col="status" class="status-col"><span class="badge badge-approved">승인</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">12,500</td></tr><tr tabindex="0" aria-selected="true" class="selected" id="p6-row-2"><td data-col="emp">10034</td><td data-col="name">이수빈</td><td data-col="rank">사원</td><td data-col="date">2025-05-28 (수)</td><td data-col="status" class="status-col" id="p6-row2-status"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-21:00</td><td data-col="hours">3.00 = 0.00+3.00+0.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">10034</td><td data-col="name">이수빈</td><td data-col="rank">사원</td><td data-col="date">2025-05-27 (화)</td><td data-col="status" class="status-col"><span class="badge badge-reapproved">재승인 대기</span></td><td data-col="warn" style="color:#8A6D00;">야간 시간 초과</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-23:30</td><td data-col="hours">5.50 = 0.00+4.00+1.50</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">10018</td><td data-col="name">최유나</td><td data-col="rank">차장</td><td data-col="date">2025-05-26 (월)</td><td data-col="status" class="status-col"><span class="badge badge-approved">승인</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">16,000</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-5"><td data-col="emp">10009</td><td data-col="name">정민수</td><td data-col="rank">과장</td><td data-col="date">2025-05-05 (월)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section"><span class="badge badge-holiday">법정휴일</span></td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">15,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">10031</td><td data-col="name">오세훈</td><td data-col="rank">사원</td><td data-col="date">2025-05-26 (월)</td><td data-col="status" class="status-col"><span class="badge badge-rejected">반려</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">야간</td><td data-col="time">22:00-06:00</td><td data-col="hours">7.00 = 0.00+0.00+7.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-7"><td data-col="emp">10027</td><td data-col="name">박재민</td><td data-col="rank">대리</td><td data-col="date">2025-05-24 (토)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">09:00-13:00</td><td data-col="hours">4.00 = 0.00+4.00+0.00</td><td data-col="wage">13,500</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-8"><td data-col="site" class="group-cell" rowspan="7">지사 A (7)</td><td data-col="emp">20015</td><td data-col="name">한지윤</td><td data-col="rank">사원</td><td data-col="date">2025-05-28 (수)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">20022</td><td data-col="name">김태현</td><td data-col="rank">대리</td><td data-col="date">2025-05-27 (화)</td><td data-col="status" class="status-col"><span class="badge badge-approved">승인</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-22:00</td><td data-col="hours">4.00 = 0.00+4.00+0.00</td><td data-col="wage">13,500</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">20011</td><td data-col="name">이서연</td><td data-col="rank">부장</td><td data-col="date">2025-05-26 (월)</td><td data-col="status" class="status-col"><span class="badge badge-reapproved">재승인 대기</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">야간</td><td data-col="time">21:00-06:00</td><td data-col="hours">8.00 = 1.00+0.00+7.00</td><td data-col="wage">17,500</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-11"><td data-col="emp">20007</td><td data-col="name">박민재</td><td data-col="rank">사원</td><td data-col="date">2025-05-25 (일)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">12,500</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">20019</td><td data-col="name">유민지</td><td data-col="rank">사원</td><td data-col="date">2025-05-24 (토)</td><td data-col="status" class="status-col"><span class="badge badge-pending">수당 미지급</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">석간</td><td data-col="time">13:00-22:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">20015</td><td data-col="name">한지윤</td><td data-col="rank">사원</td><td data-col="date">2025-05-27 (화)</td><td data-col="status" class="status-col"><span class="badge badge-reapproved">재승인 완료</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:30-22:30</td><td data-col="hours">4.00 = 0.00+3.50+0.50</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-14"><td data-col="emp">20022</td><td data-col="name">김태현</td><td data-col="rank">대리</td><td data-col="date">2025-05-24 (토)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-20:00</td><td data-col="hours">2.00 = 0.00+2.00+0.00</td><td data-col="wage">13,500</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="site" class="group-cell" rowspan="7">지사 B (7)</td><td data-col="emp">30003</td><td data-col="name">강동혁</td><td data-col="rank">사원</td><td data-col="date">2025-05-28 (수)</td><td data-col="status" class="status-col"><span class="badge badge-approved">승인</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-20:00</td><td data-col="hours">2.00 = 0.00+2.00+0.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">30014</td><td data-col="name">최예린</td><td data-col="rank">대리</td><td data-col="date">2025-05-27 (화)</td><td data-col="status" class="status-col"><span class="badge badge-reapproved">재승인 대기</span></td><td data-col="warn" style="color:#8A6D00;">야간 수당 확인</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-23:00</td><td data-col="hours">5.00 = 0.00+4.00+1.00</td><td data-col="wage">13,500</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-17"><td data-col="emp">30008</td><td data-col="name">허민우</td><td data-col="rank">사원</td><td data-col="date">2025-05-26 (월)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">야간</td><td data-col="time">22:00-06:00</td><td data-col="hours">7.00 = 0.00+0.00+7.00</td><td data-col="wage">12,500</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">30021</td><td data-col="name">김나영</td><td data-col="rank">과장</td><td data-col="date">2025-05-06 (화)</td><td data-col="status" class="status-col"><span class="badge badge-approved">승인</span></td><td data-col="warn">-</td><td data-col="section"><span class="badge badge-holiday">법정휴일</span></td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">15,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">30029</td><td data-col="name">조현우</td><td data-col="rank">사원</td><td data-col="date">2025-05-24 (토)</td><td data-col="status" class="status-col"><span class="badge badge-pending">수당 미지급</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">야간</td><td data-col="time">21:00-06:00</td><td data-col="hours">8.00 = 1.00+0.00+7.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false"><td data-col="emp">30003</td><td data-col="name">강동혁</td><td data-col="rank">사원</td><td data-col="date">2025-05-25 (일)</td><td data-col="status" class="status-col"><span class="badge badge-locked"><span class="material-symbols-outlined icon-18" aria-hidden="true">lock</span>변경불가</span></td><td data-col="warn">-</td><td data-col="section">대체</td><td data-col="code">주간</td><td data-col="time">09:00-18:00</td><td data-col="hours">8.00 = 8.00+0.00+0.00</td><td data-col="wage">12,000</td></tr><tr tabindex="-1" aria-selected="false" id="p6-row-21"><td data-col="emp">30014</td><td data-col="name">최예린</td><td data-col="rank">대리</td><td data-col="date">2025-05-26 (월)</td><td data-col="status" class="status-col"><span class="badge badge-pending">대기</span></td><td data-col="warn">-</td><td data-col="section">연장</td><td data-col="code">-</td><td data-col="time">18:00-21:00</td><td data-col="hours">3.00 = 0.00+3.00+0.00</td><td data-col="wage">13,500</td></tr></tbody></table></div><div class="detail-panel" id="p6-detail-panel" style="display: none;" role="region" aria-label="실적 상세 패널"><div class="detail-header"><span>실적 상세 정보</span><button type="button" class="user-info-btn" id="btn-close-p6-detail" aria-label="닫기"><span class="material-symbols-outlined icon-18" aria-hidden="true">close</span></button></div><div class="detail-section"><div class="detail-sec-title">기본 정보</div><div class="detail-row">근무지: <strong id="p6-d-site">본사</strong> · 사번: <strong id="p6-d-emp">10034</strong> · 이름: <strong id="p6-d-name">이수빈</strong> · 직급: <strong id="p6-d-rank">사원</strong></div></div><div class="detail-section"><div class="detail-sec-title">근무 정보</div><div class="detail-row">근무일자: <strong id="p6-d-date">2025-05-28 (수)</strong> · <span id="p6-d-work">연장 · - · 18:00-21:00 (3.00)</span></div></div><div class="detail-section"><div class="detail-sec-title">시간 분해</div><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px;"><div style="background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--text-sub);">기본</div><div id="p6-d-base" style="font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2;">0.00</div></div><div style="background: #EEF1FB; border: 1px solid #C9D4F4; border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--accent);">연장</div><div id="p6-d-ot" style="font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1.2;">3.00</div></div><div style="background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--text-sub);">야간</div><div id="p6-d-night" style="font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2;">0.00</div></div></div></div><div class="detail-section"><div class="detail-sec-title">시급 및 수당</div><div class="detail-row">시급: <strong id="p6-d-wage">12,000원</strong> · 수당: <span style="color:var(--text-sub);">승인 후 계산됩니다</span></div></div><div style="display: flex; gap: 8px; margin-top: auto; padding-top: 6px;"><button type="button" class="btn-primary" style="flex: 1;">승인</button><button type="button" class="btn-secondary" style="flex: 1;">반려</button></div></div></div></main></div></div><footer class="footer-statusbar"><div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div><div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="status-cell"><span>대기 파일 3개</span></div><div class="status-cell"><span>최신</span></div><div class="status-cell"><span>v2.3.1</span></div></footer><div class="modal-overlay" id="modal-approve-single" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-single-title"><div class="modal-box"><div class="modal-header"><h2 id="modal-single-title" class="modal-title">실적 승인 확인</h2></div><div class="modal-body"><p style="font-weight: 600;" id="p6-single-target">실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장</p><p style="font-size: 12px; color: var(--text-sub);">승인과 동시에 수당이 계산되며, 되돌리려면 파일 단위로만 가능합니다.</p></div><div class="modal-footer"><button type="button" class="btn-secondary" id="btn-single-cancel" autofocus>돌아가기</button><button type="button" class="btn-primary" id="btn-single-confirm">승인 실행</button></div></div></div><div class="modal-overlay" id="modal-approve-file" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-file-title" tabindex="-1"><div class="modal-box"><div class="modal-header"><h2 id="modal-file-title" class="modal-title">파일 전체 승인</h2></div><div class="modal-body" id="modal-file-body"><p style="font-weight: 600;">'실적_본사_2025-05.xlsx' 파일의 대기 실적 51건을 승인합니다.</p><p style="font-size: 12px; color: var(--text-sub);">행별로 차례로 승인하며, 실패한 행은 대기 상태로 남고 사유가 표시됩니다. 승인과 동시에 수당이 계산되며, 되돌리려면 파일 단위로만 가능합니다.</p></div><div class="modal-footer" id="modal-file-footer"><button type="button" class="btn-secondary" id="btn-file-cancel" autofocus>돌아가기</button><button type="button" class="btn-primary" id="btn-file-confirm">승인 실행</button></div></div></div></div></div><div class="state-wrapper" id="state-p7"><div class="status-label-bar">
+      ── P7. 실적 관리 — ② 승인 작업 · 행 상세 열림 (승인 담당) ──
+    </div><div class="app-window"><a class="skip-link" href="#main-content-p7">본문으로 바로가기</a><div class="app-body" id="main-state-p7"><aside class="sidebar"><nav aria-label="주 메뉴"><ul class="nav-list" style="padding-top: 12px;"><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li><li class="nav-group-header">─ 준비 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li><li class="nav-group-header">─ 운영 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li><li><a href="#" class="nav-item active" aria-current="page" aria-label="실적 관리, 승인 대기 실적 128건"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 128건">128</span></a></li><li class="nav-group-header">─ 정산 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li></ul></nav></aside><div class="main-wrapper"><header class="header-bar"><div class="header-left"><button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button><div class="header-divider" aria-hidden="true"></div><h1 class="header-title">실적 관리</h1></div><div class="header-user-actions"><span class="role-badge">승인 담당</span><span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span><button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button></div></header><main class="page-content" id="main-content-p7" tabindex="-1"><div class="tabs-header-bar"><div class="tabs-group"><button type="button" class="tab-btn">① 접수·복구</button><button type="button" class="tab-btn active">② 승인 작업</button><button type="button" class="tab-btn">③ 재승인·비교</button></div><div class="summary-chips-wrap"><span class="chip chip-accent"><span class="material-symbols-outlined icon-18" aria-hidden="true">fact_check</span><span>대기 실적 <strong>128</strong>건</span></span><span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">refresh</span><span>재승인 필요 <strong>3</strong>건</span></span><span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>확인 필요 <strong>2</strong>건</span></span></div></div><div class="summary-collapsed-bar"><span class="material-symbols-outlined" aria-hidden="true">check_circle</span><span>✓ 접수·복구 정상 — 최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="table-detail-wrapper"><div class="table-container" style="flex: 1; height: 100%;"><table class="grid-table" role="grid" aria-colcount="12"><thead><tr><th style="width: 70px;">근무지</th><th style="width: 50px;">사번</th><th style="width: 55px;">이름</th><th style="width: 40px;">직급</th><th style="width: 100px;">근무일</th><th style="width: 70px;">상태</th><th style="width: 60px;">경고</th><th style="width: 60px;">구분</th><th style="width: 70px; min-width: 70px; white-space: nowrap;">근무코드</th><th style="width: 85px;">시작-종료</th><th style="width: 175px;">시간(총=기본+연장+야간)</th><th style="width: 60px;">시급</th></tr></thead><tbody><tr tabindex="-1" aria-selected="false"><td class="group-cell">지사 A (1)</td><td>20022</td><td>김태현</td><td>대리</td><td>2025-05-24 (토)</td><td><span class="badge badge-pending">대기</span></td><td>-</td><td>연장</td><td>-</td><td>18:00-20:00</td><td>2.00 = 0.00+2.00+0.00</td><td>13,500</td></tr><tr tabindex="-1" aria-selected="false"><td class="group-cell" rowspan="7">지사 B (7)</td><td>30003</td><td>강동혁</td><td>사원</td><td>2025-05-28 (수)</td><td><span class="badge badge-approved">승인</span></td><td>-</td><td>연장</td><td>-</td><td>18:00-20:00</td><td>2.00 = 0.00+2.00+0.00</td><td>12,000</td></tr><tr tabindex="-1" aria-selected="false"><td>30014</td><td>최예린</td><td>대리</td><td>2025-05-27 (화)</td><td><span class="badge badge-reapproved">재승인 대기</span></td><td style="color:#8A6D00;">야간 수당 확인</td><td>연장</td><td>-</td><td>18:00-23:00</td><td>5.00 = 0.00+4.00+1.00</td><td>13,500</td></tr><tr tabindex="0" aria-selected="true" class="selected"><td>30008</td><td>허민우</td><td>사원</td><td>2025-05-26 (월)</td><td><span class="badge badge-pending">대기</span></td><td>-</td><td>연장</td><td>야간</td><td>22:00-06:00</td><td>7.00 = 0.00+0.00+7.00</td><td>12,500</td></tr><tr tabindex="-1" aria-selected="false"><td>30021</td><td>김나영</td><td>과장</td><td>2025-05-06 (화)</td><td><span class="badge badge-approved">승인</span></td><td>-</td><td><span class="badge badge-holiday">법정휴일</span></td><td>주간</td><td>09:00-18:00</td><td>8.00 = 8.00+0.00+0.00</td><td>15,000</td></tr><tr tabindex="-1" aria-selected="false"><td>30029</td><td>조현우</td><td>사원</td><td>2025-05-24 (토)</td><td><span class="badge badge-pending">수당 미지급</span></td><td>-</td><td>대체</td><td>야간</td><td>21:00-06:00</td><td>8.00 = 1.00+0.00+7.00</td><td>12,000</td></tr><tr tabindex="-1" aria-selected="false"><td>30003</td><td>강동혁</td><td>사원</td><td>2025-05-25 (일)</td><td><span class="badge badge-locked"><span class="material-symbols-outlined icon-18" aria-hidden="true">lock</span>변경불가</span></td><td>-</td><td>대체</td><td>주간</td><td>09:00-18:00</td><td>8.00 = 8.00+0.00+0.00</td><td>12,000</td></tr><tr tabindex="-1" aria-selected="false"><td>30014</td><td>최예린</td><td>대리</td><td>2025-05-26 (월)</td><td><span class="badge badge-pending">대기</span></td><td>-</td><td>연장</td><td>-</td><td>18:00-21:00</td><td>3.00 = 0.00+3.00+0.00</td><td>13,500</td></tr></tbody></table></div><div class="detail-panel"><div class="detail-header"><span>실적 상세 정보</span><button type="button" class="user-info-btn" aria-label="닫기"><span class="material-symbols-outlined icon-18" aria-hidden="true">close</span></button></div><div class="detail-section"><div class="detail-sec-title">기본 정보</div><div class="detail-row">근무지: <strong>지사 B</strong> · 사번: <strong>30008</strong> · 이름: <strong>허민우</strong> · 직급: <strong>사원</strong></div></div><div class="detail-section"><div class="detail-sec-title">근무 정보</div><div class="detail-row">근무일자: <strong>2025-05-26 (월)</strong></div><div class="detail-row">근로유형: <strong>연장근무</strong> · 근무코드: <strong>야간</strong></div><div class="detail-row">시작 22:00 · 종료 06:00 (+1일) · 휴게 01:00 · 총 시간 7:00</div></div><div class="detail-section"><div class="detail-sec-title">시간 분해</div><div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px;"><div style="background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--text-sub);">기본</div><div style="font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2;">0<span style="font-size: 12px; font-weight: normal; margin-left: 2px;">분</span></div></div><div style="background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--text-sub);">연장</div><div style="font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2;">0<span style="font-size: 12px; font-weight: normal; margin-left: 2px;">분</span></div></div><div style="background: #EEF1FB; border: 1px solid #C9D4F4; border-radius: 6px; padding: 8px 6px; text-align: center;"><div style="font-size: 12px; color: var(--accent);">야간</div><div style="font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1.2;">420<span style="font-size: 12px; font-weight: normal; margin-left: 2px;">분</span></div></div></div></div><div class="detail-section"><div class="detail-sec-title">시급</div><div class="detail-row">12,500원</div></div><div class="detail-section"><div class="detail-sec-title">사유</div><div class="detail-row">야간 근무로 승인 요청드립니다.</div></div><div class="detail-section"><div class="detail-sec-title">증적자료</div><div class="detail-row" style="color:var(--text); font-weight:500;">야간근무_증적.jpg</div></div><div class="detail-section"><div class="detail-row">대체수당 지급 여부: <strong>해당 없음</strong> · 사유 코드: <strong>-</strong></div></div><div style="display: flex; gap: 8px; margin-top: auto; padding-top: 6px;"><button type="button" class="btn-primary" style="flex: 1;">승인</button><button type="button" class="btn-secondary" style="flex: 1;">반려</button></div></div></div></main></div></div><footer class="footer-statusbar"><div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div><div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="status-cell"><span>대기 파일 3개</span></div><div class="status-cell"><span>최신</span></div><div class="status-cell"><span>v2.3.1</span></div></footer></div></div><script>
+    (function() {
+      // ☰ 메뉴 접기/펼치기 (동작 9)
+      document.querySelectorAll('.state-wrapper').forEach(function(stateWrap) {
+        var toggleBtn = stateWrap.querySelector('.btn-sidebar-toggle');
+        var sidebar = stateWrap.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            toggleBtn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+            sidebar.classList.toggle('collapsed', isExpanded); // v1.9 B-7: display:none → 64px 접힘
+            sidebar.querySelectorAll('.nav-item').forEach(function(a) {
+              var t = a.querySelector('span:not(.material-symbols-outlined):not(.nav-badge)');
+              if (isExpanded && t) a.setAttribute('title', t.textContent.trim()); else a.removeAttribute('title');
+            });
+          });
+        }
+      });
+
+      var btnDensityWide = document.getElementById('btn-density-wide');
+      var btnDensityDense = document.getElementById('btn-density-dense');
+      var table = document.getElementById('p6-table');
+      var tbody = document.getElementById('p6-tbody');
+      var rows = tbody ? Array.prototype.slice.call(tbody.querySelectorAll('tr')) : [];
+      var p6DetailPanel = document.getElementById('p6-detail-panel');
+      var btnCloseP6Detail = document.getElementById('btn-close-p6-detail');
+      var currentSelectedRow = document.getElementById('p6-row-2');
+
+      if (btnDensityWide && btnDensityDense && table) {
+        btnDensityWide.addEventListener('click', function() {
+          btnDensityWide.classList.add('active');
+          btnDensityDense.classList.remove('active');
+          table.classList.remove('dense');
+        });
+        btnDensityDense.addEventListener('click', function() {
+          btnDensityDense.classList.add('active');
+          btnDensityWide.classList.remove('active');
+          table.classList.add('dense');
+        });
+      }
+
+      // ---- A-1 선택 행 연동 (동작 11): 셀은 열 이름(data-col)으로 읽는다 ----
+      var btnApprove = document.getElementById('btn-approve-single');
+      var approveDesc = document.getElementById('p6-approve-desc');
+      var chipPending = document.getElementById('p6-chip-pending');
+      var sidebarBadge = document.getElementById('p6-sidebar-badge');
+      var ariaLive = document.getElementById('p6-aria-live');
+      function cellText(row, col) { var td = row ? row.querySelector('td[data-col="' + col + '"]') : null; return td ? td.textContent.trim() : ''; }
+      function siteOf(row) {
+        var r = row, td = r ? r.querySelector('td[data-col="site"]') : null;
+        while (!td && r) { r = r.previousElementSibling; if (r) td = r.querySelector('td[data-col="site"]'); }
+        return td ? td.textContent.replace(/\s*\(\d+\)\s*$/, '').trim() : '';
+      }
+      function statusOf(row) { var td = row ? row.querySelector('.status-col') : null; return td ? td.textContent.trim() : ''; }
+      function setText(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
+      function updateApproveLock() {
+        if (!btnApprove) return;
+        var locked = !!currentSelectedRow && statusOf(currentSelectedRow) === '승인';
+        if (locked) { btnApprove.setAttribute('aria-disabled', 'true'); btnApprove.setAttribute('aria-describedby', 'p6-approve-desc'); if (approveDesc) approveDesc.style.display = 'inline'; }
+        else { btnApprove.removeAttribute('aria-disabled'); btnApprove.removeAttribute('aria-describedby'); if (approveDesc) approveDesc.style.display = 'none'; }
+      }
+      function setSelectedRow(targetRow) {
+        if (!targetRow) return;
+        rows.forEach(function(r) {
+          r.classList.remove('selected');
+          r.setAttribute('aria-selected', 'false');
+          r.setAttribute('tabindex', '-1');
+        });
+        targetRow.classList.add('selected');
+        targetRow.setAttribute('aria-selected', 'true');
+        targetRow.setAttribute('tabindex', '0');
+        targetRow.focus();
+        currentSelectedRow = targetRow;
+        updateApproveLock();
+      }
+      function openP6Detail(row) {
+        if (!p6DetailPanel) return;
+        var hours = cellText(row, 'hours'), m = hours.match(/^([\d.]+)\s*=\s*([\d.]+)\+([\d.]+)\+([\d.]+)/);
+        setText('p6-d-site', siteOf(row)); setText('p6-d-emp', cellText(row, 'emp')); setText('p6-d-name', cellText(row, 'name')); setText('p6-d-rank', cellText(row, 'rank'));
+        setText('p6-d-date', cellText(row, 'date'));
+        setText('p6-d-work', cellText(row, 'section') + ' · ' + cellText(row, 'code') + ' · ' + cellText(row, 'time') + ' (' + (m ? m[1] : hours) + ')');
+        setText('p6-d-base', m ? m[2] : '-'); setText('p6-d-ot', m ? m[3] : '-'); setText('p6-d-night', m ? m[4] : '-');
+        setText('p6-d-wage', cellText(row, 'wage') + '원');
+        p6DetailPanel.style.display = 'flex';
+        if (btnCloseP6Detail) btnCloseP6Detail.focus();
+      }
+      function closeP6Detail() {
+        if (!p6DetailPanel) return;
+        p6DetailPanel.style.display = 'none';
+        if (currentSelectedRow) currentSelectedRow.focus();
+      }
+      if (btnCloseP6Detail) btnCloseP6Detail.addEventListener('click', closeP6Detail);
+      if (p6DetailPanel) {
+        p6DetailPanel.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') closeP6Detail();
+        });
+      }
+      rows.forEach(function(row, idx) {
+        row.addEventListener('click', function() { setSelectedRow(row); });
+        row.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            var nextIdx = (idx + 1) < rows.length ? idx + 1 : idx;
+            setSelectedRow(rows[nextIdx]);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            var prevIdx = (idx - 1) >= 0 ? idx - 1 : 0;
+            setSelectedRow(rows[prevIdx]);
+          } else if (e.key === ' ') {
+            e.preventDefault();
+            if (row.getAttribute('aria-selected') === 'true') {
+              row.classList.remove('selected');
+              row.setAttribute('aria-selected', 'false');
+            } else {
+              setSelectedRow(row);
+            }
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            setSelectedRow(row);
+            openP6Detail(row);
+          }
+        });
+      });
+      updateApproveLock();
+
+      // 처리 중(busy) 분기가 있는 포커스 트랩 — busy면 Tab/Shift+Tab/Esc 전부 차단
+      function setupModalTrap(modal, closeCallback, isBusy) {
+        modal.addEventListener('keydown', function(e) {
+          if (isBusy && isBusy()) { if (e.key === 'Tab' || e.key === 'Escape') e.preventDefault(); return; }
+          if (e.key === 'Escape') { closeCallback(); return; }
+          if (e.key === 'Tab') {
+            var focusables = modal.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+            if (!first) { e.preventDefault(); return; }
+            if (e.shiftKey) {
+              if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+            } else {
+              if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+            }
+          }
+        });
+      }
+      function pendingCount() { var m = chipPending ? chipPending.textContent.match(/(\d+)/) : null; return m ? parseInt(m[1], 10) : 0; }
+      function setPending(n) {
+        if (chipPending) chipPending.innerHTML = '<span class="material-symbols-outlined icon-18" aria-hidden="true">fact_check</span><span>대기 실적 <strong>' + n + '</strong>건</span>';
+        if (sidebarBadge) { sidebarBadge.textContent = String(n); sidebarBadge.title = '승인 대기 실적 ' + n + '건'; sidebarBadge.parentElement.setAttribute('aria-label', '실적 관리, 승인 대기 실적 ' + n + '건'); }
+      }
+
+      // ---- 단건 승인 (A-1 ④~⑥) ----
+      var modalSingle = document.getElementById('modal-approve-single');
+      var cancelSingle = document.getElementById('btn-single-cancel');
+      var confirmSingle = document.getElementById('btn-single-confirm');
+      var singleTarget = document.getElementById('p6-single-target');
+      var singleBusy = false;
+
+      if (btnApprove && modalSingle) {
+        function openSingleModal() {
+          if (btnApprove.getAttribute('aria-disabled') === 'true') return;
+          var row = currentSelectedRow; if (!row) return;
+          singleBusy = false;
+          if (confirmSingle) confirmSingle.disabled = false;
+          if (cancelSingle) cancelSingle.disabled = false;
+          if (singleTarget) singleTarget.textContent = '실적 1건을 승인합니다 — ' + cellText(row, 'emp') + ' ' + cellText(row, 'name') + ' · ' + cellText(row, 'date').replace(/\s*\(.\)\s*$/, '') + ' · ' + cellText(row, 'section');
+          modalSingle.style.display = 'flex';
+          cancelSingle.focus();
+        }
+        function closeSingleModal() { modalSingle.style.display = 'none'; btnApprove.focus(); }
+        btnApprove.addEventListener('click', openSingleModal);
+        btnApprove.addEventListener('keydown', function(e) { if ((e.key === 'Enter' || e.key === ' ') && btnApprove.getAttribute('aria-disabled') === 'true') { e.preventDefault(); e.stopPropagation(); } });
+        cancelSingle.addEventListener('click', closeSingleModal);
+        setupModalTrap(modalSingle, closeSingleModal, function() { return singleBusy; });
+
+        confirmSingle.addEventListener('click', function() {
+          if (singleBusy) return;
+          var row = currentSelectedRow; if (!row) return;
+          singleBusy = true;
+          confirmSingle.disabled = true;
+          cancelSingle.disabled = true;
+
+          modalSingle.style.display = 'none';
+          var st = row.querySelector('.status-col');
+          if (st) st.innerHTML = '<span class="badge badge-approved">승인</span>';
+          var n = pendingCount() - 1; setPending(n);
+          if (ariaLive) ariaLive.textContent = '1건이 승인되었습니다. 대기 실적 ' + n + '건.';
+          var idx = rows.indexOf(row), next = null;
+          for (var i = idx + 1; i < rows.length; i++) { if (statusOf(rows[i]) === '대기') { next = rows[i]; break; } }
+          if (next) setSelectedRow(next); else { updateApproveLock(); btnApprove.focus(); }
+        });
+      }
+
+      // ---- 파일 전체 승인 모달 생애주기 (A-2, 동작 12) ----
+      var btnApproveFile = document.getElementById('btn-approve-file');
+      var modalFile = document.getElementById('modal-approve-file');
+      var modalFileBody = document.getElementById('modal-file-body');
+      var modalFileFooter = document.getElementById('modal-file-footer');
+      var cancelFile = null, confirmFile = null, fileBusy = false;
+
+      if (btnApproveFile && modalFile && modalFileBody && modalFileFooter) {
+        var fileBodyInit = modalFileBody.innerHTML, fileFooterInit = modalFileFooter.innerHTML;
+        var sampleRows = ['p6-row-2', 'p6-row-5', 'p6-row-7'].map(function(id) { var r = document.getElementById(id); var st = r ? r.querySelector('.status-col') : null; return { st: st, html: st ? st.innerHTML : '' }; });
+        var sampleChip = chipPending ? chipPending.innerHTML : '', sampleBadge = sidebarBadge ? sidebarBadge.textContent : '';
+        function runFile() {
+          if (fileBusy) return;
+          fileBusy = true;
+          confirmFile.innerHTML = '<span class="material-symbols-outlined icon-spin icon-18" aria-hidden="true">progress_activity</span> 처리 중…';
+          confirmFile.disabled = true;
+          cancelFile.disabled = true;
+          if (ariaLive) ariaLive.textContent = '처리 중: 파일 승인 중…';
+          modalFile.focus();
+          setTimeout(function() {
+            modalFileBody.innerHTML = '<p style="font-weight:600; color:#1E7A46;">실적 승인 완료 — 51건의 실적을 승인하고 품의 이력에 반영했습니다.</p>';
+            modalFileFooter.innerHTML = '<button type="button" class="btn-primary btn-sm" id="btn-file-done">닫기</button>';
+            fileBusy = false;
+            var doneBtn = document.getElementById('btn-file-done');
+            doneBtn.focus();
+            doneBtn.addEventListener('click', function() {
+              modalFile.style.display = 'none';
+              sampleRows.forEach(function(x) { if (x.st) x.st.innerHTML = '<span class="badge badge-approved">승인</span>'; });
+              setPending(77);
+              if (ariaLive) ariaLive.textContent = '실적 승인 완료 — 51건의 실적을 승인하고 품의 이력에 반영했습니다.';
+              updateApproveLock();
+              btnApproveFile.focus();
+            });
+          }, 800);
+        }
+        function closeFileModal() { if (fileBusy) return; modalFile.style.display = 'none'; btnApproveFile.focus(); }
+        function bindFileButtons() {
+          cancelFile = document.getElementById('btn-file-cancel'); confirmFile = document.getElementById('btn-file-confirm');
+          if (cancelFile) cancelFile.addEventListener('click', closeFileModal);
+          if (confirmFile) confirmFile.addEventListener('click', runFile);
+        }
+        function restoreFileModal() {
+          modalFileBody.innerHTML = fileBodyInit; modalFileFooter.innerHTML = fileFooterInit; bindFileButtons();
+          sampleRows.forEach(function(x) { if (x.st) x.st.innerHTML = x.html; });
+          if (chipPending) chipPending.innerHTML = sampleChip; if (sidebarBadge) { sidebarBadge.textContent = sampleBadge; sidebarBadge.title = '승인 대기 실적 ' + sampleBadge + '건'; sidebarBadge.parentElement.setAttribute('aria-label', '실적 관리, 승인 대기 실적 ' + sampleBadge + '건'); }
+          if (ariaLive) ariaLive.textContent = '';
+          fileBusy = false; updateApproveLock();
+        }
+        function openFileModal() { restoreFileModal(); modalFile.style.display = 'flex'; cancelFile.focus(); }
+        bindFileButtons();
+        btnApproveFile.addEventListener('click', openFileModal);
+        setupModalTrap(modalFile, closeFileModal, function() { return fileBusy; });
+      }
+    })();
+  </script>
+<script>
+/* 0-18 소급(v1.8) 동작 9 보강(B-7)·동작 13 로그아웃 데모 전이(B-4) — 데이터 연동·라우팅·auth:sign-out 호출 없음 */
+(function(){
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'); if (!w) return;
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      w.querySelectorAll('.nav-group-header').forEach(function(h){ if (expanded) h.removeAttribute('aria-hidden'); else h.setAttribute('aria-hidden', 'true'); });
+    });
+  });
+  var UNSAVED = {};
+  function showToast(appWin){
+    if (!appWin) return;
+    var t = document.createElement('div'); t.className = 'demo-toast'; t.setAttribute('role', 'status'); t.textContent = '로그인 화면으로 이동합니다';
+    appWin.appendChild(t); setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 1500);
+  }
+  function openLeave(modal, opener, appWin){
+    var body = appWin.querySelector('.app-body');
+    function close(){ modal.style.display = 'none'; if (body) body.removeAttribute('aria-hidden'); if (opener) opener.focus(); }
+    modal.style.display = 'flex'; if (body) body.setAttribute('aria-hidden', 'true');
+    var stay = modal.querySelector('.btn-leave-stay'), discard = modal.querySelector('.btn-leave-discard');
+    stay.onclick = close;
+    discard.onclick = function(){ close(); showToast(appWin); };
+    modal.onkeydown = function(e){
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key === 'Tab') { var f = [stay, discard]; if (e.shiftKey) { if (document.activeElement === f[0]) { f[1].focus(); e.preventDefault(); } } else { if (document.activeElement === f[1]) { f[0].focus(); e.preventDefault(); } } }
+    };
+    stay.focus();
+  }
+  document.querySelectorAll('.btn-logout').forEach(function(btn){
+    if (btn.disabled) return;
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'), appWin = btn.closest('.app-window'); if (!w || !appWin) return;
+      var m = w.querySelector('.modal-leave');
+      if (m && UNSAVED[w.id]) openLeave(m, btn, appWin); else showToast(appWin);
+    });
+  });
+  
+})();
+</script>
+</body></html>

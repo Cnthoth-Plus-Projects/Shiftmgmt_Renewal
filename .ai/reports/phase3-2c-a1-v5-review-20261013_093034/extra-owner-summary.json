@@ -1,0 +1,8 @@
+{
+  "status": "ACTUAL_OWNER_FAILURES_REPRODUCED",
+  "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40",
+  "findings": [
+    "OWNER_PUBLISHES_PASS_WITH_INVALID_GATE_CLOCK_FIXED_FINAL_REJECTS",
+    "PRE_REMOVAL_LEDGER_MISMATCH_NOT_DETECTED_TEMP_DELETED_BEFORE_GATE_REJECTION"
+  ]
+}

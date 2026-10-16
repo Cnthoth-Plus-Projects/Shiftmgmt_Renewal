@@ -1,0 +1,378 @@
+{
+  "started": "2026-09-30T08:06:28.235Z",
+  "chrome": {
+    "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "version": "154.0.8037.58"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "url": "http://127.0.0.1:18740/",
+  "checks": [
+    {
+      "id": "L1-background",
+      "pass": true,
+      "actual": "rgb(229, 231, 235)",
+      "expected": "#E5E7EB"
+    },
+    {
+      "id": "L1-card-width",
+      "pass": true,
+      "actual": 460,
+      "expected": 460
+    },
+    {
+      "id": "L1-card-border",
+      "pass": true,
+      "actual": "rgb(226, 229, 234)",
+      "expected": "#E2E5EA"
+    },
+    {
+      "id": "L1-card-variant",
+      "pass": true,
+      "actual": {
+        "x": 490,
+        "y": 256.75,
+        "width": 460,
+        "height": 386.5,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(226, 229, 234)",
+        "radius": "8px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "36px 32px",
+        "shadow": "rgba(0, 0, 0, 0.06) 0px 4px 16px 0px",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      "expected": "8px / 36px32px / approved shadow"
+    },
+    {
+      "id": "L1-input-radius",
+      "pass": true,
+      "actual": "6px",
+      "expected": "6px canonical wins older HTML"
+    },
+    {
+      "id": "L1-button-font",
+      "pass": true,
+      "actual": "14px",
+      "expected": "14px login approved variant"
+    },
+    {
+      "id": "L1-tab-order",
+      "pass": true,
+      "actual": [
+        {
+          "tag": "INPUT",
+          "id": "login-id",
+          "label": "",
+          "class": "form-input ",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "INPUT",
+          "id": "login-password",
+          "label": "",
+          "class": "form-input ",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "BUTTON",
+          "id": "",
+          "label": "비밀번호 표시",
+          "class": "btn-eye-toggle",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "BUTTON",
+          "id": "",
+          "label": "로그인",
+          "class": "btn-primary login-submit-btn",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        }
+      ],
+      "expected": "ID -> password -> eye -> submit"
+    },
+    {
+      "id": "L1-focus-ring",
+      "pass": true,
+      "actual": [
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px"
+      ],
+      "expected": "accent solid2px"
+    },
+    {
+      "id": "L1-eye-space",
+      "pass": true,
+      "actual": "text",
+      "expected": "text"
+    },
+    {
+      "id": "L1-eye-enter",
+      "pass": true,
+      "actual": "password",
+      "expected": "password"
+    },
+    {
+      "id": "L1-escape-stable",
+      "pass": true,
+      "actual": true,
+      "expected": "full-page stays mounted; no dialog"
+    },
+    {
+      "id": "static-eye-radius",
+      "pass": true,
+      "actual": "6px",
+      "expected": "6px"
+    },
+    {
+      "id": "L2-enter-error-alert",
+      "pass": true,
+      "actual": "error\n로그인 ID 또는 비밀번호가 올바르지 않습니다.",
+      "expected": "visible login failure alert"
+    },
+    {
+      "id": "L4-lock-described",
+      "pass": true,
+      "actual": "l4-rule-desc",
+      "expected": "aria-describedby -> visible reason"
+    },
+    {
+      "id": "L4-lock-focusable",
+      "pass": true,
+      "actual": {
+        "nativeDisabled": false,
+        "focused": true,
+        "outline": "rgb(62, 86, 182) solid 2px"
+      },
+      "expected": "native disabled=false; actual Tab -> button, accent 2px ring"
+    },
+    {
+      "id": "L4-weak-password-blocked",
+      "pass": true,
+      "actual": {
+        "newRequests": 0,
+        "ariaDisabled": "true",
+        "nativeDisabled": false
+      },
+      "expected": "weak input: click/Space/Enter/form Enter cannot call change API; native-disabled keyboard activation unavailable is recorded separately"
+    },
+    {
+      "id": "L4-mismatch-blocked",
+      "pass": true,
+      "actual": {
+        "newRequests": 0,
+        "ariaDisabled": "true",
+        "nativeDisabled": false
+      },
+      "expected": "mismatch: zero change API requests"
+    },
+    {
+      "id": "admin-L4-valid-enabled",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "id": "L4-pending-single-submit",
+      "pass": true,
+      "actual": {
+        "nativeDisabled": true,
+        "ariaDisabled": "true",
+        "empty": true,
+        "requests": 1
+      },
+      "expected": "native disabled, fields cleared, double submit count1"
+    }
+  ],
+  "measurements": {
+    "login": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "background": "rgb(244, 245, 247)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".login-container": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "background": "rgb(229, 231, 235)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "24px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".login-card": {
+        "x": 490,
+        "y": 256.75,
+        "width": 460,
+        "height": 386.5,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(226, 229, 234)",
+        "radius": "8px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "36px 32px",
+        "shadow": "rgba(0, 0, 0, 0.06) 0px 4px 16px 0px",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".form-input": {
+        "x": 523,
+        "y": 394.75,
+        "width": 394,
+        "height": 38,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(132, 138, 147)",
+        "radius": "6px",
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "padding": "0px 10px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": ""
+      },
+      ".btn-primary": {
+        "x": 523,
+        "y": 530.25,
+        "width": 394,
+        "height": 40,
+        "background": "rgb(62, 86, 182)",
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(62, 86, 182)",
+        "radius": "6px",
+        "fontSize": "14px",
+        "fontWeight": "600",
+        "padding": "6px 14px",
+        "shadow": "none",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "hidden": false,
+        "text": "로그인"
+      },
+      ".login-title": {
+        "x": 523,
+        "y": 293.75,
+        "width": 394,
+        "height": 30,
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "20px",
+        "fontWeight": "700",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0"
+      },
+      ".btn-eye-toggle": {
+        "x": 879,
+        "y": 475.25,
+        "width": 32,
+        "height": 32,
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(75, 85, 99)",
+        "border": "rgb(75, 85, 99)",
+        "radius": "6px",
+        "fontSize": "13.3333px",
+        "fontWeight": "400",
+        "padding": "4px",
+        "shadow": "none",
+        "outline": "rgb(75, 85, 99) none 3px",
+        "hidden": false,
+        "text": "visibility"
+      }
+    },
+    "loginTab": [
+      {
+        "tag": "INPUT",
+        "id": "login-id",
+        "label": "",
+        "class": "form-input ",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "INPUT",
+        "id": "login-password",
+        "label": "",
+        "class": "form-input ",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "비밀번호 표시",
+        "class": "btn-eye-toggle",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "로그인",
+        "class": "btn-primary login-submit-btn",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      }
+    ],
+    "iconFont": {
+      "font": "\"Material Symbols Outlined\"",
+      "width": 24,
+      "loaded": true,
+      "text": "visibility"
+    }
+  },
+  "captures": [
+    "login-L1.png",
+    "login-L2.png",
+    "admin-L4-lock.png"
+  ],
+  "unexpected": [],
+  "expectedHttp": [],
+  "groups": [
+    {
+      "name": "login-design-keyboard",
+      "completed": true
+    }
+  ],
+  "sourceEdits": false,
+  "script": "integration-check.mjs",
+  "actualChrome": "154.0.8037.58"
+}

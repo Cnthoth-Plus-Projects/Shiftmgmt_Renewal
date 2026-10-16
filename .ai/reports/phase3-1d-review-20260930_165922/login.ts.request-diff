@@ -1,0 +1,92 @@
+--- verified-previous-login.ts
++++ received-login.ts
+@@ -72,6 +72,7 @@
+ 
+   public setMode(mode: LoginViewMode, session?: AuthSession | null, message?: string): void {
+     this.mode = mode;
++    this.isSubmitting = false;
+     if (session !== undefined) {
+       this.currentSession = session;
+     }
+@@ -414,7 +415,8 @@
+     submitBtn.className = "btn-primary";
+     submitBtn.id = "l4-btn-submit";
+     submitBtn.setAttribute("aria-disabled", "true");
+-    submitBtn.disabled = true;
++    submitBtn.setAttribute("aria-describedby", "l4-rule-desc");
++    submitBtn.disabled = false;
+     submitBtn.textContent = "비밀번호 변경";
+     form.appendChild(submitBtn);
+ 
+@@ -439,12 +441,15 @@
+     const curPwInput = curGroup.querySelector("#l4-current-pw") as HTMLInputElement;
+     const ruleList = newGroup.querySelector("#l4-rule-list") as HTMLUListElement;
+ 
++    let canSubmitChange = false;
++
+     const validate = () => {
+       const v = newPwInput.value;
+       const c = confPwInput.value;
+       const checks = getPasswordPolicyChecks(v);
+       const isStrong = isStrongPasswordSatisfied(v);
+       const isMatch = v.length > 0 && v === c;
++      canSubmitChange = isStrong && isMatch;
+ 
+       ruleList.innerHTML = "";
+       for (const check of checks) {
+@@ -461,18 +466,27 @@
+       if (!isStrong) {
+         desc.textContent = "모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.";
+         desc.classList.remove("policy-desc-hidden");
+-        submitBtn.disabled = true;
++        if (!this.isSubmitting) {
++          submitBtn.disabled = false;
++        }
+         submitBtn.setAttribute("aria-disabled", "true");
++        submitBtn.setAttribute("aria-describedby", "l4-rule-desc");
+       } else if (!isMatch) {
+         desc.textContent = "새 비밀번호와 확인 입력이 일치하지 않습니다.";
+         desc.classList.remove("policy-desc-hidden");
+-        submitBtn.disabled = true;
++        if (!this.isSubmitting) {
++          submitBtn.disabled = false;
++        }
+         submitBtn.setAttribute("aria-disabled", "true");
++        submitBtn.setAttribute("aria-describedby", "l4-rule-desc");
+       } else {
+         desc.textContent = "";
+         desc.classList.add("policy-desc-hidden");
+-        submitBtn.disabled = false;
++        if (!this.isSubmitting) {
++          submitBtn.disabled = false;
++        }
+         submitBtn.removeAttribute("aria-disabled");
++        submitBtn.removeAttribute("aria-describedby");
+       }
+     };
+ 
+@@ -480,9 +494,15 @@
+     confPwInput.addEventListener("input", validate);
+     validate();
+ 
++    submitBtn.addEventListener("click", (e) => {
++      if (!canSubmitChange || this.isSubmitting || this.postChangeState !== "idle") {
++        e.preventDefault();
++      }
++    });
++
+     form.addEventListener("submit", async (e) => {
+       e.preventDefault();
+-      if (this.postChangeState !== "idle" || submitBtn.disabled || this.isSubmitting) return;
++      if (this.postChangeState !== "idle" || !canSubmitChange || this.isSubmitting) return;
+ 
+       const bridge = window.appBridge;
+       if (!bridge) {
+@@ -496,6 +516,7 @@
+ 
+       this.isSubmitting = true;
+       submitBtn.disabled = true;
++      submitBtn.setAttribute("aria-disabled", "true");
+ 
+       // 비밀번호 입력값 즉시 정리 (메모리 및 DOM 보호)
+       curPwInput.value = "";

@@ -1,0 +1,125 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {createRequire} from 'node:module';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const out=path.dirname(fileURLToPath(import.meta.url));
+const repo='C:/Projects/Active/ShiftMgmt_V4';
+const require=createRequire(path.join(repo,'package.json'));
+const {chromium}=require('playwright');
+const {findChrome}=await import(pathToFileURL(path.join(repo,'scripts/lib/find-chrome.mjs')));
+const info=JSON.parse(fs.readFileSync(path.join(out,'server-info.json'),'utf8'));
+const boot=JSON.parse(fs.readFileSync(info.bootstrapPath,'utf8'));
+const chrome=findChrome();
+const browser=await chromium.launch({executablePath:chrome.path,headless:true});
+const context=await browser.newContext({viewport:{width:1440,height:900}});
+const page=await context.newPage();
+const evidence={chromeVersion:chrome.version,browserVersion:browser.version(),viewport:{width:1440,height:900},groups:[],consoleErrors:[],pageErrors:[],requestFailures:[],responses:[]};
+page.on('console',m=>{if(m.type()==='error')evidence.consoleErrors.push(m.text());});
+page.on('pageerror',e=>evidence.pageErrors.push(e.message));
+page.on('requestfailed',r=>evidence.requestFailures.push({url:r.url(),error:r.failure()?.errorText}));
+page.on('response',r=>{if(r.status()>=400)evidence.responses.push({url:r.url(),status:r.status()});});
+const privatePasswords=new Map();
+const nextPassword=()=>crypto.randomBytes(16).toString('hex')+'Aa9!';
+async function login(role='admin'){
+  await page.goto(info.url,{waitUntil:'load'});
+  await page.waitForFunction(()=>!!document.querySelector('#login-id')||!!document.querySelector('.btn-logout'));
+  if(await page.locator('#login-id').count()){
+    const c=boot.credentials['user-'+role];
+    await page.locator('#login-id').fill(c.loginId);
+    await page.locator('#login-password').fill(privatePasswords.get(role)??c.password);
+    await page.locator('#login-password').press('Enter');
+    await page.waitForFunction(()=>!!document.querySelector('#l4-btn-submit')||!!document.querySelector('.btn-logout'));
+    if(await page.locator('#l4-btn-submit').count()){
+      const pw=nextPassword();
+      await page.locator('#l4-current-pw').fill(privatePasswords.get(role)??c.password);
+      await page.locator('#l4-new-pw').fill(pw);
+      await page.locator('#l4-confirm-pw').fill(pw);
+      await page.locator('#l4-btn-submit').click();
+      privatePasswords.set(role,pw);
+    }
+  }
+  await page.locator('.btn-logout').waitFor({timeout:15000});
+  await page.evaluate(()=>document.fonts.ready);
+}
+const makeRow=(id,actionType='sign-in',details='검증용 상세')=>({id,userId:'fixture-user',loginId:'fixture-user',displayName:'검증 사용자',role:'admin',actionType,actionLabel:actionType==='performance-hide-approved'?'승인완료 목록삭제':'검증 액션',routeLabel:'활동 이력',details,occurredAt:'2026-09-30T10:30:00.000Z'});
+const users=[{id:'u-a',loginId:'alpha',displayName:'같은 이름',role:'admin'},{id:'u-b',loginId:'beta',displayName:'같은 이름',role:'operator'}];
+let handler;
+let requests=[];
+let userHandler=null;
+await page.route('**/api/access-logs:list',async r=>{const q=JSON.parse(r.request().postData()||'[]')[0]||{};requests.push({query:q,time:Date.now()});if(handler)await handler(r,q);else await r.fulfill({json:{ok:true,data:[makeRow('baseline')]}});});
+await page.route('**/api/operations:list-users',async r=>{if(userHandler)await userHandler(r);else await r.fulfill({json:{ok:true,data:users}});});
+async function history(){await login();await page.getByRole('button',{name:'활동 이력',exact:true}).click();await page.waitForFunction(()=>!!document.querySelector('#state-g1-table')||!!document.querySelector('#state-g2-empty')||!!document.querySelector('.access-history-users-warning'));await page.evaluate(()=>document.fonts.ready);}
+async function capture(name){const p=path.join(out,name+'.png');await page.screenshot({path:p,fullPage:true});return p;}
+async function group(name,fn){try{const result=await fn();evidence.groups.push({name,...result});console.log(name,JSON.stringify(result));}catch(e){evidence.groups.push({name,status:'PROBE_ERROR',error:e.message});console.log(name,'PROBE_ERROR',e.message);}fs.writeFileSync(path.join(out,'probe-results.json'),JSON.stringify(evidence,null,2));}
+function deferred(){let resolve;const promise=new Promise(r=>{resolve=r;});return{promise,resolve};}
+try{
+await group('badge-design-and-long-row',async()=>{
+  handler=async r=>r.fulfill({json:{ok:true,data:[makeRow('hide','performance-hide-approved'),makeRow('long','site-save','매우긴파일경로-'+('긴내용'.repeat(400)))]}});
+  await history();
+  const actual=await page.evaluate(()=>{
+    const row=document.querySelector('#log-row-hide');const badge=row.querySelector('.access-history-badge');const table=document.querySelector('#table-access-logs');const ds=document.querySelector('#filter-date-from');const get=el=>({height:el.getBoundingClientRect().height,width:el.getBoundingClientRect().width,fontSize:getComputedStyle(el).fontSize});
+    return{hideBadge:{class:badge.className,bg:getComputedStyle(badge).backgroundColor,color:getComputedStyle(badge).color},normalRow:get(row),longRow:get(document.querySelector('#log-row-long')),dateInput:get(ds),headers:[...table.querySelectorAll('th')].map(x=>({text:x.textContent,...get(x)})),tableAccessibleLabel:table.getAttribute('aria-label'),tableLabelledby:table.getAttribute('aria-labelledby'),caption:table.querySelector('caption')?.textContent??null,detailFullTextLength:document.querySelector('#log-row-long td:last-child').textContent.length,detailTitleLength:document.querySelector('#log-row-long td:last-child').title.length};
+  });
+  return{status:actual.hideBadge.bg==='rgb(252, 235, 233)'&&actual.longRow.height===40&&actual.dateInput.width===132?'PASS':'FAIL',actual,capture:await capture('design-long-row')};
+});
+await group('invalid-date-during-loading',async()=>{
+  handler=null;await history();const started=deferred(),release=deferred(),done=deferred();
+  handler=async(r,q)=>{if(q.keyword==='hold-invalid'){started.resolve();await release.promise;await r.fulfill({json:{ok:true,data:[makeRow('old-invalid')]}});done.resolve();}else await r.fulfill({json:{ok:true,data:[makeRow('fresh')]}});};
+  await page.locator('#filter-keyword-input').fill('hold-invalid');await started.promise;
+  await page.locator('#filter-date-to').fill('2026-09-01');await page.locator('#filter-date-to').dispatchEvent('change');
+  const beforeRelease=await page.locator('.access-history-loading-banner').count();release.resolve();await done.promise;await page.waitForTimeout(150);
+  const actual={loadingBeforeRelease:beforeRelease,loadingAfterRelease:await page.locator('.access-history-loading-banner').count(),count:await page.locator('#access-history-count-label').innerText(),dateError:await page.locator('#filter-date-error-desc').innerText(),refreshNativeDisabled:await page.locator('#btn-refresh-logs').evaluate(el=>el.disabled)};
+  return{status:actual.loadingAfterRelease===0?'PASS':'FAIL',actual,capture:await capture('invalid-date-loading-left')};
+});
+await group('stale-success-during-debounce',async()=>{
+  handler=null;await history();const started=deferred(),release=deferred(),done=deferred();
+  handler=async(r,q)=>{if(q.keyword==='hold-old'){started.resolve();await release.promise;await r.fulfill({json:{ok:true,data:[makeRow('old-during-debounce')]}});done.resolve();}else await r.fulfill({json:{ok:true,data:[makeRow('latest')]}});};
+  await page.locator('#filter-keyword-input').fill('hold-old');await started.promise;
+  await page.locator('#filter-keyword-input').fill('new-keyword');const typed=Date.now();release.resolve();await done.promise;
+  let staleVisible=false;try{await page.locator('#log-row-old-during-debounce').waitFor({timeout:180});staleVisible=true;}catch{}
+  const observedAfterMs=Date.now()-typed;const count=await page.locator('#access-history-count-label').innerText();await page.locator('#log-row-latest').waitFor({timeout:15000});
+  return{status:staleVisible?'FAIL':'PASS',actual:{staleVisibleWithinDebounce:staleVisible,observedAfterMs,count,keyword:'new-keyword'}};
+});
+await group('stale-auth-during-debounce',async()=>{
+  handler=null;await history();const started=deferred(),release=deferred(),done=deferred();
+  handler=async(r,q)=>{if(q.keyword==='hold-auth'){started.resolve();await release.promise;await r.fulfill({json:{ok:false,errorCode:'AUTH_SESSION_REQUIRED',message:'지연된 이전 조회의 세션 오류'}});done.resolve();}else await r.fulfill({json:{ok:true,data:[makeRow('auth-latest')]}});};
+  await page.locator('#filter-keyword-input').fill('hold-auth');await started.promise;await page.locator('#filter-keyword-input').fill('new-auth-keyword');release.resolve();await done.promise;await page.waitForTimeout(150);
+  const actual={loginDisplayed:await page.locator('#login-id').count()>0,activityDisplayed:await page.locator('#access-history-screen').count()>0};
+  return{status:actual.loginDisplayed?'FAIL':'PASS',actual,capture:await capture('stale-auth-incorrect-login')};
+});
+await group('refresh-does-not-cancel-debounce',async()=>{
+  handler=null;await history();requests=[];
+  await page.locator('#filter-keyword-input').fill('one-refresh');await page.locator('#btn-refresh-logs').click();await page.waitForTimeout(400);
+  const matching=requests.filter(r=>r.query.keyword==='one-refresh');return{status:matching.length===1?'PASS':'FAIL',actual:{matchingRequests:matching.length,requests:matching}};
+});
+await group('users-retry-pending-duplicate',async()=>{
+  handler=null;userHandler=async r=>r.fulfill({json:{ok:false,errorCode:'DB_ERROR',message:'사용자 목록 검증 오류'}});await history();await page.locator('.access-history-users-warning').waitFor();
+  const release=deferred();let userCalls=0,logCalls=0;const completed=[];
+  userHandler=async r=>{userCalls++;const d=deferred();completed.push(d.promise);await release.promise;await r.fulfill({json:{ok:false,errorCode:'DB_ERROR',message:'사용자 목록 검증 오류'}});d.resolve();};
+  handler=async r=>{logCalls++;const d=deferred();completed.push(d.promise);await release.promise;await r.fulfill({json:{ok:true,data:[makeRow('retry-result')]}});d.resolve();};
+  await page.getByRole('button',{name:'사용자 목록 재시도',exact:true}).click();await page.getByRole('button',{name:'사용자 목록 재시도',exact:true}).click();await page.waitForTimeout(80);
+  const actual={userCalls,logCalls,refreshNativeDisabled:await page.locator('#btn-refresh-logs').evaluate(el=>el.disabled),retryNativeDisabled:await page.getByRole('button',{name:'사용자 목록 재시도',exact:true}).evaluate(el=>el.disabled)};
+  release.resolve();await Promise.all(completed);await page.waitForTimeout(100);userHandler=null;handler=null;
+  return{status:userCalls===1&&logCalls===1?'PASS':'FAIL',actual,capture:await capture('users-retry-duplicate')};
+});
+await group('keyboard-invalid-lock',async()=>{
+  handler=null;userHandler=null;await history();await page.locator('#filter-date-to').fill('2026-09-01');await page.locator('#filter-date-to').dispatchEvent('change');requests=[];
+  const btn=page.locator('#btn-refresh-logs');await page.locator('#btn-filter-reset').focus();await page.keyboard.press('Tab');const focused=await btn.evaluate(el=>document.activeElement===el);const style=await btn.evaluate(el=>({disabled:el.disabled,ariaDisabled:el.getAttribute('aria-disabled'),outline:getComputedStyle(el).outlineWidth}));await page.keyboard.press('Space');await page.keyboard.press('Enter');await btn.click({force:true});await page.waitForTimeout(300);
+  return{status:focused&&!style.disabled&&requests.length===0?'PASS':'FAIL',actual:{focused,...style,requests:requests.length}};
+});
+await group('role-guard-three-real-sessions',async()=>{
+  handler=null;userHandler=null;await page.unroute('**/api/access-logs:list');await page.unroute('**/api/operations:list-users');const results=[];
+  for(const role of ['operator','planner','reviewer']){
+    if(await page.locator('.btn-logout').count()){await page.locator('.btn-logout').click();await page.locator('#login-id').waitFor();}
+    let autoLogs=0,autoUsers=0;const count=r=>{if(r.url().endsWith('/api/access-logs:list'))autoLogs++;if(r.url().endsWith('/api/operations:list-users'))autoUsers++;};page.on('request',count);
+    await login(role);await page.waitForTimeout(150);page.off('request',count);
+    const menu=await page.getByRole('button',{name:'활동 이력',exact:true}).count();const direct=await page.evaluate(async()=>({logs:await window.appBridge.listAccessLogs({}),users:await window.appBridge.listOperationUsers()}));
+    results.push({role,menu,autoLogs,autoUsers,logsDenied:direct.logs.ok===false&&direct.logs.errorCode==='AUTH_FORBIDDEN',usersDenied:direct.users.ok===false&&direct.users.errorCode==='AUTH_FORBIDDEN',logsDataAbsent:!Object.hasOwn(direct.logs,'data'),usersDataAbsent:!Object.hasOwn(direct.users,'data')});
+  }
+  return{status:results.every(r=>r.menu===0&&r.autoLogs===0&&r.autoUsers===0&&r.logsDenied&&r.usersDenied&&r.logsDataAbsent&&r.usersDataAbsent)?'PASS':'FAIL',actual:results};
+});
+}finally{
+  await browser.close();
+  evidence.finished=new Date().toISOString();fs.writeFileSync(path.join(out,'probe-results.json'),JSON.stringify(evidence,null,2));
+}

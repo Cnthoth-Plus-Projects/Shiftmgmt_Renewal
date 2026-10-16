@@ -1,0 +1,198 @@
+# HANDOFF — Phase3-2b 활동 이력 구현
+
+- Task: 관리자 활동 이력 G1·G2를 기존 조회 계약으로 구현하고 실제 Chrome 증거 제출
+- Action: IMPLEMENT
+- From: Sol(xhigh, Codex) — orchestrator
+- To: Gemini — implementation coder
+- Time: __TIME__ KST
+- 회신: 필요
+- Repository: `C:\Projects\Active\ShiftMgmt_V4`
+- Branch: `main`
+- Baseline commit: `160940f9aaeb6696538447f83b44658073e382f0`
+- Expected initial status: **clean**, staged/unstaged/untracked 제품 변경 모두0
+- Routing: frontier(Sol 범위·권한·통합), bounded implementation(Gemini)
+- Control workspace: `C:\Projects\Active\교대근무관리 시스템`
+
+## 회신 요청
+
+Gemini는 착수 게이트가 다르면 수정 없이 즉시 `BLOCKED`, 같으면 아래9파일만 구현·검증한 뒤 맨 아래 `## 회신`을 작성한다. 본문을 바꾸지 않는다. 사용자가 외부 세션을 중계한다. 다른 AI CLI 호출, 임의 commit/push, TODO 수정은 금지다.
+
+## 1. 목표
+
+관리자가 실제 활동 이력을 날짜·사용자·액션·검색어로 조회하고, 최신순5열 표/실제건수/더 보기/빈 상태/명확한 오류를 사용할 수 있게 한다. 메뉴는 관리자에게만 보이며 서버 권한 가드를 그대로 사용한다.
+
+## 2. 비목표
+
+- 다른 업무 화면, 전체 메뉴 재설계, 홈 카드 연결, 전역 라우터/URL/권한 재설계.
+- 활동 기록 수정·삭제·내보내기·새 기록 정책, 서버 pagination, DB/API/계산/시급/입사일 변경.
+- 의존성·lockfile·서버 코드·기존 시험·정본·하네스 변경, EOF 빈줄 정리, 광역 포맷.
+- 승인 시안의 가상 날짜·이름·128건·8건을 제품 상수/데이터로 복사하기.
+
+## 3. 현재 상태와 근거
+
+3-1d 제품 검수는912시험, Chrome26시나리오, 통합83조건으로 수용됐다. 검수와 동일한324파일 바이트를 확인하고 수용된 Phase2.5/3-0/3-1 누적92경로를 위 baseline에 커밋했다. worktree clean. 원문 끝 빈줄5개만 staged whitespace RC2로 공개 기록·보존했다. 기능 시험 면제나 source 수정은 없다. 사용자 다음 단계 진행 지시가 있으나 **3-1e 사용자 직접 화면 확인은 별도 증거가 없어 완료로 주장하지 않는다.** 이번3-2 명세/구현 진행과 구분한다.
+
+정본은 다음이며 전부 읽기 전용이다. 경로는 Control workspace 기준이다.
+
+- `TODO.md` Phase3-2a~d — 순서: 명세→Gemini 구현→Sol 독립 검증→수용/커밋/사용자 확인.
+- `05-screen-spec.md` §8: 관리자 전용, 로그인·화면 이동·주요 처리 기록, 사용자/기간/동작 필터, 최신순.
+- `11-디자인-요청서.md` 및 `12-능력-매트릭스.md` §4.5: G1/G2 새로고침·초기화·필터 초기화는 admin만. 역할은 계단식이 아니다.
+- `시안/2026-09-02-2차HTML/12-access-logs-1.html`의 `#state-g1/#state-g2` — 승인 디자인 정본이다. `스냅샷-*`/`cap-*`는 이력이다.
+- `시안/2026-09-06-최종정리/05-디자인-시스템-확정본-v1.3.md` — 토큰/글자/행높이의 우선 정본. HTML의 오래된 토큰과 충돌하면 v1.3이 우선한다.
+- `CLAUDE.md`, `07-invariants-and-pitfalls.md`, `AGENTS.md`, `PROTOCOL.md`, `GEMINI.md`.
+
+실제 호출/기존 기능 근거:
+
+1. `src/shared/bridge/contracts.ts#AccessLogListQuery`: `dateFrom?`, `dateTo?`, `loginId?`, `actionType?: AccessLogActionType | "all"`, `keyword?`. `listAccessLogs(query?) -> BridgeResult<AccessLogRecord[]>`. 별도 total/offset/limit 계약은 없다.
+2. `src/shared/domain/access-log.ts`: 옵션은 `accessLogActionOptions`, 행은 `id/userId/loginId/displayName/role/actionType/actionLabel/routeKey?/routeLabel?/details?/occurredAt`. 실제 액션 이름은 서버의 `actionLabel` 그대로 표시한다.
+3. `src/main/services/access-log-service.ts#listAccessLogs`: 최신 `occurred_at DESC,id DESC`, 날짜 양끝 포함, loginId/actionType exact filter, keyword 표시명·계정·액션·화면·상세 검색. **날짜 필터는 저장 ISO의 날짜 부분 기준**이다. 화면에서 시간대 변환으로 재정의하지 않는다.
+4. `src/main/http/route-registry.ts`: accessHistory guard는 `requireRoleSession(getRequiredRoleForRoute("access-history"),cookie)`이다. `listOperationUsers`도 admin 전용이다. 서버는 그대로 보호한다.
+5. `src/web/screens/shell.ts`: MENU_ITEMS에 아직 활동 이력이 없다. 현재 관리 그룹의 조직 관리/사용자 관리 준비 안내는 유지하고 **활동 이력 항목 하나만 추가**한다. createMainContent/refreshMain/destroy/로그아웃 경로에서 화면 수명을 관리한다.
+6. 기존 renderer는 `C:\Projects\Active\ShiftMgmt_V3.4\src\renderer\screens\AccessHistoryScreen.tsx` **읽기 전용**. 월초~오늘 기본값, 검색250ms debounce, 사용자 displayName 정렬/계정 식별,200행씩 더 보기, routeLabel/details 조합을 재사용한다. React/CSS/코드를 통째로 이식하지 않는다.
+
+__BASELINE_HASHES__
+
+## 4. 수정 경계 — 아래9파일만
+
+| 파일 | 요구사항 | 허용 변경 |
+|---|---|---|
+| `src/web/screens/access-history-model.ts` **신규** | R32-02/03/04 | 순수 UI 조회조건·기본값·날짜 검증·표시/배지/사용자 옵션 helper |
+| `src/web/screens/access-history-model.test.ts` **신규** | R32-09 | 아래 의미 있는 경계 시험6개 이상 |
+| `src/web/screens/access-history.ts` **신규** | R32-01~07 | AccessHistoryScreen의 DOM/조회/필터/표/상태/수명 |
+| `src/web/access-history.css` **신규** | R32-04/07 | `.access-history-*` 또는 화면 root 아래 한정 스타일 |
+| `scripts/ui-checks/access-history.mjs` **신규** | R32-08/09 | 설치 Chrome·격리 서버·8업무+2기존회귀 case·증거·정리 |
+| `src/web/screens/shell.ts` | R32-01/06 | import/필드, admin-only 항목1개, 활동 화면 mount/destroy/제목/선택 연결. 다른 메뉴·권한·로그아웃 계약 변경 금지 |
+| `src/web/index.html` | R32-07 | access-history.css link1개 추가 |
+| `scripts/copy-web-assets.mjs` | R32-07 | access-history.css 복사1행 추가 |
+| `docs/codebase-map.md` | R32-09 | 신규 파일과 재사용 호출점의 작은 행/설명 추가. 관련된 낡은 화면 설명만 최소 정정 |
+
+신규5/기존4. 새 파일은30,000bytes 이하. 초과하거나10번째 파일이 필요하면 구현 확대 대신 BLOCKED. 공용 표 라이브러리/가상스크롤/범용 라우터를 만들지 않는다. native table 패턴을 이번 화면에서 검증한다.
+
+보호: 위4기존 파일 외 baseline324개 전부, `src/main/**`, `src/shared/**`, 기존 시험·scripts/lib/ui-check.mjs·login/shell/home 검증기·package*.json·tsconfig*·전역/로그인/셸/홈CSS. V3 전체 읽기 전용. Control workspace의 TODO/정본/.ai/Log/운영 문서 수정 금지. HANDOFF는 회신만 허용.
+
+빌드의 ignored `dist/**`, 공통 검증기의 ignored `artifacts/captures/phase3/**`는 검증 생성물로만 허용한다. 테스트용 DB/계정/credentials는 저장소 밖 새 격리 temp에만 둔다. 산출물은 비밀 없는 manifest/캡처/로그만 보존한다. 기존 임시 폴더는 손대지 않는다.
+
+## 5. 요구사항
+
+| ID | 행동 | 기대 결과·오류 경계 |
+|---|---|---|
+| R32-01 | admin 관리 메뉴 진입 | `활동 이력`, icon `history`, id `access-history`, 활성 항목/aria-current/page 및 헤더h1 갱신. 다른3역할은 메뉴0·관련 API 자동 호출0. Screen 자체도 admin 확인 후 읽는다 |
+| R32-02 | 최초조회·필터·초기화 | 운영 PC 로컬 월초~오늘; 사용자/액션 `all`, 검색 빈값. `createTodayDateInputValue` 재사용, UTC today 생성 금지. 날짜·선택 변경 즉시 조회, 검색250ms 후 최신 keyword만 조회; 초기화/필터 초기화는 debounce 취소 후 기본값으로1회 조회 |
+| R32-03 | 날짜 오류·새로고침 | 빈 날짜는 해당 경계 생략. 존재하지 않는 날짜/시작>종료면 사유를 표시하고 list 요청0; 예전 in-flight 결과도 무효화. 새로고침은 현재 유효조건으로1회, 처리 중 native disabled로 중복0. 조건잠금은 native disabled=false/aria-disabled=true/연결된사유·키보드포커스 유지, click/Space/Enter guard로 요청0 |
+| R32-04 | 정상 목록 G1 | native table5열 `활동시간/사용자/권한/액션내용/상세`, `th scope=col`, 실제응답 최신순 유지. 사용자 displayName·loginId, 권한 `getRoleLabel`, actionLabel, routeLabel + ` / ` + details 또는 실제 한 값/없으면 `-`. 시간은 기존 ko-KR 로컬 표시, invalid 값은 안전한 원문 표시.200행씩 더 보기/전체 N건 중 M건 표시; 더 보기마다 추가200, 원본 배열 삭제·절단0 |
+| R32-05 | 로딩·G2·조회 실패 | 최초/재조회 로딩 안내는 role=status. G2는 **성공 빈 배열일 때만**. 제목·안내·필터 초기화는 승인 G2. 목록 실패/예외는 role=alert·한국어 오류·재시도, 빈 데이터 성공으로 위장0. users 실패는 목록 성공과 분리해 오류/재시도, 선택한 loginId를 조용히 바꾸지 않는다 |
+| R32-06 | 세션·권한·이탈·경합 | AUTH_SESSION_REQUIRED는 current 요청일 때 기존 onSessionExpired 콜백을1회 호출해 로그인으로. AUTH_FORBIDDEN은 권한 오류/데이터0, 자동 로그인·우회0. query 변경/refresh/mount 세대와 destroyed 확인; old success/error/auth/finally는 새 상태·잠금·현재 화면을 바꾸지 않는다. destroy는 debounce 취소·세대무효·listener 정리 |
+| R32-07 | 디자인·접근성·안전 | 아래수치 및 G1/G2 캡처. 사용자/서버 문자열은 textContent 또는 검증된 escape로, HTML 실행0. inline style/onclick/external font/network 추가0; CSS scope 밖 영향0. keyboard로 날짜/두select/검색/초기화/새로고침/더보기/메뉴이동 가능 |
+| R32-08 | 실제 Chrome 시험 | 아래8case+기존2회귀, 각 입력→기대→실제값·요청수·captures·manifest. 인증/인가 판정은 실제 서버/cookie로 확인; response fixture는 UI 상태 시험에만 표시하여 사용 |
+| R32-09 | 통합 증거 | typecheck/lint/map/build/full tests, changed9경로/보호hash/전체diff/신규파일 크기/정리 결과. 구현제출은 수용과 다름 |
+
+## 6. Sol 코드 전략 — 이 순서
+
+1. model helper: 월초/오늘 문자열, query snapshot/trim/date validation, 사용자 옵션은 loginId identity·한국어 이름 정렬, 날짜/role/detail/action 표시. 서버 정렬/필터를 프런트에서 재구현하지 않는다.
+2. screen은 HomeScreen와 같은 `{container,session,onSessionExpired}`와 `render()/destroy()` 계약. 최초 admin guard, local state, `destroyed/generation/debounce/sessionExpiredTriggered` 보유. 화면 본문/필터 DOM은 안정적으로 유지하여 검색 시 focus/caret를 잃지 않는다.
+3. 최초에는 logs와users를 병렬로 읽되 `Promise.allSettled` 등으로 각각의 실패를 분리. users는 최초/명시 재시도/새로고침 때 읽고 단순 keyword마다 중복 조회하지 않는다. list는 immutable query snapshot을 사용. 모든 async resolve/reject/finally 반영 전에 현재 세대·수명을 확인한다.
+4. 조건 변경은 이전 debounce/조회세대를 무효화하고 loading→success/error. invalid 조건은 화면사유+조회0. count/rows는 현재 성공 query 데이터만 가리킨다. 처리 중 reset/유효 필터 변경은 새세대이며 이전 finally가 잠금을 해제하지 않는다.
+5. 5열표는 안정적인 record.id로 표시, 통째로 row state를 복제/캐시하지 않는다. 더 보기는200행씩 로컬 표시만 확장한다. textarea/내용경로/사용자 문자열이 HTML을 만들지 않도록 한다. 선택·편집·행 click 동작이 없으므로 가짜 selectable-grid/cursor:pointer를 붙이지 않는다.
+6. G2 본문은 승인 시안. **빈 월에도 과거 날짜로 검색할 수 있어야 하므로 동일한5필터는 G1/G2에서 계속 접근 가능하게 유지한다.** G2 시안의 축약검색줄은 완전한 필터 제거 지시가 아니다(`05`§8/기존실제화면 기능 우선). 이 조정과 캡처를 회신에 명시한다. 실제 데이터·더보기·로딩/오류는 정적 시안의 샘플과 구분한다.
+7. shell에 활동항목/필드/mount 추가. HomeScreen 수명관리 위치3곳(`destroy`, `refreshMain`, 로그아웃 시작)에서 활동화면도 destroy; 상태줄은 유지. 홈복귀·다른준비메뉴 진입·logout·session expiry 후 활동응답이 DOM을 덮지 못하게 한다. 현재의 다른 placeholder메뉴는 그대로. 기존 callback/wrapper권한 변경0.
+8. CSS/index/copy 연동. 공용 스타일 수정 없이 screen scope에서 토큰/부품 구현. docs 작은 갱신. 신규model시험과 UI runner를 쓰고 아래명령 순서대로 검증.
+
+### 6.1 확정 디자인 수치와 표시 선택
+
+- 셸 유지: 1440×900, sidebar220↔64, header56, footer32, title20/600. 본문 padding16px20px/gap14px.
+- 표 본문14px/400, **머리12px/600**(HTML의13보다 디자인 정본이 우선), 머리#F8F9FA, 기본 행40px/padding8px12px. 긴 내용은 가로 스크롤/명시적 제목·전체 텍스트 접근으로 보존하고 값 절단0; 가짜 줄내림으로 행40을 과장하지 않는다.
+- 기본열 폭130/140/100/160px, 마지막 상세는 남는 폭. overflow-x:auto, 가로스크롤 키보드 접근. 길이가 긴 데이터의 전체값은 title/접근 가능한 텍스트로 유지한다.
+- 필터/표 표면흰색, 경계#E2E5EA/radius6, 필터 padding12px16px. 날짜 input34px높이/132px폭, keyword160px, label12px, input기능선#848A93. 버튼13px/radius6, secondary padding6px12px. empty body:폭600px(작은viewport에max-width100%)/padding48px24px/간격16px/radius8(승인 G2 변형)/제목18px700/안내13px.
+- 배지는12px600/radius4/padding2px8px(정보만 승인HTML의2px6px 변형 허용). G1처럼 sign-in/route-view는 **대기 neutral #F1F2F4/#4B5563**, 승인·재승인확정은 #E8F5EE/#1E7A46, 기타 정보는 #EEF1FB/#3E56B6. 실패/반려/삭제는 #FCEBE9/#C0392B. 예전React helper의 sign-in초록은 시안과 충돌하므로 복사하지 않는다. 동작 정책을 바꾸는 것이 아니라 표시색만 정본을 따른다.
+- 초점2px --accent, 정보의 색+문구 병기. th scope, 표 accessible name, filter label/name, status/alert. 처리중 disabled와 조건잠금 aria-disabled를 구분하며 isDisabled()만으로 native값을 판단하지 않는다.
+
+## 7. 불변조건과 과거 함정
+
+- 화면은 새로, 계산은 그대로. API/DB/정책/승인스냅샷/이관원본/기존시험 바이트 수정0.
+- 관리자 UI 숨김은 서버 권한 보증의 대체가 아니다. HTTP200의 BridgeFailure도 실패이며 AUTH_FORBIDDEN/AUTH_SESSION_REQUIRED를 empty로 바꾸지 않는다.
+- id/loginId를 식별자로 사용; 동명이인을 displayName으로 합치거나 별도 숫자 식별자를 표시하지 않는다.200행은 표시 단위이며 전체 count·더보기로 데이터 전부 접근.
+- UI 오류를 fallback 0건으로 감추지 않는다. 예전조회 success/error/auth/finally, 이탈 후 늦은 응답, debounce초기화 잔여 호출을 각각 검증한다.
+- Playwright isDisabled()는 aria-disabled도 포함한다. 잠금은 DOM `.disabled` 실값, actual Tab/document.activeElement/outline, actual Space/Enter/click 요청수로 검사한다.
+- held route를 unroute하기 전에 handler 완료를 기다린다. fixture 도구 실패는 제품 실패와 분리하되 원 실패 로그를 보존한다. mock 성공을 실제 API/권한/데이터 시험으로 주장하지 않는다.
+- credentials/신규암호/cookie/복구키를 stdout·로그·JSON·HANDOFF·캡처에 남기지 않는다. 기존 실패/skip를 누락하거나 전체시스템용 토큰을 읽지 않는다.
+
+## 8. 착수 전 확인
+
+1. `git -c safe.directory=C:/Projects/Active/ShiftMgmt_V4 status --short --untracked-files=all`, `git rev-parse HEAD`, branch를 대조한다. clean/main/위40자 HEAD여야 한다.
+2. 아래 baseline.json의 모든324파일·정본해시/크기와 신규5파일 부재를 실제 명령으로 확인한다. allowlist밖 차이가 있으면 수정 없이 BLOCKED.
+3. 정본/호출점/기존시험을 읽고 requireRoleSession/계약/날짜필터/실제생성물 경계를 확인한다. 불일치는 설계를 바꾸지 말고 반환한다.
+
+## 9. 검증 계획
+
+### 9.1 정적·빌드·시험 — 제품 저장소에서
+
+| 순서 | 정확한 명령 | 기대 |
+|---|---|---|
+| 1 | `npm run typecheck` | RC0 |
+| 2 | `node --check scripts/ui-checks/access-history.mjs` | RC0 |
+| 3 | `npm run lint` | RC0, 신규오류/경고0, 기존경고5 공개 |
+| 4 | `npm run validate:map` | RC0, 모든경로존재. 기존82와 추가된경로 실제개수 기록 |
+| 5 | `npm run build` | RC0, 신규CSS dist/browser/web에존재·indexlink·font/CSP/network 정상 |
+| 6 | `npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1` | RC0, 기존시험과 신규6개 이상 모두PASS/skip0 |
+| 7 | `npm test` | RC0,133파일/918시험 이상, 실패/skip0. 기존132파일912시험 유지 및 신규개수 실제집계 |
+| 8 | `git -c safe.directory=C:/Projects/Active/ShiftMgmt_V4 diff --check` | RC0. 신규5파일은EOF여분빈줄/후행공백0 별도 검사 |
+
+의미 있는 신규model시험: ① KST 자정 부근의 로컬 기본월/오늘 ② 윤년 유효일·불가능날짜 ③ 역전기간 거부/빈경계허용 ④ 동명이인 다른loginId 옵션보존 ⑤ 상세 누락·특수문자·invalid시간 원문보존 ⑥ G1행의 배지/한국어권한과 query exact identity. 구현의 문자열을 복사한 기대값만 반복하지 않는다.
+
+### 9.2 Chrome runner 실행/격리/증거 계약
+
+새 runner는 `node scripts/ui-checks/access-history.mjs --case=CASE` 형식이다. 각 실행은 **자기 소유의 새 os.tmpdir() 바로 아래 `shiftmgmt-gemini-32-*` 격리폴더**를 만들고 compiled 서버를 `SHIFTMGMT_USER_DATA_DIR=<격리폴더>`, `SHIFTMGMT_PORT=18741`로 띄운다. 기존 SHIFTMGMT_* 환경을 그대로 운영DB에 적용하지 않는다. 포트 충돌/다른PID 서버를 재사용·종료하지 않는다. spawn은 windowsHide:true, ownPID만 종료한다.
+
+이전 Sol 검증기의 서버 초기화/cleanup 전략은 Control `.ai/reports/phase3-1d-review-20260930_165922/start-test-server.mjs`를 읽기 전용 참고한다. credentials가 필요하면 기존 compiled auth-password-policy의 default 상수로 격리 auth bootstrap을 초기화하고 `<temp>/data/bootstrap-credentials.json`에서만 읽는다. 실제로그인/필요한L4암호변경은 기존 home/shell runner 방식을 재사용하고 비밀을 출력하지 않는다. fixture를 위해 실제 운영DB를 읽거나 직접SQL을 만들지 않는다.
+
+공통 `runScreenCheck`/`validateTargetUrl`/`waitForFontsReady`/설치Chrome를 그대로 재사용한다. root loopback URL, viewport1440×900, fonts.ready 후 capture. 정상예상외 콘솔/pageerror/requestfailed/CSP/HTTP오류0. 오류재현은 정확한 channel/횟수만 기대오류로 분류하고 원목록/차이를 별도 action-assertions JSON에 보존, 공통오류수집을 끄지 않는다.
+
+공통 runScreenCheck는 HTTP오류/requestfailed 전부를 실패로 처리하는 엄격한 정상 경로 실행기다. 따라서 정상/fixture/role-guard는 이 실행기를 쓰고, 실제401 또는 network abort가 필요한 `session-expired`/`errors`만 새 runner 안의 별도 음성 실행 경로를 사용한다. 기존 home 검증기의 독립 action-matrix 방식처럼 validateTargetUrl/checkServerHealth/waitForFontsReady/findChrome를 재사용하고 동일 viewport·브라우저/콘솔/페이지/요청/응답 수집·capture·manifest·finally 종료를 유지한다. 기대오류는 해당 API의 실제401/지정 abort만 정확한 횟수로 대조하고 예상외오류0을 요구한다. 공통 실행기 수정/계측 제거/401을200으로 재작성/서버 인증 응답mock은 금지다. native BridgeFailure(HTTP200)로 충분한 오류는 정상 실행기 안에서 확인한다.
+
+각case별 fresh 서버/DB/credentials. finally에서 ownserver 종료→exit확인→temp realpath가 real os.tmpdir()의 바로 아래이며 prefix일치/저장소밖인지 재확인→그temp만정리. cleanup 실패는 원 실패와 함께 RC비0·manifest에공개. 이전 거부된 `shiftmgmt-sol-31d-2Kh5fr` 등 기존temp는 손대지 않는다. ignored artifacts의 새 고유 runDir에 캡처/비밀없는 action-assertions/manifest/result만 보존한다.
+
+| CASE | 검사·필수 음성 동작 |
+|---|---|
+| `live-admin` | 실제로그인→활동메뉴→실제 list/users응답과 표시row/count/순서대조→refresh→홈복귀→재진입→logout. 응답 fixture 없이 수행; 충분한 audit data가 필요하면 격리 authenticated recordAccessLog 계약으로 명확한 시험기록을 생성하고 synthetic audit임을 표기 |
+| `list-fixture` | UIfixture로 G1의8대표행,5열·색·글자·행높이·수치·capture. 201행응답의처음200→더보기201/남은0, 실제count전부보존. XSS문자열script실행0, 알려진전체text접근 |
+| `empty-fixture` | 정상빈배열만G2→capture→keyword/필터초기화→기본query1회→과거기간필터도접근. 처리중을empty로오표시0 |
+| `filters` | dates/loginId/actionType/keyword의 HTTP body확인, 검색연속입력250ms에최신1회, reset잔여debounce0, invalid날짜/역전범위에서click/Space/Enter/폼Enter request0 및focus. refresh실제pending native disabled·중복0 |
+| `errors` | list BridgeFailure/throw→alert/retry(가짜G2/0건금지), users실패+목록성공분리/선택계정유지/재시도. error 메시지HTML실행0, retry반복요청중복0 |
+| `stale-response` | 과거list success/error/auth를hold→새필터성공/refresh→과거release, query/state/count/lock 불변. 홈/다른placeholder/로그아웃으로이탈 후hold해제→activityDOM재등장0/debounce0. current AUTH만로그인전환1회 |
+| `role-guard` | 실제 operator/planner/reviewer 각세션: 메뉴0/list/users자동호출0; 실제 cookie로listAccessLogs/listOperationUsers 직접호출 AUTH_FORBIDDEN·data없음. admin 허용. 인증응답을mock하지 않는다 |
+| `session-expired` | 실제admin세션을별도APIContext signOut으로무효화→refresh→서버 AUTH_SESSION_REQUIRED→로그인/활동DOM0, 비인증직접list거부. TTL경과를기다린시험으로주장하지않는다 |
+| `regression-shell` | 같은격리env/bootstrap/URL로 기존 `node scripts/ui-checks/shell.mjs URL` 실행 RC0. 기존파일/기대값수정0 |
+| `regression-home` | 같은격리env/bootstrap/URL로 기존 `node scripts/ui-checks/home.mjs URL --case=live-admin` 실행 RC0. home/API행동보호 |
+
+실행명령은 위10case 각각 `node scripts/ui-checks/access-history.mjs --case=<표의실제CASE값>`이며 case명 이외 CLI형식은 바꾸지 않는다. 비밀없는 `<...>` 기호를 결과에 남기지 말고 실제 실행10명령/시각/RC를 모두 회신한다.8신규와2기존회귀 각각 PASS 필요. timeout≤15초(전체시험예외), 요청과handler 완료를 bounded하게 기다린다.
+
+### 9.3 범위/해시/생성물
+
+baseline.json과현재gitfile집합을 비교한다. 신규5기존4의9경로만changed, 보호320파일 불변, canonical/control hash불변. dependency/lockfile/기존시험 변경0. `git diff --stat`, 기존4diff원문, 신규5전체내용/bytes/SHA를 기록한다. build/Chrome ignored생성물 경로와 temp cleanup을구분한다. commit/push0.
+
+## 10. 성공 조건
+
+R32-01~09 구현위치/실행증거,9파일경계,정본수치,실제서버권한/세션,음성동작요청수,full시험,8case+2회귀와정리증거가모두충족돼야 IMPLEMENTED다. Sol 검증 전 Phase3-2 완료라고선언하지않는다. 사용자직접화면확인이나운영배포를추정하지않는다.
+
+## 11. 즉시 중단 조건
+
+baseline/status/hash다름,allowlist외수정필요,새패키지/DB/API/권한/계산/전역라우터정책필요,정본모순으로위전략실행불가,시험완화/가짜fallback없이는통과불가,실제Chrome/격리서버/필수거절시험불가면 BLOCKED. 실패를다시실행해누락하지않고원인/처음실패/최종출력을함께보고한다.
+
+## 회신
+
+Gemini는 아래항목을 실제값으로 채운다. 자리표시자·축약SHA·HTML주석을쓰지않는다.
+
+- 판정: IMPLEMENTED 또는 BLOCKED 또는 FAILED
+- 기준: repository/branch/full baseline commit/final HEAD
+- 초기 상태: git status·착수324hash/정본·신규부재 대조
+- 변경 파일:9파일각요구사항ID·위치·한줄목적·bytes
+- 범위 밖 변경:0개 또는정확한경로/사유
+- 요구사항 대조:R32-01~09 →구현위치→PASS/FAIL/BLOCKED
+- 검증 증거:정확한명령→RC→파일/시험/경고실제수→시각→로그경로
+- 음성 테스트:입력/조작→기대차단→실제값/요청수/근거JSON
+- UI 증거:10case→실제Chrome버전→URL→click/keyboard→capture/manifest→원오류목록/예상외0
+- 디자인 대조:G1/G2필수수치·neutral로그인/이동배지・G2전체필터유지조정·설명
+- diff 요약:git diff/stat와신규전체내용경로,依存/생성물변화
+- 전체 SHA-256:변경9파일·보호manifest·정본의실제64자명령결과
+- 정리:ownserver/PID종료·temp경계/제거·보존artifact·실패유무
+- 미해결/가정:없음또는정확한목록;직접사용자화면확인/TTL대기/운영배포를실행했다는추정금지

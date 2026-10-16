@@ -1,0 +1,72 @@
+[
+  {
+    "name": "gate-evidence.py",
+    "compile": "PASS"
+  },
+  {
+    "name": "runtime-probes.py",
+    "compile": "PASS"
+  },
+  {
+    "name": "parser-selftest",
+    "argv": [
+      "python",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--self-test"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  },
+  {
+    "name": "syntax-runtime-preload.mjs",
+    "argv": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-preload.mjs"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  },
+  {
+    "name": "syntax-ipc-probes.mjs",
+    "argv": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  },
+  {
+    "name": "syntax-component-probes.mjs",
+    "argv": [
+      "node",
+      "--check",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  },
+  {
+    "name": "inventory-ipc",
+    "argv": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs",
+      "--list"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  },
+  {
+    "name": "inventory-components",
+    "argv": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs",
+      "--list"
+    ],
+    "rc": 0,
+    "proof": "CONTROL_TOOL_FORMAT_ONLY_NOT_SUT_ACCEPTANCE"
+  }
+]

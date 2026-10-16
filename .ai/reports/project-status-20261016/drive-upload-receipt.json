@@ -1,0 +1,26 @@
+{
+  "timeUtc": "2026-10-16T02:56:26.712042+00:00",
+  "targetFolder": "https://drive.google.com/drive/folders/1qz8U9xEO883GOSfY1B-7erKJVNKoiqHa",
+  "uploadedFiles": [
+    {
+      "id": "1SWdDF4aCaBkawWmcGbrSWOvkdzo0w7kd",
+      "name": "PROJECT_STATUS.md",
+      "url": "https://drive.google.com/file/d/1SWdDF4aCaBkawWmcGbrSWOvkdzo0w7kd/view?usp=drivesdk",
+      "parent": "1qz8U9xEO883GOSfY1B-7erKJVNKoiqHa",
+      "bytes": 15132,
+      "sha256": "0487BCB82E44A303D400259D19F9E917CF9EC8DBA2618C7E24B1F312CEAB520A",
+      "localByteExactMatch": true
+    },
+    {
+      "id": "1hT6OqbLBwkrtKJ7DRi2tDqx48H0KAMC8",
+      "name": "project-status-20261016-evidence.json",
+      "url": "https://drive.google.com/file/d/1hT6OqbLBwkrtKJ7DRi2tDqx48H0KAMC8/view?usp=drivesdk",
+      "parent": "14ymgalJvMfNr2PSlkkPl9moqFFj7B5QP",
+      "bytes": 1426,
+      "sha256": "31B3F32012B4B3930FFD6388D81E261D6099E617935131C05FB1A32A81181A52",
+      "localByteExactMatch": true
+    }
+  ],
+  "verifiedBy": "Drive metadata readback plus complete raw download byte and SHA-256 comparison",
+  "productEdits": 0
+}

@@ -1,0 +1,17 @@
+{
+  "name": "extra-actual-private",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\extra-private-probes.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 13392,
+  "start": "2026-10-13T00:42:05.859759+00:00",
+  "end": "2026-10-13T00:42:08.595279+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\extra-actual-private.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\extra-actual-private.stderr.txt",
+  "stdoutSha256": "340460F6301E725D8B2F843555A65A67B631E930359CA88118B3EE205E82DEFE",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

@@ -1,0 +1,1 @@
+(()=>{document.getElementById('btn-open-e6').click();var d=document.getElementById('e6-date');d.value='2025-07-01';d.dispatchEvent(new Event('change',{bubbles:true}));return 'ok';})()

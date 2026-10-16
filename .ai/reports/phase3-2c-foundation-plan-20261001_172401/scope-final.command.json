@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "python",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+    "--contract-sha",
+    "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+    "--baseline-sha",
+    "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+    "--scope"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "rc": 0
+}

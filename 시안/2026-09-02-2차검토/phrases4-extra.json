@@ -1,0 +1,23 @@
+{
+ "00-shell-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)","!receipt_long","!analytics"],
+ "00-shell-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)","!receipt_long","!analytics"],
+ "01-login-1.html": ["근무 관리 시스템","!교대근무 관리 시스템","!아이디를 입력","!잊으셨나요","!계정 복구","!연속 5회","!16자리","!계정복구키로 재설정"],
+ "01-login-2.html": ["현재 비밀번호","새 비밀번호","새 비밀번호 확인","모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.","계정복구키","취소","확인","!20자 이하","!현재 비밀번호와 다른","!만료","!지금 변경하기","!다음에 변경","!(!@#$%^&*)"],
+ "04-sites-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "04-sites-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "06-employees-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "06-employees-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "06-employees-3.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "07-schedule-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "07-schedule-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "07-schedule-3.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "09-allowance-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "09-allowance-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "09-allowance-3.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "10-dashboard-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!─ 관리 ─","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "11-operations-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","전체 18건 중 8건 표시","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "11-operations-2.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","저장 전에 영향 미리보기를 실행해 기존 승인 계산의 예상 변동을 확인하세요.","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "11-operations-3.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "11-operations-4.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"],
+ "12-access-logs-1.html": ["─ 준비 ─","─ 운영 ─","─ 정산 ─","─ 관리 ─","승인 대기 실적 128건","payments","monitoring","관리자","승인 담당","계획 담당","!주 메뉴","!(admin)","!(planner)","!(operator)","!(reviewer)"]
+}

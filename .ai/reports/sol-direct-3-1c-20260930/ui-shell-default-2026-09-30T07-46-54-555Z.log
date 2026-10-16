@@ -1,0 +1,12 @@
+
+PASS: [UI 검증 성공: shell]
+- 대상 주소: http://127.0.0.1:18739/
+- 크롬: C:\Program Files\Google\Chrome\Application\chrome.exe (판 154.0.8037.58)
+- 뷰포트: 1440x900 (fullPage)
+- 캡처 산출물 (4개):
+  * admin-expanded: artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/admin-expanded.png
+  * admin-collapsed: artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/admin-collapsed.png
+  * watch-stopped: artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/watch-stopped.png
+  * operator: artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/operator.png
+- manifest: artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/manifest.json
+- 콘솔/페이지/요청/HTTP/정리 오류: 0건

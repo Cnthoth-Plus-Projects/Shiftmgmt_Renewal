@@ -1,0 +1,2 @@
+{"type":"instrumentation-loaded","mode":"preflight","timeMs":1790905262071,"pid":3180}
+{"type":"owner-process-exit","mode":"preflight","timeMs":1790905262072,"pid":3180,"code":0,"triggered":false}

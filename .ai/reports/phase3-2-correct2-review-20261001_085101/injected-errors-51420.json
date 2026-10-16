@@ -1,0 +1,11 @@
+{
+  "pid": 51420,
+  "synthetic": true,
+  "purpose": "test verifier rejection of unexpected browser errors",
+  "temps": [
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-TPzC34"
+  ],
+  "serverPid": 30216,
+  "consoleErrors": [],
+  "pageErrors": []
+}

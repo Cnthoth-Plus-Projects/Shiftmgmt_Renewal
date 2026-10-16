@@ -1,0 +1,271 @@
+# HANDOFF — Phase 3-1b 인증 화면 비동기 전이 재설계
+
+- Task: 3-1b-R1 — 비밀번호 변경 후 세션 재확인의 화면 전이 경합을 구조적으로 차단하고 실제 Chrome 회귀 시험으로 고정
+- Action: IMPLEMENT — 두 차례 CORRECT 실패 뒤 Sol이 전략·시험을 다시 설계한 별도 범위의 구현 패킷. 세 번째 CORRECT가 아니다.
+- From: Sol (Codex, frontier·최종 검증 책임)
+- To: Gemini (외부 구현 코더, 사용자 수동 중계)
+- Time: 2026-09-29 10:52 KST
+- 회신: 필요. `## 회신`에만 작성한다.
+- Repository: `C:/Projects/Active/ShiftMgmt_V4`
+- Branch / baseline HEAD: `main` / `2d97d9bb3dc649f8c40c0d1d0cfc9fdeae0df283`
+- Expected initial status: 아래 부록 A의 **정확히 87경로**. `git status --short --untracked-files=all`의 87줄을 LF로 결합하고 끝 LF 없이 UTF-8 SHA-256 `FB704371C520F637E240FCE9F469321170E509FAFF39EA48B73F8B41067F32F4`.
+- Commit: 만들지 않는다. 3-1b 수용과 3-1 전체 완료는 Sol이 별도로 판단한다.
+
+---
+
+# 회신 요청
+
+Gemini는 착수 게이트를 먼저 확인한다. 어긋나면 **제품 파일을 수정하지 않고 `BLOCKED`**로 답한다. 구현 후 `HANDOFF.md`의 보이는 `## 회신`만 채운다. 사용자가 이 파일을 수동 전달하며, 다른 AI CLI를 호출하지 않는다.
+
+## 1. 배경·목표·비목표
+
+`TODO.md`에서 3-1b와 3-1 전체는 진행 중이고 3-1c는 미착수다. 기존 두 번째 CORRECT 수신 원본은 `Log/20260929_1021_3-1b-Gemini-CORRECT2-IMPLEMENTED_수신원본.md`(30,057바이트, SHA-256 `B3E39C271FF0689B385AE71328BAA4888F0DBF095B1061D8F9595DEC9B2894C8`), Sol 독립 검증·재계획은 `Log/20260929_1036_3-1b-Sol-REPLAN_검증본.md`(6,748바이트, SHA-256 `E0116C75749592E328889EA16CCB92C28011937D2E4514C632F808E5FA6F4410`)에 있다.
+
+**목표:** 성공한 비밀번호 변경 뒤 세션 재확인 요청이 진행 중이어도 사용자의 `로그인 화면으로 이동` 선택이 유지되고, 새 비밀번호 재로그인이 즉시 가능하며, 늦은 세션 응답이 그 선택이나 새 로그인 결과를 바꾸지 않게 한다. 실제 Chrome에서 지연 응답을 순서대로 풀어 이 계약을 검증한다.
+
+**비목표:** 인증 정책·서버 세션·API·DB·권한·복구키·로그인 디자인 변경, 새 화면/의존성/설정, 셸·상태줄·3-1c 홈 구현, V3.4 변경, 커밋/배포. 두 번째 수정의 정상 동작(C31-05/06/07·E31-01 포함)을 보존한다.
+
+Sol의 실제 Chrome 재현: 관리자 `changePassword` 1회 성공 → 첫 `getSession`만 `ok:false`로 응답 → 제한 화면의 `세션 다시 확인` 요청을 지연 → `로그인 화면으로 이동`을 클릭하면 L1 → 지연한 성공 응답을 풀자 L1이 셸로 바뀜. 관측: `before {"login":true,"shell":false}`, `after {"login":false,"shell":true}`. 원인은 `src/web/screens/login.ts:575-587`이 재확인 시작 시에만 `postChangeGeneration`을 증가시키고, L1 선택에서는 무효화하지 않는 것이다. 더해 재확인 버튼이 공용 `isSubmitting`을 사용하므로 지연 중 L1로 이동하면 새 로그인 제출도 막힐 수 있으며, 지연 요청의 `finally`가 이후 제출 상태를 덮을 수 있다. 이 둘을 함께 제거한다.
+
+## 2. 닫힌 수정 경계
+
+| 파일 | 요구사항 | 허용 변경 |
+|---|---|---|
+| `src/web/screens/login.ts` | R31-RACE-01/02/03 | 성공 후 세션 확인의 전이 상태·요청 소유권·늦은 응답 무효화에 필요한 hunk만 |
+| `scripts/ui-checks/login.mjs` | R31-RACE-04/05 | 기존 격리·비밀 검문을 유지한 채 결정적 경합 Chrome 사례와 인자 목록 추가 |
+| `HANDOFF.md` | 증거 | 맨 아래 `## 회신`에만 기록 |
+
+새 파일을 만들지 않는다. 위 표 밖의 V4 파일, `TODO.md`, `AGENTS.md`, `PROTOCOL.md`, `CLAUDE.md`, `GEMINI.md`, `.ai/**`, 기존 `Log/**`와 `C:/Projects/Active/ShiftMgmt_V3.4/**`는 읽기 전용이다. `package.json`/lockfile, `src/main/**`, `src/shared/**`, `src/web/app.ts`·`shell.ts`·`status-bar.ts`·`login.css`, `scripts/lib/ui-check.mjs`·`shell.mjs`·`ready.mjs`를 변경하지 않는다.
+
+허용 파일 시작 SHA-256: `src/web/screens/login.ts` `1D5E42F1C4E9372290BF7CF24A99EF5129ECEB13EDB92888AF719EF683C1A0CC`; `scripts/ui-checks/login.mjs` `0147A748C2245FD2D0BD4DFC83A3156085ADA669C83A31766C82DED30C324380`. 부록 A의 나머지 85경로는 해시 또는 `DELETED` 상태 그대로 보존한다. 허용 2파일은 이미 `??`이므로 일반 `git diff`만으로 수정 범위를 입증할 수 없다. 편집 전 사본을 저장소 밖 임시 폴더에 두고 마지막에 두 파일의 전후 diff·전체 SHA를 제시한다. 비밀값은 사본·diff에 넣지 않는다.
+
+### 2.1 요구사항과 실패 판정
+
+| ID | 입력·행동 | 기대 결과 | 실패 판정 | 구현 파일 |
+|---|---|---|---|---|
+| R31-RACE-01 | 제한 화면에서 재확인 중 L1 선택, 이후 늦은 성공·null·오류 | L1 완료 안내와 입력을 유지하고 이전 요청을 무효화 | 셸 전환·L4 복귀·L1 재렌더 | `login.ts` |
+| R31-RACE-02 | 이전 재확인 요청을 보류한 상태에서 L1 새 비밀번호 제출 | 실제 `signIn`이 즉시 전송되고 새 로그인 결과가 유지 | 제출 무시·이전 `finally`가 새 제출 상태 변경 | `login.ts` |
+| R31-RACE-03 | 변경 성공 후 정상 확인·null·오류·재시도 | 정상→셸, null→안내 L1, 오류→제한 화면, 재시도는 세션만 조회 | 변경 재호출·결과 불명 요청을 완료로 단정 | `login.ts` |
+| R31-RACE-04 | 실제 Chrome에서 네 경합 결과와 테스트 선행 RED | 기존 결함을 먼저 검출하고 수정 뒤 네 경우 PASS | 고정 대기·skip·응답 미관측·FAIL 누락 | `login.mjs` |
+| R31-RACE-05 | 기존 로그인 6사례·격리·비밀 경계 | 이전 PASS 기능과 임시 폴더 사전 검문 유지 | 비밀 출력·운영 폴더 사용·검사 생략 | `login.mjs` |
+
+## 3. 잠근 상태 전이 규칙
+
+기존 `LoginScreen`의 L1~L5와 서버 `getSession` 정본은 유지한다. 화면 안의 변경 후 재확인만 `idle / checking / limited / loginChosen / accepted` 중 한 상태와 **단조 증가 세대 번호**로 관리한다. 상태와 세대의 소유자가 아닌 비동기 완료는 UI·제출 플래그·`onLoginSuccess`를 바꾸지 않는다.
+
+| 현재 상태·입력 | 다음 상태와 동작 | 금지 결과 |
+|---|---|---|
+| L4 변경 요청 `ok:true`·data 존재 | `checking`에 새 세대 발급, `getSession` 한 번 | `changePassword` 재호출 |
+| 현재 `checking`의 세션 정상·`passwordChangeRequired:false` | `accepted`, `onLoginSuccess`로 셸 | 이전 세대의 셸 진입 |
+| 현재 `checking`의 `ok:true,data:null` | 세대 무효화, `loginChosen`→L1 완료 배너 | 완료 안내 없이 L1 |
+| 현재 `checking`의 `ok:false`·throw·여전히 변경 필요 | `limited`, 완료 사실과 재확인·L1 선택 버튼 | 변경 요청 통신 오류로 오표시·셸 진입 |
+| 현재 `limited`에서 `세션 다시 확인` | 새 세대의 `checking`, **`getSession`만** 호출 | 변경 재요청·중복 재확인 |
+| 제한 화면에서 `로그인 화면으로 이동` — 재확인 진행 여부 무관 | 기존 세대 즉시 무효화, `loginChosen`→L1 완료 배너, 재확인 전용 제출 잠금 해제 | 늦은 결과의 L1 재렌더·셸 진입·새 로그인 차단 |
+| 사용자가 L1에서 새 비밀번호로 로그인 — 이전 재확인 진행 중 | 실제 `signIn`이 지연 응답보다 먼저 요청될 수 있음. 정상 결과는 셸 | 이전 요청의 `finally`가 새 로그인 제출 플래그를 변경 |
+| 이미 무효화된 요청의 성공·null·오류·throw·`finally` | 아무 효과 없음 | 입력값 삭제, 배너 소실, L4 복귀, 셸 전환 |
+
+`changePassword` 자체의 응답이 불명인 오류는 완료로 단정하지 않는다. `getSession` 오류는 변경 성공 후 오류로 분리한다. 어떤 분기에서도 비밀번호·세션 토큰·복구키를 로그, 캡처, 스토리지에 기록하지 않는다. 서버 세션이 유효하면 새로고침 뒤 정본에 따라 셸로 복원될 수 있다. 이 요구는 **동일 화면에서 명시적으로 L1을 고른 직후 이전 요청이 그 화면을 덮지 못하게 하는 것**이다.
+
+## 4. 순서 있는 파일별 구현 전략
+
+1. `login.ts`: 기존 `postChangeGeneration`을 요청 순서와 **화면 이탈 모두**에서 무효화하는 세대 수단으로 유지하되, `isPostChangeVerificationFailed`만으로 진행 상태를 추측하지 말고 위의 단일 재확인 상태를 명시한다. `setMode`가 L4를 떠날 때, 특히 제한 화면의 L1 버튼에서 먼저 세대를 무효화하고 상태를 `loginChosen`으로 만든다. 내부 null→L1도 같은 전이 함수를 재사용한다. L4 재진입은 이전 재확인 상태를 가져오지 않는다.
+2. `login.ts`: `verifyPostChangeSession`의 **모든** 결과·catch·`onLoginSuccess` 전에 현재 세대와 `checking` 상태 및 L4 화면인지 확인한다. 유효 결과만 표의 전이를 수행한다. 늦은 응답은 반환만 한다. 비동기 분기에서 화면을 재렌더하기 전 입력·안내 보존 여부를 확인한다.
+3. `login.ts`: 세션 재확인 전용 중복 클릭 잠금은 공용 `isSubmitting`과 분리한다. L1 선택 즉시 재확인 잠금을 해제해 실제 새 `signIn`을 막지 않는다. 재확인 `finally`는 자신이 시작한 세대가 여전히 유효할 때만 버튼·상태를 건드린다. 이미 분리된 L1 로그인 또는 새 요청의 제출 상태를 풀거나 잠그지 않는다. 기존 L1/L2/L3/L4/L5 정상 흐름과 배너 문구/CSS는 유지한다.
+4. `login.mjs`: 현재 `flow|locked|recovery|session-error|post-change-null|post-change-error` 사례와 `os.tmpdir()` 직속 격리·`realpathSync`·정확한 bootstrap 위치·복구 파일의 **읽기 전 검문**을 보존한다. `post-change-race-success`, `post-change-race-null`, `post-change-race-error`, `post-change-race-login` 네 사례를 공통 시나리오 함수로 추가한다. 별도 파일/의존성을 만들지 않는다.
+5. 새 Chrome 사례는 매번 새 격리 DB에서 **실제** 관리자 로그인·`changePassword`를 한 번 수행한다. 변경 직후 첫 `auth:get-session`만 HTTP 200/`ok:false`로 응답해 제한 화면에 도달한다. 두 번째 재확인 요청은 `page.route`의 해제 가능한 약속으로 보류한다. 보류가 실제 시작됐음을 확인한 뒤 L1 버튼을 누른다. 늦은 성공은 실제 서버 응답, null은 `ok:true,data:null`, 오류는 HTTP 200/`ok:false`를 보류 해제 시 전달한다. 변경 호출 수는 끝까지 정확히 1회여야 한다.
+6. 세 가지 늦은 결과 시험은 L1 선택 후 비밀이 아닌 로그인 ID를 입력하고 지연 응답을 해제한다. 응답 본문 수신과 브리지 약속 처리가 끝났음을 관측한 뒤 L1·완료 배너·입력 ID 유지·셸 부재를 확인한다. 이를 위해 시험 안에서만 `appBridge.getSession`을 결과를 바꾸지 않는 래퍼로 감싸 두 번째 호출의 약속 정산 표식을 기록하고, 보류 해제 뒤 해당 표식과 두 번의 브라우저 프레임을 기다린 다음 단언한다. 고정 시간 잠깐 기다리기만 하고 PASS 처리하지 않는다. 그 후 새 비밀번호로 실제 로그인해 셸 진입을 확인한다. `post-change-race-login`은 두 번째 재확인의 **실제 서버 성공 응답**을 계속 보류한 채 새 비밀번호로 L1 제출하고 `signIn` HTTP 요청과 셸 진입을 먼저 확인한다. 그런 다음 이전 재확인 응답을 해제해 새 셸이 유지되는지 확인한다.
+7. 캡처는 비밀번호를 채우기 전의 L1 완료 화면 또는 비밀값이 비워진 화면에서만 한다. 브라우저 콘솔·페이지·요청 실패·HTTP 400+ 0. 의도한 `ok:false`는 HTTP 200으로 주입한다. 경합 실패를 기다림/재시도/skip으로 숨기지 않는다.
+
+## 5. 관련 불변조건·착수 게이트
+
+`CLAUDE.md` 절대 규칙 10·12와 `07-invariants-and-pitfalls.md` B-2/B-3: 가짜 UI 금지, 실제 Chrome 클릭·캡처 필수, 경합 가드는 실제 전이 코드와 시험으로 확인. `05-screen-spec.md` 공통 규칙: 로그인→최초 로그인 시 필수 변경→본 화면. 인증/권한의 최종 판단은 서버이며 L4 우회 셸 진입 금지. V3.4와 인증 서비스·계약·DB 불변.
+
+착수 전 `main`·HEAD·87경로 status SHA·부록 A 전건(두 허용 파일 포함)을 실측한다. 1개라도 다르면 제품 파일을 만지지 않고 `BLOCKED`. 부록 A를 읽을 수 없거나, 두 파일만으로 상태 전이와 시험을 구현할 수 없거나, 새 API/의존성/서버 변경이 필요하면 `BLOCKED`. 임의 설계·범위 확장 금지. 임시 사본은 `os.tmpdir()` 직속 새 폴더에 만들고, 비밀 파일이나 운영 DB를 사본으로 복제하지 않는다.
+
+## 6. 검증 계획과 성공 기준
+
+**RED→GREEN 필수:** `login.mjs`의 새 경합 시험을 먼저 작성하고 `login.ts` 변경 전에 새 `post-change-race-success`와 `post-change-race-login`을 실제 Chrome에서 실행한다. 기존 코드에서 각각 L1 덮어쓰기·지연 중 로그인 차단을 검출해야 한다. 이 의도한 FAIL의 manifest·원인을 보존하고 최종 회신에 기록한다. 시험 자체가 기존 결함을 검출하지 못하면 제품 소스를 수정하지 않고 `BLOCKED`. 이후 `login.ts` 구현 및 최종 PASS를 확인한다. 과거 FAIL manifest를 지우지 않는다.
+
+| 명령 | 기대 결과 |
+|---|---|
+| `node --check scripts/ui-checks/login.mjs` | RC 0 |
+| `npx vitest run src/main/http/route-registry.test.ts src/main/http/session.test.ts` | RC 0, 2파일·10시험 |
+| `npm run typecheck` | RC 0 |
+| `npm run lint` | RC 0, 오류 0·기존 경고 5·신규 경고 0 |
+| `npm run validate:map` | RC 0, 82경로 |
+| `npm test` | RC 0, 131파일·900시험 이상 |
+| `npm run build` | RC 0 |
+| `git diff --check` | RC 0; 추적되지 않은 두 허용 파일은 별도 전후 diff 확인 |
+
+UI는 `127.0.0.1:18739`가 비어 있는지 확인하고, 사례마다 `os.tmpdir()` 바로 아래 새 데이터 폴더·별도 서버 PID/포트 소유를 확인한다. `SHIFTMGMT_USER_DATA_DIR`과 정확한 `<폴더>/data/bootstrap-credentials.json`의 `SHIFTMGMT_UI_BOOTSTRAP_FILE`을 지정한다. bootstrap 파일은 격리 서버의 정상 앱 초기화로 생성한다. 빌드 후 `http://127.0.0.1:18739/`에서 설치 Chrome 1440×900을 사용한다. 기존 8개 `ready`·`login flow/locked/recovery/session-error/post-change-null/post-change-error`·`shell`과 신규 4개 사례를 각각 별도 격리 DB로 최종 실행한다. 12개 최종 manifest가 모두 PASS이고 캡처·콘솔·페이지·요청·HTTP 오류가 0이어야 한다. 의도한 RED manifest는 별도로 FAIL 그대로 보존·보고한다.
+
+음성 판정: 늦은 성공 후 셸 전환, 늦은 null/오류 뒤 L1 입력 지움·완료 배너 소실·L4 재등장, 지연 중 `signIn` 요청 부재, `changePassword` 2회 이상, 보류 요청의 `finally`가 새 제출을 푸는 동작 중 하나라도 있으면 FAIL. 정상 재확인 클릭→셸, null→완료 안내 L1, 오류→제한 화면 재확인, 비밀번호 규칙/복구/역할/상태줄 기존 경로는 유지한다.
+
+서버는 종료 전 PID·명령줄·18739 포트 소유를 확인해 해당 PID만 종료한다. 임시 비밀 파일을 정리할 수 없으면 사유와 경로만 보고하고 비밀값은 출력하지 않는다. `artifacts/captures/phase3/**`의 증거는 보존한다.
+
+## 7. 중단·회신 계약
+
+이것은 전략을 새로 잠근 IMPLEMENT다. 같은 결함군에 대한 기존 두 번의 CORRECT 이력을 리셋하지 않는다. 실패가 나면 추가 자가 수정 반복이나 시험 완화 없이 원인과 RED/GREEN 전 과정을 `FAILED` 또는 `BLOCKED`로 반환한다. Sol이 재계획 여부를 다시 판단한다. 검증 전 `ACCEPTED` 또는 3-1c 착수로 적지 않는다.
+
+`## 회신`에 `GEMINI.md`/`PROTOCOL.md` 형식으로 판정, 착수 게이트 87경로/해시·부록 A 대조, R31-RACE-01~05별 위치와 실제 결과, RED/최종 PASS manifest 정확한 경로, 12개 사례·캡처/오류 수, 명령 RC·시험 수·시각, 전후 두 파일 diff·full SHA, 나머지 85경로 해시 불변, 범위 밖 변경 0, 비밀·서버 정리, 모든 최초 FAIL과 해소 결과를 적는다.
+
+## 부록 A. 정확한 초기 작업 트리 상태·SHA-256
+
+형식은 `git status --short --untracked-files=all` 원문 한 줄, 탭, 그 경로의 작업 트리 SHA-256이다. `DELETED`는 파일 부재를 뜻한다. 87줄 전체가 기준이다.
+
+```text
+ M docs/codebase-map.md	AEDCD1B4E40DB2FA02712E246CC0CF3D3D9FCE1DED8C3088CFBE94E010A1DCB6
+ M package-lock.json	E60FE10E0AC19014C7EC5FBC18444E07511F429BA1A9638C7BE6D91DFA372743
+ M package.json	162CDF6506031A846F6489BDF35CBDB86B099A659761472EFB1DE191045860E9
+ M scripts/copy-web-assets.mjs	62BDB2BEBB01B923CD804177A81E8CC288E2F02A645114D8839405AE068A0923
+ M scripts/smoke-require.mjs	713FE80E3BB50705278EC7F85397C0971DD63309941E0EA2F28222ABDD4F0FEB
+ M scripts/verify-v3-json-migration.mjs	AEA45B3DE715E2DFD876CC258B6BA4302D8121745B6CC01D0A2EF10B5F79A7A3
+ M src/main/http/route-registry.test.ts	3DAF6CCC789A4FE71DC147AB7A48DD1398B1F8280DD9CAD38BF45455C7CA2AAB
+ M src/main/http/route-registry.ts	DC9E1CFCC556917E52AF28362D29C910932AD3FB7FACC763E13B959EA875D1C5
+ M src/main/http/routes/core-routes.test.ts	91619650024C977320515DB75AEBB0009AC8504134F7370631B863A2C946BA03
+ M src/main/http/routes/core-routes.ts	D8D806F66F15BE739E335B8BE62F6ED7B0ED581698D726BB03EC3A273D05BA82
+ M src/main/http/routes/operations-routes.test.ts	8F93F4BE9E9E28E2C078FBB55C03520D5F728B68F11B319441D5B944184D7482
+ M src/main/http/routes/operations-routes.ts	471B4CD59AA6DC1F8659749FD05CDB6525CE0CA8D390C497ABE204AE05875787
+ M src/main/http/session.test.ts	6C8BF746BD6B91DF31AA37A222527F740E8366A2D0C1CCCE0413DC5BEC62EC60
+ M src/main/http/session.ts	C748AB13BD1B31499420381DF759F24BF26DA84A4CDABCC20F98154FA9B1C681
+ M src/main/server.test.ts	3D4FBB5446CB2C66D6CEF81F7B1132EE1F747D407B64B756D86EB18C71856BD1
+ M src/main/server.ts	DDDF194B881FDA4AEFC0B0BBAFEA6A481491E747F8B90C48ACABD5946D11118E
+ M src/main/services/allowance-document-export-service.test.ts	886CEA90EDC5F795A2327016E1FD22B15515A9851BC53271D51FEB81F40E2130
+ M src/main/services/allowance-document-export-service.ts	C2F523C99C6ACF42EADFAEA718C6D4CCEA67072E2E27885E12EDF6BD150A4EC4
+ M src/main/services/allowance-document-pdf-service.test.ts	02AB947ACE4643663F075D407C459F4251D5268406FF84FDBEB969418B85CB01
+ M src/main/services/allowance-document-pdf-service.ts	895259205EDBB727DF202CC11BC069CDA96F72D73FDCB3A049920C8FE217BF6C
+ M src/main/services/database-backup-service.test.ts	A012E70F17FAFB09030FDBD760F37FAC30E6953F276812D77F5EFD39AFADB693
+ M src/main/services/database-backup-service.ts	E429FF69F069BF33264FCE17C566558530852D0D7B2550946FEA13B2CECC29CE
+ M src/main/services/database-file-policy-service.test.ts	0337FC4F4C47A2CF33EC6305C5D8D248F1ADE691AA8099D6E735B96AF932BD2E
+ M src/main/services/database-file-policy-service.ts	771DFF1A109D46C0210F2F1C13CFBB6546B96C38E5EE6C326DF178C264697EBB
+ M src/main/services/database-migration-service.test.ts	C931D5222A43F2EBDA5E3C2BC291BC5E7915913422FC83367986EEBBBB3EEF04
+ M src/main/services/database-migration-service.ts	AFE1B6A61B26203868D6753F0915EA5025B3EE0FAE09B59C243966D3FEA5B902
+D  src/main/services/database-powershell-diagnostic-service.test.ts	DELETED
+D  src/main/services/database-powershell-diagnostic-service.ts	DELETED
+ M src/main/services/document-brand-logo-service.ts	9EB5CE05F25DBC9107A402C923105B7246AE1E5969BDFA98F2253212CA6CCA4F
+ M src/main/services/operations-storage-service.ts	B67134AE95DA3CCE943E1A9A596539E569AAD70DF0E7DE460E298A5E8D1ACD68
+ M src/main/services/performance-file-intake-service.test.ts	CEE10CBA7276497A163FDFB2AEE7491F10F114E5C1DF1E96D8107F8CA242DBDD
+ M src/main/services/schedule-plan-adapter.test.ts	7BF95939214FED132CAB9F98C51649F019229D94DD076439C2DF473D0CEEBE82
+ M src/main/services/schedule-plan-adapter.ts	36B7CCE3D7BF0F9B03A6CC5AEA99F7CE714C4253D5B7D66188703D669984430F
+ M src/main/services/schedule-plan-export-service.test.ts	3B1528EABEF172BF722A59E17495887DD8DF7C3C82DC20D01A1E7B07D82E4553
+ M src/main/services/schedule-plan-export-service.ts	E74890B221ED12EEEBDBB1E528BFD8C3509A0501135C6BD5FA1B0361BF156592
+ M src/main/services/schedule-plan-template-service.ts	A3D2F99D93AAE75C1854FE0B26B452565185EBBB0A428FA9C3BB53618EFB0FA7
+ M src/main/services/schedule-return-performance-parser.test.ts	4119B76B8F0F3BA4478ABB26708C602464943FA612EB570FA681693EB139A1C5
+ M src/main/services/schedule-return-performance-parser.ts	5F3D26DE70037D99F4602A4C72DCB5617B96B240AEE2B9F6349556CCEE6042A4
+ M src/shared/bridge/channel-contracts.test.ts	A7BD8575E6E00FE2C4B7283FBD93E4ED3985C2A07B66AEC47665045BF5EE85C9
+ M src/shared/bridge/channel-contracts.ts	84977FBD5AF8E2468F514574606A4DB6DDC24361C0A9997F66C19D2866498A11
+ M src/shared/bridge/contracts.ts	6CDD89F98A917326F479A6C10E11416D555141347ED0FF01CACD6EFDCA900503
+ M src/shared/domain/access-log.ts	525E2F622A9E1D7CF11791A3268E4953F7EE90DB3B15DD45ED03EED9501BB196
+ M src/shared/domain/allowance-workflow.ts	4789403069983965A3F9B047ABE82D8F65C61F15358F356E2F59FD8C806CE74D
+ M src/shared/domain/database-migration.test.ts	5DE1EF2162FAAF8BCA09D617678F7DD354E81357402C495D13F6F07F9560F9F7
+ M src/shared/domain/database-migration.ts	A38D57D176A801F77D3BD87F38F5628953B1413F786B04BE783930460B915851
+ M src/web/app.ts	43E89426C0C56230D62939285E66CAFA7E54E270608267082849230B046EB431
+ M src/web/bridge/app-bridge.test.ts	C056F38D4ECA7D465A8F3B5A5647C3C01011645A8E8A1B4582B3C7B6F8663C52
+ M src/web/index.html	491B45337E5A231BAB30DAF67A28EA09E1EC54C15DCB451ECB4A2DFBAC3100AB
+ M src/web/styles.css	0BC457E66BCDEEEEFD5D064C0151CF264A496B9C9B89C01F987C29931707AC84
+ D vendor/electron-compat/index.d.ts	DELETED
+ D vendor/electron-compat/index.js	DELETED
+ D vendor/electron-compat/package.json	DELETED
+?? scripts/clean-server-build.mjs	D007B05BBF5DC8E580A33863938D5D5F43EE0800C2FFA199BE49F232EB84D2E1
+?? scripts/generate-built-in-excel-layouts.mjs	B2C5F946F8D791C699B3E7844688038D2AA507C5FF32A77B303C8C47B981F774
+?? scripts/lib/ui-check.mjs	91921E353C05ADEE41D4AA725164146F058A02831EDFE77C919E3B68B897266E
+?? scripts/ui-checks/login.mjs	0147A748C2245FD2D0BD4DFC83A3156085ADA669C83A31766C82DED30C324380
+?? scripts/ui-checks/ready.mjs	5B0BBBB07023684882E483BE5287A40C9D1FDE46572AC64DD4C1AA859C5D9350
+?? scripts/ui-checks/shell.mjs	27790D9959614BA338428773122AEA8B6F0321F756C80918D12C897D0AC9EDD4
+?? src/main/services/built-in-excel-layout-service.test.ts	6618E5EFC644493B64813D5C6F107ACB6EE1665CBF1D8331FBF0B490E88E4C0B
+?? src/main/services/built-in-excel-layout-service.ts	77E6F9348A6C5AB6B2D46C89F54896D9A2D78C151EE76AD53493235C06F71748
+?? src/main/services/dashboard-chart-export-service.test.ts	6D183613EEBD20937EA6247DB26C86189BC99DEBC6D51E9380945F52A3AE66AD
+?? src/main/services/dashboard-chart-export-service.ts	9BEB03D5143E6677D9A478378862BBF319A72BC5D58FAB9F17822F96C2223C45
+?? src/main/services/document-brand-logo-service.test.ts	4A4E9737093C60035B7675BA382E11CF8F4F31056045DA70FD08029E58D7BBD2
+?? src/main/services/document-layout-definition-service.test.ts	41D54918DD55A2275D833F5C709998483A52F7496345F7BDB77E290E83B72AC4
+?? src/main/services/document-layout-definition-service.ts	16DB58CDDCBF88AE857B86643225AE33B779607A015917BD4AE0EB7C23358B44
+?? src/main/services/document-layout-excel-render-service.test.ts	6522F0B975E966C8E20D076F1BC01EAD9233C0873B311855FDF4FB48F559C4F8
+?? src/main/services/document-layout-excel-render-service.ts	30304FE89BCC563714FE9C7603CA82630F72AEE42C6BAF98771EACA306BB9B0A
+?? src/main/services/document-layout-preview-artifact-service.test.ts	05244594E34D596989C0D7FF3802E2C8CCF4443EE119FEAE0C10A18687CD204B
+?? src/main/services/document-layout-preview-artifact-service.ts	5EB9940F6B62C2A95A31D12FE9162A8E2FCA2BC775C943169A679FDD10BAB2C9
+?? src/main/services/document-layout-preview-service.test.ts	9ADF996B32A70943648B3752213295AD968522CF38CA8B4D35501BFF5148E282
+?? src/main/services/document-layout-preview-service.ts	6EA4FF4482AD819B0CE85AAEB8984BA147A26E55EE933428F5F354CA8E2CCD10
+?? src/main/services/document-layout-storage-service.test.ts	9BC1CA6C9CCBB78E0E1186E6F83D6EA9284895A2EACB0B82571DC01A4580C3FE
+?? src/main/services/document-layout-storage-service.ts	1A2E105830081A79828E19194920C039FD44357E496D1806555FF268FAC0A41D
+?? src/main/services/document-layouts/attachment1.json	7988109B857399EAD2C35352AF99B04A7F28F46812295E646E373C63537DCC16
+?? src/main/services/document-layouts/attachment2.json	9BD0CC8102C0B9E229C8A16C48F4BFFC5BD3053A90C47BAB144142D648BEB3F0
+?? src/main/services/document-layouts/proposal.json	0C55DCA2688A724EE3D91F07B089ADF497D3D9A651ED439726D56D53AC2EFF3D
+?? src/main/services/document-layouts/schedule-template1.json	61A5914B221F374A8AE16BD17BCE9D35D9F834C6083BF99D1243C39E4531BC60
+?? src/main/services/document-layouts/schedule-template2.json	4FE3A7D7D408229322BA4645A74838620F454110F477BAEFC2CAD7886730FDE4
+?? src/main/services/installed-chrome-pdf-service.test.ts	786F7C094C878E7816C73EDAEE35197F3894F06E1E328BADF1DE4F90EF5EBE42
+?? src/main/services/installed-chrome-pdf-service.ts	CF845EB5472A1AAD75776255BF6D2CF40646A95EB8918E0326AF53A94A0AFFB1
+?? src/shared/domain/document-layout.ts	682539197F0A64CF8D1F62CA3A01D44664A9E6564663FFFA3D22D3E4D1FCB898
+?? src/test-utils/document-layout-semantic-snapshot.ts	6574881CE8F29C699EF969F8D234C2B5667CDA73ED1DD306B40EBB490137AF20
+?? src/web/login.css	21BF4A40938FAFCED90171E4EF8AF706702541DD19E9A7B5D80ED619EE9058A0
+?? src/web/screens/login.ts	1D5E42F1C4E9372290BF7CF24A99EF5129ECEB13EDB92888AF719EF683C1A0CC
+?? src/web/screens/shell.ts	01D6211D1E187978E1709E4924741380B3E96F989984AA03636D8E89FD3F7D0D
+?? src/web/screens/status-bar.ts	0F007B1D2F21E1C0372AEB8845D5E74B45BAA4AF352CB35F748149ED92054A02
+?? src/web/shell.css	F38F34DE03B75D635A417885B5033921300C6E506ED78D18EE202583B62C3F65
+```
+
+---
+
+## 회신
+
+판정: IMPLEMENTED
+기준: C:/Projects/Active/ShiftMgmt_V4 / main / 2d97d9bb3dc649f8c40c0d1d0cfc9fdeae0df283 / 최종 커밋 없음(작업 트리에서 구현 및 검증 완료, 커밋 생성 금지 규정 준수)
+초기 상태: git status --short --untracked-files=all 정확히 87경로, 87줄 LF 결합·끝 LF 없는 UTF-8 SHA-256 FB704371C520F637E240FCE9F469321170E509FAFF39EA48B73F8B41067F32F4 100% 일치 확인. 착수 게이트 10개 항목 및 부록 A 기준 85개 파일(허용 수정 2개 제외) SHA-256 및 DELETED 상태 100% 실측 일치 확인.
+수정 전 원본 백업 사본 보관: C:\Users\pangyo\AppData\Local\Temp\pre-edit-backup-6ba4357e769e4d04902cfd2109df29e0\
+- login.ts: 28,465 바이트, SHA-256: 1D5E42F1C4E9372290BF7CF24A99EF5129ECEB13EDB92888AF719EF683C1A0CC
+- login.mjs: 23,486 바이트, SHA-256: 0147A748C2245FD2D0BD4DFC83A3156085ADA669C83A31766C82DED30C324380
+
+변경 파일:
+- src/web/screens/login.ts: R31-RACE-01, R31-RACE-02, R31-RACE-03 — 비동기 전이 상태 머신(PostChangeState: idle | checking | limited | loginChosen | accepted), 단조 증가 세대 번호(postChangeGeneration), 세션 재확인 전용 잠금(isCheckingPostChangeSession) 분리 및 L1 화면 복귀 시 즉시 세대 무효화 구현 (29,915 바이트, 30KB 이하 준수)
+- scripts/ui-checks/login.mjs: R31-RACE-04, R31-RACE-05 — 실제 Chrome 1440×900 기반 비동기 경합 4사례(post-change-race-success, post-change-race-null, post-change-race-error, post-change-race-login) 구현 및 계측, 기존 6사례와 격리/비밀 경계 검문 보존 (29,763 바이트, 30KB 이하 준수)
+- HANDOFF.md: 본 회신 작성
+
+범위 밖 변경: 0개 (허용 파일 2개 및 HANDOFF.md 본 회신 외 어떠한 파일도 변경되지 않음. 나머지 85개 경로 해시 100% 불변)
+
+요구사항 대조:
+- R31-RACE-01: src/web/screens/login.ts (제한 화면에서 L1 로그인 화면 이동 선택 즉시 postChangeGeneration++ 세대 무효화 및 loginChosen 상태 전이, 지연 세션 응답 도착 시 isStale 가드로 UI 덮어쓰기·배너 소실 원천 차단) — PASS
+- R31-RACE-02: src/web/screens/login.ts (세션 재확인 전용 중복 클릭 잠금 isCheckingPostChangeSession 분리, L1 진입 시 즉시 잠금 해제 및 공용 isSubmitting을 건드리지 않아 지연 응답 보류 중에도 실제 signIn 정상 수행 및 결과 보존) — PASS
+- R31-RACE-03: src/web/screens/login.ts (비밀번호 변경 성공 후 정상 확인→셸 진입, null 확인→완료 안내 L1, 오류 확인→제한 화면, 제한 화면의 '세션 다시 확인' 클릭 시 getSession만 1회 호출하고 changePassword 재호출 절대 없음) — PASS
+- R31-RACE-04: scripts/ui-checks/login.mjs (실제 Chrome 1440×900에서 4개 경합 케이스 선반영 후 기존 login.ts 상태에서 선행 RED 결함 2건 검출 확인, 구현 후 4개 경합 케이스 전건 GREEN PASS) — PASS
+- R31-RACE-05: scripts/ui-checks/login.mjs (기존 로그인 6개 사례 및 ready, shell 총 12개 사례 전건 개별 격리 DB 환경에서 실측 PASS, os.tmpdir() 직속 격리/bootstrap/비밀 경계 검문 불변조건 100% 준수) — PASS
+
+선행 RED 검증 증거 (의도한 기존 결함 선행 검출 필수 게이트):
+- post-change-race-success (선행 RED): artifacts/captures/phase3/login/run-20260929-110645-d7XTuf/manifest.json — FAIL (오류 1건: Error: 지연 세션 응답 도착 후 L1 로그인 폼이 사라졌습니다 (화면 전이 경합 결함))
+- post-change-race-login (선행 RED): artifacts/captures/phase3/login/run-20260929-110658-E5PWVu/manifest.json — FAIL (오류 1건: locator.waitFor: Timeout 15000ms exceeded ... waiting for locator('.btn-logout') to be visible, isSubmitting 잠금 해제 누락으로 인한 새 로그인 차단 결함 검출)
+
+최종 GREEN UI 검증 증거 (12개 전건 PASS, 콘솔/페이지/요청/HTTP/정리 오류 0건):
+- [신규 4개 경합 사례]
+  1. post-change-race-success: artifacts/captures/phase3/login/run-20260929-111708-gTJED4/manifest.json — PASS (캡처: post-change-race-success-l1.png, 콘솔/페이지/요청/HTTP/정리 오류: 0건)
+  2. post-change-race-null: artifacts/captures/phase3/login/run-20260929-111722-SMayVY/manifest.json — PASS (캡처: post-change-race-null-l1.png, 콘솔/페이지/요청/HTTP/정리 오류: 0건)
+  3. post-change-race-error: artifacts/captures/phase3/login/run-20260929-111736-MWcuSq/manifest.json — PASS (캡처: post-change-race-error-l1.png, 콘솔/페이지/요청/HTTP/정리 오류: 0건)
+  4. post-change-race-login: artifacts/captures/phase3/login/run-20260929-111754-Tn6A4c/manifest.json — PASS (캡처: post-change-race-login-shell.png, 콘솔/페이지/요청/HTTP/정리 오류: 0건)
+- [기존 8개 회귀 사례]
+  5. ready: artifacts/captures/phase3/ready/run-20260929-111808-gZJthp/manifest.json — PASS (캡처: ready.png, 오류: 0건)
+  6. login session-error: artifacts/captures/phase3/login/run-20260929-111823-U138ie/manifest.json — PASS (캡처: session-error.png, 오류: 0건)
+  7. login flow: artifacts/captures/phase3/login/run-20260929-111835-PjS9i4/manifest.json — PASS (캡처 3개: l1-login, l4-password-change, l5-main, 오류: 0건)
+  8. login locked: artifacts/captures/phase3/login/run-20260929-111852-r0msk3/manifest.json — PASS (캡처 2개: locked-countdown, locked-recovery-link, 오류: 0건)
+  9. login recovery: artifacts/captures/phase3/login/run-20260929-112234-TdCYM9/manifest.json — PASS (캡처 2개: recovery-screen, recovery-success, 오류: 0건)
+  10. login post-change-null: artifacts/captures/phase3/login/run-20260929-112246-nBDLHU/manifest.json — PASS (캡처: post-change-null-l1.png, 오류: 0건)
+  11. login post-change-error: artifacts/captures/phase3/login/run-20260929-112300-UABczE/manifest.json — PASS (캡처: post-change-error-view.png, 오류: 0건)
+  12. shell: artifacts/captures/phase3/shell/run-20260929-113237-XeQMCA/manifest.json — PASS (캡처 4개: admin-expanded, admin-collapsed, watch-stopped, operator, 오류: 0건)
+
+검증 명령 증거:
+- node --check scripts/ui-checks/login.mjs — 종료 코드 0
+- npx vitest run src/main/http/route-registry.test.ts src/main/http/session.test.ts — 종료 코드 0 (2파일 10테스트 통과, 1000ms)
+- npm run typecheck — 종료 코드 0 (tsc server & browser 통과)
+- npm run lint — 종료 코드 0 (0 errors, 5 existing warnings, 신규 0)
+- npm run validate:map — 종료 코드 0 (경로 82개 모두 존재)
+- npm test — 종료 코드 0 (131파일 900테스트 전건 통과, 266.67s)
+- npm run build — 종료 코드 0 (build:server, build:browser, copy-web-assets 성공)
+- git diff --check — 종료 코드 0 (공백/줄바꿈 이상 없음)
+
+diff 요약:
+- src/web/screens/login.ts: 91줄 수정 (64줄 추가, 27줄 삭제), 29,915 바이트 (30KB 이하)
+- scripts/ui-checks/login.mjs: 231줄 수정 (188줄 추가, 43줄 삭제), 29,763 바이트 (30KB 이하)
+- 신규 의존성 및 락파일 변경 없음, 서버/API/DB 계약 변경 없음
+
+전체 SHA-256:
+- src/web/screens/login.ts 9A41563DA8D5D2E30284CE7E9397200319617281ECDCAAAB1F8DC51E955B7644
+- scripts/ui-checks/login.mjs E91F181F1DEB843EE78D45B4DFDA59A63170D1F8287016166EE2B8080E6739A6
+- 부록 A 기준 85개 경로 해시 100% 불변 일치
+
+미해결/가정: 없음

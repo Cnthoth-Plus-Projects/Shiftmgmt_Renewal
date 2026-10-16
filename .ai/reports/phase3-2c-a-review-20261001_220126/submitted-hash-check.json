@@ -1,0 +1,165 @@
+{
+  "files": [
+    {
+      "name": "docs/codebase-map.md",
+      "claimedBytes": 12802,
+      "bytes": 12802,
+      "claimedSha256": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794",
+      "sha256": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794",
+      "matches": true
+    },
+    {
+      "name": "scripts/copy-web-assets.mjs",
+      "claimedBytes": 4292,
+      "bytes": 4292,
+      "claimedSha256": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115",
+      "sha256": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115",
+      "matches": true
+    },
+    {
+      "name": "src/web/index.html",
+      "claimedBytes": 601,
+      "bytes": 601,
+      "claimedSha256": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2",
+      "sha256": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2",
+      "matches": true
+    },
+    {
+      "name": "src/web/screens/shell.ts",
+      "claimedBytes": 16334,
+      "bytes": 16334,
+      "claimedSha256": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130",
+      "sha256": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130",
+      "matches": true
+    },
+    {
+      "name": "scripts/ui-checks/access-history-negative.mjs",
+      "claimedBytes": 7290,
+      "bytes": 7290,
+      "claimedSha256": "17B2905F59E3DF3891355FAFF466ED4DEBCC3874AA3EFB062E209A4583B0E7BE",
+      "sha256": "17B2905F59E3DF3891355FAFF466ED4DEBCC3874AA3EFB062E209A4583B0E7BE",
+      "matches": true
+    },
+    {
+      "name": "scripts/ui-checks/access-history-positive.mjs",
+      "claimedBytes": 18000,
+      "bytes": 18000,
+      "claimedSha256": "BF5E8628576F917517B124B2722A0E2D2C1300BDC54F89906BD72909E29A974A",
+      "sha256": "BF5E8628576F917517B124B2722A0E2D2C1300BDC54F89906BD72909E29A974A",
+      "matches": true
+    },
+    {
+      "name": "scripts/ui-checks/access-history-shared.mjs",
+      "claimedBytes": 18974,
+      "bytes": 18974,
+      "claimedSha256": "94DAF63798AA5E9A7B05582A2C0368A286096F511F5E4C285A7F75E61071EE25",
+      "sha256": "94DAF63798AA5E9A7B05582A2C0368A286096F511F5E4C285A7F75E61071EE25",
+      "matches": true
+    },
+    {
+      "name": "scripts/ui-checks/access-history.mjs",
+      "claimedBytes": 21253,
+      "bytes": 21253,
+      "claimedSha256": "C6F2EF91CD00A4D4D4C7480D0E4061B7634977D5C3132C340DEA0676EDD7DF18",
+      "sha256": "C6F2EF91CD00A4D4D4C7480D0E4061B7634977D5C3132C340DEA0676EDD7DF18",
+      "matches": true
+    },
+    {
+      "name": "src/web/access-history.css",
+      "claimedBytes": 7261,
+      "bytes": 7261,
+      "claimedSha256": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1",
+      "sha256": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1",
+      "matches": true
+    },
+    {
+      "name": "src/web/screens/access-history-model.test.ts",
+      "claimedBytes": 10177,
+      "bytes": 10177,
+      "claimedSha256": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E",
+      "sha256": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E",
+      "matches": true
+    },
+    {
+      "name": "src/web/screens/access-history-model.ts",
+      "claimedBytes": 6786,
+      "bytes": 6786,
+      "claimedSha256": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265",
+      "sha256": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265",
+      "matches": true
+    },
+    {
+      "name": "src/web/screens/access-history.ts",
+      "claimedBytes": 29601,
+      "bytes": 29601,
+      "claimedSha256": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979",
+      "sha256": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979",
+      "matches": true
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "server-stdout",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\server-stdout.log",
+      "claimedBytes": 139,
+      "bytes": 745,
+      "claimedSha256": "5F67EB847F2382DA6AE716D1EB3A45C3F5E7B7E2CE924151B381A0BA7A6CCB7C",
+      "sha256": "0236C6FA55672B9123EFAD21AF469E9FDA49746F59F797BFAC3773535C030BF6",
+      "matches": false
+    },
+    {
+      "id": "server-stderr",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\server-stderr.log",
+      "claimedBytes": 0,
+      "bytes": 169,
+      "claimedSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "sha256": "0D98832FB03FE0940C418CA1956CC60147718B7DE6989802296E149E983F2F6A",
+      "matches": false
+    },
+    {
+      "id": "worker-stdout",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\worker-stdout.log",
+      "claimedBytes": 0,
+      "bytes": 0,
+      "claimedSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "matches": true
+    },
+    {
+      "id": "worker-stderr",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\worker-stderr.log",
+      "claimedBytes": 0,
+      "bytes": 0,
+      "claimedSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "matches": true
+    },
+    {
+      "id": "worker-final",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\worker-final.json",
+      "claimedBytes": 1846,
+      "bytes": 3676,
+      "claimedSha256": "895D94D4CE256156930AE46E4A831E64DA9598EC06B5FCE8E2C4FF7A4278DA23",
+      "sha256": "323C8F1DA045FD3409A41FA2342046475BA6DD6202E54B86ACD5131EA256D92F",
+      "matches": false
+    },
+    {
+      "id": "core-observations",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\core-observations.json",
+      "claimedBytes": 3782,
+      "bytes": 5620,
+      "claimedSha256": "76C983050C3DBC9C0E28B52E82E37E4E98337EB5036BEE3DCE2FFC0DF551CD67",
+      "sha256": "94CD3CD59440926E02636F59671C1FF48510B5EBA5D6382A8CF290AF1BBA4A43",
+      "matches": false
+    },
+    {
+      "id": "core-capture",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\core-capture.png",
+      "claimedBytes": 42674,
+      "bytes": 25688,
+      "claimedSha256": "6B786BC7B32E0E84D7A1EB25F7ED2BCF14643F24285B35B472916F4F54728555",
+      "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D",
+      "matches": false
+    }
+  ]
+}

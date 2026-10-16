@@ -1,0 +1,29 @@
+{
+  "file": ".ai\\reports\\phase3-2-correct1-review-20260930_224512\\injected-errors.json",
+  "previousEmbedded": {
+    "synthetic": true,
+    "purpose": "test verifier rejection of unexpected browser errors",
+    "temps": [
+      "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-6VjoH1"
+    ],
+    "serverPid": null,
+    "consoleErrors": [
+      "SOL_VERIFIER_FAULT_CONSOLE"
+    ],
+    "pageErrors": [
+      "SOL_VERIFIER_FAULT_PAGE",
+      "SOL_VERIFIER_FAULT_PAGE"
+    ]
+  },
+  "currentObserved": {
+    "synthetic": true,
+    "purpose": "test verifier rejection of unexpected browser errors",
+    "temps": [
+      "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-yYLHNv"
+    ],
+    "serverPid": null,
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "knownWriter": "Sol control preload used by submitted Gemini command writes this path; forwarded --import also executes in owner/worker"
+}

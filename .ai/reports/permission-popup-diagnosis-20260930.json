@@ -1,0 +1,34 @@
+{
+  "observedAt": "2026-09-30T15:23:22.641670+09:00",
+  "rootFullAccessEffectiveAtKST": "2026-09-30 13:17:17",
+  "sessions": [
+    {
+      "agent": "/root",
+      "approvalPolicy": "never",
+      "sandboxType": "disabled"
+    },
+    {
+      "agent": "/root/harness_install_review",
+      "approvalPolicy": "on-request",
+      "sandboxType": "managed"
+    },
+    {
+      "agent": "/root/home_review",
+      "approvalPolicy": "on-request",
+      "sandboxType": "managed"
+    },
+    {
+      "agent": "/root/home_evidence",
+      "approvalPolicy": "on-request",
+      "sandboxType": "managed"
+    }
+  ],
+  "staleAgentEscalationsKST": [
+    "2026-09-30 14:16:40",
+    "2026-09-30 14:22:11",
+    "2026-09-30 14:24:01"
+  ],
+  "cause": "Previously created harness_install_review retained workspace-write/on-request after root switched to danger-full-access/never.",
+  "currentState": "All three prior child agents are completed; do not reactivate stale permission contexts. Root continues authorized work directly.",
+  "settingsModified": false
+}

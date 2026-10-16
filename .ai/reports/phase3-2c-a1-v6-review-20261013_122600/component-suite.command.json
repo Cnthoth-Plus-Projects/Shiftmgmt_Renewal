@@ -1,0 +1,23 @@
+{
+  "name": "component-suite",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\component-probes.mjs",
+    "--core-manifest",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-123042-AO1jdq\\owner-final.json",
+    "--execution-sha",
+    "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA",
+    "--baseline-sha",
+    "45C56DB27091804BDC1DBBC83049123F9EE135799B659616F7528EAC245C3C3D"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 39432,
+  "start": "2026-10-13T03:36:31.525142+00:00",
+  "end": "2026-10-13T03:36:37.263298+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\component-suite.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\component-suite.stderr.txt",
+  "stdoutSha256": "FDD0B1747BB28A4A56B6B3BFA6F7967EEB8C55A21320D36B18340212029C48AC",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

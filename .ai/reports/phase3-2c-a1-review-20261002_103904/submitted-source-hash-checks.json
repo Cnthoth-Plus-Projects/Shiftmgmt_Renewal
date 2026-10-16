@@ -1,0 +1,74 @@
+[
+  {
+    "path": "scripts/ui-checks/access-history.mjs",
+    "reportedBytes": 28113,
+    "reportedSha256": "B8C9351C6C7B8256C4D907BBB8947C29A76DBDAC026105106798C90C9678B7B7",
+    "match": true
+  },
+  {
+    "path": "scripts/ui-checks/access-history-shared.mjs",
+    "reportedBytes": 26717,
+    "reportedSha256": "81DACB5B8F03BF7AECDA5A497EB63571EA725BA8A5823F2C48F280E20D47A346",
+    "match": true
+  },
+  {
+    "path": "docs/codebase-map.md",
+    "reportedBytes": 12802,
+    "reportedSha256": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794",
+    "match": true
+  },
+  {
+    "path": "scripts/copy-web-assets.mjs",
+    "reportedBytes": 4292,
+    "reportedSha256": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115",
+    "match": true
+  },
+  {
+    "path": "src/web/index.html",
+    "reportedBytes": 601,
+    "reportedSha256": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/shell.ts",
+    "reportedBytes": 16334,
+    "reportedSha256": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130",
+    "match": true
+  },
+  {
+    "path": "scripts/ui-checks/access-history-negative.mjs",
+    "reportedBytes": 7290,
+    "reportedSha256": "17B2905F59E3DF3891355FAFF466ED4DEBCC3874AA3EFB062E209A4583B0E7BE",
+    "match": true
+  },
+  {
+    "path": "scripts/ui-checks/access-history-positive.mjs",
+    "reportedBytes": 18000,
+    "reportedSha256": "BF5E8628576F917517B124B2722A0E2D2C1300BDC54F89906BD72909E29A974A",
+    "match": true
+  },
+  {
+    "path": "src/web/access-history.css",
+    "reportedBytes": 7261,
+    "reportedSha256": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/access-history-model.test.ts",
+    "reportedBytes": 10177,
+    "reportedSha256": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/access-history-model.ts",
+    "reportedBytes": 6786,
+    "reportedSha256": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/access-history.ts",
+    "reportedBytes": 29601,
+    "reportedSha256": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979",
+    "match": true
+  }
+]

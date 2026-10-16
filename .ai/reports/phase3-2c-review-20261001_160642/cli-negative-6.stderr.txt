@@ -1,0 +1,1 @@
+[CLI 인수 오류] --case=<케이스> 필요: 'http://localhost:18741/'

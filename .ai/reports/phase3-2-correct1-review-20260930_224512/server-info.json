@@ -1,0 +1,9 @@
+{
+  "url": "http://127.0.0.1:18742/",
+  "port": 18742,
+  "dataDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-32c1-c9dYuM",
+  "bootstrapPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-32c1-c9dYuM\\data\\bootstrap-credentials.json",
+  "stopFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-32c1-c9dYuM\\sol-verification-stop",
+  "serverPid": 42024,
+  "started": "2026-09-30T13:53:46.098Z"
+}

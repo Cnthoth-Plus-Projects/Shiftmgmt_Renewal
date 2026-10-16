@@ -1,0 +1,25 @@
+{
+  "name": "scope-after",
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py",
+    "--execution-sha",
+    "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+    "--baseline-sha",
+    "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E",
+    "--scope"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 28260,
+  "start": "2026-10-13T00:40:24.042724+00:00",
+  "end": "2026-10-13T00:40:25.023440+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\scope-after.stderr.txt",
+  "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

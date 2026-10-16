@@ -1,0 +1,24 @@
+{
+  "name": "actual-runtime-original-controls",
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py",
+    "--execution-sha",
+    "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35",
+    "--baseline-sha",
+    "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 50628,
+  "start": "2026-10-13T00:34:18.681528+00:00",
+  "end": "2026-10-13T00:39:48.577675+00:00",
+  "rc": 1,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\actual-runtime-original-controls.stderr.txt",
+  "stdoutSha256": "B83C3C317115C311EA99ECA77C66EA32940E31637AD04E986DE5601234E59993",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

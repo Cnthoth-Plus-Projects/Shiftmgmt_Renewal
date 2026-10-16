@@ -1,0 +1,6 @@
+{
+  "beforeSHA256": "DBA51927A04EAC0A764820C2E109D619F3369064AA43BBB8368EB38693A1113A",
+  "afterSHA256": "B163D9166FE69FDD1F1AC9F86CCB3D7B882C4C4FC7265331765C535831ACC9C6",
+  "archive": "Log\\20260930_172244_3-1d-Sol검수기_정정전_보존본.mjs",
+  "reason": "isDisabled includes aria-disabled; use native DOM disabled plus actual Tab focus, and execute all locked-button keyboard probes. Add4 explicit design checks and1 pending duplicate-submit check. Wait until held route.continue completes before unroute."
+}

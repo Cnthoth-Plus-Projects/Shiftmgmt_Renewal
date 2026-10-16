@@ -1,0 +1,7 @@
+[검증 실패] core-ack: Ack nonce 불일치
+Error: Ack nonce 불일치
+    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:432:42
+    at ChildProcess.<anonymous> (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-review-20261002_103904/extra-preload-review.mjs:118:127)
+    at ChildProcess.emit (node:events:508:28)
+    at emit (node:internal/child_process:949:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)

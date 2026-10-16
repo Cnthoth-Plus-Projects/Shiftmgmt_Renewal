@@ -1,0 +1,115 @@
+{
+  "proof": "EXPLICIT_CONTROL_MIGRATION_NOT_IMPLEMENTATION",
+  "files": {
+    "evidence-v7.py": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\evidence-v7.py",
+      "beforeSha256": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03",
+      "afterSha256": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03",
+      "adapted": false
+    },
+    "gate-evidence.py": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\gate-evidence.py",
+      "beforeSha256": "3F58D07C17DC0980EBF950FCDA5AA39A13DA3F16BCAD4010F497DE436C0A5291",
+      "afterSha256": "0BD49A425F026D37EF861E4EB70EAC237733EC7D847E7164933B7BEA01F2E622",
+      "adapted": true
+    },
+    "runtime-probes.py": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\runtime-probes.py",
+      "beforeSha256": "BA60E7F5AC583FB87BAB819E4BD7FD0F9991C9DC45779D9BCF18C27BE6FDB538",
+      "afterSha256": "7D9869069FC46D5D6505088C37E7A81CFD139FC8FB542CF01F44F875B34DC07E",
+      "adapted": true
+    },
+    "runtime-preload.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\runtime-preload.mjs",
+      "beforeSha256": "90DFF6BD959035EA1CF3AAF10B51CE91D96995525CDA56A42CE7CEAE946C99EE",
+      "afterSha256": "90DFF6BD959035EA1CF3AAF10B51CE91D96995525CDA56A42CE7CEAE946C99EE",
+      "adapted": false
+    },
+    "observer-selfcheck.py": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\observer-selfcheck.py",
+      "beforeSha256": "376AF09920F46305CD2A4FDB4116DB5C8CDA777E2B58D2F2F44DBFA0C16FA786",
+      "afterSha256": "E6964F5A6E19FFF4240668E12E152464CAE459F9DB2F6A84B7FAC96F308B0D29",
+      "adapted": true
+    },
+    "observer-canary.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\observer-canary.mjs",
+      "beforeSha256": "3C5CC18435FB06E5A7DB7701426C11947853DD6B5647A9BE9A37BE552C10B6FF",
+      "afterSha256": "9C1AA501D1C480A8E75AFEE3D9CC6AB6AE965488BBD793880C5B7F41D326CCDF",
+      "adapted": true
+    },
+    "ipc-probes.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\ipc-probes.mjs",
+      "beforeSha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B",
+      "afterSha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B",
+      "adapted": false
+    },
+    "component-probes.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\component-probes.mjs",
+      "beforeSha256": "39C4559D712665C4B56E1BD4870F556A22DB722C7D0BC97BCE18E3C1E9F14B62",
+      "afterSha256": "2D7CD92E3670C3CA37B0D67B985B3922FCB45E6B42F8678CA1C224A34477E339",
+      "adapted": true
+    },
+    "partial-probes.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\partial-probes.mjs",
+      "beforeSha256": "81600E6C56BB09F02A384B4330A91639815D4904C24D703844F83BE9DC89B240",
+      "afterSha256": "81600E6C56BB09F02A384B4330A91639815D4904C24D703844F83BE9DC89B240",
+      "adapted": false
+    },
+    "partial-preload.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\partial-preload.mjs",
+      "beforeSha256": "1F1EAE161E3386B108740A9185229FDDFAD7B79EEC5A5E42F6451FA4DD55809B",
+      "afterSha256": "1EBDE0A5F97F36D05235BD9499FD4998D77AD9D133C75C55B6C00CE50A2924C2",
+      "adapted": true
+    },
+    "lifecycle-probes.py": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-probes.py",
+      "beforeSha256": "0985EE5280D9E0044920528EBCFF2388013D396C0E8875DE025DD515EC72B2FD",
+      "afterSha256": "B59A3DED9ED640797EF0183FAD44218A35AC33A3F53E1610B9811C8C358AE05F",
+      "adapted": true
+    },
+    "lifecycle-preload.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-preload.mjs",
+      "beforeSha256": "0372FE03729F23B8A5E9436E2AFF3A898DD723AF8FDDB729042F4C7547095C49",
+      "afterSha256": "0372FE03729F23B8A5E9436E2AFF3A898DD723AF8FDDB729042F4C7547095C49",
+      "adapted": false
+    },
+    "lifecycle-extension.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-extension.mjs",
+      "beforeSha256": "E700B3CA2B50FEF8C3D32A018B88C04B88CCC630C4C1474E38987DDBB566E36D",
+      "afterSha256": "E700B3CA2B50FEF8C3D32A018B88C04B88CCC630C4C1474E38987DDBB566E36D",
+      "adapted": false
+    },
+    "lifecycle-canary.mjs": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-canary.mjs",
+      "beforeSha256": "C73768F302AE40AA4E7572972C92CF7482F33576C0227FD02BBF16ED7BDA1DAB",
+      "afterSha256": "C73768F302AE40AA4E7572972C92CF7482F33576C0227FD02BBF16ED7BDA1DAB",
+      "adapted": false
+    },
+    "frozen-shared.json": {
+      "from": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\frozen-shared.json",
+      "beforeSha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA",
+      "afterSha256": "FE2B0EA77B1A006987B86A2A38A4ECB78214C1F56803D88BA3854C9002C3837E",
+      "adapted": true
+    }
+  },
+  "observerMigration": {
+    "old45": 45,
+    "retainedGeneric": 37,
+    "replacedDeferredByActualNormalCases": [
+      "live-admin",
+      "list-fixture",
+      "empty-fixture",
+      "filters",
+      "errors",
+      "stale-response",
+      "role-guard",
+      "session-expired"
+    ],
+    "rejectedCorruptions": 9,
+    "historicalFilesEdited": 0
+  },
+  "A1FaultsRetained": 51,
+  "partialRetained": 11,
+  "lateRetained": 15,
+  "guardInvalidRetained": 5
+}

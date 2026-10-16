@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Projects\Active\교대근무관리 시스템\.ai\reports\phase3-2c-a1-v6-review-20261013_122600\extra-owner.py", line 39, in <module>
+    if __name__=='__main__':main()
+  File "C:\Projects\Active\교대근무관리 시스템\.ai\reports\phase3-2c-a1-v6-review-20261013_122600\extra-owner.py", line 17, in main
+    assert not record['timeout'] and record['observerHealthy'] and record['quiescenceObserved'] and record['faultTriggered']
+AssertionError

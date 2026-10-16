@@ -1,0 +1,1214 @@
+{
+  "testedAt": "2026-09-07T06:07:16.483Z",
+  "results": [
+    {
+      "file": "03-home-1.html",
+      "normal": [
+        {
+          "state": "state-h1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-h2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-h3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "03-home-2.html",
+      "normal": [
+        {
+          "state": "state-h4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-h5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "normal": [
+        {
+          "state": "state-w1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "normal": [
+        {
+          "state": "state-w3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "normal": [
+        {
+          "state": "state-w5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "btn-secondary",
+        "id": "btn-leave-discard",
+        "text": "변경 버리고 나가기",
+        "clip": "auto",
+        "width": 137.234375,
+        "height": 31,
+        "insideDialog": true
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "normal": [
+        {
+          "state": "state-w8",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w9",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-w10",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "08-performance-1.html",
+      "normal": [
+        {
+          "state": "state-p1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "08-performance-2.html",
+      "normal": [
+        {
+          "state": "state-p4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "08-performance-3.html",
+      "normal": [
+        {
+          "state": "state-p6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "08-performance-4.html",
+      "normal": [
+        {
+          "state": "state-p8",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p9",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-p10",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "00-shell-1.html",
+      "normal": [
+        {
+          "state": "state-s1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-s2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-s3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "00-shell-2.html",
+      "normal": [
+        {
+          "state": "state-s4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-s5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-s6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "01-login-1.html",
+      "normal": [],
+      "bodyText": [],
+      "firstTab": null,
+      "firstStateTop": 20
+    },
+    {
+      "file": "01-login-2.html",
+      "normal": [],
+      "bodyText": [],
+      "firstTab": null,
+      "firstStateTop": 20
+    },
+    {
+      "file": "02-common-1.html",
+      "normal": [],
+      "bodyText": [],
+      "firstTab": null,
+      "firstStateTop": 20
+    },
+    {
+      "file": "02-common-2.html",
+      "normal": [],
+      "bodyText": [],
+      "firstTab": null,
+      "firstStateTop": 20
+    },
+    {
+      "file": "02-common-3.html",
+      "normal": [],
+      "bodyText": [],
+      "firstTab": null,
+      "firstStateTop": 20
+    },
+    {
+      "file": "04-sites-1.html",
+      "normal": [
+        {
+          "state": "state-t1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "04-sites-2.html",
+      "normal": [
+        {
+          "state": "state-t3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-t4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "06-employees-1.html",
+      "normal": [
+        {
+          "state": "state-e1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e9",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "06-employees-2.html",
+      "normal": [
+        {
+          "state": "state-e3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "06-employees-3.html",
+      "normal": [
+        {
+          "state": "state-e6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-e8",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "07-schedule-1.html",
+      "normal": [
+        {
+          "state": "state-r1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "07-schedule-2.html",
+      "normal": [
+        {
+          "state": "state-r2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-r3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "07-schedule-3.html",
+      "normal": [
+        {
+          "state": "state-r4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-r5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-r6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-r7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "09-allowance-1.html",
+      "normal": [
+        {
+          "state": "state-a1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-a2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "09-allowance-2.html",
+      "normal": [
+        {
+          "state": "state-a3-a5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-a9",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "09-allowance-3.html",
+      "normal": [
+        {
+          "state": "state-a6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-a7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-a8",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "normal": [
+        {
+          "state": "state-d1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-d2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-d3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "11-operations-1.html",
+      "normal": [
+        {
+          "state": "state-o1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-o2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "11-operations-2.html",
+      "normal": [
+        {
+          "state": "state-o3",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-o4",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-o5",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "11-operations-3.html",
+      "normal": [
+        {
+          "state": "state-o6",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-o7",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-o8",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "11-operations-4.html",
+      "normal": [
+        {
+          "state": "state-o9-o10",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    },
+    {
+      "file": "12-access-logs-1.html",
+      "normal": [
+        {
+          "state": "state-g1",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        },
+        {
+          "state": "state-g2",
+          "clip": "rect(0px, 0px, 0px, 0px)",
+          "width": 24,
+          "height": 16,
+          "targetExists": true,
+          "targetClass": "app-body",
+          "targetContainsNav": true,
+          "actualMainExists": true
+        }
+      ],
+      "bodyText": [],
+      "firstTab": {
+        "cls": "skip-link",
+        "id": "",
+        "text": "본문으로 바로가기",
+        "clip": "auto",
+        "width": 131.5625,
+        "height": 35.5,
+        "insideDialog": false
+      },
+      "firstStateTop": 20
+    }
+  ]
+}

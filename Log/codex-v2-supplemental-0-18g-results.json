@@ -1,0 +1,114 @@
+{
+  "timestamp": "2026-09-07T03:46:32.564Z",
+  "tool": "Node Playwright local Chromium",
+  "viewport": "1440x900",
+  "pass": true,
+  "bad": [],
+  "out": [
+    {
+      "n": "A9 A3 opens with focus inside",
+      "p": true,
+      "a": true,
+      "e": true
+    },
+    {
+      "n": "A9 locked A5 click Enter Space stay blocked",
+      "p": true,
+      "a": {
+        "a3": "flex",
+        "a5": "none",
+        "lock": "true"
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "A9 A3 Escape restores clone opener",
+      "p": true,
+      "a": {
+        "d": "none",
+        "a": "btn-open-a3-a9"
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "A9 A4 opens with focus inside",
+      "p": true,
+      "a": true,
+      "e": true
+    },
+    {
+      "n": "A9 A4 processing native disabled and modal focus",
+      "p": true,
+      "a": {
+        "disabled": [
+          true,
+          true,
+          true
+        ],
+        "active": "modal-a4-a9"
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "A9 A4 designated completion restores clone opener",
+      "p": true,
+      "a": {
+        "d": "none",
+        "a": "btn-open-a4-a9"
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "08-performance-3.html wide table has at least 15 fully visible body rows",
+      "p": true,
+      "a": {
+        "rows": 21,
+        "full": 15,
+        "wrap": {
+          "top": 298,
+          "bottom": 940,
+          "height": 642
+        },
+        "first": 339,
+        "last": 939
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "08-performance-4.html wide table has at least 15 fully visible body rows",
+      "p": true,
+      "a": {
+        "rows": 21,
+        "full": 15,
+        "wrap": {
+          "top": 298,
+          "bottom": 940,
+          "height": 642
+        },
+        "first": 339,
+        "last": 939
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "#state-p6 status/warning right edges within scroll container",
+      "p": true,
+      "a": {
+        "status": 749.578125,
+        "warn": 871.59375,
+        "wrapRight": 1420
+      },
+      "e": "predicate"
+    },
+    {
+      "n": "#state-p7 status/warning right edges within scroll container",
+      "p": true,
+      "a": {
+        "status": 738.921875,
+        "warn": 858.640625,
+        "wrapRight": 1050
+      },
+      "e": "predicate"
+    }
+  ]
+}

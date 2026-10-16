@@ -1,0 +1,13 @@
+--- received-v6/access-history-shared.mjs
++++ received-v7/access-history-shared.mjs
+@@ -12,8 +12,8 @@
+ 
+ export const CONTRACT_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json";
+ export const CONTRACT_SHA256 = "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE";
+-export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\execution.json";
+-export const EXECUTION_SHA256 = "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA";
++export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\execution.json";
++export const EXECUTION_SHA256 = "3BEACF9A206E550A765E9040EA6FE49BF510740D9A9A8D57C82F08A6EF1A13B9";
+ 
+ function sha(d) {
+   return crypto.createHash("sha256").update(d).digest("hex").toUpperCase();

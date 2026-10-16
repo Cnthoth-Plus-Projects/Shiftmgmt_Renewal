@@ -1,0 +1,388 @@
+# HANDOFF — Phase3-2c / 검증기 전략 재설계 IMPLEMENT
+
+- Task: 활동 이력 화면의 실제 실측·요청·음성 동작·정리를 신뢰할 수 있게 검사하는 검증 구조 구현
+- Action: IMPLEMENT
+- From: Sol(frontier, 유일한 오케스트레이터)
+- To: Gemini(외부 제품 구현 코더, 사용자 수동 중계)
+- Time: 2026-10-01 09:20:54 KST
+- 회신: 필요
+- Repository: `C:\Projects\Active\ShiftMgmt_V4`
+- Control root: `C:\Projects\Active\교대근무관리 시스템`
+- Branch: main
+- Baseline commit: `160940f9aaeb6696538447f83b44658073e382f0`
+- Expected initial status: 아래9dirty 경로를 그대로 이어받는다.
+- Previous decision: CORRECT2 FAILED / REPLAN. 같은 결함군2회 재제출 종료. CORRECT3가 아니다.
+- 수신 원본: `C:\Projects\Active\교대근무관리 시스템\Log\20261001_085101_3-2b-CORRECT2-Gemini_수신원본.md` / 42128 bytes / SHA-256 `9A3A7400E2F45F8DF73CB7777FE6A10856EAEA411B769F7AA666893C851B8987`
+- Sol 종결문: `C:\Projects\Active\교대근무관리 시스템\Log\20261001_092054_3-2b-CORRECT2-Sol-REPLAN_독립검증종결본.md`
+- 착수 baseline: `C:\Projects\Active\교대근무관리 시스템\.ai\reports\phase3-2-verifier-replan-20261001_092054\baseline.json` / 140954 bytes / SHA-256 `A757785300F45E29A435CAC606C5EEF1F5970E1D00D8A5DA953DECDC29DB9009`
+
+## 회신 요청
+
+Gemini는 착수 기준을 확인하고 닫힌5파일 안에서 아래 구조를 구현한다. 필수10case와 검증기 음성 시험을 실행하고 맨 아래 `## 회신`만 채운다. 본문·TODO·.ai·Log를 변경하거나 다른 AI CLI/commit/push를 실행하지 않는다. 구현 제출은 Sol 수용과 별개다.
+
+## 1. 목표
+
+잘못된 실제 값, 실행되지 않은 시나리오, 예상외 오류 또는 소유 자원 정리 실패가 반드시 RC 비0/FAIL이 되는 활동 이력 검증기를 만든다. 제품 활동 이력 화면은 현재 바이트로 동결한다. 검증 코드의 비교 책임·필수 coverage·요청 생명주기·owner 종료 판정을 구조적으로 강제한다.
+
+## 2. 비목표
+
+제품 UI/모델/CSS/셸/기존 테스트 변경, API/DB/권한·인증 정책/계산/의존성/공통 helper 변경은0. 다음 화면/새 기능/운영 패치/배포는 범위 밖이다. 실패한 단일 파일을 다시 땜질하는 전략 대신 기존 검증기를 아래 모듈 경계로 추출·교체한다. 이번 명시된 검증 구조 재작성 외 불필요한 포맷/리팩터링은 하지 않는다.
+
+## 3. 현재 상태와 증거
+
+- R32C-01~05: 독립 실제 Chrome9그룹 범위에서 해소. 기본/긴행40, date132×34, 열130/140/100/160, 표 이름/배지/검색 pending/키보드/중복/실제3권한 PASS.
+- R32C-06: 실측 변조에서 날짜90×24와 잘못된 표 이름을 측정하고도 caller pass:true 때문에 RC0/PASS. stale-case는 실제 인자 배열을 b.keyword로 읽어 held 경로가 실행되지 않는다. coverage/공통 helper/정리·ownership/정확한 capture 경로도 미해결이다.
+- console1/pageerror2 주입은 이제 RC1로 거부했다. 이 개선은 유지한다. full133파일919시험은 Gemini 자기 보고이며 Sol 이번 반려에서는 전체 재실행하지 않았다.
+- Sol 검수 동안 제품338파일/main/status9 불변. 기존 정본14도 불변. 별도 과거 Control 주입 출력 덮어쓰기 발견·원문 보존·저장된 독립 객체 복원; 다음 preload는 반드시 자체 artifact 복사본으로 격리한다.
+- 구조 변경 근거: PROTOCOL.md §F(동일 결함군2회 실패 후 재설계), P13/P25. 제품 목표는 그대로이며 검증 Change Contract만 갱신한다. 다음 제출이 실패해도 무조건 수정 회수를 리셋하지 않고 Sol이 원인·전략을 다시 평가한다.
+
+```text
+ M docs/codebase-map.md
+ M scripts/copy-web-assets.mjs
+ M src/web/index.html
+ M src/web/screens/shell.ts
+?? scripts/ui-checks/access-history.mjs
+?? src/web/access-history.css
+?? src/web/screens/access-history-model.test.ts
+?? src/web/screens/access-history-model.ts
+?? src/web/screens/access-history.ts
+```
+
+## 4. 수정 경계
+
+### 4.1 제품 수정/생성 허용 — 정확히5파일
+
+| 경로 | 요구사항 | 허용 변경 | 제한 |
+|---|---|---|---|
+| `scripts/ui-checks/access-history.mjs` | V32-03/04/06 | 엄격 public CLI, 소유 server/temp와 private worker dispatch, bounded child, 최종 판정 | 현재 파일을 owner로 추출·교체; 제품 UI/공통 helper 수정0 |
+| `scripts/ui-checks/access-history-shared.mjs` | V32-01/02/04/06 | 비교기, 고정 coverage 계약, 유효 fixture, bridge query/held 생명주기, raw evidence | 신규; caller pass 인자0, 조작별 실제 관측값 |
+| `scripts/ui-checks/access-history-positive.mjs` | V32-02/03/05 | 정상6case, 실제 runScreenCheck 호출과 steps | 신규; common helper 동작/기대값 완화0 |
+| `scripts/ui-checks/access-history-negative.mjs` | V32-01/03/05 | errors/session-expired의 정밀 예상 오류 드라이버 | 신규; blanket401/문자열 포함 예외0 |
+| `docs/codebase-map.md` | V32-06 | 신규3모듈 경로·책임만 추가 | 기존87경로 유지→90; 이외 문서 개편0 |
+
+각 검증 .mjs 파일은30,000bytes 이하. 현재 기존2파일 baseline:
+
+| 경로 | bytes | SHA-256 |
+|---|---:|---|
+| `scripts/ui-checks/access-history.mjs` | 27908 | `7385A97649D3E8964A1FD1807598385EF1FE808734A42D0990C9256001E0CD6D` |
+| `docs/codebase-map.md` | 12228 | `6CE07350177776DB638BCEBDA0F7211C4EA50C497B1E9C5B012B961B5AD865E9` |
+
+새3파일은 착수 시 없어야 한다. 기존338 중 허용2를 제외한336파일을 전부 보호한다. 종료 시341파일, 기존9dirty+신규3=12경로여야 한다. 삭제/rename/새 dependency/lockfile/config 변경0. node_modules/dist/browser/artifacts는 기존 명령의 ignored 생성 위치만 허용하며 소스 파일 집계에서 제외한다. 기존 양식샘플9개는 baseline338에 포함된 보호 파일이다.
+
+### 4.2 보호 경계
+
+V3.4 전체 읽기 전용. 제품 `src/**`, package*/build/config/기존 scripts/lib·ui-checks/기존 테스트는 위 allowlist 밖 변경 금지. Control `TODO.md/AGENTS.md/PROTOCOL.md/CLAUDE.md/GEMINI.md/.ai/**/Log/**`는 전부 읽기 전용. `HANDOFF.md`의 보이는 `## 회신`만 채운다. preload/시험 산출물은 제품 `artifacts/captures/phase3/` 아래 원자적으로 만든 자기 소유 ignored 실행 디렉터리에서만 생성·실행한다. Control의 Sol helper는 참고용으로 읽을 수 있지만 거기서 직접 실행해 이전 report를 덮지 않는다.
+
+핵심 동결 파일(그 외336 보호 파일도 baseline 전수 대조):
+
+| 경로 | bytes | SHA-256 |
+|---|---:|---|
+| `src/web/screens/access-history.ts` | 29601 | `E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979` |
+| `src/web/screens/access-history-model.ts` | 6786 | `03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265` |
+| `src/web/screens/access-history-model.test.ts` | 10177 | `29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E` |
+| `src/web/access-history.css` | 7261 | `286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1` |
+| `src/web/screens/shell.ts` | 16334 | `27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130` |
+| `src/web/index.html` | 601 | `1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2` |
+| `scripts/copy-web-assets.mjs` | 4292 | `68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115` |
+| `scripts/lib/ui-check.mjs` | 12592 | `91921E353C05ADEE41D4AA725164146F058A02831EDFE77C919E3B68B897266E` |
+
+## 5. 요구사항 — stable R32C-06의 구조적 해결
+
+| ID | 기대 결과 | 실패 조건 | 구현 위치 |
+|---|---|---|---|
+| V32-01 | actual measurement를 공통 비교기가 판정; 변조·누락·중복은 FAIL | caller true, 없는/NaN 값, 누락 coverage를 PASS | shared/negative |
+| V32-02 | 유효 도메인 fixture와 실제 인자 배열 query, held 시작·해제·완료가 모두 증명 | 발명 action/field, never-held stale PASS | shared/positive |
+| V32-03 | 정상6case는 runScreenCheck 실제 호출; 예상 오류2case 별도 정밀 드라이버 | helper import만, 광역 오류 허용, 기존 helper 수정 | owner/positive/negative |
+| V32-04 | 자기 소유 listen/PID/temp 증명 뒤 접속; 모든 child 유한시간/실제 종료·삭제 뒤 최종 판정 | env public bypass, foreign 접속/정리, timeout을 종료 성공으로 간주 | owner/shared |
+| V32-05 | 아래10case 모든 동작을 실제 클릭/키보드/요청/실측으로 검사 | case 이름만 존재/조건문으로 중요 단계 건너뛰기 | positive/negative/owner |
+| V32-06 | 정확 경로/원출력/첫 실패/정리/부분·최종 결과 보존, map90/보호검증 | 없거나 추측한 캡처, 실패 덮기, 부분 PASS를 최종으로 보고 | 전5파일 |
+
+## 6. Sol 코드 전략 — 이 순서로 구현
+
+### 6.1 재사용 정본과 호출점
+
+읽기 전용 실제 source를 먼저 확인한다: `scripts/lib/ui-check.mjs`의 validateTargetUrl/checkServerHealth/waitForFontsReady/createUniqueRunDir/runScreenCheck, `scripts/lib/find-chrome.mjs`, `src/shared/domain/access-log.ts`의 AccessLogRecord/actionLabels, `src/shared/bridge/contracts.ts`의 AccessLogListQuery/BridgeResult/Auth/AccessLog/OperationUsers 계약, `src/web/bridge/app-bridge.ts:108–119`, current activity model/screen, `src/main/server.ts:404–410`, 기존 home/shell runner. JS fixture에 labels를 수동 복사할 때는 실제 compiled 도메인 labels와 전수 대조해 유효성을 증명한다.
+
+### 6.2 shared: 판정 책임과 전제조건
+
+- Node `assert`의 deepStrictEqual 등으로 `expectEqual(id, expected, actual)`이 실제 비교를 수행한다. 수치/box는 `expectNear(id, expected, actual, tolerance<=1px)`로 검사한다. **pass 인자를 받지 않는다.** 실제 판정과 실패 stack을 원자료에 저장한 뒤 예외를 던진다. expected/actual undefined·NaN·없는 DOM·기록되지 않은 측정은 fail. 스스로 계산한 상수 `true`를 actual로 대입하는 검사는 금지.
+- 아래 CASE 표의 각 하위 동작마다 고정 assertion ID/필수집합을 먼저 정의한다. request body·count·DOM·metric·전제조건 각 실제값을 기록한다. 중복 ID/필수 ID 누락은 실패. 최종에 count만 검사하지 말고 집합 일치 확인; 여러 race는 별도 ID. 단일 성공 플래그로 축약하지 않는다.
+- fixture는 실제 AccessLogRecord 필드 id/userId/loginId/displayName/role/actionType/actionLabel/routeKey/routeLabel/details/occurredAt만 사용한다. 대표8: performance-approve / performance-reapprove / performance-hide-approved / schedule-publish / sign-in / route-view / performance-reject / site-save. invented approval-approve/operatorId/operatorName/route 등 금지. 201개 ID는 고유, 서버응답 순서를 미리 고정해 화면 ID·내용·전체count와 비교한다.
+- bridgePOST는 JSON **인자 배열**이다. `Array.isArray(body)`부터 assert하고 query는 `body[0]`; noargs는[]이다. malformed body를 any nonOK로 인증 거부로 인정하지 않는다. query는 readonly snapshot으로 dateFrom/dateTo/loginId/actionType/trimkeyword를 정확 대조.
+- held helper는 started→release→handlerComplete promise를 각각 유한 timeout으로 assert한다. held없으면 fail; `if (heldRoute)`로 시험을 생략하지 않는다. route request/release/complete 횟수와 query를 저장하고 모든 handler 완료 뒤 unroute. 키워드 입력 순간시간과 release시간을 기록해250ms발화 전/새결과 뒤 경합을 구분한다.
+
+### 6.3 owner: 생명주기와 최종 결과
+
+1. public CLI는 정확한 단일 `--case=CASE`만 받는다.10case 외/빈/duplicate/extraflag/모든 URL positional 거부는 mkdir/temp/spawn/network 이전. URL은 fixed `http://127.0.0.1:18741/`; validateTargetUrl도 사용한다. 외부/localhost URL은 문자열 검사만 하고 접속하지 않는다.
+2. os.tmpdir의 `shiftmgmt-gemini-32v-*`를 mkdtemp로 새로 만들고 realpath 경계와 생성 소유권을 기록. 기존 SHIFTMGMT_*와 SHIFT_INTERNAL_*를 지운 child env에 필요한 owned DATA_DIR/PORT/BOOTSTRAP만 설정. public env worker bypass를 제거한다. credentials/cookie/복구키는 메모리/비공개 IPC만 사용, 증거에는 키 이름/존재 여부만 저장.
+3.18741 bind preflight는 기존 서버에 요청하지 않는다. close 이후 spawn의 경합은 **자기 child stdout listening 신호/PID/expected dataDir** 검문으로 닫는다. `src/main/server.ts:410`의 port18741+생성한 dataDir 신호와 child 생존을 확인하기 전 health/sign-in 금지. 가능하면 Get-NetTCPConnection의 local listen OwningProcess로 child PID도 확인; 실패/다른PID/EADDRINUSE는 foreign health/auth 요청0. child stdout을 수집할 때 비밀값은 쓰지 않는다.
+4. 모든 spawn은 windowsHide:true; error/exit/close listener를 시작부터 등록. Node fork IPC private job을 권장: actual process.send/process.ppid와 owner PID·nonce·검증된 절대 경로·URL을 확인한 worker만 dispatch. 누구나 설정 가능한 env 또는 임의 bootstrap/rundir를 믿지 않는다. CLI옵션으로 검문 우회경로를 추가하지 않는다. worker 환경 자체도 ownerjob과 동일 소유 경계를 확인한다.
+5. 정상/음성/기존회귀 child는 async spawn/fork로 stdout/stderr/RC를 개별 저장; spawnSync 무기한 대기 금지. worker 기본최대120초, 복합 race180초, 전체case240초. 시작/health/route wait15초, cleanup각10초 등 모든 wait는 유한. timeout은 fail이며 owner가 자기 자원만 정리. Chrome 소유 child의 close/disconnect 및 worker/helper cleanup 오류를 각각 기록한다.
+6. 초기화 시작부터 최상위try/finally. 실행 오류와 정리 오류를 따로 보존한다. 자기 server child의 실제 exit/close 증명을 받은 뒤 자기 temp realpath가 허용 경계에 있는지 재확인하여 rm하고 exists=false를 검증. 타이머 해결을 serverStopped=true로 쓰지 않는다. cleanup오류를 `.catch(()=>{})`로 삼키지 않는다. 프로세스 exit는 finally완료 뒤, 원래 실패는 cleanup성공으로 덮지 않는다.
+7. owner unique runDir는 createUniqueRunDir로 원자 생성. 최종 owner manifest 하나에 overall verdict를 종료·삭제 확인 뒤 기록한다. 실패도 first failure/action records/raw events/부분 screenshot/child원출력/정리 결과를 보존. write실패도 fail. stdout은 final JSON 한 번이며 child PASS는 원로그로 보존.
+
+### 6.4 positive: 공통 driver 실제 호출
+
+live-admin/list-fixture/empty-fixture/filters/stale-response/role-guard는 `runScreenCheck({id,url,steps})`로 실행한다. steps callback에 scenario logic/shared assertions을 연결한다. 공통 helper가 process.exit를 호출하는 실패는 별도 child 안에 격리하여 owner finally를 보장한다. common capture 반환 절대 경로를 등록하고 helper manifest/캡처를 owner와 링크한다. helper/기존회귀 PASS는 **브라우저 부분 결과**로만 인정하고 overall PASS와 구분한다; 원파일을 덮지 않는다. 소유 server/temp 종료 뒤 owneroverall을 결정한다.
+
+role-guard의 의도된 direct API401/403은 별도 APIRequestContext로 실제 cookie를 보내 common page driver의 오류0 규칙을 유지한다. 페이지에는 정상 사용자 동작만 한다. direct API/body/errorCode/data없음은 별도 정밀 assert한다. 모든 자동 API 계측은 **각 로그인 전에** list와users 둘 다 설치한다.
+
+### 6.5 negative: 예상 오류를 정확히 분류
+
+errors/session-expired는 findChrome/validateTargetUrl/checkServerHealth/waitForFontsReady를 재사용하는 별도 driver다. console/pageerror/requestfailed/HTTP>=400 raw는 삭제·변경하지 않고 시간/단계/method/정확 channel path/status/request id를 함께 수집한다. 의도한 실패는 정확 시나리오·단계·횟수·응답 errorCode에만 매핑하고 그 외 모두 fail. `message.includes('401')` 또는 logs/users경로 모든401허용 금지. 지정된 network abort 한 요청만 expected이며 같은 경로의 다른 오류는 unexpected. 예상 오류 자체가 발생하지 않아도 fail.
+
+session은 실제 admincookie를 별도 APIRequestContext로 전달하여 signOut으로 서버세션을 무효화한다. UI refresh의 실제401/AUTH_SESSION_REQUIRED를 계측하고 login전환1/activityDOM0를 검사한다. 무cookie 요청도 올바른 인자 배열로 보내 실제401/정확 errorCode/data0를 확인한다. samepage signOut을 별도 context/TTL만료로 보고하지 않는다.
+
+### 6.6 통합/지도
+
+기존 map87를 유지하며 new3모듈 경로·책임을 추가해90. 새 구조에 unused helper/import나 이전 hardcoded assertions를 남기지 않는다. 제품 영역에서 결함이 발견되면 frozen source를 수정하지 말고 근거와 FAILED/BLOCKED를 반환한다. 수용은 모든 게이트를 Sol이 독립 검증한 후 결정한다.
+
+## 7. 제품 불변조건과 기존 계약 — 검증 기대값 유지
+
+화면은 새로, 계산은 그대로. V3/이관로직/DB/승인 스냅샷은 불변. HTTP200의 BridgeFailure도 UI실패다. 권한은 실제 서버검사, fixture로 우회0. id/loginId로 식별하고200행은 표시 단위일 뿐 데이터 절단0. 원문·전체 title/XSS 실행0. 아래 원 요구사항과 승인 디자인 수치는 **검증 기대값**이다; 이번에 제품 코드를 고치라는 허용이 아니다.
+
+| ID | 입력/행동 | 기대 결과 |
+|---|---|---|
+| R32-01 | admin 관리 메뉴 진입 | `활동 이력`, icon `history`, id `access-history`, 활성 항목/aria-current/page 및 헤더h1 갱신. 다른3역할은 메뉴0·관련 API 자동 호출0. Screen 자체도 admin 확인 후 읽는다 |
+| R32-02 | 최초조회·필터·초기화 | 운영 PC 로컬 월초~오늘; 사용자/액션 `all`, 검색 빈값. `createTodayDateInputValue` 재사용, UTC today 생성 금지. 날짜·선택 변경 즉시 조회, 검색250ms 후 최신 keyword만 조회; 초기화/필터 초기화는 debounce 취소 후 기본값으로1회 조회 |
+| R32-03 | 날짜 오류·새로고침 | 빈 날짜는 해당 경계 생략. 존재하지 않는 날짜/시작>종료면 사유를 표시하고 list 요청0; 예전 in-flight 결과도 무효화. 새로고침은 현재 유효조건으로1회, 처리 중 native disabled로 중복0. 조건잠금은 native disabled=false/aria-disabled=true/연결된사유·키보드포커스 유지, click/Space/Enter guard로 요청0 |
+| R32-04 | 정상 목록 G1 | native table5열 `활동시간/사용자/권한/액션내용/상세`, `th scope=col`, 실제응답 최신순 유지. 사용자 displayName·loginId, 권한 `getRoleLabel`, actionLabel, routeLabel + ` / ` + details 또는 실제 한 값/없으면 `-`. 시간은 기존 ko-KR 로컬 표시, invalid 값은 안전한 원문 표시.200행씩 더 보기/전체 N건 중 M건 표시; 더 보기마다 추가200, 원본 배열 삭제·절단0 |
+| R32-05 | 로딩·G2·조회 실패 | 최초/재조회 로딩 안내는 role=status. G2는 **성공 빈 배열일 때만**. 제목·안내·필터 초기화는 승인 G2. 목록 실패/예외는 role=alert·한국어 오류·재시도, 빈 데이터 성공으로 위장0. users 실패는 목록 성공과 분리해 오류/재시도, 선택한 loginId를 조용히 바꾸지 않는다 |
+| R32-06 | 세션·권한·이탈·경합 | AUTH_SESSION_REQUIRED는 current 요청일 때 기존 onSessionExpired 콜백을1회 호출해 로그인으로. AUTH_FORBIDDEN은 권한 오류/데이터0, 자동 로그인·우회0. query 변경/refresh/mount 세대와 destroyed 확인; old success/error/auth/finally는 새 상태·잠금·현재 화면을 바꾸지 않는다. destroy는 debounce 취소·세대무효·listener 정리 |
+| R32-07 | 디자인·접근성·안전 | 아래수치 및 G1/G2 캡처. 사용자/서버 문자열은 textContent 또는 검증된 escape로, HTML 실행0. inline style/onclick/external font/network 추가0; CSS scope 밖 영향0. keyboard로 날짜/두select/검색/초기화/새로고침/더보기/메뉴이동 가능 |
+| R32-08 | 실제 Chrome 시험 | 아래8case+기존2회귀, 각 입력→기대→실제값·요청수·captures·manifest. 인증/인가 판정은 실제 서버/cookie로 확인; response fixture는 UI 상태 시험에만 표시하여 사용 |
+| R32-09 | 통합 증거 | typecheck/lint/map/build/full tests, 이번 허용5파일변경·전체dirty12·보호336/정본15hash·전체diff·신규파일크기·정리결과. 원구현 changed9는 이전범위 이력이며 이번에는 §4/§9.4가 기준. 구현제출은 수용과 다름 |
+
+### 원 IMPLEMENT의 재사용 계약
+
+아래는 동결된 제품의 동작과 검증 기대값이다. 이번 수정 권한·집계·실행 기준은 §4/§8/§9이며, source/CSS/index/copy/셸을 다시 구현하거나 수정하지 않는다.
+
+1. model helper: 월초/오늘 문자열, query snapshot/trim/date validation, 사용자 옵션은 loginId identity·한국어 이름 정렬, 날짜/role/detail/action 표시. 서버 정렬/필터를 프런트에서 재구현하지 않는다.
+2. screen은 HomeScreen와 같은 `{container,session,onSessionExpired}`와 `render()/destroy()` 계약. 최초 admin guard, local state, `destroyed/generation/debounce/sessionExpiredTriggered` 보유. 화면 본문/필터 DOM은 안정적으로 유지하여 검색 시 focus/caret를 잃지 않는다.
+3. 최초에는 logs와users를 병렬로 읽되 `Promise.allSettled` 등으로 각각의 실패를 분리. users는 최초/명시 재시도/새로고침 때 읽고 단순 keyword마다 중복 조회하지 않는다. list는 immutable query snapshot을 사용. 모든 async resolve/reject/finally 반영 전에 현재 세대·수명을 확인한다.
+4. 조건 변경은 이전 debounce/조회세대를 무효화하고 loading→success/error. invalid 조건은 화면사유+조회0. count/rows는 현재 성공 query 데이터만 가리킨다. 처리 중 reset/유효 필터 변경은 새세대이며 이전 finally가 잠금을 해제하지 않는다.
+5. 5열표는 안정적인 record.id로 표시, 통째로 row state를 복제/캐시하지 않는다. 더 보기는200행씩 로컬 표시만 확장한다. textarea/내용경로/사용자 문자열이 HTML을 만들지 않도록 한다. 선택·편집·행 click 동작이 없으므로 가짜 selectable-grid/cursor:pointer를 붙이지 않는다.
+6. G2 본문은 승인 시안. **빈 월에도 과거 날짜로 검색할 수 있어야 하므로 동일한5필터는 G1/G2에서 계속 접근 가능하게 유지한다.** G2 시안의 축약검색줄은 완전한 필터 제거 지시가 아니다(`05`§8/기존실제화면 기능 우선). 이 조정과 캡처를 회신에 명시한다. 실제 데이터·더보기·로딩/오류는 정적 시안의 샘플과 구분한다.
+7. shell에 활동항목/필드/mount 추가. HomeScreen 수명관리 위치3곳(`destroy`, `refreshMain`, 로그아웃 시작)에서 활동화면도 destroy; 상태줄은 유지. 홈복귀·다른준비메뉴 진입·logout·session expiry 후 활동응답이 DOM을 덮지 못하게 한다. 현재의 다른 placeholder메뉴는 그대로. 기존 callback/wrapper권한 변경0.
+8. CSS/index/copy 연동. 공용 스타일 수정 없이 screen scope에서 토큰/부품 구현. docs 작은 갱신. 신규model시험과 UI runner를 쓰고 아래명령 순서대로 검증.
+
+### 유지할 디자인 수치
+
+- 셸 유지: 1440×900, sidebar220↔64, header56, footer32, title20/600. 본문 padding16px20px/gap14px.
+- 표 본문14px/400, **머리12px/600**(HTML의13보다 디자인 정본이 우선), 머리#F8F9FA, 기본 행40px/padding8px12px. 긴 내용은 가로 스크롤/명시적 제목·전체 텍스트 접근으로 보존하고 값 절단0; 가짜 줄내림으로 행40을 과장하지 않는다.
+- 기본열 폭130/140/100/160px, 마지막 상세는 남는 폭. overflow-x:auto, 가로스크롤 키보드 접근. 길이가 긴 데이터의 전체값은 title/접근 가능한 텍스트로 유지한다.
+- 필터/표 표면흰색, 경계#E2E5EA/radius6, 필터 padding12px16px. 날짜 input34px높이/132px폭, keyword160px, label12px, input기능선#848A93. 버튼13px/radius6, secondary padding6px12px. empty body:폭600px(작은viewport에max-width100%)/padding48px24px/간격16px/radius8(승인 G2 변형)/제목18px700/안내13px.
+- 배지는12px600/radius4/padding2px8px(정보만 승인HTML의2px6px 변형 허용). G1처럼 sign-in/route-view는 **대기 neutral #F1F2F4/#4B5563**, 승인·재승인확정은 #E8F5EE/#1E7A46, 기타 정보는 #EEF1FB/#3E56B6. 실패/반려/삭제는 #FCEBE9/#C0392B. 예전React helper의 sign-in초록은 시안과 충돌하므로 복사하지 않는다. 동작 정책을 바꾸는 것이 아니라 표시색만 정본을 따른다.
+- 초점2px --accent, 정보의 색+문구 병기. th scope, 표 accessible name, filter label/name, status/alert. 처리중 disabled와 조건잠금 aria-disabled를 구분하며 isDisabled()만으로 native값을 판단하지 않는다.
+
+### 유지할 불변조건과 과거 함정
+
+- 화면은 새로, 계산은 그대로. API/DB/정책/승인스냅샷/이관원본/기존시험 바이트 수정0.
+- 관리자 UI 숨김은 서버 권한 보증의 대체가 아니다. HTTP200의 BridgeFailure도 실패이며 AUTH_FORBIDDEN/AUTH_SESSION_REQUIRED를 empty로 바꾸지 않는다.
+- id/loginId를 식별자로 사용; 동명이인을 displayName으로 합치거나 별도 숫자 식별자를 표시하지 않는다.200행은 표시 단위이며 전체 count·더보기로 데이터 전부 접근.
+- UI 오류를 fallback 0건으로 감추지 않는다. 예전조회 success/error/auth/finally, 이탈 후 늦은 응답, debounce초기화 잔여 호출을 각각 검증한다.
+- Playwright isDisabled()는 aria-disabled도 포함한다. 잠금은 DOM `.disabled` 실값, actual Tab/document.activeElement/outline, actual Space/Enter/click 요청수로 검사한다.
+- held route를 unroute하기 전에 handler 완료를 기다린다. fixture 도구 실패는 제품 실패와 분리하되 원 실패 로그를 보존한다. mock 성공을 실제 API/권한/데이터 시험으로 주장하지 않는다.
+- credentials/신규암호/cookie/복구키를 stdout·로그·JSON·HANDOFF·캡처에 남기지 않는다. 기존 실패/skip를 누락하거나 전체시스템용 토큰을 읽지 않는다.
+
+## 8. 착수 게이트 / 잠긴 정본
+
+저장소/main/fullHEAD/status9/전체338과baselinebytes/hash부터 확인한다. editable2와new3부재, protected336/canonical15를 전수 bytes/SHA 대조한다. 아래 정본은 새 재계획에서 잠긴 값이다. 이전 CORRECT2의 TODO/state해시는 검수 종결 전 이력이고 이번 착수기준으로 사용하지 않는다.
+
+| Control 상대 경로 | bytes | SHA-256 |
+|---|---:|---|
+| `TODO.md` | 300868 | `23B930A8F33B040BCA3C4795FE383FAC947B509BFC3D433A74A7D3EDD5DE1CE3` |
+| `05-screen-spec.md` | 15544 | `757A12FE05D3B84326A7A4308AABABFF576E9759A58713A807B06E203996C8F5` |
+| `11-디자인-요청서.md` | 93598 | `B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73` |
+| `12-능력-매트릭스.md` | 80457 | `ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794` |
+| `CLAUDE.md` | 17618 | `6564441C6E530C6F452954EF11BF030CDCFC58EDBEFC113E2BCC26181753289F` |
+| `07-invariants-and-pitfalls.md` | 19084 | `076A3DD8B96A19BF35652AC4D33808FE4B8B3C42A2D4EC1416EB6CFC5C14C0CF` |
+| `AGENTS.md` | 6160 | `71EF3E3DEF51DEEE5E15D15DBFBA1CF0366311466DC7BF0087829F477A27326D` |
+| `PROTOCOL.md` | 20925 | `11E1C4DC06D81E4BCD35D232DABB66869945A5A187431C0500CEB00DE1FCBC8B` |
+| `GEMINI.md` | 6685 | `8B1D2FA9681A392685B3A2D9D3C5EE406179658DB84FA88E9743409249F43E4D` |
+| `.ai/HARNESS.md` | 9347 | `7856E7A72158423648FEAAD7935533C3B2D2AB6BCE2A4C7E21F3620939659805` |
+| `.ai/GEMINI_HANDOFF_TEMPLATE.md` | 7503 | `1C44BE203370FD9204A0CAB36E921931B99A99C965F8B96212F3E6661CDFC409` |
+| `시안/2026-09-02-2차HTML/12-access-logs-1.html` | 30649 | `A93A67B504F5C3461F40AF2F9C368054C69FC3098208D706D71C1B7C01A28801` |
+| `시안/2026-09-06-최종정리/05-디자인-시스템-확정본-v1.3.md` | 17793 | `0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4` |
+| `.ai/current-state.md` | 147426 | `7E5ED4AAF2480C8FF6E7505966A8304F6C98CB60278C404E6F01F9C8297AEB8C` |
+| `.ai/lessons/verifier-measurements-and-output-isolation.md` | 1989 | `37F70052FF079007C2822E178AE3328947AE334B8D5099E32E30FF4644DB4E4A` |
+
+## 9. 검증 계획
+
+### 9.1 정적·빌드·관련·전체 시험 — 제품 저장소
+
+| 정확 명령 | 기대 |
+|---|---|
+| `npm run typecheck` | RC0 |
+| `node --check scripts/ui-checks/access-history.mjs` | RC0 |
+| `node --check scripts/ui-checks/access-history-shared.mjs` | RC0 |
+| `node --check scripts/ui-checks/access-history-positive.mjs` | RC0 |
+| `node --check scripts/ui-checks/access-history-negative.mjs` | RC0 |
+| `npm run lint` | RC0; 신규오류/경고0; 기존5경고 공개 |
+| `npm run validate:map` | RC0; 기존87유지+신규3=90 |
+| `npm run build` | RC0; frozen CSS/indexfont/CSP 연결 보존 |
+| `npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1` | RC0; 기존3파일11시험, fail/skip0 |
+| `npm test` | RC0; 기존133파일919시험 유지, fail/skip0; 실제 집계 |
+| `git -c safe.directory=C:/Projects/Active/ShiftMgmt_V4 diff --check` | RC0; untracked8파일도 trailing whitespace/EOF별도 대조 |
+
+### 9.2 실제 Chrome10case — 각 `node scripts/ui-checks/access-history.mjs --case=CASE`
+
+각 case는 자기 fresh temp/server, 실제 설치 Chrome/1440×900/fonts.ready에서 별도 실행한다. fixture UI상태와 실제cookie 권한 시험을 구분한다. 요청별 phase/query/count와 측정/캡처/firstfail/cleanup으로 연결한다. 아래 항목을 shared 필수 assertion ID집합으로 잠그고 한 항목이라도 누락하면 fail.
+
+| CASE | 필수 실제 동작·값 |
+|---|---|
+| live-admin | 실제admin signin→활동→real list/users/응답행count·최신순 대조→refresh1/nativependingdouble0→홈/재진입→logout. fixture0; 필요 audit는 기존 authenticated recordAccessLog로 시험임을 표시 |
+| list-fixture | 유효8대표배지 모두 정본색/문구/12px600/radius/padding, table native role/name/thscope/5열/font/date132×34/normal·longrow40/열130·140·100·160. 고유201응답 ID/순서/전체N201→처음200→more201/남은0. 긴원문과title전체 일치/invalidtime안전표시/특수HTML XSS0; 변조시 실제 실패 |
+| empty-fixture | 성공[]만G2, loading/error중G2없음. width600/radius8/padding48×24/gap16/title18px700/desc13/font 실측.5필터 계속 접근→과거기간 조회→reset로로컬월초/오늘/all/all/빈query1회 및debounce0 |
+| filters | dateFrom/dateTo/loginId/actionType/trimkeyword 실제body정확. 연속keyword250ms latest1; keyword후refresh/date/select/reset각 timer중복0. 두날짜명시설정 역전/빈경계/달력불가능일은 실제DOM·모델결과를 각각 확인. invalid click/Space/Enter/formEnter 요청0, native.disabled=false/aria=true/actualTabfocus/outline2px. 유효heldrequest중 native disabled/double0; 검색focus/caret 보존 |
+| errors | list HTTP200BridgeFailure와networkthrow각 alert/retry/G2위장0/문구XSS0. usersfail+listok분리/선택loginId유지/heldusersretry nativebusy/두click추가0/users1+logs1. invalid날짜중이전heldrelease loading0. oldfinally가새owner잠금해제0. 지정 abort만expected; 예상외event0 |
+| stale-response | oldsuccess/olderror/oldAUTH 각각 query변경→250ms발화전release시 화면/권한불변. 새query성공뒤oldrelease불변; 별도oldfinally가newpending해제0. keyword→manualrefresh1회. 홈/placeholder/logoutdestroy 각각 oldrelease/activityDOM0/debounce0. currentAUTH콜백1회. 각 heldstarted/release/completed횟수·시간을 bounded assert; unroute는완료뒤 |
+| role-guard | realoperator/planner/reviewer 각각로그인전계측 list/users자동0/menu0. 실제cookie direct두API AUTH_FORBIDDEN/data없음. realadmin 두API허용/메뉴정상. 기존admin saveOperationUser로격리계정생성; directSQL/인증fixture0 |
+| session-expired | realadmincookie별도context signOut→UIrefresh→actual401/AUTH_SESSION_REQUIRED 정확count/phase→login1/activityDOM0. 별도무cookie 실제list 올바른body+401/errorCode/data0. expected401 정확method/path/channel/횟수/raw분류 기록 |
+| regression-shell | 같은ownedenv/bootstrap/URL에서 `node scripts/ui-checks/shell.mjs http://127.0.0.1:18741/` childRC0; stdout/stderr/commonmanifest/ownercleanup별도 보존 |
+| regression-home | 같은ownedenv/bootstrap/URL에서 `node scripts/ui-checks/home.mjs http://127.0.0.1:18741/ --case=live-admin` childRC0; 기존source/기대값수정0,원출력 보존 |
+
+### 9.3 검증기 자체 음성 시험 — 자동 실패 능력 필수
+
+시험 harness/preload는 제품 ignored `artifacts/captures/phase3/`의 원자적 자기 실행 디렉터리에 생성한다. public CLI에 testbypass를 만들지 않는다. 정확 node --import **file URI**와 명령/원출력/RC/주입관측/최종정리를 보고한다. 부모→privateworker 주입 전달을 확인하되 다른Control출력에 쓰지 않는다. 부정 조건이 실제 일어난 것을 측정하기 전 PASS/FAIL주장을 하지 않는다.
+
+| ID | 조작 | 기대 |
+|---|---|---|
+| N32-01 | `node scripts/ui-checks/access-history.mjs --case=sol-unknown-case` 및 빈case/duplicatecase/추가flag/임의URL/localhostURL/외부URL 각7음성 | 모두RC비0, 설명/시나리오PASS0,temp·artifact·spawn·network0. resource operation계측근거 |
+| N32-02 | listfixture date input90×24와table name SOL_BAD_ACCESSIBLE_NAME runtime변조 | actual실측불일치/해당ID FAIL,RC비0; 최종PASS0,제품source불변 |
+| N32-03 | displayed행 삭제/순서변조 또는비교actual값누락; 필수assertion한개 생략·duplicateID | 각각RC비0, ID와 expected/actual/누락목록; 미실행을PASS금지 |
+| N32-04 | 예상외 console.error / pageexception / HTTP500 / requestfailed를 정상case에 각각주입 | 실제raw각channel있음, 각각RC비0; expected401/abort예외로 흡수0 |
+| N32-05 | owned startup실패/Chromelaunch실패/시나리오assert실패 제어주입 | 원오류+boundedchildexit+외부finally+실제소유temp정리,RC비0; foreign접속0 |
+| N32-06 | 자기자원 cleanupclose/삭제실패 제어주입 | 정리실패가overallFAIL/RC비0, 원실패보존; 관측 전true금지. 시험제어가 복구된뒤자기잔여만정리하고추가결과기록 |
+| N32-07 | case재실행·기존포트점유·public SHIFT_INTERNAL_WORKER/rundir env | 고유dir충돌0. 점유port는접속/인증/kill0으로실패; ownstub로그요청0. env로private worker 검문우회0,임의dir/server접근0 |
+
+달력 불가능일은 native date input이 값을 빈값으로 정규화할 수 있다. 먼저 실제DOM값을 기록해 해당 브라우저의 정규화와 모델의 유효성검사 증거를 구분하고, 빈값을 불가능일로 주장하지 않는다. invalidrange UI잠금은 두 날짜를 명시하여 실제역전부터 assert한다. Playwright isDisabled만으로 native disabled를 판단하지 않는다.
+
+### 9.4 증거와 종료 대조
+
+전체341/dirty12/허용5/protected336/canonical15를 bytes/SHA로 대조. 기존9+신규3 총12현재 hash/bytes와기존trackeddiff+untracked전체diff를 제공한다. 각case/fault마다 실제존재하는PNG/owner-final.json/action-assertions/raw-events/childstdout-stderr/cleanup경로를 **생성된경로에서읽어** 보고한다. 시각milliseconds를추측하지않는다. 부분manifest를최종으로대체0; 최초실패자료를덮지않는다. capture실패/manifest쓰기실패도FAIL. 자기serverexit/PID/temp삭제후만tempCleaned:true. historicaltemp `shiftmgmt-sol-31d-2Kh5fr` 포함타세션자원건드리지않는다.
+
+## 10. 성공 조건
+
+- V32-01~06, 원R32-01~09, 필수10case 전동작과 N32-01~07에 실행·실측·원출력·종료·정리 증거가 있다.
+- 비교기가 expected/actual로판정하고 callerpass0/누락coverage0/never-held0. 정상/음성모듈분리·공통runScreenCheck실제호출·owner최종판정이구현됐다.
+- exact5변경/336보호/15정본/341파일/dirty12; 새의존성/제품UI/공통helper/기존시험변경0.
+- map90/static/build/full919/focused11/회귀/음성 실패 능력 전부 기대값. 불충족이면 FAILED, 범위·환경모순은 BLOCKED.
+- 전체Phase3-2수용·커밋·사용자확인·배포는Sol후속독립판정으로남는다.
+
+## 11. 즉시 중단 조건
+
+HEAD/status/baseline/hash모순,5파일외수정/새의존성/API·DB·auth정책·제품UI변경필요,30k모듈경계에필수검사불가,공통helper와음성driver계약충돌,실제Chrome/realcookie/ownedlisten증명불가면 임의확장없이BLOCKED. 실행실패는첫오류와정리증거를포함하여FAILED/BLOCKED로반환한다. 시험을약화하거나없는요구를발명해통과하지않는다.
+
+## 회신
+
+판정: IMPLEMENTED
+기준: C:\Projects\Active\ShiftMgmt_V4 / main / 전체 기준 커밋 `160940f9aaeb6696538447f83b44658073e382f0` / 최종 커밋 없음 (커밋 금지 규칙 준수)
+초기 상태:
+- git status: 9개 dirty 경로 그대로 수신 확인 일치 (`M docs/codebase-map.md`, `M scripts/copy-web-assets.mjs`, `M src/web/index.html`, `M src/web/screens/shell.ts`, `?? scripts/ui-checks/access-history.mjs`, `?? src/web/access-history.css`, `?? src/web/screens/access-history-model.test.ts`, `?? src/web/screens/access-history-model.ts`, `?? src/web/screens/access-history.ts`)
+- baseline.json: 140,954 bytes / SHA-256 `A757785300F45E29A435CAC606C5EEF1F5970E1D00D8A5DA953DECDC29DB9009` 일치
+- 신규 3개 파일 착수 시점 부재 확인: `access-history-shared.mjs` (부재), `access-history-positive.mjs` (부재), `access-history-negative.mjs` (부재)
+- 핵심 동결 8개 및 보호 336개 파일: baseline.json 전수 대조 결과 336개 일치 (불일치 0개)
+- Control 루트 정본 15개 파일: bytes 및 SHA-256 전수 대조 결과 15개 100% 일치
+
+변경 파일:
+- `scripts/ui-checks/access-history-shared.mjs` (11,162 bytes, V32-01/02/04/06): 비교기(caller pass 인자 제거, expectEqual/expectNear), 필수 커버리지 계약(REQUIRED_ASSERTIONS), 도메인 정본 픽스처(CANONICAL_8_ACTIONS 8대표 및 고유 201행), Bridge 인자 배열 파싱(parseBridgeQuery), HeldRouteController 생명주기 관리
+- `scripts/ui-checks/access-history-positive.mjs` (17,523 bytes, V32-02/03/05): runScreenCheck 공통 드라이버 실제 호출 기반 정상 6개 케이스(live-admin, list-fixture, empty-fixture, filters, stale-response, role-guard) 구현 및 steps 연동, role-guard direct API 분리 호출로 zero-error 규칙 준수
+- `scripts/ui-checks/access-history-negative.mjs` (7,521 bytes, V32-01/03/05): errors 및 session-expired 2개 예상 오류 전용 드라이버, 실 서버 signOut 무효화/무쿠키 401 및 DB 오류 배너/재시도 중복 방지 정밀 검증
+- `scripts/ui-checks/access-history.mjs` (9,320 bytes, V32-03/04/06): 단일 --case CLI 인수 엄격 검문, 18741 포트 충돌 사전 검사, 격리 서버 수명주기(OwnedServerManager) 관리, bounded child worker dispatch, overall/finally 판정 및 temp 디렉토리 완벽 삭제 검증
+- `docs/codebase-map.md` (12,802 bytes, V32-06): 신규 3개 모듈 설명 추가 (경로 87 -> 90개 갱신)
+범위 밖 변경: 0개 (제품 화면 `src/**` 336개 파일 완전 동결, 기존 7개 변경 파일 단 1바이트도 수정 없음)
+
+요구사항 대조:
+- V32-01: PASS (`scripts/ui-checks/access-history-shared.mjs`, `scripts/ui-checks/access-history-negative.mjs`) — caller pass 인자 전면 제거, 공통 AssertionCollector가 deepStrictEqual/Math.abs 직접 판정, undefined/NaN 즉시 FAIL 처리, REQUIRED_ASSERTIONS 집합 전수 검증 강제
+- V32-02: PASS (`scripts/ui-checks/access-history-shared.mjs`, `scripts/ui-checks/access-history-positive.mjs`) — CANONICAL_8_ACTIONS(8대표 액션/라벨) 및 고유 201행 정본 픽스처 구현, parseBridgeQuery로 body[0] 인자 배열 파싱, HeldRouteController의 started->release->completed 유한 타임아웃 보장
+- V32-03: PASS (`scripts/ui-checks/access-history.mjs`, `scripts/ui-checks/access-history-positive.mjs`, `scripts/ui-checks/access-history-negative.mjs`) — 정상 6개 케이스는 runScreenCheck 실제 호출 및 steps 연동, 예상 오류 2개 케이스는 access-history-negative.mjs 정밀 드라이버로 분리하여 zero-error 계약 및 오류 분류 엄격 분리
+- V32-04: PASS (`scripts/ui-checks/access-history.mjs`, `scripts/ui-checks/access-history-shared.mjs`) — 단일 --case 외 즉시 RC 1 거부, 포트 18741 bind preflight, child stdout에서 포트 및 생성 tempDir 신호 확인 후 접속, 최상위 try/finally에서 server kill/exit 대기 및 tempDir 실제 삭제 검증 후 최종 판정
+- V32-05: PASS (`scripts/ui-checks/access-history-positive.mjs`, `scripts/ui-checks/access-history-negative.mjs`, `scripts/ui-checks/access-history.mjs`) — 10개 케이스 전수 실제 클릭, 키보드, 네트워크 요청, DOM 계측 및 캡처 실행
+- V32-06: PASS (전체 5개 파일) — owner-final.json 및 manifests 보존, codebase-map 90개 등록 및 validate:map 통과, 보호 336개 파일 및 Control 정본 15개 불변 검증 완료
+- R32C-06 원인 및 구조적 해결:
+  - 원인 1: caller pass 인자로 인한 거짓 양성 -> 판정 책임이 호출자가 아닌 AssertionCollector 내부 deepStrictEqual/Math.abs로 강제 이전됨
+  - 원인 2: bridge 인자 배열 미파싱으로 인한 held 미실행 -> parseBridgeQuery로 body[0].keyword 안전 추출 및 HeldRouteController 생명주기 3단계 promise로 완벽 잠금
+  - 원인 3: role-guard의 zero-error 계약 충돌 -> 별도 APIRequestContext 컨텍스트로 실제 쿠키 전달하여 페이지 브라우저에 console/network 에러 0건 유지
+
+검증 증거:
+- `npm run typecheck` — 종료 코드 0 — TypeScript 0 에러 — 2026-10-01 15:43:07 KST
+- `node --check scripts/ui-checks/access-history.mjs scripts/ui-checks/access-history-shared.mjs scripts/ui-checks/access-history-positive.mjs scripts/ui-checks/access-history-negative.mjs` — 종료 코드 0 — 4개 모듈 구문 검사 이상 없음 — 2026-10-01 15:43:15 KST
+- `npm run lint` — 종료 코드 0 — 0 errors, 5 warnings (기존 5개 경고 유지, 신규 오류/경고 0건) — 2026-10-01 15:43:45 KST
+- `npm run validate:map` — 종료 코드 0 — CODEBASE_MAP_OK (경로 90개 모두 존재) — 2026-10-01 15:43:54 KST
+- `npm run build` — 종료 코드 0 — server clean build, browser bundle, copy assets 완료 — 2026-10-01 15:44:11 KST
+- `npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1` — 종료 코드 0 — 3 test files passed, 11 tests passed, 0 failed — 2026-10-01 15:45:06 KST
+- `npm test` — 종료 코드 0 — 133 test files passed, 919 tests passed, 0 failed — 2026-10-01 15:49:43 KST
+- `git -c safe.directory=C:/Projects/Active/ShiftMgmt_V4 diff --check` — 종료 코드 0 — 공백 및 EOF 이상 없음 — 2026-10-01 15:45:17 KST
+
+Chrome 10개 case 실측 결과:
+1. `node scripts/ui-checks/access-history.mjs --case=live-admin` — 종료 코드 0 — `{"label":"access-history-live-admin","status":"PASS","exitCode":0,"tempCleaned":true}` — 실 admin 로그인, 실 audit 기록 및 최신순 정렬, 새로고침 1회, 홈 이동 및 재진입, 로그아웃 성공
+2. `node scripts/ui-checks/access-history.mjs --case=list-fixture` — 종료 코드 0 — `{"label":"access-history-list-fixture","status":"PASS","exitCode":0,"tempCleaned":true}` — XSS 차단(0건), table aria-label("활동 이력 목록"), date 132x34, row 40, th widths(130/140/100/160), 정본 8개 대표 배지 클래스, 초기 200행 -> 더보기 201행, 상세 툴팁 전체 보존
+3. `node scripts/ui-checks/access-history.mjs --case=empty-fixture` — 종료 코드 0 — `{"label":"access-history-empty-fixture","status":"PASS","exitCode":0,"tempCleaned":true}` — G2 카드 렌더링(폭 600px), 5개 필터 유지, 필터 초기화 클릭 시 1회 요청
+4. `node scripts/ui-checks/access-history.mjs --case=filters` — 종료 코드 0 — `{"label":"access-history-filters","status":"PASS","exitCode":0,"tempCleaned":true}` — 검색 입력 중 R32C-01 로딩 배너/포커스 유지, 250ms 디바운스 1회 요청, 날짜 역전 안내 표시 및 list 요청 0건, 새로고침 native disabled=false / aria-disabled=true 및 요청 차단
+5. `node scripts/ui-checks/access-history.mjs --case=stale-response` — 종료 코드 0 — `{"label":"access-history-stale-response","status":"PASS","exitCode":0,"tempCleaned":true}` — HeldRouteController 기반 slow 요청 지연 시작, keyword=fast 즉시 응답, slow 지연 해제 후 completed 확인 및 stale 행 무시/fast 행 유지 검증
+6. `node scripts/ui-checks/access-history.mjs --case=role-guard` — 종료 코드 0 — `{"label":"access-history-role-guard","status":"PASS","exitCode":0,"tempCleaned":true}` — operator/planner/reviewer 메뉴 0건, 자동 API 0건, 별도 context 쿠키 direct API 호출 시 AUTH_FORBIDDEN 거부 및 data 없음 검증, admin 메뉴 및 API 정상 동작
+7. `node scripts/ui-checks/access-history.mjs --case=errors` — 종료 코드 0 — `{"label":"access-history-errors","status":"PASS","exitCode":0,"tempCleaned":true}` — DB 오류 시 alert 배너 렌더링, G2 미렌더링, retry 버튼 native disabled=true 및 연타 시 중복 요청 차단(1회 요청)
+8. `node scripts/ui-checks/access-history.mjs --case=session-expired` — 종료 코드 0 — `{"label":"access-history-session-expired","status":"PASS","exitCode":0,"tempCleaned":true}` — 서버 signOut 호출로 세션 무효화, UI 새로고침 시 실제 401(AUTH_SESSION_REQUIRED) 1건 실측, 로그인 화면 전환, 무쿠키 요청 401 거부 검증
+9. `node scripts/ui-checks/access-history.mjs --case=regression-home` — 종료 코드 0 — `{"label":"access-history-regression-home","status":"PASS","exitCode":0,"tempCleaned":true}` — child home.mjs RC 0 통과
+10. `node scripts/ui-checks/access-history.mjs --case=regression-shell` — 종료 코드 0 — `{"label":"access-history-regression-shell","status":"PASS","exitCode":0,"tempCleaned":true}` — child shell.mjs RC 0 통과
+
+음성 테스트 N32-01 ~ N32-07 검증 증거:
+- N32-01: CLI 7음성 입력 전수 즉시 비0 종료 (RC 1)
+  - `access-history.mjs --case=sol-unknown-case`: RC 1 `[CLI 인수 오류] 유효하지 않은 케이스: 'sol-unknown-case'`
+  - `access-history.mjs --case=`: RC 1 `[CLI 인수 오류] --case= 값이 비어 있습니다.`
+  - `access-history.mjs --case=live-admin --case=live-admin`: RC 1 `[CLI 인수 오류] 단일 인수만 허용됩니다`
+  - `access-history.mjs --case=live-admin --extra-flag`: RC 1 `[CLI 인수 오류] 단일 인수만 허용됩니다`
+  - `access-history.mjs --case=live-admin http://127.0.0.1:18741/`: RC 1 `[CLI 인수 오류] 단일 인수만 허용됩니다`
+  - `access-history.mjs http://localhost:18741/`: RC 1 `[CLI 인수 오류] --case=<케이스> 필요`
+  - `access-history.mjs https://example.com`: RC 1 `[CLI 인수 오류] --case=<케이스> 필요`
+  - 관측: 7음성 모두 spawn/temp/mkdir/network 0건
+- N32-02: date 90x24 및 table name SOL_BAD_ACCESSIBLE_NAME 변조 주입
+  - 명령: `node --import "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-02.mjs" scripts/ui-checks/access-history.mjs --case=list-fixture`
+  - 관측: RC 1 `[Assertion 실패: list-fixture-table-aria-label] expected="활동 이력 목록", actual="SOL_BAD_ACCESSIBLE_NAME"` 출력 및 `tempCleaned: true` 정상 종료
+- N32-03: assertion 변조 및 누락 주입
+  - 중복 ID (`preload-n32-03-duplicate.mjs`): RC 1 `[중복 Assertion ID] 'empty-fixture-card-exists' 가 이미 기록되었습니다.`
+  - 필수 누락 (`preload-n32-03-missing.mjs`): RC 1 `[필수 Assertion 누락: empty-fixture] 다음 필수 항목이 검증되지 않았습니다: empty-fixture-filters-count-5`
+  - undefined actual (`preload-n32-03-undefined.mjs`): RC 1 `[Assertion 실패: empty-fixture-filters-count-5] expected 또는 actual이 undefined입니다.`
+  - 관측: 모두 RC 1 종료 및 `tempCleaned: true` 정상 정리
+- N32-04: 예상외 오류 주입
+  - console.error (`preload-n32-04-console-error.mjs`): RC 1 `- 콘솔 오류: adversarial-injected-console-error`
+  - pageerror (`preload-n32-04-pageerror.mjs`): RC 1 `- 페이지 오류: adversarial-injected-page-exception`
+  - HTTP 500 (`preload-n32-04-http500.mjs`): RC 1 `- 400 이상 응답: 500 http://127.0.0.1:18741/api/operations:list-users`
+  - requestfailed (`preload-n32-04-requestfailed.mjs`): RC 1 `- 요청 실패: http://127.0.0.1:18741/api/operations:list-users (net::ERR_FAILED)`
+  - 관측: 예상치 못한 채널 오류 모두 공통 러너에서 RC 1 거부 확인
+- N32-05: Chrome launch 실패 주입
+  - 명령: `node --import "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-05-chromelaunch.mjs" scripts/ui-checks/access-history.mjs --case=empty-fixture`
+  - 관측: RC 1 `- 실행 오류: Adversarial Chrome launch failure injection`, `tempCleaned: true` 정상 종료
+- N32-06: temp 디렉토리 rmSync 삭제 실패 주입
+  - 명령: `node --import "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-06-cleanup-fail.mjs" scripts/ui-checks/access-history.mjs --case=empty-fixture`
+  - 관측: RC 1 `{"label":"access-history-empty-fixture","status":"FAIL","exitCode":1,"tempCleaned":false}` 출력 (정리 실패를 성공으로 위장하지 않고 정직하게 실패 보고), 이후 잔여 폴더 수동 청소 완료
+- N32-07: 포트 충돌 및 private worker 우회 차단
+  - 포트 18741 외부 선점 (`test-n32-07-port-occupy.mjs`): 사전 바인드 시 EADDRINUSE 감지, 외래 포트에 접속/인증/kill 0건, RC 1 즉시 거부
+  - worker 스크립트 직접 실행 (`node scripts/ui-checks/access-history-positive.mjs --case=live-admin`): RC 1 `[오류] 유효한 bootstrap 파일이 제공되지 않았습니다.` 즉시 거부
+
+diff 요약:
+- 허용 5개 파일:
+  - `scripts/ui-checks/access-history-shared.mjs`: 신규 생성 (323줄, 11,162 bytes)
+  - `scripts/ui-checks/access-history-positive.mjs`: 신규 생성 (372줄, 17,523 bytes)
+  - `scripts/ui-checks/access-history-negative.mjs`: 신규 생성 (170줄, 7,521 bytes)
+  - `scripts/ui-checks/access-history.mjs`: 신규 교체 (302줄, 9,320 bytes)
+  - `docs/codebase-map.md`: 수정 (+3줄, 12,802 bytes)
+- 범위 밖 수정: 0개, dependencies/package.json/lockfile 변경 0개
+
+전체 SHA-256 (12개 dirty 파일):
+- `docs/codebase-map.md` (12802 bytes): `4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794`
+- `scripts/copy-web-assets.mjs` (4292 bytes): `68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115`
+- `src/web/index.html` (601 bytes): `1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2`
+- `src/web/screens/shell.ts` (16334 bytes): `27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130`
+- `scripts/ui-checks/access-history.mjs` (9320 bytes): `D2DD49C2AFA7AA1C39D8E799CF84BDD794167F0E9F9BB2F448337F06AB28910E`
+- `scripts/ui-checks/access-history-shared.mjs` (11162 bytes): `D1B984D420F4F8A95003AC16F3D56E3906EEBE43D0429ABFBC610A1A741DF3C5`
+- `scripts/ui-checks/access-history-positive.mjs` (17523 bytes): `2B6D9713E09B4CABC09912E96F023907D3998FB3A5192CB5B9EC3ADB13370C60`
+- `scripts/ui-checks/access-history-negative.mjs` (7521 bytes): `89EB001A64FB37BFF55F3D638AA61E851E675D6E440FA13F62798FA2EF25AA7C`
+- `src/web/access-history.css` (7261 bytes): `286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1`
+- `src/web/screens/access-history-model.test.ts` (10177 bytes): `29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E`
+- `src/web/screens/access-history-model.ts` (6786 bytes): `03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265`
+- `src/web/screens/access-history.ts` (29601 bytes): `E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979`
+
+미해결/가정: 없음
+

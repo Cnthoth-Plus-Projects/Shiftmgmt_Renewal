@@ -1,0 +1,46 @@
+--- verified-previous-shell.css
++++ received-shell.css
+@@ -170,7 +170,7 @@
+   justify-content: center;
+   background: none;
+   border: none;
+-  border-radius: 4px;
++  border-radius: 6px;
+   cursor: pointer;
+   color: var(--text);
+ }
+@@ -187,7 +187,7 @@
+ }
+ 
+ .header-title {
+-  font-size: 18px;
++  font-size: 20px;
+   font-weight: 600;
+   color: var(--text);
+   white-space: nowrap;
+@@ -234,9 +234,9 @@
+ .content-card {
+   background: var(--surface);
+   border: 1px solid var(--line);
+-  border-radius: 8px;
++  border-radius: 6px;
+   padding: 24px;
+-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
++  box-shadow: none;
+ }
+ 
+ .content-title {
+@@ -319,11 +319,11 @@
+ .btn-statusbar-restart {
+   height: 22px;
+   padding: 0 8px;
+-  font-size: 11px;
++  font-size: 12px;
+   font-weight: 600;
+   background: var(--surface);
+   border: 1px solid var(--line-strong);
+-  border-radius: 4px;
++  border-radius: 6px;
+   color: var(--text);
+   cursor: pointer;
+   margin-left: 4px;

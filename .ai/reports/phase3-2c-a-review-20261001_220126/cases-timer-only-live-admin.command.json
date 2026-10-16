@@ -1,0 +1,18 @@
+{
+  "name": "cases-timer-only-live-admin",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=live-admin"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:15:37.374299+00:00",
+  "pid": 25736,
+  "rc": 1,
+  "end": "2026-10-01T13:16:11.136002+00:00",
+  "elapsedSeconds": 33.766,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-live-admin.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-live-admin.stderr.txt"
+}

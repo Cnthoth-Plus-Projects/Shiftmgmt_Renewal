@@ -1,0 +1,288 @@
+--- src/web/screens/home.ts.before
++++ src/web/screens/home.ts
+@@ -59,12 +59,11 @@
+ 
+   private todos: HomeTodoItem[] = [];
+ 
+-  // 작업 실행 중 상태 (중복 클릭 방지 및 수명 관리)
+-  private isRetryingRecovery = false;
+-  private isRestartingWatch = false;
+-  private activeRetryTicket = 0;
+-  private activeRestartTicket = 0;
+-  private actionTimers: number[] = [];
++  // 각 요청이 자신의 잠금만 정리하며, 결과 반영은 현재 조회 세대에서만 허용한다.
++  private homeActions = {
++    "retry-recovery": { busy: false, ticket: 0, error: null as string | null },
++    "restart-watch": { busy: false, ticket: 0, error: null as string | null },
++  };
+ 
+   constructor(options: HomeScreenOptions) {
+     this.container = options.container;
+@@ -73,19 +72,16 @@
+   }
+ 
+   public render(): void {
+-    this.renderSkeleton();
+     void this.loadData();
+   }
+ 
+   public destroy(): void {
+     this.destroyed = true;
+     this.loadGeneration++;
+-    this.activeRetryTicket = 0;
+-    this.activeRestartTicket = 0;
+-    for (const timer of this.actionTimers) {
+-      window.clearTimeout(timer);
+-    }
+-    this.actionTimers = [];
++    for (const action of Object.values(this.homeActions)) {
++      action.ticket++;
++      action.busy = false;
++    }
+     this.container.innerHTML = "";
+   }
+ 
+@@ -105,6 +101,7 @@
+   private async loadData(): Promise<void> {
+     const currentGen = ++this.loadGeneration;
+     this.isLoading = true;
++    this.renderSkeleton();
+     this.monthContext = getSeoulMonthContext();
+ 
+     const scheduleMonth = this.monthContext.yearMonth;
+@@ -785,11 +782,11 @@
+           actionBtn.type = "button";
+           actionBtn.className = "btn-secondary btn-sm";
+           actionBtn.id = "btn-retry-recovery";
+-          actionBtn.textContent = this.isRetryingRecovery ? "처리 중…" : (item.actionLabel || "다시 복구");
+-          actionBtn.disabled = this.isRetryingRecovery;
++          actionBtn.textContent = this.homeActionLabel("retry-recovery");
++          actionBtn.disabled = this.homeActions["retry-recovery"].busy;
+ 
+           actionBtn.addEventListener("click", () => {
+-            void this.handleRetryRecovery(actionBtn);
++            void this.handleHomeAction("retry-recovery");
+           });
+           actionsEl.appendChild(actionBtn);
+         } else if (item.actionKind === "restart-watch" && this.session.role === "admin") {
+@@ -797,11 +794,11 @@
+           actionBtn.type = "button";
+           actionBtn.className = "btn-secondary btn-sm";
+           actionBtn.id = "home-btn-restart-watch";
+-          actionBtn.textContent = this.isRestartingWatch ? "처리 중…" : (item.actionLabel || "다시 시작");
+-          actionBtn.disabled = this.isRestartingWatch;
++          actionBtn.textContent = this.homeActionLabel("restart-watch");
++          actionBtn.disabled = this.homeActions["restart-watch"].busy;
+ 
+           actionBtn.addEventListener("click", () => {
+-            void this.handleRestartWatch(actionBtn);
++            void this.handleHomeAction("restart-watch");
+           });
+           actionsEl.appendChild(actionBtn);
+         }
+@@ -822,153 +819,60 @@
+   // 실제 액션 핸들러 (수명 관리 및 중복 클릭 방지 - R31C-04)
+   // --------------------------------------------------------------------------
+ 
+-  private async handleRetryRecovery(button: HTMLButtonElement): Promise<void> {
+-    if (this.isRetryingRecovery) return;
+-    this.isRetryingRecovery = true;
+-    const ticket = ++this.activeRetryTicket;
+-    const actionGen = this.loadGeneration;
+-
+-    button.disabled = true;
+-    button.textContent = "처리 중…";
+-
+-    const bridge = window.appBridge;
+-    if (!bridge) {
+-      if (ticket === this.activeRetryTicket) {
+-        this.isRetryingRecovery = false;
+-        if (!this.destroyed && actionGen === this.loadGeneration) {
+-          button.disabled = false;
+-          button.textContent = "다시 복구";
+-        }
+-      }
+-      return;
+-    }
++  private homeActionLabel(kind: "retry-recovery" | "restart-watch"): string {
++    const action = this.homeActions[kind];
++    return action.busy ? "처리 중…" : action.error || (kind === "retry-recovery" ? "다시 복구" : "다시 시작");
++  }
++
++  private syncHomeActionButton(kind: "retry-recovery" | "restart-watch"): void {
++    if (this.destroyed) return;
++    const selector = kind === "retry-recovery" ? "#btn-retry-recovery" : "#home-btn-restart-watch";
++    const button = this.container.querySelector<HTMLButtonElement>(selector);
++    if (button) {
++      button.disabled = this.homeActions[kind].busy;
++      button.textContent = this.homeActionLabel(kind);
++    }
++  }
++
++  private async handleHomeAction(kind: "retry-recovery" | "restart-watch"): Promise<void> {
++    const action = this.homeActions[kind];
++    if (this.destroyed || action.busy || (kind === "restart-watch" && this.session.role !== "admin")) return;
++    action.busy = true;
++    action.error = null;
++    const ticket = ++action.ticket;
++    const generation = this.loadGeneration;
++    this.syncHomeActionButton(kind);
++    let refresh = false;
+ 
+     try {
+-      const res = await bridge.retryPerformanceStartupRecovery();
+-
+-      // 수명 유효성 검사: destroyed되었거나 다른 generation/ticket으로 변경된 경우 무시
+-      if (this.destroyed || ticket !== this.activeRetryTicket || actionGen !== this.loadGeneration) {
++      const bridge = window.appBridge;
++      if (!bridge) {
++        action.error = "오류: 재시도";
+         return;
+       }
+-
+-      if (!res.ok) {
+-        if (res.errorCode === "AUTH_SESSION_REQUIRED") {
+-          this.handleSessionExpired();
+-          return;
+-        }
+-        button.textContent = "실패: 재시도";
+-        const timerId = window.setTimeout(() => {
+-          if (this.destroyed || ticket !== this.activeRetryTicket || actionGen !== this.loadGeneration) {
+-            return;
+-          }
+-          this.isRetryingRecovery = false;
+-          const currentBtn = this.container.querySelector("#btn-retry-recovery") as HTMLButtonElement | null;
+-          const targetBtn = currentBtn || button;
+-          targetBtn.disabled = false;
+-          targetBtn.textContent = "다시 복구";
+-        }, 2000);
+-        this.actionTimers.push(timerId);
++      const result = await (kind === "retry-recovery"
++        ? bridge.retryPerformanceStartupRecovery()
++        : bridge.restartFileWatch());
++      if (this.destroyed || ticket !== action.ticket || generation !== this.loadGeneration) return;
++      if (!result.ok) {
++        if (result.errorCode === "AUTH_SESSION_REQUIRED") this.handleSessionExpired();
++        else action.error = "실패: 재시도";
+         return;
+       }
+-
+-      // 정상 성공: 잠금 해제 후 전체 새로고침
+-      this.isRetryingRecovery = false;
++      refresh = true;
++    } catch {
++      if (!this.destroyed && ticket === action.ticket && generation === this.loadGeneration) {
++        action.error = "오류: 재시도";
++      }
++    } finally {
++      // 세대가 바뀌어도 완료된 요청의 잠금은 현재 컨트롤에서 해제한다.
++      if (ticket === action.ticket) {
++        action.busy = false;
++        this.syncHomeActionButton(kind);
++      }
++    }
++    if (refresh && !this.destroyed && ticket === action.ticket && generation === this.loadGeneration) {
+       await this.refresh();
+-    } catch {
+-      if (this.destroyed || ticket !== this.activeRetryTicket || actionGen !== this.loadGeneration) {
+-        return;
+-      }
+-      button.textContent = "오류: 재시도";
+-      const timerId = window.setTimeout(() => {
+-        if (this.destroyed || ticket !== this.activeRetryTicket || actionGen !== this.loadGeneration) {
+-          return;
+-        }
+-        this.isRetryingRecovery = false;
+-        const currentBtn = this.container.querySelector("#btn-retry-recovery") as HTMLButtonElement | null;
+-        const targetBtn = currentBtn || button;
+-        targetBtn.disabled = false;
+-        targetBtn.textContent = "다시 복구";
+-      }, 2000);
+-      this.actionTimers.push(timerId);
+-    } finally {
+-      if (ticket === this.activeRetryTicket && (this.destroyed || actionGen !== this.loadGeneration)) {
+-        this.isRetryingRecovery = false;
+-      }
+-    }
+-  }
+-
+-  private async handleRestartWatch(button: HTMLButtonElement): Promise<void> {
+-    if (this.isRestartingWatch) return;
+-    this.isRestartingWatch = true;
+-    const ticket = ++this.activeRestartTicket;
+-    const actionGen = this.loadGeneration;
+-
+-    button.disabled = true;
+-    button.textContent = "처리 중…";
+-
+-    const bridge = window.appBridge;
+-    if (!bridge) {
+-      if (ticket === this.activeRestartTicket) {
+-        this.isRestartingWatch = false;
+-        if (!this.destroyed && actionGen === this.loadGeneration) {
+-          button.disabled = false;
+-          button.textContent = "다시 시작";
+-        }
+-      }
+-      return;
+-    }
+-
+-    try {
+-      const res = await bridge.restartFileWatch();
+-
+-      // 수명 유효성 검사
+-      if (this.destroyed || ticket !== this.activeRestartTicket || actionGen !== this.loadGeneration) {
+-        return;
+-      }
+-
+-      if (!res.ok) {
+-        if (res.errorCode === "AUTH_SESSION_REQUIRED") {
+-          this.handleSessionExpired();
+-          return;
+-        }
+-        button.textContent = "실패: 재시도";
+-        const timerId = window.setTimeout(() => {
+-          if (this.destroyed || ticket !== this.activeRestartTicket || actionGen !== this.loadGeneration) {
+-            return;
+-          }
+-          this.isRestartingWatch = false;
+-          const currentBtn = this.container.querySelector("#home-btn-restart-watch") as HTMLButtonElement | null;
+-          const targetBtn = currentBtn || button;
+-          targetBtn.disabled = false;
+-          targetBtn.textContent = "다시 시작";
+-        }, 2000);
+-        this.actionTimers.push(timerId);
+-        return;
+-      }
+-
+-      // 정상 성공: 잠금 해제 후 전체 새로고침
+-      this.isRestartingWatch = false;
+-      await this.refresh();
+-    } catch {
+-      if (this.destroyed || ticket !== this.activeRestartTicket || actionGen !== this.loadGeneration) {
+-        return;
+-      }
+-      button.textContent = "오류: 재시도";
+-      const timerId = window.setTimeout(() => {
+-        if (this.destroyed || ticket !== this.activeRestartTicket || actionGen !== this.loadGeneration) {
+-          return;
+-        }
+-        this.isRestartingWatch = false;
+-        const currentBtn = this.container.querySelector("#home-btn-restart-watch") as HTMLButtonElement | null;
+-        const targetBtn = currentBtn || button;
+-        targetBtn.disabled = false;
+-        targetBtn.textContent = "다시 시작";
+-      }, 2000);
+-      this.actionTimers.push(timerId);
+-    } finally {
+-      if (ticket === this.activeRestartTicket && (this.destroyed || actionGen !== this.loadGeneration)) {
+-        this.isRestartingWatch = false;
+-      }
+     }
+   }
+ 
+@@ -1000,4 +904,3 @@
+     }
+   }
+ }
+-

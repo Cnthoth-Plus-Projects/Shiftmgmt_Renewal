@@ -1,0 +1,104 @@
+{
+  "time_utc": "2026-10-15T07:51:01.907366+00:00",
+  "scope": "TODO factual status alignment; existing scope and order preserved",
+  "changes": [
+    "최종 갱신일",
+    "점검 이력",
+    "지금 위치",
+    "다음 행동",
+    "현재 확인",
+    "Phase 3 요약",
+    "전체 A 세부 작업과 다음 A2 작업"
+  ],
+  "before": {
+    "bytes": 316181,
+    "sha256": "fdbae123c97245590a58c8578dab603b90db17178bdb84cb4eba3a6c4b2e5ff3"
+  },
+  "after": {
+    "bytes": 317654,
+    "sha256": "22d1f6e859bddebcf73aeb07a8c7d6c5aa2eacd2c50a687bd54095269b854f03"
+  },
+  "checks": {
+    "CRLF_preserved": true,
+    "historical_notes_unchanged": true,
+    "long_history_suffix_unchanged": true,
+    "closed_handoff_hash_matches": true,
+    "current_state_matches": true,
+    "evidence_links_exist": true
+  },
+  "protected_sha256": {
+    "HANDOFF.md": "fe08200519969915168f7a8c32065953de3a2d56996c79d09c5ac92cf1e29c6c",
+    ".ai/current-state.md": "d49ba70f9af5793de40198085e01694ea455aece5459d21eb1aadfca1590e39a",
+    "AGENTS.md": "71ef3e3def51deee5e15d15dbfba1cf0366311466dc7bf0087829f477a27326d",
+    ".ai/HARNESS.md": "7856e7a72158423648feaad7935533c3b2d2ab6bce2a4c7e21f3620939659805"
+  },
+  "changed_blocks": [
+    {
+      "kind": "replace",
+      "old_lines": [
+        4,
+        4
+      ],
+      "new_lines": [
+        4,
+        4
+      ]
+    },
+    {
+      "kind": "insert",
+      "old_lines": [
+        21,
+        20
+      ],
+      "new_lines": [
+        21,
+        22
+      ]
+    },
+    {
+      "kind": "replace",
+      "old_lines": [
+        66,
+        67
+      ],
+      "new_lines": [
+        68,
+        69
+      ]
+    },
+    {
+      "kind": "replace",
+      "old_lines": [
+        69,
+        69
+      ],
+      "new_lines": [
+        71,
+        71
+      ]
+    },
+    {
+      "kind": "replace",
+      "old_lines": [
+        79,
+        79
+      ],
+      "new_lines": [
+        81,
+        81
+      ]
+    },
+    {
+      "kind": "replace",
+      "old_lines": [
+        308,
+        308
+      ],
+      "new_lines": [
+        310,
+        313
+      ]
+    }
+  ],
+  "product_commands_or_edits": 0
+}

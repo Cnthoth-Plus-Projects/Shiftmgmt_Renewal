@@ -1,0 +1,142 @@
+{
+  "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+  "fixtureCandidates": [
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json"
+  ],
+  "positiveCases": 3,
+  "rejectedMutations": 14,
+  "records": [
+    {
+      "case": "contract-core",
+      "check": "filesystem-parser-positive",
+      "result": {
+        "status": "ACCEPTABLE_CANDIDATE",
+        "acceptance": "A1_PREREQUISITE_ONLY",
+        "case": "contract-core",
+        "runId": "run-sol-parser-only-dd7f7aabe2b4",
+        "candidateSha256": "90BEBD2EB1EE07AEEBDA8BCB19D30AD9C0266CF777CB5E368EA12CA9FB6D8A09",
+        "executionSha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "checks": 9,
+        "artifacts": 7
+      },
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    },
+    {
+      "case": "contract-core",
+      "check": "worker-close",
+      "rejected": true,
+      "reason": "worker close not confirmed"
+    },
+    {
+      "case": "contract-core",
+      "check": "server-close",
+      "rejected": true,
+      "reason": "server close not confirmed"
+    },
+    {
+      "case": "contract-core",
+      "check": "duplicate-id",
+      "rejected": true,
+      "reason": "Worker receipt differs: checks"
+    },
+    {
+      "case": "contract-core",
+      "check": "caller-expected",
+      "rejected": true,
+      "reason": "Worker receipt differs: checks"
+    },
+    {
+      "case": "regression-shell",
+      "check": "filesystem-parser-positive",
+      "result": {
+        "status": "ACCEPTABLE_CANDIDATE",
+        "acceptance": "A1_PREREQUISITE_ONLY",
+        "case": "regression-shell",
+        "runId": "run-sol-parser-only-dd7f7aabe2b4",
+        "candidateSha256": "5D348A9CDB916F2E5FCE4A867E4DB217380FE91C3B5AFC06D3FC7DCCC7A541CD",
+        "executionSha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "checks": 3,
+        "artifacts": 10
+      },
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    },
+    {
+      "case": "regression-shell",
+      "check": "worker-close",
+      "rejected": true,
+      "reason": "worker close not confirmed"
+    },
+    {
+      "case": "regression-shell",
+      "check": "server-close",
+      "rejected": true,
+      "reason": "server close not confirmed"
+    },
+    {
+      "case": "regression-shell",
+      "check": "duplicate-id",
+      "rejected": true,
+      "reason": "Duplicate check ID"
+    },
+    {
+      "case": "regression-shell",
+      "check": "caller-expected",
+      "rejected": true,
+      "reason": "Caller verdict/expected/tolerance forbidden"
+    },
+    {
+      "case": "regression-shell",
+      "check": "fake-regression-IPC",
+      "rejected": true,
+      "reason": "Protected runner falsely claims IPC authorization"
+    },
+    {
+      "case": "regression-home",
+      "check": "filesystem-parser-positive",
+      "result": {
+        "status": "ACCEPTABLE_CANDIDATE",
+        "acceptance": "A1_PREREQUISITE_ONLY",
+        "case": "regression-home",
+        "runId": "run-sol-parser-only-dd7f7aabe2b4",
+        "candidateSha256": "229EAFD899D4D29C93DCB165D1E849DE6F88B5D111282122A8E3A1FE4725B7D7",
+        "executionSha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "checks": 3,
+        "artifacts": 7
+      },
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    },
+    {
+      "case": "regression-home",
+      "check": "worker-close",
+      "rejected": true,
+      "reason": "worker close not confirmed"
+    },
+    {
+      "case": "regression-home",
+      "check": "server-close",
+      "rejected": true,
+      "reason": "server close not confirmed"
+    },
+    {
+      "case": "regression-home",
+      "check": "duplicate-id",
+      "rejected": true,
+      "reason": "Duplicate check ID"
+    },
+    {
+      "case": "regression-home",
+      "check": "caller-expected",
+      "rejected": true,
+      "reason": "Caller verdict/expected/tolerance forbidden"
+    },
+    {
+      "case": "regression-home",
+      "check": "fake-regression-IPC",
+      "rejected": true,
+      "reason": "Protected runner falsely claims IPC authorization"
+    }
+  ],
+  "retention": "New ignored parser-only fixture copies retained. Historical artifacts unchanged. No app/worker/browser launched."
+}

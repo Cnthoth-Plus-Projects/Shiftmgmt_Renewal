@@ -1,0 +1,1404 @@
+{
+  "started": "2026-09-30T07:08:33.331Z",
+  "chrome": {
+    "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "version": "154.0.8037.58"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "url": "http://127.0.0.1:18740/",
+  "checks": [
+    {
+      "id": "L1-background",
+      "pass": false,
+      "actual": "rgb(245, 246, 248)",
+      "expected": "#E5E7EB"
+    },
+    {
+      "id": "L1-card-width",
+      "pass": true,
+      "actual": 460,
+      "expected": 460
+    },
+    {
+      "id": "L1-card-border",
+      "pass": false,
+      "actual": "rgb(216, 220, 226)",
+      "expected": "#E2E5EA"
+    },
+    {
+      "id": "L1-card-variant",
+      "pass": true,
+      "actual": {
+        "x": 490,
+        "y": 256.75,
+        "width": 460,
+        "height": 386.5,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "8px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "36px 32px",
+        "shadow": "rgba(0, 0, 0, 0.06) 0px 4px 16px 0px",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      "expected": "8px / 36px32px / approved shadow"
+    },
+    {
+      "id": "L1-input-radius",
+      "pass": false,
+      "actual": "4px",
+      "expected": "6px canonical wins older HTML"
+    },
+    {
+      "id": "L1-button-font",
+      "pass": false,
+      "actual": "13px",
+      "expected": "14px login approved variant"
+    },
+    {
+      "id": "L1-tab-order",
+      "pass": true,
+      "actual": [
+        {
+          "tag": "INPUT",
+          "id": "login-id",
+          "label": "",
+          "class": "form-input ",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "INPUT",
+          "id": "login-password",
+          "label": "",
+          "class": "form-input ",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "BUTTON",
+          "id": "",
+          "label": "비밀번호 표시",
+          "class": "btn-eye-toggle",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        {
+          "tag": "BUTTON",
+          "id": "",
+          "label": "로그인",
+          "class": "btn-primary login-submit-btn",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        }
+      ],
+      "expected": "ID -> password -> eye -> submit"
+    },
+    {
+      "id": "L1-focus-ring",
+      "pass": true,
+      "actual": [
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px",
+        "rgb(62, 86, 182) solid 2px"
+      ],
+      "expected": "accent solid2px"
+    },
+    {
+      "id": "L1-eye-space",
+      "pass": true,
+      "actual": "text",
+      "expected": "text"
+    },
+    {
+      "id": "L1-eye-enter",
+      "pass": true,
+      "actual": "password",
+      "expected": "password"
+    },
+    {
+      "id": "L1-escape-stable",
+      "pass": true,
+      "actual": true,
+      "expected": "full-page stays mounted; no dialog"
+    },
+    {
+      "id": "L2-enter-error-alert",
+      "pass": true,
+      "actual": "error\n로그인 ID 또는 비밀번호가 올바르지 않습니다.",
+      "expected": "visible login failure alert"
+    },
+    {
+      "id": "L4-lock-described",
+      "pass": false,
+      "actual": null,
+      "expected": "aria-describedby -> visible reason"
+    },
+    {
+      "id": "L4-lock-focusable",
+      "pass": false,
+      "actual": true,
+      "expected": "validation lock remains keyboard focusable"
+    },
+    {
+      "id": "L4-weak-password-blocked",
+      "pass": true,
+      "actual": {
+        "newRequests": 0,
+        "ariaDisabled": "true",
+        "nativeDisabled": true
+      },
+      "expected": "weak input: click/Space/Enter/form Enter cannot call change API; native-disabled keyboard activation unavailable is recorded separately"
+    },
+    {
+      "id": "L4-mismatch-blocked",
+      "pass": true,
+      "actual": {
+        "newRequests": 0,
+        "ariaDisabled": "true",
+        "nativeDisabled": true
+      },
+      "expected": "mismatch: zero change API requests"
+    },
+    {
+      "id": "admin-L4-valid-enabled",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "id": "shell-sidebar-expanded",
+      "pass": true,
+      "actual": 220,
+      "expected": 220
+    },
+    {
+      "id": "shell-header-height",
+      "pass": true,
+      "actual": 56,
+      "expected": 56
+    },
+    {
+      "id": "shell-footer-height",
+      "pass": true,
+      "actual": 32,
+      "expected": 32
+    },
+    {
+      "id": "shell-main-height",
+      "pass": true,
+      "actual": 812,
+      "expected": 812
+    },
+    {
+      "id": "token---bg",
+      "pass": false,
+      "actual": "#F5F6F8",
+      "expected": "#F4F5F7"
+    },
+    {
+      "id": "token---line",
+      "pass": false,
+      "actual": "#D8DCE2",
+      "expected": "#E2E5EA"
+    },
+    {
+      "id": "token---text",
+      "pass": false,
+      "actual": "#191B1F",
+      "expected": "#1F2430"
+    },
+    {
+      "id": "token---text-sub",
+      "pass": false,
+      "actual": "#606877",
+      "expected": "#4B5563"
+    },
+    {
+      "id": "token---accent-hover",
+      "pass": false,
+      "actual": "#32479A",
+      "expected": "#32479B"
+    },
+    {
+      "id": "token---success-bg",
+      "pass": false,
+      "actual": "#EAF5ED",
+      "expected": "#E8F5EE"
+    },
+    {
+      "id": "home-cards-flat",
+      "pass": true,
+      "actual": {
+        "progress": {
+          "x": 244,
+          "y": 171,
+          "width": 380,
+          "height": 172.59375,
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(25, 27, 31)",
+          "border": "rgb(216, 220, 226)",
+          "radius": "6px",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "padding": "16px",
+          "shadow": "none",
+          "outline": "rgb(25, 27, 31) none 3px",
+          "hidden": false,
+          "text": "domain\n          준비 (현재 배정 기준)\n        \n        \n          1/2\n          근무지\n        \n        \n          \n        \n        이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. "
+        },
+        "section": {
+          "x": 244,
+          "y": 363.59375,
+          "width": 1172,
+          "height": 157,
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(25, 27, 31)",
+          "border": "rgb(216, 220, 226)",
+          "radius": "6px",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "padding": "18px",
+          "shadow": "none",
+          "outline": "rgb(25, 27, 31) none 3px",
+          "hidden": false,
+          "text": "이번 달 대기 실적 현황\n        \n        \n          \n            folder\n            \n              대기 실적 그룹\n              \n                0\n                개\n           "
+        }
+      },
+      "expected": "6px/no shadow"
+    },
+    {
+      "id": "shell-first-tab-skip",
+      "pass": true,
+      "actual": {
+        "tag": "A",
+        "id": "",
+        "label": "본문 바로가기",
+        "class": "skip-link",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      "expected": "본문 바로가기"
+    },
+    {
+      "id": "shell-collapse-space",
+      "pass": true,
+      "actual": 64,
+      "expected": 64
+    },
+    {
+      "id": "shell-expand-enter",
+      "pass": true,
+      "actual": 220,
+      "expected": 220
+    },
+    {
+      "id": "admin-nine-menus",
+      "pass": true,
+      "actual": 9,
+      "expected": "home + eight existing menus"
+    },
+    {
+      "id": "nav-근무표 생성",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '근무표 생성' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-실적 가져오기",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '실적 가져오기' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-근무 현황",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '근무 현황' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-근무표 조정",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '근무표 조정' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-수당 계산",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '수당 계산' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-품의서 출력",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '품의서 출력' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-조직 관리",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '조직 관리' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "nav-사용자 관리",
+      "pass": true,
+      "actual": {
+        "current": "page",
+        "notice": "info\n화면 준비 중 — '사용자 관리' 화면은 다음 구현 단계에서 연결됩니다."
+      },
+      "expected": "current page + honest placeholder"
+    },
+    {
+      "id": "placeholder-card-flat",
+      "pass": false,
+      "actual": {
+        "x": 244,
+        "y": 146,
+        "width": 1172,
+        "height": 174.5625,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "8px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "24px",
+        "shadow": "rgba(0, 0, 0, 0.04) 0px 2px 8px 0px",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n      \n        로그인되었습니다. 현재 이용할 수 있는 기능은 다음과 같습니다.\n        - 사용자: 관리자 (관리자)\n        - 현재 가능한 동작: 사이드바 접기/펼치기, 하단 상태줄 확인, 로그아웃\n        - 업무 메뉴(준비·운영·정"
+      },
+      "expected": "6px/no shadow"
+    },
+    {
+      "id": "nav-home-return",
+      "pass": true,
+      "actual": "home mounted",
+      "expected": "home mounted"
+    },
+    {
+      "id": "home-no-horizontal-overflow",
+      "pass": true,
+      "actual": 1440,
+      "expected": 1440
+    },
+    {
+      "id": "home-1024-no-horizontal-overflow",
+      "pass": true,
+      "actual": 1024,
+      "expected": 1024
+    },
+    {
+      "id": "shell-home-icons-hidden",
+      "pass": true,
+      "actual": [],
+      "expected": "decorative icons aria-hidden=true"
+    },
+    {
+      "id": "admin-can-stop-watch",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "id": "shell-skip-passes-nav-header",
+      "pass": true,
+      "actual": {
+        "enter": {
+          "tag": "BODY",
+          "id": "",
+          "label": "본문 바로가기\n      schedule\n      교대근무관리\n    \n      hom",
+          "class": "",
+          "outline": "rgb(25, 27, 31) none 3px",
+          "insideMain": false
+        },
+        "next": {
+          "tag": "BUTTON",
+          "id": "home-btn-restart-watch",
+          "label": "다시 시작",
+          "class": "btn-secondary btn-sm",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": true
+        }
+      },
+      "expected": "Tab after skip reaches main action or footer, bypassing sidebar/header"
+    },
+    {
+      "id": "watch-restart-font-min12",
+      "pass": false,
+      "actual": "11px",
+      "expected": ">=12px"
+    },
+    {
+      "id": "admin-watch-enter-restarted",
+      "pass": true,
+      "actual": "폴더 감시 중",
+      "expected": "actual API success"
+    },
+    {
+      "id": "planner-created-real-api",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "id": "reviewer-created-real-api",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "id": "expired-session-returns-login",
+      "pass": true,
+      "actual": "L1",
+      "expected": "server invalidation -> refresh -> login"
+    },
+    {
+      "id": "expired-shell-destroyed",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "operator-L4-valid-enabled",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "id": "operator-seven-menus",
+      "pass": true,
+      "actual": 7,
+      "expected": "home + six work menus"
+    },
+    {
+      "id": "operator-no-admin-menus",
+      "pass": true,
+      "actual": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "expected": "management not rendered"
+    },
+    {
+      "id": "operator-no-watch-cell",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "operator-no-watch-api",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "operator-watch-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "operator-users-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "operator-logout-enter",
+      "pass": true,
+      "actual": "L1",
+      "expected": "L1"
+    },
+    {
+      "id": "planner-L4-valid-enabled",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "id": "planner-seven-menus",
+      "pass": true,
+      "actual": 7,
+      "expected": "home + six work menus"
+    },
+    {
+      "id": "planner-no-admin-menus",
+      "pass": true,
+      "actual": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "expected": "management not rendered"
+    },
+    {
+      "id": "planner-no-watch-cell",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "planner-no-watch-api",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "planner-watch-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "planner-users-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "planner-logout-enter",
+      "pass": true,
+      "actual": "L1",
+      "expected": "L1"
+    },
+    {
+      "id": "reviewer-L4-valid-enabled",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "id": "reviewer-seven-menus",
+      "pass": true,
+      "actual": 7,
+      "expected": "home + six work menus"
+    },
+    {
+      "id": "reviewer-no-admin-menus",
+      "pass": true,
+      "actual": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "expected": "management not rendered"
+    },
+    {
+      "id": "reviewer-no-watch-cell",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "reviewer-no-watch-api",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "id": "reviewer-watch-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "reviewer-users-denied",
+      "pass": true,
+      "actual": {
+        "ok": false,
+        "errorCode": "AUTH_FORBIDDEN"
+      },
+      "expected": "AUTH_FORBIDDEN (existing HTTP200 BridgeFailure contract)"
+    },
+    {
+      "id": "reviewer-logout-enter",
+      "pass": true,
+      "actual": "L1",
+      "expected": "L1"
+    },
+    {
+      "id": "approved-html-rendered",
+      "pass": true,
+      "actual": [
+        "login",
+        "shell",
+        "home"
+      ],
+      "expected": "login/shell/home comparison artifacts"
+    }
+  ],
+  "measurements": {
+    "login": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "background": "rgb(245, 246, 248)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".login-container": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "background": "rgb(245, 246, 248)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "24px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".login-card": {
+        "x": 490,
+        "y": 256.75,
+        "width": 460,
+        "height": 386.5,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "8px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "36px 32px",
+        "shadow": "rgba(0, 0, 0, 0.06) 0px 4px 16px 0px",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0\n      \n      업무를 시작하려면 로그인해 주세요\n    \n      로그인 ID\n      \n    \n      비밀번호\n      \n        \n        visibility\n      \n    로그인비밀번호를 잊은 경우 "
+      },
+      ".form-input": {
+        "x": 523,
+        "y": 394.75,
+        "width": 394,
+        "height": 38,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(132, 138, 147)",
+        "radius": "4px",
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "padding": "0px 10px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": ""
+      },
+      ".btn-primary": {
+        "x": 523,
+        "y": 530.25,
+        "width": 394,
+        "height": 40,
+        "background": "rgb(62, 86, 182)",
+        "color": "rgb(255, 255, 255)",
+        "border": "rgb(62, 86, 182)",
+        "radius": "6px",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "padding": "6px 14px",
+        "shadow": "none",
+        "outline": "rgb(255, 255, 255) none 3px",
+        "hidden": false,
+        "text": "로그인"
+      },
+      ".login-title": {
+        "x": 523,
+        "y": 293.75,
+        "width": 394,
+        "height": 30,
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "20px",
+        "fontWeight": "700",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "교대근무관리 시스템\n        v0.1.0"
+      }
+    },
+    "loginTab": [
+      {
+        "tag": "INPUT",
+        "id": "login-id",
+        "label": "",
+        "class": "form-input ",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "INPUT",
+        "id": "login-password",
+        "label": "",
+        "class": "form-input ",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "비밀번호 표시",
+        "class": "btn-eye-toggle",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      {
+        "tag": "BUTTON",
+        "id": "",
+        "label": "로그인",
+        "class": "btn-primary login-submit-btn",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      }
+    ],
+    "admin": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "background": "rgb(245, 246, 248)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "본문 바로가기\n      schedule\n      교대근무관리\n    \n      home\n      홈\n    준비\n          calendar_add_on\n          근무표 생성\n        \n          upload_file\n          실적 가져오기\n "
+      },
+      ".sidebar": {
+        "x": 0,
+        "y": 0,
+        "width": 220,
+        "height": 868,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31) rgb(216, 220, 226) rgb(25, 27, 31) rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "schedule\n      교대근무관리\n    \n      home\n      홈\n    준비\n          calendar_add_on\n          근무표 생성\n        \n          upload_file\n          실적 가져오기\n        운영\n    "
+      },
+      ".header-bar": {
+        "x": 220,
+        "y": 0,
+        "width": 1220,
+        "height": 56,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31) rgb(25, 27, 31) rgb(216, 220, 226)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px 16px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "menu홈관리자관리자로그아웃"
+      },
+      ".footer-statusbar": {
+        "x": 0,
+        "y": 868,
+        "width": 1440,
+        "height": 32,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(96, 104, 119)",
+        "border": "rgb(216, 220, 226) rgb(96, 104, 119) rgb(96, 104, 119)",
+        "radius": "0px",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "padding": "0px 16px",
+        "shadow": "none",
+        "outline": "rgb(96, 104, 119) none 3px",
+        "hidden": false,
+        "text": "DB: 경로 설정됨\n          \n      동기화: 완료 (2026-09-30T07:08:35.819Z) completed\n      대기 파일: 0개\n      \n      \n                \n                폴더 감시 중\n              \n "
+      },
+      ".page-content": {
+        "x": 220,
+        "y": 56,
+        "width": 1220,
+        "height": 812,
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "24px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "progress_activity\n        \n          데이터 동기화 진행 중 (폴더 검색 중)\n          2026-09 승인대기 폴더를 확인하는 중입니다.\n        \n      \n        \n          domain\n          준비 (현재 배정 "
+      },
+      ".progress-card": {
+        "x": 244,
+        "y": 171,
+        "width": 380,
+        "height": 172.59375,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "6px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "16px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "domain\n          준비 (현재 배정 기준)\n        \n        \n          1/2\n          근무지\n        \n        \n          \n        \n        이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. "
+      },
+      ".section-card": {
+        "x": 244,
+        "y": 363.59375,
+        "width": 1172,
+        "height": 157,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "6px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "18px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "이번 달 대기 실적 현황\n        \n        \n          \n            folder\n            \n              대기 실적 그룹\n              \n                0\n                개\n           "
+      },
+      ".role-badge": {
+        "x": 1233.875,
+        "y": 14.5,
+        "width": 49.125,
+        "height": 26,
+        "background": "rgb(238, 241, 251)",
+        "color": "rgb(62, 86, 182)",
+        "border": "rgb(213, 220, 245)",
+        "radius": "12px",
+        "fontSize": "12px",
+        "fontWeight": "600",
+        "padding": "3px 8px",
+        "shadow": "none",
+        "outline": "rgb(62, 86, 182) none 3px",
+        "hidden": false,
+        "text": "관리자"
+      }
+    },
+    "rootTokens": {
+      "--bg": "#F5F6F8",
+      "--line": "#D8DCE2",
+      "--text": "#191B1F",
+      "--text-sub": "#606877",
+      "--accent-hover": "#32479A",
+      "--success-bg": "#EAF5ED"
+    },
+    "skip": {
+      "first": {
+        "tag": "A",
+        "id": "",
+        "label": "본문 바로가기",
+        "class": "skip-link",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      "enter": {
+        "tag": "BODY",
+        "id": "",
+        "label": "본문 바로가기\n      schedule\n      교대근무관리\n    \n      hom",
+        "class": "",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "insideMain": false
+      },
+      "next": {
+        "tag": "A",
+        "id": "",
+        "label": "본문 바로가기",
+        "class": "skip-link",
+        "outline": "rgb(62, 86, 182) solid 2px",
+        "insideMain": false
+      },
+      "initialNote": "No focusable main/footer controls at this point; test again when a real action exists.",
+      "withAction": {
+        "first": {
+          "tag": "A",
+          "id": "",
+          "label": "본문 바로가기",
+          "class": "skip-link",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": false
+        },
+        "enter": {
+          "tag": "BODY",
+          "id": "",
+          "label": "본문 바로가기\n      schedule\n      교대근무관리\n    \n      hom",
+          "class": "",
+          "outline": "rgb(25, 27, 31) none 3px",
+          "insideMain": false
+        },
+        "next": {
+          "tag": "BUTTON",
+          "id": "home-btn-restart-watch",
+          "label": "다시 시작",
+          "class": "btn-secondary btn-sm",
+          "outline": "rgb(62, 86, 182) solid 2px",
+          "insideMain": true
+        }
+      }
+    },
+    "adminMenus": [
+      "home\n      홈",
+      "calendar_add_on\n          근무표 생성",
+      "upload_file\n          실적 가져오기",
+      "dashboard\n          근무 현황",
+      "edit_calendar\n          근무표 조정",
+      "calculate\n          수당 계산",
+      "description\n          품의서 출력",
+      "corporate_fare\n          조직 관리",
+      "manage_accounts\n          사용자 관리"
+    ],
+    "placeholder": {
+      "x": 244,
+      "y": 146,
+      "width": 1172,
+      "height": 174.5625,
+      "background": "rgb(255, 255, 255)",
+      "color": "rgb(25, 27, 31)",
+      "border": "rgb(216, 220, 226)",
+      "radius": "8px",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "padding": "24px",
+      "shadow": "rgba(0, 0, 0, 0.04) 0px 2px 8px 0px",
+      "outline": "rgb(25, 27, 31) none 3px",
+      "hidden": false,
+      "text": "교대근무관리 시스템\n      \n        로그인되었습니다. 현재 이용할 수 있는 기능은 다음과 같습니다.\n        - 사용자: 관리자 (관리자)\n        - 현재 가능한 동작: 사이드바 접기/펼치기, 하단 상태줄 확인, 로그아웃\n        - 업무 메뉴(준비·운영·정"
+    },
+    "icons": [],
+    "restart": {
+      "x": 538.40625,
+      "y": 873.5,
+      "width": 65.0625,
+      "height": 22,
+      "background": "rgb(255, 255, 255)",
+      "color": "rgb(25, 27, 31)",
+      "border": "rgb(132, 138, 147)",
+      "radius": "4px",
+      "fontSize": "11px",
+      "fontWeight": "600",
+      "padding": "0px 8px",
+      "shadow": "none",
+      "outline": "rgb(25, 27, 31) none 3px",
+      "hidden": false,
+      "text": "다시 시작"
+    },
+    "operator": {
+      "menus": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "watchCellCount": 0,
+      "naturalWatch": 0
+    },
+    "planner": {
+      "menus": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "watchCellCount": 0,
+      "naturalWatch": 0
+    },
+    "reviewer": {
+      "menus": [
+        "home\n      홈",
+        "calendar_add_on\n          근무표 생성",
+        "upload_file\n          실적 가져오기",
+        "dashboard\n          근무 현황",
+        "edit_calendar\n          근무표 조정",
+        "calculate\n          수당 계산",
+        "description\n          품의서 출력"
+      ],
+      "watchCellCount": 0,
+      "naturalWatch": 0
+    },
+    "reference-login": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 2952,
+        "background": "rgb(229, 231, 235)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(25, 27, 31)",
+        "radius": "0px",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "padding": "20px 0px",
+        "shadow": "none",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "── L1. 로그인 — 초기 ──\n  \n    \n      \n        \n          근무 관리 시스템\n          v2.3.1\n        \n      \n      \n        \n          로그인 ID\n          \n        \n        \n  "
+      },
+      ".login-card": {
+        "x": 490,
+        "y": 340.5,
+        "width": 460,
+        "height": 347,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(25, 27, 31)",
+        "border": "rgb(216, 220, 226)",
+        "radius": "8px",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "padding": "36px 32px",
+        "shadow": "rgba(0, 0, 0, 0.06) 0px 4px 16px 0px",
+        "outline": "rgb(25, 27, 31) none 3px",
+        "hidden": false,
+        "text": "근무 관리 시스템\n          v2.3.1\n        \n      \n      \n        \n          로그인 ID\n          \n        \n        \n          비밀번호\n          \n            \n            visi"
+      },
+      ".sidebar": null,
+      ".header-bar": null,
+      ".footer-statusbar": null,
+      ".progress-card": null,
+      ".section-card": null
+    },
+    "reference-shell": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 2912,
+        "background": "rgb(229, 231, 235)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "20px 0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "── S1. 셸 — 기본 ──\n  본문으로 바로가기\n    \n      \n  \n    \n          home홈\n          ─ 준비 ─\n          domain근무지 관리\n          group인력 관리\n          ─ 운영 ─\n          calenda"
+      },
+      ".login-card": null,
+      ".sidebar": {
+        "x": 0,
+        "y": 56,
+        "width": 220,
+        "height": 868,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48) rgb(226, 229, 234) rgb(31, 36, 48) rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "home홈\n          ─ 준비 ─\n          domain근무지 관리\n          group인력 관리\n          ─ 운영 ─\n          calendar_month근무표 배포\n          fact_check실적 관리128\n          ─ 정산 ─"
+      },
+      ".header-bar": {
+        "x": 220,
+        "y": 56,
+        "width": 1220,
+        "height": 56,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48) rgb(31, 36, 48) rgb(226, 229, 234)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px 16px 0px 12px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "menu\n      \n      \n      홈\n    \n    \n      관리자\n      personadmin\n      logout로그아웃"
+      },
+      ".footer-statusbar": {
+        "x": 0,
+        "y": 924,
+        "width": 1440,
+        "height": 32,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(75, 85, 99)",
+        "border": "rgb(226, 229, 234) rgb(75, 85, 99) rgb(75, 85, 99)",
+        "radius": "0px",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "padding": "0px 16px",
+        "shadow": "none",
+        "outline": "rgb(75, 85, 99) none 3px",
+        "hidden": false,
+        "text": "DB 연결됨최근 인테이크: 마지막 처리 완료 14:32대기 파일 3개폴더 감시 실행 중최신v2.3.1"
+      },
+      ".progress-card": null,
+      ".section-card": null
+    },
+    "reference-home": {
+      "body": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 2912,
+        "background": "rgb(229, 231, 235)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "20px 0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "── H1. 홈 — 기본 (오류 없음) (사용자) ──\n    \n      \n        \n          \n            home홈\n            ─ 준비 ─\n            domain근무지 관리\n            group인력 관리\n            "
+      },
+      ".login-card": null,
+      ".sidebar": {
+        "x": 0,
+        "y": 56,
+        "width": 220,
+        "height": 868,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48) rgb(226, 229, 234) rgb(31, 36, 48) rgb(31, 36, 48)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "home홈\n            ─ 준비 ─\n            domain근무지 관리\n            group인력 관리\n            ─ 운영 ─\n            calendar_month근무표 배포\n            fact_check실적 관리128\n    "
+      },
+      ".header-bar": {
+        "x": 220,
+        "y": 56,
+        "width": 1220,
+        "height": 56,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(31, 36, 48) rgb(31, 36, 48) rgb(226, 229, 234)",
+        "radius": "0px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "0px 16px 0px 12px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "menu\n              calendar_month\n              근무 관리 시스템\n              \n              홈\n            \n            \n              사용자\n              person김지현\n   "
+      },
+      ".footer-statusbar": {
+        "x": 0,
+        "y": 924,
+        "width": 1440,
+        "height": 32,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(75, 85, 99)",
+        "border": "rgb(226, 229, 234) rgb(75, 85, 99) rgb(75, 85, 99)",
+        "radius": "0px",
+        "fontSize": "12px",
+        "fontWeight": "400",
+        "padding": "0px 16px",
+        "shadow": "none",
+        "outline": "rgb(75, 85, 99) none 3px",
+        "hidden": false,
+        "text": "DB 연결됨\n        최근 인테이크: 마지막 처리 완료 14:32\n        대기 파일 3개\n        최신\n        v2.3.1"
+      },
+      ".progress-card": {
+        "x": 240,
+        "y": 132,
+        "width": 382.65625,
+        "height": 172.59375,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(226, 229, 234)",
+        "radius": "6px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "16px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "domain\n                  준비 (현재 배정 기준)\n                \n                4/5근무지\n                \n                이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은"
+      },
+      ".section-card": {
+        "x": 240,
+        "y": 324.59375,
+        "width": 1180,
+        "height": 159,
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(31, 36, 48)",
+        "border": "rgb(226, 229, 234)",
+        "radius": "6px",
+        "fontSize": "14px",
+        "fontWeight": "400",
+        "padding": "18px",
+        "shadow": "none",
+        "outline": "rgb(31, 36, 48) none 3px",
+        "hidden": false,
+        "text": "이번 달 대기 실적 현황\n                실적 관리에서 확인\n              \n              \n                \n                  folder\n                  대기 실적 그룹3개\n                \n "
+      }
+    }
+  },
+  "captures": [
+    "login-L1.png",
+    "login-L2.png",
+    "admin-L4-lock.png",
+    "admin-home.png",
+    "admin-shell-collapsed.png",
+    "admin-menu-placeholder.png",
+    "admin-home-1024.png",
+    "admin-watch-stopped.png",
+    "session-expired.png",
+    "operator-home.png",
+    "planner-home.png",
+    "reviewer-home.png",
+    "reference-login.png",
+    "reference-shell.png",
+    "reference-home.png"
+  ],
+  "unexpected": [],
+  "expectedHttp": [
+    {
+      "phase": "actual-session-invalidation",
+      "url": "http://127.0.0.1:18740/api/performance:get-sync-state",
+      "status": 401
+    }
+  ],
+  "groups": [
+    {
+      "name": "login-design-keyboard",
+      "completed": true
+    },
+    {
+      "name": "admin-login-shell-home",
+      "completed": true
+    },
+    {
+      "name": "admin-watch-and-users",
+      "completed": true
+    },
+    {
+      "name": "actual-session-invalidation",
+      "completed": true
+    },
+    {
+      "name": "role-operator",
+      "completed": true
+    },
+    {
+      "name": "role-planner",
+      "completed": true
+    },
+    {
+      "name": "role-reviewer",
+      "completed": true
+    },
+    {
+      "name": "approved-reference-render",
+      "completed": true
+    }
+  ],
+  "sourceEdits": false,
+  "script": "integration-check.mjs",
+  "actualChrome": "154.0.8037.58",
+  "finished": "2026-09-30T07:08:50.695Z",
+  "browserClosed": true,
+  "summary": {
+    "passed": 64,
+    "failed": 14,
+    "groupsCompleted": 8,
+    "groupsFailed": 0,
+    "unexpectedErrors": 0,
+    "captures": 15
+  }
+}

@@ -1,0 +1,4 @@
+{"name": "gate-timestamp-regression", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "gate-timestamp-regression-fixed-final", "rc": 1, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "worker-ledger-scalar-mismatch", "rc": 1, "timeout": false, "observerHealthy": true, "failureCode": "A1_GATE_REJECTED"}
+{"status": "ACTUAL_OWNER_FAILURES_REPRODUCED", "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-owner-8n85nk40", "count": 2}

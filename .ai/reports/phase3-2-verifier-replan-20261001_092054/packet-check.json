@@ -1,0 +1,16 @@
+{
+  "time": "2026-10-01T09:22:48.996328+09:00",
+  "packetBytesAndArchiveMatch": true,
+  "product338Unchanged": true,
+  "protected336Unchanged": true,
+  "canonical15Matches": true,
+  "allowedNew3Absent": true,
+  "mainHeadMatches": true,
+  "status9Matches": true,
+  "sourceChangesBySol": 0,
+  "handoff": {
+    "bytes": 38646,
+    "sha256": "E3FD108430358C9E3CEB0B8816405A8A5FA2B4EF66CDBEA37EC596E53B7972DD"
+  },
+  "dispatch": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-verifier-replan-20261001_092054\\dispatch-final.json"
+}

@@ -1,0 +1,47 @@
+{
+  "time": "2026-10-12T16:30:41.772112+09:00",
+  "sourceUnchanged": true,
+  "sourceFiles": 341,
+  "protectedFiles": 339,
+  "snapshotsRetained": [
+    "scripts/ui-checks/access-history.mjs",
+    "scripts/ui-checks/access-history-shared.mjs"
+  ],
+  "receivedArchiveVerified": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_154142_3-2c-A1-v3-Sol-FAILED_次패킷전보존본.md",
+    "bytes": 16738,
+    "sha256": "2AE144A6A5B564E1545D38A774DF83581D7C379C91E7A95E3B456A938E741E41"
+  },
+  "controlValidation": {
+    "bytes": 10096,
+    "sha256": "A9C55D518DBCB981990D7F14A8C81712614DAA3498F2826C6BE805990A1DD487"
+  },
+  "redCoverage": {
+    "summary": {
+      "status": "EXPECTED_LEGACY_REGRESSIONS_DETECTED",
+      "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-partial-cC3Vsu",
+      "modes": 5
+    },
+    "evidence": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-partial-cC3Vsu\\suite-result.json",
+    "bytes": 14890,
+    "sha256": "04423B14E9079314E41FA56AA129A94E41036DDA3CB6833D5D57D18B623781A6"
+  },
+  "redCoverageScope": "Control replays against exact v3 SUT; no v4 product acceptance. API calls absent are not a changed-screen experiment.",
+  "routing": {
+    "primary": "frontier",
+    "reason": "orchestration and verification redesign",
+    "internal": "unavailable Terra -> balanced gpt-6-sol; read-only evidence review"
+  },
+  "policyTrace": [
+    "P04 scope",
+    "P06 verification",
+    "P13 executable recurrence guards",
+    "P25 replan"
+  ],
+  "McpSurfaceInspected": true,
+  "McpFailures": [],
+  "skillsUsed": [],
+  "productEditsBySol": 0,
+  "aiCliInvocations": 0,
+  "counterReset": 0
+}

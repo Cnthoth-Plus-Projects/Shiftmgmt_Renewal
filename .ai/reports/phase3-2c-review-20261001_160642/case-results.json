@@ -1,0 +1,162 @@
+[
+  {
+    "name": "case-live-admin",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=live-admin"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:04.923347+00:00",
+    "pid": 27876,
+    "rc": 0,
+    "end": "2026-10-01T07:13:09.964681+00:00",
+    "elapsedSeconds": 5.047,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-live-admin.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-live-admin.stderr.txt"
+  },
+  {
+    "name": "case-list-fixture",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:09.965688+00:00",
+    "pid": 17924,
+    "rc": 0,
+    "end": "2026-10-01T07:13:13.784178+00:00",
+    "elapsedSeconds": 3.812,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-list-fixture.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-list-fixture.stderr.txt"
+  },
+  {
+    "name": "case-empty-fixture",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=empty-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:13.785698+00:00",
+    "pid": 22136,
+    "rc": 0,
+    "end": "2026-10-01T07:13:18.130903+00:00",
+    "elapsedSeconds": 4.344,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-empty-fixture.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-empty-fixture.stderr.txt"
+  },
+  {
+    "name": "case-filters",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=filters"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:18.132685+00:00",
+    "pid": 47492,
+    "rc": 0,
+    "end": "2026-10-01T07:13:23.060309+00:00",
+    "elapsedSeconds": 4.922,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-filters.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-filters.stderr.txt"
+  },
+  {
+    "name": "case-stale-response",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=stale-response"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:23.061428+00:00",
+    "pid": 24492,
+    "rc": 0,
+    "end": "2026-10-01T07:13:28.020349+00:00",
+    "elapsedSeconds": 4.968,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-stale-response.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-stale-response.stderr.txt"
+  },
+  {
+    "name": "case-role-guard",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=role-guard"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:28.021976+00:00",
+    "pid": 38792,
+    "rc": 0,
+    "end": "2026-10-01T07:13:36.209466+00:00",
+    "elapsedSeconds": 8.188,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-role-guard.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-role-guard.stderr.txt"
+  },
+  {
+    "name": "case-errors",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=errors"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:36.210958+00:00",
+    "pid": 27336,
+    "rc": 0,
+    "end": "2026-10-01T07:13:40.212951+00:00",
+    "elapsedSeconds": 4.0,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-errors.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-errors.stderr.txt"
+  },
+  {
+    "name": "case-session-expired",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=session-expired"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:40.214599+00:00",
+    "pid": 36328,
+    "rc": 0,
+    "end": "2026-10-01T07:13:44.432967+00:00",
+    "elapsedSeconds": 4.219,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-session-expired.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-session-expired.stderr.txt"
+  },
+  {
+    "name": "case-regression-shell",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=regression-shell"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:44.435000+00:00",
+    "pid": 1756,
+    "rc": 0,
+    "end": "2026-10-01T07:13:51.211760+00:00",
+    "elapsedSeconds": 6.781,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-regression-shell.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-regression-shell.stderr.txt"
+  },
+  {
+    "name": "case-regression-home",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=regression-home"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:13:51.214121+00:00",
+    "pid": 26684,
+    "rc": 0,
+    "end": "2026-10-01T07:13:55.575026+00:00",
+    "elapsedSeconds": 4.359,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-regression-home.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-regression-home.stderr.txt"
+  }
+]

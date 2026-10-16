@@ -1,0 +1,9 @@
+{
+  "time": "2026-10-12 18:35:08 KST",
+  "verdict": "FAILED / A1_NOT_ACCEPTED",
+  "reason": "Five product finding families plus control/reply gaps",
+  "scopePassedBeforeClosure": true,
+  "oldBaselineNowHistorical": true,
+  "productEditsBySol": 0,
+  "newImplementationAuthorization": false
+}

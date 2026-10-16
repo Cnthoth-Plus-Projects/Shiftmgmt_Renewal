@@ -1,0 +1,9 @@
+{"artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-extra-owner-resume2-5au8312e"}
+{"name": "late-child-before-removal", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "late-child-before-removal-fixed-final", "rc": 0, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "late-child-gate", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "late-child-gate-fixed-final", "rc": 0, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "late-log-gate", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "late-log-gate-fixed-final", "rc": 0, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "late-child-gate-failure", "rc": 1, "timeout": false, "observerHealthy": true, "failureCode": "A1_SERVER_SPAWN_FAILURE"}
+{"status": "ACTUAL_LATE_ERROR_GAPS_REPRODUCED", "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-extra-owner-resume2-5au8312e", "count": 4}

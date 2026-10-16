@@ -1,0 +1,169 @@
+=============== 02-common-1 C1~C4 (Q1) ===============
+-- [C1] 열기(트리거 btn-open-c1 → modal-c1)
+-- [C2] 열기(트리거 btn-open-c2 → modal-c2)
+-- [C3] 열기(트리거 btn-open-c3 → modal-c3)
+-- [C4] 열기(트리거 btn-open-c4 → modal-c4)
+-- C4 게이트(지시서: 빈 값이면 aria-disabled, 값 있으면 해제)
+빈값: aria-disabled=true 사유표시=true fs=12px | 2자(누락): aria-disabled=null 사유표시=false fs=12px | 7자: aria-disabled=null 사유표시=false fs=12px | descText=반려 사유를 입력해야 반려할 수 있습니다.
+-- C1 [확인] 클릭 반응
+C1 [확인] 클릭 직후 label=처리 중... disabled=true
+   console: 1 (1=오류 없음)
+=============== 06-employees-2 E3·E4 (Q2) · E5 ↑↓ ===============
+-- [E3] 열기(트리거 btn-open-e3 → modal-e3)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=460 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=시급 등록 (박성진) btns=close|취소|등록
+   trap(6 Tab):true active=INPUT
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+-- [E4] 열기(트리거 btn-open-e4 → modal-e4)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=460 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=근무지 및 조 배정 (박성진) btns=close|취소|배정
+   trap(6 Tab):true active=INPUT
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+-- E4 B조 정원 초과
+aria-disabled 요소: 
+-- E5 ↑↓ 이동
+before: 1위 (조장) 박성진 ,2위 이상민 대리 · ,3위 김하늘 사원 · ,4위 최우진 사원 ·  [첫↑=true 끝↓=true] | 2행↑ 후: 1위 (조장) 이상민 ,2위 박성진 사원 · ,3위 김하늘 사원 · ,4위 최우진 사원 ·  [첫↑=null 끝↓=true] | 초기화/순서저장 버튼=0
+   console: 1 (1=오류 없음)
+=============== 06-employees-3 E6 (Q6) ===============
+-- [E6] 열기(트리거 btn-open-e6 → modal-e6)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=860 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=시급 일괄 업데이트 btns=close|파일 가져오기|미리보기|취소|시급 일괄 업데이트
+   trap(6 Tab):true active=INPUT
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+요약카드≈0 표 행=[5,3] [시급 일괄 업데이트] 시급 일괄 업데이트 → 업데이트 중... disabled=true
+   console: 1 (1=오류 없음)
+=============== 07-schedule-3 R4 (Q3) ===============
+-- [R4] 열기(트리거 btn-open-r4 → modal-r4)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=420 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=근무표 배포 확인 btns=close|취소|배포
+   trap(6 Tab):true active=취소
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+[배포] 배포 → 게시 중... disabled=true 재클릭 후=게시 중... | 본문=근무표 배포 확인 close 근무표를 배포할까요? 보라매 사업장 · 2025-06 · 14명 배포 폴더: C:\연장근무실적\배포관리 같은 달을 다시 게시하면 배포 폴더의 파일이 덮어써집니다. 취소 게시 중...
+   console: 1 (1=오류 없음)
+=============== 09-allowance-2 A3→A5·A4 (Q4) ===============
+-- [A3] 열기(트리거 btn-open-a3 → modal-a3)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=640 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=수당 품의 미리보기 (2025년 05월) btns=close|닫기|품의 승인
+   trap(6 Tab):true active=닫기
+   Esc→ closed=true focusBack=true bgRestored=true
+   [닫기]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+-- [A4] 열기(트리거 btn-open-a4 → modal-a4)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=460 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=조기 지급일 지정 btns=close|취소|지정
+   trap(6 Tab):true active=INPUT
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+-- A3 [품의 승인] → A5 → [취소] → A3 → Esc
+A5 open=true A3 hidden=true role=dialog boxW=420 focusIn=true title=품의를 승인할까요? | A5[취소]→ A5 closed=true A3 back=true
+   A3 Esc→ closed=true focusBack=true
+-- A5 Esc → A3로 · A5 [승인] 처리 중
+A5 open=true focusIn=true
+   A5 Esc→ A5 closed=true A3 back=true
+[승인] 승인 → 승인 중... disabled=true | A5 본문=품의를 승인할까요? close 품의를 승인할까요? 승인하면 품의서와 별첨 문서가 생성되고 백업됩니다. 승인된 계산은 이력 없이 덮어쓸 수 없습니다. 취소 승인 중...
+A4 본문= 조기 지급일 지정 close 대상자: 박성진 (50001 · 144,000원) 지정 지급일 취소 지정 
+   console: 1 (1=오류 없음)
+=============== 11-operations-4 O9→O10 (Q5) ===============
+-- [O9] 열기(트리거 btn-open-o9 → modal-o9)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=900 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=DB복원 미리보기 btns=close|취소|다음: 확인
+   trap(6 Tab):true active=close
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+O10 open=true O9 hidden=true role=dialog boxW=420 focusIn=true title=데이터베이스 복원 확인 | O10[취소]→ O10 closed=true O9 back=true
+O10 재열림=true
+   O10 Esc→ O10 closed=true O9 back=true
+-- O10 게이트
+빈값=true 교=true 교체=null | [교체 실행] 교체 실행 → 복원 중... disabled=true
+-- O9 현황 표
+O9 표 행=18 첫행h=0 td fs=14px 요약=있음 감소강조=12셀
+   console: 1 (1=오류 없음)
+=============== 00-shell-2 S6 (Q7·고정) · S5 ===============
+-- [S6 밴드] 열기(트리거 btn-open-s6-banner → modal-s6-update)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=600 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=근무표 배포 안정화와 수당 근거 패널 개선 btns=close|나중에|다운로드
+   trap(6 Tab):true active=나중에
+   Esc→ closed=true focusBack=true bgRestored=true
+   [나중에]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+-- [S6 상태줄] 열기(트리거 btn-open-s6-status → modal-s6-update)
+MISSING t=false m=true
+   trap(6 Tab):false active=domain근무지 관리
+   Esc→ closed=true focusBack=false bgRestored=true
+   [나중에]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+S6 본문: 근무표 배포 안정화와 수당 근거 패널 개선 close 현재 버전 2.3.1 → 대상 버전 2.4.0 새 버전 v2.4.0 이 준비되었습니다. 다운로드 전에 변경 내용을 먼저 확인하세요. 근무표 배포 안정화와 수당 근거 패널 개선 배포 버전 v2.4.0 · 게시일 2025. 05. 19. 선택 업데이트 즉시 적용 가능 근무표 게시 후 배포 이력이 자동으로 갱신되고, 수당 근거 패널에 적용 요율 버전이 표시됩니다. 주요 변경 근무표 배포 — 게시 후 배포 이력 자동 갱신 수당 근거 패널 — 적용 요율 버전 표시 나중에 다운로드
+S6 밴드 [업데이트] 업데이트 → 다운로드 중 disabled=true
+   console: 1 (1=오류 없음)
+=============== 04-sites-1 T2 · 04-sites-2 T4 (Q7·고정) ===============
+-- [T2] 열기(트리거 btn-open-t2 → modal-t2)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=720 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=근무지 상세 정보 (보라매 사업장) btns=close|삭제|수정|닫기
+   trap(6 Tab):true active=삭제
+   Esc→ closed=true focusBack=true bgRestored=true
+   [닫기]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+T2 조별 현황: A조/4 / 5명/박성진/박성진, 이상민, 김하늘, 최우진 | B조/5 / 5명/정해린/정해린, 김태우, 오현석, 이시온, 조한별 | C조/3 / 5명/백민수/백민수, 유지선, 정민호 | D조/2 / 5명/한지우/한지우, 최민서 | 캡션=있음 행h=40 td fs=14px
+   console: 1 (1=오류 없음)
+-- [T4] 열기(트리거 btn-open-t4 → modal-t4)
+open=true dim=rgba(0, 0, 0, 0.4) role=dialog aria-modal=true boxW=420 focusIn=true bgAriaHidden=null modalInsideHidden=false overlayCoversBg=true title=근무지 삭제 확인 btns=close|취소|삭제
+   trap(6 Tab):true active=취소
+   Esc→ closed=true focusBack=true bgRestored=true
+   [취소]→ closed=true focusBack=true
+   ✕→ closed=true focusBack=true
+T4 [삭제] 삭제 → 삭제 중... disabled=true | 본문=근무지 삭제 확인 close 근무지 '보라매 사업장'을 삭제할까요? 배정 인력 14명 · 근무표 3건이 연결되어 있습니다. 삭제하면 배정 이력은 남지만 목록에서 사라집니다. 되돌리려면 관리자에게 문의해야 합니다. 취소 삭제 중...
+   console: 1 (1=오류 없음)
+=============== 00-shell-1 ☰ (Q15) ===============
+state-s1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 9→19→9
+state-s2 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 7→15→7
+state-s3 ☰ side 64→64→64 main null→null→null aria-expanded(after)=true navTextHidden 7→7→15
+S3 그룹 머리: ─ 준비 ─:12px:표시 | ─ 운영 ─:12px:표시 | ─ 정산 ─:12px:표시 | 초기 aria-expanded=false
+   console: 1 (1=오류 없음)
+-- 다른 파일의 ☰ (전 파일 공통 확인)
+06-employees-1.html state-e1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 7→15→7
+07-schedule-1.html state-r1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 7→15→7
+09-allowance-1.html state-a1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 7→15→7
+10-dashboard-1.html state-d1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 7→15→7
+11-operations-1.html state-o1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 9→19→9
+12-access-logs-1.html state-g1 ☰ side 220→220→220 main null→null→null aria-expanded(after)=false navTextHidden 9→19→9
+02-common-3.html =============== 01-login-2 L4 (Q16) · 01-login-1 눈 토글 ===============
+init aria-disabled=true describedby=l4-rule-desc desc=모든 비밀번호 규칙을 충족해야 변경할 수 있습니다. visible=true fs=12px | 새="Password" 확인="Password" | 규칙: 
+전부충족+일치: aria-disabled=null 사유=(숨김) | 불일치: aria-disabled=true 사유=새로운 비밀번호 확인이 일치하지 않습니다. | 규칙미충족: aria-disabled=true 사유=모든 비밀번호 규칙을 충족해야 변경할 수 있습니다. | 아이콘(password 입력 후)=
+aria-disabled 상태 클릭 → label=비밀번호 변경 disabled=false
+   console: 1 (1=오류 없음)
+   console: 1 (1=오류 없음)
+=============== 07-schedule-2 R2·R3 (Q14·Q17) · §D R2 검산 ===============
+R2 요약카드: 주간 총시간 0건 기준 내 | 연속 야간 0건 기준 내 | 휴식시간 103건 상세 확인 필요 | 주휴 0건 기준 내 || 경고:  || ⚠셀: A조@4,B조@3,C조@6 || 발췌=전체 103건 중 3건 ✓
+   console: 1 (1=오류 없음)
+=============== §D 검산 회귀 — A1·A7·D1·R1·E1·E2·R5·O2·G1 ===============
+A1 행=4 박성진 승인 · 이상민 승인 · 조한별 승인 · 정해린 승인 합=0 | 카드=369,000원,4명,총 4건 수당 계산,225,000원,144,000원,369,000원,144,000원 | 버튼=description품의 미리보기,조기 지급,조기 지급,조기 지급,조기 지급
+A7 칩: 승인 담당,승인 6,대기 34,반려 0,승인,대기 파일 3개 | 캡션=✓ | 표 행=6 | A6 경로=✓ 폴더열기=false
+D1 순위: 1/박성진 (사원)/보라매 사업장/8.0시간/144,000원 · 2/조한별 (과장)/보라매 사업장/4.0시간/90,000원 · 3/정해린 (사원)/보라매 사업장/4.0시간/72,000원 · 4/이상민 (대리)/보라매 사업장/3.0시간/63,000원 | +2건=✓ | D3=✓
+R1 행=14 | A조:박성 A조:이상 A조:김하 A조:최우 B조:정해 B조:김태 B조:오현 B조:이시 B조:조한 C조:백민 C조:유지 C조:정민 D조:한지 D조:최민 | team=team-a,team-a,team-a,team-a,team-b,team-b,team-b,team-b,team-b,team-c,team-c,team-c,team-d,team-d | 머리=✓ 92일=✓ 경고103=✓ | 직급 셀 fs=
+E1 발췌=✓ 행=8 직급=사원,대리,사원,사원,사원,사원,사원,사원 | E2 패널 표: 8행/h40/fs14px/thrgb(248, 249, 250) ; 2행/h40/fs14px/thrgb(248, 249, 250) | E2 버튼=시급 등록,배정,현재 배정 해지,인력 삭제
+   E1 ↓ 후 row#=2 이상민
+   E1 Space 후 aria-selected=null bg=rgb(238, 241, 251)
+   console: 1 (1=오류 없음)
+R5 발췌=✓ 행=6 첫행h=40 td fs=14px th=rgb(248, 249, 250)/600 | 파일명=보라매사업장_2025-06_4조3교대.xlsx,성수물류센터_2025-06_2조2교대.xlsx | 원본열기/폴더열기=0 | R6 버튼=menu,person
+        박은영,add_circle근무표 만들기
+O2 발췌=✓ 행=8 | 탭 배지=경로 설정 승인 폴더와 출력 경로 설정  | 공휴일 관리 시스템 DB 공휴일과 외부  | 요율 관리 연도별 수당계산 요율 버전 1 | 사용자 관리 권한과 상태별 사용자 목록  | 사이트 명 관리 근무지 등록 선택값 관리 | 양식 관리 승인, 기본 사용, 출력 규칙 | 업데이트 내역 버전별 변경사항과 배포 기 | O1 파일 선택=1 폴더 선택=6
+O3 표=1행,5행,3행 버전행=✓ 행작업=수정,삭제 카드안버튼=true 이력=✓ 상태선택=초안/적용 중/종료 forward문구=✓
+O6 5버튼 카드=4 양식등록=1 이력 표 행=3 | O7 저장되지않음 fs=12px | O8 검색=1 표행=3
+G1 필터=date:g1-start-date,date:g1-end-date,select-one:,select-one:,text:사용자 / 액션 / 상세 | 버튼=menu,person
+        admin,초기화,새로고침 | 128=✓ 248=false 행=8 | G2 버튼=menu,person
+        admin,초기화,필터 초기화
+   G1 ↓ 후 row#=2
+   console: 1 (1=오류 없음)
+E6 제외 표=3행 일치 인력 없음,기존 시급과 동일,시급 형식 오류 | 요약=8건,5건,3건 | 열 입력=2025-06-01,B,C,D
+=============== 콘솔 오류 — 나머지 파일 ===============
+02-common-2   console: 1 (1=오류 없음)
+02-common-3   console: 1 (1=오류 없음)
+09-allowance-3   console: 1 (1=오류 없음)
+10-dashboard-1   console: 1 (1=오류 없음)
+11-operations-1   console: 1 (1=오류 없음)
+11-operations-2   console: 1 (1=오류 없음)
+11-operations-3   console: 1 (1=오류 없음)
+07-schedule-1   console: 1 (1=오류 없음)
+09-allowance-1   console: 1 (1=오류 없음)
+DONE

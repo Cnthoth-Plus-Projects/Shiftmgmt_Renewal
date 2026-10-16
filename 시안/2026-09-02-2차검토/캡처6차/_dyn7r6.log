@@ -1,0 +1,125 @@
+=============== R13-b ☰ 접기 → nav title (셸 19파일 42상태) ===============
+-- 00-shell-1
+state-s1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-s2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-s3 초기(collapsed=true) title=7 → 토글1(collapsed=false) title=∅/∅/∅/∅/∅/∅/∅ → 토글2(collapsed=true) title=6
+-- 00-shell-2
+state-s4 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-s5 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-s6 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 04-sites-1
+state-t1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 04-sites-2
+state-t3 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-t4 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 06-employees-1
+state-e1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-e2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 06-employees-2
+state-e3 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-e4 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-e5 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 06-employees-3
+state-e6 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-e7 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 07-schedule-1
+state-r1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 07-schedule-2
+state-r2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-r3 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 07-schedule-3
+state-r4 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-r5 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-r6 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 09-allowance-1
+state-a1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-a2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 09-allowance-2
+state-a3-a5 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 09-allowance-3
+state-a6 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-a7 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-a8 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 10-dashboard-1
+state-d1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-d2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+state-d3 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 → 토글2(collapsed=false) title=0
+-- 11-operations-1
+state-o1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-o2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+-- 11-operations-2
+state-o3 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-o4 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-o5 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+-- 11-operations-3
+state-o6 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-o7 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-o8 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+-- 11-operations-4
+state-o9-o10 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+-- 12-access-logs-1
+state-g1 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+state-g2 초기(collapsed=false) title=0 → 토글1(collapsed=true) title=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드/운영 관리/활동 이력 → 토글2(collapsed=false) title=0
+=============== R14-a E1·A1 Enter → activeElement ===============
+E1 행 tabindex=0,0,0,0,0,0,0,0 | Enter → activeElement id=e2-detail-title text="박성진 (50001)" | 대상 존재=true tabindex=-1 | 상태 밖 위치=state-e2
+a1 없음
+e1 없음
+A1 행 tabindex=0,0,0,0 | Enter → activeElement id=a2-detail-title text="수당 계산 근거" | 대상 존재=true tabindex=-1 | 상태 밖 위치=state-a2
+A1 ↓ → 2행 포커스=true · Space → selected=true
+=============== R14-c status div 구조 (7파일) ===============
+-- 00-shell-2
+state-s5:#live-s5 role=status live=polite sr-only=true main첫자식=true JS참조=true text=""
+state-s6:#live-s6 role=status live=polite sr-only=true main첫자식=true JS참조=true text=""
+-- 04-sites-2
+state-t4:#live-t4 role=status live=polite sr-only=true main첫자식=true JS참조=true text=""
+-- 06-employees-3
+state-e6:#live-e6 role=status live=polite sr-only=true main첫자식=true JS참조=true text=""
+-- 07-schedule-3
+state-r4:#live-r4 role=status live=polite sr-only=true main첫자식=true JS참조=true text=""
+-- 09-allowance-2
+status 없음
+-- 11-operations-4
+status 없음
+S5 [다시 시작] → live-s5="처리 중: 다시 시작하는 중..." 버튼=다시 시작하는 중... | S6 밴드 [업데이트] → live-s6="처리 중: 다운로드 중" 버튼=다운로드 중
+=============== R14-d E5 · O10 describedby ===============
+초기: ↑true/e5-desc-top ↓-/- | ↑-/- ↓-/- | ↑-/- ↓-/- | ↑-/- ↓true/e5-desc-bottom
+1행 ↓ 후: ↑-/- ↓-/- | ↑true/e5-desc-top ↓-/- | ↑-/- ↓-/- | ↑-/- ↓true/e5-desc-bottom
+e5-desc-top="맨 위 행은 더 올릴 수 없습니다." sr=true · e5-desc-bottom="맨 아래 행은 더 내릴 수 없습니다." sr=true
+O10 초기 aria-disabled=true describedby=o10-exec-desc desc.display=block fs=12px
+  교체 입력 → aria-disabled=- describedby=- desc.display=none fs=12px
+  비움 → aria-disabled=true describedby=o10-exec-desc desc.display=block fs=12px
+  desc text="확인 문구 '교체'를 입력해야 실행할 수 있습니다."
+=============== R15 계산값 (11-operations-1 / 01-login-1 / 01-login-2 / 02-common-1) ===============
+-- 11-operations-1
+--line-strong=#848A93
+input 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+readonly 테두리=rgb(226, 229, 234) 대비=1.26 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+select 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+btn-secondary 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+btn-primary 테두리=rgb(62, 86, 182) 대비=6.54 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+tab 테두리=rgb(62, 86, 182) 대비=6.54 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+-- 01-login-1
+--line-strong=#848A93
+input 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+readonly: 없음
+select: 없음
+btn-secondary 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+btn-primary 테두리=rgb(255, 255, 255) 대비=1.00 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+tab: 없음
+-- 01-login-2
+--line-strong=#848A93
+input 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+readonly: 없음
+select: 없음
+btn-secondary 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+btn-primary 테두리=rgb(255, 255, 255) 대비=1.00 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+tab: 없음
+-- 02-common-1
+--line-strong=#848A93
+input 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=none 0px rgb(31, 36, 48) offset=0px 대비=- | 활성=false
+readonly: 없음
+select: 없음
+btn-secondary 테두리=rgb(132, 138, 147) 대비=3.48 | focus outline=none 0px rgb(31, 36, 48) offset=0px 대비=- | 활성=false
+btn-primary 테두리=rgb(62, 86, 182) 대비=6.54 | focus outline=solid 2px rgb(62, 86, 182) offset=2px 대비=6.54 | 활성=true
+tab: 없음
+DONE

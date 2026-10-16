@@ -1,0 +1,38 @@
+[
+  {
+    "case": "regression-shell",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-222010-FIgAWO\\admin-expanded.png",
+    "bytes": 84057,
+    "sha256": "9F6C5B42DFEF02785E4E2EBB686AD3BBB97E1F7C41F7017181E4DFA5A6A8172C"
+  },
+  {
+    "case": "regression-shell",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-222010-FIgAWO\\admin-collapsed.png",
+    "bytes": 72187,
+    "sha256": "B44B808812A47F960E71DD00DC06571DEAC982CCD249EC147CBA73E592652DE7"
+  },
+  {
+    "case": "regression-shell",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-222010-FIgAWO\\watch-stopped.png",
+    "bytes": 64675,
+    "sha256": "3DEB735AF8A9B2D524CA4563BF6E68D31519A05C627AA17339D994A65FD29E27"
+  },
+  {
+    "case": "regression-shell",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-222010-FIgAWO\\operator.png",
+    "bytes": 78212,
+    "sha256": "BAB228E62EC7831BD91488DC63D0BB7270E27E652D4D44C06F85BBCC000FD8E1"
+  },
+  {
+    "case": "regression-home",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\home-live-admin\\run-20261001-222016-LOU2lx\\home-live-admin.png",
+    "bytes": 84313,
+    "sha256": "F7CF258A58D8621A0842E087F01309DE70F1B8D64B518250B477333FC9A35871"
+  },
+  {
+    "case": "contract-core",
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-220622-5NxZB9\\core-capture.png",
+    "bytes": 25688,
+    "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+  }
+]

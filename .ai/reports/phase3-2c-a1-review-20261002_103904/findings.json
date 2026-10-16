@@ -1,0 +1,90 @@
+[
+  {
+    "id": "A1T-01",
+    "owner": "Sol control",
+    "severity": "BLOCKER",
+    "status": "REPRODUCED",
+    "cause": "runtime-preload note uses fs.appendFileSync; Node24 append calls patched writeFileSync and reenters note",
+    "source": ".ai/contracts/phase3-2c-a1-v2/runtime-preload.mjs:11,66-70",
+    "proof": "preload-original-command.json/preload-original.stderr.txt; no SUT, RC1 RangeError",
+    "boundary": "Canonical locked controls were not edited. Review copy uses captured original.write with flag:a only."
+  },
+  {
+    "id": "A1T-02",
+    "owner": "Sol control",
+    "severity": "P1",
+    "status": "REPRODUCED",
+    "cause": "Preflight/malformed/port negative guards accept arbitrary RC1 without observer loaded/health and intended error proof",
+    "source": ".ai/contracts/phase3-2c-a1-v2/ipc-probes.mjs:44-46; runtime-probes.py malformed loop",
+    "proof": "ipc-original RC0 reports port accepted:true with RangeError/eventCount0; repaired review copy proves real port rejection",
+    "boundary": "Original IPC port and submitted malformed9 do not prove SUT rejection despite accepted:true."
+  },
+  {
+    "id": "A1F-01",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "REPRODUCED",
+    "source": "scripts/ui-checks/access-history.mjs:785-817",
+    "cause": "Owner only checks status PASS and truthy result; lacks exact candidate/case/run/sha/count response match",
+    "proof": "extra gate-result-mismatch: actual fixed gate runs, observer changes successful stdout case; ownerRC0/PASS, unchanged --final RC1 Adjudication result differs"
+  },
+  {
+    "id": "A1F-02",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "REPRODUCED_AND_SOURCE_CONFIRMED",
+    "source": "scripts/ui-checks/access-history.mjs:271-320,388-477,499-539,844-861",
+    "cause": "ACK/worker error outer catch stops server and removes temp without owning/waiting worker; spawn error handlers missing; timeout kills without await; PID force-kill fallback",
+    "proof": "extra owner-bad-ack RC1; actual owned temp removed 4917ms before actual worker close; no foreign PID killed by Sol",
+    "limits": "Missing spawn handlers/PID reuse/timeout branches are source findings; not all were runtime faulted."
+  },
+  {
+    "id": "A1F-03",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "SOURCE_CONFIRMED",
+    "source": "scripts/ui-checks/access-history-shared.mjs:533-544,565-566,619-641",
+    "cause": "browser/context created recorded before actual creation; viewport/origin/request count fixed constants; fixture labels copied constant instead of actual createMockAccessLogs(8)",
+    "proof": "Exact current source vs locked STRATEGY:98-104; file gate cannot establish reported observation provenance"
+  },
+  {
+    "id": "A1F-04",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "REPRODUCED",
+    "source": "scripts/ui-checks/access-history-shared.mjs:421-469",
+    "cause": "Collector only tests existing path/resource array length, no real installed-chrome/resources schema; returned checks/actual mutable; hardcoded rules instead of validated frozen contract traversal",
+    "proof": "Actual SUT direct calls accept resources-created-only, duplicate resource kind, arbitrary file without Chrome versions and mutable returned snapshot; unchanged v1 rules reject three invalid observations",
+    "limits": "Caller-extra-arg/finite/constant-eq/input-independent snapshot vectors pass; final external gate rejects the invalid resource/Chrome observations."
+  },
+  {
+    "id": "A1F-05",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "SOURCE_CONFIRMED",
+    "source": "scripts/ui-checks/access-history.mjs:271-320,620-637,683-694,776-817",
+    "cause": "End server logs before terminating child; no stream finish await, fabricated logsSettled/default timestamps; candidate primary:null and late primary never rechecked",
+    "proof": "Source lacks required log-finish/registry/quiescence checks; canonical24 did not exercise every late-stream or delayed-close branch",
+    "limits": "No universal late-stream falsePASS claim. Current normal runs and defined log-denial vectors reject or pass correctly."
+  },
+  {
+    "id": "A1F-06",
+    "owner": "Gemini product",
+    "severity": "P1",
+    "status": "SOURCE_CONFIRMED",
+    "source": "scripts/ui-checks/access-history-shared.mjs:551-604,631-668,702-713",
+    "cause": "Core cleanup errors discarded locally; body exception jumps past raw/partial persistence; outer catch logs message only and worker PASS may retain close-error",
+    "proof": "Source flow and helper invalid-resource acceptance. Fixed gate rejects close-error later, but actual first cleanup/body error/partial worker proof is lost",
+    "limits": "Canonical helper close2 pass; worker body failure/partial branches not all executed."
+  },
+  {
+    "id": "A1F-07",
+    "owner": "Gemini product",
+    "severity": "P2",
+    "status": "SOURCE_CONFIRMED",
+    "source": "scripts/ui-checks/access-history.mjs:25-29,51-114,698-720; access-history-shared.mjs:22-43,239-356,681-685",
+    "cause": "Baseline/gate hashes exported but not preflight read/compared; contract/execution objects not finite/deepfreeze validated; worker trim and duplicate/replay handling do not implement strict entry rules",
+    "proof": "Exact current source; normal14 IPC rejection subset passes, additional source branches remain uncovered",
+    "limits": "No locked canonical file or source was mutated to exercise these branches."
+  }
+]

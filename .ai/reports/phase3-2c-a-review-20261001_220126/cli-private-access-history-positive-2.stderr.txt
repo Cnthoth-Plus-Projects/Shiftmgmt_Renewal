@@ -1,0 +1,9 @@
+file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:208
+    throw new Error("[IPC 거부] 소유 부모 프로세스 IPC 채널이 연결되지 않았습니다.");
+          ^
+
+Error: [IPC 거부] 소유 부모 프로세스 IPC 채널이 연결되지 않았습니다.
+    at performWorkerIpcHandshake (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:208:11)
+    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:34:27
+
+Node.js v24.13.0

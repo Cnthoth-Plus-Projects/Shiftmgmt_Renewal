@@ -1,0 +1,77 @@
+# 전/후 — 출발점 스냅샷16차 → 결과본 (④ 2차 재수정 a+b) · 2026-09-07 14:37:59
+
+## sha256sum 결과본 34 (원문)
+1차 832d2b997e04a8335b35ab57c774eb9b216d8a626f8328ed6fda44da4d39d6c6 *03-home-1.html
+1차 3a38dc89a0e3d2624b3e3a9e05bb86af2a4281b60b2c913e1d1099dbc79f86e3 *03-home-2.html
+1차 18a56e6310441cc02ba5ccd3c1ee67adbdb212fcfed658a145181725fda215e2 *05-sites-wizard-1.html
+1차 0201bcdaca4fcf97f221e5104b16a2c9911e4d7bc365a3138a31f1a39816ad59 *05-sites-wizard-2.html
+1차 c706015d419f790b5cc635b4fd5e6712636e7f4e8b1cc42dd7f40fd36e0f5d72 *05-sites-wizard-3.html
+1차 6e7dc210f6e77fea76a2122eabd90d0dae975dc4a2613313737c55dd459a620f *05-sites-wizard-4.html
+1차 f32a49bec567c6f541a01a7912ee6b0b0ae0bd36b97257f383d270cb3a16337e *08-performance-1.html
+1차 978f71ed7b1d66ea940896adfeea59d400c4ec4f17ba1e5eb693781d554fcb8f *08-performance-2.html
+1차 f03adbee54df7216fb79d94ef3cde415444f510277458139c51ca160683b7179 *08-performance-3.html
+1차 bbb6f4c0216ae54842b10e19a1ee25d0eab2efa964e07ab578bb4bfa8fc87623 *08-performance-4.html
+2차 198004951bfa114ae4435dbf015a341919cbf7a4e9cb61ea74fd01a9d30deb4f *00-shell-1.html
+2차 a0ec5f2064a0eac88224e0110bf4b1f4171fdaaaf48ca5701d8565cab3e5ffef *00-shell-2.html
+2차 d9294bd934e8625db60bf4b50c26ed92cfc801710ebe7199baef79481a726cdf *01-login-1.html
+2차 f4a42028d8b0105975164cf27d5a1375bc3e1ff007bbbc6fedcf23933b37b902 *01-login-2.html
+2차 d774066b0391cb4cfc36c73a591a424a4d564efc5a80f200529b66aff8c7ff09 *02-common-1.html
+2차 fb2e1493a9f93312f783b8d6e329a535d5888fb33b76a34cf55ba9d1c2add8dd *02-common-2.html
+2차 27e6858f36b0b7e2b6e223cc802e85ebd164907f3807525de3dcea85b81b6b4d *02-common-3.html
+2차 94b5f60d5fc8343e4c83edd1059798aa2f87f99cdd0ebd2a54122b6da9fcadeb *04-sites-1.html
+2차 105f912971ed9341d013454c093c5a27fcbaee5a1432d3203a89751fc436ada3 *04-sites-2.html
+2차 4a6a7a54c2f7a5f87ae205f01cd4c8fa7a486df455cf0ae4b568271aa8cb0445 *06-employees-1.html
+2차 2f5c2303247d4ccf0eb0569c7add19990a6cf9e6d7883f7f5aab7d60210ffb6c *06-employees-2.html
+2차 4ceb96f091799eb927da258e743c7ebc73a54760e2728437bf12be8a01868977 *06-employees-3.html
+2차 27452e109b026f73eb8db904cdc2e0579b19970a7d4304b8d2586b8fd445b3eb *07-schedule-1.html
+2차 f6b8dba4f01707a13ab49598f520497b2133bc66dcdcced47e7b8441796bbfb1 *07-schedule-2.html
+2차 4832f32c73b8b9ac79a65b31424117a57b2256a5276b16d8d46ed88e0dfc0ac7 *07-schedule-3.html
+2차 f3a2c79231561e288f0c66adba85e2839ddd4697d1e61871a2f70bbdc32717fe *09-allowance-1.html
+2차 b1cb2490a423173f1c2a69affa854e5152a95e0f61f9cb835b924d6159cb75ca *09-allowance-2.html
+2차 46ca89980d78e7a07bc93983bad84c273ac7c746afef7ea46dfbfb7f20063084 *09-allowance-3.html
+2차 22578a69c55fa1612e146ae55604bfde817b7b1e17c9178dfac8999785654dc5 *10-dashboard-1.html
+2차 d6e0bf63bff491ed3ea4fd95f9c42253231de5033470531c941558bd3ec69a1a *11-operations-1.html
+2차 1d44fd9d0e3269fbf10c67f9e56d20ab8ae4cd999034947e767c64627b012785 *11-operations-2.html
+2차 ecb01b6df84b6e0e53f189ff0e2b9d4d4896c12f4a7da1a7a4ddae1ea7edbab1 *11-operations-3.html
+2차 5ec8457def72ca792718c37e5d253447acf34d4cbdde84d2ce3a5a88e058905b *11-operations-4.html
+2차 7b6180852a26fdeed9ac8c9ceb0756a46b481a1d96a616b467cb5a2ad0a6da42 *12-access-logs-1.html
+
+## 스냅샷16차 해시 ↔ 결과본 직접 대조(파일별 sha256 계산 — 스냅샷 폴더 안 `sha256sum -c`는 스냅샷 자신을 검사하므로 쓰지 않음): 변경 29 · 불변 5
+변경: 1차 03-home-1.html, 1차 03-home-2.html, 1차 05-sites-wizard-1.html, 1차 05-sites-wizard-2.html, 1차 05-sites-wizard-3.html, 1차 05-sites-wizard-4.html, 1차 08-performance-1.html, 1차 08-performance-2.html, 1차 08-performance-3.html, 1차 08-performance-4.html, 2차 00-shell-1.html, 2차 00-shell-2.html, 2차 04-sites-1.html, 2차 04-sites-2.html, 2차 06-employees-1.html, 2차 06-employees-2.html, 2차 06-employees-3.html, 2차 07-schedule-1.html, 2차 07-schedule-2.html, 2차 07-schedule-3.html, 2차 09-allowance-1.html, 2차 09-allowance-2.html, 2차 09-allowance-3.html, 2차 10-dashboard-1.html, 2차 11-operations-1.html, 2차 11-operations-2.html, 2차 11-operations-3.html, 2차 11-operations-4.html, 2차 12-access-logs-1.html
+불변: 2차 01-login-1.html, 2차 01-login-2.html, 2차 02-common-1.html, 2차 02-common-2.html, 2차 02-common-3.html
+
+## 파일별 바이트 · hunk 수(diff 16차↔결과본 | grep -c '^[0-9]')
+1차 03-home-1.html 48607 → 48650 B · hunk 6
+1차 03-home-2.html 31252 → 32106 B · hunk 3
+1차 05-sites-wizard-1.html 56491 → 57418 B · hunk 5
+1차 05-sites-wizard-2.html 48741 → 49653 B · hunk 8
+1차 05-sites-wizard-3.html 57944 → 58988 B · hunk 4
+1차 05-sites-wizard-4.html 33369 → 34295 B · hunk 4
+1차 08-performance-1.html 31504 → 32778 B · hunk 8
+1차 08-performance-2.html 33140 → 34111 B · hunk 7
+1차 08-performance-3.html 61164 → 62238 B · hunk 7
+1차 08-performance-4.html 38283 → 39201 B · hunk 4
+2차 00-shell-1.html 27560 → 27675 B · hunk 1
+2차 00-shell-2.html 36431 → 36546 B · hunk 1
+2차 01-login-1.html 9884 → 9884 B · hunk 0
+2차 01-login-2.html 12663 → 12663 B · hunk 0
+2차 02-common-1.html 21017 → 21017 B · hunk 0
+2차 02-common-2.html 18529 → 18529 B · hunk 0
+2차 02-common-3.html 18061 → 18061 B · hunk 0
+2차 04-sites-1.html 28901 → 29016 B · hunk 1
+2차 04-sites-2.html 28304 → 28419 B · hunk 1
+2차 06-employees-1.html 48349 → 49256 B · hunk 7
+2차 06-employees-2.html 42769 → 42884 B · hunk 1
+2차 06-employees-3.html 50007 → 50122 B · hunk 1
+2차 07-schedule-1.html 41076 → 41191 B · hunk 1
+2차 07-schedule-2.html 49274 → 49389 B · hunk 1
+2차 07-schedule-3.html 58567 → 58682 B · hunk 1
+2차 09-allowance-1.html 32302 → 32417 B · hunk 1
+2차 09-allowance-2.html 46843 → 46958 B · hunk 1
+2차 09-allowance-3.html 30432 → 30547 B · hunk 1
+2차 10-dashboard-1.html 37021 → 37136 B · hunk 1
+2차 11-operations-1.html 49124 → 49239 B · hunk 1
+2차 11-operations-2.html 52292 → 52407 B · hunk 1
+2차 11-operations-3.html 49226 → 49341 B · hunk 1
+2차 11-operations-4.html 30968 → 31083 B · hunk 1
+2차 12-access-logs-1.html 30348 → 30463 B · hunk 1

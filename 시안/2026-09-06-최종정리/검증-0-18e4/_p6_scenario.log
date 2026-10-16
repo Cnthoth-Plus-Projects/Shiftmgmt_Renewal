@@ -1,0 +1,24 @@
+### A-1 시작 19:32:56 — 새로 열기 1회
+0 초기: {"sel":"p6-row-2","focus":"BODY","chip":"128","badge":"128","live":"","r2":"대기","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"}
+1 row-2 Enter → 패널: {"panel":"flex","row":"p6-row-2","match":10,"diff":[],"got":{"site":"본사","emp":"10034","name":"이수빈","rank":"사원","date":"2025-05-28 (수)","work":"연장 · - · 18:00-21:00 (3.00)","base":"0.00","ot":"3.00","night":"0.00","wage":"12,000원"}}
+2 Esc → focus: p6-row-2
+3 [승인] → {"sel":"p6-row-2","focus":"btn-single-cancel","chip":"128","badge":"128","live":"","r2":"대기","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"flex","file":"none","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"}
+4 실행 → {"sel":"p6-row-5","focus":"p6-row-5","chip":"127","badge":"127","live":"1건이 승인되었습니다. 대기 실적 127건.","r2":"승인","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"}
+5 (초기화 없이) 다음 대기 행 Enter → 패널: {"panel":"flex","row":"p6-row-5","match":10,"diff":[],"got":{"site":"본사","emp":"10009","name":"정민수","rank":"과장","date":"2025-05-05 (월)","work":"법정휴일 · 주간 · 09:00-18:00 (8.00)","base":"8.00","ot":"0.00","night":"0.00","wage":"15,000원"}}
+6 [승인] → {"sel":"p6-row-5","focus":"btn-single-cancel","chip":"127","badge":"127","live":"1건이 승인되었습니다. 대기 실적 127건.","r2":"승인","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"flex","file":"none","target":"실적 1건을 승인합니다 — 10009 정민수 · 2025-05-05 · 법정휴일"}
+7 실행 → {"sel":"p6-row-7","focus":"p6-row-7","chip":"126","badge":"126","live":"1건이 승인되었습니다. 대기 실적 126건.","r2":"승인","r5":"승인","r7":"대기","lock":null,"lockDesc":"none","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10009 정민수 · 2025-05-05 · 법정휴일"}
+8 row-2 재선택 → {"sel":"p6-row-2","focus":"p6-row-2","chip":"126","badge":"126","live":"1건이 승인되었습니다. 대기 실적 126건.","r2":"승인","r5":"승인","r7":"대기","lock":"true","lockDesc":"block","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10009 정민수 · 2025-05-05 · 법정휴일"}
+9 잠긴 [승인] 클릭 → {"sel":"p6-row-2","focus":"p6-row-2","chip":"126","badge":"126","live":"1건이 승인되었습니다. 대기 실적 126건.","r2":"승인","r5":"승인","r7":"대기","lock":"true","lockDesc":"block","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10009 정민수 · 2025-05-05 · 법정휴일"}
+10 잠긴 [승인] Enter/Space → {"sel":"p6-row-2","focus":"btn-approve-single","chip":"126","badge":"126","live":"1건이 승인되었습니다. 대기 실적 126건.","r2":"승인","r5":"승인","r7":"대기","lock":"true","lockDesc":"block","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10009 정민수 · 2025-05-05 · 법정휴일"}
+### A-2 시작 19:33:10 — 새로 열기 1회, 이후 외부 초기화 없음
+1-a 열기 → {"sel":"p6-row-2","focus":"btn-file-cancel","chip":"128","badge":"128","live":"","r2":"대기","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"none","file":"flex","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"} / body='실적_본사_2025-05.xlsx'
+1-b 실행 + 처리 중 실제 Tab/Shift+Tab/Esc (chain, 19:33:12.566):
+[js] {"t":"10:33:13.045","inModal":true,"display":"flex","cancelDis":true,"confirmDis":true,"focus":"modal-approve-file","live":"처리 중: 파일 승인 중…","synthPrevented":"true/true/true"}
+1-c 완료 후: {"done":true,"focus":"btn-file-done","body":"실적 승인 완료 — 51건의 실적을 승인하고 품의 이력","confirmLeft":false,"footerBtns":1}
+1-d 닫기 → {"sel":"p6-row-2","focus":"btn-approve-file","chip":"77","badge":"77","live":"실적 승인 완료 — 51건의 실적을 승인하고 품의 이력에 반영했습니다.","r2":"승인","r5":"승인","r7":"승인","lock":"true","lockDesc":"block","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"}
+2-a 열기 → {"sel":"p6-row-2","focus":"btn-file-cancel","chip":"128","badge":"128","live":"","r2":"대기","r5":"대기","r7":"대기","lock":null,"lockDesc":"none","single":"none","file":"flex","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"} / body='실적_본사_2025-05.xlsx'
+2-b 실행 + 처리 중 실제 Tab/Shift+Tab/Esc (chain, 19:33:16.749):
+[js] {"t":"10:33:17.226","inModal":true,"display":"flex","cancelDis":true,"confirmDis":true,"focus":"modal-approve-file","live":"처리 중: 파일 승인 중…","synthPrevented":"true/true/true"}
+2-c 완료 후: {"done":true,"focus":"btn-file-done","body":"실적 승인 완료 — 51건의 실적을 승인하고 품의 이력","confirmLeft":false,"footerBtns":1}
+2-d 닫기 → {"sel":"p6-row-2","focus":"btn-approve-file","chip":"77","badge":"77","live":"실적 승인 완료 — 51건의 실적을 승인하고 품의 이력에 반영했습니다.","r2":"승인","r5":"승인","r7":"승인","lock":"true","lockDesc":"block","single":"none","file":"none","target":"실적 1건을 승인합니다 — 10034 이수빈 · 2025-05-28 · 연장"}
+### 끝 19:33:19

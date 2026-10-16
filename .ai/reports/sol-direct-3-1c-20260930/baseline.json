@@ -1,0 +1,21 @@
+{
+  "time": "2026-09-30T14:17:01.9114446+09:00",
+  "authorization": "2026-09-30 user: 너가 직접해 너무 오래걸린다 — specific Sol product-code exception for Phase3-1c home.ts/home.mjs, supersedes pending CORRECT2",
+  "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_141701_3-1c-CORRECT2_Sol직접수정전_보존본.md",
+  "archiveBytes": 42080,
+  "archiveSHA": "F0D5EC508B6E7C8234601F9C87AE36BC8FBF7D55AA9EA59052E3D51691BFA503",
+  "files": [
+    {
+      "path": "src/web/screens/home.ts",
+      "bytes": 37972,
+      "sha256": "10A0A32F19BD8544EFA557502F531B09E01EE0002875FA84386BA71FE090E577",
+      "backup": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\sol-direct-3-1c-20260930\\home.ts.before"
+    },
+    {
+      "path": "scripts/ui-checks/home.mjs",
+      "bytes": 36168,
+      "sha256": "FE79578666E2765A6DF897329E20C4E44BB80DF26C1C9D50F5E601721EA57145",
+      "backup": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\sol-direct-3-1c-20260930\\home.mjs.before"
+    }
+  ]
+}

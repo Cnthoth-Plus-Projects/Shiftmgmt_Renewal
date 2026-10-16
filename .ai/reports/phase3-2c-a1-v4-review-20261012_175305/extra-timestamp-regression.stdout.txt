@@ -1,0 +1,1 @@
+{"status":"PASS","case":"contract-core","runId":"run-20261012-181004-v0K0XF","manifestPath":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261012-181004-v0K0XF\\owner-final.json","exitCode":0,"stageSlice":"A1","acceptance":"A1_PREREQUISITE_ONLY"}

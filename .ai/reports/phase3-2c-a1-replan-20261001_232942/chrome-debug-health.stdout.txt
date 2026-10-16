@@ -1,0 +1,1 @@
+{"closed":true,"proof":"OFFLINE_DIAGNOSTIC_CAPABILITY_ONLY"}

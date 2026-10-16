@@ -1,0 +1,17 @@
+{
+  "name": "partial-suite",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\partial-probes.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 50656,
+  "start": "2026-10-12T09:06:14.156196+00:00",
+  "end": "2026-10-12T09:06:23.969611+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\partial-suite.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\partial-suite.stderr.txt",
+  "stdoutSha256": "9652DBA9999D951B77934724F9FDD066918CB6349888991272E88BAE99D90E7E",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

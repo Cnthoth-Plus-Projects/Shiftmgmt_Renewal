@@ -1,0 +1,20 @@
+{
+  "labelMismatches": [
+    {
+      "actionType": "schedule-publish",
+      "expected": "근무표 배포",
+      "actual": "근무편성공개"
+    }
+  ],
+  "unknownCaseEmptyCoverageAccepted": true,
+  "knownRequiredCases": [
+    "live-admin",
+    "list-fixture",
+    "empty-fixture",
+    "filters",
+    "stale-response",
+    "role-guard",
+    "errors",
+    "session-expired"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-review-20261013_150833\\helper-probes.mjs"
+  ],
+  "pid": 34920,
+  "startUtc": "2026-10-13T10:23:53.138645+00:00",
+  "endUtc": "2026-10-13T10:23:54.118263+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-review-20261013_150833\\helper-before-direct.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-review-20261013_150833\\helper-before-direct.stderr.txt",
+  "source": {
+    "bytes": 29998,
+    "sha256": "F1C51C85F969D56EDF1AD264088D6E6271702AC1395940AB2BA22BBE397292EC"
+  }
+}

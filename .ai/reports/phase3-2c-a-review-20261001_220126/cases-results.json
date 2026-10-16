@@ -1,0 +1,1158 @@
+[
+  {
+    "name": "cases-timer-only-live-admin",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=live-admin"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:15:37.374299+00:00",
+    "pid": 25736,
+    "rc": 1,
+    "end": "2026-10-01T13:16:11.136002+00:00",
+    "elapsedSeconds": 33.766,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-live-admin.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-live-admin.stderr.txt",
+    "fault": "timer-only",
+    "case": "live-admin",
+    "events": [
+      {
+        "time": 1790860537811,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 50756,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860538992,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 50840,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=live-admin"
+        ]
+      },
+      {
+        "time": 1790860539444,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860570999,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 50840,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860571000,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 50840
+      },
+      {
+        "time": 1790860571017,
+        "pid": 25736,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 50756,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-live-admin",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-live-admin\\run-20261001-221537-irBSHC\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "live-admin",
+      "runId": "run-20261001-221537-irBSHC",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "LIVE-01",
+        "LIVE-02",
+        "LIVE-03",
+        "LIVE-04",
+        "LIVE-05",
+        "LIVE-06",
+        "LIVE-07",
+        "LIVE-08"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-list-fixture",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:16:11.184082+00:00",
+    "pid": 34572,
+    "rc": 1,
+    "end": "2026-10-01T13:16:44.960136+00:00",
+    "elapsedSeconds": 33.781,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-list-fixture.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-list-fixture.stderr.txt",
+    "fault": "timer-only",
+    "case": "list-fixture",
+    "events": [
+      {
+        "time": 1790860571637,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 51148,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860572831,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 11924,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=list-fixture"
+        ]
+      },
+      {
+        "time": 1790860573284,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860604836,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 11924,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860604837,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 11924
+      },
+      {
+        "time": 1790860604851,
+        "pid": 34572,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 51148,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-list-fixture",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-221611-7sYf7b\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "list-fixture",
+      "runId": "run-20261001-221611-7sYf7b",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "LIST-01",
+        "LIST-02",
+        "LIST-03",
+        "LIST-04",
+        "LIST-05",
+        "LIST-06",
+        "LIST-07",
+        "LIST-08",
+        "LIST-09",
+        "LIST-10",
+        "LIST-11",
+        "LIST-12",
+        "LIST-13",
+        "LIST-14"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-empty-fixture",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=empty-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:16:45.000489+00:00",
+    "pid": 51452,
+    "rc": 1,
+    "end": "2026-10-01T13:17:18.785788+00:00",
+    "elapsedSeconds": 33.797,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-empty-fixture.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-empty-fixture.stderr.txt",
+    "fault": "timer-only",
+    "case": "empty-fixture",
+    "events": [
+      {
+        "time": 1790860605441,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 25524,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860606622,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 49824,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=empty-fixture"
+        ]
+      },
+      {
+        "time": 1790860607074,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860638650,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 49824,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860638651,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 49824
+      },
+      {
+        "time": 1790860638667,
+        "pid": 51452,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 25524,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-empty-fixture",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-221645-NQY8Ha\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "empty-fixture",
+      "runId": "run-20261001-221645-NQY8Ha",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "EMPTY-01",
+        "EMPTY-02",
+        "EMPTY-03",
+        "EMPTY-04",
+        "EMPTY-05",
+        "EMPTY-06",
+        "EMPTY-07",
+        "EMPTY-08"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-filters",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=filters"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:17:18.814445+00:00",
+    "pid": 51076,
+    "rc": 1,
+    "end": "2026-10-01T13:17:52.564481+00:00",
+    "elapsedSeconds": 33.75,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-filters.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-filters.stderr.txt",
+    "fault": "timer-only",
+    "case": "filters",
+    "events": [
+      {
+        "time": 1790860639262,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 22772,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860640437,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 33824,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=filters"
+        ]
+      },
+      {
+        "time": 1790860640896,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860672424,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 33824,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860672425,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 33824
+      },
+      {
+        "time": 1790860672441,
+        "pid": 51076,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 22772,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-filters",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-filters\\run-20261001-221719-WJ38L2\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "filters",
+      "runId": "run-20261001-221719-WJ38L2",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "FILTER-01",
+        "FILTER-02",
+        "FILTER-03",
+        "FILTER-04",
+        "FILTER-05",
+        "FILTER-06",
+        "FILTER-07",
+        "FILTER-08",
+        "FILTER-09",
+        "FILTER-10",
+        "FILTER-11",
+        "FILTER-12",
+        "FILTER-13",
+        "FILTER-14",
+        "FILTER-15"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-errors",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=errors"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:17:52.598132+00:00",
+    "pid": 51856,
+    "rc": 1,
+    "end": "2026-10-01T13:18:26.001089+00:00",
+    "elapsedSeconds": 33.391,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-errors.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-errors.stderr.txt",
+    "fault": "timer-only",
+    "case": "errors",
+    "events": [
+      {
+        "time": 1790860673058,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 28660,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860674228,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 20424,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-negative.mjs",
+          "--case=errors"
+        ]
+      },
+      {
+        "time": 1790860674664,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860705861,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 20424,
+        "isServer": false,
+        "code": 1,
+        "signal": null
+      },
+      {
+        "time": 1790860705862,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 20424
+      },
+      {
+        "time": 1790860705877,
+        "pid": 51856,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 28660,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-errors",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-20261001-221753-hKRtw4\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "errors",
+      "runId": "run-20261001-221753-hKRtw4",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "ERROR-01",
+        "ERROR-02",
+        "ERROR-03",
+        "ERROR-04",
+        "ERROR-05",
+        "ERROR-06",
+        "ERROR-07",
+        "ERROR-08"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-stale-response",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=stale-response"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:26.039568+00:00",
+    "pid": 40820,
+    "rc": 1,
+    "end": "2026-10-01T13:18:59.813222+00:00",
+    "elapsedSeconds": 33.766,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-stale-response.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-stale-response.stderr.txt",
+    "fault": "timer-only",
+    "case": "stale-response",
+    "events": [
+      {
+        "time": 1790860706469,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 17064,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860707655,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 47596,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=stale-response"
+        ]
+      },
+      {
+        "time": 1790860708087,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860739670,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 47596,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860739671,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 47596
+      },
+      {
+        "time": 1790860739688,
+        "pid": 40820,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 17064,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-stale-response",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-20261001-221826-ttVae9\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "stale-response",
+      "runId": "run-20261001-221826-ttVae9",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "STALE-01",
+        "STALE-02",
+        "STALE-03",
+        "STALE-04",
+        "STALE-05",
+        "STALE-06",
+        "STALE-07",
+        "STALE-08",
+        "STALE-09",
+        "STALE-10",
+        "STALE-11",
+        "STALE-12"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-role-guard",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=role-guard"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:59.844066+00:00",
+    "pid": 13388,
+    "rc": 1,
+    "end": "2026-10-01T13:19:34.180814+00:00",
+    "elapsedSeconds": 34.344,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-role-guard.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-role-guard.stderr.txt",
+    "fault": "timer-only",
+    "case": "role-guard",
+    "events": [
+      {
+        "time": 1790860740308,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 36540,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860741591,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 40620,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs",
+          "--case=role-guard"
+        ]
+      },
+      {
+        "time": 1790860742043,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860774041,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 40620,
+        "isServer": false,
+        "code": 2,
+        "signal": null
+      },
+      {
+        "time": 1790860774042,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 40620
+      },
+      {
+        "time": 1790860774058,
+        "pid": 13388,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 36540,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-role-guard",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-20261001-221900-CixFmG\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "role-guard",
+      "runId": "run-20261001-221900-CixFmG",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "ROLE-01",
+        "ROLE-02",
+        "ROLE-03",
+        "ROLE-04",
+        "ROLE-05",
+        "ROLE-06",
+        "ROLE-07",
+        "ROLE-08",
+        "ROLE-09"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-session-expired",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=session-expired"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:19:34.210118+00:00",
+    "pid": 36068,
+    "rc": 1,
+    "end": "2026-10-01T13:20:08.026230+00:00",
+    "elapsedSeconds": 33.812,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-session-expired.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-session-expired.stderr.txt",
+    "fault": "timer-only",
+    "case": "session-expired",
+    "events": [
+      {
+        "time": 1790860774717,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 48464,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860775990,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 31732,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-negative.mjs",
+          "--case=session-expired"
+        ]
+      },
+      {
+        "time": 1790860776520,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860807887,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 31732,
+        "isServer": false,
+        "code": 1,
+        "signal": null
+      },
+      {
+        "time": 1790860807888,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 31732
+      },
+      {
+        "time": 1790860807906,
+        "pid": 36068,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 48464,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-session-expired",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-20261001-221934-mpHSd6\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "session-expired",
+      "runId": "run-20261001-221934-mpHSd6",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "FAIL_INCOMPLETE",
+      "exitCode": 1,
+      "missing": [
+        "SESSION-01",
+        "SESSION-02",
+        "SESSION-03",
+        "SESSION-04",
+        "SESSION-05",
+        "SESSION-06",
+        "SESSION-07"
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "note": "A 단계에서는 기초 계약 기반 검증만 수용하며, 화면 8case 전체 coverage는 미완성이므로 fail-closed (RC 1)로 종료합니다."
+    }
+  },
+  {
+    "name": "cases-timer-only-regression-shell",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=regression-shell"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:20:08.069628+00:00",
+    "pid": 35044,
+    "rc": 0,
+    "end": "2026-10-01T13:20:14.407967+00:00",
+    "elapsedSeconds": 6.328,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-regression-shell.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-regression-shell.stderr.txt",
+    "fault": "timer-only",
+    "case": "regression-shell",
+    "events": [
+      {
+        "time": 1790860808518,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 37596,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860809699,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 45508,
+        "isServer": false,
+        "isRegression": true,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\shell.mjs",
+          "http://127.0.0.1:18741/"
+        ]
+      },
+      {
+        "time": 1790860809700,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860814269,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 45508,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860814270,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 45508
+      },
+      {
+        "time": 1790860814289,
+        "pid": 35044,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 37596,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-regression-shell",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261001-222008-olzOaN\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "regression-shell",
+      "runId": "run-20261001-222008-olzOaN",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "checks": [
+        {
+          "id": "REGSHELL-01",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/exitCode",
+          "actual": 0
+        },
+        {
+          "id": "REGSHELL-02",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/closeSeen",
+          "actual": true
+        },
+        {
+          "id": "REGSHELL-03",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/status",
+          "actual": "PASS"
+        }
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      }
+    }
+  },
+  {
+    "name": "cases-timer-only-regression-home",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-ndwwgg2p/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=regression-home"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:20:14.442148+00:00",
+    "pid": 15428,
+    "rc": 0,
+    "end": "2026-10-01T13:20:18.350644+00:00",
+    "elapsedSeconds": 3.906,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-regression-home.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cases-timer-only-regression-home.stderr.txt",
+    "fault": "timer-only",
+    "case": "regression-home",
+    "events": [
+      {
+        "time": 1790860814882,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 45584,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860816065,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "owned-child-spawn",
+        "childPid": 34988,
+        "isServer": false,
+        "isRegression": true,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\home.mjs",
+          "http://127.0.0.1:18741/",
+          "--case=live-admin"
+        ]
+      },
+      {
+        "time": 1790860816065,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 180000
+      },
+      {
+        "time": 1790860818218,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 34988,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860818219,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 180000,
+        "childPid": 34988
+      },
+      {
+        "time": 1790860818237,
+        "pid": 15428,
+        "fault": "timer-only",
+        "type": "owned-child-really-closed",
+        "childPid": 45584,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-regression-home",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261001-222014-CCPTpF\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "regression-home",
+      "runId": "run-20261001-222014-CCPTpF",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "checks": [
+        {
+          "id": "REGHOME-01",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/exitCode",
+          "actual": 0
+        },
+        {
+          "id": "REGHOME-02",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/closeSeen",
+          "actual": true
+        },
+        {
+          "id": "REGHOME-03",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/status",
+          "actual": "PASS"
+        }
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      }
+    }
+  }
+]

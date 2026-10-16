@@ -1,0 +1,14 @@
+{
+  "pid": 15700,
+  "synthetic": true,
+  "purpose": "test verifier rejection of unexpected browser errors",
+  "temps": [],
+  "serverPid": null,
+  "consoleErrors": [
+    "SOL_VERIFIER_FAULT_CONSOLE"
+  ],
+  "pageErrors": [
+    "SOL_VERIFIER_FAULT_PAGE",
+    "SOL_VERIFIER_FAULT_PAGE"
+  ]
+}

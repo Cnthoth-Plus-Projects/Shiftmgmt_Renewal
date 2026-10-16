@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\contracts\\phase3-2c-a1-v4\\component-probes.mjs",
+    "--list"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 6964,
+  "start": "2026-10-12T07:19:33.215050+00:00",
+  "end": "2026-10-12T07:19:33.330019+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_161931-component-list.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_161931-component-list.stderr.txt",
+  "stdoutSha256": "A0C394BD43AE0DD4C6D6E28D1A0B125BED08192066C2E650AAEC6F393C7FFDE7",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

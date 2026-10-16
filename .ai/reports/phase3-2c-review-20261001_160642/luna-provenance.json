@@ -1,0 +1,488 @@
+{
+  "task": "Phase3-2c submission provenance inventory; no acceptance decision",
+  "inputs": {
+    "baseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-verifier-replan-20261001_092054\\baseline.json",
+    "receivedArchive": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_160642_3-2c-Gemini-IMPLEMENTED_수신원본.md",
+      "bytes": 52871,
+      "sha256": "48384DE2A5195055B384B7B6C62A3401C1FCDB9F55A52B2755A9372CDFEF2DAB"
+    },
+    "issuedPacket": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_092054_3-2c-Sol-IMPLEMENT_검증기재설계_발송본.md",
+      "bytes": 38316,
+      "sha256": "52393A06B1F834A05F5BF9FF702870FFBAEA262F80374823CDF0E9C859CA9528"
+    }
+  },
+  "git": {
+    "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "branch": "main",
+    "head": "160940f9aaeb6696538447f83b44658073e382f0",
+    "expectedHead": "160940f9aaeb6696538447f83b44658073e382f0",
+    "headMatches": true,
+    "sourceFilesPresent": 341,
+    "expectedSourceFiles": 341,
+    "sourceCountMatches": true,
+    "statusCount": 12,
+    "expectedStatusCount": 12,
+    "statusPaths": [
+      "docs/codebase-map.md",
+      "scripts/copy-web-assets.mjs",
+      "src/web/index.html",
+      "src/web/screens/shell.ts",
+      "scripts/ui-checks/access-history-negative.mjs",
+      "scripts/ui-checks/access-history-positive.mjs",
+      "scripts/ui-checks/access-history-shared.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "src/web/access-history.css",
+      "src/web/screens/access-history-model.test.ts",
+      "src/web/screens/access-history-model.ts",
+      "src/web/screens/access-history.ts"
+    ],
+    "expectedStatusPathCount": 12,
+    "dirtySet": [
+      "docs/codebase-map.md",
+      "scripts/copy-web-assets.mjs",
+      "scripts/ui-checks/access-history-negative.mjs",
+      "scripts/ui-checks/access-history-positive.mjs",
+      "scripts/ui-checks/access-history-shared.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "src/web/access-history.css",
+      "src/web/index.html",
+      "src/web/screens/access-history-model.test.ts",
+      "src/web/screens/access-history-model.ts",
+      "src/web/screens/access-history.ts",
+      "src/web/screens/shell.ts"
+    ],
+    "inheritedBaselineDirtyPaths": [
+      " M docs/codebase-map.md",
+      " M scripts/copy-web-assets.mjs",
+      " M src/web/index.html",
+      " M src/web/screens/shell.ts",
+      "?? scripts/ui-checks/access-history.mjs",
+      "?? src/web/access-history.css",
+      "?? src/web/screens/access-history-model.test.ts",
+      "?? src/web/screens/access-history-model.ts",
+      "?? src/web/screens/access-history.ts"
+    ],
+    "sourcePathSetSha256": "3D6A5EA5E6C1358FD6520224223A968D568FFA5160B5971D21C4A8B6AF834A79"
+  },
+  "baselineComparisons": {
+    "protectedExpected": 336,
+    "protectedMismatches": [],
+    "canonicalExpected": 15,
+    "canonicalMismatches": [],
+    "replyHashClaims": 12,
+    "replyHashMismatches": [],
+    "returnedBodyBeforeReplyExactMatchesIssuedPacket": true,
+    "replyHeadingByteOffset": 1029,
+    "packetReplyHeadingByteOffset": 1029
+  },
+  "oldSourcePathsFromBaseline": {
+    "baselineSourceChangesBySolField": 0,
+    "expectedOldPathCountPerAssignment": 87,
+    "oldPathListPresentInBaseline": false,
+    "note": "Baseline records sourceChangesBySol as integer 0, so the claimed old87 pathnames cannot be compared individually."
+  },
+  "artifacts": {
+    "manifestFileCount": 382,
+    "caseRuns": {
+      "access-history-list-fixture": [
+        {
+          "run": "run-20261001-155003-tC1Ne3",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-list-fixture/run-20261001-155003-tC1Ne3/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-list-fixture/run-20261001-155003-tC1Ne3/list-fixture-201.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155431-0iVTWQ",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-list-fixture/run-20261001-155431-0iVTWQ/manifest.json",
+          "captures": [],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: [Assertion 실패: list-fixture-table-aria-label] expected=\"활동 이력 목록\", actual=\"SOL_BAD_ACCESSIBLE_NAME\"\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:133:13)\n    at steps (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:91:17)\n    at async runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        }
+      ],
+      "access-history-filters": [
+        {
+          "run": "run-20261001-155024-WJO92u",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-filters/run-20261001-155024-WJO92u/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-filters/run-20261001-155024-WJO92u/filters-validation-lock.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        }
+      ],
+      "access-history-stale-response": [
+        {
+          "run": "run-20261001-155035-qqQqeq",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-stale-response/run-20261001-155035-qqQqeq/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-stale-response/run-20261001-155035-qqQqeq/stale-response-prevented.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        }
+      ],
+      "access-history-role-guard": [
+        {
+          "run": "run-20261001-155104-A9V6t9",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-role-guard/run-20261001-155104-A9V6t9/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-role-guard/run-20261001-155104-A9V6t9/role-guard-operator-planner.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        }
+      ],
+      "access-history-session-expired": [],
+      "access-history-errors": [],
+      "access-history-empty-fixture": [
+        {
+          "run": "run-20261001-155014-3yvfbA",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155014-3yvfbA/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155014-3yvfbA/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155513-ORCtu0",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155513-ORCtu0/manifest.json",
+          "captures": [],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: [중복 Assertion ID] 'empty-fixture-card-exists' 가 이미 기록되었습니다.\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:101:13)\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-03-duplicate.mjs:8:16)\n    at steps (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:139:17)\n    at async runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155528-Hz7he6",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155528-Hz7he6/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155528-Hz7he6/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: [필수 Assertion 누락: empty-fixture] 다음 필수 항목이 검증되지 않았습니다: empty-fixture-filters-count-5\n    at AssertionCollector.validateRequiredCoverage (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:170:13)\n    at steps (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:362:15)\n    at async runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155542-clBZav",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155542-clBZav/manifest.json",
+          "captures": [],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: [Assertion 실패: empty-fixture-filters-count-5] expected 또는 actual이 undefined입니다.\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:106:19)\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-03-undefined.mjs:7:23)\n    at steps (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:150:17)\n    at async runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155601-LrPAQy",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155601-LrPAQy/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155601-LrPAQy/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [
+              "adversarial-injected-console-error",
+              "adversarial-injected-console-error"
+            ],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155619-hNrIpe",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155619-hNrIpe/manifest.json",
+          "captures": [],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: [Assertion 실패: empty-fixture-reset-single-request] expected=1, actual=2\n    at AssertionCollector.expectEqual (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:133:13)\n    at steps (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:159:17)\n    at async runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [
+              "adversarial-injected-page-exception",
+              "adversarial-injected-page-exception"
+            ],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155636-A7FsPx",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155636-A7FsPx/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155636-A7FsPx/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155700-kq1g1i",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155700-kq1g1i/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155700-kq1g1i/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155811-fOovSJ",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155811-fOovSJ/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155811-fOovSJ/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [
+              "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+              "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+              "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+            ],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [
+              "500 http://127.0.0.1:18741/api/operations:list-users",
+              "500 http://127.0.0.1:18741/api/operations:list-users",
+              "500 http://127.0.0.1:18741/api/operations:list-users"
+            ],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155827-UuOtbO",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155827-UuOtbO/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155827-UuOtbO/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [
+              "Failed to load resource: net::ERR_FAILED",
+              "Failed to load resource: net::ERR_FAILED",
+              "Failed to load resource: net::ERR_FAILED"
+            ],
+            "pageErrors": [],
+            "requestFailed": [
+              "http://127.0.0.1:18741/api/operations:list-users (net::ERR_FAILED)",
+              "http://127.0.0.1:18741/api/operations:list-users (net::ERR_FAILED)",
+              "http://127.0.0.1:18741/api/operations:list-users (net::ERR_FAILED)"
+            ],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155856-Ojg8Sn",
+          "status": "FAIL",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155856-Ojg8Sn/manifest.json",
+          "captures": [],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": "Error: Adversarial Chrome launch failure injection\n    at chromium.launch (file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/adversarial-tests/preload-n32-05-chromelaunch.mjs:4:9)\n    at runScreenCheck (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/lib/ui-check.mjs:223:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:36:1",
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        },
+        {
+          "run": "run-20261001-155944-MEP5Cu",
+          "status": "PASS",
+          "manifest": "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155944-MEP5Cu/manifest.json",
+          "captures": [
+            "artifacts/captures/phase3/access-history-empty-fixture/run-20261001-155944-MEP5Cu/empty-fixture-g2.png"
+          ],
+          "actionAssertions": false,
+          "ownerFinal": false,
+          "errors": {
+            "executionError": null,
+            "manifestWriteError": null,
+            "consoleErrors": [],
+            "pageErrors": [],
+            "requestFailed": [],
+            "badResponses": [],
+            "cleanupErrors": []
+          }
+        }
+      ],
+      "access-history-regression-shell": []
+    },
+    "adversarialInputs": [
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-02.mjs",
+        "bytes": 1581
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-03-duplicate.mjs",
+        "bytes": 422
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-03-missing.mjs",
+        "bytes": 397
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-03-undefined.mjs",
+        "bytes": 450
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-04-console-error.mjs",
+        "bytes": 484
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-04-http500.mjs",
+        "bytes": 646
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-04-pageerror.mjs",
+        "bytes": 528
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-04-requestfailed.mjs",
+        "bytes": 495
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-05-chromelaunch.mjs",
+        "bytes": 141
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/preload-n32-06-cleanup-fail.mjs",
+        "bytes": 310
+      },
+      {
+        "path": "artifacts/captures/phase3/adversarial-tests/test-n32-07-port-occupy.mjs",
+        "bytes": 594
+      }
+    ],
+    "stdoutStderrLogFiles": [],
+    "stdoutStderrExist": false,
+    "note": "Existing retained artifacts only; manifest status/file presence do not establish runtime correctness."
+  }
+}

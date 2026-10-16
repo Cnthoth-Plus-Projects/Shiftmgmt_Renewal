@@ -1,0 +1,164 @@
+{
+  "proof": "ACTUAL_OWNER_AND_REAL_SDK_CONTROLLED_PROBES_NOT_A2_ACCEPTANCE",
+  "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a2-review-runtime-1i_ofx62\\review-runtime-result.json",
+  "meta": {
+    "bytes": 26462,
+    "sha256": "DB3F40F528AAE588F8039F263643AA1D7514EF59CAFFE2B4F13C00520E861098"
+  },
+  "pidClaims": [
+    {
+      "index": 1,
+      "name": "scope-before",
+      "claimedPid": 56304,
+      "actualPid": 56304,
+      "match": true
+    },
+    {
+      "index": 2,
+      "name": "syntax-access-history",
+      "claimedPid": 46564,
+      "actualPid": 46564,
+      "match": true
+    },
+    {
+      "index": 3,
+      "name": "syntax-access-history-shared",
+      "claimedPid": 40996,
+      "actualPid": 49924,
+      "match": false
+    },
+    {
+      "index": 4,
+      "name": "syntax-access-history-positive",
+      "claimedPid": 51432,
+      "actualPid": 24224,
+      "match": false
+    },
+    {
+      "index": 5,
+      "name": "syntax-access-history-negative",
+      "claimedPid": 42680,
+      "actualPid": 28636,
+      "match": false
+    },
+    {
+      "index": 6,
+      "name": "typecheck (npm run typecheck)",
+      "claimedPid": 56492,
+      "actualPid": 47856,
+      "match": false
+    },
+    {
+      "index": 7,
+      "name": "lint (npm run lint)",
+      "claimedPid": 51184,
+      "actualPid": 9496,
+      "match": false
+    },
+    {
+      "index": 8,
+      "name": "map (npm run validate",
+      "claimedPid": 47684,
+      "actualPid": 656,
+      "match": false
+    },
+    {
+      "index": 9,
+      "name": "diff-check (git diff --check)",
+      "claimedPid": 36464,
+      "actualPid": 15924,
+      "match": false
+    },
+    {
+      "index": 10,
+      "name": "build (npm run build)",
+      "claimedPid": 49308,
+      "actualPid": 49732,
+      "match": false
+    },
+    {
+      "index": 11,
+      "name": "focused-tests (vitest 3개 스위트)",
+      "claimedPid": 40384,
+      "actualPid": 53316,
+      "match": false
+    },
+    {
+      "index": 12,
+      "name": "gate-parser (gate-evidence.py --self-test)",
+      "claimedPid": 40484,
+      "actualPid": 50340,
+      "match": false
+    },
+    {
+      "index": 13,
+      "name": "runtime-parser (runtime-probes.py --self-test)",
+      "claimedPid": 41532,
+      "actualPid": 20048,
+      "match": false
+    },
+    {
+      "index": 14,
+      "name": "actual-a1-runtime51 (runtime-probes.py)",
+      "claimedPid": 52028,
+      "actualPid": 4596,
+      "match": false
+    },
+    {
+      "index": 15,
+      "name": "ipc19-and-port (ipc-probes.mjs)",
+      "claimedPid": 54100,
+      "actualPid": 3516,
+      "match": false
+    },
+    {
+      "index": 16,
+      "name": "component32 (component-probes.mjs)",
+      "claimedPid": 39420,
+      "actualPid": 43532,
+      "match": false
+    },
+    {
+      "index": 17,
+      "name": "partial11 (partial-probes.mjs)",
+      "claimedPid": 36528,
+      "actualPid": 55572,
+      "match": false
+    },
+    {
+      "index": 18,
+      "name": "actual-guard-parity (lifecycle-probes.py --guard)",
+      "claimedPid": 56840,
+      "actualPid": 9616,
+      "match": false
+    },
+    {
+      "index": 19,
+      "name": "actual-late15 (lifecycle-probes.py)",
+      "claimedPid": 45960,
+      "actualPid": 1164,
+      "match": false
+    },
+    {
+      "index": 20,
+      "name": "actual-normal8 (normal-probes.py)",
+      "claimedPid": 49452,
+      "actualPid": 46608,
+      "match": false
+    },
+    {
+      "index": 21,
+      "name": "negative-ledger (validate-negative.py)",
+      "claimedPid": 47760,
+      "actualPid": 55140,
+      "match": false
+    },
+    {
+      "index": 22,
+      "name": "scope-after",
+      "claimedPid": 53456,
+      "actualPid": 47072,
+      "match": false
+    }
+  ]
+}

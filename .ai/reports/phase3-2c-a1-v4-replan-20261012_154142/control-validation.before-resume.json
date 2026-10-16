@@ -1,0 +1,283 @@
+{
+  "status": "PASS",
+  "proof": "V4_CONTROL_SYNTAX_PARSER_AND_ACTUAL_OBSERVER_ONLY_NOT_SUT_ACCEPTANCE",
+  "pythonSyntax": [
+    "gate-evidence.py",
+    "observer-selfcheck.py",
+    "runtime-probes.py"
+  ],
+  "nodeSyntax": 6,
+  "gateParser": {
+    "status": "PASS",
+    "result": {
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+      "original": {
+        "positiveComparisons": 2,
+        "rejectedMutations": 19,
+        "mutations": [
+          "missing-id",
+          "duplicate-id",
+          "unknown-id",
+          "viewport",
+          "loginInputs",
+          "fixtureRequestCount",
+          "rawErrors",
+          "constant-actual",
+          "caller-tolerance",
+          "caller-expected",
+          "canonical-label-drift",
+          "nonfinite-nan",
+          "nonfinite-inf",
+          "numeric-tolerance-2",
+          "numeric-tolerance-4",
+          "numeric-tolerance-nan",
+          "date-133.5",
+          "close-error",
+          "truncated-png"
+        ],
+        "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+      },
+      "extraRejectedMutations": [
+        "protected-executionError",
+        "protected-manifestWriteError",
+        "protected-consoleErrors",
+        "protected-pageErrors",
+        "protected-requestFailed",
+        "protected-badResponses",
+        "protected-cleanupErrors",
+        "protected-extra-error-field",
+        "recursive-nan",
+        "numeric-bool",
+        "log-before-close",
+        "log-boolean-time",
+        "log-missing-stderr",
+        "log-extra-finish",
+        "stdout-logFinishSeen-missing",
+        "stdout-logFinishSeen-false",
+        "stdout-logCloseSeen-missing",
+        "stdout-logCloseSeen-false",
+        "stdout-close-null",
+        "stdout-close-bool",
+        "stdout-close-zero",
+        "stdout-close-before-finish",
+        "stdout-close-nan",
+        "stderr-logFinishSeen-missing",
+        "stderr-logFinishSeen-false",
+        "stderr-logCloseSeen-missing",
+        "stderr-logCloseSeen-false",
+        "stderr-close-null",
+        "stderr-close-bool",
+        "stderr-close-zero",
+        "stderr-close-before-finish",
+        "stderr-close-nan",
+        "logFinishSeen-extra",
+        "logCloseSeen-extra",
+        "logCloseAtMs-extra"
+      ]
+    }
+  },
+  "runtimeParser": {
+    "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+    "validPreflight": 1,
+    "rejectedPreflightMutations": [
+      [
+        "observerHealthy",
+        false
+      ],
+      [
+        "sideEffectFree",
+        false
+      ],
+      [
+        "rc",
+        0
+      ],
+      [
+        "timeout",
+        true
+      ],
+      [
+        "errors",
+        ""
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_LOCK_MISMATCH\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}"
+      ],
+      [
+        "output",
+        "{\"status\":\"PASS\"}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\nunrelated fatal crash\n"
+      ],
+      [
+        "output",
+        "PASS"
+      ]
+    ],
+    "earlyRemovalRejected": true,
+    "unsettledRetainedLogRejected": true,
+    "richFailurePositive": 1,
+    "richFailureRejected": [
+      "missing-pid",
+      "missing-exitCode",
+      "missing-exitSeen",
+      "missing-closeSeen",
+      "missing-aliveAfterClose",
+      "missing-createdAtMs",
+      "missing-exitAtMs",
+      "missing-closeAtMs",
+      "missing-logsSettled",
+      "missing-logFinishSeen",
+      "missing-logCloseSeen",
+      "missing-logFinishAtMs",
+      "missing-logCloseAtMs",
+      "fabricated-logFinish-time",
+      "fabricated-logClose-time"
+    ]
+  },
+  "plans": {
+    "runtime": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "positiveCases": [
+        "contract-core",
+        "regression-shell",
+        "regression-home"
+      ],
+      "deferredCases": [
+        "live-admin",
+        "list-fixture",
+        "empty-fixture",
+        "filters",
+        "errors",
+        "stale-response",
+        "role-guard",
+        "session-expired"
+      ],
+      "faults": {
+        "png-header-only": "A1_GATE_REJECTED",
+        "png-crc": "A1_GATE_REJECTED",
+        "duplicate-id": "A1_GATE_REJECTED",
+        "missing-id": "A1_GATE_REJECTED",
+        "extra-id": "A1_GATE_REJECTED",
+        "caller-expected": "A1_GATE_REJECTED",
+        "constant-actual": "A1_GATE_REJECTED",
+        "raw-console": "A1_GATE_REJECTED",
+        "raw-pageerror": "A1_GATE_REJECTED",
+        "raw-requestfailed": "A1_GATE_REJECTED",
+        "raw-http": "A1_GATE_REJECTED",
+        "canonical-drift": "A1_GATE_REJECTED",
+        "worker-close-receipt": "A1_GATE_REJECTED",
+        "server-close-receipt": "A1_GATE_REJECTED",
+        "server-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "final-write-denied": "A1_FINAL_WRITE_FAILED",
+        "server-spawn-error": "A1_SERVER_SPAWN_FAILURE",
+        "log-write-denied": "A1_LOG_WRITE_FAILED",
+        "owner-bad-ack": "A1_ACK_INVALID",
+        "worker-no-ack": "A1_ACK_TIMEOUT",
+        "worker-no-run": "A1_WORKER_FAILED",
+        "gate-spawn-error": "A1_GATE_SPAWN_FAILURE",
+        "gate-log-write-denied": "A1_LOG_WRITE_FAILED",
+        "regression-no-evidence": "A1_WORKER_FAILED",
+        "worker-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "worker-spawn-error": "A1_WORKER_SPAWN_FAILURE",
+        "log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "late-log-error": "A1_LOG_WRITE_FAILED",
+        "gate-response-case": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-runId": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-candidateSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-executionSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-checks": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-artifacts": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-acceptance": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-status": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra-output": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-outer-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "gate-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "gate-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED"
+      },
+      "malformedPublicCases": 9,
+      "observerHealthMandatory": true
+    },
+    "ipc": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "cases": [
+        "wrong-protocol",
+        "wrong-owner-pid",
+        "wrong-worker-pid",
+        "wrong-case",
+        "wrong-nonce",
+        "wrong-url",
+        "sibling-run",
+        "wrong-temp-root",
+        "wrong-bootstrap",
+        "wrong-contract-path",
+        "wrong-contract-digest",
+        "wrong-execution-path",
+        "wrong-execution-digest",
+        "no-run-approval",
+        "wrong-run-nonce"
+      ]
+    },
+    "component": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "semanticVectors": [
+        "fixed-expectation",
+        "unknown-id-field",
+        "recursive-nan",
+        "recursive-infinity",
+        "immutable-actual-snapshot",
+        "caller-extra-argument"
+      ],
+      "additionalTypedMutations": 25,
+      "invalidTopLevelInputs": 4,
+      "realResourceVectors": [
+        "context-close-throw-browser-still-closed",
+        "browser-close-throw-first-error-preserved"
+      ]
+    },
+    "partial": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "modes": [
+        "capture-failure",
+        "context-close-failure",
+        "partial-write-failure",
+        "measured-viewport",
+        "measured-origin"
+      ]
+    }
+  },
+  "observerSummary": {
+    "status": "PASS",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-selfcheck-dzxqh30y",
+    "actualControlChecks": 37,
+    "rejectedCorruptions": 9,
+    "proof": "CONTROL_CANARIES_AND_CURRENT_SUT_PREFLIGHT_ONLY_NOT_A1_ACCEPTANCE"
+  },
+  "controlHashes": {
+    "component-probes.mjs": "AA844D76F2A84E1F77737BFF3FEBC254CEAC604F6307FF5E0E70E4F9043E888B",
+    "execution.json": "C6B76D80765818B934E204B886159CD56ADEF2A304AFC128089ED7A9DDC63FA4",
+    "frozen-shared.json": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA",
+    "gate-evidence.py": "21D88C1662D2EE87D89BFA22332255466BEBE6E3C84F2B15E57AB4BB64314B84",
+    "ipc-probes.mjs": "CFAD25CF5156A8BAE2E27A1563A605116CBEA76B100EBAAE447396E3940C6006",
+    "observer-canary.mjs": "901DEDFFF555061F0A435B68B799FFB4B61ADA63D9717D03B5ED350F39B3F4F2",
+    "observer-selfcheck.py": "96B93D98DBB292E589FFCD92245CF23A16E0DE6E343A4BA6A9405EBAFBEA4093",
+    "partial-preload.mjs": "9844BBA1129BDBB9E13B259A2E2A41695EA1ACBE04415488677331263B88354D",
+    "partial-probes.mjs": "9F6B4B552D3970AD2C87263526289083DE3E653D3D4C17FAFA42AC028B7C7732",
+    "runtime-preload.mjs": "CA332C0049C2E369217CC7656B01490D7D2B2BB7D6E82D8D821C3B50A06CEE57",
+    "runtime-probes.py": "98386DD973DA86EF8BB8BFAA1F46090E510528D29BC8FEC72735F2C46862A063",
+    "STRATEGY.md": "A3B3F938F57EDE5F788D2F9CD04FCD4901F4A90DBAC5024100BE063E0D32F6C1"
+  },
+  "A1Accepted": false,
+  "productChanges": 0
+}

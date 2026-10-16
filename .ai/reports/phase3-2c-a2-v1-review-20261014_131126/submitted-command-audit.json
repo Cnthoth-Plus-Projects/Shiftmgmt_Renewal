@@ -1,0 +1,168 @@
+{
+  "status": "IMPLEMENTATION_CHECKS_PASS_NOT_SOL_ACCEPTANCE",
+  "proof": "ACTUAL_A1_AND_NORMAL8_INCOMPLETE_EVIDENCE_PLUS_NEGATIVE_LEDGER",
+  "A2Accepted": false,
+  "BAccepted": false,
+  "verifiedCommands": [
+    {
+      "name": "scope-before",
+      "pid": 56304,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:26.803682+00:00",
+      "endUtc": "2026-10-14T00:47:28.009941+00:00"
+    },
+    {
+      "name": "syntax-access-history",
+      "pid": 46564,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:28.013760+00:00",
+      "endUtc": "2026-10-14T00:47:28.140208+00:00"
+    },
+    {
+      "name": "syntax-access-history-shared",
+      "pid": 49924,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:28.141820+00:00",
+      "endUtc": "2026-10-14T00:47:28.266278+00:00"
+    },
+    {
+      "name": "syntax-access-history-positive",
+      "pid": 24224,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:28.267333+00:00",
+      "endUtc": "2026-10-14T00:47:28.390375+00:00"
+    },
+    {
+      "name": "syntax-access-history-negative",
+      "pid": 28636,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:28.392574+00:00",
+      "endUtc": "2026-10-14T00:47:28.518317+00:00"
+    },
+    {
+      "name": "typecheck",
+      "pid": 47856,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:28.520349+00:00",
+      "endUtc": "2026-10-14T00:47:38.227340+00:00"
+    },
+    {
+      "name": "lint",
+      "pid": 9496,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:47:38.253632+00:00",
+      "endUtc": "2026-10-14T00:48:09.090873+00:00"
+    },
+    {
+      "name": "map",
+      "pid": 656,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:09.107459+00:00",
+      "endUtc": "2026-10-14T00:48:10.068744+00:00"
+    },
+    {
+      "name": "diff-check",
+      "pid": 15924,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:10.084662+00:00",
+      "endUtc": "2026-10-14T00:48:10.299984+00:00"
+    },
+    {
+      "name": "build",
+      "pid": 49732,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:10.302967+00:00",
+      "endUtc": "2026-10-14T00:48:20.491195+00:00"
+    },
+    {
+      "name": "focused-tests",
+      "pid": 53316,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:20.509695+00:00",
+      "endUtc": "2026-10-14T00:48:30.415755+00:00"
+    },
+    {
+      "name": "gate-parser",
+      "pid": 50340,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:30.445987+00:00",
+      "endUtc": "2026-10-14T00:48:30.681687+00:00"
+    },
+    {
+      "name": "runtime-parser",
+      "pid": 20048,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:30.695493+00:00",
+      "endUtc": "2026-10-14T00:48:30.927811+00:00"
+    },
+    {
+      "name": "actual-a1-runtime51",
+      "pid": 4596,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:48:30.942597+00:00",
+      "endUtc": "2026-10-14T00:54:24.894114+00:00"
+    },
+    {
+      "name": "ipc19-and-port",
+      "pid": 3516,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:54:24.949082+00:00",
+      "endUtc": "2026-10-14T00:54:41.262641+00:00"
+    },
+    {
+      "name": "component32",
+      "pid": 43532,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:54:41.286291+00:00",
+      "endUtc": "2026-10-14T00:54:47.382722+00:00"
+    },
+    {
+      "name": "partial11",
+      "pid": 55572,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:54:47.398733+00:00",
+      "endUtc": "2026-10-14T00:55:05.505474+00:00"
+    },
+    {
+      "name": "actual-guard-parity",
+      "pid": 9616,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:55:05.519468+00:00",
+      "endUtc": "2026-10-14T00:55:06.085768+00:00"
+    },
+    {
+      "name": "actual-late15",
+      "pid": 1164,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:55:06.103636+00:00",
+      "endUtc": "2026-10-14T00:56:18.771739+00:00"
+    },
+    {
+      "name": "actual-normal8",
+      "pid": 46608,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:56:18.788630+00:00",
+      "endUtc": "2026-10-14T00:59:02.437408+00:00"
+    },
+    {
+      "name": "negative-ledger",
+      "pid": 55140,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:59:02.459288+00:00",
+      "endUtc": "2026-10-14T00:59:02.877331+00:00"
+    },
+    {
+      "name": "scope-after",
+      "pid": 47072,
+      "rc": 0,
+      "startUtc": "2026-10-14T00:59:02.893636+00:00",
+      "endUtc": "2026-10-14T00:59:04.022383+00:00"
+    }
+  ],
+  "streamsVerified": 44,
+  "diffHashesVerified": 4,
+  "implementationResultMeta": {
+    "bytes": 27982,
+    "sha256": "4A08CBE76C2F4A077BE5A8521CF557AB819EBF2A2B7DFBC2DBEB9DE4BFE87F78"
+  }
+}

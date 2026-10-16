@@ -1,0 +1,91 @@
+{
+  "time": "2026-10-01 17:24:01 KST",
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-foundation-plan-20261001_172401",
+  "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_172401_3-2c-Sol-REPLAN_새패킷전_보존본.md",
+  "received": {
+    "bytes": 15601,
+    "sha256": "FB072898CC88DE9C0326F0C6A1A68A821D68D18922ADF00F94F5378E627CBB40"
+  },
+  "outgoing": {
+    "bytes": 29974,
+    "sha256": "588DBC12078DAE556F243F17F016227F311F4C44465E765DFAE1D091D2BD464E"
+  },
+  "body": {
+    "bytes": 29220,
+    "sha256": "1675AFF7C8770982AC6F2DCD0401C66D6FED0AEBCF395A3DC23002AC3A3CDBD9"
+  },
+  "contract": {
+    "bytes": 29515,
+    "sha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE"
+  },
+  "strategy": {
+    "bytes": 26069,
+    "sha256": "0A6136FD23F989F7065993449F8A705CD4047FA358248218BB0719497B9F12D1"
+  },
+  "checker": {
+    "bytes": 19880,
+    "sha256": "24244C9C2098F1C587BE633FF017979CB1EE982C38038A6FDC90F752A921A954"
+  },
+  "baseline": {
+    "bytes": 61201,
+    "sha256": "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50"
+  },
+  "sourceChangesBySol": 0,
+  "sourceIdenticalToClosedReview": true,
+  "routing": "frontier; economyLuna extraction; balancedTerra unavailable gpt-6-sol read-only fallback",
+  "policyTrace": {
+    "active": [
+      "P04",
+      "P05",
+      "P06",
+      "P10",
+      "P13",
+      "P17",
+      "P21",
+      "P25",
+      "P26"
+    ],
+    "mode": "record_only"
+  },
+  "stage": "A only; B/fullPhase3-2 not accepted",
+  "selfTest": {
+    "status": "PASS",
+    "result": {
+      "positiveComparisons": 2,
+      "rejectedMutations": 19,
+      "mutations": [
+        "missing-id",
+        "duplicate-id",
+        "unknown-id",
+        "viewport",
+        "loginInputs",
+        "fixtureRequestCount",
+        "rawErrors",
+        "constant-actual",
+        "caller-tolerance",
+        "caller-expected",
+        "canonical-label-drift",
+        "nonfinite-nan",
+        "nonfinite-inf",
+        "numeric-tolerance-2",
+        "numeric-tolerance-4",
+        "numeric-tolerance-nan",
+        "date-133.5",
+        "close-error",
+        "truncated-png"
+      ],
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    }
+  },
+  "published": true,
+  "outgoingArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_172401_3-2c-A-Sol-IMPLEMENT_발송본.md",
+  "scopeFinal": {
+    "status": "PASS",
+    "result": {
+      "files": 341,
+      "protected": 337,
+      "dirtyPaths": 12,
+      "changedAllowed": []
+    }
+  }
+}

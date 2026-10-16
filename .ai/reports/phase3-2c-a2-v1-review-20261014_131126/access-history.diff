@@ -1,0 +1,188 @@
+--- accepted-a1/access-history.mjs
++++ received-a2/access-history.mjs
+@@ -8,14 +8,15 @@
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import { createUniqueRunDir } from "../lib/ui-check.mjs";
+ import { loadContract, loadExecution, CONTRACT_PATH, CONTRACT_SHA256, EXECUTION_PATH, EXECUTION_SHA256 } from "./access-history-shared.mjs";
++import { validateProcessReceipt, readNormalWorkerEvidence } from "./access-history-negative.mjs";
+ 
+ const repoRoot = fs.realpathSync(process.cwd());
+ if (repoRoot !== fs.realpathSync(path.resolve(fileURLToPath(import.meta.url), "../../.."))) { process.stderr.write("repo mismatch\n"); process.exit(1); }
+ 
+-export const BASELINE_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\baseline.json";
+-export const BASELINE_SHA256 = "351CBAFB1120BBBDD786BEE6E201B88F23B229124E27BDD6CA0BD4701CE217FF";
+-export const GATE_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\gate-evidence.py";
+-export const GATE_SHA256 = "3F58D07C17DC0980EBF950FCDA5AA39A13DA3F16BCAD4010F497DE436C0A5291";
++export const BASELINE_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\baseline.json";
++export const BASELINE_SHA256 = "D305FE700885F4F3BD640FC021E6F545B684E46E2630CDB993A4A8173E7C1A03";
++export const GATE_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\gate-evidence.py";
++export const GATE_SHA256 = "0BD49A425F026D37EF861E4EB70EAC237733EC7D847E7164933B7BEA01F2E622";
+ export const PYTHON_PATH = "C:\\Users\\pangyo\\anaconda3\\python.exe";
+ 
+ const sha = (d) => crypto.createHash("sha256").update(d).digest("hex").toUpperCase();
+@@ -49,7 +50,7 @@
+ try {
+   const baseBytes = fs.readFileSync(BASELINE_PATH);
+   if (sha(baseBytes) !== BASELINE_SHA256) throw new Error("baseline");
+-  const baseline = JSON.parse(baseBytes.toString("utf8")), allowed = new Set(["scripts/ui-checks/access-history.mjs", "scripts/ui-checks/access-history-shared.mjs"]);
++  const baseline = JSON.parse(baseBytes.toString("utf8")), allowed = new Set(execution.allowed);
+   for (const [rP, info] of Object.entries({ ...baseline.files, ...baseline.control })) {
+     const fP = path.resolve(repoRoot, rP);
+     if (fP === path.resolve(BASELINE_PATH)) continue;
+@@ -128,25 +129,7 @@
+ 
+ const deepFreeze = (o) => { Object.freeze(o); for (const v of Object.values(o)) if (v && typeof v === "object") deepFreeze(v); return o; };
+ 
+-function validateProcessReceipt(r) {
+-  const q = ok => { if (!ok) throw new Error("process receipt invalid"); }, ev = r?.callbackEvents, K = ["stdout", "stderr"];
+-  q(Array.isArray(ev) && ev.length === 7 && Number.isInteger(r.pid) && r.pid > 0);
+-  q(isObj(r.logsSettled, 2) && K.every(k => Object.hasOwn(r.logsSettled, k) && r.logsSettled[k] === true));
+-  const sg = {}, lg = {}, EK = ["event", "timeMs", "stream", "pid", "code", "signal", "error"];
+-  for (const e of ev) {
+-    q(isObj(e, 7) && EK.every(k => Object.hasOwn(e, k)) && Number.isFinite(e.timeMs) && e.timeMs > 0 && e.error === null);
+-    const k = e.event;
+-    q(["spawn", "exit", "close", "log-finish", "log-close"].includes(k));
+-    if (k.startsWith("log-")) { q(K.includes(e.stream) && e.pid === null && e.code === null && e.signal === null && !lg[k + e.stream]); lg[k + e.stream] = e; }
+-    else { q(e.stream === null && e.pid === r.pid && !sg[k]); sg[k] = e; q(e.code === null || Number.isInteger(e.code)); q(e.signal === null || typeof e.signal === "string" && !!e.signal); if (k === "spawn") q(e.code === null && e.signal === null); }
+-  }
+-  for (const [k, sn, tm, ck, sk] of [["spawn", null, "createdAtMs", null, null], ["exit", "exitSeen", "exitAtMs", "exitCode", "exitSignal"], ["close", "closeSeen", "closeAtMs", "closeCode", "closeSignal"]]) { const e = sg[k]; q(!!e && r[tm] === e.timeMs); if (sn) q(r[sn] === true && r[ck] === e.code && r[sk] === e.signal); }
+-  for (const [k, p] of [["log-finish", "logFinish"], ["log-close", "logClose"]]) { q(isObj(r[p + "Seen"], 2) && isObj(r[p + "AtMs"], 2)); for (const t of K) { const e = lg[k + t]; q(!!e && Object.hasOwn(r[p + "Seen"], t) && Object.hasOwn(r[p + "AtMs"], t) && r[p + "Seen"][t] === true && r[p + "AtMs"][t] === e.timeMs); } }
+-  q(ev[0].event === "spawn" && ev[1].event === "exit" && ev[2].event === "close" && r.aliveAfterClose === false);
+-  for (let i = 1; i < ev.length; i++) q(ev[i].timeMs >= ev[i - 1].timeMs);
+-  for (const t of K) { const e = ev.filter(e => e.stream === t); q(e.length === 2 && e[0].event === "log-finish" && e[1].event === "log-close" && r.closeAtMs <= r.logFinishAtMs[t] && r.logFinishAtMs[t] <= r.logCloseAtMs[t]); }
+-  q(r.createdAtMs <= r.exitAtMs && r.exitAtMs <= r.closeAtMs); return 7;
+-}
++
+ 
+ const waitChild = (rec, child, ms, ev = "exit") => new Promise((res, rej) => {
+   if (rec[ev + "Seen"]) return res(true);
+@@ -162,11 +145,12 @@
+ 
+ let serverReg, workerReg, gateReg, tempDir, bootstrapFile, nonce, nonceSha256, context, contextSha256, checks = [], artifacts = [], tempRemoved = false, tempRemovedAtMs = null, sealedAtMs = null, workerAckReceipt = null, contextAck = false, runAuthorized = false, workerArgv = [], acquiredRaw = null, acquiredChecks = null, acquiredAcquisition = null, workerCached = null, serverCached = null, gateCached = null;
+ 
+-const wrapWorker = (r) => r ? { ...r, parentPid: process.pid, nonceSha256, contextAck, runAuthorized, ackReceipt: selectedCase === "contract-core" ? workerAckReceipt : null, argv: workerArgv } : null;
++const wrapWorker = (r) => r ? { ...r, parentPid: process.pid, nonceSha256, contextAck, runAuthorized, ackReceipt: (selectedCase === "contract-core" || execution.normalCases.includes(selectedCase)) ? workerAckReceipt : null, argv: workerArgv } : null;
+ const errObj = (p) => ({ primary: p, cleanup: cleanupErrors, evidence: evidenceErrors, unexpected: unexpectedErrors });
+ const cacheProc = (r) => { try { const s = r.toManifestRecord(); validateProcessReceipt(s); return deepFreeze(structuredClone(s)); } catch (e) { recordError("lifecycle-clock", e, "A1_LIFECYCLE_INVALID"); throw e; } };
+ const checkBarrier = () => { if (primaryError) throw primaryError; for (const a of [unexpectedErrors, cleanupErrors, evidenceErrors]) if (a.length) throw a[0]; for (const [r, c] of [[workerReg, workerCached], [serverReg, serverCached], [gateReg, gateCached]]) if (r && c) for (const k of Object.keys(c)) { const v = k === "aliveAfterClose" ? isPidAlive(r.pid) : k === "logsSettled" ? { stdout: r.settled, stderr: r.settled } : r[k]; if (!same(v, c[k])) fail(r.name + "-barrier", k, "A1_LIFECYCLE_INVALID"); } };
+-const makeBaseManifest = (st, rc) => ({ schema: contract?.evidenceSchema || "shiftmgmt.verifier.evidence.v1", stage: "foundation", stageSlice: "A1", case: selectedCase, runId, contractSha256: CONTRACT_SHA256, executionSha256: EXECUTION_SHA256, status: st, exitCode: rc, owner: { pid: process.pid, nodePath: process.execPath, nonceSha256, context: context || {} } });
++const isNormal = execution.normalCases.includes(selectedCase);
++const makeBaseManifest = (st, rc) => ({ schema: contract?.evidenceSchema || "shiftmgmt.verifier.evidence.v1", stage: isNormal ? "normal-integration" : "foundation", stageSlice: isNormal ? "A2" : "A1", case: selectedCase, runId, contractSha256: CONTRACT_SHA256, executionSha256: EXECUTION_SHA256, status: st, exitCode: rc, owner: { pid: process.pid, nodePath: process.execPath, nonceSha256, context: context || {} } });
+ 
+ try {
+   const osTemp = fs.realpathSync(os.tmpdir());
+@@ -216,9 +200,11 @@
+ 
+   workerReg = new ProcessRecord("worker", path.join(runDir, "worker-stdout.log"), path.join(runDir, "worker-stderr.log"));
+ 
+-  if (selectedCase === "contract-core") {
+-    const marker = { protocol: 2, case: "contract-core", ownerPid: process.pid, workerPid: null, nonceSha256, contextSha256, context };
+-    workerArgv = [process.execPath, path.join(repoRoot, "scripts/ui-checks/access-history-shared.mjs"), "--case=contract-core"];
++  let normalEvidence = null;
++  const isIpc = selectedCase === "contract-core" || isNormal;
++  if (isIpc) {
++    const script = selectedCase === "contract-core" ? "scripts/ui-checks/access-history-shared.mjs" : execution.normalWorkerScripts[selectedCase];
++    workerArgv = [process.execPath, path.resolve(repoRoot, script), "--case=" + selectedCase];
+     let wChild;
+     try {
+       wChild = spawnChild(workerReg, workerArgv[0], workerArgv.slice(1), buildChildEnv(tempDir, bootstrapFile), true);
+@@ -227,11 +213,11 @@
+       await cleanProc(workerReg); throw wErr;
+     }
+ 
+-    marker.workerPid = wChild.pid;
++    const marker = { protocol: 2, case: selectedCase, ownerPid: process.pid, workerPid: wChild.pid, nonceSha256, contextSha256, context };
+     fs.writeFileSync(path.join(runDir, "owner-registration.json"), JSON.stringify(marker));
+ 
+     const sendMsg = (t) => {
+-      try { wChild.send({ type: t, protocol: 2, case: "contract-core", ownerPid: process.pid, workerPid: wChild.pid, nonce, contextSha256, ...(t === "owner-context" ? { context } : {}) }); }
++      try { wChild.send({ type: t, protocol: 2, case: selectedCase, ownerPid: process.pid, workerPid: wChild.pid, nonce, contextSha256, ...(t === "owner-context" ? { context } : {}) }); }
+       catch (sErr) { recordError("worker-send", sErr, "A1_WORKER_FAILED"); throw sErr; }
+     };
+     sendMsg("owner-context");
+@@ -243,8 +229,12 @@
+         clearTimeout(timer);
+         workerAckReceipt = { packet: structuredClone(msg), receivedAtMs: Date.now() };
+         const k = Object.keys(msg);
+-        const bad = !isObj(msg, 7) || ["type", "protocol", "case", "ownerPid", "workerPid", "nonce", "contextSha256"].some(x => !k.includes(x)) ||
+-          msg.protocol !== 2 || msg.case !== "contract-core" || msg.ownerPid !== process.pid || msg.workerPid !== wChild.pid || msg.nonce !== nonce || msg.contextSha256 !== contextSha256;
++        const expNonce = selectedCase === "contract-core" ? nonce : undefined;
++        const expNonceSha = isNormal ? nonceSha256 : undefined;
++        const bad = !isObj(msg, 7) || ["type", "protocol", "case", "ownerPid", "workerPid", "contextSha256"].some(x => !k.includes(x)) ||
++          msg.protocol !== 2 || msg.case !== selectedCase || msg.ownerPid !== process.pid || msg.workerPid !== wChild.pid ||
++          (expNonce !== undefined && msg.nonce !== expNonce) || (expNonceSha !== undefined && msg.nonceSha256 !== expNonceSha) ||
++          msg.contextSha256 !== contextSha256;
+         if (bad) {
+           const err = new Error("ACK"); recordError("worker-ack-invalid", err, "A1_ACK_INVALID"); return reject(err);
+         }
+@@ -260,11 +250,19 @@
+     sendMsg("owner-run");
+     runAuthorized = true;
+ 
+-    try { await waitChild(workerReg, wChild, execution.deadlinesMs.contractCore); } catch (wErr) { recordError("core-worker", wErr, "A1_WORKER_FAILED"); throw wErr; }
+-    if (workerReg.exitCode !== 0) { const err = new Error(); recordError("core-worker", err, "A1_WORKER_FAILED"); throw err; }
+-    const wf = JSON.parse(fs.readFileSync(path.join(runDir, "worker-final.json"), "utf8"));
+-    acquiredRaw = JSON.parse(fs.readFileSync(path.join(runDir, "core-observations.json"), "utf8"));
+-    acquiredChecks = wf.checks; acquiredAcquisition = wf.acquisition; checks = acquiredChecks;
++    const timeout = selectedCase === "contract-core" ? execution.deadlinesMs.contractCore : execution.deadlinesMs.normal;
++    try { await waitChild(workerReg, wChild, timeout); } catch (wErr) { recordError("worker-timeout", wErr, "A1_WORKER_FAILED"); throw wErr; }
++    const expCode = isNormal ? 1 : 0;
++    if (workerReg.exitCode !== expCode) { const err = new Error("exit mismatch"); recordError("worker-exit", err, "A1_WORKER_FAILED"); throw err; }
++
++    if (isNormal) {
++      normalEvidence = readNormalWorkerEvidence({ caseName: selectedCase, context, execution, contract, workerPid: wChild.pid, exitCode: workerReg.exitCode });
++      checks = [];
++    } else {
++      const wf = JSON.parse(fs.readFileSync(path.join(runDir, "worker-final.json"), "utf8"));
++      acquiredRaw = JSON.parse(fs.readFileSync(path.join(runDir, "core-observations.json"), "utf8"));
++      acquiredChecks = wf.checks; acquiredAcquisition = wf.acquisition; checks = acquiredChecks;
++    }
+   } else {
+     const regPolicy = execution.regressions[selectedCase], scriptPath = path.resolve(repoRoot, regPolicy.script);
+     workerArgv = [process.execPath, scriptPath, BASE_URL, ...regPolicy.extraArgs];
+@@ -305,7 +303,7 @@
+ 
+   workerCached = cacheProc(workerReg); serverCached = cacheProc(serverReg); checkBarrier();
+ 
+-  artifacts = (selectedCase === "contract-core" ? contract.foundation.artifacts : execution.regressions[selectedCase].artifacts).map((id) => {
++  artifacts = (selectedCase === "contract-core" ? contract.foundation.artifacts : isNormal ? normalEvidence.artifactIds : execution.regressions[selectedCase].artifacts).map((id) => {
+     const p = path.join(runDir, id + (id.includes("std") ? ".log" : id.includes("capture") ? ".png" : ".json")), d = fs.readFileSync(p);
+     return { id, path: p, bytes: d.length, sha256: sha(d) };
+   });
+@@ -321,7 +319,7 @@
+   if (!tempRemoved) throw new Error();
+   checkBarrier();
+ 
+-  const candidateManifest = { ...makeBaseManifest("READY_FOR_ADJUDICATION", 0), worker: wrapWorker(workerCached), server: { ...serverCached, stdoutListenVerified: serverStdoutVerified, portListeningAfterClose: !portFreed, health: { status: 200, payload: healthPayload } }, cleanup: { tempRemoved: true, tempRemovedAtMs }, sealedAtMs, errors: errObj(null), artifacts, checks };
++  const candidateManifest = { ...makeBaseManifest(isNormal ? "FAIL_INCOMPLETE" : "READY_FOR_ADJUDICATION", isNormal ? 1 : 0), worker: wrapWorker(workerCached), server: { ...serverCached, stdoutListenVerified: serverStdoutVerified, portListeningAfterClose: !portFreed, health: { status: 200, payload: healthPayload } }, cleanup: { tempRemoved: true, tempRemovedAtMs }, sealedAtMs, errors: errObj(null), artifacts, checks, ...(isNormal ? { coverage: normalEvidence.coverage } : {}) };
+ 
+   const candidatePath = path.join(runDir, "owner-candidate.json");
+   try { writeAtomic(candidatePath, candidateManifest, checkBarrier); } catch (cErr) {
+@@ -358,14 +356,23 @@
+   try {
+     const lines = adjStdout.trim().split(/\r?\n/).filter(Boolean); if (lines.length !== 1) throw new Error();
+     parsedGate = JSON.parse(lines[0]); const r = parsedGate?.result;
+-    if (parsedGate?.status !== "PASS" || !isObj(parsedGate, 2) || !isObj(r, 8) || r.status !== "ACCEPTABLE_CANDIDATE" || r.acceptance !== "A1_PREREQUISITE_ONLY" || r.case !== selectedCase || r.runId !== runId || r.candidateSha256 !== candidateSha256 || r.executionSha256 !== EXECUTION_SHA256 || r.checks !== checks.length || r.artifacts !== artifacts.length) throw new Error();
++    if (isNormal) {
++      if (parsedGate?.status !== "PASS" || !isObj(parsedGate, 2) || !isObj(r, 8) || r.status !== "ACCEPTABLE_INCOMPLETE_CANDIDATE" || r.acceptance !== "A2_INCOMPLETE_EVIDENCE_ONLY" || r.case !== selectedCase || r.runId !== runId || r.candidateSha256 !== candidateSha256 || r.executionSha256 !== EXECUTION_SHA256 || r.checks !== 0 || r.artifacts !== artifacts.length) throw new Error();
++    } else {
++      if (parsedGate?.status !== "PASS" || !isObj(parsedGate, 2) || !isObj(r, 8) || r.status !== "ACCEPTABLE_CANDIDATE" || r.acceptance !== "A1_PREREQUISITE_ONLY" || r.case !== selectedCase || r.runId !== runId || r.candidateSha256 !== candidateSha256 || r.executionSha256 !== EXECUTION_SHA256 || r.checks !== checks.length || r.artifacts !== artifacts.length) throw new Error();
++    }
+   } catch (parseErr) { recordError("adjudicator-response", parseErr, "A1_GATE_RESPONSE_MISMATCH"); throw parseErr; }
+ 
+-  const finalManifest = { ...candidateManifest, status: "PASS", adjudication: { result: parsedGate.result, candidateSha256, gatePath: GATE_PATH, gateSha256: GATE_SHA256, process: gateCached, stdoutPath: gateReg.stdoutPath, stderrPath: gateReg.stderrPath, stdoutSha256: sha(fs.readFileSync(gateReg.stdoutPath)), stderrSha256: sha(fs.readFileSync(gateReg.stderrPath)) } };
++  const finalManifest = { ...candidateManifest, status: isNormal ? "FAIL_INCOMPLETE" : "PASS", adjudication: { result: parsedGate.result, candidateSha256, gatePath: GATE_PATH, gateSha256: GATE_SHA256, process: gateCached, stdoutPath: gateReg.stdoutPath, stderrPath: gateReg.stderrPath, stdoutSha256: sha(fs.readFileSync(gateReg.stdoutPath)), stderrSha256: sha(fs.readFileSync(gateReg.stderrPath)) } };
+   const finalPath = path.join(runDir, "owner-final.json");
+   try { writeAtomic(finalPath, finalManifest, checkBarrier); } catch (fErr) { if (primaryError) throw primaryError; recordError("final-write", fErr, "A1_FINAL_WRITE_FAILED"); throw fErr; }
+-  process.stdout.write(JSON.stringify({ status: "PASS", case: selectedCase, runId, manifestPath: finalPath, exitCode: 0, stageSlice: "A1", acceptance: "A1_PREREQUISITE_ONLY" }) + "\n");
+-  process.exit(0);
++  if (isNormal) {
++    process.stderr.write(JSON.stringify({ status: "FAIL_INCOMPLETE", code: "A2_COVERAGE_INCOMPLETE", case: selectedCase, runId, manifestPath: finalPath, exitCode: 1, stageSlice: "A2", acceptance: "A2_INCOMPLETE_EVIDENCE_ONLY" }) + "\n");
++    process.exit(1);
++  } else {
++    process.stdout.write(JSON.stringify({ status: "PASS", case: selectedCase, runId, manifestPath: finalPath, exitCode: 0, stageSlice: "A1", acceptance: "A1_PREREQUISITE_ONLY" }) + "\n");
++    process.exit(0);
++  }
+ } catch (err) {
+   if (!primaryError) recordError("execution", err, primaryCode);
+   for (const reg of [workerReg, serverReg, gateReg]) await cleanProc(reg);

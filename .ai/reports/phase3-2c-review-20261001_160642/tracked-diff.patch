@@ -1,0 +1,151 @@
+diff --git a/docs/codebase-map.md b/docs/codebase-map.md
+index fe22a28..6f8028c 100644
+--- a/docs/codebase-map.md
++++ b/docs/codebase-map.md
+@@ -46,6 +46,10 @@
+ | `scripts/ui-checks/ready.mjs` | 실제 준비 화면 접속·상태 확인→캡처→재로드→재확인·캡처 시나리오 |
+ | `scripts/ui-checks/login.mjs` | 실제 Chrome 기반 로그인 흐름 및 L1~L5 검증 시나리오 스크립트 |
+ | `scripts/ui-checks/shell.mjs` | 실제 Chrome 기반 역할별 셸 메뉴, 사이드바 접힘, 상태줄 검증 시나리오 스크립트 |
++| `scripts/ui-checks/access-history.mjs` | 실제 Chrome 기반 활동 이력 화면 G1(목록)·G2(빈 상태) 및 필터·권한 검증 시나리오 스크립트 |
++| `scripts/ui-checks/access-history-shared.mjs` | 활동 이력 검증 공통 모듈: 엄격 비교기, 고정 커버리지 계약, 도메인 정본 픽스처 및 Held 생명주기 관리 |
++| `scripts/ui-checks/access-history-positive.mjs` | 실제 Chrome 및 runScreenCheck 기반 활동 이력 정상 6개 케이스(목록·빈상태·필터·경합·권한가드 등) 실행 스크립트 |
++| `scripts/ui-checks/access-history-negative.mjs` | 실제 Chrome 기반 활동 이력 예상 오류 2개 케이스(조회 실패·세션 만료) 정밀 드라이버 스크립트 |
+ 
+ ## 서버 (`src/main`)
+ 
+@@ -113,6 +117,10 @@
+ | `src/web/screens/login.ts` | 로그인 L1~L5 화면 렌더링, 폼 입력, 규칙 검증, 계정복구 처리 |
+ | `src/web/screens/shell.ts` | 역할별 앱 셸, 메뉴 네비게이션, 사이드바 토글, 로그아웃 화면 |
+ | `src/web/screens/status-bar.ts` | DB·동기화·대기파일·감시·업데이트 실제 API 상태줄 컴포넌트 |
++| `src/web/access-history.css` | 활동 이력 화면 전용 스타일시트(필터·테이블·빈 상태) |
++| `src/web/screens/access-history.ts` | 관리자 활동 이력 화면 렌더링, 필터링, G1 목록 및 G2 빈 상태 처리 |
++| `src/web/screens/access-history-model.ts` | 활동 이력 날짜 범위 검증, 배지 톤 매핑, 쿼리 구성 순수 모델 함수 |
++| `src/web/screens/access-history-model.test.ts` | 활동 이력 모델 날짜·윤년·정렬·배지 단위 시험 |
+ 
+ ## 만들어지는 폴더(저장소에는 담지 않는다)
+ 
+diff --git a/scripts/copy-web-assets.mjs b/scripts/copy-web-assets.mjs
+index f5e8381..4d38a2b 100644
+--- a/scripts/copy-web-assets.mjs
++++ b/scripts/copy-web-assets.mjs
+@@ -45,6 +45,7 @@ copyInto(path.join(root, "src", "web", "styles.css"), webOut, "화면 CSS");
+ copyInto(path.join(root, "src", "web", "login.css"), webOut, "로그인 CSS");
+ copyInto(path.join(root, "src", "web", "shell.css"), webOut, "셸 CSS");
+ copyInto(path.join(root, "src", "web", "home.css"), webOut, "홈 CSS");
++copyInto(path.join(root, "src", "web", "access-history.css"), webOut, "활동 이력 CSS");
+ 
+ // 2) Pretendard — woff 항목을 뺀 생성본 + woff2 9개
+ const pretendardDir = path.join(root, "node_modules", "pretendard", "dist", "web", "static");
+diff --git a/src/web/index.html b/src/web/index.html
+index dba6f83..636c3ac 100644
+--- a/src/web/index.html
++++ b/src/web/index.html
+@@ -9,6 +9,7 @@
+     <link rel="stylesheet" href="/web/login.css">
+     <link rel="stylesheet" href="/web/shell.css">
+     <link rel="stylesheet" href="/web/home.css">
++    <link rel="stylesheet" href="/web/access-history.css">
+     <script type="module" src="/web/app.js"></script>
+   </head>
+   <body>
+diff --git a/src/web/screens/shell.ts b/src/web/screens/shell.ts
+index 1cde505..e04eea0 100644
+--- a/src/web/screens/shell.ts
++++ b/src/web/screens/shell.ts
+@@ -2,6 +2,7 @@
+ import type { AuthSession } from "../../shared/domain/model";
+ import { StatusBar } from "./status-bar";
+ import { HomeScreen } from "./home";
++import { AccessHistoryScreen } from "./access-history";
+ 
+ export interface ShellScreenOptions {
+   container: HTMLElement;
+@@ -31,6 +32,7 @@ const MENU_ITEMS: NavMenuItem[] = [
+   // 관리 (admin only)
+   { id: "org-mgmt", label: "조직 관리", icon: "corporate_fare", group: "admin", adminOnly: true },
+   { id: "user-mgmt", label: "사용자 관리", icon: "manage_accounts", group: "admin", adminOnly: true },
++  { id: "access-history", label: "활동 이력", icon: "history", group: "admin", adminOnly: true },
+ ];
+ 
+ export class ShellScreen {
+@@ -43,6 +45,7 @@ export class ShellScreen {
+   private noticeMessage = "";
+   private statusBar: StatusBar | null = null;
+   private homeScreen: HomeScreen | null = null;
++  private accessHistoryScreen: AccessHistoryScreen | null = null;
+   private syncObserver: MutationObserver | null = null;
+ 
+   constructor(options: ShellScreenOptions) {
+@@ -120,6 +123,10 @@ export class ShellScreen {
+       this.homeScreen.destroy();
+       this.homeScreen = null;
+     }
++    if (this.accessHistoryScreen) {
++      this.accessHistoryScreen.destroy();
++      this.accessHistoryScreen = null;
++    }
+     if (this.statusBar) {
+       this.statusBar.destroy();
+       this.statusBar = null;
+@@ -258,8 +265,12 @@ export class ShellScreen {
+         `;
+ 
+         btn.addEventListener("click", () => {
+-          // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
+-          this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
++          if (item.id === "access-history") {
++            this.noticeMessage = "";
++          } else {
++            // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
++            this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
++          }
+           this.currentTitle = item.label;
+           this.updateActiveNav(navList, btn);
+           this.refreshMain();
+@@ -330,6 +341,10 @@ export class ShellScreen {
+         this.homeScreen.destroy();
+         this.homeScreen = null;
+       }
++      if (this.accessHistoryScreen) {
++        this.accessHistoryScreen.destroy();
++        this.accessHistoryScreen = null;
++      }
+       if (this.statusBar) {
+         this.statusBar.destroy();
+         this.statusBar = null;
+@@ -395,6 +410,23 @@ export class ShellScreen {
+       return main;
+     }
+ 
++    if (this.currentTitle === "활동 이력") {
++      this.accessHistoryScreen = new AccessHistoryScreen({
++        container: main,
++        session: this.session,
++        onSessionExpired: () => {
++          this.destroy();
++          if (this.onSessionExpired) {
++            this.onSessionExpired();
++          } else {
++            this.onSignOut();
++          }
++        },
++      });
++      this.accessHistoryScreen.render();
++      return main;
++    }
++
+     if (this.noticeMessage) {
+       const banner = document.createElement("div");
+       banner.className = "notice-banner";
+@@ -432,6 +464,11 @@ export class ShellScreen {
+       this.homeScreen = null;
+     }
+ 
++    if (this.accessHistoryScreen) {
++      this.accessHistoryScreen.destroy();
++      this.accessHistoryScreen = null;
++    }
++
+     const oldMain = this.container.querySelector("#main-content");
+     if (oldMain && oldMain.parentElement) {
+       const newMain = this.createMainContent();

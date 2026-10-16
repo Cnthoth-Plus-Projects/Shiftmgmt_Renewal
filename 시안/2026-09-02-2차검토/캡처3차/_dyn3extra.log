@@ -1,0 +1,92 @@
+=============== H1 00-shell-1 S1~S3 ===============
+state-s1 cells(6): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ 폴더 감시 실행 중{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ 최신{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:버전 정보} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=관리자 (admin) person admin
+   band: 
+state-s2 cells(5): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ 최신{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=사용자 (operator) person 김지현
+   band: 
+state-s3 cells(5): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ 최신{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=계획 담당 (planner) person 박은영
+   band: 
+=============== H1 00-shell-2 S4~S6 ===============
+state-s4 cells(6): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ 폴더 감시 실행 중{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ 최신{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:버전 정보} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=관리자 (admin) person admin
+   band: 
+state-s5 cells(6): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 05-20 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ 폴더 감시 중단됨 다시 시작{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ 최신{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:버전 정보} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=관리자 (admin) person admin
+   band: 
+state-s6 cells(5): DB 연결됨{title:데이터 폴더 연결됨} bg=rgba(0, 0, 0, 0) │ 최근 인테이크: 마지막 처리 완료 14:32{title:마지막 처리 완료 시각} bg=rgba(0, 0, 0, 0) │ 대기 파일 3개{title:대기 폴더 파일 수} bg=rgba(0, 0, 0, 0) │ ↑ 업데이트 가능 v2.4.0 [자세히 보기]{title:승인 대기 폴더 자동 감시} bg=rgba(0, 0, 0, 0) │ v2.3.1{title:현재 버전 최신 여부} bg=rgba(0, 0, 0, 0)
+   descCards=0 skeleton=7(ariaHidden 7) hdrUser=계획 담당 (planner) person 박은영
+   band: 
+-- H2 S6 상세 모달 전문
+boxW=600 title=근무표 배포 안정화와 수당 근거 패널 개선 | badges=선택 업데이트(rgb(238, 241, 251)),즉시 적용 가능(rgb(241, 242, 244)) | ol/li=2 | btns=close[btn-ghost,btn-sm]|나중에[btn-ghost]|다운로드[btn-primary]
+   본문: 근무표 배포 안정화와 수당 근거 패널 개선 close 현재 버전 2.3.1 → 대상 버전 2.4.0 새 버전 v2.4.0 이 준비되었습니다. 다운로드 전에 변경 내용을 먼저 확인하세요. 근무표 배포 안정화와 수당 근거 패널 개선 배포 버전 v2.4.0 · 게시일 2025. 05. 19. 선택 업데이트 즉시 적용 가능 근무표 게시 후 배포 이력이 자동으로 갱신되고, 수당 근거 패널에 적용 요율 버전이 표시됩니다. 주요 변경 근무표 배포 — 게시 후 배포 이력 자동 갱신 수당 근거 패널 — 적용 요율 버전 표시 나중에 다운로드
+-- N1 S6: 열림 중 배경 aria-hidden 범위
+before=["main.page-content","span.status-dot-green"] open=["div.app-body","header.header-bar","main.page-content","span.status-dot-green"] modalInsideHidden=false modalIsWrapperChild=true after=["main.page-content","span.status-dot-green"]
+=============== H4~H7 02-common-1/2/3 ===============
+-- 02-common-1
+shell부품=0 | captions(4)=[데모용 — 공통 부품 확인용]12px ; [데모용 — 공통 부품 확인용]12px ; [데모용 — 공통 부품 확인용]12px ; [데모용 — 공통 부품 확인용]12px | 데모 제목= | frames=state-c1:1440x900 bg=rgb(244, 245, 247) state-c2:1440x900 bg=rgb(244, 245, 247) state-c3:1440x900 bg=rgb(244, 245, 247) state-c4:1440x900 bg=rgb(244, 245, 247)
+-- 02-common-2
+shell부품=0 | captions(0)= | 데모 제목= | frames=state-c5:1440x900 bg=rgb(244, 245, 247) state-c6:1440x900 bg=rgb(244, 245, 247) state-c7:1440x900 bg=rgb(244, 245, 247) state-c8:1440x900 bg=rgb(244, 245, 247) state-c9:1440x900 bg=rgb(244, 245, 247)
+-- 02-common-3
+shell부품=0 | captions(0)= | 데모 제목= | frames=state-c10:1440x900 bg=rgb(244, 245, 247) state-c11:1440x900 bg=rgb(244, 245, 247) state-c12:1440x900 bg=rgb(244, 245, 247)
+C1 boxW=420 title=근무지 이름 변경 btns=close|취소|확인 본문=근무지 이름 변경 close 근무지 이름을 변경할까요? 취소 확인
+C2 boxW=420 title=근무표 배포 확인 btns=close|취소|배포 본문=근무표 배포 확인 close 근무표를 배포할까요? 보라매 사업장 · 2025-06 · 14명 배포 후에는 회수한 실적으로만 수정할 수 있습니다. 취소 배포
+C3 boxW=420 title=근무지 삭제 확인 btns=close|취소|삭제 본문=근무지 삭제 확인 close 근무지를 삭제할까요? 삭제하면 배정 이력은 남지만 목록에서 사라집니다. 되돌리려면 관리자에게 문의해야 합니다. 취소 삭제
+C4 boxW=420 title=실적 반려 btns=close|취소|반려 본문=실적 반려 close 실적을 반려할까요? 반려 사유 * 반려 사유를 입력해야 반려할 수 있습니다. 취소 반려
+C3 [삭제] bg=rgb(192, 57, 43) color=rgb(255, 255, 255)
+C9 btns=실적 승인 | 실적 승인[a-dis desc=실적 승인은 승인 담당만 할 수 있습니다 (현재 권한: 계획 담당)] | 저장 중...[disabled]
+   toasts=
+   C8=── C8. 공통 — 빈 상태 ── domain_disabled 아직 등록된 근무지가 없습니다 근무지를 등록하면 근무표를 만들 수 있습니다. + 근무지 등록
+C10 rows=0 cards=0 skeletonEls=8 | C11 bars=status-label-bar:36px text=── C11. 공통 — 진행 수치형 ── 승인대기 파싱 진행 중 34/120개 처리 28% 분석 28개 · 재사용/건너뜀 6개 · 확인 필요 2건 | C12 anim=material-symbols-outlined:spin text=── C12. 공통 — 진행 불확정형 ── sync 백업 파일을 만드는 중입니다. 완료될 때까지 이 화면을 유지해 주세요.
+=============== N6 데모 캡션 · N1 배경 범위 (모달 파일) ===============
+04-sites-1.html state-t2: caption= 데모제목= | boxW=720 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=상세
+04-sites-2.html state-t4: caption=[데모용 — 실제로는 근무지 관리 화면의 [삭제]가 엽니다]12px 데모제목= | boxW=420 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=[보라매 사업장] 삭제 확인 열어 보기
+06-employees-2.html state-e3: caption=[데모용 — 실제로는 인력 관리 우측 패널의 [시급 등록]이 엽니다]12px 데모제목= | boxW=460 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=시급 등록 열어 보기
+06-employees-2.html state-e4: caption=[데모용 — 실제로는 인력 관리 우측 패널의 [배정]이 엽니다]12px 데모제목= | boxW=460 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=배정 열어 보기
+06-employees-3.html state-e6: caption=[데모용 — 실제로는 인력 관리 상단의 [시급 일괄 업데이트]가 엽니다]12px 데모제목= | boxW=860 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=시급 일괄 업데이트 열어 보기
+07-schedule-3.html state-r4: caption=[데모용 — 실제로는 근무표 배포 화면의 [배포 폴더로 게시]가 엽니다]12px 데모제목= | boxW=420 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=배포 확인 열어 보기
+09-allowance-2.html state-a3: caption=[A3: 데모용 — 실제로는 수당 관리 화면의 [품의 미리보기]가 엽니다]12px;[A4: 데모용 — 실제로는 수당 관리 결과표의 [조기 지급]이 엽니다]12px 데모제목= | boxW=640 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=품의 미리보기 열어 보기 (A3)
+09-allowance-2.html state-a4: caption=[A3: 데모용 — 실제로는 수당 관리 화면의 [품의 미리보기]가 엽니다]12px;[A4: 데모용 — 실제로는 수당 관리 결과표의 [조기 지급]이 엽니다]12px 데모제목= | boxW=460 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=조기 지급일 지정 열어 보기 (A4)
+11-operations-4.html state-o9: caption=[데모용 — 실제로는 운영 관리 상단의 [DB복원]이 엽니다]12px 데모제목= | boxW=900 insideHidden=false bg before=1 open=["div.app-body","header.header-bar","span.status-dot-green"] after=1 trigger=DB복원 미리보기 열어 보기
+-- A5·O10 (연쇄 2단계) 폭·배경
+A5 boxW=420 insideHidden=false 본문=품의를 승인할까요? close 품의를 승인할까요? 승인하면 품의서와 별첨 문서가 생성되고 백업됩니다. 승인된 계산은 이력 없이 덮어쓸 수 없습니다. 취소 승인
+O10 boxW=420 insideHidden=false
+=============== N5 12-access-logs-1 G1·G2 ===============
+th=활동시간|사용자|권한|액션내용|상세
+   rows(8):
+   05-20 14:32 / 관리자 admin / admin / DB 복원 미리보기 / backup_2025-05-19.json 복원 시뮬레이션
+   05-20 14:20 / 이정호 leejungho / reviewer / 실적 승인 / 실적_보라매사업장_2025-05.xlsx (4건)
+   05-20 11:05 / 이정호 leejungho / reviewer / 품의 승인 / 2025-05 수당 품의 완료 (369,000원)
+   05-20 09:12 / 박은영 parkeunyoung / planner / 근무표 배포 / 보라매사업장_2025-06_4조3교대.xlsx
+   05-19 16:40 / 박은영 parkeunyoung / planner / 시급 일괄 적용 / 5명 시급 갱신
+   05-19 09:01 / 김지현 kimjihyun / operator / 화면 이동 / 홈 → 실적 관리
+   05-19 08:58 / 김지현 kimjihyun / operator / 로그인 / 로그인 성공
+   05-18 17:22 / 관리자 admin / admin / 앱 설정 저장 / 경로 설정 및 폴더 감시 설정
+   selects=사용자 선택[전체 사용자,관리자 (admin),김지현 (kimjihyun),박은영 (parkeunyoung),이정호 (leejungho)] ; 액션 선택[전체 액션,로그인,화면 이동,실적 승인,근무표 배포,앱 설정 저장]
+   placeholder=사용자 / 액션 / 상세
+   부제=?
+   badges=DB 복원 미리보기(rgb(238, 241, 251)),실적 승인(rgb(232, 245, 238)),품의 승인(rgb(232, 245, 238)),근무표 배포(rgb(238, 241, 251)),시급 일괄 적용(rgb(238, 241, 251)),화면 이동(rgb(241, 242, 244)),로그인(rgb(241, 242, 244)),앱 설정 저장(rgb(238, 241, 251))
+   G1 buttons=menu,person
+        admin,초기화,새로고침 | G2 buttons=menu,person
+        admin,초기화,필터 초기화 G2 text=니다. 초기화 history_toggle_off 활동 이력이 없습니다 현재 필터 조건에 맞는 활동 이력이 없습니다. 필터를 초기화하거나 검색 조건을 변경해 보세요. 필터 초기화 DB 연결됨 최근 인테이크: 마지막 처리 완료 14:32 대기 파일 3개 폴더 감시 실행 중 최신 v2.3.1
+=============== N3·N4 11-operations-1 O1·O2 / -2 O3 / -3 O8 ===============
+O1 labels=── O1. 운영 관리 — 탭 경로 설정 ──|승인 대기 폴더|승인 완료 폴더|근무표 내보내기 폴더|품의서 저장 폴더|별첨1 저장 폴더|별첨2 저장 폴더|데이터 루트|DB 경로|복원 파일 경로|공휴일 API 주소|적용 시작일|적용 시작일|백업 저장 폴더|백업 주기|백업 시간|주휴 누락 경고 (주 1일 이상 휴무가 없으면 경고)
+   cards=
+   btns=menu,person
+        admin,DB복원,경로 저장,폴더 선택,폴더 선택,폴더 선택,폴더 선택,폴더 선택,폴더 선택,파일 선택,재시작,중지,수동 백업 저장
+   readonly==C:\연장근무실적\대기 ; =C:\연장근무실적\승인 ; =C:\연장근무실적\배포관리 ; =C:\연장근무실적\품의서 ; =C:\연장근무실적\별첨1 ; =C:\연장근무실적\별첨2 ; =C:\연장근무실적 ; =C:\연장근무실적\DB\ShiftMgmt.accdb ; =C:\연장근무실적\백업\backup_2025-05-19.json ; =C:\연장근무실적\백업
+   placeholders=미설정 (기존 규칙 유지)
+   2026-07-01=false
+O2 cards= | calendars=0 months=1월,2월,3월,4월,5월,6월 holidayCells=0 | btns=menu,person
+        admin,DB복원,모두 반영,add신규 등록,수정,제거 | 캡션=true | 설명=true
+O3 selects=[초안/적용 중/종료] | labels=변경 사유|상태 | inputs=:변경 사유를 입력하세요 ; :1.5 ; :2.0 ; :2.5 ; :0.0 ; :1.5 ; :2.0 ; :1.5 ; :2.0 ; :2.5 ; :0.0 ; :1.5 ; :2.0 ; :1.5 ; :2.0 ; :2.5
+   영향카드=없음
+O8 th=게시글|버전|게시일|업데이트 구분|적용 조건|요약 | cards=
+=============== 잔여 문구 확인(2차 phrases 없음 4건) ===============
+L3 잠김 문구: 
+E2 배정 이력: ─ 주 메뉴 ─ home 홈 domain 근무지 관리 group 인력 관리 calendar_month 근무표 / ─ 주 메뉴 ─ home 홈 domain 근무지 관리 group 인력 관리 calendar_month 근무표
+R1 패턴명: 보라매 사업장 — 2025년 6월 근무표 미리보기 (4조 3교대)
+A1 시간 카드: 총 19.0시간 근로분
+DONE
+EXTRADONE

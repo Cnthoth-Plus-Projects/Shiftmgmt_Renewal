@@ -1,0 +1,87 @@
+--- Gemini-v7/access-history.mjs
++++ Sol-direct-v7/access-history.mjs
+@@ -3,6 +3,7 @@
+ import path from "node:path";
+ import net from "node:net";
+ import crypto from "node:crypto";
++import { isDeepStrictEqual as same } from "node:util";
+ import { spawn } from "node:child_process";
+ import { fileURLToPath, pathToFileURL } from "node:url";
+ import { createUniqueRunDir } from "../lib/ui-check.mjs";
+@@ -73,7 +74,7 @@
+ const cleanupErrors = [], evidenceErrors = [], unexpectedErrors = [];
+ const recordError = (phase, err, code = null) => { const entry = { code: code || primaryCode, phase, ...errInfo(err), timeMs: Date.now() }; if (!primaryError) { primaryError = entry; primaryCode = code || primaryCode; primaryPhase = phase; } else unexpectedErrors.push(entry); return entry; };
+ const fail = (ph, msg, cd) => { const e = new Error(msg); recordError(ph, e, cd); throw e; };
+-const cleanProc = async (r) => { if (r) { try { await r.stop(1000); await r.settleLogs(1000); } catch {} } };
++const cleanProc = async r => { if (r) for (const k of ["stop", "settleLogs"]) try { await r[k](1000); } catch (e) { cleanupErrors.push({ phase: "cleanup", ...errInfo(e), timeMs: Date.now() }); } };
+ const isPidAlive = (pid) => { if (!pid || pid <= 0) return false; try { process.kill(pid, 0); return true; } catch { return false; } };
+ const buildChildEnv = (d, b) => ({ ...Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith("SHIFT") && k !== "NODE_OPTIONS" && !k.startsWith("SOL_A1_PROBE"))), SHIFTMGMT_USER_DATA_DIR: d, SHIFTMGMT_PORT: String(PORT), SHIFTMGMT_UI_BOOTSTRAP_FILE: b });
+ const validatePng = (p) => {
+@@ -93,7 +94,7 @@
+     this.logErrors = { stdout: null, stderr: null }; this.callbackEvents = [];
+     for (const s of ["stdout", "stderr"]) {
+       this.streams[s].on("error", (e) => { this.logErrors[s] = this.logError = e; this.addEv("log-error", Date.now(), s, null, null, null, errInfo(e)); recordError(`${name}-log-error`, e, "A1_LOG_WRITE_FAILED"); });
+-      for (const ev of ["finish", "close"]) { const cap = ev[0].toUpperCase() + ev.slice(1); this.streams[s].on(ev, () => { const t = Date.now(); this[`log${cap}Seen`][s] = true; this[`log${cap}AtMs`][s] = t; this.addEv(`log-${ev}`, t, s, null, null, null, null); }); }
++      for (const ev of ["finish", "close"]) { const cap = ev[0].toUpperCase() + ev.slice(1); this.streams[s].once(ev, () => { const t = Date.now(); this[`log${cap}Seen`][s] = true; this[`log${cap}AtMs`][s] = t; this.addEv(`log-${ev}`, t, s, null, null, null, null); }); }
+     }
+   }
+ 
+@@ -113,7 +114,9 @@
+   async stop(timeoutMs = 5000) { if (this.child && !this.closeSeen) { if (this.child.exitCode === null && !this.exitSeen) { try { this.child.kill(); } catch {} } const dl = Date.now() + timeoutMs; while (Date.now() < dl && !this.closeSeen) await sleep(50); } }
+ 
+   async settleLogs(timeoutMs = 5000) {
+-    if (this.settled) return; this.streams.stdout.end(); this.streams.stderr.end(); const dl = Date.now() + timeoutMs;
++    if (this.settled) return;
++    for (const s of ["stdout", "stderr"]) try { this.streams[s].end(); } catch (e) { this.logErrors[s] = this.logError = e; recordError(this.name + "-log-end", e, "A1_LOG_WRITE_FAILED"); try { this.streams[s].destroy(e); } catch (d) { cleanupErrors.push({ phase: "cleanup", ...errInfo(d), timeMs: Date.now() }); } }
++    const dl = Date.now() + timeoutMs;
+     while (Date.now() < dl && (!this.logCloseSeen.stdout && !this.logErrors.stdout || !this.logCloseSeen.stderr && !this.logErrors.stderr)) await sleep(20);
+     await new Promise((r) => setImmediate(r)); if (this.logError) { recordError(`${this.name}-log-error`, this.logError, "A1_LOG_WRITE_FAILED"); throw this.logError; }
+     for (const ev of ["Finish", "Close"]) if (!this[`log${ev}Seen`].stdout || !this[`log${ev}Seen`].stderr) fail(`${this.name}-log-${ev.toLowerCase()}`, "unverified", `A1_LOG_${ev.toUpperCase()}_UNVERIFIED`);
+@@ -126,22 +129,23 @@
+ const deepFreeze = (o) => { Object.freeze(o); for (const v of Object.values(o)) if (v && typeof v === "object") deepFreeze(v); return o; };
+ 
+ function validateProcessReceipt(r) {
+-  const q = (ok) => { if (!ok) throw new Error(); }, ev = r?.callbackEvents; q(Array.isArray(ev) && ev.length === 7);
+-  const sg = {}, lg = {}, errs = [], EK = ["event","timeMs","stream","pid","code","signal","error"];
++  const q = ok => { if (!ok) throw new Error("process receipt invalid"); }, ev = r?.callbackEvents, K = ["stdout", "stderr"];
++  q(Array.isArray(ev) && ev.length === 7 && Number.isInteger(r.pid) && r.pid > 0);
++  q(isObj(r.logsSettled, 2) && K.every(k => Object.hasOwn(r.logsSettled, k) && r.logsSettled[k] === true));
++  const sg = {}, lg = {}, EK = ["event", "timeMs", "stream", "pid", "code", "signal", "error"];
+   for (const e of ev) {
+-    q(isObj(e, 7) && EK.every(k => k in e) && typeof e.timeMs === "number" && Number.isFinite(e.timeMs) && e.timeMs > 0);
+-    const k = e.event; q(["spawn","exit","close","error","log-finish","log-close","log-error"].includes(k));
+-    if (k.startsWith("log-")) { q((e.stream === "stdout" || e.stream === "stderr") && e.pid === null && e.code === null && e.signal === null); if (k === "log-error") errs.push(e); else { q(!lg[k + e.stream]); lg[k + e.stream] = e; } }
+-    else { q(e.stream === null); if (k === "error") { q(e.pid === r.pid && e.code === null && e.signal === null); errs.push(e); } else { q(!sg[k]); sg[k] = e; q(k === "spawn" ? typeof e.pid === "number" && Number.isInteger(e.pid) && e.pid > 0 && e.pid === r.pid : e.pid === r.pid); q(e.code === null || (typeof e.code === "number" && Number.isInteger(e.code))); q(e.signal === null || (typeof e.signal === "string" && Boolean(e.signal))); if (k === "spawn") q(e.code === null && e.signal === null); } }
+-    if (k.includes("error")) { const er = e.error; q(isObj(er, 3) && typeof er.name === "string" && typeof er.message === "string" && typeof er.stack === "string" && er.name && er.message && er.stack); } else q(e.error === null);
+-  }
+-  for (const [k, sn, tm, cK, sK] of [["spawn", null, "createdAtMs", null, null], ["exit", "exitSeen", "exitAtMs", "exitCode", "exitSignal"], ["close", "closeSeen", "closeAtMs", "closeCode", "closeSignal"]]) { const f = sg[k]; if (sn) q(r[sn] === Boolean(f)); q(r[tm] === (f ? f.timeMs : null)); if (cK) q(cK in r && sK in r && r[cK] === (f ? f.code : null) && r[sK] === (f ? f.signal : null)); }
+-  for (const [k, pfx] of [["log-finish", "logFinish"], ["log-close", "logClose"]]) { q(isObj(r[pfx + "Seen"], 2) && isObj(r[pfx + "AtMs"], 2)); for (const s of ["stdout", "stderr"]) { const f = lg[k + s]; q(r[pfx + "Seen"]?.[s] === Boolean(f) && r[pfx + "AtMs"]?.[s] === (f ? f.timeMs : null)); } }
+-  q(Object.keys(sg).length === 3 && Object.keys(lg).length === 4 && errs.length === 0); q(ev[0].event === "spawn" && ev[1].event === "exit" && ev[2].event === "close");
+-  for (let i = 1; i < 7; i++) q(ev[i].timeMs >= ev[i - 1].timeMs);
+-  for (const s of ["stdout", "stderr"]) { const se = ev.filter(e => e.stream === s); q(se.length === 2 && se[0].event === "log-finish" && se[1].event === "log-close" && r.closeAtMs <= r.logFinishAtMs[s] && r.logFinishAtMs[s] <= r.logCloseAtMs[s]); }
+-  q(r.createdAtMs <= r.exitAtMs && r.exitAtMs <= r.closeAtMs); q(typeof r.pid === "number" && Number.isInteger(r.pid) && r.pid > 0 && r.exitSeen === true && r.closeSeen === true && r.aliveAfterClose === false);
+-  return 7;
++    q(isObj(e, 7) && EK.every(k => Object.hasOwn(e, k)) && Number.isFinite(e.timeMs) && e.timeMs > 0 && e.error === null);
++    const k = e.event;
++    q(["spawn", "exit", "close", "log-finish", "log-close"].includes(k));
++    if (k.startsWith("log-")) { q(K.includes(e.stream) && e.pid === null && e.code === null && e.signal === null && !lg[k + e.stream]); lg[k + e.stream] = e; }
++    else { q(e.stream === null && e.pid === r.pid && !sg[k]); sg[k] = e; q(e.code === null || Number.isInteger(e.code)); q(e.signal === null || typeof e.signal === "string" && !!e.signal); if (k === "spawn") q(e.code === null && e.signal === null); }
++  }
++  for (const [k, sn, tm, ck, sk] of [["spawn", null, "createdAtMs", null, null], ["exit", "exitSeen", "exitAtMs", "exitCode", "exitSignal"], ["close", "closeSeen", "closeAtMs", "closeCode", "closeSignal"]]) { const e = sg[k]; q(!!e && r[tm] === e.timeMs); if (sn) q(r[sn] === true && r[ck] === e.code && r[sk] === e.signal); }
++  for (const [k, p] of [["log-finish", "logFinish"], ["log-close", "logClose"]]) { q(isObj(r[p + "Seen"], 2) && isObj(r[p + "AtMs"], 2)); for (const t of K) { const e = lg[k + t]; q(!!e && Object.hasOwn(r[p + "Seen"], t) && Object.hasOwn(r[p + "AtMs"], t) && r[p + "Seen"][t] === true && r[p + "AtMs"][t] === e.timeMs); } }
++  q(ev[0].event === "spawn" && ev[1].event === "exit" && ev[2].event === "close" && r.aliveAfterClose === false);
++  for (let i = 1; i < ev.length; i++) q(ev[i].timeMs >= ev[i - 1].timeMs);
++  for (const t of K) { const e = ev.filter(e => e.stream === t); q(e.length === 2 && e[0].event === "log-finish" && e[1].event === "log-close" && r.closeAtMs <= r.logFinishAtMs[t] && r.logFinishAtMs[t] <= r.logCloseAtMs[t]); }
++  q(r.createdAtMs <= r.exitAtMs && r.exitAtMs <= r.closeAtMs); return 7;
+ }
+ 
+ const waitChild = (rec, child, ms, ev = "exit") => new Promise((res, rej) => {
+@@ -161,7 +165,7 @@
+ const wrapWorker = (r) => r ? { ...r, parentPid: process.pid, nonceSha256, contextAck, runAuthorized, ackReceipt: selectedCase === "contract-core" ? workerAckReceipt : null, argv: workerArgv } : null;
+ const errObj = (p) => ({ primary: p, cleanup: cleanupErrors, evidence: evidenceErrors, unexpected: unexpectedErrors });
+ const cacheProc = (r) => { try { const s = r.toManifestRecord(); validateProcessReceipt(s); return deepFreeze(structuredClone(s)); } catch (e) { recordError("lifecycle-clock", e, "A1_LIFECYCLE_INVALID"); throw e; } };
+-const checkBarrier = () => { if (primaryError) throw primaryError; for (const a of [unexpectedErrors, cleanupErrors, evidenceErrors]) if (a.length) throw a[0]; for (const [r, c] of [[workerReg, workerCached], [serverReg, serverCached], [gateReg, gateCached]]) { if (!c || !r) continue; const l = r.toManifestRecord(); if (l.callbackEvents.some(e => e.event.includes("error")) || JSON.stringify(l) !== JSON.stringify(c)) { const err = new Error(r.name + "-barrier"); recordError(r.name + "-barrier", err, "A1_LIFECYCLE_INVALID"); throw err; } } };
++const checkBarrier = () => { if (primaryError) throw primaryError; for (const a of [unexpectedErrors, cleanupErrors, evidenceErrors]) if (a.length) throw a[0]; for (const [r, c] of [[workerReg, workerCached], [serverReg, serverCached], [gateReg, gateCached]]) if (r && c) for (const k of Object.keys(c)) { const v = k === "aliveAfterClose" ? isPidAlive(r.pid) : k === "logsSettled" ? { stdout: r.settled, stderr: r.settled } : r[k]; if (!same(v, c[k])) fail(r.name + "-barrier", k, "A1_LIFECYCLE_INVALID"); } };
+ const makeBaseManifest = (st, rc) => ({ schema: contract?.evidenceSchema || "shiftmgmt.verifier.evidence.v1", stage: "foundation", stageSlice: "A1", case: selectedCase, runId, contractSha256: CONTRACT_SHA256, executionSha256: EXECUTION_SHA256, status: st, exitCode: rc, owner: { pid: process.pid, nodePath: process.execPath, nonceSha256, context: context || {} } });
+ 
+ try {

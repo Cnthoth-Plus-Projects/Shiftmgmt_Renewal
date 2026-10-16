@@ -1,0 +1,340 @@
+[
+  {
+    "name": "cli-public-1",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:51.012296+00:00",
+    "pid": 51744,
+    "rc": 1,
+    "end": "2026-10-01T13:18:51.445750+00:00",
+    "elapsedSeconds": 0.437,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-1.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-1.stderr.txt"
+  },
+  {
+    "name": "cli-public-2",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case="
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:51.456044+00:00",
+    "pid": 46204,
+    "rc": 1,
+    "end": "2026-10-01T13:18:51.877682+00:00",
+    "elapsedSeconds": 0.422,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-2.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-2.stderr.txt"
+  },
+  {
+    "name": "cli-public-3",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=sol-unknown"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:51.887119+00:00",
+    "pid": 37860,
+    "rc": 1,
+    "end": "2026-10-01T13:18:52.305920+00:00",
+    "elapsedSeconds": 0.422,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-3.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-3.stderr.txt"
+  },
+  {
+    "name": "cli-public-4",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:52.318264+00:00",
+    "pid": 48660,
+    "rc": 1,
+    "end": "2026-10-01T13:18:52.725329+00:00",
+    "elapsedSeconds": 0.406,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-4.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-4.stderr.txt"
+  },
+  {
+    "name": "cli-public-5",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core",
+      "extra"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:52.735175+00:00",
+    "pid": 27384,
+    "rc": 1,
+    "end": "2026-10-01T13:18:53.167674+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-5.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-5.stderr.txt"
+  },
+  {
+    "name": "cli-public-6",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--url=http://127.0.0.1:18741/"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:53.176960+00:00",
+    "pid": 38888,
+    "rc": 1,
+    "end": "2026-10-01T13:18:53.606322+00:00",
+    "elapsedSeconds": 0.421,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-6.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-6.stderr.txt"
+  },
+  {
+    "name": "cli-public-7",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "http://127.0.0.1:18741/"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:53.621425+00:00",
+    "pid": 50112,
+    "rc": 1,
+    "end": "2026-10-01T13:18:54.063993+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-7.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-7.stderr.txt"
+  },
+  {
+    "name": "cli-public-8",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case= contract-core "
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:54.074976+00:00",
+    "pid": 32120,
+    "rc": 1,
+    "end": "2026-10-01T13:18:54.505612+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-8.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-8.stderr.txt"
+  },
+  {
+    "name": "cli-public-9",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case",
+      "contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:54.518064+00:00",
+    "pid": 40984,
+    "rc": 1,
+    "end": "2026-10-01T13:18:54.972225+00:00",
+    "elapsedSeconds": 0.468,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-9.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-9.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-shared-1",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-shared.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:54.983933+00:00",
+    "pid": 45520,
+    "rc": 1,
+    "end": "2026-10-01T13:18:55.431798+00:00",
+    "elapsedSeconds": 0.454,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-1.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-1.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-shared-2",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-shared.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:55.447944+00:00",
+    "pid": 34088,
+    "rc": 1,
+    "end": "2026-10-01T13:18:55.880328+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-2.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-2.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-shared-3",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-shared.mjs",
+      "--case=sol-unknown"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:55.892199+00:00",
+    "pid": 44572,
+    "rc": 1,
+    "end": "2026-10-01T13:18:56.330945+00:00",
+    "elapsedSeconds": 0.437,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-3.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-3.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-shared-4",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-shared.mjs",
+      "--case=contract-core",
+      "extra"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:56.343235+00:00",
+    "pid": 52748,
+    "rc": 1,
+    "end": "2026-10-01T13:18:56.778959+00:00",
+    "elapsedSeconds": 0.437,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-4.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-shared-4.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-positive-1",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-positive.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:56.781944+00:00",
+    "pid": 49988,
+    "rc": 1,
+    "end": "2026-10-01T13:18:57.222450+00:00",
+    "elapsedSeconds": 0.453,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-1.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-1.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-positive-2",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-positive.mjs",
+      "--case=live-admin"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:57.234870+00:00",
+    "pid": 18788,
+    "rc": 1,
+    "end": "2026-10-01T13:18:57.666809+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-2.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-2.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-positive-3",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-positive.mjs",
+      "--case=sol-unknown"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:57.684665+00:00",
+    "pid": 17188,
+    "rc": 1,
+    "end": "2026-10-01T13:18:58.114047+00:00",
+    "elapsedSeconds": 0.437,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-3.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-3.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-positive-4",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-positive.mjs",
+      "--case=live-admin",
+      "extra"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:58.124664+00:00",
+    "pid": 33968,
+    "rc": 1,
+    "end": "2026-10-01T13:18:58.563352+00:00",
+    "elapsedSeconds": 0.438,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-4.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-positive-4.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-negative-1",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-negative.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:58.566882+00:00",
+    "pid": 52648,
+    "rc": 1,
+    "end": "2026-10-01T13:18:59.025059+00:00",
+    "elapsedSeconds": 0.453,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-1.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-1.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-negative-2",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-negative.mjs",
+      "--case=errors"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:59.028569+00:00",
+    "pid": 45724,
+    "rc": 1,
+    "end": "2026-10-01T13:18:59.485968+00:00",
+    "elapsedSeconds": 0.453,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-2.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-2.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-negative-3",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-negative.mjs",
+      "--case=sol-unknown"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:59.497816+00:00",
+    "pid": 51600,
+    "rc": 1,
+    "end": "2026-10-01T13:18:59.950224+00:00",
+    "elapsedSeconds": 0.453,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-3.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-3.stderr.txt"
+  },
+  {
+    "name": "cli-private-access-history-negative-4",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history-negative.mjs",
+      "--case=errors",
+      "extra"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:18:59.960632+00:00",
+    "pid": 39468,
+    "rc": 1,
+    "end": "2026-10-01T13:19:00.412033+00:00",
+    "elapsedSeconds": 0.453,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-4.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-private-access-history-negative-4.stderr.txt"
+  }
+]

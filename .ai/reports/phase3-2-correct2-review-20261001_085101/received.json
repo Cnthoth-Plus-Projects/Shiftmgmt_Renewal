@@ -1,0 +1,8 @@
+{
+  "time": "2026-10-01T08:51:01.889289+09:00",
+  "reviewDirectory": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101",
+  "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_085101_3-2b-CORRECT2-Gemini_수신원본.md",
+  "sha256": "9A3A7400E2F45F8DF73CB7777FE6A10856EAEA411B769F7AA666893C851B8987",
+  "bytes": 42128,
+  "correctionBaseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-20260930_230510\\baseline.json"
+}

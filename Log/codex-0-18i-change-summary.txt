@@ -1,0 +1,9 @@
+0-18i independent static audit (2026-09-07)
+Sources: current 1차/2차 HTML vs snapshot17/18 corresponding folders.
+Counts: 1차 10 files changed 10 unchanged 0; 2차 24 files changed 19 unchanged 5; total changed 29 unchanged 5.
+Current equals snapshot18: 34/34; SHA manifest mismatches: 0; line-count equal 34/34.
+HANDOFF declared HTML hash lines: 34; snapshot18 manifests: 34; declaration-manifest differences: 0.
+Diff artifact: codex-0-18i-change-unified.diff (git diff --no-index -U0).
+Hunk total: 171 (29 files).
+Added-line classification: aria-label 63; skip href 53; main id/tabindex 52; wizard3 CSS 1; P6 JS 2; unexpected 0.
+Allowed scope verdict: all observed changes map to N1 aria-label, N2 skip/main, N3 wizard3 CSS, or P6 JS; no unexpected E9 or second-batch script changes observed.

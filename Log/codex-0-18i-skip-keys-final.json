@@ -1,0 +1,3130 @@
+{
+  "at": "2026-09-07T08:07:44.268Z",
+  "skip": [
+    {
+      "file": "03-home-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-h1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-h1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-h1",
+        "cls": "page-content",
+        "main": "main-content-h1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary btn-sm",
+        "main": "main-content-h1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "03-home-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-h2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-h1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-h2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-h2",
+        "cls": "page-content",
+        "main": "main-content-h2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary btn-sm",
+        "main": "main-content-h2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "03-home-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-h3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-h2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-h3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-h3",
+        "cls": "page-content",
+        "main": "main-content-h3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary btn-sm",
+        "main": "main-content-h3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "03-home-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-h4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-h4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-h4",
+        "cls": "page-content",
+        "main": "main-content-h4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary btn-sm",
+        "main": "main-content-h4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "03-home-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-h5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-h4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-h5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-h5",
+        "cls": "page-content",
+        "main": "main-content-h5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-h5-check",
+        "cls": "btn-primary btn-sm",
+        "main": "main-content-h5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w1",
+        "cls": "page-content",
+        "main": "main-content-w1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "w1-site-name",
+        "cls": "form-input",
+        "main": "main-content-w1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w2",
+        "cls": "page-content",
+        "main": "main-content-w2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-w2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w3",
+        "cls": "page-content",
+        "main": "main-content-w3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-w3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w4",
+        "cls": "page-content",
+        "main": "main-content-w4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "DIV",
+        "id": "",
+        "cls": "w2-col",
+        "main": "main-content-w4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w5",
+      "closedW7": "none",
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w5",
+        "cls": "page-content",
+        "main": "main-content-w5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary",
+        "main": "main-content-w5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w6",
+      "closedW7": "none",
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w6",
+        "cls": "page-content",
+        "main": "main-content-w6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-w6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w7",
+      "closedW7": "none",
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w7",
+        "cls": "page-content",
+        "main": "main-content-w7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-prev-w7",
+        "cls": "btn-secondary",
+        "main": "main-content-w7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w8",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w8"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w8",
+        "cls": "page-content",
+        "main": "main-content-w8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary",
+        "main": "main-content-w8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w9",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w9"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w9",
+        "cls": "page-content",
+        "main": "main-content-w9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "w9-site-name",
+        "cls": "form-input",
+        "main": "main-content-w9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "05-sites-wizard-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-w10",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-w9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-w10"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-w10",
+        "cls": "page-content",
+        "main": "main-content-w10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary",
+        "main": "main-content-w10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p1",
+        "cls": "page-content",
+        "main": "main-content-p1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn active",
+        "main": "main-content-p1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-p1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p2",
+        "cls": "page-content",
+        "main": "main-content-p2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn active",
+        "main": "main-content-p2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-1.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p3",
+        "cls": "page-content",
+        "main": "main-content-p3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn active",
+        "main": "main-content-p3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p4",
+        "cls": "page-content",
+        "main": "main-content-p4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn active",
+        "main": "main-content-p4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-2.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-restart-recovery",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-p4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p5",
+        "cls": "page-content",
+        "main": "main-content-p5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p6",
+        "cls": "page-content",
+        "main": "main-content-p6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-3.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p7",
+      "closedW7": null,
+      "pre": {
+        "tag": "TR",
+        "id": "p6-row-2",
+        "cls": "selected",
+        "main": "main-content-p6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p7",
+        "cls": "page-content",
+        "main": "main-content-p7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p8",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p8"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p8",
+        "cls": "page-content",
+        "main": "main-content-p8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p9",
+      "closedW7": null,
+      "pre": {
+        "tag": "DIV",
+        "id": "",
+        "cls": "table-container",
+        "main": "main-content-p8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p9"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p9",
+        "cls": "page-content",
+        "main": "main-content-p9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "08-performance-4.html",
+      "dir": "시안/2026-08-31-1차HTML/",
+      "target": "main-content-p10",
+      "closedW7": null,
+      "pre": {
+        "tag": "DIV",
+        "id": "",
+        "cls": "table-container",
+        "main": "main-content-p9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-p10"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-p10",
+        "cls": "page-content",
+        "main": "main-content-p10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "tab-btn",
+        "main": "main-content-p10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "00-shell-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s1",
+        "cls": "page-content",
+        "main": "main-content-s1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s2"
+      }
+    },
+    {
+      "file": "00-shell-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "user-info-btn btn-logout",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s2",
+        "cls": "page-content",
+        "main": "main-content-s2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s3"
+      }
+    },
+    {
+      "file": "00-shell-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "user-info-btn btn-logout",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s3",
+        "cls": "page-content",
+        "main": "main-content-s3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s1"
+      }
+    },
+    {
+      "file": "00-shell-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s4",
+        "cls": "page-content",
+        "main": "main-content-s4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s5"
+      }
+    },
+    {
+      "file": "00-shell-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "user-info-btn btn-logout",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s5",
+        "cls": "page-content",
+        "main": "main-content-s5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-s5-status-restart",
+        "cls": "btn-secondary btn-sm",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "00-shell-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-s6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-s5-status-restart",
+        "cls": "btn-secondary btn-sm",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-s6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-s6",
+        "cls": "page-content",
+        "main": "main-content-s6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-s6-status-detail",
+        "cls": "btn-ghost btn-sm",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "04-sites-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-t1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-t1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-t1",
+        "cls": "page-content",
+        "main": "main-content-t1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "",
+        "cls": "form-input",
+        "main": "main-content-t1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "04-sites-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-t3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-t3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-t3",
+        "cls": "page-content",
+        "main": "main-content-t3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "",
+        "cls": "form-input",
+        "main": "main-content-t3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "04-sites-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-t4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary",
+        "main": "main-content-t3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-t4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-t4",
+        "cls": "page-content",
+        "main": "main-content-t4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-t4",
+        "cls": "btn-danger-ghost",
+        "main": "main-content-t4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e1",
+        "cls": "page-content",
+        "main": "main-content-e1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-e1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e2",
+      "closedW7": null,
+      "pre": {
+        "tag": "TR",
+        "id": "",
+        "cls": "",
+        "main": "main-content-e1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e2",
+        "cls": "page-content",
+        "main": "main-content-e2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-e2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e9",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-danger-ghost btn-sm",
+        "main": "main-content-e2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e9"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e9",
+        "cls": "page-content",
+        "main": "main-content-e9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-e9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e3",
+        "cls": "page-content",
+        "main": "main-content-e3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-e3",
+        "cls": "btn-primary",
+        "main": "main-content-e3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-open-e3",
+        "cls": "btn-primary",
+        "main": "main-content-e3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e4",
+        "cls": "page-content",
+        "main": "main-content-e4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-e4",
+        "cls": "btn-primary",
+        "main": "main-content-e4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-open-e4",
+        "cls": "btn-primary",
+        "main": "main-content-e4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e5",
+        "cls": "page-content",
+        "main": "main-content-e5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm btn-up",
+        "main": "main-content-e5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e6",
+        "cls": "page-content",
+        "main": "main-content-e6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-e6",
+        "cls": "btn-primary",
+        "main": "main-content-e6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e7",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-open-e6",
+        "cls": "btn-primary",
+        "main": "main-content-e6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e7",
+        "cls": "page-content",
+        "main": "main-content-e7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-e7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "06-employees-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-e8",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-e7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-e8"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-e8",
+        "cls": "page-content",
+        "main": "main-content-e8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-e8",
+        "cls": "btn-primary",
+        "main": "main-content-e8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r1",
+        "cls": "page-content",
+        "main": "main-content-r1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-r1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r2",
+        "cls": "page-content",
+        "main": "main-content-r2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-r2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-ghost btn-sm",
+        "main": "main-content-r2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r3",
+        "cls": "page-content",
+        "main": "main-content-r3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-r3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r4",
+        "cls": "page-content",
+        "main": "main-content-r4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-r4",
+        "cls": "btn-primary",
+        "main": "main-content-r4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-open-r4",
+        "cls": "btn-primary",
+        "main": "main-content-r4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r5",
+        "cls": "page-content",
+        "main": "main-content-r5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r6"
+      }
+    },
+    {
+      "file": "07-schedule-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "user-info-btn btn-logout",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r6",
+        "cls": "page-content",
+        "main": "main-content-r6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-r6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "07-schedule-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-r7",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-r6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-r7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-r7",
+        "cls": "page-content",
+        "main": "main-content-r7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-r7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a1",
+        "cls": "page-content",
+        "main": "main-content-a1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-a1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-a1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a2",
+        "cls": "page-content",
+        "main": "main-content-a2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-a2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a3-a5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a3-a5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a3-a5",
+        "cls": "page-content",
+        "main": "main-content-a3-a5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-a3",
+        "cls": "btn-primary",
+        "main": "main-content-a3-a5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a9",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "btn-open-a4",
+        "cls": "btn-secondary",
+        "main": "main-content-a3-a5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a9"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a9",
+        "cls": "page-content",
+        "main": "main-content-a9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-a3-a9",
+        "cls": "btn-primary",
+        "main": "main-content-a9",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a6",
+        "cls": "page-content",
+        "main": "main-content-a6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-a6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a7",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-a6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a7",
+        "cls": "page-content",
+        "main": "main-content-a7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "filter-chip active",
+        "main": "main-content-a7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "09-allowance-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-a8",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "filter-chip",
+        "main": "main-content-a7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-a8"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-a8",
+        "cls": "page-content",
+        "main": "main-content-a8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-a8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-d1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-d1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-d1",
+        "cls": "page-content",
+        "main": "main-content-d1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-d1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-d2",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-d1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-d2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-d2",
+        "cls": "page-content",
+        "main": "main-content-d2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-d2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-d3",
+      "closedW7": null,
+      "pre": {
+        "tag": "INPUT",
+        "id": "",
+        "cls": "",
+        "main": "main-content-d2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-d3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-d3",
+        "cls": "page-content",
+        "main": "main-content-d3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "SELECT",
+        "id": "",
+        "cls": "form-select",
+        "main": "main-content-d3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o1",
+        "cls": "page-content",
+        "main": "main-content-o1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o2",
+      "closedW7": null,
+      "pre": {
+        "tag": "INPUT",
+        "id": "o1-chk-rest",
+        "cls": "",
+        "main": "main-content-o1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o2",
+        "cls": "page-content",
+        "main": "main-content-o2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o3",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o3"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o3",
+        "cls": "page-content",
+        "main": "main-content-o3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o4",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-secondary btn-sm",
+        "main": "main-content-o3",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o4"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o4",
+        "cls": "page-content",
+        "main": "main-content-o4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-2.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o5",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-danger-ghost btn-sm",
+        "main": "main-content-o4",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o5"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o5",
+        "cls": "page-content",
+        "main": "main-content-o5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o5",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o6",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o6"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o6",
+        "cls": "page-content",
+        "main": "main-content-o6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o7",
+      "closedW7": null,
+      "pre": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-danger-ghost btn-sm",
+        "main": "main-content-o6",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o7"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o7",
+        "cls": "page-content",
+        "main": "main-content-o7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-3.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o8",
+      "closedW7": null,
+      "pre": {
+        "tag": "INPUT",
+        "id": "o7-area-range",
+        "cls": "form-input",
+        "main": "main-content-o7",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o8"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o8",
+        "cls": "page-content",
+        "main": "main-content-o8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "cls": "btn-primary",
+        "main": "main-content-o8",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "11-operations-4.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-o9-o10",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-o9-o10"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-o9-o10",
+        "cls": "page-content",
+        "main": "main-content-o9-o10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "btn-open-o9",
+        "cls": "btn-primary",
+        "main": "main-content-o9-o10",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "12-access-logs-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-g1",
+      "closedW7": null,
+      "pre": {
+        "tag": "BODY",
+        "id": "",
+        "cls": "",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-g1"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-g1",
+        "cls": "page-content",
+        "main": "main-content-g1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "g1-start-date",
+        "cls": "form-input",
+        "main": "main-content-g1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    },
+    {
+      "file": "12-access-logs-1.html",
+      "dir": "시안/2026-09-02-2차HTML/",
+      "target": "main-content-g2",
+      "closedW7": null,
+      "pre": {
+        "tag": "TR",
+        "id": "",
+        "cls": "",
+        "main": "main-content-g1",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "tabs": 1,
+      "reached": true,
+      "tab": {
+        "tag": "A",
+        "id": "",
+        "cls": "skip-link",
+        "main": null,
+        "nav": false,
+        "dialog": null,
+        "href": "#main-content-g2"
+      },
+      "enter": {
+        "tag": "MAIN",
+        "id": "main-content-g2",
+        "cls": "page-content",
+        "main": "main-content-g2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      },
+      "after": {
+        "tag": "INPUT",
+        "id": "",
+        "cls": "form-input",
+        "main": "main-content-g2",
+        "nav": false,
+        "dialog": null,
+        "href": null
+      }
+    }
+  ],
+  "e9": []
+}

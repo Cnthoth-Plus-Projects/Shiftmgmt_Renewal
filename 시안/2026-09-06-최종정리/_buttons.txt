@@ -1,0 +1,708 @@
+
+## 03-home-1.html :: state-h1 :: H1. 홈 — 기본 (오류 없음) (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 실적 관리에서 확인 | primary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 보기 | secondary sm
+
+## 03-home-1.html :: state-h2 :: H2. 홈 — 문제 있음 (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 실적 관리에서 확인 | primary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 원인 보기 | secondary sm
+- (no id) | 다시 복구 | secondary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 실적 관리에서 확인 | secondary sm
+- (no id) | 실적 관리에서 확인 | secondary sm
+
+## 03-home-1.html :: state-h3 :: H3. 홈 — 처리 중 (진행 중) (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 실적 관리에서 확인 | primary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 원인 보기 | secondary sm
+- (no id) | 보기 | secondary sm
+- (no id) | 실적 관리에서 확인 | secondary sm
+- (no id) | 실적 관리에서 확인 | secondary sm
+
+## 03-home-2.html :: state-h4 :: H4. 홈 — 할 일 없음 (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 실적 관리에서 확인 | primary sm
+- (no id) | 실적 관리 보기 | primary
+
+## 03-home-2.html :: state-h5 :: H5. 홈 — 로딩 (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- btn-h5-check | 실적 관리에서 확인 | primary sm | aria-disabled=true → 불러오는 중입니다
+
+## 05-sites-wizard-1.html :: state-w1 :: W1. 근무지 관리 — 마법사 1-A 기본 설정 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- w1-team-minus | - | stepper-
+- w1-team-plus | + | stepper-
+- w1-bundle-minus | - | stepper-
+- w1-bundle-plus | + | stepper-
+- (no id) | 2교대 | chip- | aria-disabled=true → 검수용 시안에서는 템플릿 적용이 동작하지 않습니다.
+- (no id) | 3교대 | chip- | aria-disabled=true → 검수용 시안에서는 템플릿 적용이 동작하지 않습니다.
+- (no id) | 불러오기 | secondary sm | aria-disabled=true → 검수용 시안에서는 불러올 근무지를 선택할 수 없습니다.
+- btn-open-w1-fast-modal | 파일 선택 | primary sm
+- (no id) | 뒤로가기 | secondary
+- (no id) | 다음: 근무시간 설정 | primary
+- btn-close-extract-x | [닫기] | user-info-
+- (no id) | 파일 가져오기 | secondary sm | aria-disabled=true → 검수용 시안에서는 파일을 선택할 수 없습니다.
+- (no id) | 패턴 산출 | secondary sm | aria-disabled=true → 파일을 먼저 가져와야 합니다.
+- (no id) | 초안에 반영 | primary sm | aria-disabled=true → 패턴 산출 결과가 있어야 반영할 수 있습니다.
+- btn-close-extract-modal | 닫기 | secondary sm
+
+## 05-sites-wizard-1.html :: state-w2 :: W2. 근무지 관리 — 마법사 1-B 근무시간 설정 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 변경 | secondary sm
+- (no id) | [주간 수정] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [주간 더보기] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [야간 수정] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [야간 더보기] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [석간 수정] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [석간 더보기] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [휴무 수정] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | [휴무 더보기] | secondary sm | aria-disabled=true → 검수용 시안에서는 유형 편집이 동작하지 않습니다.
+- (no id) | + 근무 유형 추가 | secondary sm | aria-disabled=true → 근무형은 최대 3개입니다
+- (no id) | + 휴무 유형 추가 | secondary sm
+- (no id) | 운영 교대조 | primary sm
+- (no id) | 야간 전담조 | secondary sm
+- (no id) | 되돌리기 | secondary sm
+- (no id) | [일차 추가] | pattern-add-
+- (no id) | 이전: 기본 설정 | secondary
+- (no id) | 입력 검토 | primary
+
+## 05-sites-wizard-2.html :: state-w3 :: W3. 근무지 관리 — 마법사 1-B 조별 개별 패턴 ON (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 변경 | secondary sm
+- (no id) | + 근무 유형 추가 | secondary sm | aria-disabled=true → 근무형은 최대 3개입니다
+- (no id) | + 휴무 유형 추가 | secondary sm
+- (no id) | [일차 추가] | pattern-add-
+- (no id) | 초기화 | secondary sm
+- (no id) | [일차 추가] | pattern-add-
+- (no id) | 초기화 | secondary sm
+- (no id) | 초기화 | secondary sm
+- (no id) | [일차 추가] | pattern-add-
+- (no id) | 초기화 | secondary sm
+- (no id) | 이전: 기본 설정 | secondary
+- (no id) | 입력 검토 | primary
+
+## 05-sites-wizard-2.html :: state-w4 :: W4. 근무지 관리 — 마법사 1-B 못 쓰는 값 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 운영 교대조 | primary sm
+- (no id) | 야간 전담조 | secondary sm
+- (no id) | [일차 추가] | pattern-add-
+- (no id) | 이전: 기본 설정 | secondary
+- (no id) | 입력 검토 | primary
+
+## 05-sites-wizard-3.html :: state-w5 :: W5. 근무지 관리 — 마법사 1-C 검토 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 이전 단계 | secondary
+- (no id) | 다음 단계 | primary | aria-disabled=true → 오류 2건을 해결해야 다음 단계로 갈 수 있습니다
+
+## 05-sites-wizard-3.html :: state-w6 :: W6. 근무지 관리 — 마법사 2단계 조직 구성 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | 일괄 설정 | secondary sm
+- (no id) | 조 설정 | secondary sm team-setting
+- (no id) | [박성진 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [이상민 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [김하늘 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [최우진 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | 조 설정 | secondary sm team-setting
+- (no id) | [정해린 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [김태우 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [오현석 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [이시온 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [조한별 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | 조 설정 | secondary sm team-setting
+- (no id) | [백민수 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [유지선 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [정민호 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | 조 설정 | secondary sm team-setting
+- (no id) | [한지우 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | [최민서 배정 취소] | chip-remove | aria-disabled=true → 검수용 시안에서는 배정 변경이 동작하지 않습니다.
+- (no id) | 이전 단계 | secondary
+- (no id) | 입력 다시 검토 | secondary
+- (no id) | 근무표로 이동 | secondary | aria-disabled=true → 완료 후 이동할 수 있습니다
+- (no id) | 완료 | primary
+- btn-close-team-x | [닫기] | user-info-
+- btn-team-dec | − | secondary sm
+- btn-team-inc | + | secondary sm
+- btn-apply-team | 적용 | primary sm
+- btn-cancel-team | 취소 | secondary sm
+
+## 05-sites-wizard-3.html :: state-w7 :: W7. 근무지 관리 — 이탈 확인 모달 (계획 담당)
+- (no id) | 김지현 | user-info-
+- btn-prev-w7 | 이전 단계 | secondary
+- (no id) | 다음 단계 | primary
+- btn-leave-stay | 계속 편집 | primary
+- btn-leave-discard | 변경 버리고 나가기 | secondary
+
+## 05-sites-wizard-4.html :: state-w8 :: W8. 근무지 관리 — 마법사 로딩 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 뒤로가기 | secondary | aria-disabled=true → 로딩 중에는 조작할 수 없습니다
+- (no id) | 다음: 근무시간 설정 | primary | aria-disabled=true → 로딩 중에는 조작할 수 없습니다
+
+## 05-sites-wizard-4.html :: state-w9 :: W9. 근무지 관리 — 마법사 권한 없음 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 뒤로가기 | secondary
+- (no id) | 다음: 근무시간 설정 | primary | aria-disabled=true → 근무지 등록 권한이 필요합니다 (현재 권한: 승인 담당)
+
+## 05-sites-wizard-4.html :: state-w10 :: W10. 근무지 관리 — 마법사 처리 중 (계획 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 이전 단계 | secondary | aria-disabled=true → 저장 처리 중에는 조작할 수 없습니다
+- (no id) | 입력 다시 검토 | secondary | aria-disabled=true → 저장 처리 중에는 조작할 수 없습니다
+- (no id) | 근무표로 이동 | secondary | aria-disabled=true → 저장 처리 중에는 조작할 수 없습니다
+- (no id) | 저장 중… | primary | aria-disabled=true → 저장 처리 중에는 조작할 수 없습니다
+
+## 08-performance-1.html :: state-p1 :: P1. 실적 관리 — ① 접수·복구 정상 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab- active
+- (no id) | ② 승인 작업 | tab-
+- (no id) | ③ 재승인·비교 | tab-
+- (no id) | 시작 복구 다시 실행 | secondary sm
+
+## 08-performance-1.html :: state-p2 :: P2. 실적 관리 — ① 인테이크 진행 중 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab- active
+- (no id) | ② 승인 작업 | tab-
+- (no id) | ③ 재승인·비교 | tab-
+
+## 08-performance-1.html :: state-p3 :: P3. 실적 관리 — ① 해석 실패 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab- active
+- (no id) | ② 승인 작업 | tab-
+- (no id) | ③ 재승인·비교 | tab-
+- (no id) | 다시 시도 | secondary sm
+- (no id) | 시작 복구 다시 실행 | secondary sm
+- (no id) | 상세 보기 | secondary sm
+- (no id) | 상세 보기 | secondary sm
+- (no id) | 상세 보기 | secondary sm
+
+## 08-performance-2.html :: state-p4 :: P4. 실적 관리 — ① 고아 승인 안내 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab- active
+- (no id) | ② 승인 작업 | tab-
+- (no id) | ③ 재승인·비교 | tab-
+- btn-close-orphan | [닫기] | user-info-
+- btn-restart-recovery | 시작 복구 다시 실행 | secondary sm
+
+## 08-performance-2.html :: state-p5 :: P5. 실적 관리 — ③ 재승인·비교 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab-
+- (no id) | ③ 재승인·비교 | tab- active
+- (no id) | 재승인본 확정 | primary sm
+- (no id) | 원본 엑셀 열기 ↗ | secondary sm
+
+## 08-performance-3.html :: state-p6 :: P6. 실적 관리 — ② 승인 작업 · 기본 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab- active
+- (no id) | ③ 재승인·비교 | tab-
+- btn-density-wide | 넓게 | density- active
+- btn-density-dense | 좁게 | density-
+- btn-approve-single | 승인 | primary
+- btn-reject-single | 반려 | secondary
+- btn-approve-file | 파일 전체 승인 | secondary
+- (no id) | 승인대기로 되돌리기 | secondary | aria-disabled=true → ※ 승인대기로 되돌리기: 승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다.
+- (no id) | 목록에서 숨기기 | secondary | aria-disabled=true → ※ 목록에서 숨기기: 승인완료 보관본만 목록에서 숨길 수 있습니다.
+- (no id) | 원본 엑셀 열기 ↗ | secondary
+- btn-close-p6-detail | [닫기] | user-info-
+- (no id) | 승인 | primary
+- (no id) | 반려 | secondary
+- btn-single-cancel | 돌아가기 | secondary
+- btn-single-confirm | 승인 실행 | primary
+- btn-file-cancel | 돌아가기 | secondary
+- btn-file-confirm | 승인 실행 | primary
+
+## 08-performance-3.html :: state-p7 :: P7. 실적 관리 — ② 승인 작업 · 행 상세 열림 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab- active
+- (no id) | ③ 재승인·비교 | tab-
+- (no id) | [닫기] | user-info-
+- (no id) | 승인 | primary
+- (no id) | 반려 | secondary
+
+## 08-performance-4.html :: state-p8 :: P8. 실적 관리 — ② 권한 없음 (사용자)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab- active
+- (no id) | ③ 재승인·비교 | tab-
+- (no id) | 넓게 | density- active
+- (no id) | 좁게 | density-
+- (no id) | 승인 | primary | aria-disabled=true → ※ 승인 권한이 필요합니다 (현재 권한: 사용자)
+- (no id) | 반려 | secondary | aria-disabled=true → ※ 승인 권한이 필요합니다 (현재 권한: 사용자)
+- (no id) | 파일 전체 승인 | secondary | aria-disabled=true → ※ 승인 권한이 필요합니다 (현재 권한: 사용자)
+- (no id) | 승인대기로 되돌리기 | secondary | aria-disabled=true → ※ 승인 권한이 필요합니다 (현재 권한: 사용자)
+- (no id) | 목록에서 숨기기 | secondary | aria-disabled=true → ※ 승인 권한이 필요합니다 (현재 권한: 사용자)
+- (no id) | 원본 엑셀 열기 ↗ | secondary
+
+## 08-performance-4.html :: state-p9 :: P9. 실적 관리 — ② 로딩 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab- active
+- (no id) | ③ 재승인·비교 | tab-
+
+## 08-performance-4.html :: state-p10 :: P10. 실적 관리 — ② 승인 작업 · 빈 상태 (승인 담당)
+- (no id) | 김지현 | user-info-
+- (no id) | 도움말 | user-info-
+- (no id) | 로그아웃 | user-info-
+- (no id) | ① 접수·복구 | tab-
+- (no id) | ② 승인 작업 | tab- active
+- (no id) | ③ 재승인·비교 | tab-
+- (no id) | 승인 | primary | aria-disabled=true → ※ 승인·반려·파일전체승인·숨기기: 선택한 행이 없습니다.
+- (no id) | 반려 | secondary | aria-disabled=true → ※ 승인·반려·파일전체승인·숨기기: 선택한 행이 없습니다.
+- (no id) | 파일 전체 승인 | secondary | aria-disabled=true → ※ 승인·반려·파일전체승인·숨기기: 선택한 행이 없습니다.
+- (no id) | 승인대기로 되돌리기 | secondary | aria-disabled=true → ※ 승인대기로 되돌리기: 되돌릴 파일이 없습니다.
+- (no id) | 목록에서 숨기기 | secondary | aria-disabled=true → ※ 승인·반려·파일전체승인·숨기기: 선택한 행이 없습니다.
+- (no id) | 원본 엑셀 열기 ↗ | secondary | aria-disabled=true → ※ 원본 엑셀 열기: 열 파일이 없습니다.
+- (no id) | 접수·복구 확인 | primary
+
+## 00-shell-1.html :: state-s1 :: S1. 셸 — 기본
+- (no id) | admin | user-info-
+
+## 00-shell-1.html :: state-s2 :: S2. 셸 — 일반 사용자
+- (no id) | 김지현 | user-info-
+
+## 00-shell-1.html :: state-s3 :: S3. 셸 — 사이드바 축소
+- (no id) | 박은영 | user-info-
+
+## 00-shell-2.html :: state-s4 :: S4. 셸 — 상태줄 툴팁
+- (no id) | admin | user-info-
+
+## 00-shell-2.html :: state-s5 :: S5. 셸 — 감시 오류
+- (no id) | admin | user-info-
+- btn-s5-banner-restart | 다시 시작 | secondary sm
+- btn-s5-status-restart | 다시 시작 | secondary sm
+
+## 00-shell-2.html :: state-s6 :: S6. 셸 — 업데이트 알림
+- (no id) | 박은영 | user-info-
+- btn-open-s6-banner | 자세히 보기 | secondary sm
+- btn-s6-banner-update | 업데이트 | primary sm
+- (no id) | [닫기] | ghost sm
+- btn-s6-status-detail | [자세히 보기] | ghost sm
+- btn-close-s6-x | [닫기] | ghost sm
+- btn-close-s6 | 나중에 | ghost
+- btn-download-s6 | 다운로드 | primary
+
+## 01-login-1.html :: state-l1 :: L1. 로그인 — 초기
+- (no id) | [비밀번호 표시] | eye-toggle
+- (no id) | 로그인 | primary
+
+## 01-login-1.html :: state-l2 :: L2. 로그인 — 인증 실패
+- (no id) | [비밀번호 표시] | eye-toggle
+- (no id) | 로그인 | primary
+
+## 01-login-1.html :: state-l3 :: L3. 로그인 — 계정 잠김
+- (no id) | 로그인 화면으로 돌아가기 | secondary
+
+## 01-login-2.html :: state-l4 :: L4. 로그인 — 비밀번호 변경
+- (no id) | [비밀번호 표시] | eye-toggle
+- (no id) | [비밀번호 표시] | eye-toggle
+- (no id) | [비밀번호 표시] | eye-toggle
+- l4-btn-submit | 비밀번호 변경 | primary | aria-disabled=true → 모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.
+
+## 01-login-2.html :: state-l5 :: L5. 로그인 — 관리자 복구키
+- (no id) | [복구키 표시] | eye-toggle
+- (no id) | 취소 | secondary
+- btn-l5-submit | 확인 | primary
+
+## 02-common-1.html :: state-c1 :: C1. 공통 — 단순 확인창
+- btn-open-c1 | 단순 확인 열어 보기 | primary
+- (no id) | [닫기] | ghost sm modal-close-x
+- (no id) | 취소 | secondary modal-cancel
+- (no id) | 확인 | primary modal-confirm
+
+## 02-common-1.html :: state-c2 :: C2. 공통 — 위험 확인창
+- btn-open-c2 | 위험 확인 열어 보기 | primary
+- (no id) | [닫기] | ghost sm modal-close-x
+- (no id) | 취소 | secondary modal-cancel
+- (no id) | 배포 | primary modal-confirm
+
+## 02-common-1.html :: state-c3 :: C3. 공통 — 파괴 확인창
+- btn-open-c3 | 파괴 확인 열어 보기 | primary
+- (no id) | [닫기] | ghost sm modal-close-x
+- (no id) | 취소 | secondary modal-cancel
+- (no id) | 삭제 | danger modal-confirm
+
+## 02-common-1.html :: state-c4 :: C4. 공통 — 사유 입력 모달
+- btn-open-c4 | 사유 입력 열어 보기 | primary
+- (no id) | [닫기] | ghost sm modal-close-x
+- (no id) | 취소 | secondary modal-cancel
+- btn-c4-reject | 반려 | danger modal-confirm | aria-disabled=true → 반려 사유를 입력해야 반려할 수 있습니다.
+
+## 02-common-2.html :: state-c5 :: C5. 공통 — 토스트 알림 성공
+- btn-show-c5 | 성공 토스트 다시 보기 | secondary sm
+- (no id) | [닫기] | ghost sm toast-close
+
+## 02-common-2.html :: state-c6 :: C6. 공통 — 토스트 알림 정보
+- btn-show-c6 | 정보 토스트 다시 보기 | secondary sm
+- (no id) | [닫기] | ghost sm toast-close
+
+## 02-common-2.html :: state-c7 :: C7. 공통 — 토스트 알림 오류
+- btn-show-c7 | 오류 토스트 다시 보기 | secondary sm
+- (no id) | [닫기] | ghost sm toast-close
+
+## 02-common-2.html :: state-c8 :: C8. 공통 — 빈 상태
+- (no id) | + 근무지 등록 | primary
+
+## 02-common-2.html :: state-c9 :: C9. 공통 — 버튼 3형 비교
+- (no id) | 실적 승인 | primary
+- (no id) | 실적 승인 | primary | aria-disabled=true → 실적 승인은 승인 담당만 할 수 있습니다 (현재 권한: 계획 담당)
+- (no id) | 저장 중... | primary
+
+## 02-common-3.html :: state-c10 :: C10. 공통 — 로딩(스켈레톤)
+
+## 02-common-3.html :: state-c11 :: C11. 공통 — 진행 수치형
+
+## 02-common-3.html :: state-c12 :: C12. 공통 — 진행 불확정형
+
+## 04-sites-1.html :: state-t1 :: T1. 근무지 관리 — 목록
+- (no id) | 박은영 | user-info-
+- (no id) | 전체 3 | filter-chip active
+- (no id) | 활성 2 | filter-chip
+- (no id) | 준비 중 1 | filter-chip
+- (no id) | 근무지 등록 | primary
+- btn-open-t2 | 상세 | secondary
+- (no id) | 상세 | secondary
+- (no id) | 상세 | secondary
+- btn-close-t2-x | [닫기] | ghost sm
+- (no id) | 삭제 | danger
+- (no id) | 수정 | secondary
+- btn-close-t2 | 닫기 | primary
+
+## 04-sites-2.html :: state-t3 :: T3. 근무지 관리 — 검색 결과 없음 및 빈 상태
+- (no id) | 박은영 | user-info-
+- (no id) | 검색 지우기 | secondary sm
+- (no id) | 근무지 등록 | primary
+- (no id) | 검색 지우기 | secondary
+
+## 04-sites-2.html :: state-t4 :: T4. 근무지 관리 — 삭제 확인
+- (no id) | 박은영 | user-info-
+- btn-open-t4 | [보라매 사업장] 삭제 확인 열어 보기 | danger
+- btn-close-t4-x | [닫기] | ghost sm
+- btn-cancel-t4 | 취소 | secondary
+- btn-exec-t4 | 삭제 | danger
+
+## 06-employees-1.html :: state-e1 :: E1. 인력 관리 — 목록
+- (no id) | 박은영 | user-info-
+- btn-e1-new | 신규 인력 등록 | primary
+
+## 06-employees-1.html :: state-e2 :: E2. 인력 관리 — 상세 패널
+- (no id) | 박은영 | user-info-
+- btn-e2-new | 신규 인력 등록 | primary
+- (no id) | [패널 닫기] | ghost sm
+- (no id) | 시급 등록 | secondary sm
+- (no id) | 배정 | secondary sm
+- (no id) | 현재 배정 해지 | secondary sm
+- (no id) | 인력 삭제 | danger sm
+
+## 06-employees-2.html :: state-e3 :: E3. 인력 관리 — 시급 등록 모달
+- (no id) | 박은영 | user-info-
+- btn-open-e3 | 시급 등록 열어 보기 | primary
+- btn-e3-goto-perf | 실적 관리로 이동 | secondary sm
+- btn-e3-toast-close | [닫기] | ghost sm
+- btn-close-e3-x | [닫기] | ghost sm
+- btn-cancel-e3 | 취소 | secondary
+- btn-submit-e3 | 등록 | primary | aria-disabled=true → 적용 시작일을 선택해야 등록할 수 있습니다.
+
+## 06-employees-2.html :: state-e4 :: E4. 인력 관리 — 배정 모달
+- (no id) | 박은영 | user-info-
+- btn-open-e4 | 배정 열어 보기 | primary
+- btn-close-e4-x | [닫기] | ghost sm
+- btn-cancel-e4 | 취소 | secondary
+- btn-submit-e4 | 배정 | primary
+
+## 06-employees-2.html :: state-e5 :: E5. 인력 관리 — 조 안 순서 이동
+- (no id) | 박은영 | user-info-
+- (no id) | ↑ | secondary sm up | aria-disabled=true → 맨 위 행은 더 올릴 수 없습니다.
+- (no id) | ↓ | secondary sm down
+- (no id) | ↑ | secondary sm up
+- (no id) | ↓ | secondary sm down
+- (no id) | ↑ | secondary sm up
+- (no id) | ↓ | secondary sm down
+- (no id) | ↑ | secondary sm up
+- (no id) | ↓ | secondary sm down | aria-disabled=true → 맨 아래 행은 더 내릴 수 없습니다.
+
+## 06-employees-3.html :: state-e6 :: E6. 인력 관리 — 시급 일괄 업데이트
+- (no id) | admin | user-info-
+- btn-open-e6 | 시급 일괄 업데이트 열어 보기 | primary
+- btn-close-e6-x | [닫기] | ghost sm
+- (no id) | 파일 가져오기 | primary sm
+- btn-e6-preview | 미리보기 | secondary sm
+- btn-cancel-e6 | 취소 | secondary
+- btn-submit-e6 | 시급 일괄 업데이트 | primary
+- btn-close-e6-confirm-x | [닫기] | ghost sm
+- btn-back-e6-confirm | 돌아가기 | secondary
+- btn-apply-e6-confirm | 적용 | primary
+
+## 06-employees-3.html :: state-e7 :: E7. 인력 관리 — 빈 상태
+- (no id) | 박은영 | user-info-
+- (no id) | 신규 인력 등록 | primary
+
+## 06-employees-3.html :: state-e8 :: E8. 인력 관리 — 신규 인력 등록 모달
+- (no id) | 박은영 | user-info-
+- btn-open-e8 | 신규 인력 등록 열어 보기 | primary
+- btn-close-e8-x | [닫기] | ghost sm
+- btn-cancel-e8 | 취소 | secondary
+- btn-submit-e8 | 등록 | primary
+
+## 07-schedule-1.html :: state-r1 :: R1. 근무표 배포 — 선택 및 미리보기
+- (no id) | 박은영 | user-info-
+- (no id) | 미리보기 | secondary
+- (no id) | 경고 103건 | filter-chip
+- (no id) | 엑셀 생성 | secondary
+- (no id) | 배포 폴더로 게시 | primary
+
+## 07-schedule-2.html :: state-r2 :: R2. 근무표 배포 — 자동 경고 패널 펼침
+- (no id) | 박은영 | user-info-
+- (no id) | 미리보기 | secondary
+- (no id) | 경고 103건 (펼침) | filter-chip
+- (no id) | 엑셀 생성 | secondary
+- (no id) | 배포 폴더로 게시 | primary
+- (no id) | [패널 접기] | ghost sm
+
+## 07-schedule-2.html :: state-r3 :: R3. 근무표 배포 — 생성 불가 차단 패널
+- (no id) | 박은영 | user-info-
+- (no id) | 미리보기 | secondary
+- (no id) | 엑셀 생성 | secondary | aria-disabled=true → (desc id 없음:r3-reason-1 r3-reason-2)
+- (no id) | 배포 폴더로 게시 | primary | aria-disabled=true → (desc id 없음:r3-reason-1 r3-reason-2)
+
+## 07-schedule-3.html :: state-r4 :: R4. 근무표 배포 — 배포 확인 위험 모달
+- (no id) | 박은영 | user-info-
+- btn-open-r4 | 배포 확인 열어 보기 | primary
+- btn-close-r4-x | [닫기] | ghost sm
+- btn-cancel-r4 | 취소 | secondary
+- btn-submit-r4 | 배포 | primary
+
+## 07-schedule-3.html :: state-r5 :: R5. 근무표 배포 — 배포 이력
+- (no id) | 박은영 | user-info-
+
+## 07-schedule-3.html :: state-r6 :: R6. 근무표 배포 — 빈 상태
+- (no id) | 박은영 | user-info-
+- (no id) | 근무표 만들기 | primary
+
+## 09-allowance-1.html :: state-a1 :: A1. 수당 관리 — 요약 및 결과표
+- (no id) | 이정호 | user-info-
+- (no id) | 품의 미리보기 | primary
+- (no id) | 조기 지급 | secondary sm
+- (no id) | 조기 지급 | secondary sm
+- (no id) | 조기 지급 | secondary sm
+- (no id) | 조기 지급 | secondary sm
+
+## 09-allowance-1.html :: state-a2 :: A2. 수당 관리 — 근거 패널
+- (no id) | 이정호 | user-info-
+- (no id) | 품의 미리보기 | primary
+- (no id) | [패널 닫기] | ghost sm
+
+## 09-allowance-2.html :: state-a3-a5 :: A3·A4·A5. 수당 관리 — 품의 미리보기 / 조기지급 / 승인확인
+- (no id) | 이정호 | user-info-
+- btn-open-a3 | 품의 미리보기 열어 보기 (A3) | primary
+- btn-open-a4 | 조기 지급일 지정 열어 보기 (A4) | secondary
+- btn-close-a3-x | [닫기] | ghost sm
+- btn-close-a3 | 닫기 | secondary
+- btn-goto-a5 | 품의 승인 | primary
+- btn-close-a4-x | [닫기] | ghost sm
+- btn-cancel-a4 | 취소 | secondary
+- btn-submit-a4 | 지정 | primary
+- btn-close-a5-x | [닫기] | ghost sm
+- btn-cancel-a5 | 취소 | secondary
+- btn-submit-a5 | 승인 | primary
+
+## 09-allowance-3.html :: state-a6 :: A6. 수당 관리 — 출력 결과 패널
+- (no id) | 이정호 | user-info-
+- (no id) | 닫기 | primary
+
+## 09-allowance-3.html :: state-a7 :: A7. 수당 관리 — 이력
+- (no id) | 이정호 | user-info-
+- (no id) | 승인 6 | filter-chip active
+- (no id) | 대기 34 | filter-chip
+- (no id) | 반려 0 | filter-chip
+
+## 09-allowance-3.html :: state-a8 :: A8. 수당 관리 — 빈 상태
+- (no id) | 이정호 | user-info-
+- (no id) | 실적 관리로 이동 | primary
+
+## 10-dashboard-1.html :: state-d1 :: D1. 대시보드 — 기본
+- (no id) | 이정호 | user-info-
+- (no id) | 차트 데이터 내보내기 | secondary sm
+- (no id) | 보고서 내보내기 | secondary sm
+
+## 10-dashboard-1.html :: state-d2 :: D2. 대시보드 — 필터 패널 펼침
+- (no id) | 이정호 | user-info-
+
+## 10-dashboard-1.html :: state-d3 :: D3. 대시보드 — 빈 상태
+- (no id) | 이정호 | user-info-
+- (no id) | 실적 관리로 이동 | primary
+
+## 11-operations-1.html :: state-o1 :: O1. 운영 관리 — 탭 경로 설정
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 경로 저장 | primary
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 폴더 선택 | secondary sm
+- (no id) | 파일 선택 | secondary sm
+- (no id) | 재시작 | secondary sm
+- (no id) | 중지 | secondary sm
+- (no id) | 수동 백업 저장 | secondary sm
+
+## 11-operations-1.html :: state-o2 :: O2. 운영 관리 — 탭 공휴일 관리
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 모두 반영 | secondary sm
+- (no id) | 신규 등록 | primary sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 제거 | danger sm
+
+## 11-operations-2.html :: state-o3 :: O3. 운영 관리 — 탭 요율 관리
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 신규 요율 추가 | primary
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 저장 | primary sm
+- (no id) | 영향 미리보기 | secondary sm
+
+## 11-operations-2.html :: state-o4 :: O4. 운영 관리 — 탭 사용자 관리
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 계정복구키 발급 | secondary
+- (no id) | 신규 사용자 추가 | primary
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+
+## 11-operations-2.html :: state-o5 :: O5. 운영 관리 — 탭 사이트 명 관리
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 근무지 이름 추가 | primary
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 삭제 | danger sm
+
+## 11-operations-3.html :: state-o6 :: O6. 운영 관리 — 탭 양식 관리
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+- (no id) | 양식등록 | primary
+- (no id) | 수정 | secondary sm
+- (no id) | 파일명 변경 | secondary sm
+- (no id) | 승인 | secondary sm
+- (no id) | 기본 사용 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 파일명 변경 | secondary sm
+- (no id) | 승인 | secondary sm
+- (no id) | 기본 사용 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 파일명 변경 | secondary sm
+- (no id) | 승인 | secondary sm
+- (no id) | 기본 사용 | secondary sm
+- (no id) | 삭제 | danger sm
+- (no id) | 수정 | secondary sm
+- (no id) | 파일명 변경 | secondary sm
+- (no id) | 승인 | secondary sm
+- (no id) | 기본 사용 | secondary sm
+- (no id) | 삭제 | danger sm
+
+## 11-operations-3.html :: state-o7 :: O7. 운영 관리 — 양식 캔버스 영역 지정
+- (no id) | admin | user-info-
+- (no id) | 저장 | primary
+
+## 11-operations-3.html :: state-o8 :: O8. 운영 관리 — 탭 업데이트 내역
+- (no id) | admin | user-info-
+- (no id) | DB복원 | primary
+
+## 11-operations-4.html :: state-o9-o10 :: O9·O10. 운영 관리 — DB복원 미리보기 및 확인
+- (no id) | admin | user-info-
+- btn-open-o9 | DB복원 미리보기 열어 보기 | primary
+- btn-close-o9-x | [닫기] | ghost sm
+- btn-close-o9 | 취소 | secondary
+- btn-goto-o10 | 다음: 확인 | primary
+- btn-close-o10-x | [닫기] | ghost sm
+- btn-cancel-o10 | 취소 | secondary
+- btn-exec-o10 | 교체 실행 | danger | aria-disabled=true → 확인 문구 '교체'를 입력해야 실행할 수 있습니다.
+
+## 12-access-logs-1.html :: state-g1 :: G1. 활동 이력 — 목록
+- (no id) | admin | user-info-
+- (no id) | 초기화 | secondary sm
+- (no id) | 새로고침 | secondary sm
+
+## 12-access-logs-1.html :: state-g2 :: G2. 활동 이력 — 빈 상태
+- (no id) | admin | user-info-
+- (no id) | 초기화 | secondary sm
+- (no id) | 필터 초기화 | secondary

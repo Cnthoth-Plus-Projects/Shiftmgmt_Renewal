@@ -1,0 +1,24 @@
+{
+  "time": "2026-10-12 20:39:35 KST",
+  "kind": "IDENTICAL_CLOSED_HANDOFF_RECHECK_NO_NEW_SUBMISSION",
+  "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_203935_3-2c-A1-v4-Sol-종결본_재확인전원문.md",
+  "received": {
+    "bytes": 16196,
+    "sha256": "BA4437108EB5D418B3057569DA75755D7FC7DB392A90F116583E0EFDB6A903CF"
+  },
+  "priorClosingArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_183508_3-2c-A1-v4-Sol-FAILED_독립검수종결본.md",
+  "exactPriorBytes": true,
+  "sourceSameAsLastReview": true,
+  "sourceFiles": 341,
+  "protectedFiles": 339,
+  "v4ControlFilesUnchanged": 13,
+  "immutableBaselineControlFilesUnchanged": 60,
+  "newGeminiReply": false,
+  "newProductSourceChanges": false,
+  "testsRerun": false,
+  "verdict": "FAILED / A1_NOT_ACCEPTED",
+  "productEditsBySol": 0,
+  "newImplementationAuthorization": false,
+  "priorCorrectionsExhausted": 2,
+  "counterReset": 0
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "A1V3-01",
+    "requirement": "E3-05 / A1F01",
+    "proof": "ACTUAL_SUT_FALSE_PASS",
+    "summary": "真实 gate PASS의 바깥 객체에 unapproved:true를 추가해도 owner RC0/PASS",
+    "source": "scripts/ui-checks/access-history.mjs:627-645",
+    "evidence": "gate-outer-extra.command.json / outer-gate-preload.mjs",
+    "details": "고정 Python이 실제 PASS한 뒤 바깥 key 하나만 추가. observer healthy/trigger true. 원본 final checker RC1 Actual adjudicator stdout differs. owner는 result keys만 비교하고 outer keys를 비교하지 않는다."
+  },
+  {
+    "id": "A1V3-02",
+    "requirement": "E3-02 / A1F02,A1F05",
+    "proof": "ACTUAL_SUT_FALSE_PASS_AND_SOURCE_GAP",
+    "summary": "worker stdout log의 실제 close를 SUT에서 숨겨도 owner RC0/PASS·temp 삭제; 고정 gate도 final RC0",
+    "source": "scripts/ui-checks/access-history.mjs:199-253,530-555",
+    "evidence": "log-close-unobserved.command.json / unobserved-log-close-preload.mjs",
+    "details": "실제 stream은 닫혔고 observer는 close/hiddenFromSut를 기록했다. 따라서 실제 열린 자원 누수 증거로 주장하지 않는다. 구현은 SUT close 미관측에도 5초 후 finish만 확인해 성공하며 logsSettled:true 및 fallback/Math.max 시각을 게시한다. child.close 검문도 logs.end 뒤에 있다."
+  },
+  {
+    "id": "A1V3-03",
+    "requirement": "E3-03 / A1F03",
+    "proof": "INDEPENDENT_SOURCE_READ",
+    "summary": "viewport/origin/fixtureLabels/request count 상수, browser/context created를 실제 생성 전 기록",
+    "source": "scripts/ui-checks/access-history-shared.mjs:433-480",
+    "evidence": "실제 소스·CORE9 원본 규칙·소스 SHA",
+    "details": "viewport=[1440,900], origin=context.url, labels=CANONICAL_8_ACTIONS, fixtureRequestCount=0. page.viewportSize()/실제 location/route handler 측정이 아니다. ledger created2개를 launch/newContext 이전에 만든다. 이 판단은 소스 근거이며 실제 화면 변경 실험 또는 모든 실패 분기 실행으로 확대하지 않는다."
+  },
+  {
+    "id": "A1V3-04",
+    "requirement": "E3-03 / A1F04",
+    "proof": "ACTUAL_SUT_HELPER_CALLS",
+    "summary": "부정 raw7개를 collectCoreChecks가 전부 수용",
+    "source": "scripts/ui-checks/access-history-shared.mjs:336-401",
+    "evidence": "collector-extra.json / collector-v1-comparison.json / collector-extra.mjs",
+    "details": "close-error·임의 resource state·가짜 Chrome version·가짜 browserVersion·canonical extra field/가짜SHA/가짜map 수용. 원본 typed checker는 resource2/browserVersion1 세 변조를 독립 거절한다. 나머지4는 원본 check_rules만으로 거절됐다고 주장하지 않으며 v3 메타데이터/닫힌 collector 요구 이탈로 구분한다. deepFreeze와 finite tree 자체는 구현됨."
+  },
+  {
+    "id": "A1V3-05",
+    "requirement": "E3-06 / A1F06",
+    "proof": "ACTUAL_SUT_PARTIAL_LOSS_AND_SOURCE_GAP",
+    "summary": "실제 Chrome/DOM 확보 후 capture 실패의 partial은 error만 남고 raw/checks/resources/cleanup을 잃음",
+    "source": "scripts/ui-checks/access-history-shared.mjs:464-466,519-524; access-history.mjs:686-701",
+    "evidence": "core-partial-result.json / capture-failure-events.jsonl / core-partial-probe.mjs",
+    "details": "valid context ACK/RUN 후 실제 browser/context 생성·로그인 count1/1 확인·screenshot에서 한 오류 주입. context/browser 실제 닫힘도 기록. worker RC1/partial={case,runId,status,error}, 얻은 raw와 ledger 없음. owner failure도 context/child/log 상태 없이 직접 writeFileSync, 쓰기 실패 catch{}; owner 부분은 소스 근거다."
+  },
+  {
+    "id": "A1V3-06",
+    "requirement": "E3-01 / A1F07",
+    "proof": "INDEPENDENT_SOURCE_READ",
+    "summary": "실제 frozen shared fragment/339 보호제품/baseline control 검문을 실행 전 수행하지 않음",
+    "source": "scripts/ui-checks/access-history.mjs:81-91",
+    "evidence": "실제 preflight for-loop 및 shared frozen bytes/hash·baseline control 원문",
+    "details": "여섯 정본 파일 hash만 비교한다. frozen JSON hash가 actual fragment hash 검문을 대신할 수 없다. later 외부 gate scope/frozen 검사와 사전 검문은 다르다. 보호 제품 파일을 실제 변조하는 실험은 하지 않았다."
+  },
+  {
+    "id": "A1V3-07",
+    "requirement": "E3-04 / IPC protocol2",
+    "proof": "ACTUAL_SUT_IPC_BOUNDARY",
+    "summary": "owner-context protocol1에 protocol2 ACK 반환 후 RUN_TIMEOUT",
+    "source": "scripts/ui-checks/access-history-shared.mjs:241-285",
+    "evidence": "extra-protocol.stdout.txt / protocol-ipc-probe.mjs",
+    "details": "같은 정본·nonce·PIDs·context·protocol2 registration, 메시지 protocol만1. ACK를 받았고5초 뒤 A1_RUN_TIMEOUT. 올바른 동작은 ACK 전에 context 거절. HTTP/Chrome 부작용은 없었다."
+  },
+  {
+    "id": "A1V3-T01",
+    "requirement": "Sol independent control coverage",
+    "proof": "ACTUAL_CONTROL_COVERAGE_GAP",
+    "summary": "현재38fault/typed18/IPC14가 outer key·log close·resource state·context protocol을 놓침",
+    "source": ".ai/contracts/phase3-2c-a1-v3/runtime-preload.mjs / gate-evidence.py / component-probes.mjs / ipc-probes.mjs",
+    "evidence": "full runtime PASS와 추가4검증 실패의 동시 재현",
+    "details": "Sol 검수 범위도 보강해야 한다. log.close 미관측의 final이 고정 gate에서도 PASS이므로 기존 자기보고 flag/시간만으로 SUT 관측을 충분히 검증하지 못했다. 기존 정본을 이 검수에서 고쳐 제출을 통과시키지 않았다."
+  }
+]

@@ -1,0 +1,170 @@
+[
+  {
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-09-30T13-02-29-139Z\\action-assertions.json",
+    "assertionCount": 13,
+    "assertions": [
+      {
+        "name": "xss-blocked",
+        "expected": false,
+        "actual": false,
+        "pass": true
+      },
+      {
+        "name": "table-aria-label",
+        "expected": "활동 이력 목록",
+        "actual": "활동 이력 목록",
+        "pass": true
+      },
+      {
+        "name": "date-width-132",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "date-height-34",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "row-height-40",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "th-width-130",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "th-width-140",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "th-width-100",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "th-width-160",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "hide-approved-is-danger",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "publish-is-info",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "initial-row-200",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "name": "next-row-201",
+        "expected": 201,
+        "actual": 201,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-2026-09-30T13-04-18-167Z\\action-assertions.json",
+    "assertionCount": 5,
+    "assertions": [
+      {
+        "name": "operator-menu-not-present",
+        "expected": 0,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "name": "operator-logs-forbidden",
+        "expected": "AUTH_FORBIDDEN",
+        "actual": "AUTH_FORBIDDEN",
+        "pass": true
+      },
+      {
+        "name": "operator-users-forbidden",
+        "expected": "AUTH_FORBIDDEN",
+        "actual": "AUTH_FORBIDDEN",
+        "pass": true
+      },
+      {
+        "name": "planner-menu-not-present",
+        "expected": 0,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "name": "planner-logs-forbidden",
+        "expected": "AUTH_FORBIDDEN",
+        "actual": "AUTH_FORBIDDEN",
+        "pass": true
+      }
+    ]
+  },
+  {
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-2026-09-30T13-04-05-300Z\\action-assertions.json",
+    "assertionCount": 1,
+    "assertions": [
+      {
+        "name": "stale-response-ignored",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-09-30T13-03-51-014Z\\action-assertions.json",
+    "assertionCount": 2,
+    "assertions": [
+      {
+        "name": "list-error-message",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "users-error-message",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-09-30T13-05-04-067Z\\action-assertions.json",
+    "assertionCount": 2,
+    "assertions": [
+      {
+        "name": "server-signout-ok",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "session-expired-redirect",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      }
+    ]
+  }
+]

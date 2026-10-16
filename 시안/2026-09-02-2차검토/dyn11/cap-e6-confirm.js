@@ -1,0 +1,1 @@
+(()=>{function busy(ms){var t=Date.now();while(Date.now()-t<ms){}}document.getElementById('btn-e6-preview').click();busy(800);return 'ok';})()

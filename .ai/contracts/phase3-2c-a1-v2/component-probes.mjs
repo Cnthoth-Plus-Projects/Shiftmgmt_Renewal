@@ -1,0 +1,44 @@
+// SUT helper tests and real owned Chrome close tests, separate from UI acceptance.
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {spawnSync} from 'node:child_process';
+import {pathToFileURL} from 'node:url';
+const repo=fs.realpathSync(process.cwd());
+if(process.argv.slice(2).join(' ')==='--list'){console.log(JSON.stringify({proof:'PLAN_ONLY_NOT_RUN',semanticVectors:['fixed-expectation','unknown-id-field','recursive-nan','recursive-infinity','immutable-actual-snapshot','caller-extra-argument'],realResourceVectors:['context-close-throw-browser-still-closed','browser-close-throw-first-error-preserved']}));process.exit(0);}
+const sut=await import(pathToFileURL(path.join(repo,'scripts/ui-checks/access-history-shared.mjs')).href);
+assert.equal(typeof sut.collectCoreChecks,'function');assert.equal(typeof sut.settleOwnedResources,'function');
+const args=process.argv.slice(2);assert.equal(args.length,6);
+const options=new Map();for(let i=0;i<args.length;i+=2){assert.ok(['--core-manifest','--execution-sha','--baseline-sha'].includes(args[i]));assert.equal(options.has(args[i]),false);options.set(args[i],args[i+1]);}
+const corePath=path.resolve(options.get('--core-manifest'));
+const verified=spawnSync('python',[path.resolve(import.meta.dirname,'gate-evidence.py'),'--execution-sha',options.get('--execution-sha'),'--baseline-sha',options.get('--baseline-sha'),'--final',corePath],{cwd:repo,windowsHide:true,encoding:'utf8',timeout:20000});
+assert.equal(verified.status,0,verified.stderr);assert.equal(JSON.parse(verified.stdout).result.case,'contract-core');
+const candidate=JSON.parse(fs.readFileSync(corePath,'utf8'));
+const observationPath=candidate.artifacts.find(a=>a.id==='core-observations').path;
+const observations=JSON.parse(fs.readFileSync(observationPath,'utf8'));
+const checks=sut.collectCoreChecks(structuredClone(observations));assert.equal(checks.length,9);
+const input=structuredClone(observations);const immutable=sut.collectCoreChecks(input);input.viewport[0]=777;assert.deepEqual(immutable[0].actual,[1440,900]);
+const mutations=[['fixed-expectation',r=>r.viewport=[777,555]],['recursive-nan',r=>r.resources[0].events[0].timeMs=NaN],['recursive-infinity',r=>r.resources[0].events[0].timeMs=Infinity]];
+for(const [name,change] of mutations){const value=structuredClone(observations);change(value);assert.throws(()=>sut.collectCoreChecks(value),undefined,name);}
+assert.throws(()=>sut.collectCoreChecks(observations,{expected:[777,555]}));
+assert.throws(()=>sut.collectCoreChecks(observations,{id:'CORE-UNKNOWN'}));
+const require=createRequire(path.join(repo,'package.json'));const {chromium}=require('playwright');
+const {findChrome}=await import(pathToFileURL(path.join(repo,'scripts/lib/find-chrome.mjs')).href);
+const resources=[];
+for(const kind of ['context','browser']){
+ const browser=await chromium.launch({executablePath:findChrome().path,headless:true});let context;
+ try{
+  context=await browser.newContext({viewport:{width:1440,height:900}});
+  const ledger=[{kind:'browser',id:'browser-1',events:[{state:'created',timeMs:Date.now()}]},{kind:'context',id:'context-1',events:[{state:'created',timeMs:Date.now()}]}];
+  const first={phase:'existing-first-failure',message:'SOL_A1_FIRST_ERROR',stack:'control-owned first failure'};
+  const errors={primary:first,cleanup:[],evidence:[],unexpected:[]};
+  const original=(kind==='context'?context:browser).close.bind(kind==='context'?context:browser);
+  (kind==='context'?context:browser).close=async()=>{await original();throw new Error('SOL_A1_REAL_'+kind.toUpperCase()+'_CLOSE_THROW');};
+  let timer;await Promise.race([sut.settleOwnedResources({context,browser},ledger,errors),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('SUT cleanup timeout')),15000);})]).finally(()=>clearTimeout(timer));
+  assert.equal(errors.primary,first);assert.ok(errors.cleanup.some(e=>JSON.stringify(e).includes('SOL_A1_REAL_')));assert.equal(browser.isConnected(),false);
+  assert.ok(ledger.find(r=>r.kind==='browser').events.some(e=>['closed','close-error'].includes(e.state)));
+  resources.push({case:kind+'-close-throw',ledger,errors,browserConnected:browser.isConnected()});
+ }finally{if(context)try{await context.close();}catch{}try{await browser.close();}catch{}}
+}
+console.log(JSON.stringify({status:'PASS',proof:'ACTUAL_SUT_HELPERS_AND_OWNED_CHROME_CLOSE_ONLY',resources}));

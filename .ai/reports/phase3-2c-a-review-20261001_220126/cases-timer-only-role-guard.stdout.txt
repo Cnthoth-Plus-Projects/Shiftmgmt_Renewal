@@ -1,0 +1,1 @@
+{"label":"access-history-role-guard","status":"FAIL_INCOMPLETE","exitCode":1,"tempCleaned":true,"manifestPath":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-20261001-221900-CixFmG\\owner-final.json"}

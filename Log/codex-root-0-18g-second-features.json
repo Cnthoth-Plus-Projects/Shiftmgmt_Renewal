@@ -1,0 +1,508 @@
+{
+  "testedAt": "2026-09-07T03:51:20.352Z",
+  "secondSidebarInitial": {
+    "file": "00-shell-1.html",
+    "s3Initial": {
+      "width": 64,
+      "display": "flex",
+      "groups": [
+        {
+          "ariaHidden": "true",
+          "font": "0px",
+          "height": 1
+        },
+        {
+          "ariaHidden": "true",
+          "font": "0px",
+          "height": 1
+        },
+        {
+          "ariaHidden": "true",
+          "font": "0px",
+          "height": 1
+        }
+      ],
+      "menus": [
+        {
+          "text": "home홈",
+          "label": null,
+          "current": "page"
+        },
+        {
+          "text": "domain근무지 관리",
+          "label": null,
+          "current": null
+        },
+        {
+          "text": "group인력 관리",
+          "label": null,
+          "current": null
+        },
+        {
+          "text": "calendar_month근무표 배포",
+          "label": null,
+          "current": null
+        },
+        {
+          "text": "fact_check실적 관리",
+          "label": null,
+          "current": null
+        },
+        {
+          "text": "payments수당 관리",
+          "label": null,
+          "current": null
+        },
+        {
+          "text": "monitoring대시보드",
+          "label": null,
+          "current": null
+        }
+      ]
+    }
+  },
+  "secondSidebarSettled": [
+    {
+      "s3ExpandedWidth": 220
+    },
+    {
+      "s3CollapsedWidth": 64
+    }
+  ],
+  "a1": {
+    "chartCardTitlesAbsent": true,
+    "tableTop": 321,
+    "cards": [
+      {
+        "columns": "286px 286px 286px 286px",
+        "count": 4,
+        "texts": [
+          "총 지급액369,000원총 근로시간 19.0h",
+          "지급 인원4명총 4건 수당 계산",
+          "정규 지급분225,000원3건 (월 정기 지급)",
+          "조기 지급분144,000원1건 (05-22 예정)"
+        ]
+      }
+    ]
+  },
+  "e2": {
+    "inputs": [
+      {
+        "value": "",
+        "placeholder": "이름 또는 사번"
+      }
+    ],
+    "tables": [
+      {
+        "id": "",
+        "rows": 8
+      },
+      {
+        "id": "e2-wage-history",
+        "rows": 2
+      }
+    ]
+  },
+  "g1": {
+    "rows": [
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40
+    ],
+    "overflowCells": []
+  },
+  "o1": {
+    "parentText": "● 저장되지 않음경로 저장",
+    "parentClass": "",
+    "buttonCenter": 276.28125,
+    "parentCenter": 276.28125
+  },
+  "t2": {
+    "hiddenAncestor": true,
+    "hit": "modal-overlay",
+    "hitIsLogout": false
+  },
+  "danger": [
+    {
+      "file": "00-shell-1.html",
+      "danger": []
+    },
+    {
+      "file": "00-shell-2.html",
+      "danger": []
+    },
+    {
+      "file": "01-login-1.html",
+      "danger": []
+    },
+    {
+      "file": "01-login-2.html",
+      "danger": []
+    },
+    {
+      "file": "02-common-1.html",
+      "danger": [
+        {
+          "state": "state-c3",
+          "id": "",
+          "cls": "btn-danger btn-modal-confirm",
+          "text": "삭제",
+          "background": "rgb(192, 57, 43)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-c4",
+          "id": "btn-c4-reject",
+          "cls": "btn-secondary btn-modal-confirm",
+          "text": "반려",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(31, 36, 48)",
+          "border": "rgb(132, 138, 147)"
+        }
+      ]
+    },
+    {
+      "file": "02-common-2.html",
+      "danger": []
+    },
+    {
+      "file": "02-common-3.html",
+      "danger": []
+    },
+    {
+      "file": "04-sites-1.html",
+      "danger": [
+        {
+          "state": "state-t1",
+          "id": "",
+          "cls": "btn-danger-ghost",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "04-sites-2.html",
+      "danger": [
+        {
+          "state": "state-t4",
+          "id": "btn-open-t4",
+          "cls": "btn-danger-ghost",
+          "text": "[보라매 사업장] 삭제 확인 열어 보기",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-t4",
+          "id": "btn-exec-t4",
+          "cls": "btn-danger",
+          "text": "삭제",
+          "background": "rgb(192, 57, 43)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "06-employees-1.html",
+      "danger": [
+        {
+          "state": "state-e2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "인력 삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-e9",
+          "id": "btn-e9-delete",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "인력 삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "06-employees-2.html",
+      "danger": []
+    },
+    {
+      "file": "06-employees-3.html",
+      "danger": []
+    },
+    {
+      "file": "07-schedule-1.html",
+      "danger": []
+    },
+    {
+      "file": "07-schedule-2.html",
+      "danger": []
+    },
+    {
+      "file": "07-schedule-3.html",
+      "danger": []
+    },
+    {
+      "file": "09-allowance-1.html",
+      "danger": []
+    },
+    {
+      "file": "09-allowance-2.html",
+      "danger": []
+    },
+    {
+      "file": "09-allowance-3.html",
+      "danger": []
+    },
+    {
+      "file": "10-dashboard-1.html",
+      "danger": []
+    },
+    {
+      "file": "11-operations-1.html",
+      "danger": [
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o2",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "제거",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "11-operations-2.html",
+      "danger": [
+        {
+          "state": "state-o3",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o4",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o4",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o4",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o4",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o5",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o5",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o5",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o5",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o5",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "11-operations-3.html",
+      "danger": [
+        {
+          "state": "state-o6",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o6",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o6",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        },
+        {
+          "state": "state-o6",
+          "id": "",
+          "cls": "btn-danger-ghost btn-sm",
+          "text": "삭제",
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(192, 57, 43)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "11-operations-4.html",
+      "danger": [
+        {
+          "state": "state-o9-o10",
+          "id": "btn-exec-o10",
+          "cls": "btn-danger",
+          "text": "교체 실행",
+          "background": "rgb(192, 57, 43)",
+          "color": "rgb(255, 255, 255)",
+          "border": "rgb(192, 57, 43)"
+        }
+      ]
+    },
+    {
+      "file": "12-access-logs-1.html",
+      "danger": []
+    }
+  ],
+  "contrastAgainstWhite": 5.438402422419904,
+  "note": "Collapsed/expanded widths measured after transition completion. Summary cards are inline-styled children, not .summary-card selectors."
+}

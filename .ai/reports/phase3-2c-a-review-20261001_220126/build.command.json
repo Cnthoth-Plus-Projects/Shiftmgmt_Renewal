@@ -1,0 +1,16 @@
+{
+  "name": "build",
+  "command": [
+    "npm.cmd",
+    "run",
+    "build"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:06:53.757651+00:00",
+  "pid": 18204,
+  "rc": 0,
+  "end": "2026-10-01T13:07:03.527050+00:00",
+  "elapsedSeconds": 9.765,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\build.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\build.stderr.txt"
+}

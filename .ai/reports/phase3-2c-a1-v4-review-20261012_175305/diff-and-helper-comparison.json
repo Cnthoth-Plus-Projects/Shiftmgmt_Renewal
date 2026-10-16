@@ -1,0 +1,54 @@
+{
+  "diffCounts": {
+    "access-history.mjs": {
+      "added": 215,
+      "deleted": 285,
+      "hunks": 23,
+      "oldLines": 708,
+      "newLines": 638
+    },
+    "access-history-shared.mjs": {
+      "added": 180,
+      "deleted": 125,
+      "hunks": 13,
+      "oldLines": 532,
+      "newLines": 587
+    }
+  },
+  "originalRuleComparison": [
+    {
+      "name": "repeated-created",
+      "rejected": true,
+      "error": "Resource close missing/failed"
+    },
+    {
+      "name": "reversed-states",
+      "rejected": true,
+      "error": "Resource close missing/failed"
+    },
+    {
+      "name": "extra-closed",
+      "rejected": true,
+      "error": "Resource close missing/failed"
+    },
+    {
+      "name": "numeric-resource-id",
+      "rejected": true,
+      "error": "Resource ID absent"
+    },
+    {
+      "name": "boolean-resource-id",
+      "rejected": true,
+      "error": "Resource ID absent"
+    },
+    {
+      "name": "array-resource-id",
+      "rejected": true,
+      "error": "Resource ID absent"
+    },
+    {
+      "name": "caller-canonical-path",
+      "v1RawRuleCheck": "NOT_APPLICABLE_PATH_ANCHOR_IS_FULL_GATE"
+    }
+  ]
+}

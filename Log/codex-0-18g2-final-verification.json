@@ -1,0 +1,12 @@
+{
+  "verifiedAtUTC": "2026-09-07T06:23:50.472840+00:00",
+  "protectedCount": 55,
+  "changed": [],
+  "receivedPrefixIdentical": true,
+  "receivedSHA256": "51a1ab31fe1f36a46ec8271215e35f67fb32981a54ef2d03f08e834541dc436d",
+  "receivedBytes": 17976,
+  "handoffSHA256": "216a877d2ff07b051e22ce3481d56825ed7be9c954a5d7088c021cbe2c87692b",
+  "handoffBytes": 36362,
+  "replyLine": 149,
+  "decision": "DISAGREE"
+}

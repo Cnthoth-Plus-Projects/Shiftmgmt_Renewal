@@ -1,0 +1,4911 @@
+[
+  {
+    "file": "03-home-1.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:06.312Z",
+    "httpStatus": 200,
+    "bytes": 48650,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 03-home-1.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-h1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-h2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-h3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 73,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"120.672px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "실적 관리에서 확인",
+            "실적 관리에서 확인"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 9,
+          "examples": [
+            "보기",
+            "보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "원인 보기",
+            "다시 복구"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"120.672px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "실적 관리에서 확인",
+            "실적 관리에서 확인"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-h3",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": "처리 중: 시작 복구 실행 중…"
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "03-home-2.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:06.855Z",
+    "httpStatus": 200,
+    "bytes": 32106,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 03-home-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-h4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-h5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 29,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"120.672px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "실적 관리에서 확인",
+            "btn-h5-check"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"115.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "실적 관리 보기"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "05-sites-wizard-1.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:07.459Z",
+    "httpStatus": 200,
+    "bytes": 57418,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 05-sites-wizard-1.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-w1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 38,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "계속 편집",
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "변경 버리고 나가기",
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"66px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "불러오기"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-w1-fast-modal"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"78px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "뒤로가기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"145.562px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "다음: 근무시간 설정"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "파일 가져오기",
+            "패턴 산출"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "초안에 반영"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 5px\",\"font\":\"12px\",\"width\":\"36px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "변경"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"36px\",\"shadow\":\"none\"}": {
+          "count": 8,
+          "examples": [
+            "주간 수정",
+            "주간 더보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"314px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "+ 근무 유형 추가",
+            "+ 휴무 유형 추가"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 6px\",\"font\":\"12px\",\"width\":\"77.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "운영 교대조"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 6px\",\"font\":\"12px\",\"width\":\"77.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "야간 전담조"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 5px\",\"font\":\"12px\",\"width\":\"60px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "되돌리기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"114.844px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "이전: 기본 설정"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"85.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "입력 검토"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-w1",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w1"
+        },
+        {
+          "id": "pattern-extract-modal",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w1"
+        },
+        {
+          "id": "modal-leave-w2",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w2"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "palette-table",
+          "state": "state-w2",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "도트",
+            "유형",
+            "시간",
+            "휴게",
+            "조치"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": [
+        {
+          "state": "state-w2",
+          "width": 1180,
+          "scroll": 1180,
+          "columns": "340px 436px 380px"
+        }
+      ]
+    }
+  },
+  {
+    "file": "05-sites-wizard-2.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:08.032Z",
+    "httpStatus": 200,
+    "bytes": 49653,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 05-sites-wizard-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-w3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 30,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "계속 편집",
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "변경 버리고 나가기",
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 5px\",\"font\":\"12px\",\"width\":\"36px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "변경"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"274px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "+ 근무 유형 추가",
+            "+ 휴무 유형 추가"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "초기화",
+            "초기화"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"114.844px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "이전: 기본 설정",
+            "이전: 기본 설정"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"85.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "입력 검토",
+            "입력 검토"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 6px\",\"font\":\"12px\",\"width\":\"77.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "운영 교대조"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 6px\",\"font\":\"12px\",\"width\":\"77.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "야간 전담조"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-w3",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w3"
+        },
+        {
+          "id": "modal-leave-w4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w4"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "palette-table",
+          "state": "state-w3",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "도트",
+            "유형",
+            "시간",
+            "휴게"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "team-pattern-table",
+          "state": "state-w3",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "조",
+            "시작위치",
+            "패턴 스트립",
+            "동작"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            71
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "palette-table",
+          "state": "state-w4",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "도트",
+            "유형",
+            "시간",
+            "휴게"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": [
+        {
+          "state": "state-w3",
+          "width": 1180,
+          "scroll": 1194,
+          "columns": "300px 490px 380px"
+        },
+        {
+          "state": "state-w4",
+          "width": 1180,
+          "scroll": 1194,
+          "columns": "300px 490px 380px"
+        }
+      ]
+    }
+  },
+  {
+    "file": "05-sites-wizard-3.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:08.608Z",
+    "httpStatus": 200,
+    "bytes": 58988,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 05-sites-wizard-3.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-w5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 2,
+      "iconCount": 69,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "계속 편집",
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "변경 버리고 나가기",
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"81.625px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "이전 단계",
+            "이전 단계"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"85.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "다음 단계",
+            "다음 단계"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "일괄 설정"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm btn-team-setting\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"57.3438px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "조 설정",
+            "조 설정"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"111.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "입력 다시 검토"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"107.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "근무표로 이동"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"56px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "완료"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"2px 10px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-team-dec",
+            "btn-team-inc"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-apply-team"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-cancel-team"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"100px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-leave-stay"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"137.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-leave-discard"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-w5",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w5"
+        },
+        {
+          "id": "modal-leave-w6",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w6"
+        },
+        {
+          "id": "team-setting-modal",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w6"
+        },
+        {
+          "id": "modal-leave-w7",
+          "visible": true,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            600,
+            600,
+            255,
+            255
+          ],
+          "state": "state-w7"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-w5",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "유형",
+            "시작",
+            "종료",
+            "휴게"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-w5",
+          "visible": true,
+          "rows": 2,
+          "headers": [
+            "묶음 이름",
+            "하루 교대 횟수",
+            "패턴 시작일"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-w5",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "조",
+            "주간",
+            "야간",
+            "석간",
+            "휴무"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-w6",
+          "visible": true,
+          "rows": 12,
+          "headers": [
+            "이름",
+            "사번",
+            "직급",
+            "상태"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "palette-table",
+          "state": "state-w7",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "도트",
+            "유형",
+            "시간",
+            "휴게"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": [
+        {
+          "state": "state-w7",
+          "width": 1180,
+          "scroll": 1180,
+          "columns": "300px 480px 380px"
+        }
+      ]
+    }
+  },
+  {
+    "file": "05-sites-wizard-4.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:09.178Z",
+    "httpStatus": 200,
+    "bytes": 34295,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 05-sites-wizard-4.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-w8",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w9",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-w10",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 37,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"78px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "뒤로가기",
+            "뒤로가기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"145.562px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "다음: 근무시간 설정",
+            "다음: 근무시간 설정"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"81.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "이전 단계"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"111.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "입력 다시 검토"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"107.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "근무표로 이동"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"109.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "저장 중…"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-w10",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-w10"
+        }
+      ],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-w10",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": "처리 중: 근무지 저장 중…"
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "08-performance-1.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:09.727Z",
+    "httpStatus": 200,
+    "bytes": 32778,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 08-performance-1.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-p1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 42,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"124.016px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "시작 복구 다시 실행",
+            "시작 복구 다시 실행"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "다시 시도",
+            "상세 보기"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-p1",
+          "visible": true,
+          "rows": 5,
+          "headers": [
+            "파일명",
+            "받은 시각",
+            "상태"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-p2",
+          "visible": true,
+          "rows": 5,
+          "headers": [
+            "파일명",
+            "크기",
+            "상태"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table nowrap-table",
+          "state": "state-p3",
+          "visible": true,
+          "rows": 1,
+          "headers": [
+            "순번",
+            "파일명",
+            "시간",
+            "사유"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-p3",
+          "visible": true,
+          "rows": 3,
+          "headers": [
+            "순번",
+            "근무지",
+            "근무 기간",
+            "데이터 건수",
+            "접수 시간",
+            "승인 상태",
+            "작업"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [
+        {
+          "id": "live-p2",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": "인테이크 진행 중: 해석 중 34/120"
+        },
+        {
+          "id": "live-p3",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": "해석 실패 1건 — 필수 시트 누락"
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "08-performance-2.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:10.277Z",
+    "httpStatus": 200,
+    "bytes": 34111,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 08-performance-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-p4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 28,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"124.016px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-restart-recovery"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"93.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "재승인본 확정"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"111.406px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "원본 엑셀 열기 ↗"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-p4",
+          "visible": true,
+          "rows": 3,
+          "headers": [
+            "파일명",
+            "받은 시각",
+            "상태"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "compare-table",
+          "state": "state-p5",
+          "visible": true,
+          "rows": 5,
+          "headers": [
+            "근무일",
+            "구분",
+            "시간",
+            "총",
+            "기본",
+            "연장",
+            "야간",
+            "시급",
+            "수당",
+            "근무일",
+            "구분",
+            "시간",
+            "총",
+            "기본",
+            "연장",
+            "야간",
+            "시급",
+            "수당"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "simple-table",
+          "state": "state-p5",
+          "visible": true,
+          "rows": 2,
+          "headers": [
+            "일시",
+            "구분",
+            "내용",
+            "처리자"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "08-performance-3.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:10.833Z",
+    "httpStatus": 200,
+    "bytes": 62238,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 08-performance-3.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-p6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 32,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"56px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-approve-single"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"52px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-reject-single"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"111.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-approve-file"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"146.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "승인대기로 되돌리기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"120.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "목록에서 숨기기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"127.203px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "원본 엑셀 열기 ↗"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "승인",
+            "btn-single-confirm"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "반려",
+            "btn-single-cancel"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"165px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "승인"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"161px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "반려"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-approve-single",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-p6"
+        },
+        {
+          "id": "modal-approve-file",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-p6"
+        }
+      ],
+      "tables": [
+        {
+          "id": "p6-table",
+          "class": "grid-table",
+          "state": "state-p6",
+          "visible": true,
+          "rows": 21,
+          "headers": [
+            "근무지",
+            "사번",
+            "이름",
+            "직급",
+            "근무일",
+            "상태",
+            "경고",
+            "구분",
+            "근무코드",
+            "시작-종료",
+            "시간(총=기본+연장+야간)",
+            "시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": "grid"
+        },
+        {
+          "id": "",
+          "class": "grid-table",
+          "state": "state-p7",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "근무지",
+            "사번",
+            "이름",
+            "직급",
+            "근무일",
+            "상태",
+            "경고",
+            "구분",
+            "근무코드",
+            "시작-종료",
+            "시간(총=기본+연장+야간)",
+            "시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": "grid"
+        }
+      ],
+      "live": [
+        {
+          "id": "p6-aria-live",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "08-performance-4.html",
+    "dir": "시안/2026-08-31-1차HTML/",
+    "at": "2026-09-07T06:03:11.395Z",
+    "httpStatus": 200,
+    "bytes": 39201,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 08-performance-4.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-p8",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p9",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-p10",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 41,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"56px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "승인",
+            "승인"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"52px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "반려",
+            "반려"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"111.234px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "파일 전체 승인",
+            "파일 전체 승인"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"146.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "승인대기로 되돌리기",
+            "승인대기로 되돌리기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"120.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "목록에서 숨기기",
+            "목록에서 숨기기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"127.203px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "원본 엑셀 열기 ↗",
+            "원본 엑셀 열기 ↗"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"137.953px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "접수·복구 확인"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "grid-table",
+          "state": "state-p8",
+          "visible": true,
+          "rows": 21,
+          "headers": [
+            "근무지",
+            "사번",
+            "이름",
+            "직급",
+            "근무일",
+            "상태",
+            "경고",
+            "구분",
+            "근무코드",
+            "시작-종료",
+            "시간(총=기본+연장+야간)",
+            "시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "12px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": "grid"
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "00-shell-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:11.929Z",
+    "httpStatus": 200,
+    "bytes": 27675,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 00-shell-1.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-s1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-s2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-s3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 32,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {},
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "00-shell-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:12.489Z",
+    "httpStatus": 200,
+    "bytes": 36546,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 00-shell-2.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-s4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-s5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-s6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 38,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-s5-banner-restart"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"1px 6px\",\"font\":\"12px\",\"width\":\"65.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-s5-status-restart"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"81.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-s6-banner"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"66px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-s6-banner-update"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "닫기"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"0px 4px\",\"font\":\"12px\",\"width\":\"78.0156px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-s6-status-detail"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-close-s6-x"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-download-s6"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-s6-update",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-s6"
+        }
+      ],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-s5",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        },
+        {
+          "id": "live-s6",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "01-login-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:13.030Z",
+    "httpStatus": 200,
+    "bytes": 9884,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 01-login-1.html",
+      "wrappers": 3,
+      "headers": [],
+      "nav": 0,
+      "skip": 0,
+      "current": 0,
+      "iconCount": 4,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"0px\",\"font\":\"14px\",\"width\":\"394px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "로그인",
+            "로그인"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"0px\",\"font\":\"14px\",\"width\":\"394px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "로그인 화면으로 돌아가기"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "01-login-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:13.574Z",
+    "httpStatus": 200,
+    "bytes": 12663,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 01-login-2.html",
+      "wrappers": 2,
+      "headers": [],
+      "nav": 0,
+      "skip": 0,
+      "current": 0,
+      "iconCount": 10,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"0px\",\"font\":\"14px\",\"width\":\"394px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "l4-btn-submit"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"0px\",\"font\":\"14px\",\"width\":\"193px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "취소"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"0px\",\"font\":\"14px\",\"width\":\"191px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-l5-submit"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "02-common-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:14.116Z",
+    "httpStatus": 200,
+    "bytes": 21017,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 02-common-1.html",
+      "wrappers": 4,
+      "headers": [],
+      "nav": 0,
+      "skip": 0,
+      "current": 0,
+      "iconCount": 4,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"144.844px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "btn-open-c1",
+            "btn-open-c2"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm btn-modal-close-x\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "닫기",
+            "닫기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-modal-cancel\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "취소",
+            "취소"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-modal-confirm\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "확인",
+            "배포"
+          ]
+        },
+        "{\"class\":\"btn-danger btn-modal-confirm\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "삭제"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-modal-confirm\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-c4-reject"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-c1",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-c1"
+        },
+        {
+          "id": "modal-c2",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-c2"
+        },
+        {
+          "id": "modal-c3",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-c3"
+        },
+        {
+          "id": "modal-c4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-c4"
+        }
+      ],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "02-common-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:14.647Z",
+    "httpStatus": 200,
+    "bytes": 18529,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 02-common-2.html",
+      "wrappers": 5,
+      "headers": [],
+      "nav": 0,
+      "skip": 0,
+      "current": 0,
+      "iconCount": 7,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"136.016px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-show-c5",
+            "btn-show-c6"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm btn-toast-close\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "닫기",
+            "닫기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"109.828px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "+ 근무지 등록"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"85.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "실적 승인",
+            "실적 승인"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"83.4531px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "저장 중..."
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-c5",
+          "role": "status",
+          "parent": "common-stage",
+          "hiddenAncestor": false,
+          "text": ""
+        },
+        {
+          "id": "live-c6",
+          "role": "status",
+          "parent": "common-stage",
+          "hiddenAncestor": false,
+          "text": ""
+        },
+        {
+          "id": "live-c7",
+          "role": "status",
+          "parent": "common-stage",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "02-common-3.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:15.225Z",
+    "httpStatus": 200,
+    "bytes": 18061,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 02-common-3.html",
+      "wrappers": 3,
+      "headers": [],
+      "nav": 0,
+      "skip": 0,
+      "current": 0,
+      "iconCount": 1,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {},
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "04-sites-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:15.762Z",
+    "httpStatus": 200,
+    "bytes": 29016,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 04-sites-1.html",
+      "wrappers": 1,
+      "headers": [
+        {
+          "state": "state-t1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 1,
+      "skip": 1,
+      "current": 1,
+      "iconCount": 12,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"122.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "근무지 등록"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"340.656px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-open-t2",
+            "상세"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"340.672px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "상세"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-close-t2-x"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "삭제"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "수정"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-close-t2"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-t2",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "900px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-t1"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-t1",
+          "visible": false,
+          "rows": 4,
+          "headers": [
+            "조",
+            "인원",
+            "조장",
+            "배정 명단"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "04-sites-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:16.303Z",
+    "httpStatus": 200,
+    "bytes": 28419,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 04-sites-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-t3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-t4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 23,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"81.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "검색 지우기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"122.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "근무지 등록"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"94.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "검색 지우기"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"233.297px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-t4"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-close-t4-x"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-cancel-t4"
+          ]
+        },
+        "{\"class\":\"btn-danger\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-exec-t4"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-t4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-t4"
+        }
+      ],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-t4",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "06-employees-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:16.866Z",
+    "httpStatus": 200,
+    "bytes": 49256,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 06-employees-1.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-e1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e9",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 35,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"139.234px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-e1-new",
+            "btn-e2-new"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "패널 닫기",
+            "btn-e9-panel-close"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "시급 등록",
+            "btn-e9-wage"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "배정",
+            "btn-e9-assign"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"167px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "현재 배정 해지",
+            "btn-e9-unassign"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"167px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "인력 삭제",
+            "btn-e9-delete"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "table-emp-e1",
+          "class": "table-data",
+          "state": "state-e1",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "사번",
+            "이름",
+            "직급",
+            "고용형태",
+            "상태",
+            "입사일",
+            "현재 근무지",
+            "현재 조",
+            "최근 등록 시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-data",
+          "state": "state-e2",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "사번",
+            "이름",
+            "직급",
+            "상태",
+            "입사일",
+            "근무지",
+            "조",
+            "최근 등록 시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "e2-wage-history",
+          "class": "table-custom",
+          "state": "state-e2",
+          "visible": true,
+          "rows": 2,
+          "headers": [
+            "시급",
+            "적용 기간",
+            "구분"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-data",
+          "state": "state-e9",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "사번",
+            "이름",
+            "직급",
+            "상태",
+            "입사일",
+            "근무지",
+            "조",
+            "최근 등록 시급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "e2-wage-history-e9",
+          "class": "table-custom",
+          "state": "state-e9",
+          "visible": true,
+          "rows": 2,
+          "headers": [
+            "시급",
+            "적용 기간",
+            "구분"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "06-employees-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:17.419Z",
+    "httpStatus": 200,
+    "bytes": 42884,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 06-employees-2.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-e3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 34,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"144.844px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-e3"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-e3-goto-perf"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-e3-toast-close",
+            "btn-close-e3-x"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-cancel-e3",
+            "btn-cancel-e4"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-submit-e3",
+            "btn-submit-e4"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"115.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-e4"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm btn-up\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"24px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "위로 이동",
+            "위로 이동"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm btn-down\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"24px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "아래로 이동",
+            "아래로 이동"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-e3",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-e3"
+        },
+        {
+          "id": "modal-e4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-e4"
+        }
+      ],
+      "tables": [],
+      "live": [
+        {
+          "id": "toast-e3",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": "check_circle\n    시급을 등록했습니다. 영향받는 대기 실적 3건은 아직 옛 시급입니다 — 실적 관리에서 다시 읽어야 반영됩니다.\n "
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "06-employees-3.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:17.984Z",
+    "httpStatus": 200,
+    "bytes": 50122,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 06-employees-3.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-e6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-e8",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 37,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"200.453px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-e6"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-close-e6-x",
+            "btn-close-e6-confirm-x"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "파일 가져오기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-e6-preview"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-cancel-e6",
+            "btn-back-e6-confirm"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "btn-submit-e6",
+            "btn-apply-e6-confirm"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"139.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "신규 인력 등록"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"174.453px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-e8"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-e6",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "900px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-e6"
+        },
+        {
+          "id": "modal-e6-confirm",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-e6"
+        },
+        {
+          "id": "modal-e8",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-e8"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-e6",
+          "visible": false,
+          "rows": 5,
+          "headers": [
+            "상태",
+            "근무지",
+            "이름",
+            "사원번호",
+            "적용 전",
+            "적용 후",
+            "현재 적용일",
+            "종료일 (자동)"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-e6",
+          "visible": false,
+          "rows": 3,
+          "headers": [
+            "상태",
+            "근무지",
+            "이름",
+            "가져온 시급",
+            "사유"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [
+        {
+          "id": "live-e6",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        },
+        {
+          "id": "live-e8",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "07-schedule-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:18.526Z",
+    "httpStatus": 200,
+    "bytes": 41191,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 07-schedule-1.html",
+      "wrappers": 1,
+      "headers": [
+        {
+          "state": "state-r1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 1,
+      "skip": 1,
+      "current": 1,
+      "iconCount": 11,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"78px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "미리보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"81.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "엑셀 생성"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"128.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "배포 폴더로 게시"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-r1",
+          "visible": true,
+          "rows": 14,
+          "headers": [
+            "조",
+            "이름",
+            "6/1(일)",
+            "6/2(월)",
+            "6/3(화)",
+            "6/4(수)",
+            "6/5(목)",
+            "6/6(금·공)",
+            "6/7(토)",
+            "6/8(일)",
+            "6/9(월)",
+            "6/10(화)"
+          ],
+          "tdFonts": [
+            "14px",
+            "13px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "07-schedule-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:19.069Z",
+    "httpStatus": 200,
+    "bytes": 49389,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 07-schedule-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-r2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-r3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 23,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"78px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "미리보기",
+            "미리보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"81.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "엑셀 생성",
+            "엑셀 생성"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"128.234px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "배포 폴더로 게시",
+            "배포 폴더로 게시"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "패널 접기"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-r2",
+          "visible": true,
+          "rows": 14,
+          "headers": [
+            "조",
+            "이름",
+            "6/1(일)",
+            "6/2(월)",
+            "6/3(화)",
+            "6/4(수)",
+            "6/5(목)",
+            "6/6(금·공)",
+            "6/7(토)",
+            "6/8(일)",
+            "6/9(월)",
+            "6/10(화)"
+          ],
+          "tdFonts": [
+            "14px",
+            "13px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "07-schedule-3.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:19.619Z",
+    "httpStatus": 200,
+    "bytes": 58682,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 07-schedule-3.html",
+      "wrappers": 4,
+      "headers": [
+        {
+          "state": "state-r4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-r5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-r6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-r7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 4,
+      "skip": 4,
+      "current": 4,
+      "iconCount": 44,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"144.844px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-r4"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-close-r4-x"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-cancel-r4"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-submit-r4"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"135.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "근무표 만들기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"78px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "미리보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"81.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-r7-excel"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"128.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-r7-publish"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-r4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-r4"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-r5",
+          "visible": true,
+          "rows": 6,
+          "headers": [
+            "배포일시 ▼",
+            "근무지",
+            "대상 월",
+            "파일명",
+            "배포자"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-r7",
+          "visible": true,
+          "rows": 14,
+          "headers": [
+            "조",
+            "이름",
+            "6/1(일)",
+            "6/2(월)",
+            "6/3(화)",
+            "6/4(수)",
+            "6/5(목)",
+            "6/6(금·공)",
+            "6/7(토)",
+            "6/8(일)",
+            "6/9(월)",
+            "6/10(화)"
+          ],
+          "tdFonts": [
+            "14px",
+            "13px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [
+        {
+          "id": "live-r4",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "09-allowance-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:20.170Z",
+    "httpStatus": 200,
+    "bytes": 32417,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 09-allowance-1.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-a1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-a2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 22,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"135.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "품의 미리보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"0px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "조기 지급",
+            "조기 지급"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"111.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "품의 미리보기"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"34px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "패널 닫기"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-a1",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "근무지",
+            "사번",
+            "이름",
+            "직급",
+            "근무일",
+            "구분",
+            "시간",
+            "시급",
+            "금액",
+            "상태",
+            "조기 지급"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-a2",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "근무지",
+            "사번",
+            "이름",
+            "근무일",
+            "구분",
+            "금액"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "09-allowance-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:20.715Z",
+    "httpStatus": 200,
+    "bytes": 46958,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 09-allowance-2.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-a3-a5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-a9",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 26,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"199.734px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-open-a3",
+            "btn-open-a3-a9"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"211.625px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-open-a4",
+            "btn-open-a4-a9"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 6,
+          "examples": [
+            "btn-close-a3-x",
+            "btn-close-a4-x"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 6,
+          "examples": [
+            "btn-close-a3",
+            "btn-cancel-a4"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 6,
+          "examples": [
+            "btn-goto-a5",
+            "btn-submit-a4"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-a3",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "900px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a3-a5"
+        },
+        {
+          "id": "modal-a4",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a3-a5"
+        },
+        {
+          "id": "modal-a5",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a3-a5"
+        },
+        {
+          "id": "modal-a3-a9",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "900px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a9"
+        },
+        {
+          "id": "modal-a4-a9",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a9"
+        },
+        {
+          "id": "modal-a5-a9",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-a9"
+        }
+      ],
+      "tables": [],
+      "live": [
+        {
+          "id": "live-a5",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        },
+        {
+          "id": "live-a5-a9",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "09-allowance-3.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:21.259Z",
+    "httpStatus": 200,
+    "bytes": 30547,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 09-allowance-3.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-a6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-a7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-a8",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 33,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"56px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "닫기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"152.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "실적 관리로 이동"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-a7",
+          "visible": true,
+          "rows": 6,
+          "headers": [
+            "대상 월",
+            "근무지",
+            "사번",
+            "이름",
+            "근무일",
+            "구분",
+            "시간",
+            "금액",
+            "상태"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "10-dashboard-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:21.807Z",
+    "httpStatus": 200,
+    "bytes": 37136,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 10-dashboard-1.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-d1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-d2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-d3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 32,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"132.672px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "차트 데이터 내보내기"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"105.344px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "보고서 내보내기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"152.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "실적 관리로 이동"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-d1",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "순위",
+            "이름 (직급)",
+            "근무지",
+            "총 시간",
+            "총 금액"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "11-operations-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:22.371Z",
+    "httpStatus": 200,
+    "bytes": 49239,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 11-operations-1.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-o1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-o2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 26,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"74.7812px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "DB복원",
+            "DB복원"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "경로 저장"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 8,
+          "examples": [
+            "폴더 선택",
+            "폴더 선택"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"54px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "재시작"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "중지"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"96.6719px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "수동 백업 저장"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"93.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "신규 등록"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"0px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 8,
+          "examples": [
+            "수정",
+            "수정"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost btn-sm\",\"radius\":\"6px\",\"padding\":\"0px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 8,
+          "examples": [
+            "제거",
+            "제거"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-o1",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-o1"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o2",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "날짜",
+            "공휴일명",
+            "작업"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "11-operations-2.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:22.939Z",
+    "httpStatus": 200,
+    "bytes": 52407,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 11-operations-2.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-o3",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-o4",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-o5",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 36,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"74.7812px\",\"shadow\":\"none\"}": {
+          "count": 3,
+          "examples": [
+            "DB복원",
+            "DB복원"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"115.234px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "신규 요율 추가"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"0px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 10,
+          "examples": [
+            "수정",
+            "수정"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost btn-sm\",\"radius\":\"6px\",\"padding\":\"0px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 10,
+          "examples": [
+            "삭제",
+            "삭제"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "저장"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"93.3438px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "영향 미리보기"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"120.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "계정복구키 발급"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"128.234px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "신규 사용자 추가",
+            "근무지 이름 추가"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o3",
+          "visible": true,
+          "rows": 1,
+          "headers": [
+            "버전명",
+            "적용 시작일",
+            "상태",
+            "작업"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o3",
+          "visible": true,
+          "rows": 5,
+          "headers": [
+            "구분",
+            "기본",
+            "연장",
+            "야간"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o3",
+          "visible": true,
+          "rows": 3,
+          "headers": [
+            "일시",
+            "버전",
+            "작업",
+            "수정자"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o4",
+          "visible": true,
+          "rows": 4,
+          "headers": [
+            "계정명",
+            "이름",
+            "권한",
+            "내선번호",
+            "연락처",
+            "메일주소",
+            "상태",
+            "작업"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o5",
+          "visible": true,
+          "rows": 5,
+          "headers": [
+            "근무지 이름",
+            "사용 근무지",
+            "수정일",
+            "작업"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "11-operations-3.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:23.484Z",
+    "httpStatus": 200,
+    "bytes": 49341,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 11-operations-3.html",
+      "wrappers": 3,
+      "headers": [
+        {
+          "state": "state-o6",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-o7",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-o8",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 3,
+      "skip": 3,
+      "current": 3,
+      "iconCount": 37,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"74.7812px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "DB복원",
+            "DB복원"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"82px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "양식등록"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 8,
+          "examples": [
+            "수정",
+            "승인"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"81.3438px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "파일명 변경",
+            "파일명 변경"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"69.3438px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "기본 사용",
+            "기본 사용"
+          ]
+        },
+        "{\"class\":\"btn-danger-ghost btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"42px\",\"shadow\":\"none\"}": {
+          "count": 4,
+          "examples": [
+            "삭제",
+            "삭제"
+          ]
+        },
+        "{\"class\":\"btn-primary btn-leave-stay\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "계속 편집"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-leave-discard\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "변경 버리고 나가기"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"56px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "저장"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-leave-o7",
+          "visible": false,
+          "radius": "10px",
+          "padding": "24px 20px",
+          "font": "14px",
+          "width": "600px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-o7"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o6",
+          "visible": true,
+          "rows": 3,
+          "headers": [
+            "시각",
+            "양식 종류",
+            "버전",
+            "작업",
+            "상세"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        },
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o8",
+          "visible": true,
+          "rows": 3,
+          "headers": [
+            "게시글",
+            "버전",
+            "게시일",
+            "업데이트 구분",
+            "적용 조건",
+            "요약"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  },
+  {
+    "file": "11-operations-4.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:24.022Z",
+    "httpStatus": 200,
+    "bytes": 31083,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 11-operations-4.html",
+      "wrappers": 1,
+      "headers": [
+        {
+          "state": "state-o9-o10",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 1,
+      "skip": 1,
+      "current": 1,
+      "iconCount": 14,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"189.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-open-o9"
+          ]
+        },
+        "{\"class\":\"btn-ghost btn-sm\",\"radius\":\"4px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-close-o9-x",
+            "btn-close-o10-x"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "btn-close-o9",
+            "btn-cancel-o10"
+          ]
+        },
+        "{\"class\":\"btn-primary\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-goto-o10"
+          ]
+        },
+        "{\"class\":\"btn-danger\",\"radius\":\"6px\",\"padding\":\"6px 14px\",\"font\":\"13px\",\"width\":\"auto\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "btn-exec-o10"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [
+        {
+          "id": "modal-o9",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "900px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-o9-o10"
+        },
+        {
+          "id": "modal-o10",
+          "visible": false,
+          "radius": "10px",
+          "padding": "0px",
+          "font": "14px",
+          "width": "400px",
+          "shadow": "rgba(0, 0, 0, 0.12) 0px 8px 24px 0px",
+          "scroll": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "state": "state-o9-o10"
+        }
+      ],
+      "tables": [
+        {
+          "id": "",
+          "class": "table-custom",
+          "state": "state-o9-o10",
+          "visible": false,
+          "rows": 18,
+          "headers": [
+            "항목",
+            "현재",
+            "DB복원 후"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [
+        {
+          "id": "live-o10",
+          "role": "status",
+          "parent": "app-window",
+          "hiddenAncestor": false,
+          "text": ""
+        }
+      ],
+      "layouts": []
+    }
+  },
+  {
+    "file": "12-access-logs-1.html",
+    "dir": "시안/2026-09-02-2차HTML/",
+    "at": "2026-09-07T06:03:24.578Z",
+    "httpStatus": 200,
+    "bytes": 30463,
+    "errors": [],
+    "data": {
+      "title": "근무 관리 시스템 — 시안 12-access-logs-1.html",
+      "wrappers": 2,
+      "headers": [
+        {
+          "state": "state-g1",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        },
+        {
+          "state": "state-g2",
+          "height": 56,
+          "logout": 1,
+          "accountButtons": 1,
+          "parts": [
+            "header-left",
+            "header-user-actions"
+          ]
+        }
+      ],
+      "nav": 2,
+      "skip": 2,
+      "current": 2,
+      "iconCount": 25,
+      "leakingIcons": [],
+      "duplicateIds": [],
+      "badRefs": [],
+      "buttonGroups": {
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"54px\",\"shadow\":\"none\"}": {
+          "count": 2,
+          "examples": [
+            "초기화",
+            "초기화"
+          ]
+        },
+        "{\"class\":\"btn-secondary btn-sm\",\"radius\":\"6px\",\"padding\":\"4px 8px\",\"font\":\"12px\",\"width\":\"66px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "새로고침"
+          ]
+        },
+        "{\"class\":\"btn-secondary\",\"radius\":\"6px\",\"padding\":\"6px 12px\",\"font\":\"13px\",\"width\":\"94.625px\",\"shadow\":\"none\"}": {
+          "count": 1,
+          "examples": [
+            "필터 초기화"
+          ]
+        }
+      },
+      "unnamed": [],
+      "smallText": [],
+      "modals": [],
+      "tables": [
+        {
+          "id": "table-logs-g1",
+          "class": "table-custom",
+          "state": "state-g1",
+          "visible": true,
+          "rows": 8,
+          "headers": [
+            "활동시간",
+            "사용자",
+            "권한",
+            "액션내용",
+            "상세"
+          ],
+          "tdFonts": [
+            "14px"
+          ],
+          "thFonts": [
+            "13px"
+          ],
+          "rowHeights": [
+            40
+          ],
+          "ariaRowCount": null,
+          "role": null
+        }
+      ],
+      "live": [],
+      "layouts": []
+    }
+  }
+]

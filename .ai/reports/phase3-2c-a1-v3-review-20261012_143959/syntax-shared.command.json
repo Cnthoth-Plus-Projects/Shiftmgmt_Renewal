@@ -1,0 +1,17 @@
+{
+  "name": "syntax-shared",
+  "argv": [
+    "node",
+    "--check",
+    "scripts/ui-checks/access-history-shared.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 33420,
+  "start": "2026-10-12T05:42:32.452891+00:00",
+  "end": "2026-10-12T05:42:32.568309+00:00",
+  "elapsedSeconds": 0.10899999999674037,
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v3-review-20261012_143959\\syntax-shared.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v3-review-20261012_143959\\syntax-shared.stderr.txt"
+}

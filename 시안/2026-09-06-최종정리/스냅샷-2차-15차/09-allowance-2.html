@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 09-allowance-2.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+  --line: #E2E5EA;
+  --line-strong: #848A93;
+  --text: #1F2430;
+  --text-sub: #4B5563;
+  --accent: #3E56B6;
+  --row-selected: #EEF1FB;
+  --badge-approved-text: #1E7A46;
+  --badge-approved-bg: #E8F5EE;
+  --badge-pending-text: #4B5563;
+  --badge-pending-bg: #F1F2F4;
+  --badge-rejected-text: #C0392B;
+  --badge-rejected-bg: #FCEBE9;
+  --badge-reapproved-text: #A05200;
+  --badge-reapproved-bg: #FDF3E4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+  background: #E5E7EB;
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 32px;
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  user-select: none;
+}
+.icon-18 { font-size: 18px; width: 18px; height: 18px; }
+.icon-40 { font-size: 40px; width: 40px; height: 40px; }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.state-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1440px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.status-label-bar {
+  height: 36px;
+  background: #E2E5EA;
+  color: #4B5563;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  border-bottom: 1px solid #D1D5DB;
+}
+.app-window {
+  width: 1440px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  position: relative;
+}
+.app-body {
+  display: flex;
+  flex: 1;
+  height: calc(900px - 32px);
+  overflow: hidden;
+}
+.sidebar {
+  width: 220px;
+  background: #FFFFFF;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+.nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.sidebar.collapsed .nav-group-header { text-align: center; padding: 8px 0 4px; font-size: 12px; }
+.nav-item {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text);
+  text-decoration: none;
+  gap: 10px;
+  font-size: 14px;
+  position: relative;
+  white-space: nowrap;
+}
+.sidebar.collapsed .nav-item { justify-content: center; padding: 0; gap: 0; }
+.sidebar.collapsed .nav-item span:not(.material-symbols-outlined):not(.nav-dot-badge) { display: none; }
+.nav-item:hover { background: #F8F9FA; }
+.nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  line-height: 1;
+}
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 1220px;
+  overflow: hidden;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed + .main-wrapper {
+  width: 1376px;
+}
+.header-bar {
+  height: 56px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 12px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; align-items: center; gap: 8px; }
+.btn-sidebar-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text);
+}
+.btn-sidebar-toggle:hover { background: #F4F5F7; }
+.header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+.header-title { font-size: 20px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.header-user-actions { display: flex; align-items: center; gap: 12px; }
+.role-badge {
+  background: #EEF1FB;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid #D5DCF5;
+}
+.user-info-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-sub);
+  font-size: 13px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.page-content {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer-statusbar {
+  height: 32px;
+  background: #FFFFFF;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--text-sub);
+  width: 1440px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-right: 1px solid var(--line);
+  height: 100%;
+}
+.status-cell:first-child { padding-left: 0; }
+.status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+.status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+.status-dot-red { width: 8px; height: 8px; background: #C0392B; border-radius: 50%; display: inline-block; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary:hover { background: #32479B; }
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-secondary:hover { background: #F8F9FA; border-color: var(--line-strong); }
+.btn-danger {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: 1px solid #C0392B;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-danger:hover { background: #A93226; }
+.btn-ghost {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-ghost:hover { background: rgba(0,0,0,0.05); }
+.btn-sm { padding: 4px 8px; font-size: 12px; }
+
+[aria-disabled="true"], button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.form-input, .form-select {
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: #FFFFFF;
+  color: var(--text);
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(62,86,182,0.15);
+}
+.disabled-desc {
+  font-size: 12px;
+  color: #C0392B;
+  display: block;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  background: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 850px;
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+.modal-footer {
+  padding: 12px 20px;
+  background: #F8F9FA;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.box-blue-info {
+  background: #EEF1FB;
+  border: 1px solid #C9D4F4;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.box-red-danger {
+  background: #FCEBE9;
+  border: 1px solid #E0B4B0;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #C0392B;
+  line-height: 1.4;
+}
+
+.table-data, .table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table-data th, .table-data td, .table-custom th, .table-custom td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  height: 40px;
+  min-height: 40px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.table-data th, .table-custom th {
+  background: #F8F9FA;
+  font-weight: 600;
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.table-data tbody tr:hover { background: #F8F9FA; cursor: pointer; }
+.table-data tbody tr.selected { background: var(--row-selected); font-weight: 500; }
+
+.filter-chip-group { display: flex; gap: 6px; align-items: center; }
+.filter-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  color: var(--text-sub);
+  cursor: pointer;
+}
+.filter-chip.active {
+  background: #EEF1FB;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-pending { background: var(--badge-pending-bg); color: var(--badge-pending-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-info { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 600px;
+  gap: 16px;
+  margin: 40px auto;
+}
+.empty-illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #EEF1FB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.demo-caption {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+
+</style>
+</head>
+<body>
+
+<div class="state-wrapper" id="state-a3-a5">
+  <div class="status-label-bar">── A3·A4·A5. 수당 관리 — 품의 미리보기 / 조기지급 / 승인확인 ──</div>
+  <div class="app-window" id="allowance2-app-window">
+    <div class="sr-only" role="status" aria-live="polite" id="live-a5"></div>
+    <div class="app-body">
+      
+  <aside class="sidebar ">
+    <ul class="nav-list" style="padding-top: 12px;">
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+          <li class="nav-group-header">─ 준비 ─</li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+          <li class="nav-group-header">─ 운영 ─</li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 128건">128</span></a></li>
+          <li class="nav-group-header">─ 정산 ─</li>
+          <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+          <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+        </ul>
+  </aside>
+      <div class="main-wrapper">
+        
+  <header class="header-bar">
+    <div class="header-left">
+      <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="header-divider"></div>
+      <h1 class="header-title">수당 관리</h1>
+    </div>
+    <div class="header-user-actions">
+      <span class="role-badge">승인 담당</span>
+      <button type="button" class="user-info-btn">
+        <span class="material-symbols-outlined icon-18" aria-hidden="true">person</span>
+        <span>이정호</span>
+      </button>
+    </div>
+  </header>
+        <main class="page-content">
+          <div style="background:#FFF;border:1px solid var(--line);border-radius:6px;padding:24px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button type="button" class="btn-primary" id="btn-open-a3">품의 미리보기 열어 보기 (A3)</button>
+              <button type="button" class="btn-secondary" id="btn-open-a4">조기 지급일 지정 열어 보기 (A4)</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span class="demo-caption">A3: 데모용 — 실제로는 수당 관리 화면의 [품의 미리보기]가 엽니다</span>
+              <span class="demo-caption">A4: 데모용 — 실제로는 수당 관리 결과표의 [조기 지급]이 엽니다</span>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+  <footer class="footer-statusbar">
+    <div class="status-cell" title="데이터 폴더 연결됨"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div><div class="status-cell" title="마지막 처리 완료 시각"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div><div class="status-cell" title="대기 폴더 파일 수"><span>대기 파일 3개</span></div><div class="status-cell" title="현재 버전 최신 여부"><span>최신</span></div><div class="status-cell" title="버전 정보"><span>v2.3.1</span></div>
+  </footer>
+  </div>
+
+  <div class="modal-overlay" id="modal-a3" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-a3-title" tabindex="-1">
+    <div class="modal-box" style="width: 640px;">
+      <div class="modal-header">
+        <h2 id="modal-a3-title" class="modal-title">수당 품의 미리보기 (2025년 05월)</h2>
+        <button type="button" class="btn-ghost btn-sm" id="btn-close-a3-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+      </div>
+      <div class="modal-body" style="gap:16px;">
+        <div style="background:#F8F9FA;border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+          <div style="font-weight:600;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:4px;">근무지별 요약</div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;">
+            <span>보라매 사업장</span>
+            <span>대체 144,000 + 연장 153,000 + 휴일 72,000 = <strong>369,000원</strong></span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
+          <div style="background:#FFF;border:1px solid var(--line);border-radius:6px;padding:10px;">
+            <div style="color:var(--text-sub);font-size:12px;">정규 지급분 (3건)</div>
+            <div style="font-size:16px;font-weight:700;">225,000원</div>
+          </div>
+          <div style="background:#FDF3E4;border:1px solid #E5C287;border-radius:6px;padding:10px;">
+            <div style="color:#A05200;font-size:12px;">조기 지급분 (1건)</div>
+            <div style="font-size:16px;font-weight:700;color:#A05200;">144,000원</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:#EEF1FB;border-radius:6px;">
+          <span style="font-weight:600;font-size:14px;">총 품의 합계 금액</span>
+          <span style="font-weight:700;font-size:18px;color:var(--accent);">369,000원</span>
+        </div>
+        <div style="font-size:12px;color:var(--text-sub);">
+          품의서·별첨1·별첨2가 함께 만들어집니다.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-close-a3">닫기</button>
+        <button type="button" class="btn-primary" id="btn-goto-a5">품의 승인</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-a4" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-a4-title" tabindex="-1">
+    <div class="modal-box" style="width: 460px;">
+      <div class="modal-header">
+        <h2 id="modal-a4-title" class="modal-title">조기 지급일 지정</h2>
+        <button type="button" class="btn-ghost btn-sm" id="btn-close-a4-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:13px;color:var(--text-sub);">
+          대상자: <strong>박성진</strong> (50001 · 144,000원)
+        </div>
+        <div style="margin-top:6px;">
+          <label class="form-label" for="a4-payout-date">지정 지급일</label>
+          <input type="date" class="form-input" id="a4-payout-date" value="2025-05-22" style="width:100%;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-cancel-a4">취소</button>
+        <button type="button" class="btn-primary" id="btn-submit-a4">지정</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-a5" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-a5-title" tabindex="-1">
+    <div class="modal-box" style="width: 420px;">
+      <div class="modal-header">
+        <h2 id="modal-a5-title" class="modal-title" style="color:var(--accent);">품의를 승인할까요?</h2>
+        <button type="button" class="btn-ghost btn-sm" id="btn-close-a5-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight:700;font-size:15px;color:var(--text);">품의를 승인할까요?</div>
+        <div class="box-blue-info">
+          승인하면 품의서와 별첨 문서가 생성되고 백업됩니다. 승인된 계산은 이력 없이 덮어쓸 수 없습니다.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="btn-cancel-a5">취소</button>
+        <button type="button" class="btn-primary" id="btn-submit-a5">승인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var appWin = btn.closest('.app-window');
+      if (!appWin) return;
+      var sidebar = appWin.querySelector('.sidebar');
+      if (!sidebar) return;
+      var isCollapsed = sidebar.classList.toggle('collapsed');
+      btn.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+      var navTexts = sidebar.querySelectorAll('.nav-item span:not(.material-symbols-outlined):not(.nav-dot-badge)');
+      navTexts.forEach(function(el) {
+        if (isCollapsed) {
+          el.setAttribute('aria-hidden', 'true');
+          if (!el.classList.contains('nav-badge')) el.parentElement.setAttribute('title', el.textContent.trim());
+        } else {
+          el.removeAttribute('aria-hidden');
+          el.parentElement.removeAttribute('title');
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('[aria-disabled="true"]').forEach(function(el) {
+    el.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); });
+    el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); } });
+  });
+})();
+</script>
+
+<script>
+(function() {
+  var appWin = document.getElementById('allowance2-app-window');
+  var modalA3 = document.getElementById('modal-a3');
+  var modalA4 = document.getElementById('modal-a4');
+  var modalA5 = document.getElementById('modal-a5');
+
+  var btnOpenA3 = document.getElementById('btn-open-a3');
+  var btnOpenA4 = document.getElementById('btn-open-a4');
+  var btnGotoA5 = document.getElementById('btn-goto-a5');
+
+  var btnCloseA3X = document.getElementById('btn-close-a3-x');
+  var btnCloseA3 = document.getElementById('btn-close-a3');
+
+  var btnCloseA4X = document.getElementById('btn-close-a4-x');
+  var btnCancelA4 = document.getElementById('btn-cancel-a4');
+  var btnSubmitA4 = document.getElementById('btn-submit-a4');
+
+  var btnCloseA5X = document.getElementById('btn-close-a5-x');
+  var btnCancelA5 = document.getElementById('btn-cancel-a5');
+  var btnSubmitA5 = document.getElementById('btn-submit-a5');
+
+  var opener = null;
+
+  function openModal(modal, e) {
+    if (e) opener = e.currentTarget;
+    modal.style.display = 'flex';
+    var appBody = appWin.querySelector('.app-body');
+    var headerBar = appWin.querySelector('.header-bar');
+    if (appBody) appBody.setAttribute('aria-hidden', 'true');
+    if (headerBar) headerBar.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-hidden');
+    var btn = modal.querySelector('.btn-secondary') || modal.querySelector('button');
+    if (btn) btn.focus();
+  }
+
+  var processing = false;
+  function closeModal(modal) {
+    if (processing) return;
+    modal.style.display = 'none';
+    var appBody = appWin.querySelector('.app-body');
+    var headerBar = appWin.querySelector('.header-bar');
+    if (appBody) appBody.removeAttribute('aria-hidden');
+    if (headerBar) headerBar.removeAttribute('aria-hidden');
+    if (opener) { opener.focus(); opener = null; }
+  }
+
+  if (btnOpenA3) btnOpenA3.addEventListener('click', function(e) { openModal(modalA3, e); });
+  if (btnOpenA4) btnOpenA4.addEventListener('click', function(e) { openModal(modalA4, e); });
+
+  if (btnCloseA3X) btnCloseA3X.addEventListener('click', function() { closeModal(modalA3); });
+  if (btnCloseA3) btnCloseA3.addEventListener('click', function() { closeModal(modalA3); });
+
+  if (btnCloseA4X) btnCloseA4X.addEventListener('click', function() { closeModal(modalA4); });
+  if (btnCancelA4) btnCancelA4.addEventListener('click', function() { closeModal(modalA4); });
+  if (btnSubmitA4) {
+    btnSubmitA4.addEventListener('click', function() {
+      processing = true;
+      var origLabel = btnSubmitA4.textContent;
+      if (btnCloseA4X) btnCloseA4X.disabled = true;
+      if (btnCancelA4) btnCancelA4.disabled = true;
+      btnSubmitA4.disabled = true;
+      btnSubmitA4.textContent = '지정 중...';
+      modalA4.focus();
+      setTimeout(function() {
+        processing = false;
+        if (btnCloseA4X) btnCloseA4X.disabled = false;
+        if (btnCancelA4) btnCancelA4.disabled = false;
+        btnSubmitA4.disabled = false;
+        btnSubmitA4.textContent = origLabel;
+        closeModal(modalA4);
+      }, 600);
+    });
+  }
+
+  if (btnGotoA5) {
+    btnGotoA5.addEventListener('click', function() {
+      modalA3.style.display = 'none';
+      modalA5.style.display = 'flex';
+      if (btnCancelA5) btnCancelA5.focus();
+    });
+  }
+
+  function backToA3() {
+    if (processing) return;
+    modalA5.style.display = 'none';
+    modalA3.style.display = 'flex';
+    if (btnGotoA5) btnGotoA5.focus();
+  }
+  if (btnCloseA5X) btnCloseA5X.addEventListener('click', backToA3);
+  if (btnCancelA5) btnCancelA5.addEventListener('click', backToA3);
+
+  if (btnSubmitA5) {
+    btnSubmitA5.addEventListener('click', function() {
+      processing = true;
+      var origLabel = btnSubmitA5.textContent;
+      if (btnCloseA5X) btnCloseA5X.disabled = true;
+      if (btnCancelA5) btnCancelA5.disabled = true;
+      btnSubmitA5.disabled = true;
+      btnSubmitA5.textContent = '승인 중...';
+      var liveA5 = document.getElementById('live-a5'); if (liveA5) liveA5.textContent = '처리 중: 승인 중...';
+      modalA5.focus();
+      setTimeout(function() {
+        processing = false;
+        if (btnCloseA5X) btnCloseA5X.disabled = false;
+        if (btnCancelA5) btnCancelA5.disabled = false;
+        btnSubmitA5.disabled = false;
+        btnSubmitA5.textContent = origLabel;
+        modalA5.style.display = 'none';
+        var appBody = appWin.querySelector('.app-body');
+        var headerBar = appWin.querySelector('.header-bar');
+        if (appBody) appBody.removeAttribute('aria-hidden');
+        if (headerBar) headerBar.removeAttribute('aria-hidden');
+        if (opener) { opener.focus(); opener = null; }
+      }, 800);
+    });
+  }
+
+  [modalA3, modalA4, modalA5].forEach(function(m) {
+    m.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (processing) return;
+        if (m === modalA5) backToA3();
+        else closeModal(m);
+        return;
+      }
+      if (processing && e.key === 'Tab') { e.preventDefault(); return; }
+      if (e.key === 'Tab') {
+        var f = m.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+        } else {
+          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

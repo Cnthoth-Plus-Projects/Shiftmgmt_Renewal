@@ -1,0 +1,1 @@
+[CLI 인수 오류] 정확히 단일 --case=<케이스> 인수가 필요합니다 (제공된 인수: --case=contract-core extra)

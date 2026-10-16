@@ -1,0 +1,204 @@
+{
+  "time": "2026-10-12T18:35:08.856054+09:00",
+  "sourceBeforeEqualsAfter": true,
+  "scopeFinal": {
+    "name": "scope-final-before-close",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\gate-evidence.py",
+      "--execution-sha",
+      "BF35D6B048B436DCEDEB297E2751A2ED5E5F4804C2546FEBAB5EB19BBF76B280",
+      "--baseline-sha",
+      "86F9EEF2D499B88CD9717BE40C2E14139B57422A69C7CDEF5B5476F2D063B208",
+      "--scope"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 47020,
+    "start": "2026-10-12T09:35:07.807544+00:00",
+    "end": "2026-10-12T09:35:08.734396+00:00",
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\scope-final-before-close.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\scope-final-before-close.stderr.txt",
+    "stdoutSha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48",
+    "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "lockedControlsBeforeClose": 62,
+  "baselineAndAll13V4FilesUnchanged": true,
+  "captures": [
+    {
+      "case": "positive-contract-core",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261012-175827-fUQW61\\core-capture.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 25688,
+      "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+    },
+    {
+      "case": "positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175833-xSshwv\\regression-capture-admin-expanded.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 84880,
+      "sha256": "D5691363F33D5B11A8933A569248E1E2DF90C29916709B376758010CDF019E9F"
+    },
+    {
+      "case": "positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175833-xSshwv\\regression-capture-admin-collapsed.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 72959,
+      "sha256": "B3F89DC7E94C029F7163F63FB9BA82314E2478C3DFE799D5EDDAF773804F663B"
+    },
+    {
+      "case": "positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175833-xSshwv\\regression-capture-watch-stopped.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 65214,
+      "sha256": "3C4F6CD759AC854058ADB7F5114D8AB9196BE205E908EACB0C80ECED8E2EB5DE"
+    },
+    {
+      "case": "positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175833-xSshwv\\regression-capture-operator.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 78575,
+      "sha256": "23CDCDDAD7C59888D356B954EF59DE3063BE4659F055286C470E57B3E7C07D4C"
+    },
+    {
+      "case": "positive-regression-home",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261012-175841-PIJWAM\\regression-capture-home-live-admin.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 84581,
+      "sha256": "D8FD29F1977BEB1BB572115519CC7796D412D05437ADB9E2999E12A9E41C37D3"
+    },
+    {
+      "case": "observed-positive-contract-core",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261012-175848-CdGGpO\\core-capture.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 25688,
+      "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+    },
+    {
+      "case": "observed-positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175855-SGUJCm\\regression-capture-admin-expanded.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 84579,
+      "sha256": "B6E31A38CAAA3683322B35402BDE058BF9612ACE32FC61122DD2A17B76A38C4C"
+    },
+    {
+      "case": "observed-positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175855-SGUJCm\\regression-capture-admin-collapsed.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 72714,
+      "sha256": "217BDC3B92F867F35A5AB2101435B971DEDAD5446E4918F7C8152A504BA47668"
+    },
+    {
+      "case": "observed-positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175855-SGUJCm\\regression-capture-watch-stopped.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 65069,
+      "sha256": "8BAB61C743D743A5FBF3BBF5DF7E32BDBDD533A9ACFE1E2626F5613631F7BE27"
+    },
+    {
+      "case": "observed-positive-regression-shell",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261012-175855-SGUJCm\\regression-capture-operator.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 78493,
+      "sha256": "A67972DA48041CC456851FFFF67F2CE648A88164699FDE3EF7EDAFA35DE48E89"
+    },
+    {
+      "case": "observed-positive-regression-home",
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261012-175904-YKRgtM\\regression-capture-home-live-admin.png",
+      "dimensions": [
+        1440,
+        900
+      ],
+      "bytes": 84559,
+      "sha256": "0B94D4DD7014164C7A2D86A513DFB2DCE357E05D57141C2340BDA25A79516EBA"
+    }
+  ],
+  "pids": {
+    "observed": 238,
+    "nonLive": 237,
+    "reused": [
+      {
+        "createdUtc": "2026-10-12T09:11:41.6676680Z",
+        "name": "conhost.exe",
+        "pid": 46432,
+        "previousObservedCloseUtc": "2026-10-12T09:10:00.561000+00:00",
+        "identity": "LATER_FOREIGN_PID_REUSE_NOT_TERMINATED"
+      }
+    ]
+  },
+  "port18741Free": true,
+  "retainedOwnedProductTemps": [
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-0vvYLm",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-2o5QZX",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-6EnLD7",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-7dp6DX",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-DVB7Gv",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-GyOmXD",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-HpTHu1",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-JpNiLU",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-LWhJF5",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-Mu9xVr",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-OHgqcz",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-YxdP5m",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-ZIpb8B",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-dn6e5X",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-kwJ9b0",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-o6GGA9",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-pOdVGc",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-riw9rv",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-tBNhuB",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-uJpJpS",
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-y2VGYt"
+  ],
+  "runtimeRoot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-runtime-8oh8iw_z",
+  "ipcRoot": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-foundation-probes\\run-sol-a1-ipc-yt1k5A",
+  "partialRoot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-partial-14R9jL",
+  "extraPrivateRoot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-partial-spERuj",
+  "limits": [
+    "Direct owned process callbacks/PID identity only, not every historical/internal Chrome process",
+    "Actual private stub tests are not full owner/app acceptance",
+    "No full919 rerun",
+    "Existing UI source untouched; inspected actual core/home captures2 only"
+  ],
+  "productSourceEditsBySol": 0,
+  "aiCliInvocations": 0,
+  "commitPushDeploy": 0,
+  "immutableControlsEdited": 0
+}

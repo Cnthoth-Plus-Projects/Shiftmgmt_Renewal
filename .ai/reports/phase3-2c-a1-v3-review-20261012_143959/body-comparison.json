@@ -1,0 +1,10 @@
+{
+  "exactBodyBytesIncludingDelimiterNewline": true,
+  "bodyContentEqualAfterRemovingCR": true,
+  "receivedBodyBytes": 28502,
+  "originalBodyBytes": 28502,
+  "receivedCRCRLF": 0,
+  "receivedCRLF": 331,
+  "originalCR": 269,
+  "diff": []
+}

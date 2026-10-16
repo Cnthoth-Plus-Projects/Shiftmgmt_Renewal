@@ -1,0 +1,7 @@
+{
+  "rc": 0,
+  "chromeLaunchAttemptsObserved": 1,
+  "browserClosed": true,
+  "proof": "DIAGNOSTIC_CAPABILITY_ONLY_NOT_A1_RUNTIME_ACCEPTANCE",
+  "environment": "whitelisted system paths only; no credentials/API keys inherited"
+}

@@ -1,0 +1,7 @@
+src/main/services/document-layout-definition-service.test.ts:970: new blank line at EOF.
+src/main/services/document-layout-preview-service.test.ts:288: new blank line at EOF.
+src/main/services/installed-chrome-pdf-service.test.ts:411: new blank line at EOF.
+src/main/services/installed-chrome-pdf-service.ts:548: new blank line at EOF.
+src/web/home.css:464: new blank line at EOF.
+
+RC=2; five nonfunctional extra blank lines at EOF. Accepted source bytes preserved; no source edits, gate output/configuration changes or functional-test waivers.

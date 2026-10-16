@@ -1,0 +1,155 @@
+{
+  "verdict": "FAILED",
+  "A1Accepted": false,
+  "findings": [
+    {
+      "id": "A1V5-01",
+      "requirements": [
+        "E5-02",
+        "E5-07"
+      ],
+      "type": "ACTUAL_OWNER_FALSE_PASS",
+      "source": [
+        "access-history.mjs:442-448",
+        "access-history.mjs:464-474"
+      ],
+      "finding": "Gate callback clock inversion reaches owner PASS; fixed final rejects. Gate ProcessRecord is never lifecycle-validated before publishing.",
+      "evidence": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094154-9xFgOa\\owner-final.json",
+      "ownerRc": 0,
+      "fixedFinalRc": 1,
+      "actualFinish": 1791852119163,
+      "actualClose": 1791852119413
+    },
+    {
+      "id": "A1V5-02",
+      "requirements": [
+        "E5-06"
+      ],
+      "type": "ACTUAL_EARLY_PARTIAL_ABSENT",
+      "source": [
+        "access-history-shared.mjs:446-458"
+      ],
+      "finding": "Repository realpath read precedes raw/errors/try. After valid ACK/RUN its forced read failure exits1 without either partial.",
+      "evidence": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v5-extra-private-6ICtbt\\repository-realpath-failure.events.jsonl",
+      "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-Wu48jM"
+    },
+    {
+      "id": "A1V5-03",
+      "requirements": [
+        "E5-04",
+        "E5-06"
+      ],
+      "type": "ACTUAL_ACQUIRED_REQUEST_COUNT_REWRITTEN",
+      "source": [
+        "access-history-shared.mjs:469-472",
+        "access-history-shared.mjs:487-490",
+        "access-history-shared.mjs:505-511"
+      ],
+      "finding": "One actual route request returned HTTP200 with8 rows; later viewport null produced raw and CORE-05 actual0 because count is assigned before handler and updated only after successful viewport.",
+      "evidence": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-8qxXjT\\core-partial.json",
+      "actualRequests": 1,
+      "publishedRequests": 0
+    },
+    {
+      "id": "A1V5-04",
+      "requirements": [
+        "E5-06"
+      ],
+      "type": "ACTUAL_ACQUIRED_CANONICAL_METADATA_LOSS",
+      "source": [
+        "access-history-shared.mjs:459-467"
+      ],
+      "finding": "Actual canonical bytes read succeeds, later import fails, but partial.canonicalLabels is null because all metadata is committed after import.",
+      "evidence": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v5-extra-AgwE0t\\core-partial.json"
+    },
+    {
+      "id": "A1V5-05",
+      "requirements": [
+        "E5-02",
+        "E5-06"
+      ],
+      "type": "ACTUAL_SYNTHETIC_PRIMARY_ORIGINAL_ERROR_SECONDARY",
+      "source": [
+        "access-history.mjs:154-158",
+        "access-history.mjs:241",
+        "access-history.mjs:279",
+        "access-history.mjs:437"
+      ],
+      "finding": "All three original spawn-error cases preserve actual no-exit/null fields, but primary stack/message is synthetic and differs from actual spawn-error callback. Original Node error remains in ledger/secondary, not lost entirely.",
+      "evidence": [
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093702-V8PWDh\\owner-failure.json",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093745-QHnm0e\\owner-failure.json",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093723-Lx4qDX\\owner-failure.json"
+      ]
+    },
+    {
+      "id": "A1V5-06",
+      "requirements": [
+        "E5-02"
+      ],
+      "type": "ACTUAL_PRE_REMOVAL_LEDGER_GUARD_GAP",
+      "source": [
+        "access-history.mjs:201-207",
+        "access-history.mjs:398-411"
+      ],
+      "finding": "Pre-removal validation checks scalar timestamp order only. Control corrupted the cloned callback ledger by1000ms before validation; owned temp was deleted, then gate rejected. This is not a false PASS.",
+      "evidence": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-094201-2iL1jz\\owner-failure.json",
+      "deletedOwnedTemp": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-t3rZY5"
+    },
+    {
+      "id": "A1V5-07",
+      "requirements": [
+        "E5-06",
+        "E5-07"
+      ],
+      "type": "SOURCE_PUBLICATION_AND_HASH_ORDER_GAP",
+      "source": [
+        "access-history.mjs:383-393",
+        "access-history.mjs:426-428"
+      ],
+      "finding": "Candidate uses direct write rather than atomic tmp+rename (three observed positives show file-write). Artifact hashes read before child/log settlement; potential late-drain mismatch not separately executed.",
+      "evidence": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\access-history.diff"
+    },
+    {
+      "id": "A1V5-T01",
+      "requirements": [
+        "E5-07"
+      ],
+      "type": "SOL_CONTROL_MESSAGE_AND_COVERAGE_GAP",
+      "source": [
+        "runtime-probes.py:GATE_REASONS",
+        "gate-evidence.py:process_closed"
+      ],
+      "finding": "Two expected old close strings conflict with earlier v5 ledger guard. Actual gates reject both; unchanged suite correctly remains FAIL44/46. Gate-clock/early-realpath/acquired-count/metadata/pre-removal guards were absent from prescribed coverage.",
+      "evidence": [
+        {
+          "case": "fault-worker-close-receipt",
+          "code": "A1_GATE_REJECTED",
+          "expected": "worker close not confirmed",
+          "actual": "Observation flag differs from callback ledger",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093637-s1GXBR\\adjudicator-stderr.log",
+          "allOtherOriginalNegativeChecksPass": true,
+          "rejectedByActualGate": true
+        },
+        {
+          "case": "fault-server-close-receipt",
+          "code": "A1_GATE_REJECTED",
+          "expected": "server close not confirmed",
+          "actual": "Observation flag differs from callback ledger",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261013-093642-U4s54Z\\adjudicator-stderr.log",
+          "allOtherOriginalNegativeChecksPass": true,
+          "rejectedByActualGate": true
+        }
+      ]
+    },
+    {
+      "id": "A1V5-R01",
+      "requirements": [
+        "E5-08"
+      ],
+      "type": "REPLY_EVIDENCE_LIMIT",
+      "finding": "Source hashes/scope and two control-message mismatches are accurate, but perfect-implementation claim contradicted by actual probes. Required diff hunk/add/delete and per-command PID/start/end evidence omitted; Sol independently captured them. Line count display difference alone is not used as a defect.",
+      "evidence": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_093204_3-2c-A1-v5-Gemini_수신원본.md"
+    }
+  ]
+}

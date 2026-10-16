@@ -1,0 +1,19 @@
+{
+  "time": "2026-09-07T16:56:19",
+  "backup": "Log/20260907_165619_0-18i-품질평가3차_원본.md",
+  "original_sha256": "7224c2ae5f53108802da16914cd4576ecbf3ec909b09d6f82d80af9f53dea14a",
+  "original_bytes": 15255,
+  "protected_ledger": "Log/20260907_165619_0-18i-protected-hashes.json",
+  "protected_count": 77,
+  "finished_local": "2026-09-07T17:13:23",
+  "received_prefix_unchanged": true,
+  "protected_changed": [],
+  "handoff_bytes": 25892,
+  "handoff_sha256": "74afc8ee60d012bfcf424e7e62c4bb9af382fea372689004fd7754777b39ac46",
+  "reply_line": 129,
+  "verdict": "DISAGREE",
+  "remaining": [
+    "N2 shell 6 aria-hidden/focus conflict",
+    "N3 audit1c missing state restriction"
+  ]
+}

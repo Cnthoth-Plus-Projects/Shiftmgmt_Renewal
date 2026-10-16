@@ -1,0 +1,26 @@
+{
+  "handoffAndArchiveIdentical": true,
+  "baselineManifestHashMatches": true,
+  "canonical13Unchanged": true,
+  "product324Unchanged": true,
+  "new5Absent": true,
+  "existing4Allowed": true,
+  "protected320Unchanged": true,
+  "productHEADMatches": true,
+  "productStatusClean": true,
+  "uiCases": [
+    "live-admin",
+    "list-fixture",
+    "empty-fixture",
+    "filters",
+    "errors",
+    "stale-response",
+    "role-guard",
+    "session-expired",
+    "regression-shell",
+    "regression-home"
+  ],
+  "sourceChangesBySol": 0,
+  "newFunctionalTestsRun": false,
+  "newImplementationStatus": "NOT_STARTED"
+}

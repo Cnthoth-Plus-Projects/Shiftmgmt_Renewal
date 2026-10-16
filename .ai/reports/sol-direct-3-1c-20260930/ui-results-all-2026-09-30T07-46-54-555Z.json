@@ -1,0 +1,546 @@
+[
+  {
+    "label": "home-empty-fixture",
+    "started": "2026-09-30T07:46:54.611Z",
+    "finished": "2026-09-30T07:46:58.746Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=empty-fixture"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-164656-u6SPlH/manifest.json",
+        "status": "PASS",
+        "captures": 3
+      }
+    ]
+  },
+  {
+    "label": "home-stale-retry-action",
+    "started": "2026-09-30T07:46:58.842Z",
+    "finished": "2026-09-30T07:47:15.283Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=stale-retry-action"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-164700-ObLEp3/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  },
+  {
+    "label": "home-stale-watch-action",
+    "started": "2026-09-30T07:47:15.366Z",
+    "finished": "2026-09-30T07:47:31.328Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=stale-watch-action"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-164717-iMp1sq/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  },
+  {
+    "label": "home-live-admin",
+    "started": "2026-09-30T07:47:31.423Z",
+    "finished": "2026-09-30T07:47:34.723Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=live-admin"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-live-admin/run-20260930-164733-T0sjSO/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-operator-fixture",
+    "started": "2026-09-30T07:47:34.803Z",
+    "finished": "2026-09-30T07:47:38.268Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=operator-fixture"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-164736-uvndeG/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-loading-error",
+    "started": "2026-09-30T07:47:38.317Z",
+    "finished": "2026-09-30T07:47:42.083Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=loading-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-loading-error/run-20260930-164740-z4ZgWT/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-stale-response",
+    "started": "2026-09-30T07:47:42.174Z",
+    "finished": "2026-09-30T07:47:46.857Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=stale-response"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-stale-response/run-20260930-164744-JDyPdw/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-admin-action",
+    "started": "2026-09-30T07:47:46.945Z",
+    "finished": "2026-09-30T07:47:50.663Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=admin-action"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-admin-action/run-20260930-164748-OJ7nk5/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-employees-error",
+    "started": "2026-09-30T07:47:50.727Z",
+    "finished": "2026-09-30T07:47:54.060Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=employees-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-employees-error/run-20260930-164752-nowrTc/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-sites-error",
+    "started": "2026-09-30T07:47:54.133Z",
+    "finished": "2026-09-30T07:47:57.573Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=sites-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-sites-error/run-20260930-164755-xSRg6X/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-sync-error",
+    "started": "2026-09-30T07:47:57.661Z",
+    "finished": "2026-09-30T07:48:00.967Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=sync-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-sync-error/run-20260930-164759-OdhbYB/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-recovery-error",
+    "started": "2026-09-30T07:48:01.056Z",
+    "finished": "2026-09-30T07:48:04.365Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=recovery-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-164802-jcoy29/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "home-watch-error",
+    "started": "2026-09-30T07:48:04.441Z",
+    "finished": "2026-09-30T07:48:08.459Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=watch-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-watch-error/run-20260930-164806-IXueBz/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-flow",
+    "started": "2026-09-30T07:48:08.529Z",
+    "finished": "2026-09-30T07:48:12.897Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=flow"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164810-C0Ve0H/manifest.json",
+        "status": "PASS",
+        "captures": 4
+      }
+    ]
+  },
+  {
+    "label": "login-locked",
+    "started": "2026-09-30T07:48:12.974Z",
+    "finished": "2026-09-30T07:48:18.098Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=locked"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164814-CMcSxK/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-recovery",
+    "started": "2026-09-30T07:48:18.190Z",
+    "finished": "2026-09-30T07:48:22.492Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=recovery"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164820-6Pfm3f/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  },
+  {
+    "label": "login-session-error",
+    "started": "2026-09-30T07:48:22.578Z",
+    "finished": "2026-09-30T07:48:26.189Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=session-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164824-sDBdKl/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-null",
+    "started": "2026-09-30T07:48:26.279Z",
+    "finished": "2026-09-30T07:48:30.715Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-null"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164828-frQO5A/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-error",
+    "started": "2026-09-30T07:48:30.805Z",
+    "finished": "2026-09-30T07:48:35.063Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164832-cr6AUj/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-race-success",
+    "started": "2026-09-30T07:48:35.155Z",
+    "finished": "2026-09-30T07:48:39.392Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-race-success"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164837-8HS0bm/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-race-null",
+    "started": "2026-09-30T07:48:39.486Z",
+    "finished": "2026-09-30T07:48:43.485Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-race-null"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164841-WOTRnh/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-race-error",
+    "started": "2026-09-30T07:48:43.572Z",
+    "finished": "2026-09-30T07:48:47.768Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-race-error"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164845-d6yCYh/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-race-login",
+    "started": "2026-09-30T07:48:47.839Z",
+    "finished": "2026-09-30T07:48:51.667Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-race-login"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164849-whDncp/manifest.json",
+        "status": "PASS",
+        "captures": 1
+      }
+    ]
+  },
+  {
+    "label": "login-post-change-first-held",
+    "started": "2026-09-30T07:48:51.742Z",
+    "finished": "2026-09-30T07:48:55.321Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/login.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=post-change-first-held"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/login/run-20260930-164853-r8HLGR/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  },
+  {
+    "label": "shell-default",
+    "started": "2026-09-30T07:48:55.393Z",
+    "finished": "2026-09-30T07:49:00.503Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/shell.mjs",
+      "http://127.0.0.1:18739/"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/shell/run-20260930-164857-5cdGBv/manifest.json",
+        "status": "PASS",
+        "captures": 4
+      }
+    ]
+  },
+  {
+    "label": "ready-default",
+    "started": "2026-09-30T07:49:00.601Z",
+    "finished": "2026-09-30T07:49:04.028Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/ready.mjs",
+      "http://127.0.0.1:18739/"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/ready/run-20260930-164902-bPZEst/manifest.json",
+        "status": "PASS",
+        "captures": 2
+      }
+    ]
+  }
+]

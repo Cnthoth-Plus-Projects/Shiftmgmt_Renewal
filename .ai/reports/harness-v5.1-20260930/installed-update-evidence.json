@@ -1,0 +1,17 @@
+{
+  "time": "2026-09-30T14:53:16.2610111+09:00",
+  "beforeHEAD": "a5638b3d4c87849fc87a7eedadec2f817ad6561e",
+  "targetHEAD": "8ebab0087b228c0203a202bead8fb56853d9cb27",
+  "backupPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\harness-v5.1-20260930\\installed-v3-backup-20260930_145306",
+  "backupFileCount": 121,
+  "backupVerified": true,
+  "planBytes": 22047,
+  "planSHA256": "7875B50DD9785138FD389A1E44CD4B60146119CCD24457A5DF3A1E524706E51C",
+  "planUnchanged": true,
+  "status": [
+    "?? plan.json"
+  ],
+  "hooks": ".githooks",
+  "checkExit": 0,
+  "checkerLog": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\harness-v5.1-20260930\\installed-v5.1-check.log"
+}

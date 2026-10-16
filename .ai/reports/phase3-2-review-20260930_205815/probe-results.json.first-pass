@@ -1,0 +1,162 @@
+{
+  "chromeVersion": "154.0.8037.58",
+  "browserVersion": "154.0.8037.58",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "groups": [
+    {
+      "name": "badge-design-and-long-row",
+      "status": "FAIL",
+      "actual": {
+        "hideBadge": {
+          "class": "access-history-badge badge-approved",
+          "bg": "rgb(232, 245, 238)",
+          "color": "rgb(30, 122, 70)"
+        },
+        "normalRow": {
+          "height": 59,
+          "width": 1170,
+          "fontSize": "14px"
+        },
+        "longRow": {
+          "height": 541.5,
+          "width": 1170,
+          "fontSize": "14px"
+        },
+        "dateInput": {
+          "height": 34,
+          "width": 130,
+          "fontSize": "14px"
+        },
+        "headers": [
+          {
+            "text": "활동시간",
+            "height": 40,
+            "width": 130,
+            "fontSize": "12px"
+          },
+          {
+            "text": "사용자",
+            "height": 40,
+            "width": 161.5625,
+            "fontSize": "12px"
+          },
+          {
+            "text": "권한",
+            "height": 40,
+            "width": 100,
+            "fontSize": "12px"
+          },
+          {
+            "text": "액션내용",
+            "height": 40,
+            "width": 160,
+            "fontSize": "12px"
+          },
+          {
+            "text": "상세",
+            "height": 40,
+            "width": 618.4375,
+            "fontSize": "12px"
+          }
+        ],
+        "tableAccessibleLabel": null,
+        "tableLabelledby": null,
+        "caption": null,
+        "detailFullTextLength": 1216,
+        "detailTitleLength": 1216
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\design-long-row.png"
+    },
+    {
+      "name": "invalid-date-during-loading",
+      "status": "PASS",
+      "actual": {
+        "loadingBeforeRelease": 1,
+        "loadingAfterRelease": 0,
+        "count": "전체 1건 중 1건 표시",
+        "dateError": "",
+        "refreshNativeDisabled": false
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\invalid-date-loading-left.png"
+    },
+    {
+      "name": "stale-success-during-debounce",
+      "status": "FAIL",
+      "actual": {
+        "staleVisibleWithinDebounce": true,
+        "observedAfterMs": 3,
+        "count": "전체 1건 중 1건 표시",
+        "keyword": "new-keyword"
+      }
+    },
+    {
+      "name": "stale-auth-during-debounce",
+      "status": "FAIL",
+      "actual": {
+        "loginDisplayed": true,
+        "activityDisplayed": false
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\stale-auth-incorrect-login.png"
+    },
+    {
+      "name": "refresh-does-not-cancel-debounce",
+      "status": "FAIL",
+      "actual": {
+        "matchingRequests": 2,
+        "requests": [
+          {
+            "query": {
+              "dateFrom": "2026-09-01",
+              "dateTo": "2026-09-30",
+              "keyword": "one-refresh"
+            },
+            "time": 1790770349714
+          },
+          {
+            "query": {
+              "dateFrom": "2026-09-01",
+              "dateTo": "2026-09-30",
+              "keyword": "one-refresh"
+            },
+            "time": 1790770349907
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-retry-pending-duplicate",
+      "status": "FAIL",
+      "actual": {
+        "userCalls": 2,
+        "logCalls": 2,
+        "refreshNativeDisabled": true,
+        "retryNativeDisabled": false
+      },
+      "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\users-retry-duplicate.png"
+    },
+    {
+      "name": "keyboard-invalid-lock",
+      "status": "FAIL",
+      "actual": {
+        "focused": true,
+        "disabled": false,
+        "ariaDisabled": null,
+        "outline": "2px",
+        "requests": 2
+      }
+    },
+    {
+      "name": "role-guard-three-real-sessions",
+      "status": "PROBE_ERROR",
+      "error": "Cannot read properties of undefined (reading 'loginId')"
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "requestFailures": [],
+  "responses": [],
+  "finished": "2026-09-30T12:12:33.734Z"
+}

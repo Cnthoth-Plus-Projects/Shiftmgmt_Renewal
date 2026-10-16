@@ -1,0 +1,30 @@
+{
+  "name": "extra-owner-extra-ack",
+  "argv": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2c-a1-v4-review-20261012_175305/runtime-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=contract-core"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 22712,
+  "session": "d80cfb5a90364666878f50b1e38350da",
+  "mode": "owner-extra-ack",
+  "start": "2026-10-12T09:09:34.731081+00:00",
+  "end": "2026-10-12T09:10:02.168304+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\extra-owner-extra-ack.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\extra-owner-extra-ack.stderr.txt",
+  "output": "{\"status\":\"PASS\",\"case\":\"contract-core\",\"runId\":\"run-20261012-180935-ltcpjT\",\"manifestPath\":\"C:\\\\Projects\\\\Active\\\\ShiftMgmt_V4\\\\artifacts\\\\captures\\\\phase3\\\\access-history-contract-core\\\\run-20261012-180935-ltcpjT\\\\owner-final.json\",\"exitCode\":0,\"stageSlice\":\"A1\",\"acceptance\":\"A1_PREREQUISITE_ONLY\"}\n",
+  "errors": "",
+  "observerHealthy": true,
+  "eventCount": 50,
+  "sideEffectFree": false,
+  "failureCode": null,
+  "quiescenceObserved": true,
+  "quiescenceError": null,
+  "eventsPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\extra-owner-extra-ack.events.jsonl",
+  "faultTriggered": true
+}

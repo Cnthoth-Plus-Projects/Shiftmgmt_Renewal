@@ -1,0 +1,22 @@
+{"type":"instrumentation-loaded","mode":"owner-bad-ack","timeMs":1790905794496,"pid":42504}
+{"type":"directory-write","mode":"owner-bad-ack","timeMs":1790905794789,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core"}
+{"type":"directory-created","mode":"owner-bad-ack","timeMs":1790905794790,"pid":42504,"prefix":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-","result":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw"}
+{"type":"directory-created","mode":"owner-bad-ack","timeMs":1790905794796,"pid":42504,"prefix":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-","result":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu"}
+{"type":"directory-write","mode":"owner-bad-ack","timeMs":1790905794797,"pid":42504,"path":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu\\data"}
+{"type":"directory-write","mode":"owner-bad-ack","timeMs":1790905794798,"pid":42504,"path":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu\\data"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905794799,"pid":42504,"path":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu\\data\\bootstrap-credentials.json"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905794799,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\server-stdout.log"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905794800,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\server-stderr.log"}
+{"type":"spawn","mode":"owner-bad-ack","timeMs":1790905794823,"pid":42504,"childPid":43004,"server":true,"gate":false,"args":["C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"],"command":"C:\\Program Files\\nodejs\\node.exe"}
+{"type":"http-attempt","mode":"owner-bad-ack","timeMs":1790905795802,"pid":42504,"url":"http://127.0.0.1:18741/api/health","method":"GET"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905795816,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\worker-stdout.log"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905795817,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\worker-stderr.log"}
+{"type":"spawn","mode":"owner-bad-ack","timeMs":1790905795834,"pid":42504,"childPid":49412,"server":false,"gate":false,"args":["C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs","--case=contract-core"],"command":"C:\\Program Files\\nodejs\\node.exe"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905795835,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\owner-registration.json"}
+{"type":"fault-triggered","mode":"owner-bad-ack","timeMs":1790905796254,"pid":42504,"childPid":49412,"messageType":"worker-ack"}
+{"type":"actual-child-close","mode":"owner-bad-ack","timeMs":1790905796274,"pid":42504,"childPid":43004,"server":true,"gate":false,"code":null,"signal":"SIGTERM"}
+{"type":"owned-temp-remove-start","mode":"owner-bad-ack","timeMs":1790905796364,"pid":42504,"path":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu"}
+{"type":"owned-temp-remove-complete","mode":"owner-bad-ack","timeMs":1790905796366,"pid":42504,"path":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-C5umOu"}
+{"type":"file-write","mode":"owner-bad-ack","timeMs":1790905796367,"pid":42504,"path":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104954-FF0cQw\\owner-final.json"}
+{"type":"actual-child-close","mode":"owner-bad-ack","timeMs":1790905801283,"pid":42504,"childPid":49412,"server":false,"gate":false,"code":1,"signal":null}
+{"type":"owner-process-exit","mode":"owner-bad-ack","timeMs":1790905801284,"pid":42504,"code":1,"triggered":true}

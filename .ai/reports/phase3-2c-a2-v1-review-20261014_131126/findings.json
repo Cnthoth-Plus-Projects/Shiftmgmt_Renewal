@@ -1,0 +1,146 @@
+{
+  "verdict": "FAILED_A2_NOT_ACCEPTED",
+  "findings": [
+    {
+      "id": "A2V1-01",
+      "requirement": [
+        "A2R09",
+        "A2R10"
+      ],
+      "kind": "RECEIVED_EVIDENCE_INVALID",
+      "title": "음성112 실측 주장이 증거와 불일치",
+      "source": "negative-results.json / build_negative_results.py:87-101,239-333,343-384",
+      "evidence": "45 vectors are unrelated owner --case=invalid_/reject_ CLI rejection; A-N11 only sets error string/throws, no SDK; A-N08 imports absent export; A-N09 explicit drift throw, no drift injection; N14 used sync/rename falsely NOT_USED; N03/N04 registered case expansions/stub missing. 101 recycled commands record builder PID4720 and zero elapsed; actual=expected copied instead of measured. A-N19 copied eight normal receipts may be retained only after exact source/run binding, not certification of whole112.",
+      "proof": "negative-ledger-audit.json and retained builder source; ledger parser PASS never certified actual runtime"
+    },
+    {
+      "id": "A2V1-02",
+      "requirement": [
+        "A2R04",
+        "A2R05",
+        "A2R06"
+      ],
+      "kind": "SOURCE_AND_HELPER_REPRO",
+      "title": "미완료 HTTP·viewport·step/close 실측을 가공",
+      "source": "negative.mjs:181-198,236-264,316-324; positive.mjs:67-69,150-151,414-427",
+      "evidence": "pending status0/ended null rewritten to200/currenttime; Node AUTH_FORBIDDEN rewrites actual status to403; viewport/origin constants; positive acquisition stamps at steps and close stamps after helper return rather than actual callbacks. Actual SDK viewport1440x901 produced raw1440x900. Invalid helper state with no entered step/resources and cleanup error still creates worker-final FAIL_INCOMPLETE.",
+      "proof": "real SDK viewport probe plus invalid-state-published actual exported helper; whole owner did FAIL, not false PASS"
+    },
+    {
+      "id": "A2V1-03",
+      "requirement": [
+        "A2R07",
+        "A2R08"
+      ],
+      "kind": "SOURCE_AND_HELPER_REPRO",
+      "title": "normal reader 검문 누락과 오류 전 temp 제거",
+      "source": "negative.mjs:361-383; owner.mjs:255-260,311-323",
+      "evidence": "reader accepts PASS/exit0/unknown case/workerPid-1/rawSha BAD/empty coverage with caller exit7; only existence+JSON parse. Invalid close raw progresses through candidate/temp removal before external gate. Real both-close-throw case writes incomplete worker-final, errors.primary/cleanup empty, owner tempRemoved true.",
+      "proof": "forged-reader-fields helper, real both-close-throw SDK and source; ultimate owner rejection preserved"
+    },
+    {
+      "id": "A2V1-04",
+      "requirement": [
+        "A2R06",
+        "A2R08"
+      ],
+      "kind": "SOURCE_AND_ACTUAL_REPRO",
+      "title": "partial·첫 오류·보호 실행기 실패 연결 누락",
+      "source": "negative.mjs:267-273,621-628; positive.mjs:67-69,74-78,424-427; owner.mjs:256,379-387",
+      "evidence": "initial partial not refreshed per acquisition/response/cleanup; both main/fallback fs errors swallowed; close errors retain message only outside primary/cleanup and publish anyway; owner scans only core-partial names. Actual protected live context-close-after-real throws, childRC2, original marker in retained child log, owner error only exit mismatch/raw null/workerPartialPath null; current normal partial still has null resources/no acquired events.",
+      "proof": "both-real-partial-writes-fail helper and context-close-throw-live actual owner+SDK"
+    },
+    {
+      "id": "A2V1-05",
+      "requirement": [
+        "A2R06",
+        "A2R07"
+      ],
+      "kind": "SOURCE_VERIFIED",
+      "title": "protected capture의 실제 run binding 대신 최신 sibling 선택",
+      "source": "positive.mjs:430-463",
+      "evidence": "sort().reverse() selects sibling run directory after helper return; no captured actual return path or streaming manifest binding. This can attach another/prior run to current worker; root did not claim fresh stale-copy reproduction.",
+      "proof": "source and closed STRATEGY §3/4"
+    },
+    {
+      "id": "A2V1-06",
+      "requirement": [
+        "A2R04",
+        "A2R05"
+      ],
+      "kind": "SOURCE_AND_HELPER_REPRO",
+      "title": "query/request identity와 JSON drain 계약 이탈",
+      "source": "negative.mjs:143-158,450-480; positive.mjs:81-146,414-421",
+      "evidence": "postDataJSON not called; unknown query keys silently dropped; response matched by URL+status0 rather than actual Request identity; status set before awaiting JSON, drain checks status0 only, parse errors swallowed, leftover status0 fabricated200. Source helper returned stripped query and postDataJSONCalls0.",
+      "proof": "request-query-not-strict helper; async association/drain defects source-verified"
+    },
+    {
+      "id": "A2V1-07",
+      "requirement": [
+        "A2R04",
+        "A2R05",
+        "A2R06"
+      ],
+      "kind": "SOURCE_AND_HELPER_REPRO",
+      "title": "Held timeout 정리·실패 경로 release/abort 누락",
+      "source": "negative.mjs:101-140,518-565; positive.mjs:304-332",
+      "evidence": "successful waits leave two referenced timers, no SUT clear; root explicitly cleared its own probe timers afterward. Assertion/fill/timeout failure after held start bypasses happy release; controller has no abort/finally/timeline ownership.",
+      "proof": "held-success-timer-leak actual helper; pending-route failure cleanup source-verified"
+    },
+    {
+      "id": "A2V1-08",
+      "requirement": [
+        "A2R03",
+        "A2R05",
+        "A2R06"
+      ],
+      "kind": "SOURCE_AND_HELPER_REPRO",
+      "title": "RAM secret registry/error redaction 부재",
+      "source": "negative.mjs:160-177,236-264,441-447; positive.mjs:142-146",
+      "evidence": "login/fetch/console/pageerror retain unredacted error text; no page WeakMap/secret registration/redaction before protected helper prints. Harmless SOL_FAKE_SECRET_FOR_REDACTION_TEST marker returned in login error. No real password copied to reports and no production credential leak claimed.",
+      "proof": "login-error-no-redaction source helper with harmless marker"
+    },
+    {
+      "id": "A2V1-09",
+      "requirement": [
+        "A2R02",
+        "A2R07"
+      ],
+      "kind": "ACTUAL_CLI_REPRO",
+      "title": "entry lexical path 비교로 junction direct CLI RC0",
+      "source": "positive.mjs:24; negative.mjs:388",
+      "evidence": "owned directory junction points read-only to exact verifier dir; positive live-admin and negative errors CLI skip main and exit0, empty streams; realpath comparison required. No browser/network/production mutation used.",
+      "proof": "junction-direct-positive/negative actual Node PIDs56436/32272"
+    },
+    {
+      "id": "A2V1-10",
+      "requirement": [
+        "A2R03",
+        "A2R07",
+        "A2R08"
+      ],
+      "kind": "SOURCE_VERIFIED",
+      "title": "fixture env 정리 및 normal ACK wire contract 이탈",
+      "source": "owner.mjs:buildChildEnv/ensureAuthBootstrapCredentials/ACK; shared.mjs:performWorkerIpcHandshake worker-ack",
+      "evidence": "bootstrap gets ambient env; child filter omits AUTH_BOOTSTRAP_*,NODE_DEBUG,non-A1 SOL. No sanitized env passed to ensureAuthBootstrapCredentials. Normal wire ACK uses nonceSha256 instead of original protocol2 nonce echo followed by storage-only hash projection. Historical core ABI remains tested; no auth/IPC bypass claimed.",
+      "proof": "source vs STRATEGY §3.1/§4 closed protocol"
+    },
+    {
+      "id": "A2V1-11",
+      "requirement": [
+        "A2R09",
+        "A2R10"
+      ],
+      "kind": "RECEIVED_REPLY_MISMATCH",
+      "title": "회신20 command PID가 실제 고정 영수증과 불일치",
+      "source": "received HANDOFF §회신/검증증거; implementation-result.json",
+      "evidence": "22 original command records really RC0 and 44 stream SHA verified; reply indices3..22 PIDs differ. E.g scope-after claim53456 vs actual47072. Four source/diff SHA and diff counts match, not rejected for invented hash.",
+      "proof": "submitted-command-audit.json and runtime-probe-reference.json pidClaims"
+    }
+  ],
+  "scopePreserved": true,
+  "sourceCount": 341,
+  "protected": 337,
+  "lockedControls": 571,
+  "noFullOwnerFalsePassClaim": true
+}

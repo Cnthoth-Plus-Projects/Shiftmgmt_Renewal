@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 03-home-2.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F5F7;
+      --surface: #FFFFFF;
+      --line: #E2E5EA;
+      --line-strong: #848A93;
+      --text: #1F2430;
+      --text-sub: #4B5563;
+      --accent: #3E56B6;
+      --row-selected: #EEF1FB;
+      --badge-approved-text: #1E7A46;
+      --badge-approved-bg: #E8F5EE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #E5E7EB;
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      gap: 32px;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .icon-18 { font-size: 18px; width: 18px; height: 18px; }
+    .icon-spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .state-wrapper { display: flex; flex-direction: column; width: 1440px; background: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+    .status-label-bar { height: 36px; background: #E2E5EA; color: #4B5563; font-size: 12px; font-weight: 600; display: flex; align-items: center; padding-left: 16px; border-bottom: 1px solid #D1D5DB; }
+    .app-window { width: 1440px; height: 900px; display: flex; flex-direction: column; background: var(--bg); position: relative; }
+    .app-body { display: flex; flex: 1; height: calc(900px - 32px); overflow: hidden; }
+    
+    .sidebar { width: 220px; background: #FFFFFF; border-right: 1px solid var(--line); display: flex; flex-direction: column; flex-shrink: 0; }
+    .nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+    .nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+    .nav-item { height: 44px; display: flex; align-items: center; padding: 0 16px; color: var(--text); text-decoration: none; gap: 10px; font-size: 14px; position: relative; }
+    .nav-item:hover { background: #F8F9FA; }
+    .nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; width: 1220px; overflow: hidden; }
+    .header-bar { height: 56px; background: #FFFFFF; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 12px; flex-shrink: 0; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .btn-sidebar-toggle{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--text)}
+    .btn-sidebar-toggle:hover { background: #F1F2F4; }
+    .app-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; }
+    .app-title { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+    .header-title{font-size:20px;font-weight:600;color:var(--text);white-space:nowrap}
+    .header-user-actions { display: flex; align-items: center; gap: 12px; }
+    .role-badge { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid #D5DCF5; }
+    .user-info-btn { display: flex; align-items: center; gap: 4px; color: var(--text-sub); font-size: 13px; text-decoration: none; background: none; border: none; cursor: pointer; }
+    
+    .page-content { width: 1220px; height: 812px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+
+    /* C1 컬러 아이콘 토큰 */
+    .icon-circle { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .icon-circle-blue { background: #EEF1FB; color: #3E56B6; }
+    .icon-circle-green { background: #E8F5EE; color: #1E7A46; }
+    .icon-circle-orange { background: #FDF3E4; color: #A05200; }
+    .icon-circle-yellow { background: #FCF6E0; color: #8A6D00; }
+
+    /* C2 수치 강조 토큰 */
+    .stat-num-hero { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1.1; }
+    .stat-unit { font-size: 14px; font-weight: 400; color: var(--text-sub); margin-left: 2px; }
+
+    .info-card-blue { background: #EEF1FB; border: 1px solid #C9D4F4; border-radius: 6px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; }
+    .info-card-title { font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 2px; }
+    .info-card-desc { font-size: 12px; color: var(--text-sub); }
+
+    .progress-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .progress-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .progress-card-header { display: flex; align-items: center; gap: 8px; }
+    .progress-card-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .progress-num-row { display: flex; align-items: baseline; margin-top: 2px; }
+    .progress-track { height: 8px; background: #E9EBEF; border-radius: 4px; overflow: hidden; width: 100%; margin-top: 4px; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 4px; }
+    .progress-card-subtext { font-size: 12px; color: var(--text-sub); margin-top: 4px; line-height: 1.4; }
+
+    .section-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .btn-primary { background: var(--accent); color: #FFFFFF; border: 1px solid var(--accent); padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary:hover { background: #32479B; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .kpi-box { background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 14px; display: flex; align-items: center; gap: 12px; }
+    .kpi-text-wrap { display: flex; flex-direction: column; gap: 2px; }
+    .kpi-label { font-size: 12px; color: var(--text-sub); }
+    .kpi-val-wrap { display: flex; align-items: baseline; }
+
+    /* C6 빈 상태 일러스트 토큰 */
+    .empty-state-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; }
+    .empty-illustration { width: 96px; height: 96px; border-radius: 50%; background: #EEF1FB; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 6px; }
+    .empty-illustration .main-icon { font-size: 40px; width: 40px; height: 40px; color: var(--accent); }
+    .empty-illustration .deco-dot-1 { position: absolute; top: 8px; left: 10px; width: 8px; height: 8px; border-radius: 50%; background: #FDF3E4; }
+    .empty-illustration .deco-dot-2 { position: absolute; bottom: 8px; right: 10px; width: 12px; height: 12px; border-radius: 50%; background: #E8F5EE; }
+    .empty-state-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .empty-state-desc { font-size: 13px; color: var(--text-sub); max-width: 460px; line-height: 1.5; margin-bottom: 6px; }
+
+    /* 스켈레톤 UI (H5 디테일) */
+    .skeleton { background: #E9EBEF; border-radius: 4px; position: relative; overflow: hidden; }
+    .skeleton::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: skeleton-wave 1.5s infinite; }
+    @keyframes skeleton-wave { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    .skeleton-circle-40 { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; }
+    .skeleton-text { height: 12px; border-radius: 3px; }
+    .skeleton-card { height: 72px; width: 100%; }
+    .skeleton-row { height: 40px; width: 100%; margin-bottom: 6px; border-radius: 4px; }
+    .skeleton-row:last-child { margin-bottom: 0; }
+
+    [aria-disabled="true"] { opacity: 0.55; cursor: default !important; }
+
+    .footer-statusbar { height: 32px; background: #FFFFFF; border-top: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; font-size: 12px; color: var(--text-sub); width: 1440px; box-sizing: border-box; flex-shrink: 0; }
+    .status-cell { display: flex; align-items: center; gap: 6px; padding: 0 12px; border-right: 1px solid var(--line); height: 100%; }
+    .status-cell:first-child { padding-left: 0; }
+    .status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+    .status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+  
+/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */
+.user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px}
+.skip-link{position:absolute;left:8px;top:-48px;z-index:1300;background:var(--accent);color:#FFF;padding:8px 12px;border-radius:6px;font-size:13px;text-decoration:none}
+.skip-link:focus{top:8px;outline:2px solid #FFF}
+.sidebar.collapsed .nav-group-header{height:1px;margin:8px 12px;padding:0;background:var(--line);font-size:0;overflow:hidden}
+.demo-toast{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#1F2430;color:#FFF;font-size:13px;padding:10px 16px;border-radius:6px;z-index:1200;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- H4. 홈 — 할 일 없음 -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-h4">
+    <div class="status-label-bar">── H4. 홈 — 할 일 없음 (사용자) ──</div>
+    <div class="app-window"><a class="skip-link" href="#main-state-h4">본문으로 바로가기</a>
+      <div class="app-body" id="main-state-h4">
+        <aside class="sidebar"><nav aria-label="주 메뉴">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </nav></aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">홈</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">사용자</span>
+              <span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span>
+              <button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content">
+            <section class="progress-cards-grid" aria-label="월별 업무 진행 현황">
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">domain</span></div>
+                  <span class="progress-card-title">준비 (현재 배정 기준)</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">5/5</span><span class="stat-unit">근무지</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="준비 진행률 100%"><div class="progress-bar" style="width: 100%;"></div></div>
+                <p class="progress-card-subtext">모든 근무지의 배정이 정상적으로 완료되었습니다.</p>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-green" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span></div>
+                  <span class="progress-card-title">운영</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">10/10</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="운영 진행률 100%"><div class="progress-bar" style="width: 100%;"></div></div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+                  <span class="progress-card-title">월 정산</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">3/3</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="월 정산 진행률 100%"><div class="progress-bar" style="width: 100%;"></div></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h4-kpi-heading">
+              <div class="section-header">
+                <h2 id="h4-kpi-heading" class="section-title">이번 달 대기 실적 현황</h2>
+                <button type="button" class="btn-primary btn-sm"><span>실적 관리에서 확인</span></button>
+              </div>
+              <div class="kpi-grid">
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">folder</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">대기 실적 그룹</span><div class="kpi-val-wrap"><span class="stat-num-hero">0</span><span class="stat-unit">개</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">승인 대기 실적</span><div class="kpi-val-wrap"><span class="stat-num-hero">0</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">refresh</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">재승인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">0</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-yellow" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">warning</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">확인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">0</span><span class="stat-unit">건</span></div></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 지금 해야 할 일 (C6 빈 상태 일러스트) -->
+            <section class="empty-state-card" aria-label="할 일 없음">
+              <div class="empty-illustration" aria-hidden="true">
+                <span class="deco-dot-1"></span>
+                <span class="material-symbols-outlined main-icon" aria-hidden="true">description</span>
+                <span class="deco-dot-2"></span>
+              </div>
+              <h2 class="empty-state-title">이번 달 처리할 일이 없습니다</h2>
+              <p class="empty-state-desc">준비와 운영을 잘 진행해 주셨습니다. 다가오는 일정과 실적은 실적 관리에서 확인할 수 있습니다.</p>
+              <button type="button" class="btn-primary"><span>실적 관리 보기</span></button>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div>
+        <div class="status-cell"><span>대기 파일 0개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- H5. 홈 — 로딩 -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-h5">
+    <div class="status-label-bar">── H5. 홈 — 로딩 (사용자) ──</div>
+    <div class="app-window"><a class="skip-link" href="#main-state-h5">본문으로 바로가기</a>
+      <div class="app-body" id="main-state-h5">
+        <aside class="sidebar"><nav aria-label="주 메뉴">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </nav></aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">홈</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">사용자</span>
+              <span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span>
+              <button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content" aria-busy="true" aria-label="데이터 로딩 중">
+            <div class="info-card-blue">
+              <span class="material-symbols-outlined icon-spin" aria-hidden="true" style="color: var(--accent); font-size: 24px; width: 24px; height: 24px;">progress_activity</span>
+              <div>
+                <div class="info-card-title">데이터를 불러오는 중입니다</div>
+                <div class="info-card-desc">잠시만 기다려 주세요. 필요한 정보를 준비하고 있습니다.</div>
+              </div>
+            </div>
+
+            <!-- 스켈레톤 진행 막대 카드 (원형 40px + 막대 2줄 조합) -->
+            <section class="progress-cards-grid">
+              <div class="progress-card">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="skeleton skeleton-circle-40"></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <div class="skeleton skeleton-text" style="width: 50%;"></div>
+                    <div class="skeleton skeleton-text" style="width: 30%; height: 16px;"></div>
+                  </div>
+                </div>
+                <div class="skeleton" style="height: 8px; width: 100%; border-radius: 4px; margin-top: 4px;"></div>
+                <div class="skeleton skeleton-text" style="margin-top: 4px; width: 80%;"></div>
+              </div>
+              <div class="progress-card">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="skeleton skeleton-circle-40"></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <div class="skeleton skeleton-text" style="width: 50%;"></div>
+                    <div class="skeleton skeleton-text" style="width: 30%; height: 16px;"></div>
+                  </div>
+                </div>
+                <div class="skeleton" style="height: 8px; width: 100%; border-radius: 4px; margin-top: 4px;"></div>
+              </div>
+              <div class="progress-card">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div class="skeleton skeleton-circle-40"></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                    <div class="skeleton skeleton-text" style="width: 50%;"></div>
+                    <div class="skeleton skeleton-text" style="width: 30%; height: 16px;"></div>
+                  </div>
+                </div>
+                <div class="skeleton" style="height: 8px; width: 100%; border-radius: 4px; margin-top: 4px;"></div>
+              </div>
+            </section>
+
+            <!-- 스켈레톤 현황 (섹션 제목 실물 유지 + 버튼 aria-disabled/describedby) -->
+            <section class="section-card" aria-labelledby="h5-kpi-heading">
+              <div class="section-header">
+                <h2 id="h5-kpi-heading" class="section-title">이번 달 대기 실적 현황</h2>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="disabled-desc" id="h5-loading-desc" style="font-size: 12px; color: var(--text-sub);">불러오는 중입니다</span>
+                  <button type="button" class="btn-primary btn-sm" id="btn-h5-check" aria-disabled="true" aria-describedby="h5-loading-desc"><span>실적 관리에서 확인</span></button>
+                </div>
+              </div>
+              <div class="kpi-grid">
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+              </div>
+            </section>
+
+            <!-- 스켈레톤 할 일 목록 (섹션 제목 실물 유지 + 6줄) -->
+            <section class="section-card" aria-labelledby="h5-todo-heading">
+              <div class="section-header">
+                <h2 id="h5-todo-heading" class="section-title">지금 해야 할 일</h2>
+              </div>
+              <div>
+                <div class="skeleton skeleton-row"></div>
+                <div class="skeleton skeleton-row"></div>
+                <div class="skeleton skeleton-row"></div>
+                <div class="skeleton skeleton-row"></div>
+                <div class="skeleton skeleton-row"></div>
+                <div class="skeleton skeleton-row"></div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: 해석 중 34/120</span></div>
+        <div class="status-cell"><span>대기 파일 34개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ☰ 메뉴 접기/펼치기 (동작 9)
+      document.querySelectorAll('.state-wrapper').forEach(function(stateWrap) {
+        var toggleBtn = stateWrap.querySelector('.btn-sidebar-toggle');
+        var sidebar = stateWrap.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+              toggleBtn.setAttribute('aria-expanded', 'false');
+              sidebar.style.display = 'none';
+              sidebar.setAttribute('aria-hidden', 'true');
+            } else {
+              toggleBtn.setAttribute('aria-expanded', 'true');
+              sidebar.style.display = 'flex';
+              sidebar.setAttribute('aria-hidden', 'false');
+            }
+          });
+        }
+      });
+
+      // H5 로딩 중 버튼 click/Enter/Space 차단 (동작 4 확장)
+      var h5Btn = document.getElementById('btn-h5-check');
+      if (h5Btn) {
+        h5Btn.addEventListener('click', function(e) { e.preventDefault(); });
+        h5Btn.addEventListener('keydown', function(e) {
+          if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
+            e.preventDefault();
+          }
+        });
+      }
+    })();
+  </script>
+
+<script>
+/* 0-18 소급(v1.8) 동작 9 보강(B-7)·동작 13 로그아웃 데모 전이(B-4) — 데이터 연동·라우팅·auth:sign-out 호출 없음 */
+(function(){
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'); if (!w) return;
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      w.querySelectorAll('.nav-group-header').forEach(function(h){ if (expanded) h.removeAttribute('aria-hidden'); else h.setAttribute('aria-hidden', 'true'); });
+    });
+  });
+  var UNSAVED = {};
+  function showToast(appWin){
+    if (!appWin) return;
+    var t = document.createElement('div'); t.className = 'demo-toast'; t.setAttribute('role', 'status'); t.textContent = '로그인 화면으로 이동합니다';
+    appWin.appendChild(t); setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 1500);
+  }
+  function openLeave(modal, opener, appWin){
+    var body = appWin.querySelector('.app-body');
+    function close(){ modal.style.display = 'none'; if (body) body.removeAttribute('aria-hidden'); if (opener) opener.focus(); }
+    modal.style.display = 'flex'; if (body) body.setAttribute('aria-hidden', 'true');
+    var stay = modal.querySelector('.btn-leave-stay'), discard = modal.querySelector('.btn-leave-discard');
+    stay.onclick = close;
+    discard.onclick = function(){ close(); showToast(appWin); };
+    modal.onkeydown = function(e){
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key === 'Tab') { var f = [stay, discard]; if (e.shiftKey) { if (document.activeElement === f[0]) { f[1].focus(); e.preventDefault(); } } else { if (document.activeElement === f[1]) { f[0].focus(); e.preventDefault(); } } }
+    };
+    stay.focus();
+  }
+  document.querySelectorAll('.btn-logout').forEach(function(btn){
+    if (btn.disabled) return;
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'), appWin = btn.closest('.app-window'); if (!w || !appWin) return;
+      var m = w.querySelector('.modal-leave');
+      if (m && UNSAVED[w.id]) openLeave(m, btn, appWin); else showToast(appWin);
+    });
+  });
+  
+})();
+</script>
+</body>
+</html>

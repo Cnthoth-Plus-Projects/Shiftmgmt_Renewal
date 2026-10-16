@@ -1,0 +1,15 @@
+{
+  "name": "submitted-ipc-probe-reproduced",
+  "command": [
+    "node",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-foundation-probes\\run-probes-20261001-181500\\test-ipc-faults.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:21:08.693071+00:00",
+  "pid": 45480,
+  "rc": 0,
+  "end": "2026-10-01T13:21:10.094123+00:00",
+  "elapsedSeconds": 1.391,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\submitted-ipc-probe-reproduced.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\submitted-ipc-probe-reproduced.stderr.txt"
+}

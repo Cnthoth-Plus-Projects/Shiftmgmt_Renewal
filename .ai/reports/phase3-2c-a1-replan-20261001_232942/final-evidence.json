@@ -1,0 +1,361 @@
+{
+  "time": "2026-10-01T23:53:48.233335+00:00",
+  "status": "PACKET_READY_VERIFIED",
+  "implementationStatus": "NOT_RUN_GEMINI_RELAY_PENDING",
+  "dispatch": {
+    "time": "2026-10-02T08:52:21.376361+09:00",
+    "action": "IMPLEMENT",
+    "stageSlice": "A1",
+    "acceptance": "READY_TO_CODE_A1_ONLY_NOT_ACCEPTED",
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261002_085221_3-2c-A1-Sol-IMPLEMENT_발송본.md",
+    "bytes": 57980,
+    "sha256": "1EE639CCA10FB17628E1D17C2657D95877E83201A8D406D3E7F46E5DFE718C39",
+    "requestBodyBytes": 56503,
+    "requestBodySha256": "40A6EEF4746AEA87A2DB336A8FCDA9AF219D01F075F144B729D56DEEC3242354",
+    "replyBoundary": "exact standalone ## 회신",
+    "baseline": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\baseline.json",
+      "bytes": 64773,
+      "sha256": "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933"
+    },
+    "execution": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\execution.json",
+      "bytes": 3918,
+      "sha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494"
+    },
+    "sourceFiles": 341,
+    "allowed": [
+      "scripts/ui-checks/access-history.mjs",
+      "scripts/ui-checks/access-history-shared.mjs"
+    ],
+    "protectedFiles": 339,
+    "controlFiles": 27,
+    "productEditsBySol": 0,
+    "priorControl": {
+      "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md": {
+        "bytes": 303224,
+        "sha256": "AC82922068B9C64326DB38E843B461D92EB1A5143E7F648AA58893A2018218C7"
+      },
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md": {
+        "bytes": 157914,
+        "sha256": "9BA9A7FE897052B91505C738858021FDBF7E4363577D4DE6442624272C9B681E"
+      }
+    },
+    "controlPlanChanges": {
+      "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md": {
+        "bytes": 304323,
+        "sha256": "108F4BCCD203DD87E05363226130DDBA002B3DC7C9D41E71142D5506F3DD8122"
+      },
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md": {
+        "bytes": 160877,
+        "sha256": "974E653660390B0D3E3F325A7B385B1E3A330EFF855264FB03A34772186B070F"
+      }
+    },
+    "runtimeAcceptance": "NOT_RUN_IMPLEMENTATION_PENDING",
+    "retriesReset": false
+  },
+  "sourceUnchanged": true,
+  "sourceFiles": 341,
+  "allowed": 2,
+  "protectedFiles": 339,
+  "controlFiles": 27,
+  "currentSourceHead": "160940f9aaeb6696538447f83b44658073e382f0",
+  "branch": "main",
+  "dirtyPaths": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history-negative.mjs",
+    "?? scripts/ui-checks/access-history-positive.mjs",
+    "?? scripts/ui-checks/access-history-shared.mjs",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "packetSelfContainedSections": 11,
+  "exactReplyBoundary": true,
+  "outgoingArchiveExactMatch": true,
+  "controlValidation": [
+    {
+      "check": "compile",
+      "file": "gate-evidence.py",
+      "rc": 0
+    },
+    {
+      "check": "compile",
+      "file": "runtime-probes.py",
+      "rc": 0
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-preload.mjs"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--self-test"
+      ],
+      "rc": 0,
+      "stdout": "{\"status\": \"PASS\", \"result\": {\"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\", \"original\": {\"positiveComparisons\": 2, \"rejectedMutations\": 19, \"mutations\": [\"missing-id\", \"duplicate-id\", \"unknown-id\", \"viewport\", \"loginInputs\", \"fixtureRequestCount\", \"rawErrors\", \"constant-actual\", \"caller-tolerance\", \"caller-expected\", \"canonical-label-drift\", \"nonfinite-nan\", \"nonfinite-inf\", \"numeric-tolerance-2\", \"numeric-tolerance-4\", \"numeric-tolerance-nan\", \"date-133.5\", \"close-error\", \"truncated-png\"], \"proof\": \"PARSER_ONLY_NO_RUNTIME_ACCEPTANCE\"}, \"extraRejectedMutations\": [\"protected-executionError\", \"protected-manifestWriteError\", \"protected-consoleErrors\", \"protected-pageErrors\", \"protected-requestFailed\", \"protected-badResponses\", \"protected-cleanupErrors\", \"protected-extra-error-field\", \"recursive-nan\", \"numeric-bool\"]}}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs",
+        "--list"
+      ],
+      "rc": 0,
+      "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"cases\":[\"wrong-owner-pid\",\"wrong-worker-pid\",\"wrong-case\",\"wrong-nonce\",\"wrong-url\",\"sibling-run\",\"wrong-temp-root\",\"wrong-bootstrap\",\"wrong-contract-path\",\"wrong-contract-digest\",\"wrong-execution-path\",\"wrong-execution-digest\",\"no-run-approval\",\"wrong-run-nonce\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs",
+        "--list"
+      ],
+      "rc": 0,
+      "stdout": "{\"proof\":\"PLAN_ONLY_NOT_RUN\",\"semanticVectors\":[\"fixed-expectation\",\"unknown-id-field\",\"recursive-nan\",\"recursive-infinity\",\"immutable-actual-snapshot\",\"caller-extra-argument\"],\"realResourceVectors\":[\"context-close-throw-browser-still-closed\",\"browser-close-throw-first-error-preserved\"]}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-probes.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "LIST_ONLY_NOT_VALIDATED",
+        "--list"
+      ],
+      "rc": 0,
+      "stdout": "{\"proof\": \"PLAN_ONLY_NOT_RUN\", \"positiveCases\": [\"contract-core\", \"regression-shell\", \"regression-home\"], \"deferredCases\": [\"live-admin\", \"list-fixture\", \"empty-fixture\", \"filters\", \"errors\", \"stale-response\", \"role-guard\", \"session-expired\"], \"coreFaults\": [\"png-header-only\", \"png-crc\", \"duplicate-id\", \"missing-id\", \"extra-id\", \"caller-expected\", \"constant-actual\", \"raw-console\", \"raw-pageerror\", \"raw-requestfailed\", \"raw-http\", \"canonical-drift\", \"worker-close-receipt\", \"server-close-receipt\", \"server-close-not-observed\", \"final-write-denied\", \"server-spawn-error\", \"log-write-denied\", \"owner-bad-ack\", \"worker-no-ack\", \"worker-no-run\", \"gate-spawn-error\", \"gate-log-write-denied\"], \"regressionFaults\": [\"regression-no-evidence\"], \"malformedPublicCases\": 9}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": "",
+      "afterFiniteCloseGuard": true
+    }
+  ],
+  "filesystemParserOnly": {
+    "positiveCases": 3,
+    "mutationsRejected": 14,
+    "candidateCliRcZero": 3,
+    "finalCliRcZero": 3,
+    "proof": "PARSER_ONLY_NO_PRODUCT_RUNTIME_ACCEPTANCE",
+    "historicalArtifactsEdited": false
+  },
+  "records": [
+    {
+      "name": "final-scope",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--scope"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 42432,
+      "createdAtMs": 1790898820601.0774,
+      "exitAtMs": 1790898821557.7163,
+      "closeAtMs": 1790898821559.0715,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\final-scope.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\final-scope.stderr.txt",
+      "stdoutSha256": "81E52687BC9A9E1F3E07F7EEA8C73F4F3FEFCE10D39FC044F7A39FEBDD50D2A1",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-candidate-1",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--candidate",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 19992,
+      "createdAtMs": 1790898821581.152,
+      "exitAtMs": 1790898822646.108,
+      "closeAtMs": 1790898822648.1323,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stdout.log",
+      "stderr": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stderr.log",
+      "stdoutSha256": "C4E9A8246770AC3C4D9047B8BF062E69E8AF9E3D143F8E619906DF9A1CEF42C1",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-final-1",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--final",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-parser-only-dd7f7aabe2b4\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 22564,
+      "createdAtMs": 1790898822650.1584,
+      "exitAtMs": 1790898823724.024,
+      "closeAtMs": 1790898823726.032,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-1.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-1.stderr.txt",
+      "stdoutSha256": "65E15C018C81800BB60BBB70CDA766CEBBFDA6B7F66FEF3F26439E0AFA97A37B",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-candidate-2",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--candidate",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 16120,
+      "createdAtMs": 1790898823740.3997,
+      "exitAtMs": 1790898824718.2607,
+      "closeAtMs": 1790898824719.261,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stdout.log",
+      "stderr": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stderr.log",
+      "stdoutSha256": "BB38A740DDCEABAFFF8E0649D98F2EA1F7FD654BD900D1378A6045F0971BDF79",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-final-2",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--final",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-sol-parser-only-dd7f7aabe2b4\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 51384,
+      "createdAtMs": 1790898824721.7693,
+      "exitAtMs": 1790898825679.7678,
+      "closeAtMs": 1790898825681.4243,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-2.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-2.stderr.txt",
+      "stdoutSha256": "71E90E9F91832A0457D429FAC45BE449E1FFBF2D129F99FFD750AB0AC534853A",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-candidate-3",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--candidate",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-sol-parser-only-dd7f7aabe2b4\\owner-candidate.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 27980,
+      "createdAtMs": 1790898825682.456,
+      "exitAtMs": 1790898826639.4043,
+      "closeAtMs": 1790898826640.7886,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stdout.log",
+      "stderr": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-sol-parser-only-dd7f7aabe2b4\\adjudicator-stderr.log",
+      "stdoutSha256": "6C7AE08980814CFE32DA4919AC72B0D15E79D339287E8A69D24E8207D3BDA3C5",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "name": "parser-final-3",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+        "--execution-sha",
+        "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+        "--baseline-sha",
+        "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+        "--final",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-sol-parser-only-dd7f7aabe2b4\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 26800,
+      "createdAtMs": 1790898826641.3147,
+      "exitAtMs": 1790898827611.6582,
+      "closeAtMs": 1790898827613.2246,
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-3.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261001_232942\\parser-final-3.stderr.txt",
+      "stdoutSha256": "A8F7CE5DFCEE993FC91BF558E33B60F54A9D7AF88A8F13ABE1A311ADDE489D8C",
+      "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  ],
+  "runtimeAcceptance": "UNVERIFIED_NOT_RUN",
+  "productEditsBySol": 0,
+  "A2B": "PENDING_UNAUTHORIZED",
+  "retryHistoryReset": false,
+  "commitPushDeployAiCli": 0,
+  "limitations": [
+    "A1 implementation and real fault/IPC/component suites require Gemini submission and independent Sol review",
+    "Known normal8 login/partial and remaining original A negative obligations retained for A2",
+    "Filesystem parser fixtures cannot prove actual Chrome/UI/process cleanup"
+  ]
+}

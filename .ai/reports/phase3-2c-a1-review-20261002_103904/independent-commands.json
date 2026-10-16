@@ -1,0 +1,97 @@
+[
+  {
+    "name": "runtime-review-copy",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\runtime-probes-review.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 23112,
+    "start": "2026-10-02T01:44:36.592103+00:00",
+    "end": "2026-10-02T01:47:01.991922+00:00",
+    "elapsedSeconds": 145.407,
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\runtime-review-copy.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\runtime-review-copy.stderr.txt"
+  },
+  {
+    "name": "component-probes",
+    "argv": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs",
+      "--core-manifest",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-104438-D8OAOX\\owner-final.json",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 37408,
+    "start": "2026-10-02T01:47:02.013953+00:00",
+    "end": "2026-10-02T01:47:04.986300+00:00",
+    "elapsedSeconds": 2.969,
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\component-probes.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\component-probes.stderr.txt"
+  },
+  {
+    "name": "ipc-original",
+    "argv": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 45400,
+    "start": "2026-10-02T01:47:04.987300+00:00",
+    "end": "2026-10-02T01:47:18.179675+00:00",
+    "elapsedSeconds": 13.187,
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\ipc-original.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\ipc-original.stderr.txt"
+  },
+  {
+    "name": "ipc-review-copy",
+    "argv": [
+      "node",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\ipc-probes-review.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 28404,
+    "start": "2026-10-02T01:47:18.182186+00:00",
+    "end": "2026-10-02T01:47:31.584617+00:00",
+    "elapsedSeconds": 13.406,
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\ipc-review-copy.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\ipc-review-copy.stderr.txt"
+  },
+  {
+    "name": "scope-after-runtime",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+      "--scope"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "pid": 49288,
+    "start": "2026-10-02T01:47:31.585623+00:00",
+    "end": "2026-10-02T01:47:32.616919+00:00",
+    "elapsedSeconds": 1.032,
+    "rc": 0,
+    "timeout": false,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\scope-after-runtime.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\scope-after-runtime.stderr.txt"
+  }
+]

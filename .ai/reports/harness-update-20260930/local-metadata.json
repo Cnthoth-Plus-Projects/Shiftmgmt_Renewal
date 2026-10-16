@@ -1,0 +1,12 @@
+{
+  "Root": "C:/Users/pangyo/AppData/Local/AI-Harness",
+  "Head": "a5638b3d4c87849fc87a7eedadec2f817ad6561e",
+  "Branch": null,
+  "Status": [
+    "?? plan.json"
+  ],
+  "HooksPath": ".githooks",
+  "PolicyFileCount": 26,
+  "PlanBytes": 22047,
+  "PlanSha256": "7875B50DD9785138FD389A1E44CD4B60146119CCD24457A5DF3A1E524706E51C"
+}

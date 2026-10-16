@@ -1,0 +1,11 @@
+CHILD_PROCESS 35672: spawnSync [Object: null prototype] {
+  maxBuffer: 1048576,
+  env: { SystemRoot: 'C:\\WINDOWS' },
+  windowsHide: true,
+  args: [ 'C:\\Program Files\\nodejs\\node.exe', '-e', '0' ],
+  cwd: undefined,
+  detached: false,
+  envPairs: [ 'SystemRoot=C:\\WINDOWS' ],
+  file: 'C:\\Program Files\\nodejs\\node.exe',
+  windowsVerbatimArguments: false
+}

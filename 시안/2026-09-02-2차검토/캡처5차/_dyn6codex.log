@@ -1,0 +1,127 @@
+=============== D2 접근 가능한 이름 · 미연결 label (24파일 63상태) ===============
+-- 00-shell-1.html
+state-s1 조작요소=11 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-s2 조작요소=9 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-s3 조작요소=9 이름없음=7(placeholder만 0) 미연결label=0 :: a{nav-item} a{nav-item} a{nav-item} a{nav-item} a{nav-item} a{nav-item} a{nav-item}
+-- 00-shell-2.html
+state-s4 조작요소=11 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-s5 조작요소=13 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-s6 조작요소=16 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 01-login-1.html
+state-l1 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-l2 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-l3 조작요소=2 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 01-login-2.html
+state-l4 조작요소=7 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-l5 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 02-common-1.html
+state-c1 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c2 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c3 조작요소=4 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c4 조작요소=5 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 02-common-2.html
+state-c5 조작요소=1 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c6 조작요소=1 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c7 조작요소=1 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c8 조작요소=1 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c9 조작요소=3 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 02-common-3.html
+state-c10 조작요소=0 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c11 조작요소=0 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-c12 조작요소=0 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 04-sites-1.html
+state-t1 조작요소=21 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 04-sites-2.html
+state-t3 조작요소=13 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-t4 조작요소=13 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 06-employees-1.html
+state-e1 조작요소=12 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-e2 조작요소=17 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 06-employees-2.html
+state-e3 조작요소=16 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-e4 조작요소=16 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-e5 조작요소=17 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 06-employees-3.html
+state-e6 조작요소=21 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-e7 조작요소=10 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 07-schedule-1.html
+state-r1 조작요소=15 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 07-schedule-2.html
+state-r2 조작요소=16 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-r3 조작요소=14 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 07-schedule-3.html
+state-r4 조작요소=13 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-r5 조작요소=9 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-r6 조작요소=10 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 09-allowance-1.html
+state-a1 조작요소=16 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-a2 조작요소=11 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 09-allowance-2.html
+state-a3-a5 조작요소=21 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 09-allowance-3.html
+state-a6 조작요소=10 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-a7 조작요소=12 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-a8 조작요소=10 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 10-dashboard-1.html
+state-d1 조작요소=11 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-d2 조작요소=18 이름없음=2(placeholder만 0) 미연결label=0 :: select[select-one]{2025년} select[select-one]{05월}
+state-d3 조작요소=12 이름없음=2(placeholder만 0) 미연결label=0 :: select[select-one]{2025년 03월} select[select-one]{전체 근무지}
+-- 11-operations-1.html
+state-o1 조작요소=49 이름없음=18(placeholder만 1) 미연결label=15 :: input[text]{C:\연장근무실적\대기} input[text]{C:\연장근무실적\승인} input[text]{C:\연장근무실적\배포관리} input[text]{C:\연장근무실적\품의서} input[text]{C:\연장근무실적\별첨1} input[text]{C:\연장근무실적\별첨2} input[text]{C:\연장근무실적} input[text]{C:\연장근무실적\DB\S} input[text]{C:\연장근무실적\백업\b} input[text]{https://apis.d} input[text]{미설정 (기존 규칙 유지)} input[text]{2026-07-01} input[text]{C:\연장근무실적\백업} select[select-one]{일간} input[text]{02:00} input[number]{52} input[number]{3} input[number]{11}
+state-o2 조작요소=38 이름없음=1(placeholder만 0) 미연결label=0 :: select[select-one]{2025년}
+-- 11-operations-2.html
+state-o3 조작요소=41 이름없음=17(placeholder만 1) 미연결label=2 :: input[text]{변경 사유를 입력하세요} select[select-one]{적용 중} input[text]{1.5} input[text]{2.0} input[text]{2.5} input[text]{0.0} input[text]{1.5} input[text]{2.0} input[text]{1.5} input[text]{2.0} input[text]{2.5} input[text]{0.0} input[text]{1.5} input[text]{2.0} input[text]{1.5} input[text]{2.0} input[text]{2.5}
+state-o4 조작요소=29 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-o5 조작요소=30 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 11-operations-3.html
+state-o6 조작요소=40 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-o7 조작요소=14 이름없음=2(placeholder만 0) 미연결label=2 :: input[text]{근무표 본문 명단} input[text]{B6:J15}
+state-o8 조작요소=20 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 11-operations-4.html
+state-o9-o10 조작요소=19 이름없음=0(placeholder만 0) 미연결label=0 :: 
+-- 12-access-logs-1.html
+state-g1 조작요소=18 이름없음=0(placeholder만 0) 미연결label=0 :: 
+state-g2 조작요소=14 이름없음=0(placeholder만 0) 미연결label=0 :: 
+=============== D3 role=tab 포커스 가능 여부 · aria-live (11-operations 1~3) ===============
+-- 11-operations-1: tablist=2 tab=14 포커스가능=0 태그=div[tabindex=null] | aria-live=0
+-- 11-operations-2: tablist=3 tab=21 포커스가능=0 태그=div[tabindex=null] | aria-live=0
+-- 11-operations-3: tablist=2 tab=14 포커스가능=0 태그=div[tabindex=null] | aria-live=0
+=============== D3 aria-disabled describedby 연결 (24파일) ===============
+-- 01-login-2.html: state-l4:비밀번호 변경→describedby OK
+-- 02-common-1.html: state-c4:반려→describedby OK
+-- 02-common-2.html: state-c9:실적 승인→describedby OK
+-- 06-employees-2.html: state-e5:위로 이동→describedby 없음 | state-e5:아래로 이동→describedby 없음
+-- 07-schedule-2.html: state-r3:엑셀 생성→describedby OK | state-r3:배포 폴더로 게시→describedby OK
+-- 11-operations-4.html: state-o9-o10:교체 실행→describedby 없음
+=============== D3 E1·A1 Enter → 상세 ===============
+state-e1 행 tabindex=0 포커스=true Enter 후 DOM 변화=0 표시요소 변화=0 | 스크립트 Enter 처리=true 활성요소=TR.selected
+state-a1 행 tabindex=null 포커스=false Enter 후 DOM 변화=0 표시요소 변화=0 | 스크립트 Enter 처리=true 활성요소=BODY
+=============== D4 포커스 스타일 · 대비 (11-operations-1 / 01-login-1 / 00-shell-1) ===============
+-- 11-operations-1
+토큰 --line=#E2E5EA 대비(백)=1.26 · --line-strong=#848A93 대비=3.48 · --accent=#3E56B6 대비=6.54 · halo rgba(62,86,182,.15) 합성=rgb(226,230,244) 대비=1.25
+input focus: outline=none 0px rgb(31, 36, 48) | box-shadow=rgba(62, 86, 182, 0.15) 0px 0px 0px 2px | border=rgb(62, 86, 182) | 활성=true
+select focus: outline=none 0px rgb(31, 36, 48) | box-shadow=rgba(62, 86, 182, 0.15) 0px 0px 0px 2px | border=rgb(62, 86, 182) | 활성=true
+btn-primary focus: outline=solid 2px rgb(62, 86, 182) | box-shadow=none | border=rgb(62, 86, 182) | 활성=true
+btn-secondary focus: outline=solid 2px rgb(62, 86, 182) | box-shadow=none | border=rgb(226, 229, 234) | 활성=true
+nav a focus: outline=solid 2px rgb(62, 86, 182) | box-shadow=none | border=rgb(31, 36, 48) | 활성=true
+tab focus: outline=none 0px rgb(31, 36, 48) | box-shadow=rgb(62, 86, 182) 0px 0px 0px 1px | border=rgb(62, 86, 182) | 활성=false
+tr[tabindex]: 없음
+-- 01-login-1
+토큰 --line=#D8DCE2 대비(백)=1.38 · --line-strong= 대비=- · --accent=#3E56B6 대비=6.54 · halo rgba(62,86,182,.15) 합성=rgb(226,230,244) 대비=1.25
+input focus: outline=none 0px rgb(0, 0, 0) | box-shadow=none | border=rgb(62, 86, 182) | 활성=true
+select: 없음
+btn-primary focus: outline=auto 1px rgb(16, 16, 16) | box-shadow=none | border=rgb(255, 255, 255) | 활성=true
+btn-secondary focus: outline=auto 1px rgb(16, 16, 16) | box-shadow=none | border=rgb(216, 220, 226) | 활성=true
+nav a: 없음
+tab: 없음
+tr[tabindex]: 없음
+-- 00-shell-1
+토큰 --line=#E2E5EA 대비(백)=1.26 · --line-strong=#848A93 대비=3.48 · --accent=#3E56B6 대비=6.54 · halo rgba(62,86,182,.15) 합성=rgb(226,230,244) 대비=1.25
+input: 없음
+select: 없음
+btn-primary: 없음
+btn-secondary: 없음
+nav a focus: outline=solid 2px rgb(62, 86, 182) | box-shadow=none | border=rgb(62, 86, 182) | 활성=true
+tab: 없음
+tr[tabindex]: 없음
+DONE

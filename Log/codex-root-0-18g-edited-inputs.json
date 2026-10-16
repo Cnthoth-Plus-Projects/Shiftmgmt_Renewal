@@ -1,0 +1,185 @@
+{
+  "testedAt": "2026-09-07T03:57:45.139Z",
+  "results": [
+    {
+      "file": "11-operations-1.html",
+      "state": "o1",
+      "inputs": [
+        {
+          "id": "o1-path-intake",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\대기",
+          "visible": true
+        },
+        {
+          "id": "o1-path-approved",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\승인",
+          "visible": true
+        },
+        {
+          "id": "o1-path-deploy",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\배포관리",
+          "visible": true
+        },
+        {
+          "id": "o1-path-report",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\품의서",
+          "visible": true
+        },
+        {
+          "id": "o1-path-annex1",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\별첨1",
+          "visible": true
+        },
+        {
+          "id": "o1-path-annex2",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\별첨2",
+          "visible": true
+        },
+        {
+          "id": "o1-path-data-root",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적",
+          "visible": true
+        },
+        {
+          "id": "o1-path-db",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\DB\\ShiftMgmt.accdb",
+          "visible": true
+        },
+        {
+          "id": "o1-path-restore",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\백업\\backup_2025-05-19.json",
+          "visible": true
+        },
+        {
+          "id": "o1-api-holiday",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo",
+          "visible": true
+        },
+        {
+          "id": "o1-policy-exclude-date",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "",
+          "visible": true
+        },
+        {
+          "id": "o1-policy-priority-date",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "2026-07-01",
+          "visible": true
+        },
+        {
+          "id": "o1-backup-folder",
+          "type": "text",
+          "readOnly": true,
+          "disabled": false,
+          "value": "C:\\연장근무실적\\백업",
+          "visible": true
+        },
+        {
+          "id": "o1-backup-time",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "02:00",
+          "visible": true
+        },
+        {
+          "id": "",
+          "type": "number",
+          "readOnly": false,
+          "disabled": false,
+          "value": "52",
+          "visible": true
+        },
+        {
+          "id": "",
+          "type": "number",
+          "readOnly": false,
+          "disabled": false,
+          "value": "3",
+          "visible": true
+        },
+        {
+          "id": "",
+          "type": "number",
+          "readOnly": false,
+          "disabled": false,
+          "value": "11",
+          "visible": true
+        },
+        {
+          "id": "o1-chk-rest",
+          "type": "checkbox",
+          "readOnly": false,
+          "disabled": false,
+          "value": "on",
+          "visible": true
+        }
+      ],
+      "changedValue": "Codex 검증 입력값",
+      "retained": true,
+      "toastShown": true,
+      "toastHiddenAfterMs": 1895
+    },
+    {
+      "file": "11-operations-3.html",
+      "state": "o7",
+      "inputs": [
+        {
+          "id": "o7-area-name",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "근무표 본문 명단",
+          "visible": true
+        },
+        {
+          "id": "o7-area-range",
+          "type": "text",
+          "readOnly": false,
+          "disabled": false,
+          "value": "B6:J15",
+          "visible": true
+        }
+      ],
+      "changedValue": "Codex 검증 입력값",
+      "retained": true,
+      "toastShown": true,
+      "toastHiddenAfterMs": 1876
+    }
+  ]
+}

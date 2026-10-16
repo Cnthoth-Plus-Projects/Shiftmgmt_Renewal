@@ -1,0 +1,204 @@
+# HANDOFF — Phase 3-1b 로그인·앱 셸 1차 수정
+
+- Task: 3-1b — 인증 진입·상태 전이·격리 UI 검증 보정
+- Action: CORRECT
+- From: Sol(xhigh, Codex) — 범위·검증 책임
+- To: Gemini — 외부 구현 코더
+- Time: 2026-09-28 17:09 KST
+- 회신: 필요
+- Repository: `C:/Projects/Active/ShiftMgmt_V4`
+- Branch / baseline HEAD: `main` / `2d97d9bb3dc649f8c40c0d1d0cfc9fdeae0df283`
+- Expected initial status: `git status --short --untracked-files=all` 85경로, 각 줄 LF 결합·끝 LF 없는 UTF-8 SHA-256 `AFD375899E4A8BC6D48D530279276AE36BA5711CE22F1E1ECDC0C0580934FC0C`. 이전 72경로 목록은 `Log/20260928_144006_3-0-Gemini-CORRECT-IMPLEMENTED_수신원본.md`의 `## 3`에 있고 SHA는 `48FDD56F221A5C295F11E3A15C57BA819171FD372AF3C0FC465FC3B095117A6D`이다. 이번 제출로 상태 목록에 추가된 13경로는 `scripts/copy-web-assets.mjs`, `src/main/http/session.test.ts`, `src/main/http/session.ts`, `src/web/app.ts`, `src/web/index.html`, `src/web/styles.css`, `scripts/ui-checks/login.mjs`, `scripts/ui-checks/shell.mjs`, `src/web/login.css`, `src/web/screens/login.ts`, `src/web/screens/shell.ts`, `src/web/screens/status-bar.ts`, `src/web/shell.css`이다. 기존 상태 72경로는 그대로다.
+- Final commit: 만들지 않는다. 3-1 전체 수용 뒤 Sol이 판단한다.
+
+---
+
+# 회신 요청
+
+착수 게이트가 다르면 제품 파일 수정 없이 `BLOCKED`로 회신한다. 3-1b 구현 제출은 아직 Sol 수용이 아니다. 이번 수정의 기준은 원래 3-1b IMPLEMENT 패킷 `Log/20260928_1508_3-1b-Sol-IMPLEMENT_발송본.md`이며, 변경되지 않은 요구사항·비목표·시안 정본·음성 기준은 계속 적용한다.
+
+## 1. 목표와 판정
+
+목표: 실제 HTTP 진입에서 비갱신 세션 조회를 보장하고, 로그인·셸의 잘못된 상태 전이를 고친 뒤, 격리된 Chrome 시험으로 누락된 거절·복구 경로를 입증한다.
+
+**판정: CORRECT.** 제출된 15개 파일은 원래 허용 범위에 있고 보호 8파일 SHA도 일치한다. 집중 시험 7/7, typecheck, lint(기존 5 warning), map 82경로와 전체 131파일/899시험은 Sol 독립 재실행에서 통과했다. 제출된 Chrome manifest는 PASS이고 화면도 열어 확인했다. 그러나 아래 C31-01~C31-07 때문에 R31-01/03/04/06/08/09 및 A31-01의 최종 판정은 보류한다.
+
+## 2. 현재 상태
+
+`TODO.md`의 3-1b는 🔄이고 3-1c~e는 대기다. 이번 확인은 3-1b 수정 요청이며 Phase 3/3-1 완료 판정이 아니다. Sol 제품 파일·커밋 변경은 0이다. 원래 설계 정본과 실행 조건은 발송본 `Log/20260928_1508_3-1b-Sol-IMPLEMENT_발송본.md` `2·`5를 따른다.
+
+## 3. 직전 실패와 근거
+
+| ID | 실제 근거 | 요구 결과 |
+|---|---|---|
+| C31-01 | `src/shared/bridge/channel-contracts.ts:229`의 `auth:get-session`은 `guard:"none"`. `src/main/http/route-registry.ts:70-71`은 handler 전에 `resolveSession`을 호출하고 `session.ts:119`는 `getSessionWithRenewal`을 호출한다. `handleGetSession` 단위 시험만 통과해도 실제 HTTP 유효 조회는 만료시각을 연장한다. | `auth:get-session` 라우팅에서 갱신 조회를 하지 않고 `handleGetSession`의 비갱신 검증만 수행. 다른 채널의 가드와 기존 세션 갱신 정책 보존. |
+| C31-02 | `login.ts:setMode`가 이전 `lastErrorMessage`를 유지한다. 제출 캡처 `artifacts/captures/phase3/login/run-20260928-161808-6Z4lpm/password-change.png`에서 존재하지 않는 ID 실패 뒤 정상 관리자 로그인→L4인데 “로그인 ID 또는 비밀번호…” 배너가 남는다. L5에도 이전 오류가 남을 수 있다. | 모드 전환 시 그 모드의 오류만 표시. L2→L4/L5, L3→L1/L5에서 과거 배너 제거; L4/L5의 실제 현재 오류는 유지. |
+| C31-03 | `login.ts:453-462`는 `changePassword` 성공 뒤 `getSession`이 실패 또는 null이어도 `result.data`로 셸을 마운트한다. | 재확인된 유효·비밀번호 변경 완료 세션으로만 셸 진입. null은 L1, 오류/통신 실패는 L4에서 재시도 안내하며 셸·상태 조회 금지. |
+| C31-04 | `status-bar.ts:fetchStatusData`는 `AUTH_SESSION_REQUIRED`을 일반 “확인 실패”로만 처리하고 `ShellScreen`에는 로그인 전환 창구가 없다. | 셸 중 세션 무효화/401 계약 오류가 나오면 한 번만 상태줄 정리 후 L1로 전환. 일시적 비인증 상태 API 오류는 해당 칸에 “확인 실패”로 남기고 자동 로그아웃하지 않는다. |
+| C31-05 | `login.ts:21`의 하드코딩된 `0.1.0`은 버전 API 실패 시에도 표시된다. `shell.ts:305-314`의 홈은 “비밀번호 변경”을 현재 가능한 동작이라 하지만 셸에 그 동작이 없고, `Phase 3-1b/3-1c` 내부 단계명을 사용자에게 노출한다. `login.ts:424-434`는 동적 `style.display`를 사용한다. | 버전은 실제 API 값만 표시하고 실패 시 배지 숨김. 홈은 실제 가능한 동작과 화면 준비 중 안내를 일반 사용자 문구로 표시. 표시/숨김은 외부 CSS 클래스로 처리. |
+| C31-06 | `login.mjs`/`shell.mjs`는 bootstrap 파일이 “저장소 밖”인지만 확인한다. `SHIFTMGMT_USER_DATA_DIR`의 격리 폴더와 일치하는지 확인하지 않아 잘못 지정된 다른 폴더의 자격증명을 읽을 수 있다. 복구키 파일도 절대 경로·격리 폴더 검문 없이 읽는다. | 비밀 파일을 읽기 전에 URL과 격리 데이터 폴더·정확한 파일 경로를 검증. 경계 밖은 즉시 실패하고 비밀 파일은 열지 않는다. |
+| C31-07 | `login.mjs`는 현재 비밀번호 오입력과 복구 후 임시 비밀번호 로그인·강제 변경을 검사하지 않는다. `shell.mjs`는 220↔64px 실측, 실제 API 값과 상태줄 대조, 재로드 복원, 세션 무효화, 상태 API 실패 표시를 검증하지 않는다. `getSession` 실패 재시도도 미검증이다. | 기존 성공 시나리오를 유지하면서 위 음성·복구·역할 경로를 실제 Chrome에서 검사. 캡처·manifest에 비밀값 금지. |
+
+원래 구현의 `session.ts:handleGetSession` 만료/null·token 비교는 보존한다. 이번 결함은 테스트가 직접 메서드만 호출해 HTTP 라우터 전처리를 놓친 데 있다. 최초 제출의 수신 원본은 `Log/20260928_1633_3-1b-Gemini-IMPLEMENTED_수신원본.md`에 30,276바이트, SHA-256 `1C83A5DB94CC7F77D0B9BB19EDB609AFFEE67A0B088B9790ADCC20672FE613D6`으로 보존·바이트 일치 확인했다.
+
+## 4. 수정 경계
+
+다음 파일만 **필요한 hunk**를 수정한다. 새 파일은 만들지 않는다.
+
+| 파일 | 허용 작업 |
+|---|---|
+| `src/main/http/route-registry.ts`, `src/main/http/route-registry.test.ts` | C31-01의 `auth:get-session` 비갱신 라우팅 예외와 dispatch 수준 회귀 시험. 다른 guard/route 불변. |
+| `src/web/app.ts`, `src/web/screens/shell.ts`, `src/web/screens/status-bar.ts` | C31-04의 세션 무효화 콜백·한 번만 전환·폴링 정리; C31-05 홈 사용자 문구. |
+| `src/web/screens/login.ts`, `src/web/login.css` | C31-02/03/05 모드별 오류·재확인·실제 버전·CSS 클래스 처리. 파일당 30KB 이하. |
+| `scripts/ui-checks/login.mjs`, `scripts/ui-checks/shell.mjs` | C31-06/07 격리 파일 검문과 빠진 실제 UI 사례 보강. `runScreenCheck` 재사용·기존 PASS 경로 유지. |
+
+기준 SHA-256 (수정 전에 전부 확인):
+`route-registry.ts` `2C46936CC45C05562876A36A94BA530BAA7B2B1A27773C0E61BA2B3401C2E271`
+`route-registry.test.ts` `8CBE564155F1B194D8F72AF60AE4F1577DA57F2C8D2C2F3784C32926ABAC6ECB`
+`app.ts` `20E786FF622048E43FB919DE9D9BC1D36765744A06777465CA2AD9E7E7A84B35`
+`login.ts` `1217079081B5D31CC61842BDF132D0EB9D03563949C718728B97615B3D87A44A`
+`login.css` `8F6E95E67C564EEE3CDBDB35C4D51AE063C6C5B8EF5B5D862ABF7AC998E9B89A`
+`shell.ts` `613B66897560A706009163F1C24E4FB473A86BD5FE8C6A116D4B60CE183CEF09`
+`status-bar.ts` `565F9D0AA38557DEA2D1D86E9D2281A61CC75865238399F0B541043EC5CA5066`
+`login.mjs` `6BC17DC4AE6A7837834F33934E73A531562AE71CEB2545D5C3F947E8C76A9F27`
+`shell.mjs` `AEEB39152614CD7347FF5E3AABE0BD5A2093DEB9A6A3DEAE12B35405DF29100F`
+
+보호 SHA-256 (변경 금지):
+`src/main/http/session.ts` `C748AB13BD1B31499420381DF759F24BF26DA84A4CDABCC20F98154FA9B1C681`
+`src/main/http/session.test.ts` `6C8BF746BD6B91DF31AA37A222527F740E8366A2D0C1CCCE0413DC5BEC62EC60`
+`src/shared/bridge/contracts.ts` `6CDD89F98A917326F479A6C10E11416D555141347ED0FF01CACD6EFDCA900503`
+`src/shared/bridge/channel-contracts.ts` `84977FBD5AF8E2468F514574606A4DB6DDC24361C0A9997F66C19D2866498A11`
+`src/web/bridge/app-bridge.ts` `EF175FDBAEA8657304AB1642CCCC520CEE3D753DB558D38FAAFCC2BFA49500B1`
+`src/main/http/routes/core-routes.ts` `D8D806F66F15BE739E335B8BE62F6ED7B0ED581698D726BB03EC3A273D05BA82`
+`src/main/services/auth-service.ts` `FF27AE01B3FD3B12BA0116D6E4F746F274D932561C193BF7A32948B2C4403F3F`
+`scripts/lib/ui-check.mjs` `91921E353C05ADEE41D4AA725164146F058A02831EDFE77C919E3B68B897266E`
+`package.json` `162CDF6506031A846F6489BDF35CBDB86B099A659761472EFB1DE191045860E9`
+`package-lock.json` `E60FE10E0AC19014C7EC5FBC18444E07511F429BA1A9638C7BE6D91DFA372743`
+`scripts/ui-checks/ready.mjs` `5B0BBBB07023684882E483BE5287A40C9D1FDE46572AC64DD4C1AA859C5D9350`
+`docs/codebase-map.md` `AEDCD1B4E40DB2FA02712E246CC0CF3D3D9FCE1DED8C3088CFBE94E010A1DCB6`
+
+`C:/Projects/Active/ShiftMgmt_V3.4/**`, TODO/AGENTS/PROTOCOL/CLAUDE/GEMINI/.ai/Log 및 표에 없는 모든 V4 파일은 읽기 전용이다. `HANDOFF.md`는 보이는 `## 회신`만 채운다. 의존성·새 API·DB/권한·업무 화면·홈 집계·온라인 업데이트·운영 데이터·커밋은 범위 밖이다.
+
+## 5. 요구사항
+
+| ID | 입력/행동 | 기대 결과 | 실패 판정 | 구현 위치 |
+|---|---|---|---|---|
+| C31-01 | 유효/만료 쿠키로 HTTP `auth:get-session` 조회 | 비갱신 검증, 다른 보호 채널 갱신 유지 | 조회만으로 만료 연장 | `route-registry.ts`/test |
+| C31-02 | L2 실패→유효 로그인→L4 또는 복구 L5 | 이전 오류 제거·현 모드 오류만 표시 | 이전 로그인 오류가 새 화면에 남음 | `login.ts` |
+| C31-03 | L4 변경 성공 뒤 세션 재조회 실패/null | 셸 차단, 재시도/L1 | `result.data`로 우회 입장 | `login.ts` |
+| C31-04 | 셸 상태 API의 인증 만료/일반 실패 | 만료만 L1; 일반 오류는 해당 칸 확인 실패 | 만료된 셸 지속/모든 오류 로그아웃 | `status-bar.ts`, `shell.ts`, `app.ts` |
+| C31-05 | 버전 API 실패·초기 홈·규칙 표시 전환 | 가짜 버전·내부 단계명·미연결 기능 없음, CSS 클래스 사용 | 사용자에게 허위·내부 문구/인라인 스타일 | `login.ts`, `login.css`, `shell.ts` |
+| C31-06 | 격리 폴더 밖 자격증명·복구키 파일 경로 | 비밀 읽기 전에 거절 | 다른 데이터 폴더 비밀을 읽음 | `login.mjs`, `shell.mjs` |
+| C31-07 | 현재 암호 오류·복구 로그인·상태값/크기/세션 음성 | Chrome 동작·값·캡처로 입증 | 단순 보임/manifest PASS만 보고 | `login.mjs`, `shell.mjs` |
+
+## 6. 구현 전략과 데이터 흐름
+
+1. `RouteRegistry.dispatch`에서 `auth:get-session`의 `guard:"none"` 경로만 `resolveSession`을 건너뛰고 handler가 `SessionManager.handleGetSession`으로 쿠키를 비갱신 검증하게 한다. 다른 `none` 채널의 기존 `context.session` 의미 및 `session/action/admin` 가드는 그대로 둔다. dispatch 단위 시험은 유효 쿠키일 때 `getSessionWithRenewal` 호출 0·`getSession` 호출 1, 만료/null과 불일치 반환 null, 일반 보호 채널은 기존 갱신 동작임을 구분한다. 기존 `session.test.ts`는 변경하지 않는다.
+2. `LoginScreen`의 모드 전환에서 오류 문자열을 기본적으로 지우고 같은 모드의 새 실패를 표시할 때만 설정한다. L2→L4 캡처에서 이전 오류가 없어야 한다. L4 `changePassword` 성공 뒤 `getSession` 반환을 확인해 `ok:true`·data 존재·`passwordChangeRequired:false`일 때만 `onLoginSuccess` 호출한다. null이면 L1, 실패/예외면 L4와 한국어 재시도 안내. `result.data` fallback 금지. 유효 비밀번호를 다시 입력해야 하는 경우 안내는 하되 저장하지 않는다.
+3. `LoginScreen.init`은 `getAppVersion` 성공 문자열만 배지에 넣고 그 전/실패는 배지 미표시. L4 규칙 안내는 `login.css`의 숨김 클래스를 토글한다. 브라우저 인라인 스타일과 `style.display` 할당을 추가하지 않는다.
+4. `StatusBar` 옵션에 한 번만 부를 `onSessionExpired` 콜백을 전달하고, 인증이 필요한 상태 API 응답의 `errorCode === "AUTH_SESSION_REQUIRED"`(또는 실제 세션 만료 계약 코드)이면 나머지 fetch 결과를 적용하지 말고 콜백을 호출한다. `ShellScreen`이 콜백을 상위 `app.ts`로 전달하며 `mountLogin("L1")`으로 폴링·DOM을 정리한다. 로그인 초기 `getSession` 조회 실패는 기존처럼 재시도 상태로 유지한다. 일반 상태 API 실패는 해당 칸 `확인 실패`; 인가 거절/권한 오류를 세션 만료로 취급하지 않는다.
+5. `ShellScreen.createMainContent`의 내부 Phase 표기와 아직 연결되지 않은 비밀번호 변경을 현재 기능 목록에서 제거하고 사용자에게 실제 사용 가능한 기능과 메뉴 준비 상태를 설명한다. 상태줄의 실제 값·역할 그룹·메뉴 차단 동작은 보존한다.
+6. UI 스크립트는 시작 시 기존 `validateTargetUrl`을 재사용해 URL 형식 검사(공통 검문을 약화하지 않음), `SHIFTMGMT_USER_DATA_DIR`가 저장소 밖의 절대 격리 폴더인지 확인하고, bootstrap 경로가 그 폴더의 `bootstrap-credentials.json` **정확한 파일**인지 검사한 다음에만 읽는다. 복구 비밀 파일도 절대 경로와 해당 격리 폴더 내부를 확인한다. 경로 비교는 `path.relative`/경계 검사를 사용해 접두어 충돌을 막는다. 비밀값을 stdout/stderr/오류/캡처/manifest에 쓰지 않는다.
+7. `login.mjs`에 잘못된 현재 비밀번호→서버 오류→L4 유지, 성공 뒤 재조회, 복구키→임시 비밀번호 1회 안내→그 임시 비밀번호로 로그인→강제 변경→셸을 넣는다. 비밀값이 보이는 상태는 캡처하지 않는다. `login.mjs --case=session-error`에서 `getSession` 실패→재시도 UI→복구를 HTTP 200/`ok:false` 가로채기로 재현해 공통 실행기의 HTTP 4xx 오류 규칙을 바꾸지 않는다.
+8. `shell.mjs`에서 실제 220/64/220px, 헤더/skip-link·admin/일반 역할, 상태줄 실제 API 값, 감시 중단/재시작 결과, 새로고침 세션 복원, 일반 API 오류 `확인 실패`, `AUTH_SESSION_REQUIRED` 후 L1을 검증한다. HTTP 4xx를 예상 실패로 지우지 말고 `page.route`의 HTTP 200/`ok:false` 주입으로 UI 상태 전이를 분리하며 서버 401 계약은 관련 단위 시험으로 검증한다. 모든 원래 PASS 시나리오 유지.
+
+## 7. 불변조건과 시험
+
+- `CLAUDE.md` 절대 규칙 10·12 및 `07-invariants-and-pitfalls.md` A-10/B-2: 가짜 수치·미동작 기능 금지, 실제 Chrome 캡처·클릭 검증 필수. `05-screen-spec.md`의 로그인→필수 변경→본 화면, 오류의 한국어 조치 안내를 유지한다.
+- `12-능력-매트릭스.md` `4.4-4.5: DB는 “경로 설정됨”일 뿐 연결됨 아님. idle은 “처리 이력 없음”, 업데이트는 수동 적용. admin만 관리 메뉴·감시/업데이트. 서버가 권한 정본이다.
+- `src/shared/config/auth-password-policy.ts` 5규칙 재사용, 쿠키·세션 토큰·비밀번호·복구키를 DOM의 필요한 입력/1회 안내 외 스토리지·URL·로그에 기록하지 않는다.
+- 전체 파일 재생성, 시험 삭제/완화, `scripts/lib/ui-check.mjs` 변경, 스크린샷에 비밀값 노출 금지.
+
+정적/단위: `npx vitest run src/main/http/route-registry.test.ts src/main/http/session.test.ts`, `npm run typecheck`, `npm run lint`(기존 5 warning 외 신규 0), `npm run validate:map`(82경로), `node --check scripts/ui-checks/login.mjs`, `node --check scripts/ui-checks/shell.mjs`, `npm test`, `npm run build`, `git diff --check` 전부 RC 0. `package.json`/lockfile/브리지/공통 UI 실행기 보호 해시 재확인. 린트·시험 실패를 다른 명령으로 덮지 않는다. `npm run release:check`는 기존 85경로 작업 트리에 적합하지 않아 게이트 아님.
+
+필수 음성/브라우저 검증:
+- URL `https://example.com/`은 RC 1, 비어 있는 로컬 포트는 RC 2, 브라우저·외부 요청·PNG 없음. 비밀 파일 경로가 격리 폴더 밖/상대 경로/저장소 안이면 네트워크·파일 읽기 전에 RC 2. 결과에는 비밀 텍스트 없음.
+- 매 계정 변경 사례마다 새 `$env:TEMP` 하위 격리 폴더·서버 PID·포트 18739 확인. `SHIFTMGMT_UI_BOOTSTRAP_FILE`과 `SHIFTMGMT_USER_DATA_DIR`을 같은 폴더로 지정. `/api/health` 200 뒤 Chrome 1440×900에서 `ready.mjs`, `login.mjs --case=flow|locked|recovery|session-error`, `shell.mjs`와 추가 음성 사례를 실행한다.
+- 서버 세션을 실제로 무효화한 뒤 새로고침하면 `getSession` null→L1임을 확인. 로그인 L2→L4 캡처에 이전 오류 배너 0, L4 현재 비밀번호 오류 뒤 셸 미진입, 약한/불일치 비밀번호 차단, L5 복구 뒤 실제 임시 비밀번호 로그인·강제 변경 완료. L1 오류 재시도, API 실패 시 상태칸 `확인 실패`, 세션 무효화 후 L1, 보호 메뉴 미노출을 체크한다.
+- `shell.mjs`은 CSS 픽셀값과 실제 API 응답 내용을 값으로 대조한다. 단순 클래스 존재/셀 표시만으로 PASS 금지. 로그인·복구키·임시 비밀번호·세션 토큰이 PNG/manifest/stdout/stderr에 없어야 한다.
+- 산출물 `artifacts/captures/phase3/{ready,login,shell}/run-*/`의 manifest PASS, 실제 PNG, 의도한 200/`ok:false` 외 console/pageerror/requestfailed/HTTP 400+ 0. 비밀 파일 삭제, 격리 서버 PID 종료·포트 해제를 기록한다.
+
+## 8. 중단·회신
+
+초기 85경로/해시·편집 전 SHA/정본이 다르거나 허용 파일 밖 변경이 필요하면 수정 없이 `BLOCKED`로 회신한다. 새 API, 로그인 정책/권한 변경, 공통 UI 실행기 약화, 운영 데이터 접근, 안전한 복구 시험 불가도 즉시 반환한다. 무리한 우회나 자체 완료 판정은 금지한다.
+
+`## 회신`에 `GEMINI.md`/`PROTOCOL.md` 형식으로 판정·기준/85경로 해시·C31-01~07 원인→변경→시험 결과·변경 파일/전체 SHA-256·명령/RC/시험 수/시각·음성 결과·Chrome 클릭/캡처/오류·서버 종료·미검증을 기록한다. 비밀값이나 실제 개인정보는 쓰지 않는다.
+
+---
+
+## 회신
+
+판정: IMPLEMENTED
+기준: C:\Projects\Active\ShiftMgmt_V4 / main / 2d97d9bb3dc649f8c40c0d1d0cfc9fdeae0df283
+초기 상태: git status --short --untracked-files=all (85줄, LF 결합 끝 LF 없는 UTF-8 SHA-256: AFD375899E4A8BC6D48D530279276AE36BA5711CE22F1E1ECDC0C0580934FC0C) 100% 일치 확인. 기준 파일 9개 및 보호 파일 12개 실측 해시 전건 일치 확인.
+변경 파일:
+- src/main/http/route-registry.ts: C31-01 auth:get-session 채널의 비갱신 세션 검증 예외 처리
+- src/main/http/route-registry.test.ts: C31-01 auth:get-session 비갱신 라우팅 및 타 보호 채널 갱신 검증 회귀 단위 시험 추가
+- src/web/app.ts: C31-04 mountShell에 onSessionExpired 콜백 전달하여 L1으로 즉시 1회 자동 복귀
+- src/web/screens/shell.ts: C31-04/05 onSessionExpired 연계 및 홈 화면 내부 단계명/미연결 기능 문구 제거, 실제 기능 안내로 교체
+- src/web/screens/status-bar.ts: C31-04 상태 API 호출 시 AUTH_SESSION_REQUIRED 발생 시 destroy() 및 onSessionExpired 1회 호출 즉시 반환
+- src/web/screens/login.ts: C31-02/03/05 모드 전환 시 이전 오류 초기화, L4 변경 후 getSession 재확인 엄격화(result.data 우회 차단), 버전 API 성공 시에만 배지 렌더링, L4 규칙 안내 CSS 클래스 토글화
+- src/web/login.css: C31-05 인라인 스타일 제거를 위한 .disabled-desc.policy-desc-hidden { display: none; } 추가
+- scripts/ui-checks/login.mjs: C31-06/07 격리 폴더·자격증명 경로 검문, L2→L4 오류 격리 검증, L4 현재 비밀번호 오입력 차단, L5 복구키→임시 비밀번호 로그인→강제 변경 플로우, --case=session-error 재시도/복구 검증
+- scripts/ui-checks/shell.mjs: C31-06/07 격리 폴더 검문, 220px/64px/220px 사이드바 전환 정밀 측정, 상태줄 실제 API 값 대조, 새로고침 세션 복원, 일반 API 오류 확인 실패, AUTH_SESSION_REQUIRED L1 자동 전환
+범위 밖 변경: 0개 (허용된 9개 파일 외 수정 없음)
+요구사항 대조:
+- C31-01: src/main/http/route-registry.ts, src/main/http/route-registry.test.ts — PASS (비갱신 검증 1회, 갱신 0회, 타 보호 채널 갱신 1회 확인)
+- C31-02: src/web/screens/login.ts — PASS (L2 오류 발생 후 L4 전환 시 이전 에러 배너 0건 확인)
+- C31-03: src/web/screens/login.ts — PASS (L4 변경 후 getSession 재조회 실패/null 시 셸 차단 및 L1/재시도 안내)
+- C31-04: src/web/screens/status-bar.ts, src/web/screens/shell.ts, src/web/app.ts — PASS (일반 오류 시 확인 실패 표시, AUTH_SESSION_REQUIRED 시 1회 L1 자동 복귀)
+- C31-05: src/web/screens/login.ts, src/web/login.css, src/web/screens/shell.ts — PASS (버전 실패 시 배지 미표시, Phase 3-1b/미연결 기능 제거, CSS 클래스 토글)
+- C31-06: scripts/ui-checks/login.mjs, scripts/ui-checks/shell.mjs — PASS (저장소 밖 절대 경로 격리 폴더 및 bootstrap-credentials.json 정확한 파일 사전 검문)
+- C31-07: scripts/ui-checks/login.mjs, scripts/ui-checks/shell.mjs — PASS (L4 현재 비밀번호 오류, 복구 임시 비밀번호 로그인, 220/64/220px 실측, 상태줄 실제 API 값 대조, 새로고침 세션 복원)
+검증 증거:
+- npx vitest run src/main/http/route-registry.test.ts src/main/http/session.test.ts — 종료 코드 0 — 2 test files passed (10 tests) — 2026-09-28 17:30
+- npm run typecheck — 종료 코드 0 — tsc server & browser 통과 — 2026-09-28 17:30
+- npm run lint — 종료 코드 0 — 5 problems (0 errors, 5 existing warnings, 신규 0) — 2026-09-28 17:30
+- npm run validate:map — 종료 코드 0 — CODEBASE_MAP_OK 경로 82개 확인 — 2026-09-28 17:31
+- node --check scripts/ui-checks/login.mjs — 종료 코드 0 — 문법 검사 통과 — 2026-09-28 17:31
+- node --check scripts/ui-checks/shell.mjs — 종료 코드 0 — 문법 검사 통과 — 2026-09-28 17:45
+- npm test — 종료 코드 0 — 131 test files passed (900 tests) — 2026-09-28 17:36
+- npm run build — 종료 코드 0 — server clean, browser bundle, web assets copy 성공 — 2026-09-28 17:36
+- git diff --check — 종료 코드 0 — 공백 및 EOF 이상 없음 — 2026-09-28 17:37
+음성 테스트:
+- URL https://example.com/ — 기대: RC 1 차단 — 실제: [URL 검증 실패] http 프로토콜만 허용됩니다 (RC 1)
+- 빈 로컬 포트 http://127.0.0.1:49999/ — 기대: RC 2 차단 — 실제: [서버 확인 실패] 서버 연결 실패 (RC 2)
+- 상대 경로 자격증명 파일 — 기대: RC 2 차단 — 실제: [오류] SHIFTMGMT_UI_BOOTSTRAP_FILE 환경변수에 절대 경로가 지정되지 않았습니다 (RC 2)
+- 저장소 내부 자격증명 파일 — 기대: RC 2 차단 — 실제: [오류] bootstrap 파일이 저장소 내부에 위치할 수 없습니다 (RC 2)
+- 격리 폴더 외부 자격증명 파일 — 기대: RC 2 차단 — 실제: [오류] bootstrap 파일이 지정된 격리 데이터 폴더 내부에 위치하지 않습니다 (RC 2)
+- L4 현재 비밀번호 오입력 — 기대: 오류 배너 표시 및 L4 유지, 셸 차단 — 실제: .error-banner 표시 및 L4 화면 유지 확인
+- L4 약한 비밀번호/불일치 — 기대: 변경 버튼 비활성화 — 실제: isDisabled() === true 확인
+- 일반 상태 API 오류 — 기대: 해당 셀 확인 실패 표시, 셸 유지 — 실제: #sb-sync 동기화: 확인 실패 확인
+- 상태 API AUTH_SESSION_REQUIRED — 기대: 1회 L1 자동 복귀 — 실제: #login-id 화면 복귀 확인
+UI 증거:
+- ready.mjs (http://127.0.0.1:18739/): 캡처 2개 (ready.png, after-reload.png), manifest PASS, 오류 0건
+- login.mjs --case=session-error (http://127.0.0.1:18739/): 캡처 2개 (session-error-retry.png, session-error-recovered.png), manifest PASS, 오류 0건
+- login.mjs --case=flow (http://127.0.0.1:18739/): 캡처 4개 (login-initial.png, login-failure.png, password-change.png, logout.png), manifest PASS, 오류 0건
+- login.mjs --case=locked (http://127.0.0.1:18739/): 캡처 1개 (account-locked.png), manifest PASS, 오류 0건
+- login.mjs --case=recovery (http://127.0.0.1:18739/): 캡처 1개 (recovery-form.png), 임시 비밀번호로 L1 로그인→L4 강제 변경→셸 진입 완료, manifest PASS, 오류 0건
+- shell.mjs (http://127.0.0.1:18739/): 캡처 4개 (admin-expanded.png, admin-collapsed.png, watch-stopped.png, operator.png), manifest PASS, 오류 0건
+- 복구 비밀 파일 즉시 삭제, 격리 서버 프로세스 정상 종료, 포트 18739 해제 확인
+diff 요약:
+- src/main/http/route-registry.ts (+12/-1)
+- src/main/http/route-registry.test.ts (+38/-0)
+- src/web/app.ts (+3/-0)
+- src/web/screens/shell.ts (+2/-2)
+- src/web/screens/status-bar.ts (+19/-0)
+- src/web/screens/login.ts (+27/-18)
+- src/web/login.css (+4/-0)
+- scripts/ui-checks/login.mjs (전체 파일 교체/보강, 182줄)
+- scripts/ui-checks/shell.mjs (전체 파일 교체/보강, 359줄)
+전체 SHA-256:
+- src/main/http/route-registry.ts DC9E1CFCC556917E52AF28362D29C910932AD3FB7FACC763E13B959EA875D1C5
+- src/main/http/route-registry.test.ts 3DAF6CCC789A4FE71DC147AB7A48DD1398B1F8280DD9CAD38BF45455C7CA2AAB
+- src/web/app.ts 43E89426C0C56230D62939285E66CAFA7E54E270608267082849230B046EB431
+- src/web/screens/shell.ts F6A41B0D2BDFBFCDB242CE1BD7D7F38ADB7DF194AFC023D36CA799616ED14E9B
+- src/web/screens/status-bar.ts 0F007B1D2F21E1C0372AEB8845D5E74B45BAA4AF352CB35F748149ED92054A02
+- src/web/screens/login.ts 83F30055226F09564045E863727B49AB252C2974AB0C0B2A880A17BA14E8F1BA
+- src/web/login.css E93D1FA775105AAD1EE33DC743285390F958E3852F8CBF71013A9EBAB92737CE
+- scripts/ui-checks/login.mjs D7DB67696D3F3E1A58F7B8759BB4B1444739F7ED4EA8D7D2B39E4FE265317CBE
+- scripts/ui-checks/shell.mjs 4CE2B745ED2223C2526A3D505483D73DEA4346A23784E853AFE867EA7769EA4C
+- 보호 파일 12개 해시 100% 불변 일치 확인
+미해결/가정: 없음
+
+

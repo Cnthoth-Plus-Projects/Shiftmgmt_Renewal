@@ -1,0 +1,17 @@
+=== C4 (02-common-1) ===
+① 열기(입력 비움): 라벨=반려 disabled=false aria-disabled=true describedby=c4-reason-desc 입력=""
+② 입력 후: 라벨=반려 disabled=false aria-disabled=null describedby=c4-reason-desc 입력="사유"
+③ 실행 직후: 라벨=처리 중... disabled=true aria-disabled=null describedby=c4-reason-desc 입력="사유" activeElement=modal-c4
+④ 완료 후: 모달=false 라벨=반려 disabled=false aria-disabled=null describedby=c4-reason-desc 입력="사유"
+⑤ 재열기: 모달=true 라벨=반려 disabled=false aria-disabled=null describedby=c4-reason-desc 입력="사유"
+⑥ 재열기+입력 비움: 라벨=반려 disabled=false aria-disabled=true describedby=c4-reason-desc 입력="" ✓게이트 유지
+  콘솔: (no console errors) 
+=== O10 (11-operations-4) ===
+① 열기(입력 비움): 라벨=교체 실행 disabled=false aria-disabled=true describedby=o10-exec-desc 입력=""
+② 입력 후: 라벨=교체 실행 disabled=false aria-disabled=null describedby=null 입력="교체"
+③ 실행 직후: 라벨=복원 중... disabled=true aria-disabled=null describedby=null 입력="교체" activeElement=modal-o10
+④ 완료 후: 모달=false 라벨=교체 실행 disabled=false aria-disabled=null describedby=null 입력="교체"
+⑤ 재열기: 모달=true 라벨=교체 실행 disabled=false aria-disabled=null describedby=null 입력="교체"
+⑥ 재열기+입력 비움: 라벨=교체 실행 disabled=false aria-disabled=true describedby=o10-exec-desc 입력="" ✓게이트 유지
+  콘솔: (no console errors) 
+DONE

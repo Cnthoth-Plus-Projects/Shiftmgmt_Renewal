@@ -1,0 +1,26 @@
+{
+  "time": "2026-10-13 13:50:26 KST",
+  "sourceUnchanged": true,
+  "sourceFiles": 341,
+  "protectedFiles": 339,
+  "historicalControlsUnchanged": 69,
+  "productEditsBySol": 0,
+  "receivedArchive": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_135026_3-2c-A1-v6-Sol-FAILED_v7발송전보존.md",
+    "bytes": 14555,
+    "sha256": "B4C6B2E205C6D14F1C2D00076565895B185BC8641243470BA733D945C5B7F654"
+  },
+  "validation": {
+    "bytes": 19563,
+    "sha256": "D2FA341084B51AAFB540B4F3F5EA9E5882D8B512E7D0751A59C2A6F9E10F6AE4"
+  },
+  "routingFallback": "Terra unavailable -> balanced gpt-6-sol read-only evidence review",
+  "policyTrace": [
+    "P04",
+    "P06",
+    "P13",
+    "P25"
+  ],
+  "A1Accepted": false,
+  "counterReset": 0
+}

@@ -1,0 +1,218 @@
+[
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+    "expected": {
+      "bytes": 302267,
+      "sha256": "8AEDF6CF04B114DECA6AEBF30EF536A53F0DCF3D59475A9523AD87BCB74D0D2F"
+    },
+    "actual": {
+      "bytes": 302267,
+      "sha256": "8AEDF6CF04B114DECA6AEBF30EF536A53F0DCF3D59475A9523AD87BCB74D0D2F"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\05-screen-spec.md",
+    "expected": {
+      "bytes": 15544,
+      "sha256": "757A12FE05D3B84326A7A4308AABABFF576E9759A58713A807B06E203996C8F5"
+    },
+    "actual": {
+      "bytes": 15544,
+      "sha256": "757A12FE05D3B84326A7A4308AABABFF576E9759A58713A807B06E203996C8F5"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\11-디자인-요청서.md",
+    "expected": {
+      "bytes": 93598,
+      "sha256": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73"
+    },
+    "actual": {
+      "bytes": 93598,
+      "sha256": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\12-능력-매트릭스.md",
+    "expected": {
+      "bytes": 80457,
+      "sha256": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794"
+    },
+    "actual": {
+      "bytes": 80457,
+      "sha256": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\CLAUDE.md",
+    "expected": {
+      "bytes": 17618,
+      "sha256": "6564441C6E530C6F452954EF11BF030CDCFC58EDBEFC113E2BCC26181753289F"
+    },
+    "actual": {
+      "bytes": 17618,
+      "sha256": "6564441C6E530C6F452954EF11BF030CDCFC58EDBEFC113E2BCC26181753289F"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\07-invariants-and-pitfalls.md",
+    "expected": {
+      "bytes": 19084,
+      "sha256": "076A3DD8B96A19BF35652AC4D33808FE4B8B3C42A2D4EC1416EB6CFC5C14C0CF"
+    },
+    "actual": {
+      "bytes": 19084,
+      "sha256": "076A3DD8B96A19BF35652AC4D33808FE4B8B3C42A2D4EC1416EB6CFC5C14C0CF"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\AGENTS.md",
+    "expected": {
+      "bytes": 6160,
+      "sha256": "71EF3E3DEF51DEEE5E15D15DBFBA1CF0366311466DC7BF0087829F477A27326D"
+    },
+    "actual": {
+      "bytes": 6160,
+      "sha256": "71EF3E3DEF51DEEE5E15D15DBFBA1CF0366311466DC7BF0087829F477A27326D"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\PROTOCOL.md",
+    "expected": {
+      "bytes": 20925,
+      "sha256": "11E1C4DC06D81E4BCD35D232DABB66869945A5A187431C0500CEB00DE1FCBC8B"
+    },
+    "actual": {
+      "bytes": 20925,
+      "sha256": "11E1C4DC06D81E4BCD35D232DABB66869945A5A187431C0500CEB00DE1FCBC8B"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\GEMINI.md",
+    "expected": {
+      "bytes": 6685,
+      "sha256": "8B1D2FA9681A392685B3A2D9D3C5EE406179658DB84FA88E9743409249F43E4D"
+    },
+    "actual": {
+      "bytes": 6685,
+      "sha256": "8B1D2FA9681A392685B3A2D9D3C5EE406179658DB84FA88E9743409249F43E4D"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\HARNESS.md",
+    "expected": {
+      "bytes": 9347,
+      "sha256": "7856E7A72158423648FEAAD7935533C3B2D2AB6BCE2A4C7E21F3620939659805"
+    },
+    "actual": {
+      "bytes": 9347,
+      "sha256": "7856E7A72158423648FEAAD7935533C3B2D2AB6BCE2A4C7E21F3620939659805"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\GEMINI_HANDOFF_TEMPLATE.md",
+    "expected": {
+      "bytes": 7503,
+      "sha256": "1C44BE203370FD9204A0CAB36E921931B99A99C965F8B96212F3E6661CDFC409"
+    },
+    "actual": {
+      "bytes": 7503,
+      "sha256": "1C44BE203370FD9204A0CAB36E921931B99A99C965F8B96212F3E6661CDFC409"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\시안\\2026-09-02-2차HTML\\12-access-logs-1.html",
+    "expected": {
+      "bytes": 30649,
+      "sha256": "A93A67B504F5C3461F40AF2F9C368054C69FC3098208D706D71C1B7C01A28801"
+    },
+    "actual": {
+      "bytes": 30649,
+      "sha256": "A93A67B504F5C3461F40AF2F9C368054C69FC3098208D706D71C1B7C01A28801"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\시안\\2026-09-06-최종정리\\05-디자인-시스템-확정본-v1.3.md",
+    "expected": {
+      "bytes": 17793,
+      "sha256": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4"
+    },
+    "actual": {
+      "bytes": 17793,
+      "sha256": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md",
+    "expected": {
+      "bytes": 153849,
+      "sha256": "19AF581A10B03C1BE8D0B38419913EC5AC699948A1F849A39DAD05A4CB9F796F"
+    },
+    "actual": {
+      "bytes": 153849,
+      "sha256": "19AF581A10B03C1BE8D0B38419913EC5AC699948A1F849A39DAD05A4CB9F796F"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\lessons\\verifier-measurements-and-output-isolation.md",
+    "expected": {
+      "bytes": 1989,
+      "sha256": "37F70052FF079007C2822E178AE3328947AE334B8D5099E32E30FF4644DB4E4A"
+    },
+    "actual": {
+      "bytes": 1989,
+      "sha256": "37F70052FF079007C2822E178AE3328947AE334B8D5099E32E30FF4644DB4E4A"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+    "expected": {
+      "bytes": 29515,
+      "sha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE"
+    },
+    "actual": {
+      "bytes": 29515,
+      "sha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\STRATEGY.md",
+    "expected": {
+      "bytes": 26069,
+      "sha256": "0A6136FD23F989F7065993449F8A705CD4047FA358248218BB0719497B9F12D1"
+    },
+    "actual": {
+      "bytes": 26069,
+      "sha256": "0A6136FD23F989F7065993449F8A705CD4047FA358248218BB0719497B9F12D1"
+    },
+    "same": true
+  },
+  {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+    "expected": {
+      "bytes": 19880,
+      "sha256": "24244C9C2098F1C587BE633FF017979CB1EE982C38038A6FDC90F752A921A954"
+    },
+    "actual": {
+      "bytes": 19880,
+      "sha256": "24244C9C2098F1C587BE633FF017979CB1EE982C38038A6FDC90F752A921A954"
+    },
+    "same": true
+  }
+]

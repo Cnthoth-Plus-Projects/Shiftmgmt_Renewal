@@ -1,0 +1,256 @@
+
+=== 00-shell-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-s1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin
+   Δ1차: btns 변경 (1차 11개→11개)
+state-s2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 김지현
+   Δ1차: btns 변경 (1차 9개→9개)
+state-s3   label=36 hdr=56 title=20px/600 ☰=40x40 side=64 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영
+   Δ1차: btns 변경 (1차 9개→9개)
+
+=== 00-shell-2 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-s4   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin
+   Δ1차: btns 변경 (1차 11개→11개)
+state-s5   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | 다시 시작 | 다시 시작
+   Δ1차: btns 변경 (1차 13개→13개)
+state-s6   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 자세히 보기 | 업데이트 | 닫기 | [자세히 보기]
+   Δ1차: btns 변경 (1차 13개→13개)
+
+=== 01-login-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F5F6F8 --line=#D8DCE2 --text=#191B1F --text-sub=#606877 --row-selected=
+state-l1   label=29 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 비밀번호 표시 | 로그인
+   Δ1차: btns 변경 (1차 3개→2개)
+state-l2   label=29 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 비밀번호 표시 | 로그인
+   Δ1차: btns 변경 (1차 1개→2개)
+state-l3   label=29 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 로그인 화면으로 돌아가기 | [계정복구]
+   Δ1차: btns 변경 (1차 2개→2개)
+
+=== 01-login-2 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F5F6F8 --line=#D8DCE2 --text=#191B1F --text-sub=#606877 --row-selected=
+state-l4   label=29 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=1 modals=0
+   btns: 비밀번호 표시 | 비밀번호 표시 | 비밀번호 표시 | 비밀번호 변경[a-dis][desc]
+state-l5   label=29 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 복구키 표시 | 취소 | 확인
+   Δ1차: btns 변경 (1차 2개→3개)
+
+=== 02-common-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-c1   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: 단순 확인 열어 보기
+state-c2   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: 위험 확인 열어 보기
+state-c3   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: 파괴 확인 열어 보기
+state-c4   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=1 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: 사유 입력 열어 보기
+
+=== 02-common-2 scripts=0 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-c5   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 닫기
+state-c6   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 닫기
+state-c7   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 닫기
+state-c8   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: + 근무지 등록
+state-c9   label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=1 modals=0
+   btns: 실적 승인 | 실적 승인[a-dis][desc] | 저장 중...[dis]
+
+=== 02-common-3 scripts=0 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-c10  label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 
+state-c11  label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 
+state-c12  label=36 hdr=null title=null ☰=null side=null foot=null rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: 
+
+=== 04-sites-1 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-t1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 전체 3 | 활성 2 | 준비 중 1 | add근무지 등록 | 상세 | 상세 | 상세
+   Δ1차: btns 변경 (1차 16개→16개)
+
+=== 04-sites-2 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-t3   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 검색 지우기 | add근무지 등록 | 검색 지우기
+   Δ1차: btns 변경 (1차 12개→12개)
+state-t4   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | [보라매 사업장] 삭제 확인 열어 보기
+   Δ1차: btns 변경 (1차 10개→10개)
+
+=== 06-employees-1 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-e1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영
+   Δ1차: btns 변경 (1차 9개→9개)
+state-e2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 패널 닫기 | 시급 등록 | 배정 | 현재 배정 해지 | 인력 삭제
+   Δ1차: btns 변경 (1차 14개→14개)
+
+=== 06-employees-2 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-e3   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 시급 등록 열어 보기
+   Δ1차: btns 변경 (1차 10개→10개)
+state-e4   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 배정 열어 보기
+   Δ1차: btns 변경 (1차 10개→10개)
+state-e5   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=2 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 위로 이동[a-dis] | 아래로 이동 | 위로 이동 | 아래로 이동 | 위로 이동 | 아래로 이동 | 위로 이동 | 아래로 이동[a-dis]
+   Δ1차: btns 변경 (1차 17개→17개)
+
+=== 06-employees-3 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-e6   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | 시급 일괄 업데이트 열어 보기
+   Δ1차: btns 변경 (1차 12개→12개)
+state-e7   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person 박은영 | person_add신규 인력 등록
+   Δ1차: btns 변경 (1차 10개→12개)
+
+=== 07-schedule-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-r1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=140 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 미리보기 | warning 경고 103건 | 엑셀 생성 | 배포 폴더로 게시
+   Δ1차: btns 변경 (1차 13개→13개)
+
+=== 07-schedule-2 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-r2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=140 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 미리보기 | warning 경고 103건 (펼침) | 엑셀 생성 | 배포 폴더로 게시 | 패널 접기
+   Δ1차: btns 변경 (1차 14개→14개)
+state-r3   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=2 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 미리보기 | 엑셀 생성[a-dis][desc✗] | 배포 폴더로 게시[a-dis][desc✗]
+   Δ1차: btns 변경 (1차 12개→12개)
+
+=== 07-schedule-3 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-r4   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=2
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | 배포 확인 열어 보기
+   Δ1차: btns 변경 (1차 10개→10개)
+state-r5   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영
+   Δ1차: btns 변경 (1차 9개→9개)
+state-r6   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 박은영 | add_circle근무표 만들기
+   Δ1차: btns 변경 (1차 10개→10개)
+
+=== 09-allowance-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-a1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[43,43,43] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | description품의 미리보기 | 조기 지급 | 조기 지급 | 조기 지급 | 조기 지급
+   Δ1차: btns 변경 (1차 14개→14개)
+state-a2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | 품의 미리보기 | 패널 닫기
+   Δ1차: btns 변경 (1차 11개→11개)
+
+=== 09-allowance-2 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-a3-a5 label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=6
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0 · modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0 · modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | 품의 미리보기 열어 보기 (A3) | 조기 지급일 지정 열어 보기 (A4)
+   Δ1차: btns 변경 (1차 11개→11개)
+
+=== 09-allowance-3 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-a6   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | 닫기
+   Δ1차: btns 변경 (1차 10개→10개)
+state-a7   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | 승인 6 | 대기 34 | 반려 0
+   Δ1차: btns 변경 (1차 12개→12개)
+state-a8   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | fact_check실적 관리로 이동
+   Δ1차: btns 변경 (1차 10개→10개)
+
+=== 10-dashboard-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-d1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | 차트 데이터 내보내기 | 보고서 내보내기
+   Δ1차: btns 변경 (1차 11개→11개)
+state-d2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호
+   Δ1차: btns 변경 (1차 9개→9개)
+state-d3   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | 메뉴 접기/펼치기 | person 이정호 | fact_check실적 관리로 이동
+   Δ1차: btns 변경 (1차 10개→10개)
+
+=== 11-operations-1 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-o1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 경로 저장 | 폴더 선택 | 폴더 선택 | 폴더 선택 | 폴더 선택 | 폴더 선택 | 폴더 선택 | 파일 선택 | 재시작 | 중지 | 수동 백업 저장
+   Δ1차: btns 변경 (1차 23개→23개)
+state-o2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[43,43,43] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 모두 반영 | add신규 등록 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거 | 수정 | 제거
+   Δ1차: btns 변경 (1차 30개→30개)
+
+=== 11-operations-2 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-o3   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[43,45,45] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 신규 요율 추가 | 수정 | 삭제 | 저장 | 영향 미리보기
+   Δ1차: btns 변경 (1차 17개→17개)
+state-o4   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[43,43,43] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 계정복구키 발급 | 신규 사용자 추가 | 수정 | 삭제 | 수정 | 삭제 | 수정 | 삭제 | 수정 | 삭제
+   Δ1차: btns 변경 (1차 22개→22개)
+state-o5   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[43,43,43] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 근무지 이름 추가 | 수정 | 삭제 | 수정 | 삭제 | 수정 | 삭제 | 수정 | 삭제 | 수정 | 삭제
+   Δ1차: btns 변경 (1차 23개→23개)
+
+=== 11-operations-3 scripts=1 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-o6   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 | 양식등록 | 수정 | 파일명 변경 | 승인 | 기본 사용 | 삭제 | 수정 | 파일명 변경 | 승인 | 기본 사용 | 삭제 | 수정 | 파일명 변경 | 승인 | 기본 사용 | 삭제 | 수정 | 파일명 변경 | 승인 | 기본 사용 | 삭제
+   Δ1차: btns 변경 (1차 33개→33개)
+state-o7   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | 저장
+   Δ1차: btns 변경 (1차 12개→12개)
+state-o8   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[40,40,40] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원
+   Δ1차: btns 변경 (1차 12개→12개)
+
+=== 11-operations-4 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-o9-o10 label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=1 modals=4
+   modals: modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0 · modal-overlay vis=false role=dialog w=0 · modal-box vis=false role=null w=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | DB복원 미리보기 열어 보기
+   Δ1차: btns 변경 (1차 12개→12개)
+
+=== 12-access-logs-1 scripts=2 bodyW=1440 tokens: --accent=#3E56B6 --bg=#F4F5F7 --line=#E2E5EA --text=#1F2430 --text-sub=#4B5563 --row-selected=#EEF1FB
+state-g1   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[56,56,56] th=rgb(248, 249, 250)/600/13px small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | 초기화 | 새로고침
+   Δ1차: btns 변경 (1차 13개→13개)
+state-g2   label=36 hdr=56 title=20px/600 ☰=40x40 side=220 foot=32 rows=[] th=- small=0 tdSmall=0 adis=0 modals=0
+   btns: home홈 | domain근무지 관리 | group인력 관리 | calendar_month근무표 배포 | fact_check실적 관리128 | payments수당 관리 | monitoring대시보드 | settings운영 관리 | history활동 이력 | 메뉴 접기/펼치기 | person admin | 초기화 | 필터 초기화
+   Δ1차: btns 변경 (1차 13개→13개)
+
+
+##### 플래그 #####
+- state-l1 라벨바 29≠36
+- state-l2 라벨바 29≠36
+- state-l3 라벨바 29≠36
+- state-l4 라벨바 29≠36
+- state-l5 라벨바 29≠36
+- state-r1 표 본문 14px 미만 td 140개
+- state-r2 표 본문 14px 미만 td 140개
+- state-r3 describedby 대상 없음: 엑셀 생성[a-dis][desc✗]
+- state-r3 describedby 대상 없음: 배포 폴더로 게시[a-dis][desc✗]
+- state-a1 행 높이 43≠40 (rows [43,43,43])
+- state-a1 행 높이 43≠40 (rows [43,43,43])
+- state-a1 행 높이 43≠40 (rows [43,43,43])
+- state-o2 행 높이 43≠40 (rows [43,43,43])
+- state-o2 행 높이 43≠40 (rows [43,43,43])
+- state-o2 행 높이 43≠40 (rows [43,43,43])
+- state-o3 행 높이 43≠40 (rows [43,45,45])
+- state-o3 행 높이 45≠40 (rows [43,45,45])
+- state-o3 행 높이 45≠40 (rows [43,45,45])
+- state-o4 행 높이 43≠40 (rows [43,43,43])
+- state-o4 행 높이 43≠40 (rows [43,43,43])
+- state-o4 행 높이 43≠40 (rows [43,43,43])
+- state-o5 행 높이 43≠40 (rows [43,43,43])
+- state-o5 행 높이 43≠40 (rows [43,43,43])
+- state-o5 행 높이 43≠40 (rows [43,43,43])
+- state-g1 행 높이 56≠40 (rows [56,56,56])
+- state-g1 행 높이 56≠40 (rows [56,56,56])
+- state-g1 행 높이 56≠40 (rows [56,56,56])
+총 27 건

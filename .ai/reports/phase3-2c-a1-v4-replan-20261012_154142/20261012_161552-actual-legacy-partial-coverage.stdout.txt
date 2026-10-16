@@ -1,0 +1,6 @@
+{"mode":"capture-failure","accepted":false,"detectedRegression":true,"exit":{"code":1,"signal":null,"timeMs":1791789353987},"reason":"AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:"}
+{"mode":"context-close-failure","accepted":false,"detectedRegression":true,"exit":{"code":0,"signal":null,"timeMs":1791789355670},"reason":"AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"}
+{"mode":"partial-write-failure","accepted":false,"detectedRegression":true,"exit":{"code":1,"signal":null,"timeMs":1791789357147},"reason":"Error: ENOENT: no such file or directory, open 'C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v4-partial-JQ0pEb\\core-partial.fallback.json'"}
+{"mode":"measured-viewport","accepted":false,"detectedRegression":true,"exit":{"code":0,"signal":null,"timeMs":1791789358828},"reason":"AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"}
+{"mode":"measured-origin","accepted":false,"detectedRegression":true,"exit":{"code":0,"signal":null,"timeMs":1791789360568},"reason":"AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"}
+{"status":"EXPECTED_LEGACY_REGRESSIONS_DETECTED","artifact":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v4-partial-cC3Vsu","modes":5}

@@ -1,0 +1,889 @@
+{
+  "badge": {
+    "testedAt": "2026-09-07T06:01:43.309Z",
+    "expanded": [
+      {
+        "id": "87930",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "description": {
+          "type": "computedString",
+          "value": "승인 대기 실적 128건"
+        },
+        "ignored": false
+      },
+      {
+        "id": "87400",
+        "role": "StaticText",
+        "name": {
+          "type": "computedString",
+          "value": "128",
+          "sources": [
+            {
+              "type": "contents",
+              "value": {
+                "type": "computedString",
+                "value": "128"
+              }
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87927",
+        "role": "link",
+        "name": {
+          "type": "computedString",
+          "value": "실적 관리 128",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "contents",
+              "value": {
+                "type": "computedString",
+                "value": "실적 관리 128"
+              }
+            },
+            {
+              "type": "attribute",
+              "attribute": "title",
+              "superseded": true
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87926",
+        "role": "listitem",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87907",
+        "role": "list",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87906",
+        "role": "navigation",
+        "name": {
+          "type": "computedString",
+          "value": "주 메뉴",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "value": {
+                "type": "computedString",
+                "value": "주 메뉴"
+              },
+              "attribute": "aria-label",
+              "attributeValue": {
+                "type": "string",
+                "value": "주 메뉴"
+              }
+            },
+            {
+              "type": "attribute",
+              "attribute": "title",
+              "superseded": true
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87905",
+        "role": "complementary",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87904",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87901",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87899",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87898",
+        "role": "none",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "87891",
+        "role": "none",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "87890",
+        "role": "RootWebArea",
+        "name": {
+          "type": "computedString",
+          "value": "근무 관리 시스템 — 시안 08-performance-3.html",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label",
+              "superseded": true
+            },
+            {
+              "type": "relatedElement",
+              "value": {
+                "type": "computedString",
+                "value": "근무 관리 시스템 — 시안 08-performance-3.html"
+              },
+              "nativeSource": "title"
+            }
+          ]
+        },
+        "ignored": false
+      }
+    ],
+    "collapsed": [
+      {
+        "id": "87930",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "description": {
+          "type": "computedString",
+          "value": "승인 대기 실적 128건"
+        },
+        "ignored": false
+      },
+      {
+        "id": "87400",
+        "role": "StaticText",
+        "name": {
+          "type": "computedString",
+          "value": "128",
+          "sources": [
+            {
+              "type": "contents",
+              "value": {
+                "type": "computedString",
+                "value": "128"
+              }
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87927",
+        "role": "link",
+        "name": {
+          "type": "computedString",
+          "value": "실적 관리 128",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "contents",
+              "value": {
+                "type": "computedString",
+                "value": "실적 관리 128"
+              }
+            },
+            {
+              "type": "attribute",
+              "value": {
+                "type": "computedString",
+                "value": "실적 관리"
+              },
+              "attribute": "title",
+              "attributeValue": {
+                "type": "string",
+                "value": "실적 관리"
+              },
+              "superseded": true
+            }
+          ]
+        },
+        "description": {
+          "type": "computedString",
+          "value": "실적 관리"
+        },
+        "ignored": false
+      },
+      {
+        "id": "87926",
+        "role": "listitem",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87907",
+        "role": "list",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87906",
+        "role": "navigation",
+        "name": {
+          "type": "computedString",
+          "value": "주 메뉴",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "value": {
+                "type": "computedString",
+                "value": "주 메뉴"
+              },
+              "attribute": "aria-label",
+              "attributeValue": {
+                "type": "string",
+                "value": "주 메뉴"
+              }
+            },
+            {
+              "type": "attribute",
+              "attribute": "title",
+              "superseded": true
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87905",
+        "role": "complementary",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "title"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87904",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87901",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87899",
+        "role": "generic",
+        "name": {
+          "type": "computedString",
+          "value": "",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "ignored": false
+      },
+      {
+        "id": "87898",
+        "role": "none",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "87891",
+        "role": "none",
+        "ignored": true,
+        "ignoredReasons": [
+          {
+            "name": "uninteresting",
+            "value": {
+              "type": "boolean",
+              "value": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "87890",
+        "role": "RootWebArea",
+        "name": {
+          "type": "computedString",
+          "value": "근무 관리 시스템 — 시안 08-performance-3.html",
+          "sources": [
+            {
+              "type": "relatedElement",
+              "attribute": "aria-labelledby"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label"
+            },
+            {
+              "type": "attribute",
+              "attribute": "aria-label",
+              "superseded": true
+            },
+            {
+              "type": "relatedElement",
+              "value": {
+                "type": "computedString",
+                "value": "근무 관리 시스템 — 시안 08-performance-3.html"
+              },
+              "nativeSource": "title"
+            }
+          ]
+        },
+        "ignored": false
+      }
+    ]
+  },
+  "skipNavigation": {
+    "testedAt": "2026-09-07T06:04:27.664Z",
+    "results": [
+      {
+        "file": "시안/2026-08-31-1차HTML/03-home-1.html",
+        "first": {
+          "tag": "A",
+          "cls": "skip-link",
+          "text": "본문으로 바로가기",
+          "href": "#main-state-h1"
+        },
+        "target": {
+          "hash": "#main-state-h1",
+          "active": "<body>\n\n  <!-- ========================================== -->\n  <!-- H1. 홈 — 기본 (오류 없음) -->\n  <!-- ========================================== -->\n  <d",
+          "targetHTML": "<div class=\"app-body\" id=\"main-state-h1\">\n        <aside class=\"sidebar\"><nav aria-label=\"주 메뉴\">\n          <ul class=\"nav-list\" style=\"padding-top: 12px;\">\n            <li><a href=\"#\" class=\"nav-item active\" aria-current=\"page\"><span class=\"material-symbols-outlined\" aria-hidden=\"true\">home</span><span>홈</span></a></li>\n            <li class=\"nav-g"
+        },
+        "next": {
+          "tag": "A",
+          "cls": "nav-item active",
+          "text": "home홈",
+          "closestNav": "주 메뉴"
+        }
+      },
+      {
+        "file": "시안/2026-09-02-2차HTML/00-shell-1.html",
+        "first": {
+          "tag": "A",
+          "cls": "skip-link",
+          "text": "본문으로 바로가기",
+          "href": "#main-state-s1"
+        },
+        "target": {
+          "hash": "#main-state-s1",
+          "active": "<body>\n\n<div class=\"state-wrapper\" id=\"state-s1\">\n  <div class=\"status-label-bar\">── S1. 셸 — 기본 ──</div>\n  <div class=\"app-window\" id=\"s1-app-window\">",
+          "targetHTML": "<div class=\"app-body\" id=\"main-state-s1\">\n      \n  <aside class=\"sidebar \"><nav aria-label=\"주 메뉴\">\n    <ul class=\"nav-list\" style=\"padding-top: 12px;\">\n          <li><a href=\"#\" class=\"nav-item active\" aria-current=\"page\"><span class=\"material-symbols-outlined\" aria-hidden=\"true\">home</span><span>홈</span></a></li>\n          <li class=\"nav-group-hea"
+        },
+        "next": {
+          "tag": "A",
+          "cls": "nav-item active",
+          "text": "home홈",
+          "closestNav": "주 메뉴"
+        }
+      }
+    ]
+  },
+  "remedyProof": {
+    "at": "2026-09-07T06:12:23.261Z",
+    "note": "Proposed fixes tested in transient DOM only, no HTML files changed.",
+    "results": [
+      {
+        "secondBefore": [
+          {
+            "role": "generic",
+            "name": "",
+            "description": "승인 대기 실적 128건"
+          },
+          {
+            "role": "StaticText",
+            "name": "128"
+          },
+          {
+            "role": "link",
+            "name": "실적 관리 128"
+          }
+        ]
+      },
+      {
+        "secondInMemoryNamedLink": [
+          {
+            "role": "generic",
+            "name": "",
+            "description": "승인 대기 실적 128건"
+          },
+          {
+            "role": "StaticText",
+            "name": "128"
+          },
+          {
+            "role": "link",
+            "name": "실적 관리, 승인 대기 실적 128건"
+          }
+        ]
+      },
+      {
+        "inMemoryMainTarget": {
+          "afterEnter": {
+            "tag": "MAIN",
+            "id": "main-state-h1"
+          },
+          "next": {
+            "tag": "BUTTON",
+            "cls": "btn-primary btn-sm",
+            "text": "실적 관리에서 확인",
+            "inNav": false
+          }
+        }
+      }
+    ]
+  },
+  "w7ClosePaths": {
+    "at": "2026-09-07T06:13:27.254Z",
+    "out": [
+      {
+        "action": "Escape",
+        "modalVisible": false,
+        "backgroundHidden": null,
+        "w2CalendarFonts": [
+          "9px",
+          "8px"
+        ]
+      },
+      {
+        "action": "stay",
+        "modalVisible": false,
+        "backgroundHidden": null,
+        "w2CalendarFonts": [
+          "9px",
+          "8px"
+        ]
+      },
+      {
+        "action": "discard",
+        "modalVisible": false,
+        "backgroundHidden": null,
+        "w2CalendarFonts": [
+          "9px",
+          "8px"
+        ]
+      }
+    ]
+  },
+  "w7VisibleFonts": {
+    "at": "2026-09-07T06:14:20.245Z",
+    "result": {
+      "count": 21,
+      "nodes": [
+        {
+          "tag": "B",
+          "cls": "c-head c-red",
+          "text": "일",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head",
+          "text": "월",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head",
+          "text": "화",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head",
+          "text": "수",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head",
+          "text": "목",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head",
+          "text": "금",
+          "font": "9px"
+        },
+        {
+          "tag": "B",
+          "cls": "c-head c-blue",
+          "text": "토",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "1",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dd",
+          "text": "주간",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "2",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dn",
+          "text": "야간",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "3",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dm",
+          "text": "석간",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "4",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "do",
+          "text": "휴무",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "5",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dd",
+          "text": "주간",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "6",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dn",
+          "text": "야간",
+          "font": "9px"
+        },
+        {
+          "tag": "DIV",
+          "cls": "c-cell",
+          "text": "7",
+          "font": "8px"
+        },
+        {
+          "tag": "B",
+          "cls": "dm",
+          "text": "석간",
+          "font": "9px"
+        }
+      ],
+      "mainHidden": null,
+      "dialogDisplay": "none"
+    }
+  },
+  "e9Registration": {
+    "at": "2026-09-07T06:10:37.885Z",
+    "layout": {
+      "button": {
+        "x": 978.90625,
+        "y": 122,
+        "width": 139.234375,
+        "height": 32,
+        "bottom": 154
+      },
+      "reason": {
+        "x": 1130.140625,
+        "y": 129,
+        "width": 272.859375,
+        "height": 18,
+        "bottom": 147
+      },
+      "sameParent": true,
+      "parentDisplay": "flex"
+    }
+  }
+}

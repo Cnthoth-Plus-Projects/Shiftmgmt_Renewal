@@ -1,0 +1,134 @@
+======================================================================
+⑥ 적대검증(Claude 대행) — 정적 전수 A1~A13
+======================================================================
+
+## A4_inline_svg: 2건
+   09-allowance-1.html <svg> 1개
+   10-dashboard-1.html <svg> 1개
+
+## A5_tab_no_panel: 3건
+   11-operations-1.html role=tab 14개인데 role=tabpanel 0
+   11-operations-2.html role=tab 21개인데 role=tabpanel 0
+   11-operations-3.html role=tab 14개인데 role=tabpanel 0
+
+## A6_disabled_no_reason: 1건
+   02-common-2.html:560 <button disabled> 사유 속성 없음
+
+## A7_navy_bg: 22건
+   00-shell-1.html:247 #32479B rgb(50,71,155)
+   00-shell-2.html:247 #32479B rgb(50,71,155)
+   02-common-1.html:247 #32479B rgb(50,71,155)
+   02-common-2.html:247 #32479B rgb(50,71,155)
+   02-common-3.html:247 #32479B rgb(50,71,155)
+   04-sites-1.html:247 #32479B rgb(50,71,155)
+   04-sites-2.html:247 #32479B rgb(50,71,155)
+   06-employees-1.html:247 #32479B rgb(50,71,155)
+   06-employees-2.html:247 #32479B rgb(50,71,155)
+   06-employees-3.html:247 #32479B rgb(50,71,155)
+   07-schedule-1.html:247 #32479B rgb(50,71,155)
+   07-schedule-2.html:247 #32479B rgb(50,71,155)
+   07-schedule-3.html:247 #32479B rgb(50,71,155)
+   09-allowance-1.html:247 #32479B rgb(50,71,155)
+   09-allowance-2.html:247 #32479B rgb(50,71,155)
+   09-allowance-3.html:247 #32479B rgb(50,71,155)
+   10-dashboard-1.html:247 #32479B rgb(50,71,155)
+   11-operations-1.html:247 #32479B rgb(50,71,155)
+   11-operations-2.html:247 #32479B rgb(50,71,155)
+   11-operations-3.html:247 #32479B rgb(50,71,155)
+   11-operations-4.html:247 #32479B rgb(50,71,155)
+   12-access-logs-1.html:247 #32479B rgb(50,71,155)
+
+## A8_english_text: 낱말 62종 / 출현 599회
+   fact_check x44
+   home x42
+   domain x42
+   group x42
+   calendar_month x42
+   payments x42
+   monitoring x42
+   menu x42
+   person x42
+   html x24
+   admin x22
+   close x22
+   xlsx x16
+   settings x15
+   history x15
+   API x10
+   visibility x6
+   check_circle x5
+   error x4
+   operations- x4
+   kimjihyun x4
+   parkeunyoung x4
+   leejungho x4
+   common- x3
+   add x3
+   employees- x3
+   Excel x3
+   schedule- x3
+   allowance- x3
+   JSON x3
+   workMonth x3
+   shell- x2
+   info x2
+   login- x2
+   radio_button_unchecked x2
+   sites- x2
+   BRM- x2
+   SSL- x2
+   PGC- x2
+   warning x2
+   lock x1
+   key x1
+   domain_disabled x1
+   sync x1
+   Pool x1
+   search_off x1
+   group_off x1
+   person_add x1
+   expand_less x1
+   event_busy x1
+   add_circle x1
+   description x1
+   receipt_long x1
+   dashboard- x1
+   analytics x1
+   Access x1
+   siteName x1
+   scheduleMonth x1
+   patternName x1
+   json x1
+   access-logs- x1
+   history_toggle_off x1
+
+## 파일 크기 (바이트)
+   00-shell-1.html 23,592
+   00-shell-2.html 32,425
+   01-login-1.html 9,846
+   01-login-2.html 12,077
+   02-common-1.html 20,403
+   02-common-2.html 16,544
+   02-common-3.html 18,043
+   04-sites-1.html 25,163
+   04-sites-2.html 23,701
+   06-employees-1.html 30,426
+   06-employees-2.html 34,295
+   06-employees-3.html 28,863
+   07-schedule-1.html 37,647
+   07-schedule-2.html 45,547
+   07-schedule-3.html 28,049
+   09-allowance-1.html 31,580
+   09-allowance-2.html 25,674
+   09-allowance-3.html 26,426
+   10-dashboard-1.html 33,015
+   11-operations-1.html 44,556
+   11-operations-2.html 48,969
+   11-operations-3.html 44,369
+   11-operations-4.html 26,364
+   12-access-logs-1.html 26,597
+
+## role=tab 구조
+   11-operations-1.html {'tab': 14, 'tablist': 2, 'tabpanel': 0, 'aria_selected': 14}
+   11-operations-2.html {'tab': 21, 'tablist': 3, 'tabpanel': 0, 'aria_selected': 21}
+   11-operations-3.html {'tab': 14, 'tablist': 2, 'tabpanel': 0, 'aria_selected': 14}

@@ -1,0 +1,7 @@
+{
+  "function": "validateProcessReceipt",
+  "allowedProvider": "scripts/ui-checks/access-history-negative.mjs",
+  "bytes": 2250,
+  "sha256": "656B3F632161ADAA1FE76AAE7A68F12E1225D236272C93DBCF61877B2F8EF652",
+  "allowedDelta": "export prefix plus file movement only; original internal newline bytes exact"
+}

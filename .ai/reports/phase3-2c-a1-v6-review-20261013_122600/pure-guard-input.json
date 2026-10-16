@@ -1,0 +1,629 @@
+[
+  {
+    "name": "valid",
+    "record": {
+      "pid": 202,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": false,
+    "fixedHelperAccepted": true
+  },
+  {
+    "name": "noninteger-pid",
+    "record": {
+      "pid": 202.5,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202.5,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202.5,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202.5,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": true,
+    "fixedHelperAccepted": false,
+    "fixedHelperError": "Child callback PID differs"
+  },
+  {
+    "name": "extra-logFinishSeen",
+    "record": {
+      "pid": 202,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true,
+        "unapproved": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": true,
+    "fixedHelperAccepted": false,
+    "fixedHelperError": "Actual stream receipt missing"
+  },
+  {
+    "name": "extra-logCloseSeen",
+    "record": {
+      "pid": 202,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true,
+        "unapproved": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": true,
+    "fixedHelperAccepted": false,
+    "fixedHelperError": "Actual stream receipt missing"
+  },
+  {
+    "name": "extra-logFinishAtMs",
+    "record": {
+      "pid": 202,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5,
+        "unapproved": 4
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": true,
+    "fixedHelperAccepted": false,
+    "fixedHelperError": "Actual stream receipt missing"
+  },
+  {
+    "name": "extra-logCloseAtMs",
+    "record": {
+      "pid": 202,
+      "exitSeen": true,
+      "closeSeen": true,
+      "createdAtMs": 1,
+      "exitAtMs": 2,
+      "closeAtMs": 3,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closeCode": 0,
+      "closeSignal": null,
+      "logFinishSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logCloseSeen": {
+        "stdout": true,
+        "stderr": true
+      },
+      "logFinishAtMs": {
+        "stdout": 4,
+        "stderr": 5
+      },
+      "logCloseAtMs": {
+        "stdout": 5,
+        "stderr": 6,
+        "unapproved": 5
+      },
+      "callbackEvents": [
+        {
+          "event": "spawn",
+          "timeMs": 1,
+          "stream": null,
+          "pid": 202,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "exit",
+          "timeMs": 2,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "close",
+          "timeMs": 3,
+          "stream": null,
+          "pid": 202,
+          "code": 0,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 4,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 5,
+          "stream": "stdout",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-finish",
+          "timeMs": 5,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        },
+        {
+          "event": "log-close",
+          "timeMs": 6,
+          "stream": "stderr",
+          "pid": null,
+          "code": null,
+          "signal": null,
+          "error": null
+        }
+      ],
+      "aliveAfterClose": false,
+      "logsSettled": {
+        "stdout": true,
+        "stderr": true
+      }
+    },
+    "expectedReject": true,
+    "fixedHelperAccepted": false,
+    "fixedHelperError": "Actual stream receipt missing"
+  }
+]

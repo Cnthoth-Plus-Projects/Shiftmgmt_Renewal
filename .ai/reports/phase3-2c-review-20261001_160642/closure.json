@@ -1,0 +1,12 @@
+{
+  "time": "2026-10-01 16:37:56 KST",
+  "sourceSnapshot": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\scope-final-before-control-update.json",
+  "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_163756_3-2c-Sol-FAILED-REPLAN_독립검증종결본.md",
+  "assessmentBytes": 15601,
+  "assessmentSha256": "FB072898CC88DE9C0326F0C6A1A68A821D68D18922ADF00F94F5378E627CBB40",
+  "todoBytes": 301570,
+  "todoSha256": "AB8AC85F0048B462AC71EDB5AD1AA3E7FBE0CDF7E7778BF073F8E8D22344DA09",
+  "stateBytes": 150820,
+  "stateSha256": "35696B21DC2BA5140B335C83A7C369138E2344F242EED8050BF34F2C9A9F456C",
+  "mapBaselineMatch": true
+}

@@ -1,0 +1,14 @@
+
+> shiftmgmt@0.1.0 build
+> npm run build:server && npm run build:browser && node scripts/copy-web-assets.mjs
+
+
+> shiftmgmt@0.1.0 build:server
+> node scripts/clean-server-build.mjs && tsc -p tsconfig.server.json
+
+CLEAN_SERVER_BUILD_OK: dist/server 청소 완료.
+
+> shiftmgmt@0.1.0 build:browser
+> esbuild src/web/app.ts --bundle --format=esm --platform=browser --target=es2022 --outfile=dist/browser/web/app.js --sourcemap --log-level=warning
+
+WEB_ASSETS_OK — dist\browser\web 에 화면 파일·글꼴을 복사했습니다.

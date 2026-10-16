@@ -1,0 +1,18 @@
+{
+  "name": "typecheck",
+  "argv": [
+    "npm.cmd",
+    "run",
+    "typecheck"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 19384,
+  "start": "2026-10-12T08:56:39.434644+00:00",
+  "end": "2026-10-12T08:56:48.378893+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\typecheck.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\typecheck.stderr.txt",
+  "stdoutSha256": "EB0C68245B291B33DD886D88F9CFB76DECBF3D9E93BDBDEA5666CE1D4BA515B3",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

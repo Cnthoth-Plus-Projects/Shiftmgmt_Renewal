@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2-correct2-review-20261001_085101/inject-ui-errors.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=list-fixture"
+  ],
+  "syntheticVerifierFault": true,
+  "exitCode": 1,
+  "stdout": "{\"label\":\"access-history-list-fixture\",\"status\":\"FAIL\",\"exitCode\":1,\"tempCleaned\":true}\n",
+  "stderr": "file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162\n    if (!pass) throw new Error(`[Assertion \uc2e4\ud328: ${name}] exp=${JSON.stringify(expected)} act=${JSON.stringify(actual)}`);\n                     ^\n\nError: [Assertion \uc2e4\ud328: unexpected-browser-errors-0] exp=0 act=3\n    at assert (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162:22)\n    at runWorker (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:484:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:592:3\n\nNode.js v24.13.0\n"
+}

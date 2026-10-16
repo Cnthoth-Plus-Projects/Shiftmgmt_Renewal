@@ -1,0 +1,18 @@
+{
+  "name": "fault-date-90x24",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=list-fixture"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:16:54.853743+00:00",
+  "pid": 43316,
+  "rc": 1,
+  "end": "2026-10-01T07:16:59.687649+00:00",
+  "elapsedSeconds": 4.829,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-90x24.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-90x24.stderr.txt"
+}

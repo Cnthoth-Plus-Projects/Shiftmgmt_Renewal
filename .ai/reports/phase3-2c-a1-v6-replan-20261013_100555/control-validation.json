@@ -1,0 +1,394 @@
+{
+  "status": "PASS",
+  "proof": "SOL_V6_CONTROL_VALIDATION_ONLY_NOT_PRODUCT_ACCEPTANCE",
+  "A1Accepted": false,
+  "productEditsBySol": 0,
+  "syntax": [
+    "evidence-v6.py",
+    "gate-evidence.py",
+    "observer-selfcheck.py",
+    "runtime-probes.py",
+    "component-probes.mjs",
+    "ipc-probes.mjs",
+    "observer-canary.mjs",
+    "partial-preload.mjs",
+    "partial-probes.mjs",
+    "runtime-preload.mjs"
+  ],
+  "gateParser": {
+    "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+    "original": {
+      "positiveComparisons": 2,
+      "rejectedMutations": 19,
+      "mutations": [
+        "missing-id",
+        "duplicate-id",
+        "unknown-id",
+        "viewport",
+        "loginInputs",
+        "fixtureRequestCount",
+        "rawErrors",
+        "constant-actual",
+        "caller-tolerance",
+        "caller-expected",
+        "canonical-label-drift",
+        "nonfinite-nan",
+        "nonfinite-inf",
+        "numeric-tolerance-2",
+        "numeric-tolerance-4",
+        "numeric-tolerance-nan",
+        "date-133.5",
+        "close-error",
+        "truncated-png"
+      ],
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+    },
+    "extraRejectedMutations": [
+      "protected-executionError",
+      "protected-manifestWriteError",
+      "protected-consoleErrors",
+      "protected-pageErrors",
+      "protected-requestFailed",
+      "protected-badResponses",
+      "protected-cleanupErrors",
+      "protected-extra-error-field",
+      "recursive-nan",
+      "numeric-bool",
+      "log-before-close",
+      "log-boolean-time",
+      "log-missing-stderr",
+      "log-extra-finish",
+      "stdout-logFinishSeen-missing",
+      "stdout-logFinishSeen-false",
+      "stdout-logCloseSeen-missing",
+      "stdout-logCloseSeen-false",
+      "stdout-close-null",
+      "stdout-close-bool",
+      "stdout-close-zero",
+      "stdout-close-before-finish",
+      "stdout-close-nan",
+      "stderr-logFinishSeen-missing",
+      "stderr-logFinishSeen-false",
+      "stderr-logCloseSeen-missing",
+      "stderr-logCloseSeen-false",
+      "stderr-close-null",
+      "stderr-close-bool",
+      "stderr-close-zero",
+      "stderr-close-before-finish",
+      "stderr-close-nan",
+      "logFinishSeen-extra",
+      "logCloseSeen-extra",
+      "logCloseAtMs-extra"
+    ],
+    "v6ReceiptRules": {
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+      "positives": 10,
+      "rejected": [
+        "missing-callbackEvents",
+        "missing-exitCode",
+        "missing-exitSignal",
+        "missing-closeCode",
+        "missing-closeSignal",
+        "missing-createdAtMs",
+        "missing-exitAtMs",
+        "missing-closeAtMs",
+        "missing-logFinishSeen",
+        "missing-logCloseSeen",
+        "missing-logFinishAtMs",
+        "missing-logCloseAtMs",
+        "rewritten-createdAtMs",
+        "rewritten-exitAtMs",
+        "rewritten-closeAtMs",
+        "rewritten-logFinishAtMs-stdout",
+        "rewritten-logFinishAtMs-stderr",
+        "rewritten-logCloseAtMs-stdout",
+        "rewritten-logCloseAtMs-stderr",
+        "rewritten-exit-False",
+        "rewritten-exit-1",
+        "rewritten-exit-0",
+        "event-extra",
+        "event-duplicate",
+        "event-order-0",
+        "event-order-3",
+        "clock-regression-success",
+        "spawn-error-fabricated-zero",
+        "acquired-empty",
+        "acquired-extra",
+        "acquired-value-rewritten",
+        "ack-extra",
+        "ack-bad-binding",
+        "acquisition-missing-fixtureRows",
+        "acquisition-missing-fixtureRequests",
+        "acquisition-missing-routeInstalled",
+        "acquisition-empty",
+        "premature-count-zero",
+        "actual-request-lost",
+        "boolean-route-install",
+        "request-extra-key",
+        "prepared-label-rewritten",
+        "canonical-byte-bool"
+      ],
+      "rejectedCount": 43
+    }
+  },
+  "runtimeParser": {
+    "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+    "validPreflight": 1,
+    "rejectedPreflightMutations": [
+      [
+        "observerHealthy",
+        false
+      ],
+      [
+        "sideEffectFree",
+        false
+      ],
+      [
+        "rc",
+        0
+      ],
+      [
+        "timeout",
+        true
+      ],
+      [
+        "errors",
+        ""
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_LOCK_MISMATCH\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}"
+      ],
+      [
+        "output",
+        "{\"status\":\"PASS\"}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\nunrelated fatal crash\n"
+      ],
+      [
+        "output",
+        "PASS"
+      ]
+    ],
+    "earlyRemovalRejected": true,
+    "unsettledRetainedLogRejected": true,
+    "richFailurePositive": 1,
+    "richFailureRejected": [
+      "missing-pid",
+      "missing-exitCode",
+      "missing-exitSeen",
+      "missing-closeSeen",
+      "missing-aliveAfterClose",
+      "missing-createdAtMs",
+      "missing-exitAtMs",
+      "missing-closeAtMs",
+      "missing-logsSettled",
+      "missing-logFinishSeen",
+      "missing-logCloseSeen",
+      "missing-logFinishAtMs",
+      "missing-logCloseAtMs",
+      "missing-exitSignal",
+      "missing-closeCode",
+      "missing-closeSignal",
+      "missing-callbackEvents",
+      "fabricated-logFinish-time",
+      "fabricated-logClose-time"
+    ],
+    "observationRules": {
+      "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+      "orderingPublicationPositive": 1,
+      "coreBindingPositives": 2,
+      "rejectedCount": 13,
+      "rejected": [
+        "no-reads",
+        "missing-stderr-read",
+        "missing-child-close",
+        "missing-log-close",
+        "early-read",
+        "direct-candidate-write",
+        "missing-rename-completion",
+        "early-rename",
+        "wrong-stage",
+        "lost-raw",
+        "lost-checks",
+        "lost-acquisition",
+        "lost-partial-path"
+      ]
+    }
+  },
+  "plans": {
+    "runtime": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "positiveCases": [
+        "contract-core",
+        "regression-shell",
+        "regression-home"
+      ],
+      "deferredCases": [
+        "live-admin",
+        "list-fixture",
+        "empty-fixture",
+        "filters",
+        "errors",
+        "stale-response",
+        "role-guard",
+        "session-expired"
+      ],
+      "faults": {
+        "png-header-only": "A1_GATE_REJECTED",
+        "png-crc": "A1_GATE_REJECTED",
+        "duplicate-id": "A1_GATE_REJECTED",
+        "missing-id": "A1_GATE_REJECTED",
+        "extra-id": "A1_GATE_REJECTED",
+        "caller-expected": "A1_GATE_REJECTED",
+        "constant-actual": "A1_GATE_REJECTED",
+        "raw-console": "A1_GATE_REJECTED",
+        "raw-pageerror": "A1_GATE_REJECTED",
+        "raw-requestfailed": "A1_GATE_REJECTED",
+        "raw-http": "A1_GATE_REJECTED",
+        "canonical-drift": "A1_GATE_REJECTED",
+        "worker-close-receipt": "A1_GATE_REJECTED",
+        "server-close-receipt": "A1_GATE_REJECTED",
+        "server-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "final-write-denied": "A1_FINAL_WRITE_FAILED",
+        "server-spawn-error": "A1_SERVER_SPAWN_FAILURE",
+        "log-write-denied": "A1_LOG_WRITE_FAILED",
+        "owner-bad-ack": "A1_ACK_INVALID",
+        "worker-no-ack": "A1_ACK_TIMEOUT",
+        "worker-no-run": "A1_WORKER_FAILED",
+        "gate-spawn-error": "A1_GATE_SPAWN_FAILURE",
+        "gate-log-write-denied": "A1_LOG_WRITE_FAILED",
+        "regression-no-evidence": "A1_WORKER_FAILED",
+        "worker-close-not-observed": "A1_CLOSE_UNVERIFIED",
+        "worker-spawn-error": "A1_WORKER_SPAWN_FAILURE",
+        "log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "late-log-error": "A1_LOG_WRITE_FAILED",
+        "gate-response-case": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-runId": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-candidateSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-executionSha256": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-checks": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-artifacts": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-acceptance": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-status": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-extra-output": "A1_GATE_RESPONSE_MISMATCH",
+        "gate-response-outer-extra": "A1_GATE_RESPONSE_MISMATCH",
+        "log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "gate-log-close-not-observed": "A1_LOG_CLOSE_UNVERIFIED",
+        "server-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "gate-log-finish-not-observed": "A1_LOG_FINISH_UNVERIFIED",
+        "owner-extra-ack": "A1_ACK_INVALID",
+        "timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "server-timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "gate-timestamp-regression": "A1_LIFECYCLE_INVALID",
+        "worker-ledger-scalar-mismatch": "A1_LIFECYCLE_INVALID",
+        "gate-ledger-scalar-mismatch": "A1_LIFECYCLE_INVALID",
+        "owner-candidate-write-denied": "A1_CANDIDATE_WRITE_FAILED"
+      },
+      "malformedPublicCases": 9,
+      "observerHealthMandatory": true
+    },
+    "ipc": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "cases": [
+        "wrong-protocol",
+        "wrong-owner-pid",
+        "wrong-worker-pid",
+        "wrong-case",
+        "wrong-nonce",
+        "wrong-url",
+        "sibling-run",
+        "wrong-temp-root",
+        "wrong-bootstrap",
+        "wrong-contract-path",
+        "wrong-contract-digest",
+        "wrong-execution-path",
+        "wrong-execution-digest",
+        "no-run-approval",
+        "wrong-run-nonce",
+        "extra-packet-key",
+        "extra-context-key",
+        "extra-registration-key",
+        "extra-run-key"
+      ]
+    },
+    "component": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "semanticVectors": [
+        "fixed-expectation",
+        "unknown-id-field",
+        "recursive-nan",
+        "recursive-infinity",
+        "immutable-actual-snapshot",
+        "caller-extra-argument"
+      ],
+      "additionalTypedMutations": 32,
+      "invalidTopLevelInputs": 4,
+      "realResourceVectors": [
+        "context-close-throw-browser-still-closed",
+        "browser-close-throw-first-error-preserved"
+      ]
+    },
+    "partial": {
+      "proof": "PLAN_ONLY_NOT_RUN",
+      "modes": [
+        "capture-failure",
+        "context-close-failure",
+        "partial-write-failure",
+        "measured-viewport",
+        "measured-origin",
+        "viewport-null",
+        "canonical-missing",
+        "repository-realpath-failure",
+        "request-then-viewport-null",
+        "canonical-import-failure",
+        "route-install-failure"
+      ],
+      "bootstrapModes": [
+        "repository-realpath-failure",
+        "request-then-viewport-null",
+        "canonical-import-failure",
+        "route-install-failure"
+      ]
+    }
+  },
+  "observerSummary": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-selfcheck-vm84rdbr",
+    "actualControlChecks": 45,
+    "rejectedCorruptions": 9,
+    "bootstrapMode": true,
+    "runtimeRejectsBootstrap": true
+  },
+  "partialReplay": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-V5XVZ7",
+    "status": "EXPECTED_V5_REGRESSIONS_DETECTED",
+    "actualV5Regressions": 4
+  },
+  "controlHashes": {
+    "component-probes.mjs": "C5520F7A23E6C40E5E59E5FD22E26C4D8916BCE517711B8D2AB7ABB594AE3B99",
+    "evidence-v6.py": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03",
+    "execution.json": "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA",
+    "frozen-shared.json": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA",
+    "gate-evidence.py": "E365B4C93DF1D745316C69AA6FD7F3E2D9E5B6AC6B8D7285B673D3693ED74B31",
+    "ipc-probes.mjs": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B",
+    "observer-canary.mjs": "286B0D22FA7C57A82173D1FFCCCFA82014445EC1251058D839C2D45A833BF318",
+    "observer-selfcheck.py": "7CD74BA370E3410BFAD38D98D15C168605A9326280A36F17A157DD6F6A6DF39F",
+    "partial-preload.mjs": "1F1EAE161E3386B108740A9185229FDDFAD7B79EEC5A5E42F6451FA4DD55809B",
+    "partial-probes.mjs": "A0178B83954AC2822B7750509278BA471BADB4141C74B2BB5862224C494FF36B",
+    "runtime-preload.mjs": "825D1EEB5D087604F3CED455A3FD16FA9C3B6068658B00566121AFF71C88F943",
+    "runtime-probes.py": "09B8F2DA751D1BCA283E5D4D8A13773DFB3AFA4B8C81005A871E67C955E70F3E",
+    "STRATEGY.md": "8F7AA5C30670F9A3505AD9E9C4D3D44723EF1A8891BEFA11D4D660826988A3C3"
+  },
+  "initialObserverFailure": {
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-selfcheck-6j_wvxie",
+    "cause": "server sentinel lacked ./ role discriminator; Sol control corrected and full45 rerun; failed run retained"
+  }
+}

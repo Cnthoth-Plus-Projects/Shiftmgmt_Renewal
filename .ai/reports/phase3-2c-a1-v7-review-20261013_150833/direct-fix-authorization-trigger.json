@@ -1,0 +1,20 @@
+{
+  "status": "V7_REQUIREMENT_GAPS_REPRODUCED_DIRECT_FIX_AUTHORIZED",
+  "decision": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\decisions\\DEC-002.md",
+  "decisionMeta": {
+    "bytes": 3058,
+    "sha256": "553B7ADB7507BBA3832D75F3751F5696B7B4A723764451B0C8BF8754C5D8B57E"
+  },
+  "productBefore": {
+    "bytes": 29998,
+    "sha256": "F1C51C85F969D56EDF1AD264088D6E6271702AC1395940AB2BA22BBE397292EC"
+  },
+  "findings": [
+    "A1V7-01 repeated success snapshot in barrier",
+    "A1V7-02 four unsettled receipts accepted by success guard",
+    "A1V7-03 stop rejection skips settle and cleanup errors vanish; first stream end exception skips second stream",
+    "A1V7-04 stream finish/close on instead of once"
+  ],
+  "proof": "Actual extracted helpers with explicit controlled fixtures, not an owner runtime false PASS",
+  "v8Created": false
+}

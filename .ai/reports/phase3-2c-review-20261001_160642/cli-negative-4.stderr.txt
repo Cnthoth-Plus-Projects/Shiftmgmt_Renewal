@@ -1,0 +1,1 @@
+[CLI 인수 오류] 단일 인수만 허용됩니다: --case=live-admin --extra-flag

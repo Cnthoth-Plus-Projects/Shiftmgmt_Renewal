@@ -1,0 +1,805 @@
+{
+  "timestamp": "2026-09-07T03:40:57.705Z",
+  "tool": "Node Playwright local package; Chromium headless own context",
+  "viewport": "1440x900",
+  "pass": true,
+  "failures": [],
+  "checks": [
+    {
+      "name": "00-shell-2.html #modal-s6-update opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-close-s6",
+        "inside": true,
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "00-shell-2.html #modal-s6-update real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "00-shell-2.html #modal-s6-update Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-s6-banner",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-s6-banner"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c1 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "취소",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c1 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "02-common-1.html #modal-c1 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-c1",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-c1"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c2 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "취소",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c2 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "02-common-1.html #modal-c2 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-c2",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-c2"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c3 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "취소",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c3 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "02-common-1.html #modal-c3 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-c3",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-c3"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c4 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "취소",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "02-common-1.html #modal-c4 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "02-common-1.html #modal-c4 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-c4",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-c4"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "04-sites-1.html #modal-t2 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-close-t2",
+        "inside": true,
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "04-sites-1.html #modal-t2 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "04-sites-1.html #modal-t2 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-t2",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-t2"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "04-sites-2.html #modal-t4 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-t4",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "04-sites-2.html #modal-t4 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "04-sites-2.html #modal-t4 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-t4",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-t4"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-2.html #modal-e3 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-e3",
+        "inside": true,
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-2.html #modal-e3 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "06-employees-2.html #modal-e3 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-e3",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-e3"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-2.html #modal-e4 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-e4",
+        "inside": true,
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-2.html #modal-e4 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "06-employees-2.html #modal-e4 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-e4",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-e4"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-3.html #modal-e6 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-e6",
+        "inside": true,
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 4
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-3.html #modal-e6 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "06-employees-3.html #modal-e6 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-e6",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-e6"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-3.html #modal-e8 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-e8",
+        "inside": true,
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "06-employees-3.html #modal-e8 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "06-employees-3.html #modal-e8 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-e8",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-e8"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "07-schedule-3.html #modal-r4 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-r4",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "07-schedule-3.html #modal-r4 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "07-schedule-3.html #modal-r4 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-r4",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-r4"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "09-allowance-2.html #modal-a3 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-close-a3",
+        "inside": true,
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "09-allowance-2.html #modal-a3 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "09-allowance-2.html #modal-a3 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-a3",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-a3"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "09-allowance-2.html #modal-a4 opens, focus contained",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-a4",
+        "inside": true,
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "09-allowance-2.html #modal-a4 real Tab/ShiftTab containment",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "09-allowance-2.html #modal-a4 Escape closes and restores opener",
+      "pass": true,
+      "actual": {
+        "s": {
+          "display": "none",
+          "focus": "btn-open-a4",
+          "inside": false,
+          "width": 0,
+          "clip": true,
+          "vertical": true,
+          "buttonRows": 1
+        },
+        "active": "btn-open-a4"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "A5 nested opens with contained focus",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-a5",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "A5 summary dynamically reads A3 source",
+      "pass": true,
+      "actual": "2030년 12월 · 검증 사업장 · 9건(정규 7 · 조기 2) · 합계 777,000원",
+      "expected": "2030년 12월 · 검증 사업장 · 9건(정규 7 · 조기 2) · 합계 777,000원"
+    },
+    {
+      "name": "A5 approval action remains available before demo execution",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    },
+    {
+      "name": "A5 Tab/ShiftTab focus contained",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "A5 Escape restores A3 and goto opener",
+      "pass": true,
+      "actual": {
+        "a5": "none",
+        "a3": "flex",
+        "active": "btn-goto-a5"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "A3 Escape restores original A3 opener",
+      "pass": true,
+      "actual": {
+        "d": "none",
+        "a": "btn-open-a3"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "O10 nested opens with contained focus",
+      "pass": true,
+      "actual": {
+        "display": "flex",
+        "focus": "btn-cancel-o10",
+        "inside": true,
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 2
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "O10 summary dynamically reads O9 source",
+      "pass": true,
+      "actual": "대상 파일 verify.json · 미리보기 12-31 23:59 (경고 9건) · 99개 항목 중 1개 증가",
+      "expected": "대상 파일 verify.json · 미리보기 12-31 23:59 (경고 9건) · 99개 항목 중 1개 증가"
+    },
+    {
+      "name": "O10 execution gate remains aria-disabled",
+      "pass": true,
+      "actual": "true",
+      "expected": "true"
+    },
+    {
+      "name": "O10 Tab/ShiftTab focus contained",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "O10 Escape restores O9 and goto opener",
+      "pass": true,
+      "actual": {
+        "o10": "none",
+        "o9": "flex",
+        "active": "btn-goto-o10"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "O9 Escape restores original O9 opener",
+      "pass": true,
+      "actual": {
+        "d": "none",
+        "a": "btn-open-o9"
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 02-common-1.html #modal-c1",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 02-common-1.html #modal-c2",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 02-common-1.html #modal-c3",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 02-common-1.html #modal-c4",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 04-sites-1.html #modal-t2",
+      "pass": true,
+      "actual": {
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 04-sites-2.html #modal-t4",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 06-employees-2.html #modal-e3",
+      "pass": true,
+      "actual": {
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 06-employees-2.html #modal-e4",
+      "pass": true,
+      "actual": {
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 06-employees-3.html #modal-e6-confirm",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 06-employees-3.html #modal-e8",
+      "pass": true,
+      "actual": {
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 07-schedule-3.html #modal-r4",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 09-allowance-2.html #modal-a3",
+      "pass": true,
+      "actual": {
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 09-allowance-2.html #modal-a4",
+      "pass": true,
+      "actual": {
+        "width": 600,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 09-allowance-2.html #modal-a5",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 11-operations-4.html #modal-o9",
+      "pass": true,
+      "actual": {
+        "width": 900,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    },
+    {
+      "name": "geometry 11-operations-4.html #modal-o10",
+      "pass": true,
+      "actual": {
+        "width": 400,
+        "clip": true,
+        "vertical": true,
+        "buttonRows": 1
+      },
+      "expected": "predicate"
+    }
+  ]
+}

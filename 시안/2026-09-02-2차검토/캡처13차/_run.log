@@ -1,0 +1,35 @@
+OLD 01-login-2 44179B
+OLD 02-common-1 46550B
+OLD 02-common-2 72302B
+OLD 02-common-3 41375B
+OLD 04-sites-2 60747B
+OLD 07-schedule-3 104702B
+OLD 09-allowance-2 32105B
+OLD 11-operations-1 156395B
+OLD 11-operations-2 194465B
+OLD 11-operations-3 174333B
+OLD 11-operations-4 30651B
+CUR 01-login-2 44179B
+CUR 02-common-1 46550B
+CUR 02-common-2 72302B
+CUR 02-common-3 40874B
+CUR 04-sites-2 60747B
+CUR 07-schedule-3 104702B
+CUR 09-allowance-2 32105B
+CUR 11-operations-1 156395B
+CUR 11-operations-2 194465B
+CUR 11-operations-3 174333B
+CUR 11-operations-4 30651B
+=== imgdiff old → new ===
+01-login-2.png: (1440, 1968) diff 0.00% bbox=None
+02-common-1.png: (1440, 3880) diff 0.00% bbox=None
+02-common-2.png: (1440, 4848) diff 0.00% bbox=None
+02-common-3.png: (1440, 2912) diff 0.00% bbox=(707, 2401, 733, 2425)
+04-sites-2.png: (1440, 1944) diff 0.00% bbox=None
+07-schedule-3.png: (1440, 2912) diff 0.00% bbox=None
+09-allowance-2.png: (1440, 976) diff 0.00% bbox=None
+11-operations-1.png: (1440, 1944) diff 0.00% bbox=None
+11-operations-2.png: (1440, 2912) diff 0.00% bbox=None
+11-operations-3.png: (1440, 2912) diff 0.00% bbox=None
+11-operations-4.png: (1440, 976) diff 0.00% bbox=None
+DONE

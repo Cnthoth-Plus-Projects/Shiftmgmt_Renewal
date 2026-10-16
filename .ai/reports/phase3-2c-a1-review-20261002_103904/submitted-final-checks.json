@@ -1,0 +1,50 @@
+[
+  {
+    "case": "contract-core",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+      "--final",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261002-092725-pvSnSG\\owner-final.json"
+    ],
+    "rc": 0,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-contract-core-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-contract-core-check.stderr.txt"
+  },
+  {
+    "case": "regression-shell",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+      "--final",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261002-093102-IjTk9g\\owner-final.json"
+    ],
+    "rc": 0,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-regression-shell-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-regression-shell-check.stderr.txt"
+  },
+  {
+    "case": "regression-home",
+    "argv": [
+      "C:\\Users\\pangyo\\anaconda3\\python.exe",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py",
+      "--execution-sha",
+      "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494",
+      "--baseline-sha",
+      "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933",
+      "--final",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261002-093115-puYQ4Z\\owner-final.json"
+    ],
+    "rc": 0,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-regression-home-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-review-20261002_103904\\submitted-regression-home-check.stderr.txt"
+  }
+]

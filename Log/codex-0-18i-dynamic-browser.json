@@ -1,0 +1,970 @@
+{
+  "at": "2026-09-07T08:03:13.285Z",
+  "p6": [
+    {
+      "stage": "initial",
+      "dom": {
+        "text": "128",
+        "title": "승인 대기 실적 128건",
+        "label": "실적 관리, 승인 대기 실적 128건",
+        "chip": "fact_check대기 실적 128건",
+        "sideWidth": 220
+      },
+      "names": [
+        "실적 관리, 승인 대기 실적 128건",
+        "실적 관리, 승인 대기 실적 128건"
+      ]
+    },
+    {
+      "stage": "single",
+      "dom": {
+        "text": "127",
+        "title": "승인 대기 실적 127건",
+        "label": "실적 관리, 승인 대기 실적 127건",
+        "chip": "fact_check대기 실적 127건",
+        "sideWidth": 220
+      },
+      "names": [
+        "실적 관리, 승인 대기 실적 127건",
+        "실적 관리, 승인 대기 실적 128건"
+      ]
+    },
+    {
+      "stage": "file",
+      "dom": {
+        "text": "77",
+        "title": "승인 대기 실적 77건",
+        "label": "실적 관리, 승인 대기 실적 77건",
+        "chip": "fact_check대기 실적 77건",
+        "sideWidth": 220
+      },
+      "names": [
+        "실적 관리, 승인 대기 실적 77건",
+        "실적 관리, 승인 대기 실적 128건"
+      ]
+    },
+    {
+      "stage": "reopened",
+      "dom": {
+        "text": "128",
+        "title": "승인 대기 실적 128건",
+        "label": "실적 관리, 승인 대기 실적 128건",
+        "chip": "fact_check대기 실적 128건",
+        "sideWidth": 220
+      },
+      "names": [
+        "실적 관리, 승인 대기 실적 128건",
+        "실적 관리, 승인 대기 실적 128건"
+      ]
+    },
+    {
+      "stage": "collapsed",
+      "dom": {
+        "text": "128",
+        "title": "승인 대기 실적 128건",
+        "label": "실적 관리, 승인 대기 실적 128건",
+        "chip": "fact_check대기 실적 128건",
+        "sideWidth": 64
+      },
+      "names": [
+        "실적 관리, 승인 대기 실적 128건",
+        "실적 관리, 승인 대기 실적 128건"
+      ]
+    }
+  ],
+  "w7": [
+    {
+      "how": "Escape",
+      "before": {
+        "dialogDisplay": "flex",
+        "hidden": "true",
+        "small": [],
+        "exceptions": [],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-leave-stay",
+        "overflowers": [
+          {
+            "tag": "SPAN",
+            "cls": "material-symbols-outlined",
+            "w": 20,
+            "sw": 28,
+            "h": 20,
+            "sh": 32
+          }
+        ]
+      },
+      "after": {
+        "dialogDisplay": "none",
+        "hidden": null,
+        "small": [],
+        "exceptions": [
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          },
+          {
+            "t": "휴무",
+            "fs": 10
+          },
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          }
+        ],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-prev-w7",
+        "overflowers": []
+      }
+    },
+    {
+      "how": "계속 편집",
+      "before": {
+        "dialogDisplay": "flex",
+        "hidden": "true",
+        "small": [],
+        "exceptions": [],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-leave-stay",
+        "overflowers": [
+          {
+            "tag": "SPAN",
+            "cls": "material-symbols-outlined",
+            "w": 20,
+            "sw": 28,
+            "h": 20,
+            "sh": 32
+          }
+        ]
+      },
+      "after": {
+        "dialogDisplay": "none",
+        "hidden": null,
+        "small": [],
+        "exceptions": [
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          },
+          {
+            "t": "휴무",
+            "fs": 10
+          },
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          }
+        ],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-prev-w7",
+        "overflowers": []
+      }
+    },
+    {
+      "how": "변경 버리고 나가기",
+      "before": {
+        "dialogDisplay": "flex",
+        "hidden": "true",
+        "small": [],
+        "exceptions": [],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-leave-stay",
+        "overflowers": [
+          {
+            "tag": "SPAN",
+            "cls": "material-symbols-outlined",
+            "w": 20,
+            "sw": 28,
+            "h": 20,
+            "sh": 32
+          }
+        ]
+      },
+      "after": {
+        "dialogDisplay": "none",
+        "hidden": null,
+        "small": [],
+        "exceptions": [
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          },
+          {
+            "t": "휴무",
+            "fs": 10
+          },
+          {
+            "t": "주간",
+            "fs": 10
+          },
+          {
+            "t": "야간",
+            "fs": 10
+          },
+          {
+            "t": "석간",
+            "fs": 10
+          }
+        ],
+        "heads": [
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          },
+          {
+            "fs": "12px",
+            "h": 22
+          }
+        ],
+        "cells": [
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          },
+          {
+            "fs": "12px",
+            "bfs": "10px",
+            "h": 39
+          }
+        ],
+        "main": {
+          "width": 1220,
+          "scroll": 1220
+        },
+        "active": "btn-prev-w7",
+        "overflowers": []
+      }
+    }
+  ],
+  "shell": [
+    {
+      "file": "00-shell-1",
+      "states": [
+        {
+          "before": {
+            "id": "main-content-s1",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-1.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "before": {
+            "id": "main-content-s2",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-1.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "before": {
+            "id": "main-content-s3",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 64,
+              "y": 36,
+              "w": 1376,
+              "h": 812
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-1.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 64,
+              "y": 36,
+              "w": 1376,
+              "h": 812
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        }
+      ],
+      "inMemoryOnly": true
+    },
+    {
+      "file": "00-shell-2",
+      "states": [
+        {
+          "before": {
+            "id": "main-content-s4",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-2.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 812
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "before": {
+            "id": "main-content-s5",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 765
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-2.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 220,
+              "y": 0,
+              "w": 1220,
+              "h": 765
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "before": {
+            "id": "main-content-s6",
+            "hidden": "true",
+            "tabindex": "-1",
+            "focused": true,
+            "rect": {
+              "x": 220,
+              "y": 79,
+              "w": 1220,
+              "h": 769
+            }
+          },
+          "focused": [
+            {
+              "role": "RootWebArea",
+              "name": "근무 관리 시스템 — 시안 00-shell-2.html"
+            },
+            {
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "axBefore": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ],
+          "after": {
+            "hidden": null,
+            "rect": {
+              "x": 220,
+              "y": 79,
+              "w": 1220,
+              "h": 769
+            }
+          },
+          "axAfter": [
+            {
+              "ignored": false,
+              "role": "main",
+              "name": ""
+            }
+          ]
+        }
+      ],
+      "inMemoryOnly": true
+    }
+  ]
+}

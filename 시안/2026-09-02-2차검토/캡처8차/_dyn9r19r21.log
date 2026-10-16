@@ -1,0 +1,76 @@
+################ OLD = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차검토/스냅샷7차
+=== R19 계정 버튼 낭독 이름 (00-shell-1 · 00-shell-2 · 10-dashboard-1) ===
+00-shell-1.html: state-s1 계정버튼 낭독="person admin" aria-label=null | state-s2 계정버튼 낭독="person 김지현" aria-label=null | state-s3 계정버튼 낭독="person 박은영" aria-label=null
+00-shell-2.html: state-s4 계정버튼 낭독="person admin" aria-label=null | state-s5 계정버튼 낭독="person admin" aria-label=null | state-s6 계정버튼 낭독="person 박은영" aria-label=null
+10-dashboard-1.html: state-d1 계정버튼 낭독="person 이정호" aria-label=null | state-d2 계정버튼 낭독="person 이정호" aria-label=null | state-d3 계정버튼 낭독="person 이정호" aria-label=null
+=== R19 표본 — 07-schedule-1 (warning 버튼) · 01-login-1 (error 문구) · 02-common-2 (토스트) ===
+07-schedule-1.html: aria-hidden 없는 아이콘 menu → 담긴 곳=BUTTON aria-label=메뉴 접기/펼치기 | aria-hidden 없는 아이콘 person → 담긴 곳=BUTTON aria-label=null | aria-hidden 없는 아이콘 warning → 담긴 곳=BUTTON aria-label=null
+01-login-1.html: aria-hidden 없는 아이콘 visibility → 담긴 곳=BUTTON aria-label=비밀번호 표시 | aria-hidden 없는 아이콘 error → 담긴 곳=없음 | aria-hidden 없는 아이콘 visibility → 담긴 곳=BUTTON aria-label=비밀번호 표시 | aria-hidden 없는 아이콘 lock → 담긴 곳=없음
+02-common-2.html: aria-hidden 없는 아이콘 check_circle → 담긴 곳=없음 | aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 info → 담긴 곳=없음 | aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 error → 담긴 곳=없음 | aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 domain_disabled → 담긴 곳=없음
+=== R20 01-login-2 규칙 5줄 ===
+li 수=5 전부 ul 직계 LI=true ul 자손 li 총수=5 중첩 li=0
+  rule-len [rule-item valid] 보이는 글="check_circle\n8자 이상" 낭독 글="check_circle 8자 이상" li=394x16@523,491 sr-only:없음
+  rule-upper [rule-item valid] 보이는 글="check_circle\n영문 대문자 포함" 낭독 글="check_circle 영문 대문자 포함" li=394x16@523,511 sr-only:없음
+  rule-lower [rule-item valid] 보이는 글="check_circle\n영문 소문자 포함" 낭독 글="check_circle 영문 소문자 포함" li=394x16@523,531 sr-only:없음
+  rule-num [rule-item invalid] 보이는 글="radio_button_unchecked\n숫자 포함" 낭독 글="radio_button_unchecked 숫자 포함" li=394x16@523,551 sr-only:없음
+  rule-special [rule-item invalid] 보이는 글="radio_button_unchecked\n특수문자 포함" 낭독 글="radio_button_unchecked 특수문자 포함" li=394x16@523,571 sr-only:없음
+=== R21 02-common-2 트리거→토스트→✕ ===
+c5: 트리거/토스트 없음 (false/false)
+c6: 트리거/토스트 없음 (false/false)
+c7: 트리거/토스트 없음 (false/false)
+=== R22 svg ===
+09-allowance-1.html: svg 100x100 aria-hidden=null role=null 다음글="■ 대체근무: 144,000원 (39%) ■ 연장근무: 153,000원 (41.5%) ■ "
+10-dashboard-1.html: svg 90x90 aria-hidden=null role=null 다음글="■ 대체근무: 144,000원 ■ 연장근무: 153,000원 ■ 법정휴일: 72,000원"
+################ CUR = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차HTML
+=== R19 계정 버튼 낭독 이름 (00-shell-1 · 00-shell-2 · 10-dashboard-1) ===
+00-shell-1.html: state-s1 계정버튼 낭독="admin" aria-label=null | state-s2 계정버튼 낭독="김지현" aria-label=null | state-s3 계정버튼 낭독="박은영" aria-label=null
+00-shell-2.html: state-s4 계정버튼 낭독="admin" aria-label=null | state-s5 계정버튼 낭독="admin" aria-label=null | state-s6 계정버튼 낭독="박은영" aria-label=null
+10-dashboard-1.html: state-d1 계정버튼 낭독="이정호" aria-label=null | state-d2 계정버튼 낭독="이정호" aria-label=null | state-d3 계정버튼 낭독="이정호" aria-label=null
+=== R19 표본 — 07-schedule-1 (warning 버튼) · 01-login-1 (error 문구) · 02-common-2 (토스트) ===
+07-schedule-1.html: aria-hidden 없는 아이콘 menu → 담긴 곳=BUTTON aria-label=메뉴 접기/펼치기
+01-login-1.html: aria-hidden 없는 아이콘 visibility → 담긴 곳=BUTTON aria-label=비밀번호 표시 | aria-hidden 없는 아이콘 visibility → 담긴 곳=BUTTON aria-label=비밀번호 표시
+02-common-2.html: aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 close → 담긴 곳=BUTTON aria-label=닫기 | aria-hidden 없는 아이콘 domain_disabled → 담긴 곳=없음
+=== R20 01-login-2 규칙 5줄 ===
+li 수=5 전부 ul 직계 LI=true ul 자손 li 총수=5 중첩 li=0
+  rule-len [rule-item valid] 보이는 글="check_circle\n충족 —\n8자 이상" 낭독 글="충족 — 8자 이상" li=394x16@523,491 sr-only:absolute 1pxx1px clip=rect(0px, 0px, 0px, 0px) 보이는크기=1x1
+  rule-upper [rule-item valid] 보이는 글="check_circle\n충족 —\n영문 대문자 포함" 낭독 글="충족 — 영문 대문자 포함" li=394x16@523,511 sr-only:absolute 1pxx1px clip=rect(0px, 0px, 0px, 0px) 보이는크기=1x1
+  rule-lower [rule-item valid] 보이는 글="check_circle\n충족 —\n영문 소문자 포함" 낭독 글="충족 — 영문 소문자 포함" li=394x16@523,531 sr-only:absolute 1pxx1px clip=rect(0px, 0px, 0px, 0px) 보이는크기=1x1
+  rule-num [rule-item invalid] 보이는 글="radio_button_unchecked\n미충족 —\n숫자 포함" 낭독 글="미충족 — 숫자 포함" li=394x16@523,551 sr-only:absolute 1pxx1px clip=rect(0px, 0px, 0px, 0px) 보이는크기=1x1
+  rule-special [rule-item invalid] 보이는 글="radio_button_unchecked\n미충족 —\n특수문자 포함" 낭독 글="미충족 — 특수문자 포함" li=394x16@523,571 sr-only:absolute 1pxx1px clip=rect(0px, 0px, 0px, 0px) 보이는크기=1x1
+=== R21 02-common-2 트리거→토스트→✕ ===
+c5: 초기 flex 토스트@1028,872 380x52 트리거@32,88 136x26 트리거부모=common-stage pos=relative 트리거첫자식=true 겹침=false | ✕클릭→none 포커스=트리거:true | 트리거클릭→flex 포커스=✕:true 토스트@1028,861 380x52 위치동일=false | ✕재클릭→none 포커스=트리거:true | 복원→flex | ✕ aria-label=닫기 class=btn-ghost btn-sm btn-toast-close | 트리거 문구="성공 토스트 다시 보기" class=btn-secondary btn-sm type=button
+c6: 초기 flex 토스트@1028,1829 380x52 트리거@32,1045 136x26 트리거부모=common-stage pos=relative 트리거첫자식=true 겹침=false | ✕클릭→none 포커스=트리거:true | 트리거클릭→flex 포커스=✕:true 토스트@1028,424 380x52 위치동일=false | ✕재클릭→none 포커스=트리거:true | 복원→flex | ✕ aria-label=닫기 class=btn-ghost btn-sm btn-toast-close | 트리거 문구="정보 토스트 다시 보기" class=btn-secondary btn-sm type=button
+c7: 초기 flex 토스트@988,1376 420x68 트리거@32,608 136x26 트리거부모=common-stage pos=relative 트리거첫자식=true 겹침=false | ✕클릭→none 포커스=트리거:true | 트리거클릭→flex 포커스=✕:true 토스트@988,416 420x68 위치동일=false | ✕재클릭→none 포커스=트리거:true | 복원→flex | ✕ aria-label=닫기 class=btn-ghost btn-sm btn-toast-close | 트리거 문구="오류 토스트 다시 보기" class=btn-secondary btn-sm type=button
+=== R22 svg ===
+09-allowance-1.html: svg 100x100 aria-hidden=true role=null 다음글="■ 대체근무: 144,000원 (39%) ■ 연장근무: 153,000원 (41.5%) ■ "
+10-dashboard-1.html: svg 90x90 aria-hidden=true role=null 다음글="■ 대체근무: 144,000원 ■ 연장근무: 153,000원 ■ 법정휴일: 72,000원"
+################ 콘솔 오류 24파일 (현재본) ################
+00-shell-1.html: 오류=[(no console errors) ]
+00-shell-2.html: 오류=[(no console errors) ]
+01-login-1.html: 오류=[(no console errors) ]
+01-login-2.html: 오류=[(no console errors) ]
+02-common-1.html: 오류=[(no console errors) ]
+02-common-2.html: 오류=[(no console errors) ]
+02-common-3.html: 오류=[(no console errors) ]
+04-sites-1.html: 오류=[(no console errors) ]
+04-sites-2.html: 오류=[(no console errors) ]
+06-employees-1.html: 오류=[(no console errors) ]
+06-employees-2.html: 오류=[(no console errors) ]
+06-employees-3.html: 오류=[(no console errors) ]
+07-schedule-1.html: 오류=[(no console errors) ]
+07-schedule-2.html: 오류=[(no console errors) ]
+07-schedule-3.html: 오류=[(no console errors) ]
+09-allowance-1.html: 오류=[(no console errors) ]
+09-allowance-2.html: 오류=[(no console errors) ]
+09-allowance-3.html: 오류=[(no console errors) ]
+10-dashboard-1.html: 오류=[(no console errors) ]
+11-operations-1.html: 오류=[(no console errors) ]
+11-operations-2.html: 오류=[(no console errors) ]
+11-operations-3.html: 오류=[(no console errors) ]
+11-operations-4.html: 오류=[(no console errors) ]
+12-access-logs-1.html: 오류=[(no console errors) ]
+DONE
+=== R21 재측정 — 문서 좌표(스크롤 보정) ===
+c5: 무대@0,56 1440x900 트리거@32,88 136x26 (무대 기준 left=32 top=32) 토스트@1028,872 380x52 → 닫고 다시 열기 후 토스트@1028,872 380x52 문서좌표 동일=true | 트리거 폰트=12px 높이=26px bg=rgb(255, 255, 255) border=rgb(132, 138, 147)
+c6: 무대@0,1024 1440x900 트리거@32,1056 136x26 (무대 기준 left=32 top=32) 토스트@1028,1840 380x52 → 닫고 다시 열기 후 토스트@1028,1840 380x52 문서좌표 동일=true | 트리거 폰트=12px 높이=26px bg=rgb(255, 255, 255) border=rgb(132, 138, 147)
+c7: 무대@0,1992 1440x900 트리거@32,2024 136x26 (무대 기준 left=32 top=32) 토스트@988,2792 420x68 → 닫고 다시 열기 후 토스트@988,2792 420x68 문서좌표 동일=true | 트리거 폰트=12px 높이=26px bg=rgb(255, 255, 255) border=rgb(132, 138, 147)

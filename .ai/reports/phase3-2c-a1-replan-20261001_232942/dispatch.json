@@ -1,0 +1,53 @@
+{
+  "time": "2026-10-02T08:52:21.376361+09:00",
+  "action": "IMPLEMENT",
+  "stageSlice": "A1",
+  "acceptance": "READY_TO_CODE_A1_ONLY_NOT_ACCEPTED",
+  "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+  "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261002_085221_3-2c-A1-Sol-IMPLEMENT_발송본.md",
+  "bytes": 57980,
+  "sha256": "1EE639CCA10FB17628E1D17C2657D95877E83201A8D406D3E7F46E5DFE718C39",
+  "requestBodyBytes": 56503,
+  "requestBodySha256": "40A6EEF4746AEA87A2DB336A8FCDA9AF219D01F075F144B729D56DEEC3242354",
+  "replyBoundary": "exact standalone ## 회신",
+  "baseline": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\baseline.json",
+    "bytes": 64773,
+    "sha256": "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933"
+  },
+  "execution": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\execution.json",
+    "bytes": 3918,
+    "sha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494"
+  },
+  "sourceFiles": 341,
+  "allowed": [
+    "scripts/ui-checks/access-history.mjs",
+    "scripts/ui-checks/access-history-shared.mjs"
+  ],
+  "protectedFiles": 339,
+  "controlFiles": 27,
+  "productEditsBySol": 0,
+  "priorControl": {
+    "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md": {
+      "bytes": 303224,
+      "sha256": "AC82922068B9C64326DB38E843B461D92EB1A5143E7F648AA58893A2018218C7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md": {
+      "bytes": 157914,
+      "sha256": "9BA9A7FE897052B91505C738858021FDBF7E4363577D4DE6442624272C9B681E"
+    }
+  },
+  "controlPlanChanges": {
+    "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md": {
+      "bytes": 304323,
+      "sha256": "108F4BCCD203DD87E05363226130DDBA002B3DC7C9D41E71142D5506F3DD8122"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md": {
+      "bytes": 160877,
+      "sha256": "974E653660390B0D3E3F325A7B385B1E3A330EFF855264FB03A34772186B070F"
+    }
+  },
+  "runtimeAcceptance": "NOT_RUN_IMPLEMENTATION_PENDING",
+  "retriesReset": false
+}

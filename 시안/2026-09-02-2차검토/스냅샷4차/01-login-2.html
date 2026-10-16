@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 01-login-2.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #F5F6F8;
+  --line: #D8DCE2;
+  --text: #191B1F;
+  --text-sub: #606877;
+  --accent: #3E56B6;
+  --accent-hover: #32479A;
+  --danger: #C0392B;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: #E5E7EB;
+  margin: 0;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.state-wrapper {
+  width: 1440px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.status-label-bar {
+  background: #2C3440;
+  color: #FFF;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 4px;
+}
+.login-frame {
+  width: 1440px;
+  height: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.login-card {
+  width: 460px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 36px 32px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.login-header { text-align: center; }
+.login-title { font-size: 20px; font-weight: 700; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.login-version { font-size: 12px; font-weight: 600; color: var(--text-sub); background: #E2E5EA; padding: 2px 6px; border-radius: 10px; }
+.login-subtitle { font-size: 13px; color: var(--text-sub); margin-top: 6px; }
+.login-form { display: flex; flex-direction: column; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.form-input {
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input.error { border-color: #C0392B; }
+.input-with-eye {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-with-eye .form-input {
+  width: 100%;
+  padding-right: 36px;
+}
+.btn-eye-toggle {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+.btn-primary {
+  height: 40px;
+  background: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-primary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--accent-hover); }
+.btn-primary[aria-disabled="true"] { background: #9AA1AC; cursor: not-allowed; }
+.btn-secondary {
+  height: 40px;
+  background: #FFFFFF;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-secondary:hover { background: #F8F9FA; }
+.disabled-desc {
+  font-size: 12px;
+  color: #C0392B;
+}
+.rule-list {
+  list-style: none;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+.rule-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-sub);
+}
+.rule-item.valid {
+  color: #1E7A46;
+  font-weight: 600;
+}
+.rule-item.invalid {
+  color: var(--text-sub);
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+}
+
+</style>
+</head>
+<body>
+
+<div class="state-wrapper" id="state-l4">
+  <div class="status-label-bar">── L4. 로그인 — 비밀번호 변경 ──</div>
+  <div class="login-frame">
+    <div class="login-card" style="width: 460px;">
+      <div class="login-header">
+        <h1 class="login-title">
+          <span>근무 관리 시스템</span>
+          <span class="login-version">v2.3.1</span>
+        </h1>
+        <p class="login-subtitle">비밀번호 변경이 필요합니다</p>
+      </div>
+      <form class="login-form" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="l4-current-pw">현재 비밀번호</label>
+          <div class="input-with-eye">
+            <input type="password" class="form-input" id="l4-current-pw" value="Current123!">
+            <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="l4-new-pw">새 비밀번호</label>
+          <div class="input-with-eye">
+            <input type="password" class="form-input" id="l4-new-pw" value="Password">
+            <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+          </div>
+          <ul class="rule-list" id="l4-rule-list">
+            <li class="rule-item valid" id="rule-len"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 8자 이상</li>
+            <li class="rule-item valid" id="rule-upper"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 영문 대문자 포함</li>
+            <li class="rule-item valid" id="rule-lower"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 영문 소문자 포함</li>
+            <li class="rule-item invalid" id="rule-num"><span class="material-symbols-outlined" style="font-size:16px;">radio_button_unchecked</span> 숫자 포함</li>
+            <li class="rule-item invalid" id="rule-special"><span class="material-symbols-outlined" style="font-size:16px;">radio_button_unchecked</span> 특수문자 포함</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="l4-confirm-pw">새 비밀번호 확인</label>
+          <div class="input-with-eye">
+            <input type="password" class="form-input" id="l4-confirm-pw" value="Password">
+            <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+          </div>
+        </div>
+
+        <div class="disabled-desc" id="l4-rule-desc">모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.</div>
+
+        <button type="button" class="btn-primary" id="l4-btn-submit" aria-disabled="true" aria-describedby="l4-rule-desc" style="width:100%;margin-top:6px;">비밀번호 변경</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="state-wrapper" id="state-l5">
+  <div class="status-label-bar">── L5. 로그인 — 관리자 복구키 ──</div>
+  <div class="login-frame">
+    <div class="login-card" style="width: 460px;">
+      <div class="login-header" style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+        <div style="width:48px;height:48px;border-radius:50%;background:#EEF1FB;display:flex;align-items:center;justify-content:center;color:var(--accent);">
+          <span class="material-symbols-outlined" style="font-size:28px;">key</span>
+        </div>
+        <h1 class="login-title" style="font-size:18px;">관리자 복구키 입력</h1>
+        <p class="login-subtitle" style="font-size:12px;line-height:1.4;">복구키는 시스템 설치 시 발급되며, 관리자만 보관하고 있습니다.</p>
+      </div>
+      <form class="login-form" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="l5-key">계정복구키</label>
+          <div class="input-with-eye">
+            <input type="password" class="form-input" id="l5-key" placeholder="계정복구키를 입력하세요">
+            <button type="button" class="btn-eye-toggle" aria-label="복구키 표시"><span class="material-symbols-outlined">visibility</span></button>
+          </div>
+        </div>
+        <div class="disabled-desc" id="l5-err" style="display:none;">계정복구키를 입력해주세요.</div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button type="button" class="btn-secondary" style="flex:1;">취소</button>
+          <button type="button" class="btn-primary" id="btn-l5-submit" style="flex:1;">확인</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  document.querySelectorAll('.btn-eye-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var input = btn.previousElementSibling;
+      var icon = btn.querySelector('.material-symbols-outlined');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+        btn.setAttribute('aria-label', '비밀번호 숨기기');
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+        btn.setAttribute('aria-label', '비밀번호 표시');
+      }
+    });
+  });
+
+  var curPw = document.getElementById('l4-current-pw');
+  var newPw = document.getElementById('l4-new-pw');
+  var confPw = document.getElementById('l4-confirm-pw');
+  var submitBtn = document.getElementById('l4-btn-submit');
+  var desc = document.getElementById('l4-rule-desc');
+
+  function validateL4() {
+    if (!newPw || !confPw || !submitBtn) return;
+    var v = newPw.value;
+    var c = confPw.value;
+
+    var rLen = v.length >= 8;
+    var rUpper = /[A-Z]/.test(v);
+    var rLower = /[a-z]/.test(v);
+    var rNum = /[0-9]/.test(v);
+    var rSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(v);
+    var rMatch = v.length > 0 && v === c;
+
+    function setRule(id, ok) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.className = ok ? 'rule-item valid' : 'rule-item invalid';
+      var icon = el.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = ok ? 'check_circle' : 'radio_button_unchecked';
+    }
+
+    setRule('rule-len', rLen);
+    setRule('rule-upper', rUpper);
+    setRule('rule-lower', rLower);
+    setRule('rule-num', rNum);
+    setRule('rule-special', rSpecial);
+
+    var allRulesOk = rLen && rUpper && rLower && rNum && rSpecial;
+
+    if (allRulesOk && rMatch) {
+      submitBtn.removeAttribute('aria-disabled');
+      if (desc) desc.style.display = 'none';
+    } else {
+      submitBtn.setAttribute('aria-disabled', 'true');
+      if (desc) {
+        desc.style.display = 'block';
+        if (!allRulesOk) {
+          desc.textContent = '모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.';
+        } else if (!rMatch) {
+          desc.textContent = '새로운 비밀번호 확인이 일치하지 않습니다.';
+        }
+      }
+    }
+  }
+
+  if (newPw && confPw) {
+    newPw.addEventListener('input', validateL4);
+    confPw.addEventListener('input', validateL4);
+  }
+
+  var btnL5 = document.getElementById('btn-l5-submit');
+  var keyL5 = document.getElementById('l5-key');
+  var errL5 = document.getElementById('l5-err');
+  if (btnL5 && keyL5 && errL5) {
+    btnL5.addEventListener('click', function() {
+      if (!keyL5.value.trim()) {
+        errL5.style.display = 'block';
+      } else {
+        errL5.style.display = 'none';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

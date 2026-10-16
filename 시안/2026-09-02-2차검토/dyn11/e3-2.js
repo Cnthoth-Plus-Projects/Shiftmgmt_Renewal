@@ -1,0 +1,8 @@
+(()=>{function H(e){return e?Math.round(e.getBoundingClientRect().height):null}function vis(e){return !!e&&getComputedStyle(e).display!=='none'}function AT(e){var s='';(function w(n){if(n.nodeType===3){s+=n.textContent;return}if(n.nodeType!==1)return;if(n.getAttribute('aria-hidden')==='true')return;for(var i=0;i<n.childNodes.length;i++)w(n.childNodes[i])})(e);return s.replace(/\s+/g,' ').trim()}
+var m=document.getElementById('modal-e3'),b=document.getElementById('btn-submit-e3'),d=document.getElementById('e3-date'),a=document.getElementById('e3-amt'),rs=document.getElementById('e3-reason'),t=document.getElementById('toast-e3'),x=document.getElementById('btn-e3-toast-close'),o=document.getElementById('btn-open-e3');
+var r=[];var tr=t.getBoundingClientRect();
+r.push('저장 후 → 모달='+vis(m)+' 포커스='+document.activeElement.id+' 토스트표시='+vis(t)+' role='+t.getAttribute('role')+' live='+t.getAttribute('aria-live')+' 낭독="'+AT(t)+'" 토스트 '+Math.round(tr.width)+'x'+Math.round(tr.height)+' | 칸 비움 금액="'+a.value+'" 날짜="'+d.value+'" 사유="'+rs.value+'" | 등록 라벨='+b.textContent+' disabled='+b.disabled+' aria-disabled='+b.getAttribute('aria-disabled')+' | app-body aria-hidden='+document.querySelector('#e3-app-window .app-body').getAttribute('aria-hidden'));
+var g=document.getElementById('btn-e3-goto-perf');r.push('이동 버튼="'+g.textContent.trim()+'" '+g.tagName);
+x.click();r.push('✕ → 토스트표시='+vis(t)+' 포커스='+document.activeElement.id);
+o.click();m.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));r.push('재열기 후 Esc → 모달='+vis(m)+' 포커스='+document.activeElement.id);
+return r.join('\n');})()

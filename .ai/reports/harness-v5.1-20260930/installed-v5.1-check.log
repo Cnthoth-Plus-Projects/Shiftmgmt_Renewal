@@ -1,0 +1,14 @@
+AI Harness repo check: PASS_WITH_WARNING
+  root: C:\Users\pangyo\AppData\Local\AI-Harness
+  [INFO] POLICY_INDEX_OK          정책 26개가 모두 디스크에서 해석됩니다 (policy_count=26).
+  [INFO] CATALOG_OK               mcp-catalog.json : 65 항목
+  [INFO] CATALOG_OK               skill-catalog.json : 45 항목
+  [INFO] BUNDLED_SKILL_OK         dashboard-builder: skills/dashboard-builder
+  [INFO] CLIENT_SKILL_SUPPORT_OK  agy: .agents/skills/{skill_id}
+  [INFO] CLIENT_SKILL_SUPPORT_OK  claude: .claude/skills/{skill_id}
+  [INFO] CLIENT_SKILL_SUPPORT_OK  codex: .agents/skills/{skill_id}
+  [INFO] ESCORT_OK                에스코트 프로필 9개, 추천 id 44건이 모두 카탈로그에서 해석됩니다.
+  [WARN] PRERELEASE_VERSION       mcp-catalog.json 에 프리릴리스 버전이 고정돼 있습니다: 0.0.1a4. 의도한 것인지 확인하세요.
+  [INFO] SCHEMA_OK                스키마 검증 5 개 파일 (schemas/ 6개)
+  [INFO] SHARED_RUNTIME_OK        공용 런타임 1개 / shared_runtime 카탈로그 항목 1개
+  [INFO] TRACKED_FILES            추적 파일 114개

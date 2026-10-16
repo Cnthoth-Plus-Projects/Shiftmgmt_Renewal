@@ -1,0 +1,15 @@
+--- issued-body
++++ received-body
+@@ -151,9 +151,11 @@
+ | R32-06 | 세션·권한·이탈·경합 | AUTH_SESSION_REQUIRED는 current 요청일 때 기존 onSessionExpired 콜백을1회 호출해 로그인으로. AUTH_FORBIDDEN은 권한 오류/데이터0, 자동 로그인·우회0. query 변경/refresh/mount 세대와 destroyed 확인; old success/error/auth/finally는 새 상태·잠금·현재 화면을 바꾸지 않는다. destroy는 debounce 취소·세대무효·listener 정리 |
+ | R32-07 | 디자인·접근성·안전 | 아래수치 및 G1/G2 캡처. 사용자/서버 문자열은 textContent 또는 검증된 escape로, HTML 실행0. inline style/onclick/external font/network 추가0; CSS scope 밖 영향0. keyboard로 날짜/두select/검색/초기화/새로고침/더보기/메뉴이동 가능 |
+ | R32-08 | 실제 Chrome 시험 | 아래8case+기존2회귀, 각 입력→기대→실제값·요청수·captures·manifest. 인증/인가 판정은 실제 서버/cookie로 확인; response fixture는 UI 상태 시험에만 표시하여 사용 |
+-| R32-09 | 통합 증거 | typecheck/lint/map/build/full tests, changed9경로/보호hash/전체diff/신규파일 크기/정리 결과. 구현제출은 수용과 다름 |
++| R32-09 | 통합 증거 | typecheck/lint/map/build/full tests, 이번 허용5파일변경·전체dirty12·보호336/정본15hash·전체diff·신규파일크기·정리결과. 원구현 changed9는 이전범위 이력이며 이번에는 §4/§9.4가 기준. 구현제출은 수용과 다름 |
+ 
+ ### 원 IMPLEMENT의 재사용 계약
++
++아래는 동결된 제품의 동작과 검증 기대값이다. 이번 수정 권한·집계·실행 기준은 §4/§8/§9이며, source/CSS/index/copy/셸을 다시 구현하거나 수정하지 않는다.
+ 
+ 1. model helper: 월초/오늘 문자열, query snapshot/trim/date validation, 사용자 옵션은 loginId identity·한국어 이름 정렬, 날짜/role/detail/action 표시. 서버 정렬/필터를 프런트에서 재구현하지 않는다.
+ 2. screen은 HomeScreen와 같은 `{container,session,onSessionExpired}`와 `render()/destroy()` 계약. 최초 admin guard, local state, `destroyed/generation/debounce/sessionExpiredTriggered` 보유. 화면 본문/필터 DOM은 안정적으로 유지하여 검색 시 focus/caret를 잃지 않는다.

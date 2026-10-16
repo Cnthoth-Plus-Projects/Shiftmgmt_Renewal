@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 02-common-1.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+  --line: #E2E5EA;
+  --line-strong: #848A93;
+  --text: #1F2430;
+  --text-sub: #4B5563;
+  --accent: #3E56B6;
+  --row-selected: #EEF1FB;
+  --badge-approved-text: #1E7A46;
+  --badge-approved-bg: #E8F5EE;
+  --badge-pending-text: #4B5563;
+  --badge-pending-bg: #F1F2F4;
+  --badge-rejected-text: #C0392B;
+  --badge-rejected-bg: #FCEBE9;
+  --badge-reapproved-text: #A05200;
+  --badge-reapproved-bg: #FDF3E4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+  background: #E5E7EB;
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 32px;
+}
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  user-select: none;
+}
+.icon-18 { font-size: 18px; width: 18px; height: 18px; }
+.icon-40 { font-size: 40px; width: 40px; height: 40px; }
+*:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.state-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 1440px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.status-label-bar {
+  height: 36px;
+  background: #E2E5EA;
+  color: #4B5563;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  border-bottom: 1px solid #D1D5DB;
+}
+.app-window {
+  width: 1440px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  position: relative;
+}
+.app-body {
+  display: flex;
+  flex: 1;
+  height: calc(900px - 32px);
+  overflow: hidden;
+}
+.sidebar {
+  width: 220px;
+  background: #FFFFFF;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+.nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.sidebar.collapsed .nav-group-header { text-align: center; padding: 8px 0 4px; font-size: 12px; }
+.nav-item {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--text);
+  text-decoration: none;
+  gap: 10px;
+  font-size: 14px;
+  position: relative;
+  white-space: nowrap;
+}
+.sidebar.collapsed .nav-item { justify-content: center; padding: 0; gap: 0; }
+.sidebar.collapsed .nav-item span:not(.material-symbols-outlined):not(.nav-dot-badge) { display: none; }
+.nav-item:hover { background: #F8F9FA; }
+.nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  line-height: 1;
+}
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 1220px;
+  overflow: hidden;
+  transition: width 0.15s ease;
+}
+.sidebar.collapsed + .main-wrapper {
+  width: 1376px;
+}
+.header-bar {
+  height: 56px;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 12px;
+  flex-shrink: 0;
+}
+.header-left { display: flex; align-items: center; gap: 8px; }
+.btn-sidebar-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text);
+}
+.btn-sidebar-toggle:hover { background: #F4F5F7; }
+.header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+.header-title { font-size: 20px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.header-user-actions { display: flex; align-items: center; gap: 12px; }
+.role-badge {
+  background: #EEF1FB;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid #D5DCF5;
+}
+.user-info-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-sub);
+  font-size: 13px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.page-content {
+  flex: 1;
+  padding: 16px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.footer-statusbar {
+  height: 32px;
+  background: #FFFFFF;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--text-sub);
+  width: 1440px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border-right: 1px solid var(--line);
+  height: 100%;
+}
+.status-cell:first-child { padding-left: 0; }
+.status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+.status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+.status-dot-red { width: 8px; height: 8px; background: #C0392B; border-radius: 50%; display: inline-block; }
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary:hover { background: #32479B; }
+.btn-secondary {
+  background: #FFFFFF;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-secondary:hover { background: #F8F9FA; border-color: var(--line-strong); }
+.btn-danger {
+  background: #C0392B;
+  color: #FFFFFF;
+  border: 1px solid #C0392B;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-danger:hover { background: #A93226; }
+.btn-ghost {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-ghost:hover { background: rgba(0,0,0,0.05); }
+.btn-sm { padding: 4px 8px; font-size: 12px; }
+
+[aria-disabled="true"], button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+.form-input, .form-select {
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: #FFFFFF;
+  color: var(--text);
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(62,86,182,0.15);
+}
+.disabled-desc {
+  font-size: 12px;
+  color: #C0392B;
+  display: block;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 850px;
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+.modal-footer {
+  padding: 12px 20px;
+  background: #F8F9FA;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.box-blue-info {
+  background: #EEF1FB;
+  border: 1px solid #C9D4F4;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.box-red-danger {
+  background: #FCEBE9;
+  border: 1px solid #E0B4B0;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #C0392B;
+  line-height: 1.4;
+}
+
+.table-data, .table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.table-data th, .table-data td, .table-custom th, .table-custom td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  height: 40px;
+  min-height: 40px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.table-data th, .table-custom th {
+  background: #F8F9FA;
+  font-weight: 600;
+  color: var(--text-sub);
+  font-size: 13px;
+}
+.table-data tbody tr:hover { background: #F8F9FA; cursor: pointer; }
+.table-data tbody tr.selected { background: var(--row-selected); font-weight: 500; }
+
+.filter-chip-group { display: flex; gap: 6px; align-items: center; }
+.filter-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  color: var(--text-sub);
+  cursor: pointer;
+}
+.filter-chip.active {
+  background: #EEF1FB;
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.badge-approved { background: var(--badge-approved-bg); color: var(--badge-approved-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-pending { background: var(--badge-pending-bg); color: var(--badge-pending-text); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.badge-info { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 600px;
+  gap: 16px;
+  margin: 40px auto;
+}
+.empty-illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #EEF1FB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.demo-caption {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+
+.common-stage {
+  width: 1440px;
+  height: 900px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.common-content-box {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.skeleton-table-row {
+  height: 40px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+}
+</style>
+</head>
+<body>
+
+  <div class="state-wrapper" id="state-c1">
+    <div class="status-label-bar">── C1. 공통 — 단순 확인창 ──</div>
+    <div class="common-stage" id="state-c1-stage">
+      <div class="common-content-box">
+        <button type="button" class="btn-primary" id="btn-open-c1">단순 확인 열어 보기</button>
+        <span class="demo-caption">데모용 — 공통 부품 확인용</span>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-c1" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-c1-title" tabindex="-1">
+      <div class="modal-box" style="width: 400px;">
+        <div class="modal-header">
+          <h2 id="modal-c1-title" class="modal-title">근무지 이름 변경</h2>
+          <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size:14px;color:var(--text);">근무지 이름을 변경할까요?</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary btn-modal-cancel">취소</button><button type="button" class="btn-primary btn-modal-confirm">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="state-wrapper" id="state-c2">
+    <div class="status-label-bar">── C2. 공통 — 위험 확인창 ──</div>
+    <div class="common-stage" id="state-c2-stage">
+      <div class="common-content-box">
+        <button type="button" class="btn-primary" id="btn-open-c2">위험 확인 열어 보기</button>
+        <span class="demo-caption">데모용 — 공통 부품 확인용</span>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-c2" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-c2-title" tabindex="-1">
+      <div class="modal-box" style="width: 400px;">
+        <div class="modal-header">
+          <h2 id="modal-c2-title" class="modal-title">근무표 배포 확인</h2>
+          <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">근무표를 배포할까요?</div>
+   <div style="font-size:13px;color:var(--text-sub);">보라매 사업장 · 2025-06 · 14명</div>
+   <div class="box-blue-info">배포 후에는 회수한 실적으로만 수정할 수 있습니다.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary btn-modal-cancel">취소</button><button type="button" class="btn-primary btn-modal-confirm">배포</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="state-wrapper" id="state-c3">
+    <div class="status-label-bar">── C3. 공통 — 파괴 확인창 ──</div>
+    <div class="common-stage" id="state-c3-stage">
+      <div class="common-content-box">
+        <button type="button" class="btn-primary" id="btn-open-c3">파괴 확인 열어 보기</button>
+        <span class="demo-caption">데모용 — 공통 부품 확인용</span>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-c3" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-c3-title" tabindex="-1">
+      <div class="modal-box" style="width: 400px;">
+        <div class="modal-header">
+          <h2 id="modal-c3-title" class="modal-title">근무지 삭제 확인</h2>
+          <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">근무지를 삭제할까요?</div>
+   <div class="box-red-danger">삭제하면 배정 이력은 남지만 목록에서 사라집니다. 되돌리려면 관리자에게 문의해야 합니다.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary btn-modal-cancel">취소</button><button type="button" class="btn-danger btn-modal-confirm">삭제</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="state-wrapper" id="state-c4">
+    <div class="status-label-bar">── C4. 공통 — 사유 입력 모달 ──</div>
+    <div class="common-stage" id="state-c4-stage">
+      <div class="common-content-box">
+        <button type="button" class="btn-primary" id="btn-open-c4">사유 입력 열어 보기</button>
+        <span class="demo-caption">데모용 — 공통 부품 확인용</span>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-c4" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-c4-title" tabindex="-1">
+      <div class="modal-box" style="width: 400px;">
+        <div class="modal-header">
+          <h2 id="modal-c4-title" class="modal-title">실적 반려</h2>
+          <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기"><span class="material-symbols-outlined icon-18">close</span></button>
+        </div>
+        <div class="modal-body">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">실적을 반려할까요?</div>
+   <div class="form-group">
+     <label class="form-label" for="c4-reason-input">반려 사유 <span style="color:#C0392B;">*</span></label>
+     <textarea class="form-input" id="c4-reason-input" style="height:80px;padding:8px;" placeholder="반려 사유를 입력하세요"></textarea>
+   </div>
+   <div class="disabled-desc" id="c4-reason-desc">반려 사유를 입력해야 반려할 수 있습니다.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary btn-modal-cancel">취소</button><button type="button" class="btn-secondary btn-modal-confirm" id="btn-c4-reject" aria-disabled="true" aria-describedby="c4-reason-desc">반려</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function() {
+  function setupModal(triggerId, modalId, stageId) {
+    var trigger = document.getElementById(triggerId);
+    var modal = document.getElementById(modalId);
+    var stage = document.getElementById(stageId);
+    var opener = null;
+
+    function openModal(e) {
+      opener = e.currentTarget;
+      modal.style.display = 'flex';
+      if (stage) stage.setAttribute('aria-hidden', 'true');
+      modal.removeAttribute('aria-hidden');
+      var cancelBtn = modal.querySelector('.btn-modal-cancel') || modal.querySelector('button');
+      if (cancelBtn) cancelBtn.focus();
+    }
+
+    var processing = false;
+    function closeModal() {
+      if (processing) return;
+      modal.style.display = 'none';
+      if (stage) stage.removeAttribute('aria-hidden');
+      if (opener) { opener.focus(); opener = null; }
+    }
+
+    if (trigger) trigger.addEventListener('click', openModal);
+
+    modal.querySelectorAll('.btn-modal-cancel, .btn-modal-close-x').forEach(function(b) {
+      b.addEventListener('click', closeModal);
+    });
+
+    modal.querySelectorAll('.btn-modal-confirm').forEach(function(b) {
+      b.addEventListener('click', function() {
+        if (b.getAttribute('aria-disabled') === 'true') return;
+        processing = true;
+        var origLabel = b.textContent;
+        var closeBtns = modal.querySelectorAll('.btn-modal-cancel, .btn-modal-close-x');
+        closeBtns.forEach(function(cb) { cb.disabled = true; });
+        b.disabled = true;
+        b.textContent = '처리 중...';
+        modal.focus();
+        setTimeout(function() {
+          processing = false;
+          closeBtns.forEach(function(cb) { cb.disabled = false; });
+          b.disabled = false;
+          b.textContent = origLabel;
+          closeModal();
+        }, 600);
+      });
+    });
+
+    modal.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { e.preventDefault(); if (!processing) closeModal(); return; }
+      if (processing && e.key === 'Tab') { e.preventDefault(); return; }
+      if (e.key === 'Tab') {
+        var f = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+        } else {
+          if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+        }
+      }
+    });
+  }
+
+  setupModal('btn-open-c1', 'modal-c1', 'state-c1-stage');
+  setupModal('btn-open-c2', 'modal-c2', 'state-c2-stage');
+  setupModal('btn-open-c3', 'modal-c3', 'state-c3-stage');
+  setupModal('btn-open-c4', 'modal-c4', 'state-c4-stage');
+
+  var c4Input = document.getElementById('c4-reason-input');
+  var c4Btn = document.getElementById('btn-c4-reject');
+  var c4Desc = document.getElementById('c4-reason-desc');
+  if (c4Input && c4Btn) {
+    c4Input.addEventListener('input', function() {
+      if (c4Input.value.trim().length > 0) {
+        c4Btn.removeAttribute('aria-disabled');
+        if (c4Desc) c4Desc.style.display = 'none';
+      } else {
+        c4Btn.setAttribute('aria-disabled', 'true');
+        if (c4Desc) c4Desc.style.display = 'block';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

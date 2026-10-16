@@ -1,0 +1,348 @@
+========================================================================
+A14. 아이콘 글리프 낭독 누출 — material-symbols span 중 aria-hidden 없는 것
+========================================================================
+전체 469개 중 누출 145개 (30.9%)
+
+## 파일별
+   00-shell-1.html: 29개 중 6개 누출  ← 누출
+   00-shell-2.html: 35개 중 10개 누출  ← 누출
+   01-login-1.html: 4개 중 4개 누출  ← 누출
+   01-login-2.html: 10개 중 10개 누출  ← 누출
+   02-common-1.html: 4개 중 4개 누출  ← 누출
+   02-common-2.html: 7개 중 7개 누출  ← 누출
+   02-common-3.html: 0개 중 0개 누출
+   04-sites-1.html: 11개 중 4개 누출  ← 누출
+   04-sites-2.html: 21개 중 7개 누출  ← 누출
+   06-employees-1.html: 19개 중 5개 누출  ← 누출
+   06-employees-2.html: 29개 중 8개 누출  ← 누출
+   06-employees-3.html: 23개 중 7개 누출  ← 누출
+   07-schedule-1.html: 10개 중 3개 누출  ← 누출
+   07-schedule-2.html: 21개 중 7개 누출  ← 누출
+   07-schedule-3.html: 30개 중 9개 누출  ← 누출
+   09-allowance-1.html: 20개 중 6개 누출  ← 누출
+   09-allowance-2.html: 12개 중 5개 누출  ← 누출
+   09-allowance-3.html: 30개 중 9개 누출  ← 누출
+   10-dashboard-1.html: 29개 중 8개 누출  ← 누출
+   11-operations-1.html: 23개 중 5개 누출  ← 누출
+   11-operations-2.html: 33개 중 6개 누출  ← 누출
+   11-operations-3.html: 33개 중 6개 누출  ← 누출
+   11-operations-4.html: 13개 중 4개 누출  ← 누출
+   12-access-logs-1.html: 23개 중 5개 누출  ← 누출
+
+## 새는 낱말
+   "menu" x42
+   "person" x42
+   "close" x22
+   "visibility" x6
+   "check_circle" x5
+   "error" x4
+   "add" x3
+   "info" x2
+   "radio_button_unchecked" x2
+   "warning" x2
+   "fact_check" x2
+   "lock" x1
+   "key" x1
+   "domain_disabled" x1
+   "search_off" x1
+   "group_off" x1
+   "person_add" x1
+   "expand_less" x1
+   "event_busy" x1
+   "add_circle" x1
+   "description" x1
+   "receipt_long" x1
+   "analytics" x1
+   "history_toggle_off" x1
+
+## 위치와 문맥 (전건)
+   00-shell-1.html:508  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   00-shell-1.html:516  "person"
+        …e">홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   00-shell-1.html:566  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   00-shell-1.html:574  "person"
+        …e">홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">사용자</span>       <button type="button" class="user-info-btn">         
+   00-shell-1.html:628  "menu"
+        … class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="false">         
+   00-shell-1.html:636  "person"
+        …>홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   00-shell-2.html:510  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   00-shell-2.html:518  "person"
+        …e">홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   00-shell-2.html:572  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   00-shell-2.html:580  "person"
+        …e">홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   00-shell-2.html:587  "error"
+        …x;align-items:center;justify-content:space-between;color:#C0392B;font-size:13px;">           <div style="display:flex;align-items:center;gap:8px;">             
+   00-shell-2.html:638  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   00-shell-2.html:646  "person"
+        …>홈</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   00-shell-2.html:653  "info"
+        …n-items:center;justify-content:space-between;color:var(--accent);font-size:13px;">           <div style="display:flex;align-items:center;gap:8px;">             
+   00-shell-2.html:659  "close"
+        …ton type="button" class="btn-primary btn-sm" id="btn-s6-banner-update">업데이트</button>             <button type="button" class="btn-ghost btn-sm" aria-label="닫기">
+   00-shell-2.html:690  "close"
+        …id="modal-s6-title" class="modal-title">근무표 배포 안정화와 수당 근거 패널 개선</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-s6-x" aria-label="닫기">
+   01-login-1.html:201  "visibility"
+        …form-input" id="l1-pw" placeholder="비밀번호를 입력하세요" autocomplete="current-password">             <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시">
+   01-login-1.html:224  "error"
+        …E9;border:1px solid #E0B4B0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:8px;color:#C0392B;font-size:13px;font-weight:600;">         
+   01-login-1.html:236  "visibility"
+        …rm-input error" id="l2-pw" value="wrongpassword" autocomplete="current-password">             <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시">
+   01-login-1.html:253  "lock"
+        …>       <div style="width:56px;height:56px;border-radius:50%;background:#FCEBE9;display:flex;align-items:center;justify-content:center;color:#C0392B;">         
+   01-login-2.html:198  "visibility"
+        …<input type="password" class="form-input" id="l4-current-pw" value="Current123!">             <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시">
+   01-login-2.html:206  "visibility"
+        …       <input type="password" class="form-input" id="l4-new-pw" value="Password">             <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시">
+   01-login-2.html:209  "check_circle"
+        …-outlined">visibility</span></button>           </div>           <ul class="rule-list" id="l4-rule-list">             <li class="rule-item valid" id="rule-len">
+   01-login-2.html:210  "check_circle"
+        …ule-len"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 8자 이상</li>             <li class="rule-item valid" id="rule-upper">
+   01-login-2.html:211  "check_circle"
+        …per"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 영문 대문자 포함</li>             <li class="rule-item valid" id="rule-lower">
+   01-login-2.html:212  "radio_button_unchecked"
+        …wer"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 영문 소문자 포함</li>             <li class="rule-item invalid" id="rule-num">
+   01-login-2.html:213  "radio_button_unchecked"
+        … class="material-symbols-outlined" style="font-size:16px;">radio_button_unchecked</span> 숫자 포함</li>             <li class="rule-item invalid" id="rule-special">
+   01-login-2.html:221  "visibility"
+        …   <input type="password" class="form-input" id="l4-confirm-pw" value="Password">             <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시">
+   01-login-2.html:239  "key"
+        …<div style="width:48px;height:48px;border-radius:50%;background:#EEF1FB;display:flex;align-items:center;justify-content:center;color:var(--accent);">           
+   01-login-2.html:249  "visibility"
+        … <input type="password" class="form-input" id="l5-key" placeholder="계정복구키를 입력하세요">             <button type="button" class="btn-eye-toggle" aria-label="복구키 표시">
+   02-common-1.html:499  "close"
+        …          <h2 id="modal-c1-title" class="modal-title">근무지 이름 변경</h2>           <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기">
+   02-common-1.html:524  "close"
+        …          <h2 id="modal-c2-title" class="modal-title">근무표 배포 확인</h2>           <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기">
+   02-common-1.html:551  "close"
+        …          <h2 id="modal-c3-title" class="modal-title">근무지 삭제 확인</h2>           <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기">
+   02-common-1.html:577  "close"
+        …r">           <h2 id="modal-c4-title" class="modal-title">실적 반려</h2>           <button type="button" class="btn-ghost btn-sm btn-modal-close-x" aria-label="닫기">
+   02-common-2.html:492  "check_circle"
+        …6;width:380px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">         <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;">           
+   02-common-2.html:495  "close"
+        …outlined icon-18">check_circle</span>           <span>근무지를 저장했습니다.</span>         </div>         <button type="button" class="btn-ghost btn-sm" aria-label="닫기">
+   02-common-2.html:507  "info"
+        …);width:380px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">         <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;">           
+   02-common-2.html:510  "close"
+        …symbols-outlined icon-18">info</span>           <span>백업이 시작되었습니다.</span>         </div>         <button type="button" class="btn-ghost btn-sm" aria-label="닫기">
+   02-common-2.html:522  "error"
+        …B;width:420px;box-shadow:0 4px 12px rgba(0,0,0,0.08);">         <div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;">           
+   02-common-2.html:525  "close"
+        …ror</span>           <span>파일을 읽지 못했습니다. 파일이 열려 있으면 닫고 다시 시도해 주세요.</span>         </div>         <button type="button" class="btn-ghost btn-sm" aria-label="닫기">
+   02-common-2.html:535  "domain_disabled"
+        …s-label-bar">── C8. 공통 — 빈 상태 ──</div>   <div class="common-stage">     <div class="empty-state-card">       <div class="empty-illustration" aria-hidden="true">
+   04-sites-1.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   04-sites-1.html:489  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   04-sites-1.html:504  "add"
+        …        <button type="button" class="filter-chip">준비 중 1</button>               </div>             </div>             <button type="button" class="btn-primary">
+   04-sites-1.html:560  "close"
+        …<h2 id="modal-t2-title" class="modal-title">근무지 상세 정보 (보라매 사업장)</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-t2-x" aria-label="닫기">
+   04-sites-2.html:483  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   04-sites-2.html:491  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   04-sites-2.html:502  "add"
+        … 검색">               <button type="button" class="btn-secondary btn-sm">검색 지우기</button>             </div>             <button type="button" class="btn-primary">
+   04-sites-2.html:505  "search_off"
+        …add</span><span>근무지 등록</span></button>           </div>           <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">
+   04-sites-2.html:545  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   04-sites-2.html:553  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   04-sites-2.html:576  "close"
+        …-t4-title" class="modal-title" style="color:#C0392B;">근무지 삭제 확인</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-t4-x" aria-label="닫기">
+   06-employees-1.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-1.html:489  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-1.html:588  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-1.html:596  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-1.html:669  "close"
+        …r:var(--text-sub);margin-top:2px;">사원 · 정규직 · 재직</div>                 </div>                 <button type="button" class="btn-ghost btn-sm" aria-label="패널 닫기">
+   06-employees-2.html:483  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-2.html:491  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-2.html:514  "close"
+        …        <h2 id="modal-e3-title" class="modal-title">시급 등록 (박성진)</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-e3-x" aria-label="닫기">
+   06-employees-2.html:554  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-2.html:562  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-2.html:585  "close"
+        …   <h2 id="modal-e4-title" class="modal-title">근무지 및 조 배정 (박성진)</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-e4-x" aria-label="닫기">
+   06-employees-2.html:633  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-2.html:641  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-3.html:487  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-3.html:495  "person"
+        …력 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   06-employees-3.html:523  "close"
+        … 이름 기준으로 시급 변경 대상을 검증한 뒤 이력으로 반영합니다.           </div>         </div>         <button type="button" class="btn-ghost btn-sm" id="btn-close-e6-x" aria-label="닫기">
+   06-employees-3.html:614  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   06-employees-3.html:622  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   06-employees-3.html:629  "group_off"
+        … </div>   </header>         <main class="page-content">           <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">
+   06-employees-3.html:632  "person_add"
+        …lor:var(--text-sub);max-width:320px;">인력을 등록하면 근무지의 조에 배정하고 시급을 등록할 수 있습니다.</div>             <button type="button" class="btn-primary" style="margin-top:8px;">
+   07-schedule-1.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-1.html:489  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-1.html:503  "warning"
+        …ss="filter-chip" style="background:#FDF3E4;border-color:#E5C287;color:#A05200;font-weight:600;display:inline-flex;align-items:center;gap:4px;">                 
+   07-schedule-2.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-2.html:489  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-2.html:503  "warning"
+        …button type="button" class="filter-chip" style="background:#A05200;color:#FFF;font-weight:600;display:inline-flex;align-items:center;gap:4px;">                 
+   07-schedule-2.html:520  "expand_less"
+        … 주간 총시간, 연속 야간, 휴식시간, 주휴 누락을 점검합니다.                 </div>               </div>               <button type="button" class="btn-ghost btn-sm" aria-label="패널 접기">
+   07-schedule-2.html:617  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-2.html:625  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-2.html:645  "error"
+        …splay:flex;flex-direction:column;gap:16px;max-width:700px;margin:40px auto;">             <div style="display:flex;align-items:center;gap:10px;">               
+   07-schedule-3.html:484  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-3.html:492  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-3.html:515  "close"
+        …>         <h2 id="modal-r4-title" class="modal-title">근무표 배포 확인</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-r4-x" aria-label="닫기">
+   07-schedule-3.html:557  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-3.html:565  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-3.html:629  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   07-schedule-3.html:637  "person"
+        …배포</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">계획 담당</span>       <button type="button" class="user-info-btn">         
+   07-schedule-3.html:644  "event_busy"
+        … </div>   </header>         <main class="page-content">           <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">
+   07-schedule-3.html:647  "add_circle"
+        …size:13px;color:var(--text-sub);max-width:320px;">근무지와 달을 선택해 근무표를 만들어 보세요.</div>             <button type="button" class="btn-primary" style="margin-top:8px;">
+   09-allowance-1.html:488  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-1.html:496  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-1.html:507  "description"
+        … aria-label="근무지 선택"><option selected>전체 근무지</option><option>보라매 사업장</option></select>             </div>             <button type="button" class="btn-primary">
+   09-allowance-1.html:607  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-1.html:615  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-1.html:648  "close"
+        …b);margin-top:2px;">박성진 (50001 · 사원) · 05-07 (수)</div>                 </div>                 <button type="button" class="btn-ghost btn-sm" aria-label="패널 닫기">
+   09-allowance-2.html:484  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-2.html:492  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-2.html:521  "close"
+        … id="modal-a3-title" class="modal-title">수당 품의 미리보기 (2025년 05월)</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-a3-x" aria-label="닫기">
+   09-allowance-2.html:562  "close"
+        …>         <h2 id="modal-a4-title" class="modal-title">조기 지급일 지정</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-a4-x" aria-label="닫기">
+   09-allowance-2.html:584  "close"
+        …le" class="modal-title" style="color:var(--accent);">품의를 승인할까요?</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-a5-x" aria-label="닫기">
+   09-allowance-3.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-3.html:489  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-3.html:497  "check_circle"
+        …x;width:680px;margin:20px auto;display:flex;flex-direction:column;gap:18px;">             <div style="display:flex;align-items:center;gap:10px;">               
+   09-allowance-3.html:563  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-3.html:571  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-3.html:636  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   09-allowance-3.html:644  "person"
+        …관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   09-allowance-3.html:651  "receipt_long"
+        … </div>   </header>         <main class="page-content">           <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">
+   09-allowance-3.html:654  "fact_check"
+        …px;color:var(--text-sub);max-width:320px;">실적 관리에서 실적을 승인하면 수당이 자동으로 계산됩니다.</div>             <button type="button" class="btn-primary" style="margin-top:8px;">
+   10-dashboard-1.html:481  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   10-dashboard-1.html:489  "person"
+        …보드</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   10-dashboard-1.html:607  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   10-dashboard-1.html:615  "person"
+        …보드</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   10-dashboard-1.html:694  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   10-dashboard-1.html:702  "person"
+        …보드</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">승인 담당</span>       <button type="button" class="user-info-btn">         
+   10-dashboard-1.html:714  "analytics"
+        …ion selected>전체 근무지</option></select>           </div>            <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">
+   10-dashboard-1.html:717  "fact_check"
+        …ar(--text-sub);max-width:340px;">실적 관리에서 실적을 승인하면 수당 계산 결과가 생성되어 여기에 집계됩니다.</div>             <button type="button" class="btn-primary" style="margin-top:8px;">
+   11-operations-1.html:492  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-1.html:500  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-1.html:682  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-1.html:690  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-1.html:783  "add"
+        …size:12px;color:var(--text-sub);font-weight:normal;margin-left:8px;">전체 18건 중 8건 표시</span></div>               <button type="button" class="btn-primary btn-sm">
+   11-operations-2.html:491  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-2.html:499  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-2.html:662  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-2.html:670  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-2.html:778  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-2.html:786  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-3.html:484  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-3.html:492  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-3.html:645  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-3.html:653  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-3.html:734  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-3.html:742  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-4.html:487  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   11-operations-4.html:495  "person"
+        …영 관리</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   11-operations-4.html:518  "close"
+        …>         <h2 id="modal-o9-title" class="modal-title">DB복원 미리보기</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-o9-x" aria-label="닫기">
+   11-operations-4.html:583  "close"
+        …title" class="modal-title" style="color:#C0392B;">데이터베이스 복원 확인</h2>         <button type="button" class="btn-ghost btn-sm" id="btn-close-o10-x" aria-label="닫기">
+   12-access-logs-1.html:484  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   12-access-logs-1.html:492  "person"
+        …동 이력</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   12-access-logs-1.html:639  "menu"
+        …r class="header-bar">     <div class="header-left">       <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true">         
+   12-access-logs-1.html:647  "person"
+        …동 이력</h1>     </div>     <div class="header-user-actions">       <span class="role-badge">관리자</span>       <button type="button" class="user-info-btn">         
+   12-access-logs-1.html:665  "history_toggle_off"
+        …n-sm">초기화</button>             </div>           </div>            <div class="empty-state-card">             <div class="empty-illustration" aria-hidden="true">

@@ -1,0 +1,55 @@
+--- A-baseline/scripts/ui-checks/access-history-positive.mjs
++++ Gemini-A/scripts/ui-checks/access-history-positive.mjs
+@@ -8,30 +8,42 @@
+   parseBridgeQuery,
+   HeldRouteController,
+   performLogin,
++  loadContract,
++  performWorkerIpcHandshake,
+ } from "./access-history-shared.mjs";
+ 
+ const repoRoot = path.resolve(process.cwd());
+ 
+-// CLI 인수: --case=<case>
++// CLI 인수 검문 (A01, A-N03)
+ const rawArgs = process.argv.slice(2);
+-const caseArg = rawArgs.find((a) => a.startsWith("--case="))?.slice(7).trim();
+-const targetUrl = process.env.SHIFT_TARGET_URL || "http://127.0.0.1:18741/";
+-
+-if (!caseArg) {
+-  process.stderr.write("[오류] --case=<case> 인수가 필요합니다.\n");
++if (rawArgs.length !== 1 || !rawArgs[0].startsWith("--case=")) {
++  process.stderr.write("[오류] 정확히 단일 --case=<케이스> 인수가 필요합니다.\n");
+   process.exit(1);
+ }
+ 
+-const bootstrapFile = process.env.SHIFTMGMT_UI_BOOTSTRAP_FILE;
+-if (!bootstrapFile || !fs.existsSync(bootstrapFile)) {
+-  process.stderr.write("[오류] 유효한 bootstrap 파일이 제공되지 않았습니다.\n");
++const caseArg = rawArgs[0].slice(7).trim();
++const contract = loadContract();
++const POSITIVE_CASES = new Set(contract.privateCases?.["access-history-positive.mjs"] || []);
++
++if (!POSITIVE_CASES.has(caseArg)) {
++  process.stderr.write(`[오류] access-history-positive.mjs에 등록되지 않은 케이스: '${caseArg}'\n`);
+   process.exit(1);
+ }
+ 
++// 소유 부모 프로세스 IPC 핸드셰이크 검문 (A03, A-N03, A-N04)
++const { context } = await performWorkerIpcHandshake(caseArg, contract);
++const targetUrl = context.url;
++const bootstrapFile = context.bootstrapFile;
++
++if (!bootstrapFile || !fs.existsSync(bootstrapFile)) {
++  process.stderr.write("[오류] 유효한 bootstrap 파일이 존재하지 않습니다.\n");
++  process.exit(1);
++}
++
+ const credentials = JSON.parse(fs.readFileSync(bootstrapFile, "utf8"));
+ const adminCreds = { ...credentials.credentials["user-admin"] };
+ 
+-const collector = new AssertionCollector(caseArg);
++const collector = new AssertionCollector(caseArg, contract);
+ 
+ await runScreenCheck({
+   id: `access-history-${caseArg}`,

@@ -1,0 +1,16 @@
+{
+  "name": "case-empty-fixture",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=empty-fixture"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:13:13.785698+00:00",
+  "pid": 22136,
+  "rc": 0,
+  "end": "2026-10-01T07:13:18.130903+00:00",
+  "elapsedSeconds": 4.344,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-empty-fixture.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-empty-fixture.stderr.txt"
+}

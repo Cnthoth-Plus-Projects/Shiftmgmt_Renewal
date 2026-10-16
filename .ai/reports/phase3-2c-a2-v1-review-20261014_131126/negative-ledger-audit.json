@@ -1,0 +1,2624 @@
+{
+  "proof": "RECEIVED_RECEIPT_SOURCE_ANALYSIS_NOT_FRESH_EXECUTION",
+  "negativeVectorCount": 112,
+  "unrelatedCLICount": 45,
+  "uniqueNonNormalCommandPids": [
+    4720
+  ],
+  "zeroElapsedCommandCount": 101,
+  "groupCounts": {
+    "A-N01": {
+      "vectors": 3,
+      "unrelatedCLI": 0
+    },
+    "A-N02": {
+      "vectors": 6,
+      "unrelatedCLI": 0
+    },
+    "A-N03": {
+      "vectors": 18,
+      "unrelatedCLI": 0
+    },
+    "A-N04": {
+      "vectors": 3,
+      "unrelatedCLI": 0
+    },
+    "A-N05": {
+      "vectors": 7,
+      "unrelatedCLI": 7
+    },
+    "A-N06": {
+      "vectors": 13,
+      "unrelatedCLI": 13
+    },
+    "A-N07": {
+      "vectors": 9,
+      "unrelatedCLI": 0
+    },
+    "A-N08": {
+      "vectors": 5,
+      "unrelatedCLI": 0
+    },
+    "A-N09": {
+      "vectors": 3,
+      "unrelatedCLI": 0
+    },
+    "A-N10": {
+      "vectors": 2,
+      "unrelatedCLI": 0
+    },
+    "A-N11": {
+      "vectors": 2,
+      "unrelatedCLI": 0
+    },
+    "A-N12": {
+      "vectors": 4,
+      "unrelatedCLI": 4
+    },
+    "A-N13": {
+      "vectors": 3,
+      "unrelatedCLI": 3
+    },
+    "A-N14": {
+      "vectors": 4,
+      "unrelatedCLI": 0
+    },
+    "A-N15": {
+      "vectors": 6,
+      "unrelatedCLI": 6
+    },
+    "A-N16": {
+      "vectors": 5,
+      "unrelatedCLI": 5
+    },
+    "A-N17": {
+      "vectors": 2,
+      "unrelatedCLI": 2
+    },
+    "A-N18": {
+      "vectors": 5,
+      "unrelatedCLI": 5
+    },
+    "A-N19": {
+      "vectors": 8,
+      "unrelatedCLI": 0
+    },
+    "A-N20": {
+      "vectors": 4,
+      "unrelatedCLI": 0
+    }
+  },
+  "vectors": [
+    {
+      "id": "A-N01/owner-noargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N01/owner-empty",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case="
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N01/owner-unknown",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=unknowncase"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-duplicate-case",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=live-admin",
+          "--case=list-fixture"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-separate-value",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case",
+          "live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-url-option",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=live-admin",
+          "--url=http://127.0.0.1:18741"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-positional-url",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=live-admin",
+          "http://127.0.0.1:18741"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-case-leading-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case= live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N02/owner-case-trailing-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=live-admin "
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-known",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case=live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-unknown",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case=unknowncase"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-noargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-twoargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case=live-admin",
+          "extra"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-leading-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case= live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-positive-trailing-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case=live-admin "
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-known",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=errors"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-unknown",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=unknowncase"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-noargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-twoargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=errors",
+          "extra"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-leading-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case= errors"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-negative-trailing-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=errors "
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-known",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-unknown",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=unknowncase"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-noargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-twoargs",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core",
+          "extra"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-leading-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case= contract-core"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N03/direct-shared-trailing-space",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core "
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N04/forged-env-no-ipc-positive",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-positive.mjs",
+          "--case=live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N04/forged-env-no-ipc-negative",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=errors"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N04/forged-env-no-ipc-shared",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-no-packet",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_no_packet"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-context-timeout",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_context_timeout"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-nonce-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_nonce_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-owner-pid-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_owner_pid_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-worker-pid-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_worker_pid_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-ppid-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_ppid_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N05/ipc-case-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N05_ipc_case_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-contract-path-missing",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_contract_path_missing"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-contract-path-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_contract_path_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-contract-digest-missing",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_contract_digest_missing"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-contract-digest-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_contract_digest_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-run-external",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_run_external"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-run-sibling",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_run_sibling"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-run-symlink",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_run_symlink"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-temp-external",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_temp_external"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-temp-sibling",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_temp_sibling"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-temp-symlink",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_temp_symlink"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-bootstrap-external",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_bootstrap_external"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-bootstrap-sibling",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_bootstrap_sibling"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N06/ipc-bootstrap-symlink",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N06_ipc_bootstrap_symlink"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near-tolerance2",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 132, 2);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near-tolerance4",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 132, 4);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near-toleranceNaN",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 132, NaN);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near-actualNaN",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, NaN, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near-actualInfinity",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, Infinity, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near133.5-vs132-tol1",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 133.5, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N07/near132-boundary",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 132, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "ACCEPT_BOUNDARY"
+      ]
+    },
+    {
+      "id": "A-N07/near133-boundary",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 133, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "ACCEPT_BOUNDARY"
+      ]
+    },
+    {
+      "id": "A-N07/constant-provenance-mismatch",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectNear('test', 132, 132, 1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N08/core-id-missing",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { validateRequiredCoverage } from './scripts/ui-checks/access-history-negative.mjs'; validateRequiredCoverage('unknowncase', []);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N08/core-id-duplicate",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { validateRequiredCoverage } from './scripts/ui-checks/access-history-negative.mjs'; validateRequiredCoverage('unknowncase', []);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N08/core-id-unknown",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { validateRequiredCoverage } from './scripts/ui-checks/access-history-negative.mjs'; validateRequiredCoverage('unknowncase', []);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N08/core-id-extra",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { validateRequiredCoverage } from './scripts/ui-checks/access-history-negative.mjs'; validateRequiredCoverage('unknowncase', []);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N08/unknown-case-required-nonempty",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { validateRequiredCoverage } from './scripts/ui-checks/access-history-negative.mjs'; validateRequiredCoverage('unknowncase', []);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N09/fixture-publish-wrong-label",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { CANONICAL_8_ACTIONS } from './scripts/ui-checks/access-history-shared.mjs'; if (CANONICAL_8_ACTIONS.length !== 8) process.exit(1); throw new Error('drift');"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N09/canonical-compiled-label-drift",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { CANONICAL_8_ACTIONS } from './scripts/ui-checks/access-history-shared.mjs'; if (CANONICAL_8_ACTIONS.length !== 8) process.exit(1); throw new Error('drift');"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N09/canonical-compiled-hash-drift",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { CANONICAL_8_ACTIONS } from './scripts/ui-checks/access-history-shared.mjs'; if (CANONICAL_8_ACTIONS.length !== 8) process.exit(1); throw new Error('drift');"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N10/unrelated-console-401",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { computeExpectedErrors } from './scripts/ui-checks/access-history-negative.mjs'; computeExpectedErrors({ case: 'live-admin', requests: [], rawErrors: { pageerror: ['err'], console: [], requestfailed: [], badResponses: [] } });"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N10/raw-pageerror",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { computeExpectedErrors } from './scripts/ui-checks/access-history-negative.mjs'; computeExpectedErrors({ case: 'live-admin', requests: [], rawErrors: { pageerror: ['err'], console: [], requestfailed: [], badResponses: [] } });"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N11/actual-context-close-then-throw",
+      "proofClaim": "ACTUAL_CLOSE_SDK",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { installNormalObserver } from './scripts/ui-checks/access-history-negative.mjs'; const s = installNormalObserver({ context: { repository: '.', runDir: '.' }, caseName: 'test', contract: {}, execution: {}, nonceSha256: '0'.repeat(64) }); s.resources.browser.error = 'close-error'; if (!s.resources.browser.error) process.exit(1); throw new Error('close-failed');"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N11/actual-browser-close-then-throw",
+      "proofClaim": "ACTUAL_CLOSE_SDK",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { installNormalObserver } from './scripts/ui-checks/access-history-negative.mjs'; const s = installNormalObserver({ context: { repository: '.', runDir: '.' }, caseName: 'test', contract: {}, execution: {}, nonceSha256: '0'.repeat(64) }); s.resources.browser.error = 'close-error'; if (!s.resources.browser.error) process.exit(1); throw new Error('close-failed');"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N12/worker-timeout",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N12_worker_timeout"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N12/worker-kill-request",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N12_worker_kill_request"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N12/kill-without-close-observed",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N12_kill_without_close_observed"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N12/server-stop-timeout",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N12_server_stop_timeout"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N13/worker-spawn-error",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N13_worker_spawn_error"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N13/server-spawn-error",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N13_server_spawn_error"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N13/server-exit-before-listen",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N13_server_exit_before_listen"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N14/owner-final-denied-sync",
+      "proofClaim": "NOT_USED",
+      "resultClaim": "NOT_USED",
+      "argvs": [],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [],
+      "zeroElapsed": [],
+      "traceActualFields": []
+    },
+    {
+      "id": "A-N14/owner-final-denied-async",
+      "proofClaim": "NOT_USED",
+      "resultClaim": "NOT_USED",
+      "argvs": [],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [],
+      "zeroElapsed": [],
+      "traceActualFields": []
+    },
+    {
+      "id": "A-N14/owner-final-denied-atomic-rename",
+      "proofClaim": "NOT_USED",
+      "resultClaim": "NOT_USED",
+      "argvs": [],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [],
+      "zeroElapsed": [],
+      "traceActualFields": []
+    },
+    {
+      "id": "A-N14/worker-final-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history-negative.mjs",
+          "--case=errors",
+          "--deny-final"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/worker-stdout-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_worker_stdout_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/worker-stderr-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_worker_stderr_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/server-stdout-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_server_stdout_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/server-stderr-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_server_stderr_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/capture-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_capture_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N15/core-observations-denied",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N15_core_observations_denied"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N16/capture-missing",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N16_capture_missing"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N16/capture-hash-mismatch",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N16_capture_hash_mismatch"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N16/capture-outside-path",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N16_capture_outside_path"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N16/capture-broken-png",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N16_capture_broken_png"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N16/worker-final-absent",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N16_worker_final_absent"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N17/protected-preflight-health-exit-before-steps",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N17_protected_preflight_health_exit_before_steps"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N17/protected-preflight-chrome-exit-before-steps",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=reject_A_N17_protected_preflight_chrome_exit_before_steps"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N18/owned-stub-port-busy",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N18_owned_stub_port_busy"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N18/inherited-SHIFT-poison",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N18_inherited_SHIFT_poison"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N18/inherited-SHIFTMGMT-poison",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N18_inherited_SHIFTMGMT_poison"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N18/inherited-NODE_OPTIONS-poison",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N18_inherited_NODE_OPTIONS_poison"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N18/execArgv-no-auto-forward",
+      "proofClaim": "ACTUAL_SUT",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=invalid_A_N18_execArgv_no_auto_forward"
+        ]
+      ],
+      "unrelatedOwnerCLI": true,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-live-admin",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=live-admin"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        49264
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-list-fixture",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=list-fixture"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        30860
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-empty-fixture",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=empty-fixture"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        54160
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-filters",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=filters"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        2920
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-errors",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=errors"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        49280
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-stale-response",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=stale-response"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        34776
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-role-guard",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=role-guard"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        36576
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N19/normal-incomplete-session-expired",
+      "proofClaim": "ACTUAL_NORMAL_RUNTIME",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--import",
+          "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a2-v1/runtime-preload.mjs",
+          "scripts/ui-checks/access-history.mjs",
+          "--case=session-expired"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        41672
+      ],
+      "zeroElapsed": [
+        false
+      ],
+      "traceActualFields": [
+        "INCOMPLETE"
+      ]
+    },
+    {
+      "id": "A-N20/actual-raw-pointer-mismatch",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectEqual('test', '/pointer', 1, 2); process.exit(1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N20/caller-expected-field",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectEqual('test', '/pointer', 1, 2); process.exit(1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N20/caller-pass-field",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectEqual('test', '/pointer', 1, 2); process.exit(1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    },
+    {
+      "id": "A-N20/caller-tolerance-field",
+      "proofClaim": "ACTUAL_SOURCE_HELPER",
+      "resultClaim": "OBSERVED_EXPECTED",
+      "argvs": [
+        [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import { NormalAssertionCollector } from './scripts/ui-checks/access-history-negative.mjs'; const c = new NormalAssertionCollector('test', {}, { diagnostics: [] }); c.expectEqual('test', '/pointer', 1, 2); process.exit(1);"
+        ]
+      ],
+      "unrelatedOwnerCLI": false,
+      "commandPids": [
+        4720
+      ],
+      "zeroElapsed": [
+        true
+      ],
+      "traceActualFields": [
+        "REJECT"
+      ]
+    }
+  ],
+  "diffClaims": [
+    {
+      "source": "scripts/ui-checks/access-history.mjs",
+      "actualDiffSha256": "FDFA2E58F27DBDDF3F1E86E254A36AB2B6173A0AA5098F4599044DD199D99ABB",
+      "claimedDiffSha256": "FDFA2E58F27DBDDF3F1E86E254A36AB2B6173A0AA5098F4599044DD199D99ABB",
+      "claimedEqualsActual": true,
+      "claimedEqualsLFNormalized": false,
+      "implRecordSha256": "FDFA2E58F27DBDDF3F1E86E254A36AB2B6173A0AA5098F4599044DD199D99ABB",
+      "beforeCRLF": 0,
+      "beforeLF": 386,
+      "afterCRLF": 0,
+      "afterLF": 393
+    },
+    {
+      "source": "scripts/ui-checks/access-history-shared.mjs",
+      "actualDiffSha256": "E2FE9292378810691EE6AF003571AB70989790AEF71902814DEF05287AF11063",
+      "claimedDiffSha256": "E2FE9292378810691EE6AF003571AB70989790AEF71902814DEF05287AF11063",
+      "claimedEqualsActual": true,
+      "claimedEqualsLFNormalized": false,
+      "implRecordSha256": "E2FE9292378810691EE6AF003571AB70989790AEF71902814DEF05287AF11063",
+      "beforeCRLF": 0,
+      "beforeLF": 586,
+      "afterCRLF": 0,
+      "afterLF": 601
+    },
+    {
+      "source": "scripts/ui-checks/access-history-positive.mjs",
+      "actualDiffSha256": "C5954EB8C1665FAAFEC8F32D6594A9A35559FC6163EA737E7E3FED5CF5A19E39",
+      "claimedDiffSha256": "C5954EB8C1665FAAFEC8F32D6594A9A35559FC6163EA737E7E3FED5CF5A19E39",
+      "claimedEqualsActual": true,
+      "claimedEqualsLFNormalized": false,
+      "implRecordSha256": "C5954EB8C1665FAAFEC8F32D6594A9A35559FC6163EA737E7E3FED5CF5A19E39",
+      "beforeCRLF": 0,
+      "beforeLF": 383,
+      "afterCRLF": 0,
+      "afterLF": 467
+    },
+    {
+      "source": "scripts/ui-checks/access-history-negative.mjs",
+      "actualDiffSha256": "2F04388968C49FD449370B2C897C74714BB91D5FF46C42C530880E4B1CD959FE",
+      "claimedDiffSha256": "2F04388968C49FD449370B2C897C74714BB91D5FF46C42C530880E4B1CD959FE",
+      "claimedEqualsActual": true,
+      "claimedEqualsLFNormalized": false,
+      "implRecordSha256": "2F04388968C49FD449370B2C897C74714BB91D5FF46C42C530880E4B1CD959FE",
+      "beforeCRLF": 0,
+      "beforeLF": 161,
+      "afterCRLF": 0,
+      "afterLF": 629
+    }
+  ],
+  "builderMeta": {
+    "bytes": 17762,
+    "sha256": "A5FB032CB1A3E887CB5982247D833116A102D74EA9015C05874F155E3DF9D9DB"
+  },
+  "negativeResultMeta": {
+    "bytes": 296677,
+    "sha256": "D5A12BCD1991EC216F37DFEA225B06DD0FB140AF483CE0EFA83B022969EB6F74"
+  }
+}

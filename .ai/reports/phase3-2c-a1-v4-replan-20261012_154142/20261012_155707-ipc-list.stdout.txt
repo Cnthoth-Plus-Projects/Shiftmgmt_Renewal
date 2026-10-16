@@ -1,0 +1,1 @@
+{"proof":"PLAN_ONLY_NOT_RUN","cases":["wrong-protocol","wrong-owner-pid","wrong-worker-pid","wrong-case","wrong-nonce","wrong-url","sibling-run","wrong-temp-root","wrong-bootstrap","wrong-contract-path","wrong-contract-digest","wrong-execution-path","wrong-execution-digest","no-run-approval","wrong-run-nonce"]}

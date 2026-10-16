@@ -1,0 +1,22 @@
+{
+  "time": "2026-10-01T22:01:26.559159+09:00",
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126",
+  "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_220126_3-2c-A-Gemini-IMPLEMENTED_수신원본.md",
+  "receivedBytes": 44403,
+  "receivedSha256": "F408FC1DFD5368439CF48B5D94CD3047C0A5C4E96345E029A8117C22C58DBBFC",
+  "bodyUnchanged": true,
+  "bodyReceivedSha256": "1675AFF7C8770982AC6F2DCD0401C66D6FED0AEBCF395A3DC23002AC3A3CDBD9",
+  "originalOutgoingBytes": 29974,
+  "sourceFiles": 341,
+  "dirtyPaths": 12,
+  "protected": 337,
+  "protectedMismatch": [],
+  "controlMismatch": [],
+  "allowedChanged": [
+    "scripts/ui-checks/access-history.mjs",
+    "scripts/ui-checks/access-history-shared.mjs",
+    "scripts/ui-checks/access-history-positive.mjs",
+    "scripts/ui-checks/access-history-negative.mjs"
+  ],
+  "sourceSetSame": true
+}

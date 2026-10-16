@@ -1,0 +1,59 @@
+[
+  {
+    "label": "typecheck",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run typecheck"
+    ],
+    "start": "2026-09-30T17:03:27.748975",
+    "end": "2026-09-30T17:03:36.003670",
+    "exitCode": 0
+  },
+  {
+    "label": "syntax",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/login.mjs"
+    ],
+    "start": "2026-09-30T17:03:36.005207",
+    "end": "2026-09-30T17:03:36.135748",
+    "exitCode": 0
+  },
+  {
+    "label": "lint",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run lint"
+    ],
+    "start": "2026-09-30T17:03:36.137253",
+    "end": "2026-09-30T17:03:43.785636",
+    "exitCode": 0
+  },
+  {
+    "label": "map",
+    "command": [
+      "cmd",
+      "/c",
+      "npm run validate:map"
+    ],
+    "start": "2026-09-30T17:03:43.786891",
+    "end": "2026-09-30T17:03:44.648568",
+    "exitCode": 0
+  },
+  {
+    "label": "diffcheck",
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+      "diff",
+      "--check"
+    ],
+    "start": "2026-09-30T17:03:44.649550",
+    "end": "2026-09-30T17:03:45.228926",
+    "exitCode": 0
+  }
+]

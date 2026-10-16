@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-B",
+    "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\contracts\\phase3-2c-a1-v4\\runtime-probes.py",
+    "--execution-sha",
+    "C6B76D80765818B934E204B886159CD56ADEF2A304AFC128089ED7A9DDC63FA4",
+    "--baseline-sha",
+    "0000000000000000000000000000000000000000000000000000000000000000",
+    "--list"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 13224,
+  "start": "2026-10-12T07:03:00.201841+00:00",
+  "end": "2026-10-12T07:03:00.428684+00:00",
+  "rc": 0,
+  "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_160258-runtime-list.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\20261012_160258-runtime-list.stderr.txt",
+  "stdoutSha256": "93852B262F3B5487550A15EEB9DC3E0076988D28DC5BB6CF5EA44300E14D00C3",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

@@ -1,0 +1,147 @@
+--- accepted-a1/access-history-shared.mjs
++++ received-a2/access-history-shared.mjs
+@@ -12,8 +12,8 @@
+ 
+ export const CONTRACT_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json";
+ export const CONTRACT_SHA256 = "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE";
+-export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\execution.json";
+-export const EXECUTION_SHA256 = "3BEACF9A206E550A765E9040EA6FE49BF510740D9A9A8D57C82F08A6EF1A13B9";
++export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\execution.json";
++export const EXECUTION_SHA256 = "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D";
+ 
+ function sha(d) {
+   return crypto.createHash("sha256").update(d).digest("hex").toUpperCase();
+@@ -212,22 +212,26 @@
+ 
+ /** Private Worker IPC Handshake 검문 (A03, A-N03, A-N05, A-N06) */
+ export async function performWorkerIpcHandshake(expectedCase, contract) {
+-  if (expectedCase !== "contract-core") throw new Error(`[IPC] unsupported: '${expectedCase}'`);
++  let execution;
++  try { execution = loadExecution(); } catch (e) { throw new Error(`[IPC] lock: ${e.message}`); }
++  const ipcSet = new Set(execution.ipcCases || ["contract-core"]);
++  if (!ipcSet.has(expectedCase)) throw new Error(`[IPC] unsupported: '${expectedCase}'`);
+   if (typeof process.send !== "function" || !process.connected) throw new Error("[IPC] not connected");
+ 
+   const fail = (code, violation, msg) => {
+     process.stderr.write(JSON.stringify({
+-      status: "FAIL", code, phase: "preflight", case: "contract-core", runId: null,
++      status: "FAIL", code, phase: "preflight", case: expectedCase, runId: null,
+       error: { name: "Error", message: msg, stack: new Error(msg).stack },
+       ...(violation ? { violation } : {})
+     }) + "\n");
+     process.exit(1);
+   };
+-  const exactKeys = (o, k) => o && typeof o === "object" && !Array.isArray(o) && Object.keys(o).length === k.length && k.every(x => Object.prototype.hasOwnProperty.call(o, x));
++  const exactKeys = (o, k) => o && typeof o === "object" && !Array.isArray(o) && Object.keys(o).length === k.length && k.every(x => Object.hasOwn(o, x));
++  const REJ = "A1_IPC_REJECTED";
+ 
+   return new Promise((resolve) => {
+     let ackSent = false, savedCtx = null, savedNonce = null, savedCtxSha = null;
+-    let timer = setTimeout(() => fail("A1_IPC_REJECTED", null, "context timeout"), 5000);
++    let timer = setTimeout(() => fail(REJ, null, "context timeout"), 5000);
+ 
+     const onMsg = (msg) => {
+       if (!msg) return;
+@@ -235,51 +239,63 @@
+         if (msg.type !== "owner-context") return;
+         clearTimeout(timer);
+         try {
+-          if (!exactKeys(msg, ["type", "protocol", "case", "ownerPid", "workerPid", "nonce", "contextSha256", "context"])) return fail("A1_IPC_REJECTED", "packetKeys", "packetKeys");
+-          if (msg.protocol !== 2) return fail("A1_IPC_REJECTED", "protocol", "protocol");
+-          if (msg.ownerPid !== process.ppid) return fail("A1_IPC_REJECTED", "ownerPid", "ownerPid");
+-          if (msg.workerPid !== process.pid) return fail("A1_IPC_REJECTED", "workerPid", "workerPid");
+-          if (msg.case !== expectedCase) return fail("A1_IPC_REJECTED", "case", "case");
+-          if (typeof msg.nonce !== "string" || msg.nonce.length < 64) return fail("A1_IPC_REJECTED", "nonce", "nonce");
++          for (const [cond, k] of [
++            [!exactKeys(msg, ["type", "protocol", "case", "ownerPid", "workerPid", "nonce", "contextSha256", "context"]), "packetKeys"],
++            [msg.protocol !== 2, "protocol"],
++            [msg.ownerPid !== process.ppid, "ownerPid"],
++            [msg.workerPid !== process.pid, "workerPid"],
++            [msg.case !== expectedCase, "case"],
++            [typeof msg.nonce !== "string" || msg.nonce.length < 64, "nonce"]
++          ]) if (cond) return fail(REJ, k, k);
+ 
+           const ctx = msg.context;
+-          if (!exactKeys(ctx, ["repository", "url", "runDir", "tempDir", "bootstrapFile", "contractPath", "contractSha256", "executionPath", "executionSha256"])) return fail("A1_IPC_REJECTED", "contextKeys", "contextKeys");
+-          if (ctx.url !== "http://127.0.0.1:18741/") return fail("A1_IPC_REJECTED", "url", "url");
++          if (!exactKeys(ctx, ["repository", "url", "runDir", "tempDir", "bootstrapFile", "contractPath", "contractSha256", "executionPath", "executionSha256"])) return fail(REJ, "contextKeys", "contextKeys");
++          if (ctx.url !== "http://127.0.0.1:18741/") return fail(REJ, "url", "url");
+           const repo = fs.realpathSync(ctx.repository);
+-          if (repo !== fs.realpathSync(process.cwd())) return fail("A1_IPC_REJECTED", null, "repo");
++          if (repo !== fs.realpathSync(process.cwd())) return fail(REJ, null, "repo");
+ 
+           let realRun, realTemp;
+-          try { realRun = fs.realpathSync(ctx.runDir); } catch { return fail("A1_IPC_REJECTED", "runDir", "runDir"); }
++          try { realRun = fs.realpathSync(ctx.runDir); } catch { return fail(REJ, "runDir", "runDir"); }
+           const expRunBase = path.resolve(repo, "artifacts/captures/phase3", `access-history-${expectedCase}`);
+-          if (path.dirname(realRun) !== expRunBase || !path.basename(realRun).startsWith("run-")) return fail("A1_IPC_REJECTED", "runDir", "runDir");
+-
+-          try { realTemp = fs.realpathSync(ctx.tempDir); } catch { return fail("A1_IPC_REJECTED", "tempDir", "tempDir"); }
+-          if (path.dirname(realTemp) !== fs.realpathSync(os.tmpdir()) || !path.basename(realTemp).startsWith(contract.tempPrefix)) return fail("A1_IPC_REJECTED", "tempDir", "tempDir");
+-
+-          if (!fs.existsSync(ctx.bootstrapFile) || path.resolve(ctx.bootstrapFile) !== path.resolve(realTemp, "data/bootstrap-credentials.json")) return fail("A1_IPC_REJECTED", "bootstrapFile", "bootstrapFile");
+-          if (path.resolve(ctx.contractPath) !== path.resolve(CONTRACT_PATH)) return fail("A1_IPC_REJECTED", "contractPath", "contractPath");
+-          if (ctx.contractSha256 !== CONTRACT_SHA256) return fail("A1_IPC_REJECTED", "contractSha256", "contractSha256");
+-          if (path.resolve(ctx.executionPath) !== path.resolve(EXECUTION_PATH)) return fail("A1_IPC_REJECTED", "executionPath", "executionPath");
+-          if (ctx.executionSha256 !== EXECUTION_SHA256) return fail("A1_IPC_REJECTED", "executionSha256", "executionSha256");
+-          if (msg.contextSha256 !== sha(JSON.stringify(ctx))) return fail("A1_IPC_REJECTED", null, "contextSha");
++          if (path.dirname(realRun) !== expRunBase || !path.basename(realRun).startsWith("run-")) return fail(REJ, "runDir", "runDir");
++
++          try { realTemp = fs.realpathSync(ctx.tempDir); } catch { return fail(REJ, "tempDir", "tempDir"); }
++          if (path.dirname(realTemp) !== fs.realpathSync(os.tmpdir()) || !path.basename(realTemp).startsWith(contract.tempPrefix)) return fail(REJ, "tempDir", "tempDir");
++
++          let realBoot, realData;
++          try { realBoot = fs.realpathSync(ctx.bootstrapFile); realData = fs.realpathSync(path.dirname(ctx.bootstrapFile)); } catch { return fail(REJ, "bootstrapFile", "bootstrapFile"); }
++          const expBoot = path.resolve(realTemp, "data/bootstrap-credentials.json"), expData = path.resolve(realTemp, "data");
++          if (!fs.existsSync(ctx.bootstrapFile) || path.resolve(ctx.bootstrapFile) !== expBoot || realBoot !== expBoot || realData !== expData) {
++            return fail(REJ, "bootstrapFile", "bootstrapFile");
++          }
++
++          if (path.resolve(ctx.contractPath) !== path.resolve(CONTRACT_PATH)) return fail(REJ, "contractPath", "contractPath");
++          if (ctx.contractSha256 !== CONTRACT_SHA256) return fail(REJ, "contractSha256", "contractSha256");
++          if (path.resolve(ctx.executionPath) !== path.resolve(EXECUTION_PATH)) return fail(REJ, "executionPath", "executionPath");
++          if (ctx.executionSha256 !== EXECUTION_SHA256) return fail(REJ, "executionSha256", "executionSha256");
++          if (msg.contextSha256 !== sha(JSON.stringify(ctx))) return fail(REJ, null, "contextSha");
+ 
+           const regPath = path.join(ctx.runDir, "owner-registration.json");
+-          if (!fs.existsSync(regPath)) return fail("A1_IPC_REJECTED", null, "registration missing");
++          if (!fs.existsSync(regPath)) return fail(REJ, null, "registration missing");
+           const reg = JSON.parse(fs.readFileSync(regPath, "utf-8"));
+-          if (!exactKeys(reg, ["protocol", "case", "ownerPid", "workerPid", "nonceSha256", "contextSha256", "context"])) return fail("A1_IPC_REJECTED", "registrationKeys", "registrationKeys");
+-          if (reg.protocol !== 2) return fail("A1_IPC_REJECTED", "protocol", "reg protocol");
+-          if (reg.case !== expectedCase) return fail("A1_IPC_REJECTED", "case", "reg case");
+-          if (reg.ownerPid !== process.ppid) return fail("A1_IPC_REJECTED", "ownerPid", "reg ownerPid");
+-          if (reg.workerPid !== process.pid) return fail("A1_IPC_REJECTED", "workerPid", "reg workerPid");
+-          if (reg.nonceSha256 !== sha(msg.nonce)) return fail("A1_IPC_REJECTED", "nonce", "reg nonce");
+-          if (reg.contextSha256 !== msg.contextSha256) return fail("A1_IPC_REJECTED", null, "reg contextSha");
++          for (const [cond, k] of [
++            [!exactKeys(reg, ["protocol", "case", "ownerPid", "workerPid", "nonceSha256", "contextSha256", "context"]), "registrationKeys"],
++            [reg.protocol !== 2, "protocol"],
++            [reg.case !== expectedCase, "case"],
++            [reg.ownerPid !== process.ppid, "ownerPid"],
++            [reg.workerPid !== process.pid, "workerPid"],
++            [reg.nonceSha256 !== sha(msg.nonce), "nonce"]
++          ]) if (cond) return fail(REJ, k, k);
++          if (reg.contextSha256 !== msg.contextSha256) return fail(REJ, null, "reg contextSha");
+           assert.deepStrictEqual(reg.context, ctx);
+ 
+           savedCtx = ctx; savedNonce = msg.nonce; savedCtxSha = msg.contextSha256;
+-          process.send({ type: "worker-ack", protocol: 2, case: expectedCase, ownerPid: process.ppid, workerPid: process.pid, nonce: msg.nonce, contextSha256: msg.contextSha256 });
++          const ackPkt = { type: "worker-ack", protocol: 2, case: expectedCase, ownerPid: process.ppid, workerPid: process.pid, contextSha256: msg.contextSha256 };
++          if (expectedCase === "contract-core") ackPkt.nonce = msg.nonce; else ackPkt.nonceSha256 = sha(msg.nonce);
++          process.send(ackPkt);
+           ackSent = true;
+           timer = setTimeout(() => { process.off("message", onMsg); fail("A1_RUN_TIMEOUT", null, "run timeout"); }, 5000);
+-        } catch (e) { process.off("message", onMsg); fail("A1_IPC_REJECTED", null, e.message); }
++        } catch (e) { process.off("message", onMsg); fail(REJ, null, e.message); }
+       } else {
+         if (msg.type !== "owner-run") return;
+         clearTimeout(timer);
+@@ -292,7 +308,6 @@
+     process.on("message", onMsg);
+   });
+ }
+-
+ function deepFreeze(o) {
+   if (o === null || typeof o !== "object") return o;
+   Object.freeze(o);

@@ -1,0 +1,15 @@
+{
+  "name": "full-tests",
+  "command": [
+    "npm.cmd",
+    "test"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:14:18.700099+00:00",
+  "pid": 39608,
+  "rc": 0,
+  "end": "2026-10-01T07:19:14.892119+00:00",
+  "elapsedSeconds": 296.188,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\full-tests.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\full-tests.stderr.txt"
+}

@@ -1,0 +1,818 @@
+{
+  "contractVersion": 1,
+  "authority": "Sol; Gemini read-only",
+  "evidenceSchema": "shiftmgmt.verifier.evidence.v1",
+  "url": "http://127.0.0.1:18741/",
+  "port": 18741,
+  "tempPrefix": "shiftmgmt-gemini-32v-",
+  "numericToleranceMaxPx": 1,
+  "publicCases": [
+    "contract-core",
+    "live-admin",
+    "list-fixture",
+    "empty-fixture",
+    "filters",
+    "errors",
+    "stale-response",
+    "role-guard",
+    "session-expired",
+    "regression-shell",
+    "regression-home"
+  ],
+  "privateCases": {
+    "access-history-shared.mjs": [
+      "contract-core"
+    ],
+    "access-history-positive.mjs": [
+      "live-admin",
+      "list-fixture",
+      "empty-fixture",
+      "filters",
+      "stale-response",
+      "role-guard"
+    ],
+    "access-history-negative.mjs": [
+      "errors",
+      "session-expired"
+    ]
+  },
+  "foundation": {
+    "accepts": "Foundation only; never full UI or Phase3-2",
+    "rules": [
+      {
+        "id": "CORE-01",
+        "pointer": "/viewport",
+        "op": "eq",
+        "expected": [
+          1440,
+          900
+        ]
+      },
+      {
+        "id": "CORE-02",
+        "pointer": "/origin",
+        "op": "eq",
+        "expected": "http://127.0.0.1:18741/"
+      },
+      {
+        "id": "CORE-03",
+        "pointer": "/loginInputs",
+        "op": "eq",
+        "expected": {
+          "id": {
+            "count": 1,
+            "visible": true
+          },
+          "password": {
+            "count": 1,
+            "visible": true
+          }
+        }
+      },
+      {
+        "id": "CORE-04",
+        "pointer": "/fixtureLabels",
+        "op": "eq",
+        "expected": [
+          {
+            "actionType": "performance-approve",
+            "label": "실적 승인"
+          },
+          {
+            "actionType": "performance-reapprove",
+            "label": "실적 승인 확정"
+          },
+          {
+            "actionType": "performance-hide-approved",
+            "label": "승인완료 목록삭제"
+          },
+          {
+            "actionType": "schedule-publish",
+            "label": "근무표 배포"
+          },
+          {
+            "actionType": "sign-in",
+            "label": "로그인"
+          },
+          {
+            "actionType": "route-view",
+            "label": "화면 이동"
+          },
+          {
+            "actionType": "performance-reject",
+            "label": "실적 반려"
+          },
+          {
+            "actionType": "site-save",
+            "label": "근무지 저장"
+          }
+        ]
+      },
+      {
+        "id": "CORE-05",
+        "pointer": "/fixtureRequestCount",
+        "op": "eq",
+        "expected": 0
+      },
+      {
+        "id": "CORE-06",
+        "pointer": "/rawErrors",
+        "op": "eq",
+        "expected": {
+          "console": [],
+          "pageerror": [],
+          "requestfailed": [],
+          "badResponses": []
+        }
+      },
+      {
+        "id": "CORE-07",
+        "pointer": "/chrome",
+        "op": "installed-chrome"
+      },
+      {
+        "id": "CORE-08",
+        "pointer": "/resources",
+        "op": "resources"
+      },
+      {
+        "id": "CORE-09",
+        "pointer": "/captureId",
+        "op": "eq",
+        "expected": "core-capture"
+      }
+    ],
+    "artifacts": [
+      "server-stdout",
+      "server-stderr",
+      "worker-stdout",
+      "worker-stderr",
+      "worker-final",
+      "core-observations",
+      "core-capture"
+    ]
+  },
+  "fullUi": {
+    "authorizedNow": false,
+    "rules": {
+      "live-admin": [
+        {
+          "id": "LIVE-01",
+          "expected": "실제 관리자 signin/list/users 모두 ok, fixture route 0",
+          "observation": "실제 Bridge 응답·method/path/args·cookie 비노출 requestId; list/users 독립 건수",
+          "negative": "mock auth/list/users 또는 응답 누락 거부"
+        },
+        {
+          "id": "LIVE-02",
+          "expected": "실제 응답 전체 ID와 표시 첫200 ID 순서 동일·최신순·총수 정확",
+          "observation": "원응답 전체 ID/occurredAt 및 DOM ID/텍스트/count; 동일 시간은 원순서 유지",
+          "negative": "ID 교환·count999·응답 절단 각각 거부"
+        },
+        {
+          "id": "LIVE-03",
+          "expected": "유효 새로고침 held 중 refresh/reset native disabled·동일 액션 중복 요청0·해제 뒤 정상",
+          "observation": "click/held start/release/complete 시각과 요청 delta 및 DOM disabled",
+          "negative": "held 중 두 번째 실제 클릭·DOM dispatch는 extra0"
+        },
+        {
+          "id": "LIVE-04",
+          "expected": "홈 이동 activity DOM0·재진입 실제 list/users와 화면1",
+          "observation": "전후 DOM counts/실제 network",
+          "negative": "상수true나 제목만 확인 거부"
+        },
+        {
+          "id": "LIVE-05",
+          "expected": "logout 뒤 login1·activity DOM0·실세션 해제",
+          "observation": "실제 UI 클릭·auth 결과·DOM",
+          "negative": "상수true 또는 UI만 숨김 거부"
+        },
+        {
+          "id": "LIVE-06",
+          "expected": "Chrome·fonts·1440x900·콘솔/page/request/HTTP 예상외0·capture 실제존재",
+          "observation": "raw events/실제 screenshot/경로hash",
+          "negative": "오류 또는 capture 누락 거부"
+        },
+        {
+          "id": "LIVE-07",
+          "expected": "원셀/스크롤의 전체 값 접근과 한국어 표시",
+          "observation": "DOM fulltext/title·실제 키보드 scroll",
+          "negative": "substring만 검사 거부"
+        },
+        {
+          "id": "LIVE-08",
+          "expected": "화면 프레임 sidebar220/64·header56·footer32·title20/600·padding16x20·gap14",
+          "observation": "computed style/bounding rect/keyboard sidebar 축소·복원",
+          "negative": "<=1px 수치 오차 초과 거부"
+        }
+      ],
+      "list-fixture": [
+        {
+          "id": "LIST-01",
+          "expected": "고유 ID201개·전체 원응답 저장·의도한 정확한 순서",
+          "observation": "fixture JSON와 DOM row ID 배열",
+          "negative": "중복ID·첫두 ID 교환 각각 거부"
+        },
+        {
+          "id": "LIST-02",
+          "expected": "최초200개 ID·200건표시/전체201, more 후201개·남은0·more 제거",
+          "observation": "실제 배열·count 완전문구·more DOM",
+          "negative": "건수999·마지막행누락 각각 거부"
+        },
+        {
+          "id": "LIST-03",
+          "expected": "native table role/name 활동 이력 목록·th scope=col 5개·정확한 제목",
+          "observation": "DOM tag/accessibility role/aria-label/scope/header 배열",
+          "negative": "name 변조 거부"
+        },
+        {
+          "id": "LIST-04",
+          "expected": "th12/600/#F8F9FA·body14/400·padding8x12",
+          "observation": "computed style 각값",
+          "negative": "class만 검사 거부"
+        },
+        {
+          "id": "LIST-05",
+          "expected": "from/to 날짜132x34·keyword160x34·label12·border#848A93",
+          "observation": "두 date/keyword/label computed style+rect",
+          "negative": "date90x24·133.5x34 각각 거부"
+        },
+        {
+          "id": "LIST-06",
+          "expected": "보통·긴값 행 모두40·최초4열130/140/100/160·detail남은폭/min200",
+          "observation": "실제 정상/긴값 row와 각열 rect/scrollWidth",
+          "negative": "row/column >1px 오차 거부"
+        },
+        {
+          "id": "LIST-07",
+          "expected": "8대표 action의 문구가 compiled accessLogActionLabels와 정확일치",
+          "observation": "각 actionType·canonical map·DOM badge text",
+          "negative": "schedule-publish 근무편성공개 거부"
+        },
+        {
+          "id": "LIST-08",
+          "expected": "8배지 색/font12/600/radius4/padding2x8(info2x6허용) 정확",
+          "observation": "각 badge computed color/background/font/padding/radius",
+          "negative": "magenta color 거부"
+        },
+        {
+          "id": "LIST-09",
+          "expected": "전체 user/action/time/detail text와 title 원문 일치",
+          "observation": "원fixture·DOM textContent/title 전값",
+          "negative": "detail title 잘림/substring 검사 거부"
+        },
+        {
+          "id": "LIST-10",
+          "expected": "invalid occurredAt은 원문·empty는-·route/details trim 결합 규칙 정확",
+          "observation": "fixture와 실제 time/detail",
+          "negative": "invalidtime 숨김 거부"
+        },
+        {
+          "id": "LIST-11",
+          "expected": "HTML/XSS payload 문자는 그대로 표시·script 실행0",
+          "observation": "addInitScript counter·원payload·DOM fulltext",
+          "negative": "실행 또는 escaped텍스트 재해석 거부"
+        },
+        {
+          "id": "LIST-12",
+          "expected": "가로스크롤 Tab 초점·실제 Arrow 키 이동·title 전체접근·outline2px",
+          "observation": "focus·scrollLeft 전후·computed outline",
+          "negative": "dispatch 이벤트만으로 키보드 통과 거부"
+        },
+        {
+          "id": "LIST-13",
+          "expected": "table card/filter surface white·border#E2E5EA·radius6·filterpadding12x16",
+          "observation": "computed style 카드/필터",
+          "negative": "class만 검사 거부"
+        },
+        {
+          "id": "LIST-14",
+          "expected": "console/page/request/HTTP 예상외0·fonts·capture",
+          "observation": "raw events와 PNG",
+          "negative": "unrelated401도 거부"
+        }
+      ],
+      "empty-fixture": [
+        {
+          "id": "EMPTY-01",
+          "expected": "실제 성공 []에서만 G2 1·table0",
+          "observation": "원응답·DOM counts",
+          "negative": "loading/error G2 나타나면 거부"
+        },
+        {
+          "id": "EMPTY-02",
+          "expected": "held loading G2 0·로딩 status/count 실제표시",
+          "observation": "held start/release/complete·DOM",
+          "negative": "settled만 관측 거부"
+        },
+        {
+          "id": "EMPTY-03",
+          "expected": "Bridge 실패·network 실패 G2 0",
+          "observation": "원실패 응답/DOM",
+          "negative": "빈목록으로 실패숨김 거부"
+        },
+        {
+          "id": "EMPTY-04",
+          "expected": "G2 width600(max100%)·radius8·padding48x24·gap16·title18/700·desc13",
+          "observation": "computed style와 rect",
+          "negative": ">1px 수치 오차 거부"
+        },
+        {
+          "id": "EMPTY-05",
+          "expected": "5필터 계속 접근 가능·과거기간 조회 요청 정확1",
+          "observation": "실제 date/input/select·query JSON배열",
+          "negative": "G2가 필터차단하면 거부"
+        },
+        {
+          "id": "EMPTY-06",
+          "expected": "empty-reset local 월초/today/all/all/emptykeyword 정확·요청1·잔여debounce0",
+          "observation": "브라우저 local시계/모델 defaults·DOM5값·250ms후 counts",
+          "negative": "UTC 날짜로 대체/추가조회 거부"
+        },
+        {
+          "id": "EMPTY-07",
+          "expected": "G2 reset 실제키보드·focus2px·한국어 문구",
+          "observation": "실제 Tab/Enter·DOM",
+          "negative": "동작없는 버튼 거부"
+        },
+        {
+          "id": "EMPTY-08",
+          "expected": "예상외 오류0·capture·fonts",
+          "observation": "raw events/PNG",
+          "negative": "누락 거부"
+        }
+      ],
+      "filters": [
+        {
+          "id": "FILTER-01",
+          "expected": "dateFrom/dateTo/loginId/actionType/trim keyword 5필드 실제 Bridge args [query] 일치",
+          "observation": "postDataJSON 전체배열·DOM5값·requestId",
+          "negative": "body객체로 오독/필드누락 거부"
+        },
+        {
+          "id": "FILTER-02",
+          "expected": "연속 keyword 입력 latest value250ms뒤 list 정확1",
+          "observation": "입력/요청 timestamps·실제body·counts",
+          "negative": "중간값/중복요청 거부"
+        },
+        {
+          "id": "FILTER-03",
+          "expected": "입력 즉시 old행0·count조회중·status로딩·focus/caret 유지",
+          "observation": "입력전후 DOM·activeElement·selectionStart/End",
+          "negative": "old행잔존/상수focus 거부"
+        },
+        {
+          "id": "FILTER-04",
+          "expected": "keyword 직후 수동 refresh는 즉시 최신조건1·250ms잔여0",
+          "observation": "actions/request timestamps·args",
+          "negative": "두 번째 debounce 거부"
+        },
+        {
+          "id": "FILTER-05",
+          "expected": "keyword 직후 날짜 변경 timer취소·최신조건1·잔여0",
+          "observation": "실제 date change·body·counts",
+          "negative": "잔여timer 거부"
+        },
+        {
+          "id": "FILTER-06",
+          "expected": "keyword 직후 user/action 변경 각각 timer취소·최신조건1·잔여0",
+          "observation": "두 select 각각 실행 로그/body",
+          "negative": "한 select 생략 거부"
+        },
+        {
+          "id": "FILTER-07",
+          "expected": "keyword 직후 reset timer취소·local기본5값·요청1·잔여0",
+          "observation": "local시계·DOM5값·body",
+          "negative": "reset 일부값/추가요청 거부"
+        },
+        {
+          "id": "FILTER-08",
+          "expected": "역전 from/to 모두 aria-describedby·error 실제표시·logs0",
+          "observation": "두 input 속성·DOM·requestdelta",
+          "negative": "날짜 하나만 연결 거부"
+        },
+        {
+          "id": "FILTER-09",
+          "expected": "invalid refresh/reset native disabled=false·aria-disabled=true·사유",
+          "observation": "실제 DOM속성",
+          "negative": "native disabled로 Tab불가 거부"
+        },
+        {
+          "id": "FILTER-10",
+          "expected": "invalid refresh click·Space·Enter 각 요청0",
+          "observation": "실제 click/키보드·독립 counts",
+          "negative": "event.dispatch만 키보드증거 거부"
+        },
+        {
+          "id": "FILTER-11",
+          "expected": "invalid 입력에서 Enter implicit-submit 요청0",
+          "observation": "실제 keyword/date Enter·DOM form count0",
+          "negative": "존재하지않는 form 창작 거부"
+        },
+        {
+          "id": "FILTER-12",
+          "expected": "invalid refresh/reset 실제 Tab 도달·outline2px",
+          "observation": "keyboard Tab·activeElement·computed outline",
+          "negative": "programmatic focus만 거부"
+        },
+        {
+          "id": "FILTER-13",
+          "expected": "빈 from/to 각 유효 조회·불가능일 HTML정규화와 순수model판정 구분",
+          "observation": "원입력/실제input.value·compiled model·query",
+          "negative": "native가 비운 값을 impossible retained라고 주장 거부"
+        },
+        {
+          "id": "FILTER-14",
+          "expected": "유효 held 중 native disabled=true·aria잔존없음·중복0·완료후해제",
+          "observation": "held start/release/complete와 DOM상태",
+          "negative": "finally busy 조기해제 거부"
+        },
+        {
+          "id": "FILTER-15",
+          "expected": "실제 focus/caret 유지·과거기간 결과·오류0·capture",
+          "observation": "DOM/network/events",
+          "negative": "개별검사 누락 거부"
+        }
+      ],
+      "errors": [
+        {
+          "id": "ERROR-01",
+          "expected": "HTTP200 BridgeFailure alert 한국어·retry1·G2 0·XSS 실행0",
+          "observation": "원응답·DOM fulltext·counter",
+          "negative": "alert 존재만 상수true 거부"
+        },
+        {
+          "id": "ERROR-02",
+          "expected": "network throw alert/retry·G2 0·정확한 abort1만 expected",
+          "observation": "method/path/requestId/phase/times/errorCode",
+          "negative": "broad 오류무시 거부"
+        },
+        {
+          "id": "ERROR-03",
+          "expected": "logs retry held native disabled·두 번 클릭/dispatch 추가0·완료해제",
+          "observation": "held lifecycle·requestdelta·DOM",
+          "negative": "sleep후 요청만 세기 거부"
+        },
+        {
+          "id": "ERROR-04",
+          "expected": "users 실패+logs성공은 별도 warning·표유지·선택 loginId 보존",
+          "observation": "users/list 원응답·warning/표/select",
+          "negative": "전체표를 오류로 대체 거부"
+        },
+        {
+          "id": "ERROR-05",
+          "expected": "users retry held 중 users1/logs1·두 번 클릭 추가0·busy 실제",
+          "observation": "두채널 requestId·held lifecycle·DOM",
+          "negative": "users중복/로그 누락 거부"
+        },
+        {
+          "id": "ERROR-06",
+          "expected": "이전 요청 held 상태에서 날짜invalid 변경은로딩해제·표0·예약0",
+          "observation": "generation/actions·DOM·counts",
+          "negative": "invalid loading 잔류 거부"
+        },
+        {
+          "id": "ERROR-07",
+          "expected": "old finally는 new held busy 해제0",
+          "observation": "oldrelease/newheld/DOM disabled 시각",
+          "negative": "before250ms 분기 생략 거부"
+        },
+        {
+          "id": "ERROR-08",
+          "expected": "예상 abort외 console/page/request/HTTP0·close오류0·capture",
+          "observation": "상관된 raw event와 cleanup",
+          "negative": "unrelated401/cleanup catch 거부"
+        }
+      ],
+      "stale-response": [
+        {
+          "id": "STALE-01",
+          "expected": "old success query변경후 새debounce250ms전 release·old DOM0",
+          "observation": "querychanged/release/250ms/newrequest times·DOM",
+          "negative": "old after new 한분기만 거부"
+        },
+        {
+          "id": "STALE-02",
+          "expected": "old error 같은250ms전 release·alert0·newquery 정상",
+          "observation": "원실패/시각/DOM",
+          "negative": "olderror 미실행 거부"
+        },
+        {
+          "id": "STALE-03",
+          "expected": "old AUTH_SESSION_REQUIRED 같은250ms전 release·callback/login0",
+          "observation": "원AUTH·시각·callbackinstrument·DOM",
+          "negative": "session 만료로 이동하면 거부"
+        },
+        {
+          "id": "STALE-04",
+          "expected": "new success 후 old success/error/AUTH 각각 release·new ID 유지",
+          "observation": "3독립 timeline/DOM/request",
+          "negative": "하나 outcome으로 대체 거부"
+        },
+        {
+          "id": "STALE-05",
+          "expected": "old finally release 때 new held refresh/reset native lock 유지",
+          "observation": "hold/release times·DOM",
+          "negative": "oldfinally newbusy 해제 거부"
+        },
+        {
+          "id": "STALE-06",
+          "expected": "keyword후manualrefresh 최신 query 정확1·250ms잔여0",
+          "observation": "actual body/counts/times",
+          "negative": "중복요청 거부"
+        },
+        {
+          "id": "STALE-07",
+          "expected": "home destroy 이전 held success/error/AUTH 각각 DOM0·callback0·debounce0",
+          "observation": "home click/destroy·release·counts",
+          "negative": "늦은render/login 거부"
+        },
+        {
+          "id": "STALE-08",
+          "expected": "placeholder destroy 이전 held success/error/AUTH 각각 DOM0·callback0·debounce0",
+          "observation": "실제 placeholder 메뉴·release·DOM",
+          "negative": "home으로만 대체 거부"
+        },
+        {
+          "id": "STALE-09",
+          "expected": "logout destroy 이전 held success/error/AUTH 각각 DOM0·추가callback0·debounce0",
+          "observation": "실제logout·release·loginDOM·counts",
+          "negative": "logout 자체 login과 oldAUTH callback 혼동 거부"
+        },
+        {
+          "id": "STALE-10",
+          "expected": "현재 generation AUTH_SESSION_REQUIRED callback 정확1·shell login1",
+          "observation": "실제 class callback counter(읽기전용 compiled harness)·shell DOM",
+          "negative": "loginDOM만 callback 횟수 주장 거부"
+        },
+        {
+          "id": "STALE-11",
+          "expected": "held마다 start/release/complete 각1·유한timeout·unroute는complete뒤",
+          "observation": "원requestId/args/timestamps/lifecycle",
+          "negative": "unresolved handler·timeout=완료 거부"
+        },
+        {
+          "id": "STALE-12",
+          "expected": "예상외 오류0·정리오류0·capture",
+          "observation": "raw events/cleanup/PNG",
+          "negative": "누락 거부"
+        }
+      ],
+      "role-guard": [
+        {
+          "id": "ROLE-01",
+          "expected": "operator 로그인전 instrumentation·menu0·automatic logs/users각0",
+          "observation": "실제cookie세션·login전listener·DOM·requestdelta",
+          "negative": "로그인후listener 또는 한채널만 거부"
+        },
+        {
+          "id": "ROLE-02",
+          "expected": "operator cookie direct logs/users AUTH_FORBIDDEN·data 필드없음",
+          "observation": "실제 Bridge 두응답",
+          "negative": "ok=false만/빈data[] 포함 거부"
+        },
+        {
+          "id": "ROLE-03",
+          "expected": "planner 로그인전 instrumentation·menu0·automatic logs/users각0",
+          "observation": "실제account/cookie·DOM/network",
+          "negative": "UI mock권한 거부"
+        },
+        {
+          "id": "ROLE-04",
+          "expected": "planner cookie direct 두 API AUTH_FORBIDDEN·data없음",
+          "observation": "실제 Bridge 두응답",
+          "negative": "code/data 누락 거부"
+        },
+        {
+          "id": "ROLE-05",
+          "expected": "reviewer 로그인전 instrumentation·menu0·automatic logs/users각0",
+          "observation": "실제account/cookie·DOM/network",
+          "negative": "role 생략 거부"
+        },
+        {
+          "id": "ROLE-06",
+          "expected": "reviewer cookie direct 두 API AUTH_FORBIDDEN·data없음",
+          "observation": "실제 Bridge 두응답",
+          "negative": "code/data 누락 거부"
+        },
+        {
+          "id": "ROLE-07",
+          "expected": "admin 두 API 실제 ok/data·menu1",
+          "observation": "원logs/users응답·DOM",
+          "negative": "users검사 누락 거부"
+        },
+        {
+          "id": "ROLE-08",
+          "expected": "planner/reviewer는 admin saveOperationUser 실제 API 생성·SQL0/authfixture0",
+          "observation": "API원응답·account별signin",
+          "negative": "DB 직접insert/rolemock 거부"
+        },
+        {
+          "id": "ROLE-09",
+          "expected": "세션별 독립계수·한국어·예상외오류0·capture",
+          "observation": "rolephase·requestId·PNG",
+          "negative": "역할사이 계수누적 혼동 거부"
+        }
+      ],
+      "session-expired": [
+        {
+          "id": "SESSION-01",
+          "expected": "realadmin 실제 cookie 획득·외부 context signOut ok/data 계약",
+          "observation": "credential비노출·cookie비노출 hash와 auth원응답",
+          "negative": "auth fixture 거부"
+        },
+        {
+          "id": "SESSION-02",
+          "expected": "refresh 실제 list401/AUTH_SESSION_REQUIRED/data필드없음 정확1",
+          "observation": "HTTPstatus·Bridgecode·method/path/requestId·UIphase",
+          "negative": "nonOK500을401로 인정 거부"
+        },
+        {
+          "id": "SESSION-03",
+          "expected": "users401 있으면 정확한 실제동시요청ID/count로만예외",
+          "observation": "두채널 독립요청·raw response",
+          "negative": "broad401/path substring 거부"
+        },
+        {
+          "id": "SESSION-04",
+          "expected": "callback/login1·activity/table DOM0",
+          "observation": "callback증거+실제 DOM",
+          "negative": "상수true 거부"
+        },
+        {
+          "id": "SESSION-05",
+          "expected": "no-cookie direct POST list body[{}] 실제401/code/data없음",
+          "observation": "cookie없는 Nodefetch 정확body와 응답",
+          "negative": "500·다른errorCode·data존재 각각 거부"
+        },
+        {
+          "id": "SESSION-06",
+          "expected": "expected console/HTTP는 정확request와location·phase·count 전부상관",
+          "observation": "console.location·response.request 객체ID·raw event",
+          "negative": "unrelated 문자열401/중복error 각각 거부"
+        },
+        {
+          "id": "SESSION-07",
+          "expected": "그외 console/page/request/HTTP0·context/browser close0·capture",
+          "observation": "원raw events와finally ledger",
+          "negative": "cleanup catch 또는 broadallow 거부"
+        }
+      ],
+      "regression-shell": [
+        {
+          "id": "REGSHELL-01",
+          "expected": "owned URL에서 보호 shell.mjs 실제 child RC0·run manifest PASS",
+          "observation": "owner argv/pid/rc·stdout/stderr·원common manifest hash",
+          "negative": "stdoutPASS만 인정 거부"
+        },
+        {
+          "id": "REGSHELL-02",
+          "expected": "원manifest 캡처전부 실제존재·자기run귀속·원오류/정리0",
+          "observation": "실제manifest/capture return경로/hash",
+          "negative": "directory 추측/누락 거부"
+        },
+        {
+          "id": "REGSHELL-03",
+          "expected": "child/server exit+close·PID종료·temp삭제 확인",
+          "observation": "owner lifecycle/파일실측",
+          "negative": "timeout을close로 인정 거부"
+        }
+      ],
+      "regression-home": [
+        {
+          "id": "REGHOME-01",
+          "expected": "ownedenv/bootstrap/URL에서 보호 home.mjs --case=live-admin RC0",
+          "observation": "owner exactargv/pid/rc/stdout/stderr",
+          "negative": "외부URL/env오염 거부"
+        },
+        {
+          "id": "REGHOME-02",
+          "expected": "원manifest PASS·캡처전부·원오류/정리0",
+          "observation": "실제common manifest/capture path/hash",
+          "negative": "stdout만/누락 거부"
+        },
+        {
+          "id": "REGHOME-03",
+          "expected": "child/server exit+close·PID종료·temp삭제 확인",
+          "observation": "lifecycle/실측",
+          "negative": "cleanup 오류소거 거부"
+        }
+      ]
+    },
+    "requiredIds": {
+      "live-admin": [
+        "LIVE-01",
+        "LIVE-02",
+        "LIVE-03",
+        "LIVE-04",
+        "LIVE-05",
+        "LIVE-06",
+        "LIVE-07",
+        "LIVE-08"
+      ],
+      "list-fixture": [
+        "LIST-01",
+        "LIST-02",
+        "LIST-03",
+        "LIST-04",
+        "LIST-05",
+        "LIST-06",
+        "LIST-07",
+        "LIST-08",
+        "LIST-09",
+        "LIST-10",
+        "LIST-11",
+        "LIST-12",
+        "LIST-13",
+        "LIST-14"
+      ],
+      "empty-fixture": [
+        "EMPTY-01",
+        "EMPTY-02",
+        "EMPTY-03",
+        "EMPTY-04",
+        "EMPTY-05",
+        "EMPTY-06",
+        "EMPTY-07",
+        "EMPTY-08"
+      ],
+      "filters": [
+        "FILTER-01",
+        "FILTER-02",
+        "FILTER-03",
+        "FILTER-04",
+        "FILTER-05",
+        "FILTER-06",
+        "FILTER-07",
+        "FILTER-08",
+        "FILTER-09",
+        "FILTER-10",
+        "FILTER-11",
+        "FILTER-12",
+        "FILTER-13",
+        "FILTER-14",
+        "FILTER-15"
+      ],
+      "errors": [
+        "ERROR-01",
+        "ERROR-02",
+        "ERROR-03",
+        "ERROR-04",
+        "ERROR-05",
+        "ERROR-06",
+        "ERROR-07",
+        "ERROR-08"
+      ],
+      "stale-response": [
+        "STALE-01",
+        "STALE-02",
+        "STALE-03",
+        "STALE-04",
+        "STALE-05",
+        "STALE-06",
+        "STALE-07",
+        "STALE-08",
+        "STALE-09",
+        "STALE-10",
+        "STALE-11",
+        "STALE-12"
+      ],
+      "role-guard": [
+        "ROLE-01",
+        "ROLE-02",
+        "ROLE-03",
+        "ROLE-04",
+        "ROLE-05",
+        "ROLE-06",
+        "ROLE-07",
+        "ROLE-08",
+        "ROLE-09"
+      ],
+      "session-expired": [
+        "SESSION-01",
+        "SESSION-02",
+        "SESSION-03",
+        "SESSION-04",
+        "SESSION-05",
+        "SESSION-06",
+        "SESSION-07"
+      ],
+      "regression-shell": [
+        "REGSHELL-01",
+        "REGSHELL-02",
+        "REGSHELL-03"
+      ],
+      "regression-home": [
+        "REGHOME-01",
+        "REGHOME-02",
+        "REGHOME-03"
+      ]
+    },
+    "acceptance": "Separate Sol B implementation packet and independent full verification required"
+  },
+  "sources": {
+    "caseTable": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_160642_3-2c-Gemini-IMPLEMENTED_수신원본.md §9.2",
+    "productDesign": "Frozen approved activity history design; CSS is evidence, not authority to relax expectations",
+    "labels": "src/shared/domain/access-log.ts; runtime compare compiled dist/server/shared/domain/access-log.js",
+    "model": "src/web/screens/access-history-model.ts; compiled read-only artifact allowed in later B packet"
+  }
+}

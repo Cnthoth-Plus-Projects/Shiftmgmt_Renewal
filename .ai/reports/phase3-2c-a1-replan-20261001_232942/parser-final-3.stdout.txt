@@ -1,0 +1,1 @@
+{"status": "PASS", "result": {"status": "VERIFIED_A1_EVIDENCE", "acceptance": "A1_PREREQUISITE_ONLY", "case": "regression-home", "runId": "run-sol-parser-only-dd7f7aabe2b4", "candidateSha256": "229EAFD899D4D29C93DCB165D1E849DE6F88B5D111282122A8E3A1FE4725B7D7", "executionSha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494", "checks": 3, "artifacts": 7}}

@@ -1,0 +1,13 @@
+{
+  "productChanged": [],
+  "sourceSetChanged": false,
+  "canonicalChangedAfterClosure": [
+    "TODO.md",
+    ".ai/current-state.md"
+  ],
+  "untrackedTrailingWhitespace": {},
+  "archiveIntact": true,
+  "handoffEqualsImmutableAssessment": true,
+  "todoHasCurrentStatus": true,
+  "stateHasCurrentStatus": true
+}

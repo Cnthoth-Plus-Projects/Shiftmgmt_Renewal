@@ -1,0 +1,21 @@
+{
+  "time": "2026-09-30 16:19:13 KST",
+  "assessment": "Log\\20260930_161913_3-1d-Sol-직접검수_검증본.md",
+  "assessmentSHA256": "CCAA0A4EC01300A305B89AF8C89BEB40A01F5C43FB132F66A1D2FE7CC6771F1F",
+  "receivedHandoffArchive": "Log\\20260930_161913_3-1c종결_3-1d검수전_보존본.md",
+  "receivedHandoffSHA256": "2000A80E8BB56A4F7E3A6065FA96748D7B4522F77128D2059A99602F7F9497CC",
+  "receivedHandoffBytes": 20747,
+  "outgoingHandoffArchive": "Log\\20260930_161913_3-1d-Sol-CORRECT_발송본.md",
+  "outgoingHandoffSHA256": "964EC82C9EEDEC1353CF1E6E08C5E29323AB394A003F30BA6CB669A507402EBD",
+  "outgoingHandoffBytes": 19899,
+  "productChanges": 0,
+  "acceptance": "CORRECT",
+  "finalTests": {
+    "passed": 64,
+    "failed": 14,
+    "groupsCompleted": 8,
+    "groupsFailed": 0,
+    "unexpectedErrors": 0,
+    "captures": 15
+  }
+}

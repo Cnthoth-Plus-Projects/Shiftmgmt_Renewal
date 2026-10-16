@@ -1,0 +1,8 @@
+feat: complete output foundation and initial UI
+
+Record accepted Phase 2.5 layouts, Excel/PDF output and JSON restoration.
+Include Phase 3 UI runner, login, role-aware shell and live-data home.
+
+Independent verification: 912 tests; 26 Chrome scenarios; 83 integration checks.
+Acceptance: Phase 2.5-7, Phase 3-0 and Phase 3-1d.
+No product source changes during this commit step.

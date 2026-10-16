@@ -1,0 +1,17 @@
+OLD 02-common-1 46550B
+OLD 04-sites-2 60714B
+OLD 07-schedule-3 104674B
+OLD 09-allowance-2 32085B
+OLD 11-operations-4 30625B
+CUR 02-common-1 46550B
+CUR 04-sites-2 60714B
+CUR 07-schedule-3 104674B
+CUR 09-allowance-2 32085B
+CUR 11-operations-4 30625B
+=== imgdiff old → new ===
+02-common-1.png: (1440, 3880) diff 0.00% bbox=None
+04-sites-2.png: (1440, 1944) diff 0.00% bbox=None
+07-schedule-3.png: (1440, 2912) diff 0.00% bbox=None
+09-allowance-2.png: (1440, 976) diff 0.00% bbox=None
+11-operations-4.png: (1440, 976) diff 0.00% bbox=None
+DONE

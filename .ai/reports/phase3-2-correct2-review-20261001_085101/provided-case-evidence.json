@@ -1,0 +1,55 @@
+[
+  {
+    "case": "list-fixture",
+    "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-09-30T14-27-06-728Z",
+    "exists": false,
+    "files": [],
+    "actualRunDirectoriesSample": [
+      "run-2026-09-30T11-50-32-010Z",
+      "run-2026-09-30T13-02-29-139Z",
+      "run-2026-09-30T13-51-50-449Z",
+      "run-2026-09-30T14-26-03-458Z",
+      "run-2026-09-30T14-27-06-486Z",
+      "run-2026-09-30T14-27-16-677Z",
+      "run-2026-09-30T23-56-10-305Z",
+      "run-2026-09-30T23-57-40-815Z"
+    ]
+  },
+  {
+    "case": "stale-response",
+    "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-2026-09-30T14-30-15-680Z",
+    "exists": false,
+    "files": [],
+    "actualRunDirectoriesSample": [
+      "run-2026-09-30T11-51-35-852Z",
+      "run-2026-09-30T13-04-05-300Z",
+      "run-2026-09-30T14-30-15-757Z"
+    ]
+  },
+  {
+    "case": "role-guard",
+    "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-2026-09-30T14-30-41-477Z",
+    "exists": false,
+    "files": [],
+    "actualRunDirectoriesSample": [
+      "run-2026-09-30T11-53-21-651Z",
+      "run-2026-09-30T13-04-18-167Z",
+      "run-2026-09-30T14-30-41-366Z"
+    ]
+  },
+  {
+    "case": "session-expired",
+    "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-09-30T14-32-32-613Z",
+    "exists": false,
+    "files": [],
+    "actualRunDirectoriesSample": [
+      "run-2026-09-30T11-53-30-288Z",
+      "run-2026-09-30T13-04-29-299Z",
+      "run-2026-09-30T13-05-04-067Z",
+      "run-2026-09-30T14-31-00-391Z",
+      "run-2026-09-30T14-31-47-679Z",
+      "run-2026-09-30T14-32-12-120Z",
+      "run-2026-09-30T14-32-32-265Z"
+    ]
+  }
+]

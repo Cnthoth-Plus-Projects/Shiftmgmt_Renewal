@@ -1,0 +1,5 @@
+{"name": "late-child-before-removal", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "late-child-before-removal-fixed-final", "rc": 0, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "late-child-gate", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}
+{"name": "late-child-gate-fixed-final", "rc": 0, "timeout": false, "observerHealthy": null, "failureCode": null}
+{"name": "late-log-gate", "rc": 0, "timeout": false, "observerHealthy": true, "failureCode": null}

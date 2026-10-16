@@ -1,0 +1,433 @@
+- generic [active] [ref=f11e1]:
+  - generic [ref=f11e2]:
+    - generic [ref=f11e3]: ── W1. 근무지 관리 — 마법사 1-A 기본 설정 (계획 담당) ──
+    - generic [ref=f11e4]:
+      - generic [ref=f11e5]:
+        - complementary [ref=f11e6]:
+          - generic [ref=f11e7]:
+            - generic [ref=f11e8]: domain
+            - generic [ref=f11e9]: 근무 관리 시스템
+          - list [ref=f11e10]:
+            - listitem [ref=f11e11]:
+              - link "홈" [ref=f11e12] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e13]: home
+            - listitem [ref=f11e15]: ─ 준비 ─
+            - listitem [ref=f11e16]:
+              - link "근무지 관리" [ref=f11e17] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e18]: domain
+            - listitem [ref=f11e20]:
+              - link "인력 관리" [ref=f11e21] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e22]: group
+            - listitem [ref=f11e24]: ─ 운영 ─
+            - listitem [ref=f11e25]:
+              - link "근무표 배포" [ref=f11e26] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e27]: calendar_month
+            - listitem [ref=f11e29]:
+              - link "실적 관리 128" [ref=f11e30] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e31]: fact_check
+                - generic [ref=f11e32]: 실적 관리
+                - generic [ref=f11e33]: "128"
+            - listitem [ref=f11e34]: ─ 정산 ─
+            - listitem [ref=f11e35]:
+              - link "수당 관리" [ref=f11e36] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e37]: payments
+            - listitem [ref=f11e39]:
+              - link "대시보드" [ref=f11e40] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e41]: monitoring
+        - generic [ref=f11e43]:
+          - banner [ref=f11e44]:
+            - heading "근무지 관리" [level=1] [ref=f11e45]
+            - generic [ref=f11e46]:
+              - generic [ref=f11e47]: 계획 담당
+              - button "김지현" [ref=f11e48] [cursor=pointer]:
+                - generic [ref=f11e49]: person
+              - button "도움말" [ref=f11e51] [cursor=pointer]:
+                - generic [ref=f11e52]: help
+              - button "로그아웃" [ref=f11e54] [cursor=pointer]:
+                - generic [ref=f11e55]: logout
+          - main [ref=f11e57]:
+            - generic [ref=f11e58]:
+              - generic [ref=f11e59]: 근무지 등록 마법사
+              - generic "등록 단계" [ref=f11e60]:
+                - generic [ref=f11e61]:
+                  - generic [ref=f11e62]: 1-A
+                  - generic [ref=f11e63]: 기본 설정
+                - generic [ref=f11e65]:
+                  - generic [ref=f11e66]: 1-B
+                  - generic [ref=f11e67]: 근무시간 설정
+                - generic [ref=f11e69]:
+                  - generic [ref=f11e70]: 1-C
+                  - generic [ref=f11e71]: 검토
+                - generic [ref=f11e73]:
+                  - generic [ref=f11e74]: "2"
+                  - generic [ref=f11e75]: 조직 구성
+            - generic [ref=f11e76]:
+              - generic [ref=f11e77]:
+                - generic [ref=f11e78]:
+                  - generic [ref=f11e79]:
+                    - generic [ref=f11e80]: 근무지 이름
+                    - textbox "근무지 이름" [ref=f11e81]: 보라매 사업장
+                  - generic [ref=f11e82]:
+                    - generic [ref=f11e83]: 고객사
+                    - textbox "고객사" [ref=f11e84]: ㈜한빛에프엠
+                  - generic [ref=f11e85]:
+                    - generic [ref=f11e86]: 상태
+                    - generic [ref=f11e87]:
+                      - generic [ref=f11e88] [cursor=pointer]:
+                        - radio "사용" [checked] [ref=f11e89]
+                        - generic [ref=f11e90]: 사용
+                      - generic [ref=f11e91] [cursor=pointer]:
+                        - radio "사용 안 함" [ref=f11e92]
+                        - generic [ref=f11e93]: 사용 안 함
+                  - generic [ref=f11e94]:
+                    - generic [ref=f11e95]: 근무지 코드 (자동 생성)
+                    - textbox "근무지 코드 (자동 생성)" [ref=f11e96]: SITE-005
+                  - generic [ref=f11e97]:
+                    - generic [ref=f11e98]: 설정 적용 시작일
+                    - textbox "설정 적용 시작일" [ref=f11e99]: 2025-06-01 (일)
+                - generic [ref=f11e100]:
+                  - generic [ref=f11e101]:
+                    - generic [ref=f11e102]: 조 개수 (2~8)
+                    - spinbutton "조 개수 (2~8)" [ref=f11e103]: "4"
+                  - generic [ref=f11e104]:
+                    - generic [ref=f11e105]: 묶음 개수 (1~8)
+                    - spinbutton "묶음 개수 (1~8)" [ref=f11e106]: "2"
+                  - generic [ref=f11e107]:
+                    - generic [ref=f11e108]: 별도 근무(Pool) 사용
+                    - generic [ref=f11e109]:
+                      - generic [ref=f11e110] [cursor=pointer]:
+                        - radio "사용함" [checked] [ref=f11e111]
+                        - generic [ref=f11e112]: 사용함
+                      - generic [ref=f11e113] [cursor=pointer]:
+                        - radio "사용 안 함" [ref=f11e114]
+                        - generic [ref=f11e115]: 사용 안 함
+                  - generic [ref=f11e116]:
+                    - generic [ref=f11e117]: 별도 근무 시간
+                    - textbox "별도 근무 시간" [ref=f11e118]: 22:00 ~ 06:00
+              - generic [ref=f11e119]:
+                - generic [ref=f11e120]: 빠른 시작
+                - generic [ref=f11e121]:
+                  - button "자주 쓰는 패턴으로 시작 표준 교대 근무 패턴을 선택하여 빠르게 설정을 구성합니다. 2교대 3교대" [ref=f11e122] [cursor=pointer]:
+                    - generic [ref=f11e123]:
+                      - generic [ref=f11e124]: tune
+                      - generic [ref=f11e125]: 자주 쓰는 패턴으로 시작
+                    - generic [ref=f11e126]: 표준 교대 근무 패턴을 선택하여 빠르게 설정을 구성합니다.
+                    - generic [ref=f11e127]:
+                      - generic [ref=f11e128]: 2교대
+                      - generic [ref=f11e129]: 3교대
+                  - button "패턴 및 설정정보 불러오기 이미 등록된 다른 근무지의 교대 설정과 규칙을 복사해 옵니다." [ref=f11e130] [cursor=pointer]:
+                    - generic [ref=f11e131]:
+                      - generic [ref=f11e132]: content_copy
+                      - generic [ref=f11e133]: 패턴 및 설정정보 불러오기
+                    - generic [ref=f11e134]: 이미 등록된 다른 근무지의 교대 설정과 규칙을 복사해 옵니다.
+                  - button "기존 엑셀에서 패턴 추출 기존 근무표 엑셀 파일을 분석하여 반복 패턴을 자동으로 산출합니다." [ref=f11e135] [cursor=pointer]:
+                    - generic [ref=f11e136]:
+                      - generic [ref=f11e137]: upload_file
+                      - generic [ref=f11e138]: 기존 엑셀에서 패턴 추출
+                    - generic [ref=f11e139]: 기존 근무표 엑셀 파일을 분석하여 반복 패턴을 자동으로 산출합니다.
+            - generic [ref=f11e140]:
+              - button "뒤로가기" [ref=f11e141] [cursor=pointer]
+              - 'button "다음: 근무시간 설정" [ref=f11e142] [cursor=pointer]'
+      - contentinfo [ref=f11e143]:
+        - generic [ref=f11e144]: DB 연결됨
+        - generic [ref=f11e147]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f11e149]: 대기 파일 3개
+        - generic [ref=f11e151]: 최신
+        - generic [ref=f11e153]: v2.3.1
+  - generic [ref=f11e155]:
+    - generic [ref=f11e156]: ── W2. 근무지 관리 — 마법사 1-B 근무시간 설정 (계획 담당) ──
+    - generic [ref=f11e157]:
+      - generic [ref=f11e158]:
+        - complementary [ref=f11e159]:
+          - generic [ref=f11e160]:
+            - generic [ref=f11e161]: domain
+            - generic [ref=f11e162]: 근무 관리 시스템
+          - list [ref=f11e163]:
+            - listitem [ref=f11e164]:
+              - link "홈" [ref=f11e165] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e166]: home
+            - listitem [ref=f11e168]: ─ 준비 ─
+            - listitem [ref=f11e169]:
+              - link "근무지 관리" [ref=f11e170] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e171]: domain
+            - listitem [ref=f11e173]:
+              - link "인력 관리" [ref=f11e174] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e175]: group
+            - listitem [ref=f11e177]: ─ 운영 ─
+            - listitem [ref=f11e178]:
+              - link "근무표 배포" [ref=f11e179] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e180]: calendar_month
+            - listitem [ref=f11e182]:
+              - link "실적 관리 128" [ref=f11e183] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e184]: fact_check
+                - generic [ref=f11e185]: 실적 관리
+                - generic [ref=f11e186]: "128"
+            - listitem [ref=f11e187]: ─ 정산 ─
+            - listitem [ref=f11e188]:
+              - link "수당 관리" [ref=f11e189] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e190]: payments
+            - listitem [ref=f11e192]:
+              - link "대시보드" [ref=f11e193] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f11e194]: monitoring
+        - generic [ref=f11e196]:
+          - banner [ref=f11e197]:
+            - heading "근무지 관리" [level=1] [ref=f11e198]
+            - generic [ref=f11e199]:
+              - generic [ref=f11e200]: 계획 담당
+              - button "김지현" [ref=f11e201] [cursor=pointer]:
+                - generic [ref=f11e202]: person
+              - button "도움말" [ref=f11e204] [cursor=pointer]:
+                - generic [ref=f11e205]: help
+              - button "로그아웃" [ref=f11e207] [cursor=pointer]:
+                - generic [ref=f11e208]: logout
+          - main [ref=f11e210]:
+            - generic [ref=f11e211]:
+              - generic [ref=f11e212]:
+                - generic [ref=f11e213]: 근무지 등록 마법사
+                - generic [ref=f11e214]: ● 저장되지 않음
+              - generic "등록 단계" [ref=f11e215]:
+                - generic [ref=f11e216]:
+                  - generic [ref=f11e217]: ✓
+                  - generic [ref=f11e218]: 기본 설정
+                - generic [ref=f11e220]:
+                  - generic [ref=f11e221]: 1-B
+                  - generic [ref=f11e222]: 근무시간 설정
+                - generic [ref=f11e224]:
+                  - generic [ref=f11e225]: 1-C
+                  - generic [ref=f11e226]: 검토
+                - generic [ref=f11e228]:
+                  - generic [ref=f11e229]: "2"
+                  - generic [ref=f11e230]: 조직 구성
+            - generic [ref=f11e231]:
+              - generic [ref=f11e232]: 근무지
+              - generic [ref=f11e233]: 보라매 사업장
+              - button "변경" [ref=f11e234] [cursor=pointer]
+              - generic [ref=f11e235]: │
+              - generic [ref=f11e236]: 적용 시작일
+              - generic [ref=f11e237]: 2025-06-01 ~
+            - generic [ref=f11e238]:
+              - generic [ref=f11e239]:
+                - generic [ref=f11e240]:
+                  - generic [ref=f11e241]: 근무 유형 팔레트
+                  - generic [ref=f11e242]: 근무 3/3 · 휴무 1
+                - generic [ref=f11e243]:
+                  - generic [ref=f11e245]:
+                    - generic [ref=f11e246]: 주간
+                    - generic [ref=f11e247]: 09:00 - 18:00 (휴게 60분)
+                  - generic [ref=f11e249]:
+                    - generic [ref=f11e250]: 야간
+                    - generic [ref=f11e251]: 21:00 - 06:00 (휴게 60분)
+                  - generic [ref=f11e253]:
+                    - generic [ref=f11e254]: 석간
+                    - generic [ref=f11e255]: 13:00 - 22:00 (휴게 60분)
+                  - generic [ref=f11e257]:
+                    - generic [ref=f11e258]: 휴무
+                    - generic [ref=f11e259]: "-"
+                - generic [ref=f11e260]:
+                  - generic [ref=f11e261]:
+                    - button "+ 근무 유형 추가" [disabled] [ref=f11e262]
+                    - generic [ref=f11e263]: 근무형은 최대 3개입니다
+                  - button "+ 휴무 유형 추가" [ref=f11e264] [cursor=pointer]
+                - generic [ref=f11e265]:
+                  - generic [ref=f11e266]: 유형 가이드
+                  - generic [ref=f11e267]: • 휴게 시간은 근무 시간에 포함되지 않습니다.
+                  - generic [ref=f11e268]: • 야간 근무(22:00~06:00)에는 법정 야간수당 기준이 자동 적용됩니다.
+                  - generic [ref=f11e269]: • 휴무 유형은 근무 시간이 없으며, 시뮬레이션에서 회색으로 표시됩니다.
+              - generic [ref=f11e270]:
+                - generic [ref=f11e271]:
+                  - generic [ref=f11e272]: 묶음별 설정
+                  - generic [ref=f11e273]:
+                    - button "운영 교대조" [ref=f11e274] [cursor=pointer]
+                    - button "야간 전담조" [ref=f11e275] [cursor=pointer]
+                - generic [ref=f11e276]:
+                  - generic [ref=f11e277]:
+                    - text: "하루 교대 횟수:"
+                    - strong [ref=f11e278]: 3회
+                  - generic [ref=f11e279]:
+                    - text: "패턴 시작일:"
+                    - strong [ref=f11e280]: 2025-06-01 (일)
+                - generic [ref=f11e281]:
+                  - generic [ref=f11e282]: 조별 시작 위치
+                  - generic [ref=f11e283]:
+                    - generic [ref=f11e284]:
+                      - text: "A조:"
+                      - strong [ref=f11e285]: "0"
+                    - generic [ref=f11e286]:
+                      - text: "B조:"
+                      - strong [ref=f11e287]: "1"
+                    - generic [ref=f11e288]:
+                      - text: "C조:"
+                      - strong [ref=f11e289]: "2"
+                    - generic [ref=f11e290]:
+                      - text: "D조:"
+                      - strong [ref=f11e291]: "3"
+                - generic [ref=f11e292]:
+                  - generic [ref=f11e293]:
+                    - generic [ref=f11e294]: 패턴 스트립 (4일 주기)
+                    - button "되돌리기" [ref=f11e295] [cursor=pointer]
+                  - generic [ref=f11e296]:
+                    - generic [ref=f11e297]:
+                      - generic [ref=f11e298]: 1일차
+                      - generic [ref=f11e299]: 주간
+                    - generic [ref=f11e300]:
+                      - generic [ref=f11e301]: 2일차
+                      - generic [ref=f11e302]: 야간
+                    - generic [ref=f11e303]:
+                      - generic [ref=f11e304]: 3일차
+                      - generic [ref=f11e305]: 석간
+                    - generic [ref=f11e306]:
+                      - generic [ref=f11e307]: 4일차
+                      - generic [ref=f11e308]: 휴무
+                    - button "일차 추가" [ref=f11e309] [cursor=pointer]:
+                      - generic [ref=f11e310]: add
+                  - generic [ref=f11e311]: 칸을 클릭해 근무 유형을 배치하세요
+                - generic [ref=f11e312]:
+                  - generic [ref=f11e313]:
+                    - generic [ref=f11e314]: 조별 개별 패턴
+                    - generic [ref=f11e315]: "OFF"
+                  - generic [ref=f11e316]:
+                    - generic [ref=f11e317]: 평일/휴일 시간 분리
+                    - generic [ref=f11e318]: "OFF"
+                - generic [ref=f11e319]:
+                  - generic [ref=f11e320]: 조별 인력 현황 (읽기 전용)
+                  - generic [ref=f11e321]:
+                    - generic [ref=f11e322]:
+                      - generic [ref=f11e323]:
+                        - generic [ref=f11e324]: A조
+                        - generic [ref=f11e325]: 4/5명
+                      - generic [ref=f11e326]: 박성진, 이상민, 김하늘, 최우진
+                    - generic [ref=f11e327]:
+                      - generic [ref=f11e328]:
+                        - generic [ref=f11e329]: B조
+                        - generic [ref=f11e330]: 5/5 (정원 참)
+                      - generic [ref=f11e331]: 정해린, 김태우, 오현석, 이시온, 조한별
+                    - generic [ref=f11e332]:
+                      - generic [ref=f11e333]:
+                        - generic [ref=f11e334]: C조
+                        - generic [ref=f11e335]: 3/5명
+                      - generic [ref=f11e336]: 백민수, 유지선, 정민호
+                    - generic [ref=f11e337]:
+                      - generic [ref=f11e338]:
+                        - generic [ref=f11e339]: D조
+                        - generic [ref=f11e340]: 2/5명
+                      - generic [ref=f11e341]: 한지우, 최민서
+              - generic [ref=f11e342]:
+                - generic [ref=f11e343]:
+                  - generic [ref=f11e344]: 3개월 시뮬레이션
+                  - generic [ref=f11e345]: A조 기준
+                - generic [ref=f11e346]:
+                  - generic [ref=f11e347]: 2025년 6월
+                  - generic [ref=f11e348]:
+                    - generic [ref=f11e349]: 일
+                    - generic [ref=f11e350]: 월
+                    - generic [ref=f11e351]: 화
+                    - generic [ref=f11e352]: 수
+                    - generic [ref=f11e353]: 목
+                    - generic [ref=f11e354]: 금
+                    - generic [ref=f11e355]: 토
+                    - generic [ref=f11e356]:
+                      - generic [ref=f11e357]: "1"
+                      - generic [ref=f11e358]: 주간
+                    - generic [ref=f11e359]:
+                      - generic [ref=f11e360]: "2"
+                      - generic [ref=f11e361]: 야간
+                    - generic [ref=f11e362]:
+                      - generic [ref=f11e363]: "3"
+                      - generic [ref=f11e364]: 석간
+                    - generic [ref=f11e365]:
+                      - generic [ref=f11e366]: "4"
+                      - generic [ref=f11e367]: 휴무
+                    - generic [ref=f11e368]:
+                      - generic [ref=f11e369]: "5"
+                      - generic [ref=f11e370]: 주간
+                    - generic [ref=f11e371]:
+                      - generic [ref=f11e372]: "6"
+                      - generic [ref=f11e373]: 야간
+                    - generic [ref=f11e374]:
+                      - generic [ref=f11e375]: "7"
+                      - generic [ref=f11e376]: 석간
+                    - generic [ref=f11e377]:
+                      - generic [ref=f11e378]: "8"
+                      - generic [ref=f11e379]: 휴무
+                    - generic [ref=f11e380]:
+                      - generic [ref=f11e381]: "9"
+                      - generic [ref=f11e382]: 주간
+                    - generic [ref=f11e383]:
+                      - generic [ref=f11e384]: "10"
+                      - generic [ref=f11e385]: 야간
+                    - generic [ref=f11e386]:
+                      - generic [ref=f11e387]: "11"
+                      - generic [ref=f11e388]: 석간
+                    - generic [ref=f11e389]:
+                      - generic [ref=f11e390]: "12"
+                      - generic [ref=f11e391]: 휴무
+                    - generic [ref=f11e392]:
+                      - generic [ref=f11e393]: "13"
+                      - generic [ref=f11e394]: 주간
+                    - generic [ref=f11e395]:
+                      - generic [ref=f11e396]: "14"
+                      - generic [ref=f11e397]: 야간
+                - generic [ref=f11e398]:
+                  - generic [ref=f11e399]: 2025년 7월
+                  - generic [ref=f11e400]:
+                    - generic [ref=f11e401]: 일
+                    - generic [ref=f11e402]: 월
+                    - generic [ref=f11e403]: 화
+                    - generic [ref=f11e404]: 수
+                    - generic [ref=f11e405]: 목
+                    - generic [ref=f11e406]: 금
+                    - generic [ref=f11e407]: 토
+                    - generic [ref=f11e410]:
+                      - generic [ref=f11e411]: "1"
+                      - generic [ref=f11e412]: 석간
+                    - generic [ref=f11e413]:
+                      - generic [ref=f11e414]: "2"
+                      - generic [ref=f11e415]: 휴무
+                    - generic [ref=f11e416]:
+                      - generic [ref=f11e417]: "3"
+                      - generic [ref=f11e418]: 주간
+                    - generic [ref=f11e419]:
+                      - generic [ref=f11e420]: "4"
+                      - generic [ref=f11e421]: 야간
+                    - generic [ref=f11e422]:
+                      - generic [ref=f11e423]: "5"
+                      - generic [ref=f11e424]: 석간
+                - generic [ref=f11e425]:
+                  - generic [ref=f11e426]: 2025년 8월
+                  - generic [ref=f11e427]:
+                    - generic [ref=f11e428]: 일
+                    - generic [ref=f11e429]: 월
+                    - generic [ref=f11e430]: 화
+                    - generic [ref=f11e431]: 수
+                    - generic [ref=f11e432]: 목
+                    - generic [ref=f11e433]: 금
+                    - generic [ref=f11e434]: 토
+                    - generic [ref=f11e440]:
+                      - generic [ref=f11e441]: "1"
+                      - generic [ref=f11e442]: 야간
+                    - generic [ref=f11e443]:
+                      - generic [ref=f11e444]: "2"
+                      - generic [ref=f11e445]: 석간
+            - generic [ref=f11e446]:
+              - 'button "이전: 기본 설정" [ref=f11e447] [cursor=pointer]'
+              - button "입력 검토" [ref=f11e448] [cursor=pointer]
+      - contentinfo [ref=f11e449]:
+        - generic [ref=f11e450]: DB 연결됨
+        - generic [ref=f11e453]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=f11e455]: 대기 파일 3개
+        - generic [ref=f11e457]: 최신
+        - generic [ref=f11e459]: v2.3.1

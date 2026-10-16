@@ -1,0 +1,1 @@
+(()=>{var h=document.getElementById('e8-hire');h.value='2030-01-01';h.dispatchEvent(new Event('input',{bubbles:true}));return 'ok';})()

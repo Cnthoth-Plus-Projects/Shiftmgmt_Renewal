@@ -1,0 +1,43 @@
+{
+  "time": "2026-09-30 21:42:22 KST",
+  "action": "CORRECT",
+  "defects": [
+    "R32C-01",
+    "R32C-02",
+    "R32C-03",
+    "R32C-04",
+    "R32C-05",
+    "R32C-06"
+  ],
+  "handoff": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+  "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_214222_3-2b-Sol-CORRECT1_발송본.md",
+  "handoffMetadata": {
+    "bytes": 32073,
+    "sha256": "A25B27EB86567B0647E172857D5D97D432365E9AD6D0D13A03A59D691C9CC18E"
+  },
+  "baseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-20260930_214222\\baseline.json",
+  "baselineMetadata": {
+    "bytes": 142479,
+    "sha256": "AC2A972F7022D03B6C9A2AC091B9326ADD99F65E545260D6851D0FB09497A6A7"
+  },
+  "productHEAD": "160940f9aaeb6696538447f83b44658073e382f0",
+  "productStatus": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "productFiles": 338,
+  "editableFiles": 5,
+  "protectedFiles": 333,
+  "canonicalFiles": 14,
+  "sourceChangesBySol": 0,
+  "reviewEvidence": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\final-evidence.json",
+  "newImplementationStatus": "CORRECTION_NOT_STARTED",
+  "manualUserRelay": true
+}

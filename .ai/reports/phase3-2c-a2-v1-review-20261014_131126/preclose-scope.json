@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python",
+    "-X",
+    "utf8",
+    "-B",
+    ".ai\\contracts\\phase3-2c-a2-v1\\gate-evidence.py",
+    "--execution-sha",
+    "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+    "--baseline-sha",
+    "D305FE700885F4F3BD640FC021E6F545B684E46E2630CDB993A4A8173E7C1A03",
+    "--scope"
+  ],
+  "rc": 0,
+  "stdout": "{\"status\": \"PASS\", \"result\": {\"files\": 341, \"protected\": 337, \"dirtyPaths\": 12, \"changedAllowed\": [\"scripts/ui-checks/access-history-negative.mjs\", \"scripts/ui-checks/access-history-positive.mjs\", \"scripts/ui-checks/access-history-shared.mjs\", \"scripts/ui-checks/access-history.mjs\"]}}\n",
+  "stderr": "",
+  "sourceUnchanged": true,
+  "controlsUnchanged": 571,
+  "receivedHandoffUnchanged": true,
+  "nodeSyntax": [
+    ".ai\\reports\\phase3-2c-a2-v1-review-20261014_131126\\child-review-preload.mjs",
+    ".ai\\reports\\phase3-2c-a2-v1-review-20261014_131126\\owner-review-preload.mjs",
+    ".ai\\reports\\phase3-2c-a2-v1-review-20261014_131126\\helper-review.mjs"
+  ]
+}

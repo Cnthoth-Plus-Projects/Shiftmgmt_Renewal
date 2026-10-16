@@ -1,0 +1,18 @@
+{
+  "attempt1": {
+    "serverStopped": true,
+    "tempDataCleaned": false,
+    "retainedPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-31d-2Kh5fr",
+    "reason": "Two native PowerShell recursive deletion commands were rejected with blocked by policy; no reason was supplied. Read-only inspection confirmed an ordinary task-created directory and no remaining server PID44256. No alternative deletion was used for the rejected target."
+  },
+  "attempt2": {
+    "time": "2026-09-30T07:05:13.162Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  },
+  "attempt3": {
+    "time": "2026-09-30T07:10:31.487Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  }
+}

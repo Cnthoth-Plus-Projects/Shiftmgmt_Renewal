@@ -1,0 +1,80 @@
+[
+  {
+    "id": "A1V4-01",
+    "requirement": "E4-02",
+    "proof": "ACTUAL_OWNER_FALSE_PASS_AND_SOURCE_GAP",
+    "source": "access-history.mjs:215-233,493-496",
+    "finding": "Observed timestamps clamped; null exitCode becomes0. Injected finish timestamp is increased250ms; owner and immutable final gate both rc0.",
+    "evidence": [
+      "extra-owner-results.json",
+      "extra-timestamp-regression.command.json"
+    ]
+  },
+  {
+    "id": "A1V4-02",
+    "requirement": "E4-05",
+    "proof": "ACTUAL_OWNER_FALSE_PASS",
+    "source": "access-history.mjs:341-354",
+    "finding": "Valid ACK plus unapproved:true accepted despite exact ACK key contract; owner and fixed final both rc0.",
+    "evidence": [
+      "extra-owner-results.json",
+      "extra-owner-extra-ack.command.json"
+    ]
+  },
+  {
+    "id": "A1V4-03",
+    "requirement": "E4-03",
+    "proof": "ACTUAL_PRIVATE_WORKER_FALSE_PASS",
+    "source": "access-history-shared.mjs:507-509",
+    "finding": "Actual API return null is replaced by [1440,900]; real private worker rc0/worker-final PASS. Actual screen remains1440x900; experiment targets missing measurement.",
+    "evidence": [
+      "extra-private-evidence.json",
+      "extra-private-null-and-early.command.json"
+    ]
+  },
+  {
+    "id": "A1V4-04",
+    "requirement": "E4-04",
+    "proof": "ACTUAL_HELPER_REJECTION_FAILURE_AND_SOURCE_GAP",
+    "source": "access-history-shared.mjs:338-347,384-418",
+    "finding": "Seven invalid raw mutations accepted: repeated/reversed/extra resource states, numeric/bool/array IDs, self-supplied canonical path. Original typed rule rejects first6; hardcoded rules remain.",
+    "evidence": [
+      "collector-extra.json",
+      "diff-and-helper-comparison.json"
+    ]
+  },
+  {
+    "id": "A1V4-05",
+    "requirement": "E4-07",
+    "proof": "ACTUAL_PARTIAL_LOSS_AND_SOURCE_GAP",
+    "source": "access-history-shared.mjs:457-480,545,575-583",
+    "finding": "Canonical virtual read failure after valid ACK/RUN produces no core-partial/fallback. All5 accepted partial tests contain8/9 acquired rule values but checks=[]; raw/context are preserved for those later failures.",
+    "evidence": [
+      "extra-private-evidence.json",
+      "partial-check-coverage.json"
+    ]
+  },
+  {
+    "id": "A1V4-T01",
+    "requirement": "Sol independent control coverage",
+    "proof": "ACTUAL_CONTROL_COVERAGE_GAP",
+    "source": ".ai/contracts/phase3-2c-a1-v4/runtime-probes.py/component-probes.mjs/partial-probes.mjs/gate-evidence.py",
+    "finding": "Original44/IPC19/typed25/partial5 PASS yet extra ACK, clamped time, null viewport, resource sequence/ID and acquired-check omissions escape. Original gates remain unchanged.",
+    "evidence": [
+      "extra-owner-results.json",
+      "collector-extra.json",
+      "partial-check-coverage.json"
+    ]
+  },
+  {
+    "id": "A1V4-R01",
+    "requirement": "Reproducible reply evidence",
+    "proof": "INDEPENDENT_DIFF_AND_REPLY_COMPARISON",
+    "source": "Received HANDOFF reply diff and requirement matrix",
+    "finding": "Actual owner215added/285deleted/23hunks and shared180added/125deleted/13hunks differ from reply counts. E4-03/E4-05 reply labels mismatch locked requirements. Source SHA claims are correct.",
+    "evidence": [
+      "diff-and-helper-comparison.json",
+      "received-product"
+    ]
+  }
+]

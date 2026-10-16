@@ -1,0 +1,18 @@
+{
+  "name": "fault-no-cookie-500",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=session-expired"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:17:13.836386+00:00",
+  "pid": 49904,
+  "rc": 0,
+  "end": "2026-10-01T07:17:17.740016+00:00",
+  "elapsedSeconds": 3.906,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-no-cookie-500.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-no-cookie-500.stderr.txt"
+}

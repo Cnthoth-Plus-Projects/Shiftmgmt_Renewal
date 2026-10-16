@@ -1,0 +1,14 @@
+{
+  "proof": "INSPECTED_REAL_CHROME_RECON_NOT_A2_IMPLEMENTATION",
+  "chrome": {
+    "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "version": "155.0.8059.40"
+  },
+  "viewport": [
+    1440,
+    900
+  ],
+  "origin": "http://127.0.0.1:18741",
+  "reconPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a2-recon-d1gGYd\\recon.json",
+  "reconSha256": "6BEA24BB49C68FAAF9CADBEC707D4DFAF40F7660B2AF858D64DAC52B47BD14C6"
+}

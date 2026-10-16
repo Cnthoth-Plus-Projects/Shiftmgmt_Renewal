@@ -1,0 +1,115 @@
+==========================================================================
+A14b. 아이콘 글리프 실제 누출 (이름을 덮어 주는 조상이 없는 것만)
+==========================================================================
+aria-hidden 없는 아이콘 145개 중 → 조상이 덮어 줌 78개 / **실제 누출 67개**
+
+## 파일별 실제 누출
+   00-shell-1.html: 3건
+   00-shell-2.html: 5건
+   01-login-1.html: 2건
+   01-login-2.html: 6건
+   02-common-2.html: 3건
+   04-sites-1.html: 2건
+   04-sites-2.html: 3건
+   06-employees-1.html: 2건
+   06-employees-2.html: 3건
+   06-employees-3.html: 3건
+   07-schedule-1.html: 2건
+   07-schedule-2.html: 4건
+   07-schedule-3.html: 4건
+   09-allowance-1.html: 3건
+   09-allowance-2.html: 1건
+   09-allowance-3.html: 5건
+   10-dashboard-1.html: 4건
+   11-operations-1.html: 3건
+   11-operations-2.html: 3건
+   11-operations-3.html: 3건
+   11-operations-4.html: 1건
+   12-access-logs-1.html: 2건
+
+## 새는 낱말
+   "person" x42
+   "check_circle" x5
+   "error" x4
+   "add" x3
+   "info" x2
+   "radio_button_unchecked" x2
+   "warning" x2
+   "fact_check" x2
+   "lock" x1
+   "key" x1
+   "person_add" x1
+   "add_circle" x1
+   "description" x1
+
+## 전건 (파일:줄  낱말  담고 있는 요소)
+   00-shell-1.html:516  "person"  담긴 곳=button
+   00-shell-1.html:574  "person"  담긴 곳=button
+   00-shell-1.html:636  "person"  담긴 곳=button
+   00-shell-2.html:518  "person"  담긴 곳=button
+   00-shell-2.html:580  "person"  담긴 곳=button
+   00-shell-2.html:587  "error"  담긴 곳=None
+   00-shell-2.html:646  "person"  담긴 곳=button
+   00-shell-2.html:653  "info"  담긴 곳=None
+   01-login-1.html:224  "error"  담긴 곳=None
+   01-login-1.html:253  "lock"  담긴 곳=None
+   01-login-2.html:209  "check_circle"  담긴 곳=None
+   01-login-2.html:210  "check_circle"  담긴 곳=None
+   01-login-2.html:211  "check_circle"  담긴 곳=None
+   01-login-2.html:212  "radio_button_unchecked"  담긴 곳=None
+   01-login-2.html:213  "radio_button_unchecked"  담긴 곳=None
+   01-login-2.html:239  "key"  담긴 곳=None
+   02-common-2.html:492  "check_circle"  담긴 곳=None
+   02-common-2.html:507  "info"  담긴 곳=None
+   02-common-2.html:522  "error"  담긴 곳=None
+   04-sites-1.html:489  "person"  담긴 곳=button
+   04-sites-1.html:504  "add"  담긴 곳=button
+   04-sites-2.html:491  "person"  담긴 곳=button
+   04-sites-2.html:502  "add"  담긴 곳=button
+   04-sites-2.html:553  "person"  담긴 곳=button
+   06-employees-1.html:489  "person"  담긴 곳=button
+   06-employees-1.html:596  "person"  담긴 곳=button
+   06-employees-2.html:491  "person"  담긴 곳=button
+   06-employees-2.html:562  "person"  담긴 곳=button
+   06-employees-2.html:641  "person"  담긴 곳=button
+   06-employees-3.html:495  "person"  담긴 곳=button
+   06-employees-3.html:622  "person"  담긴 곳=button
+   06-employees-3.html:632  "person_add"  담긴 곳=button
+   07-schedule-1.html:489  "person"  담긴 곳=button
+   07-schedule-1.html:503  "warning"  담긴 곳=button
+   07-schedule-2.html:489  "person"  담긴 곳=button
+   07-schedule-2.html:503  "warning"  담긴 곳=button
+   07-schedule-2.html:625  "person"  담긴 곳=button
+   07-schedule-2.html:645  "error"  담긴 곳=None
+   07-schedule-3.html:492  "person"  담긴 곳=button
+   07-schedule-3.html:565  "person"  담긴 곳=button
+   07-schedule-3.html:637  "person"  담긴 곳=button
+   07-schedule-3.html:647  "add_circle"  담긴 곳=button
+   09-allowance-1.html:496  "person"  담긴 곳=button
+   09-allowance-1.html:507  "description"  담긴 곳=button
+   09-allowance-1.html:615  "person"  담긴 곳=button
+   09-allowance-2.html:492  "person"  담긴 곳=button
+   09-allowance-3.html:489  "person"  담긴 곳=button
+   09-allowance-3.html:497  "check_circle"  담긴 곳=None
+   09-allowance-3.html:571  "person"  담긴 곳=button
+   09-allowance-3.html:644  "person"  담긴 곳=button
+   09-allowance-3.html:654  "fact_check"  담긴 곳=button
+   10-dashboard-1.html:489  "person"  담긴 곳=button
+   10-dashboard-1.html:615  "person"  담긴 곳=button
+   10-dashboard-1.html:702  "person"  담긴 곳=button
+   10-dashboard-1.html:717  "fact_check"  담긴 곳=button
+   11-operations-1.html:500  "person"  담긴 곳=button
+   11-operations-1.html:690  "person"  담긴 곳=button
+   11-operations-1.html:783  "add"  담긴 곳=button
+   11-operations-2.html:499  "person"  담긴 곳=button
+   11-operations-2.html:670  "person"  담긴 곳=button
+   11-operations-2.html:786  "person"  담긴 곳=button
+   11-operations-3.html:492  "person"  담긴 곳=button
+   11-operations-3.html:653  "person"  담긴 곳=button
+   11-operations-3.html:742  "person"  담긴 곳=button
+   11-operations-4.html:495  "person"  담긴 곳=button
+   12-access-logs-1.html:492  "person"  담긴 곳=button
+   12-access-logs-1.html:647  "person"  담긴 곳=button
+
+## (참고) 덮어 준 것들의 방식
+    Counter({'aria-label': 71, 'aria-hidden 조상': 7})

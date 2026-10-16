@@ -1,0 +1,16 @@
+{
+  "name": "cli-negative-1",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=sol-unknown-case"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:25:47.660324+00:00",
+  "pid": 50320,
+  "rc": 1,
+  "end": "2026-10-01T07:25:47.788265+00:00",
+  "elapsedSeconds": 0.125,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-1.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-1.stderr.txt"
+}

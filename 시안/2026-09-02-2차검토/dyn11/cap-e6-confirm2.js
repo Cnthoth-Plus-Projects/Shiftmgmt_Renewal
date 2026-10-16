@@ -1,0 +1,1 @@
+(()=>{document.getElementById('btn-submit-e6').click();return '확인모달='+getComputedStyle(document.getElementById('modal-e6-confirm')).display;})()

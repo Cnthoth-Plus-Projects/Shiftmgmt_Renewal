@@ -1,0 +1,158 @@
+{
+  "at": "2026-09-07T08:08:42.658Z",
+  "e9": [
+    {
+      "method": "click",
+      "before": {
+        "wrapper": "state-e9",
+        "panelClass": "",
+        "buttons": [
+          {
+            "id": "btn-e2-new-e9",
+            "text": "person_add신규 인력 등록",
+            "w": 139.234375,
+            "h": 32
+          },
+          {
+            "id": "btn-e9-wage",
+            "text": "시급 등록",
+            "w": 69.34375,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-assign",
+            "text": "배정",
+            "w": 42,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-unassign",
+            "text": "현재 배정 해지",
+            "w": 167,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-delete",
+            "text": "인력 삭제",
+            "w": 167,
+            "h": 26
+          }
+        ],
+        "rowHeights": [
+          40
+        ]
+      },
+      "after": {
+        "panelDisplay": "none",
+        "focus": {
+          "tag": "TR",
+          "wrapper": "state-e9",
+          "html": "<tr tabindex=\"0\" class=\"selected\" data-id=\"50001\">\n    <td>50001</td><td><strong>박성진</strong></td><td>사원</td>\n    <td><span style=\"color:#1E7A46;font-weight:600;\">재직</span></td>\n  "
+        },
+        "e2Panel": "flex"
+      }
+    },
+    {
+      "method": "Enter",
+      "before": {
+        "wrapper": "state-e9",
+        "panelClass": "",
+        "buttons": [
+          {
+            "id": "btn-e2-new-e9",
+            "text": "person_add신규 인력 등록",
+            "w": 139.234375,
+            "h": 32
+          },
+          {
+            "id": "btn-e9-wage",
+            "text": "시급 등록",
+            "w": 69.34375,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-assign",
+            "text": "배정",
+            "w": 42,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-unassign",
+            "text": "현재 배정 해지",
+            "w": 167,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-delete",
+            "text": "인력 삭제",
+            "w": 167,
+            "h": 26
+          }
+        ],
+        "rowHeights": [
+          40
+        ]
+      },
+      "after": {
+        "panelDisplay": "none",
+        "focus": {
+          "tag": "TR",
+          "wrapper": "state-e9",
+          "html": "<tr tabindex=\"0\" class=\"selected\" data-id=\"50001\">\n    <td>50001</td><td><strong>박성진</strong></td><td>사원</td>\n    <td><span style=\"color:#1E7A46;font-weight:600;\">재직</span></td>\n  "
+        },
+        "e2Panel": "flex"
+      }
+    },
+    {
+      "method": "Space",
+      "before": {
+        "wrapper": "state-e9",
+        "panelClass": "",
+        "buttons": [
+          {
+            "id": "btn-e2-new-e9",
+            "text": "person_add신규 인력 등록",
+            "w": 139.234375,
+            "h": 32
+          },
+          {
+            "id": "btn-e9-wage",
+            "text": "시급 등록",
+            "w": 69.34375,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-assign",
+            "text": "배정",
+            "w": 42,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-unassign",
+            "text": "현재 배정 해지",
+            "w": 167,
+            "h": 26
+          },
+          {
+            "id": "btn-e9-delete",
+            "text": "인력 삭제",
+            "w": 167,
+            "h": 26
+          }
+        ],
+        "rowHeights": [
+          40
+        ]
+      },
+      "after": {
+        "panelDisplay": "none",
+        "focus": {
+          "tag": "TR",
+          "wrapper": "state-e9",
+          "html": "<tr tabindex=\"0\" class=\"selected\" data-id=\"50001\">\n    <td>50001</td><td><strong>박성진</strong></td><td>사원</td>\n    <td><span style=\"color:#1E7A46;font-weight:600;\">재직</span></td>\n  "
+        },
+        "e2Panel": "flex"
+      }
+    }
+  ]
+}

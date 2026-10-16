@@ -1,0 +1,31 @@
+{
+  "time": "2026-10-13 10:45:59 KST",
+  "sourceUnchanged": true,
+  "sourceFiles": 341,
+  "protectedFiles": 339,
+  "historicalControlFiles": 55,
+  "productEditsBySol": 0,
+  "receivedArchive": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_100655_3-2c-A1-v5-Sol-FAILED_v6재설계전보존.md",
+    "bytes": 15264,
+    "sha256": "7CA34BE2868D31CB685E5A361288725CFEB5E123C5C53CC5A3D36767E127A023"
+  },
+  "routing": {
+    "primary": "frontier",
+    "reason": "structural verification redesign and integration",
+    "internal": "Terra unavailable -> balanced gpt-6-sol read-only evidence"
+  },
+  "policyTrace": [
+    "P04",
+    "P06",
+    "P13",
+    "P25"
+  ],
+  "McpSurfaceInspected": true,
+  "A1Accepted": false,
+  "counterReset": 0,
+  "validation": {
+    "bytes": 13592,
+    "sha256": "80A5BE5B652E36A3798436A7DC7ED052D0A2D297FFDAAEACA655652A590036AD"
+  }
+}

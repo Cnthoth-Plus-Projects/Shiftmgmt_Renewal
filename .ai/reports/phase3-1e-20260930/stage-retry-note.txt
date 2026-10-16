@@ -1,0 +1,1 @@
+Initial git add exited 128 because two already-staged deletions no longer exist in the index. Index and source unchanged. Preserve those staged deletions and add the other exact preflight paths.

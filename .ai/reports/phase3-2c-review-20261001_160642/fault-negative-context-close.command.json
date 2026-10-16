@@ -1,0 +1,18 @@
+{
+  "name": "fault-negative-context-close",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=errors"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:17:17.767695+00:00",
+  "pid": 52456,
+  "rc": 0,
+  "end": "2026-10-01T07:17:22.027964+00:00",
+  "elapsedSeconds": 4.265,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-negative-context-close.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-negative-context-close.stderr.txt"
+}

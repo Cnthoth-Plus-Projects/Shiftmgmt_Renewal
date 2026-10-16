@@ -1,0 +1,112 @@
+################ OLD = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차검토/스냅샷12차
+=== R24 01-login-2 L4 sr-only 동적 ===
+Password1! → len="충족 — "/valid upper="충족 — "/valid lower="충족 — "/valid num="미충족 — "/valid special="미충족 — "/valid
+Password → len="충족 — "/valid upper="충족 — "/valid lower="충족 — "/valid num="미충족 — "/invalid special="미충족 — "/invalid
+  콘솔: (no console errors)   파싱: OK 1 scripts
+=== R25 아이콘(클래스 기준) 24파일 ===
+02-common-3.html total=1 leak=1 [DIV:sync]
+총 485개 · 누출 1개
+=== R26 02-common-2 C5~C7 ===
+c5: 중심=DIV# pos=absolute z=auto 트리거@32,88 136x26 | ✕→none 중심클릭→none 포커스=✕:false live="(없음)" role=null aria-live=null 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+c6: 중심=DIV# pos=absolute z=auto 트리거@32,437 136x26 | ✕→none 중심클릭→none 포커스=✕:false live="(없음)" role=null aria-live=null 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+c7: 중심=DIV# pos=absolute z=auto 트리거@32,437 136x26 | ✕→none 중심클릭→none 포커스=✕:false live="(없음)" role=null aria-live=null 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+  마우스 실클릭:
+   c5: 토스트=none live="undefined"
+   c6: 토스트=none live="undefined"
+   c7: 토스트=none live="undefined"
+  콘솔: (no console errors)   파싱: OK 1 scripts
+=== R27 처리 중 잠금 — 9모달 + E3·E4·E6·E8 ===
+C1: 실행→처리 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-c1 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C2: 실행→처리 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-c2 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C3: 실행→처리 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-c3 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C4: 
+   
+  콘솔: (no console errors)   파싱: OK 1 scripts
+T4: 실행→삭제 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-t4 라벨=삭제 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+R4: 실행→게시 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-r4 라벨=게시 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+A4: 실행→지정 중... 모달=true 취소dis=false ✕dis=false | Esc→false | 취소→false | ✕→false
+   완료→ 모달=false 포커스=btn-open-a4 라벨=지정 중... 취소dis=false ✕dis=false 실행dis=true
+A5: 실행→승인 중... 모달=true 취소dis=false ✕dis=false | Esc→false/앞=true | 취소→false/앞=true | ✕→false/앞=true
+   완료→ 모달=false/앞=true 포커스=btn-open-a3 라벨=승인 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+O10: 실행→복원 중... 모달=true 취소dis=false ✕dis=false | Esc→false/앞=true | 취소→false/앞=true | ✕→false/앞=true
+   완료→ 모달=false/앞=true 포커스=btn-open-o9 라벨=복원 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+--- 회귀 E3·E4·E6·E8(dyn13) ---
+E3 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 클릭 → 모달=true | 처리 중 ✕ 클릭 → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e3 등록 라벨=등록 취소 disabled=false ✕ disabled=false 토스트=true | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e3 | 이동 버튼 BUTTON id=btn-e3-goto-perf 글="실적 관리로 이동"
+E4 열림=true 실행 aria-disabled=null | 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true
+E6 확인 모달=true E6=false | 적용 클릭 → 라벨=업데이트 중... 확인모달=true 돌아가기 disabled=true ✕ disabled=true live="처리 중: 업데이트 중..." | 처리 중 Esc → 확인모달=true E6=false | 처리 중 돌아가기 클릭 → 확인모달=true E6=false | 처리 중 ✕ 클릭 → 확인모달=true E6=false
+완료 후 → 확인모달=false E6=false 포커스=btn-open-e6 적용 라벨=적용 돌아가기 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) 확인모달 Esc → 확인모달=false E6=true 포커스=btn-submit-e6 | E6 Esc → E6=false 포커스=btn-open-e6
+E8 등록 클릭 → 라벨=등록 중... 모달=true 취소 disabled=true ✕ disabled=true live="처리 중: 등록 중..." | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true | 처리 중 ✕ → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e8 등록 라벨=등록 취소 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e8
+=== R28 11-operations-1/2/3 ===
+11-operations-1.html: role=tab 14 tablist 2 aria-selected 14 탭카드 tabindex 14 / 카드수 14
+  콘솔: (no console errors)   파싱: OK 1 scripts
+11-operations-2.html: role=tab 21 tablist 3 aria-selected 21 탭카드 tabindex 21 / 카드수 21
+  콘솔: (no console errors)   파싱: OK 1 scripts
+11-operations-3.html: role=tab 14 tablist 2 aria-selected 14 탭카드 tabindex 14 / 카드수 14
+  콘솔: (no console errors)   파싱: OK 1 scripts
+################ CUR = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차HTML
+=== R24 01-login-2 L4 sr-only 동적 ===
+Password1! → len="충족 — "/valid upper="충족 — "/valid lower="충족 — "/valid num="충족 — "/valid special="충족 — "/valid
+Password → len="충족 — "/valid upper="충족 — "/valid lower="충족 — "/valid num="미충족 — "/invalid special="미충족 — "/invalid
+  콘솔: (no console errors)   파싱: OK 1 scripts
+=== R25 아이콘(클래스 기준) 24파일 ===
+총 485개 · 누출 0개
+=== R26 02-common-2 C5~C7 ===
+c5: 중심=BUTTON#btn-show-c5 pos=absolute z=1 트리거@32,88 136x26 | ✕→none 중심클릭→flex 포커스=✕:true live="근무지를 저장했습니다." role=status aria-live=polite 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+c6: 중심=BUTTON#btn-show-c6 pos=absolute z=1 트리거@32,437 136x26 | ✕→none 중심클릭→flex 포커스=✕:true live="백업이 시작되었습니다." role=status aria-live=polite 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+c7: 중심=BUTTON#btn-show-c7 pos=absolute z=1 트리거@32,437 136x26 | ✕→none 중심클릭→flex 포커스=✕:true live="파일을 읽지 못했습니다. 파일이 열려 있으면 닫고 다시 시도해 주세요." role=status aria-live=polite 조상aria-hidden=false | ✕→포커스=트리거:true 토스트 role=null
+  마우스 실클릭:
+   c5: 토스트=flex live="근무지를 저장했습니다."
+   c6: 토스트=flex live="백업이 시작되었습니다."
+   c7: 토스트=flex live="파일을 읽지 못했습니다. 파일이 열려 있으면 닫고 다시 시도해 주세요."
+  콘솔: (no console errors)   파싱: OK 1 scripts
+=== R27 처리 중 잠금 — 9모달 + E3·E4·E6·E8 ===
+C1: 실행→처리 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-c1 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C2: 실행→처리 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-c2 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C3: 실행→처리 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-c3 라벨=처리 중... 취소dis=false ✕dis=false 실행dis=true
+C4: 
+   
+  콘솔: (no console errors)   파싱: OK 1 scripts
+T4: 실행→삭제 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-t4 라벨=삭제 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+R4: 실행→게시 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-r4 라벨=게시 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+A4: 실행→지정 중... 모달=true 취소dis=true ✕dis=true | Esc→true | 취소→true | ✕→true
+   완료→ 모달=false 포커스=btn-open-a4 라벨=지정 중... 취소dis=false ✕dis=false 실행dis=true
+A5: 실행→승인 중... 모달=true 취소dis=true ✕dis=true | Esc→true/앞=false | 취소→true/앞=false | ✕→true/앞=false
+   완료→ 모달=false/앞=false 포커스=btn-open-a3 라벨=승인 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+O10: 실행→복원 중... 모달=true 취소dis=true ✕dis=true | Esc→true/앞=false | 취소→true/앞=false | ✕→true/앞=false
+   완료→ 모달=false/앞=false 포커스=btn-open-o9 라벨=복원 중... 취소dis=false ✕dis=false 실행dis=true
+  콘솔: (no console errors)   파싱: OK 2 scripts
+--- 회귀 E3·E4·E6·E8(dyn13) ---
+E3 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 클릭 → 모달=true | 처리 중 ✕ 클릭 → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e3 등록 라벨=등록 취소 disabled=false ✕ disabled=false 토스트=true | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e3 | 이동 버튼 BUTTON id=btn-e3-goto-perf 글="실적 관리로 이동"
+E4 열림=true 실행 aria-disabled=null | 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true
+E6 확인 모달=true E6=false | 적용 클릭 → 라벨=업데이트 중... 확인모달=true 돌아가기 disabled=true ✕ disabled=true live="처리 중: 업데이트 중..." | 처리 중 Esc → 확인모달=true E6=false | 처리 중 돌아가기 클릭 → 확인모달=true E6=false | 처리 중 ✕ 클릭 → 확인모달=true E6=false
+완료 후 → 확인모달=false E6=false 포커스=btn-open-e6 적용 라벨=적용 돌아가기 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) 확인모달 Esc → 확인모달=false E6=true 포커스=btn-submit-e6 | E6 Esc → E6=false 포커스=btn-open-e6
+E8 등록 클릭 → 라벨=등록 중... 모달=true 취소 disabled=true ✕ disabled=true live="처리 중: 등록 중..." | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true | 처리 중 ✕ → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e8 등록 라벨=등록 취소 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e8
+=== R28 11-operations-1/2/3 ===
+11-operations-1.html: role=tab 0 tablist 0 aria-selected 0 탭카드 tabindex 0 / 카드수 14
+  콘솔: (no console errors)   파싱: OK 1 scripts
+11-operations-2.html: role=tab 0 tablist 0 aria-selected 0 탭카드 tabindex 0 / 카드수 21
+  콘솔: (no console errors)   파싱: OK 1 scripts
+11-operations-3.html: role=tab 0 tablist 0 aria-selected 0 탭카드 tabindex 0 / 카드수 14
+  콘솔: (no console errors)   파싱: OK 1 scripts
+DONE

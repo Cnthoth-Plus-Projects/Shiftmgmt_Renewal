@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 08-performance-2.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F5F7;
+      --surface: #FFFFFF;
+      --line: #E2E5EA;
+      --line-strong: #848A93;
+      --text: #1F2430;
+      --text-sub: #4B5563;
+      --accent: #3E56B6;
+      --row-selected: #EEF1FB;
+      --badge-approved-text: #1E7A46;
+      --badge-approved-bg: #E8F5EE;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #E5E7EB;
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      gap: 32px;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .icon-18 { font-size: 18px; width: 18px; height: 18px; }
+    *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .state-wrapper { display: flex; flex-direction: column; width: 1440px; background: #FFFFFF; box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-radius: 6px; overflow: hidden; }
+    .status-label-bar { height: 36px; background: #E2E5EA; color: #4B5563; font-size: 12px; font-weight: 600; display: flex; align-items: center; padding-left: 16px; border-bottom: 1px solid #D1D5DB; }
+    .app-window { width: 1440px; height: 900px; display: flex; flex-direction: column; background: var(--bg); position: relative; }
+    .app-body { display: flex; flex: 1; height: calc(900px - 32px); overflow: hidden; }
+    
+    .sidebar { width: 220px; background: #FFFFFF; border-right: 1px solid var(--line); display: flex; flex-direction: column; flex-shrink: 0; }
+    .nav-list { list-style: none; padding: 8px 0; flex: 1; overflow-y: auto; }
+    .nav-group-header { padding: 12px 16px 4px; font-size: 12px; font-weight: 600; color: var(--text-sub); }
+    .nav-item { height: 44px; display: flex; align-items: center; padding: 0 16px; color: var(--text); text-decoration: none; gap: 10px; font-size: 14px; position: relative; }
+    .nav-item:hover { background: #F8F9FA; }
+    .nav-item.active { background: #EEF1FB; color: var(--accent); font-weight: 600; }
+    .nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+    .nav-badge { margin-left: auto; background: var(--accent); color: #FFFFFF; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 12px; line-height: 1; }
+
+    .main-wrapper { flex: 1; display: flex; flex-direction: column; width: 1220px; overflow: hidden; }
+    .header-bar { height: 56px; background: #FFFFFF; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 12px; flex-shrink: 0; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .btn-sidebar-toggle{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--text)}
+    .btn-sidebar-toggle:hover { background: #F1F2F4; }
+    .app-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; }
+    .app-title { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+    .header-title{font-size:20px;font-weight:600;color:var(--text);white-space:nowrap}
+    .header-user-actions { display: flex; align-items: center; gap: 12px; }
+    .role-badge { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid #D5DCF5; }
+    .user-info-btn { display: flex; align-items: center; gap: 4px; color: var(--text-sub); font-size: 13px; text-decoration: none; background: none; border: none; cursor: pointer; }
+    
+    .page-content { width: 1220px; height: 812px; padding: 16px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+
+    /* C4 박스 탭 헤더 줄 (48px) */
+    .tabs-header-bar { height: 48px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); flex-shrink: 0; padding: 0 4px; }
+    .tabs-group { display: flex; gap: 4px; align-items: center; }
+    .tab-btn{height:40px;background:#F1F2F4;border:1px solid transparent;border-radius:6px;font-size:13px;color:var(--text-sub);padding:0 14px;cursor:pointer;font-weight:400;display:inline-flex;align-items:center}
+    .tab-btn.active { background: var(--accent); color: #FFFFFF; font-weight: 600; border-color: var(--accent); }
+
+    .summary-chips-wrap { display: flex; align-items: center; gap: 8px; }
+    .chip { background: #F1F2F4; color: var(--text-sub); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px; }
+    .chip-accent { background: #EEF1FB; color: var(--accent); }
+    .chip-warning { background: #FCF6E0; color: #8A6D00; }
+
+    /* A2 필터줄 (56px) */
+    .filter-bar-56 { height: 56px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; display: flex; align-items: center; padding: 0 16px; gap: 20px; flex-shrink: 0; }
+    .filter-group { display: flex; align-items: center; gap: 8px; }
+    .filter-label { font-size: 13px; font-weight: 500; color: var(--text-sub); white-space: nowrap; }
+    .filter-select, .filter-input { height: 36px; padding: 0 10px; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; color: var(--text); background: #FFFFFF; }
+
+    /* 주황 배너 (고아 승인 안내) */
+    .banner-orphan { background: #FDF3E4; border: 1px solid #E5C287; color: #A05200; border-radius: 6px; padding: 10px 16px; font-size: 13px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .banner-orphan-text { line-height: 1.4; }
+
+    .card-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .card-title { font-size: 14px; font-weight: 600; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
+
+    .btn-primary { background: var(--accent); color: #FFFFFF; border: 1px solid var(--accent); padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary:hover { background: #32479B; }
+    .btn-secondary { background: #FFFFFF; color: var(--text); border: 1px solid var(--line-strong); padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-secondary:hover { background: #F8F9FA; }
+    .btn-sm { padding: 3px 8px; font-size: 12px; }
+
+    .simple-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .simple-table th { background: #F8F9FA; border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; color: var(--text-sub); font-weight: 600; }
+    .simple-table td { border-bottom: 1px solid var(--line); padding: 8px 10px; }
+
+    /* P5 재승인 비교 테이블 */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+    .compare-table th { background: #F8F9FA; border: 1px solid var(--line); padding: 5px 6px; color: var(--text); font-weight: 600; text-align: center; }
+    .compare-table td { border: 1px solid var(--line); padding: 5px 6px; }
+    .cell-diff { background: #FFFDF0; color: #8A6D00; font-weight: 600; }
+    .row-add { background: #E8F5EE; }
+    .row-del { background: #FCEBE9; text-decoration: line-through; color: #848A93; }
+
+    .legend-wrap { display: flex; gap: 8px; align-items: center; font-size: 11px; }
+    .legend-badge { padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+
+    .footer-statusbar { height: 32px; background: #FFFFFF; border-top: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; font-size: 12px; color: var(--text-sub); width: 1440px; box-sizing: border-box; flex-shrink: 0; }
+    .status-cell { display: flex; align-items: center; gap: 6px; padding: 0 12px; border-right: 1px solid var(--line); height: 100%; }
+    .status-cell:first-child { padding-left: 0; }
+    .status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+    .status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- P4. 실적 관리 — ① 고아 승인 안내 -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-p4">
+    <div class="status-label-bar">── P4. 실적 관리 — ① 고아 승인 안내 (승인 담당) ──</div>
+    <div class="app-window">
+      <div class="app-body">
+        <aside class="sidebar">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item active"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge">128</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="app-logo" aria-hidden="true"><span class="material-symbols-outlined" style="color:#FFFFFF; font-size:18px;">calendar_month</span></div>
+              <span class="app-title">근무 관리 시스템</span>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">실적 관리</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">승인 담당</span>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></button>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">help</span><span>도움말</span></button>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content">
+            <!-- C4 박스 탭 헤더 줄 -->
+            <div class="tabs-header-bar">
+              <div class="tabs-group">
+                <button type="button" class="tab-btn active">① 접수·복구</button>
+                <button type="button" class="tab-btn">② 승인 작업</button>
+                <button type="button" class="tab-btn">③ 재승인·비교</button>
+              </div>
+              <div class="summary-chips-wrap">
+                <span class="chip chip-accent"><span class="material-symbols-outlined icon-18" aria-hidden="true">fact_check</span>대기 실적 128건</span>
+                <span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">refresh</span>재승인 필요 3건</span>
+                <span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span>확인 필요 2건</span>
+              </div>
+            </div>
+
+            <!-- 고아 승인 안내 주황 배너 -->
+            <div class="banner-orphan" id="orphan-banner" tabindex="0">
+              <div style="display: flex; gap: 8px; align-items: flex-start;">
+                <span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span>
+                <div class="banner-orphan-text">
+                  <strong>고아 승인 상태</strong> — 원본 파일과 연결할 수 없는 승인 기록이 있습니다. 자동 연결이 불가능하며, [시작 복구 다시 실행]으로 복구를 시도할 수 있습니다. 반복되면 관리자에게 문의해 주세요.
+                </div>
+              </div>
+              <button type="button" class="user-info-btn" id="btn-close-orphan" aria-label="닫기" style="color: #A05200;">
+                <span class="material-symbols-outlined icon-18" aria-hidden="true">close</span>
+              </button>
+            </div>
+
+            <div class="card-grid-2col">
+              <div class="card">
+                <div class="card-title">
+                  <span>최근 접수 파일</span>
+                </div>
+                <table class="simple-table">
+                  <thead><tr><th>파일명</th><th>받은 시각</th><th>상태</th></tr></thead>
+                  <tbody>
+                    <tr><td>실적_본사_2025-05.xlsx</td><td>05-28 14:31</td><td><span style="color:var(--accent); font-weight:600;">대기</span></td></tr>
+                    <tr><td>실적_지사A_2025-05.xlsx</td><td>05-28 14:12</td><td><span style="color:var(--accent); font-weight:600;">대기</span></td></tr>
+                    <tr><td>실적_지사B_2025-05.xlsx</td><td>05-28 14:32</td><td><span style="color:var(--accent); font-weight:600;">대기</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="card">
+                <div class="card-title">
+                  <span>시작 복구 상태</span>
+                  <button type="button" class="btn-secondary btn-sm" id="btn-restart-recovery">시작 복구 다시 실행</button>
+                </div>
+                <div style="font-size: 12px; background: #F8F9FA; padding: 10px; border-radius: 4px; line-height: 1.5;">
+                  <div>마지막 실행: 2025-05-28 09:00 완료 · 복구 2건 · 건너뜀 0건 · <span style="color:#C0392B; font-weight:600;">이슈 1건</span></div>
+                  <div style="color:#A05200; margin-top: 4px;">— 원본 파일 소실 건 감지</div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div>
+        <div class="status-cell"><span>대기 파일 3개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- P5. 실적 관리 — ③ 재승인·비교 -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-p5">
+    <div class="status-label-bar">── P5. 실적 관리 — ③ 재승인·비교 (승인 담당) ──</div>
+    <div class="app-window">
+      <div class="app-body">
+        <aside class="sidebar">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item active"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge">128</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="app-logo" aria-hidden="true"><span class="material-symbols-outlined" style="color:#FFFFFF; font-size:18px;">calendar_month</span></div>
+              <span class="app-title">근무 관리 시스템</span>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">실적 관리</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">승인 담당</span>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></button>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">help</span><span>도움말</span></button>
+              <button type="button" class="user-info-btn"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content">
+            <!-- C4 박스 탭 헤더 줄 -->
+            <div class="tabs-header-bar">
+              <div class="tabs-group">
+                <button type="button" class="tab-btn">① 접수·복구</button>
+                <button type="button" class="tab-btn">② 승인 작업</button>
+                <button type="button" class="tab-btn active">③ 재승인·비교</button>
+              </div>
+              <div class="summary-chips-wrap">
+                <span class="chip chip-accent"><span class="material-symbols-outlined icon-18" aria-hidden="true">fact_check</span>대기 실적 128건</span>
+                <span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">refresh</span>재승인 필요 3건</span>
+                <span class="chip chip-warning"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span>확인 필요 2건</span>
+              </div>
+            </div>
+
+            <!-- A2 P5 필터줄 (56px) - §5.0 규격 (기간, 근무지, 상태, 검색) -->
+            <div class="filter-bar-56">
+              <div class="filter-group">
+                <label for="p5-filter-date" class="filter-label">기간</label>
+                <input type="text" id="p5-filter-date" class="filter-input" value="2025-05-01 ~ 2025-05-31" style="width: 200px;" readonly>
+              </div>
+              <div class="filter-group">
+                <label for="p5-filter-site" class="filter-label">근무지</label>
+                <select id="p5-filter-site" class="filter-select">
+                  <option value="all" selected>전체</option>
+                  <option value="head">본사</option>
+                  <option value="branch-a">지사 A</option>
+                  <option value="branch-b">지사 B</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="p5-filter-status" class="filter-label">상태</label>
+                <select id="p5-filter-status" class="filter-select">
+                  <option value="all" selected>전체</option>
+                  <option value="diff">변경 있음</option>
+                  <option value="warning">경고 있음</option>
+                </select>
+              </div>
+              <div class="filter-group" style="flex: 1; max-width: 320px;">
+                <label for="p5-filter-search" class="filter-label">검색</label>
+                <input type="text" id="p5-filter-search" class="filter-input" placeholder="사번, 이름, 근무일, 경고 내용" style="width: 100%;">
+              </div>
+            </div>
+
+            <!-- 요약 줄 & 동작 버튼 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#F8F9FA; padding:8px 14px; border-radius:6px; border:1px solid var(--line);">
+              <div style="font-size: 13px; font-weight: 600;">
+                재승인·비교 대상 — 전체 5건 · 변경 있음 4건 · 변경 없음 1건 · <span style="color:#A05200;">⚠ 경고 있음 1건</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-primary btn-sm">재승인본 확정</button>
+                <button type="button" class="btn-secondary btn-sm">원본 엑셀 열기 ↗</button>
+              </div>
+            </div>
+
+            <!-- 사원 줄 & 범례 -->
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+              <div><strong>사원 10034 이수빈</strong> · 조 A조 · 근무지 본사</div>
+              <div class="legend-wrap">
+                <span class="legend-badge" style="background:#E8F5EE; color:#1E7A46;">행 추가</span>
+                <span class="legend-badge" style="background:#FCEBE9; color:#C0392B;">행 삭제</span>
+                <span class="legend-badge" style="background:#FFFDF0; color:#8A6D00; border:1px solid #E6D080;">변경</span>
+                <span class="legend-badge" style="background:#F1F2F4; color:#4B5563;">변경 없음</span>
+              </div>
+            </div>
+
+            <!-- 비교 표 (§3.4 정본 데이터) -->
+            <div style="border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th colspan="9" style="background: #F4F5F7;">원본 (기존 승인행)</th>
+                    <th colspan="9" style="background: #EEF1FB; color: var(--accent);">재승인본 (수정행)</th>
+                    <th rowspan="2" style="width: 80px;">비교 결과</th>
+                  </tr>
+                  <tr>
+                    <th>근무일</th><th>구분</th><th>시간</th><th>총</th><th>기본</th><th>연장</th><th>야간</th><th>시급</th><th>수당</th>
+                    <th>근무일</th><th>구분</th><th>시간</th><th>총</th><th>기본</th><th>연장</th><th>야간</th><th>시급</th><th>수당</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 05-23: 변경 없음 -->
+                  <tr>
+                    <td>05-23 (금)</td><td>대체 주간</td><td>09:00-18:00</td><td>8.00</td><td>8.00</td><td>0.00</td><td>0.00</td><td>12,000</td><td>144,000원</td>
+                    <td>05-23 (금)</td><td>대체 주간</td><td>09:00-18:00</td><td>8.00</td><td>8.00</td><td>0.00</td><td>0.00</td><td>12,000</td><td>확정 후 계산됩니다</td>
+                    <td>변경 없음</td>
+                  </tr>
+                  <!-- 05-26: 시급 변경 -->
+                  <tr>
+                    <td>05-26 (월)</td><td>연장</td><td>18:00-21:00</td><td>3.00</td><td>0.00</td><td>3.00</td><td>0.00</td><td>12,000</td><td>54,000원</td>
+                    <td>05-26 (월)</td><td>연장</td><td>18:00-21:00</td><td>3.00</td><td>0.00</td><td>3.00</td><td>0.00</td><td class="cell-diff">12,500</td><td>확정 후 계산됩니다</td>
+                    <td class="cell-diff">시급 변경</td>
+                  </tr>
+                  <!-- 05-27: 시간 변경 -->
+                  <tr>
+                    <td>05-27 (화)</td><td>연장</td><td>18:00-22:00</td><td>4.00</td><td>0.00</td><td>4.00</td><td>0.00</td><td>12,000</td><td>72,000원</td>
+                    <td>05-27 (화)</td><td>연장</td><td class="cell-diff">18:00-23:30</td><td class="cell-diff">5.50</td><td>0.00</td><td class="cell-diff">4.00</td><td class="cell-diff">1.50</td><td>12,000</td><td>확정 후 계산됩니다</td>
+                    <td class="cell-diff">시간 변경<br><span style="font-size:10px; color:#A05200;">⚠ 야간 시간 초과</span></td>
+                  </tr>
+                  <!-- 05-29: 행 추가 -->
+                  <tr class="row-add">
+                    <td colspan="9" style="text-align:center; color:#848A93;">(없음)</td>
+                    <td>05-29 (목)</td><td>연장</td><td>18:00-21:00</td><td>3.00</td><td>0.00</td><td>3.00</td><td>0.00</td><td>12,000</td><td>확정 후 계산됩니다</td>
+                    <td style="color:#1E7A46; font-weight:600;">행 추가</td>
+                  </tr>
+                  <!-- 05-30: 행 삭제 -->
+                  <tr class="row-del">
+                    <td>05-30 (금)</td><td>연장</td><td>20:00-24:00</td><td>4.00</td><td>0.00</td><td>2.00</td><td>2.00</td><td>12,000</td><td>84,000원</td>
+                    <td colspan="9" style="text-align:center; color:#848A93;">(없음)</td>
+                    <td style="color:#C0392B; font-weight:600;">행 삭제</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 관련 이력 표 -->
+            <div class="card" style="padding: 12px;">
+              <div style="font-size: 13px; font-weight: 600; color: var(--text);">관련 승인·반려 이력</div>
+              <table class="simple-table">
+                <thead><tr><th>일시</th><th>구분</th><th>내용</th><th>처리자</th></tr></thead>
+                <tbody>
+                  <tr><td>2025-05-28 14:10</td><td><span style="color:#1E7A46; font-weight:600;">승인</span></td><td>실적_본사_2025-05.xlsx</td><td>김지현 (승인 담당)</td></tr>
+                  <tr><td>2025-05-25 09:31</td><td><span style="color:#C0392B; font-weight:600;">반려</span></td><td>실적_본사_2025-05.xlsx — 사유: 야간 종료 시각 확인 필요</td><td>김지현 (승인 담당)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div>
+        <div class="status-cell"><span>대기 파일 3개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ☰ 메뉴 접기/펼치기 (동작 9)
+      document.querySelectorAll('.state-wrapper').forEach(function(stateWrap) {
+        var toggleBtn = stateWrap.querySelector('.btn-sidebar-toggle');
+        var sidebar = stateWrap.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+              toggleBtn.setAttribute('aria-expanded', 'false');
+              sidebar.style.display = 'none';
+              sidebar.setAttribute('aria-hidden', 'true');
+            } else {
+              toggleBtn.setAttribute('aria-expanded', 'true');
+              sidebar.style.display = 'flex';
+              sidebar.setAttribute('aria-hidden', 'false');
+            }
+          });
+        }
+      });
+
+      // P4 고아 배너 닫기 및 포커스 이동
+      var banner = document.getElementById('orphan-banner');
+      var closeBtn = document.getElementById('btn-close-orphan');
+      var restartBtn = document.getElementById('btn-restart-recovery');
+      if (banner && closeBtn) {
+        function closeBanner() {
+          banner.style.display = 'none';
+          if (restartBtn) restartBtn.focus();
+        }
+        closeBtn.addEventListener('click', closeBanner);
+        banner.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') closeBanner();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

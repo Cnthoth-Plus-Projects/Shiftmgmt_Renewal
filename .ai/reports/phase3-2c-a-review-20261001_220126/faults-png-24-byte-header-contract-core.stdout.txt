@@ -1,0 +1,1 @@
+{"label":"access-history-contract-core","status":"PASS","exitCode":0,"tempCleaned":true,"manifestPath":"C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\owner-final.json"}

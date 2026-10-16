@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>근무 관리 시스템 — 시안 03-home-1.html</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F4F5F7;
+      --surface: #FFFFFF;
+      --line: #E2E5EA;
+      --line-strong: #848A93;
+      --text: #1F2430;
+      --text-sub: #4B5563;
+      --accent: #3E56B6;
+      --row-selected: #EEF1FB;
+      --badge-approved-text: #1E7A46;
+      --badge-approved-bg: #E8F5EE;
+      --badge-pending-text: #4B5563;
+      --badge-pending-bg: #F1F2F4;
+      --badge-rejected-text: #C0392B;
+      --badge-rejected-bg: #FCEBE9;
+      --badge-reapproved-text: #A05200;
+      --badge-reapproved-bg: #FDF3E4;
+      --badge-warning-text: #8A6D00;
+      --badge-warning-bg: #FCF6E0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: #E5E7EB;
+      color: var(--text);
+      line-height: 1.5;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      gap: 32px;
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .icon-18 { font-size: 18px; width: 18px; height: 18px; }
+    .icon-spin { animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* 포커스 링 */
+    *:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .state-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 1440px;
+      background: #FFFFFF;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .status-label-bar {
+      height: 36px;
+      background: #E2E5EA;
+      color: #4B5563;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      border-bottom: 1px solid #D1D5DB;
+    }
+    .app-window {
+      width: 1440px;
+      height: 900px;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      position: relative;
+    }
+    .app-body {
+      display: flex;
+      flex: 1;
+      height: calc(900px - 32px);
+      overflow: hidden;
+    }
+    
+    /* 좌측 메뉴 */
+    .sidebar {
+      width: 220px;
+      background: #FFFFFF;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .brand-area {
+      height: 56px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--line);
+      gap: 8px;
+    }
+    .nav-list {
+      list-style: none;
+      padding: 8px 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .nav-group-header {
+      padding: 12px 16px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+    .nav-item {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      color: var(--text);
+      text-decoration: none;
+      gap: 10px;
+      font-size: 14px;
+      position: relative;
+    }
+    .nav-item:hover { background: #F8F9FA; }
+    .nav-item.active {
+      background: #EEF1FB;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+    }
+    .nav-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      line-height: 1;
+    }
+
+    /* 본문 영역 */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 1220px;
+      overflow: hidden;
+    }
+    /* 상단바 재구성 (C3, 56px 불변) */
+    .header-bar { height: 56px; background: #FFFFFF; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; padding: 0 16px 0 12px; flex-shrink: 0; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .btn-sidebar-toggle{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--text)}
+    .btn-sidebar-toggle:hover { background: #F1F2F4; }
+    .app-logo { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; }
+    .app-title { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .header-divider { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+    .header-title{font-size:20px;font-weight:600;color:var(--text);white-space:nowrap}
+    .header-user-actions { display: flex; align-items: center; gap: 12px; }
+    .role-badge { background: #EEF1FB; color: var(--accent); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 12px; border: 1px solid #D5DCF5; }
+    .user-info-btn { display: flex; align-items: center; gap: 4px; color: var(--text-sub); font-size: 13px; text-decoration: none; background: none; border: none; cursor: pointer; }
+    
+    .page-content { width: 1220px; height: 812px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+
+    /* C1 컬러 아이콘 토큰 */
+    .icon-circle { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .icon-circle-blue { background: #EEF1FB; color: #3E56B6; }
+    .icon-circle-green { background: #E8F5EE; color: #1E7A46; }
+    .icon-circle-orange { background: #FDF3E4; color: #A05200; }
+    .icon-circle-yellow { background: #FCF6E0; color: #8A6D00; }
+    .icon-circle-red { background: #FCEBE9; color: #C0392B; }
+
+    /* C2 수치 강조 토큰 */
+    .stat-num-hero { font-size: 28px; font-weight: 700; color: var(--text); line-height: 1.1; }
+    .stat-unit { font-size: 14px; font-weight: 400; color: var(--text-sub); margin-left: 2px; }
+
+    /* 진행 막대 카드 영역 */
+    .progress-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .progress-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .progress-card-header { display: flex; align-items: center; gap: 8px; }
+    .progress-card-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .progress-num-row { display: flex; align-items: baseline; margin-top: 2px; }
+    .progress-track { height: 8px; background: #E9EBEF; border-radius: 4px; overflow: hidden; width: 100%; margin-top: 4px; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 4px; }
+    .progress-card-subtext { font-size: 12px; color: var(--text-sub); margin-top: 4px; line-height: 1.4; }
+
+    /* 현황 블록 */
+    .section-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 16px; font-weight: 600; color: var(--text); }
+    .btn-primary { background: var(--accent); color: #FFFFFF; border: 1px solid var(--accent); padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary:hover { background: #32479B; }
+    .btn-secondary { background: #FFFFFF; color: var(--text); border: 1px solid var(--line-strong); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-secondary:hover { background: #F8F9FA; }
+    .btn-sm { padding: 4px 8px; font-size: 12px; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .kpi-box { background: #F8F9FA; border: 1px solid var(--line); border-radius: 6px; padding: 14px; display: flex; align-items: center; gap: 12px; }
+    .kpi-text-wrap { display: flex; flex-direction: column; gap: 2px; }
+    .kpi-label { font-size: 12px; color: var(--text-sub); }
+    .kpi-val-wrap { display: flex; align-items: baseline; }
+
+    /* 경고 박스 */
+    .warnings-container { display: flex; flex-direction: column; gap: 6px; background: #FFFDF0; border: 1px solid #E6D080; border-radius: 6px; padding: 10px 14px; }
+    .warning-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #8A6D00; font-weight: 500; }
+
+    /* 할 일 목록 */
+    .todo-list { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .todo-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--line); background: #FFFFFF; }
+    .todo-item:last-child { border-bottom: none; }
+    .todo-item.disabled { background: #FAFAFA; opacity: 0.7; }
+    .todo-title { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .todo-actions { display: flex; align-items: center; gap: 8px; }
+
+    /* 하단 상태줄 */
+    .footer-statusbar { height: 32px; background: #FFFFFF; border-top: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; font-size: 12px; color: var(--text-sub); width: 1440px; box-sizing: border-box; flex-shrink: 0; }
+    .status-cell { display: flex; align-items: center; gap: 6px; padding: 0 12px; border-right: 1px solid var(--line); height: 100%; }
+    .status-cell:first-child { padding-left: 0; }
+    .status-cell:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+    .status-dot-green { width: 8px; height: 8px; background: #1E7A46; border-radius: 50%; display: inline-block; }
+    .text-error { color: #C0392B; font-weight: 600; }
+  
+/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */
+.user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px}
+.skip-link{position:absolute;left:8px;top:8px;z-index:1300;background:var(--accent);color:#FFF;padding:8px 12px;border-radius:6px;font-size:13px;text-decoration:none;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip-link:focus{width:auto;height:auto;overflow:visible;clip:auto;outline:2px solid #FFF}
+.sidebar.collapsed .nav-group-header{height:1px;margin:8px 12px;padding:0;background:var(--line);font-size:0;overflow:hidden}
+/* 0-18 소급(v1.9) B-7 64px 접힘 — 2차 00-shell-1과 같은 규칙, 메뉴 글자는 시각만 숨김(접근 가능한 이름 유지), 배지는 모서리 표시 */
+.sidebar{transition:width .15s ease}
+.sidebar.collapsed{width:64px}
+.sidebar.collapsed .nav-item{justify-content:center;padding:0;gap:0}
+.sidebar.collapsed .nav-item>span:not(.material-symbols-outlined):not(.nav-badge){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sidebar.collapsed .nav-badge{position:absolute;top:3px;right:3px;margin:0;padding:1px 5px}
+.sidebar.collapsed+.main-wrapper{width:1376px}
+.demo-toast{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#1F2430;color:#FFF;font-size:13px;padding:10px 16px;border-radius:6px;z-index:1200;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- H1. 홈 — 기본 (오류 없음) -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-h1">
+    <div class="status-label-bar">── H1. 홈 — 기본 (오류 없음) (사용자) ──</div>
+    <div class="app-window"><a class="skip-link" href="#main-content-h1">본문으로 바로가기</a>
+      <div class="app-body" id="main-state-h1">
+        <aside class="sidebar"><nav aria-label="주 메뉴">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item" aria-label="실적 관리, 승인 대기 실적 128건"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 128건">128</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </nav></aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">홈</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">사용자</span>
+              <span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span>
+              <button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content" id="main-content-h1" tabindex="-1">
+            <section class="progress-cards-grid" aria-label="월별 업무 진행 현황">
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">domain</span></div>
+                  <span class="progress-card-title">준비 (현재 배정 기준)</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">4/5</span><span class="stat-unit">근무지</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="준비 진행률 80%"><div class="progress-bar" style="width: 80%;"></div></div>
+                <p class="progress-card-subtext">이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.</p>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-green" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span></div>
+                  <span class="progress-card-title">운영</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">7/10</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="운영 진행률 70%"><div class="progress-bar" style="width: 70%;"></div></div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+                  <span class="progress-card-title">월 정산</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">0/3</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="월 정산 진행률 0%"><div class="progress-bar" style="width: 0%;"></div></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h1-kpi-heading">
+              <div class="section-header">
+                <h2 id="h1-kpi-heading" class="section-title">이번 달 대기 실적 현황</h2>
+                <button type="button" class="btn-primary btn-sm"><span>실적 관리에서 확인</span></button>
+              </div>
+              <div class="kpi-grid">
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">folder</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">대기 실적 그룹</span><div class="kpi-val-wrap"><span class="stat-num-hero">3</span><span class="stat-unit">개</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">승인 대기 실적</span><div class="kpi-val-wrap"><span class="stat-num-hero">128</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">refresh</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">재승인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">3</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-yellow" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">warning</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">확인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">2</span><span class="stat-unit">건</span></div></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h1-todo-heading">
+              <div class="section-header"><h2 id="h1-todo-heading" class="section-title">지금 해야 할 일</h2></div>
+              <div class="todo-list">
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #3E56B6;">fact_check</span><span>대기 실적 128건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #A05200;">calendar_month</span><span>5월 근무표 미배포 — 지사 C</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #4B5563;">payments</span><span>대기 수당 34건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: 마지막 처리 완료 14:32</span></div>
+        <div class="status-cell"><span>대기 파일 3개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- H2. 홈 — 문제 있음 -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-h2">
+    <div class="status-label-bar">── H2. 홈 — 문제 있음 (사용자) ──</div>
+    <div class="app-window"><a class="skip-link" href="#main-content-h2">본문으로 바로가기</a>
+      <div class="app-body" id="main-state-h2">
+        <aside class="sidebar"><nav aria-label="주 메뉴">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item" aria-label="실적 관리, 승인 대기 실적 140건"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 140건">140</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </nav></aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">홈</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">사용자</span>
+              <span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span>
+              <button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content" id="main-content-h2" tabindex="-1">
+            <section class="progress-cards-grid" aria-label="월별 업무 진행 현황">
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">domain</span></div>
+                  <span class="progress-card-title">준비 (현재 배정 기준)</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">4/5</span><span class="stat-unit">근무지</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="준비 진행률 80%"><div class="progress-bar" style="width: 80%;"></div></div>
+                <p class="progress-card-subtext">이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.</p>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-green" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span></div>
+                  <span class="progress-card-title">운영</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">7/10</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="운영 진행률 70%"><div class="progress-bar" style="width: 70%;"></div></div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+                  <span class="progress-card-title">월 정산</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">0/3</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="월 정산 진행률 0%"><div class="progress-bar" style="width: 0%;"></div></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h2-kpi-heading">
+              <div class="section-header">
+                <h2 id="h2-kpi-heading" class="section-title">이번 달 대기 실적 현황</h2>
+                <button type="button" class="btn-primary btn-sm"><span>실적 관리에서 확인</span></button>
+              </div>
+              <div class="kpi-grid">
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">folder</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">대기 실적 그룹</span><div class="kpi-val-wrap"><span class="stat-num-hero">4</span><span class="stat-unit">개</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">승인 대기 실적</span><div class="kpi-val-wrap"><span class="stat-num-hero">140</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">refresh</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">재승인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">3</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-yellow" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">warning</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">확인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">2</span><span class="stat-unit">건</span></div></div>
+                </div>
+              </div>
+              <div class="warnings-container">
+                <div class="warning-item"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>근무지 연결 불가 1개 (성수물류센터)</span></div>
+                <div class="warning-item"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>중복 이름으로 연결 불확정 1개 (지사 B)</span></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h2-todo-heading">
+              <div class="section-header"><h2 id="h2-todo-heading" class="section-title">지금 해야 할 일</h2></div>
+              <div class="todo-list">
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #3E56B6;">fact_check</span><span>대기 실적 140건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #A05200;">calendar_month</span><span>5월 근무표 미배포 — 지사 C</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #C0392B;">error</span><span>파일 해석 실패 1건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">원인 보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #1E7A46;">refresh</span><span>시작 시 자동 복구 실패 — 4월</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">다시 복구</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #4B5563;">payments</span><span>대기 수당 34건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #8A6D00;">warning</span><span>근무지 연결 불가 1개</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">실적 관리에서 확인</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #8A6D00;">warning</span><span>중복 이름으로 연결 불확정 1개</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">실적 관리에서 확인</button></div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: <span class="text-error">오류 1건</span></span></div>
+        <div class="status-cell"><span>대기 파일 5개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- H3. 홈 — 처리 중 (진행 중) -->
+  <!-- ========================================== -->
+  <div class="state-wrapper" id="state-h3">
+    <div class="status-label-bar">── H3. 홈 — 처리 중 (진행 중) (사용자) ──</div>
+    <div class="app-window"><a class="skip-link" href="#main-content-h3">본문으로 바로가기</a><div class="sr-only" role="status" aria-live="polite" id="live-h3"></div>
+      <div class="app-body" id="main-state-h3">
+        <aside class="sidebar"><nav aria-label="주 메뉴">
+          <ul class="nav-list" style="padding-top: 12px;">
+            <li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li>
+            <li class="nav-group-header">─ 준비 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li>
+            <li class="nav-group-header">─ 운영 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li>
+            <li><a href="#" class="nav-item" aria-label="실적 관리, 승인 대기 실적 140건"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge" title="승인 대기 실적 140건">140</span></a></li>
+            <li class="nav-group-header">─ 정산 ─</li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li>
+            <li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li>
+          </ul>
+        </nav></aside>
+
+        <div class="main-wrapper">
+          <header class="header-bar">
+            <div class="header-left">
+              <button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+              <div class="header-divider" aria-hidden="true"></div>
+              <h1 class="header-title">홈</h1>
+            </div>
+            <div class="header-user-actions">
+              <span class="role-badge">사용자</span>
+              <span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span>
+              <button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button>
+            </div>
+          </header>
+
+          <main class="page-content" id="main-content-h3" tabindex="-1">
+            <section class="progress-cards-grid" aria-label="월별 업무 진행 현황">
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">domain</span></div>
+                  <span class="progress-card-title">준비 (현재 배정 기준)</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">4/5</span><span class="stat-unit">근무지</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="준비 진행률 80%"><div class="progress-bar" style="width: 80%;"></div></div>
+                <p class="progress-card-subtext">이번 달 중간에 배정이 끝난 인원은 이 숫자에 들어가지 않습니다. 월 전체 배정 이력은 인력 관리에서 확인하세요.</p>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-green" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span></div>
+                  <span class="progress-card-title">운영</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">7/10</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" aria-label="운영 진행률 70%"><div class="progress-bar" style="width: 70%;"></div></div>
+              </div>
+              <div class="progress-card">
+                <div class="progress-card-header">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">payments</span></div>
+                  <span class="progress-card-title">월 정산</span>
+                </div>
+                <div class="progress-num-row"><span class="stat-num-hero">0/3</span><span class="stat-unit">단계</span></div>
+                <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="월 정산 진행률 0%"><div class="progress-bar" style="width: 0%;"></div></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h3-kpi-heading">
+              <div class="section-header">
+                <h2 id="h3-kpi-heading" class="section-title">이번 달 대기 실적 현황</h2>
+                <button type="button" class="btn-primary btn-sm"><span>실적 관리에서 확인</span></button>
+              </div>
+              <div class="kpi-grid">
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">folder</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">대기 실적 그룹</span><div class="kpi-val-wrap"><span class="stat-num-hero">4</span><span class="stat-unit">개</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-blue" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">승인 대기 실적</span><div class="kpi-val-wrap"><span class="stat-num-hero">140</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-orange" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">refresh</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">재승인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">3</span><span class="stat-unit">건</span></div></div>
+                </div>
+                <div class="kpi-box">
+                  <div class="icon-circle icon-circle-yellow" aria-hidden="true"><span class="material-symbols-outlined" aria-hidden="true">warning</span></div>
+                  <div class="kpi-text-wrap"><span class="kpi-label">확인 필요</span><div class="kpi-val-wrap"><span class="stat-num-hero">2</span><span class="stat-unit">건</span></div></div>
+                </div>
+              </div>
+              <div class="warnings-container">
+                <div class="warning-item"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>근무지 연결 불가 1개 (성수물류센터)</span></div>
+                <div class="warning-item"><span class="material-symbols-outlined icon-18" aria-hidden="true">warning</span><span>중복 이름으로 연결 불확정 1개 (지사 B)</span></div>
+              </div>
+            </section>
+
+            <section class="section-card" aria-labelledby="h3-todo-heading">
+              <div class="section-header"><h2 id="h3-todo-heading" class="section-title">지금 해야 할 일</h2></div>
+              <div class="todo-list">
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #3E56B6;">fact_check</span><span>대기 실적 140건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #A05200;">calendar_month</span><span>5월 근무표 미배포 — 지사 C</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #C0392B;">error</span><span>파일 해석 실패 1건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">원인 보기</button></div>
+                </div>
+                <div class="todo-item disabled" aria-busy="true">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-spin icon-18" aria-hidden="true" style="color: #3E56B6;">progress_activity</span><span>시작 시 자동 복구 실패 — 4월</span></span>
+                  <div class="todo-actions"><span style="font-size: 13px; color: var(--accent); font-weight: 500; display: inline-flex; align-items: center; gap: 4px;"><span class="material-symbols-outlined icon-spin icon-18" aria-hidden="true">progress_activity</span>처리 중…</span></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #4B5563;">payments</span><span>대기 수당 34건</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">보기</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #8A6D00;">warning</span><span>근무지 연결 불가 1개</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">실적 관리에서 확인</button></div>
+                </div>
+                <div class="todo-item">
+                  <span class="todo-title"><span class="material-symbols-outlined icon-18" aria-hidden="true" style="color: #8A6D00;">warning</span><span>중복 이름으로 연결 불확정 1개</span></span>
+                  <div class="todo-actions"><button type="button" class="btn-secondary btn-sm">실적 관리에서 확인</button></div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <footer class="footer-statusbar">
+        <div class="status-cell"><span class="status-dot-green" aria-hidden="true"></span><span>DB 연결됨</span></div>
+        <div class="status-cell"><span>최근 인테이크: <span class="text-error">오류 1건</span></span></div>
+        <div class="status-cell"><span>대기 파일 5개</span></div>
+        <div class="status-cell"><span>최신</span></div>
+        <div class="status-cell"><span>v2.3.1</span></div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ☰ 메뉴 접기/펼치기 (동작 9)
+      document.querySelectorAll('.state-wrapper').forEach(function(stateWrap) {
+        var toggleBtn = stateWrap.querySelector('.btn-sidebar-toggle');
+        var sidebar = stateWrap.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            toggleBtn.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+            sidebar.classList.toggle('collapsed', isExpanded); // v1.9 B-7: display:none → 64px 접힘
+            sidebar.querySelectorAll('.nav-item').forEach(function(a) {
+              var t = a.querySelector('span:not(.material-symbols-outlined):not(.nav-badge)');
+              if (isExpanded && t) a.setAttribute('title', t.textContent.trim()); else a.removeAttribute('title');
+            });
+          });
+        }
+      });
+    })();
+  </script>
+
+<script>
+/* 0-18 소급(v1.8) 동작 9 보강(B-7)·동작 13 로그아웃 데모 전이(B-4) — 데이터 연동·라우팅·auth:sign-out 호출 없음 */
+(function(){
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'); if (!w) return;
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      w.querySelectorAll('.nav-group-header').forEach(function(h){ if (expanded) h.removeAttribute('aria-hidden'); else h.setAttribute('aria-hidden', 'true'); });
+    });
+  });
+  var UNSAVED = {};
+  function showToast(appWin){
+    if (!appWin) return;
+    var t = document.createElement('div'); t.className = 'demo-toast'; t.setAttribute('role', 'status'); t.textContent = '로그인 화면으로 이동합니다';
+    appWin.appendChild(t); setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 1500);
+  }
+  function openLeave(modal, opener, appWin){
+    var body = appWin.querySelector('.app-body');
+    function close(){ modal.style.display = 'none'; if (body) body.removeAttribute('aria-hidden'); if (opener) opener.focus(); }
+    modal.style.display = 'flex'; if (body) body.setAttribute('aria-hidden', 'true');
+    var stay = modal.querySelector('.btn-leave-stay'), discard = modal.querySelector('.btn-leave-discard');
+    stay.onclick = close;
+    discard.onclick = function(){ close(); showToast(appWin); };
+    modal.onkeydown = function(e){
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key === 'Tab') { var f = [stay, discard]; if (e.shiftKey) { if (document.activeElement === f[0]) { f[1].focus(); e.preventDefault(); } } else { if (document.activeElement === f[1]) { f[0].focus(); e.preventDefault(); } } }
+    };
+    stay.focus();
+  }
+  document.querySelectorAll('.btn-logout').forEach(function(btn){
+    if (btn.disabled) return;
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'), appWin = btn.closest('.app-window'); if (!w || !appWin) return;
+      var m = w.querySelector('.modal-leave');
+      if (m && UNSAVED[w.id]) openLeave(m, btn, appWin); else showToast(appWin);
+    });
+  });
+  setTimeout(function(){ var r=document.getElementById('live-h3'); if(r) r.textContent='처리 중: 시작 복구 실행 중…'; }, 300);
+  
+})();
+</script>
+</body>
+</html>

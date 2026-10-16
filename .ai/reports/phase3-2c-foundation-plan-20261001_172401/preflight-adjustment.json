@@ -1,0 +1,23 @@
+{
+  "reason": "Read-only reviewer found SUT corrupted-PNG rejection under-specified; Sol explicitly requires owner PNG structure/dimensions/CRC, without product changes.",
+  "oldStrategy": {
+    "bytes": 25796,
+    "sha256": "3AE5E0077FC881484BF7A7FBA3B2A2F30414B562EAF8D3519F1A382D503C1EBD"
+  },
+  "newStrategy": {
+    "bytes": 26069,
+    "sha256": "0A6136FD23F989F7065993449F8A705CD4047FA358248218BB0719497B9F12D1"
+  },
+  "oldBaseline": {
+    "bytes": 61201,
+    "sha256": "AC12B8541F0818196DC9A39B689C7FD45A29F215E57B4414C8AC868581166AC2"
+  },
+  "newBaseline": {
+    "bytes": 61201,
+    "sha256": "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50"
+  },
+  "outgoing": {
+    "bytes": 29974,
+    "sha256": "588DBC12078DAE556F243F17F016227F311F4C44465E765DFAE1D091D2BD464E"
+  }
+}

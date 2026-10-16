@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-09-30T15:28:29.280863+09:00",
+  "agent": "/root/permission_inheritance_check",
+  "threadId": "01a0f0ff-159a-7cf2-a004-799180c8fe1c",
+  "stateDbSandboxType": "disabled",
+  "sandboxMode": "danger-full-access",
+  "approvalPolicy": "never",
+  "permissionProfile": ":danger-full-access",
+  "harmlessCommandExitCode": 0,
+  "approvalRequested": false,
+  "result": "New child matches current parent permissions; parent session restart is unnecessary. Existing child permissions have no setter in available collaboration tools; replace completed stale children rather than resuming them.",
+  "officialReference": "https://developers.openai.com/codex/multi-agent/"
+}

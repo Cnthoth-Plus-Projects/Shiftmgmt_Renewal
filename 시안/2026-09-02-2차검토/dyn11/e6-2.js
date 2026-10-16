@@ -1,0 +1,9 @@
+(()=>{function busy(ms){var t=Date.now();while(Date.now()-t<ms){}}function H(e){return e?Math.round(e.getBoundingClientRect().height):null}function vis(e){return !!e&&getComputedStyle(e).display!=='none'}
+var m=document.getElementById('modal-e6'),c=document.getElementById('modal-e6-confirm'),s=document.getElementById('btn-submit-e6'),p=document.getElementById('btn-e6-preview'),bn=document.getElementById('e6-stale-banner'),bk=document.getElementById('btn-back-e6-confirm'),ap=document.getElementById('btn-apply-e6-confirm'),lv=document.getElementById('live-e6');
+var areas=['e6-preview-cards','e6-preview-ready','e6-preview-skipped'].map(i=>document.getElementById(i));
+var r=[];r.push('미리보기 후 → 라벨='+p.textContent+' 배너='+vis(bn)+' aria-disabled='+s.getAttribute('aria-disabled')+' 투명도='+areas.map(e=>getComputedStyle(e).opacity).join(','));
+s.click();r.push('적용 클릭 → E6='+vis(m)+' 확인모달='+vis(c)+' 포커스='+document.activeElement.id+' 제목="'+c.querySelector('.modal-title').textContent+'" 본문="'+[...c.querySelectorAll('.modal-body > div')].map(e=>e.textContent.trim()).join(' / ')+'" 버튼='+[...c.querySelectorAll('.modal-footer button')].map(b=>b.textContent.trim()).join('/')+' app-body aria-hidden='+document.querySelector('#e6-app-window .app-body').getAttribute('aria-hidden'));
+bk.click();r.push('돌아가기 → E6='+vis(m)+' 확인모달='+vis(c)+' 포커스='+document.activeElement.id);
+s.click();c.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));r.push('확인모달 Esc → E6='+vis(m)+' 확인모달='+vis(c)+' 포커스='+document.activeElement.id);
+s.click();ap.click();r.push('적용 실행 직후 → 라벨='+ap.textContent+' disabled='+ap.disabled+' live="'+lv.textContent+'"');
+busy(1000);return r.join('\n');})()

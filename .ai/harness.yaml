@@ -1,0 +1,61 @@
+schema_version: "2.0"
+
+harness:
+  version: "5.1"
+  initialized_with: "3.0"
+  root: "C:/Users/pangyo/AppData/Local/AI-Harness"
+  core: "CORE.md"
+  router: "ROUTER.md"
+  policy_index: "POLICY_INDEX.yaml"
+  doctor: "HARNESS_DOCTOR.md"
+  policies_dir: "policies"
+  skills_dir: "skills"
+  policy_count: 26
+
+runtime:
+  preload_all_policies: false
+  use_jit_policy_loading: true
+  use_jit_skill_loading: true
+  fast_health_check: true
+  policy_load_trace: "record_only"
+  default_target_active_policies: "2-5"
+
+project:
+  harness_bridge: ".ai/HARNESS.md"
+  current_state: ".ai/current-state.md"
+  orchestration_rules: "AGENTS.md"
+  collaboration_protocol: "PROTOCOL.md"
+  implementer_rules: "GEMINI.md"
+  product_rules: "CLAUDE.md"
+  top_level_plan: "TODO.md"
+  external_handoff: "HANDOFF.md"
+
+orchestration:
+  authority: "sol_xhigh"
+  final_decision_owner: "sol_xhigh"
+  product_code_writer: "gemini"
+  manual_external_relay: true
+  retired_actors:
+    - "claude"
+    - "fable"
+  internal_agents:
+    economy: "luna"
+    balanced: "terra"
+  max_concurrent_internal_agents: 2
+  internal_agents_read_only: true
+  internal_agents_may_change_tracked_files: false
+  ephemeral_output_requires_named_external_path: true
+  ephemeral_output_requires_retention_rule: true
+  same_defect_correction_limit: 2
+
+handoff:
+  channel: "HANDOFF.md"
+  archive_dir: "Log"
+  archive_before_replace: true
+  archive_hash: "sha256"
+  archive_append_only: true
+  require_self_contained_packet: true
+  require_file_allowlist: true
+  require_code_strategy: true
+  require_negative_tests: true
+  require_reproducible_evidence: true

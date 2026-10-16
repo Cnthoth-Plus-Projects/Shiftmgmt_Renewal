@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\gate-evidence.py",
+    "--execution-sha",
+    "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C",
+    "--baseline-sha",
+    "150C04602C0FA592D5FE23BFF65BE1C8C9CD30ED86F50EA7D0AA0C5448B1975D",
+    "--scope"
+  ],
+  "rc": 0,
+  "stdout": "{\"status\": \"PASS\", \"result\": {\"files\": 341, \"protected\": 339, \"dirtyPaths\": 12, \"changedAllowed\": []}}\n",
+  "stderr": ""
+}

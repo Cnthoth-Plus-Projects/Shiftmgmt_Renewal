@@ -1,0 +1,117 @@
+[
+  {
+    "name": "cli-negative-1",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=sol-unknown-case"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:47.660324+00:00",
+    "pid": 50320,
+    "rc": 1,
+    "end": "2026-10-01T07:25:47.788265+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-1.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-1.stderr.txt"
+  },
+  {
+    "name": "cli-negative-2",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case="
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:47.800362+00:00",
+    "pid": 41844,
+    "rc": 1,
+    "end": "2026-10-01T07:25:47.930985+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-2.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-2.stderr.txt"
+  },
+  {
+    "name": "cli-negative-3",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=live-admin",
+      "--case=live-admin"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:47.940712+00:00",
+    "pid": 35580,
+    "rc": 1,
+    "end": "2026-10-01T07:25:48.058615+00:00",
+    "elapsedSeconds": 0.11,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-3.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-3.stderr.txt"
+  },
+  {
+    "name": "cli-negative-4",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=live-admin",
+      "--extra-flag"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:48.068250+00:00",
+    "pid": 39304,
+    "rc": 1,
+    "end": "2026-10-01T07:25:48.185894+00:00",
+    "elapsedSeconds": 0.11,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-4.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-4.stderr.txt"
+  },
+  {
+    "name": "cli-negative-5",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=live-admin",
+      "http://127.0.0.1:18741/"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:48.194946+00:00",
+    "pid": 43748,
+    "rc": 1,
+    "end": "2026-10-01T07:25:48.321604+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-5.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-5.stderr.txt"
+  },
+  {
+    "name": "cli-negative-6",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "http://localhost:18741/"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:48.338379+00:00",
+    "pid": 30244,
+    "rc": 1,
+    "end": "2026-10-01T07:25:48.456434+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-6.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-6.stderr.txt"
+  },
+  {
+    "name": "cli-negative-7",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "https://example.com"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:25:48.472784+00:00",
+    "pid": 51016,
+    "rc": 1,
+    "end": "2026-10-01T07:25:48.601737+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-7.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-review-20261001_160642\\cli-negative-7.stderr.txt"
+  }
+]

@@ -1,0 +1,120 @@
+--- received-v5/scripts/ui-checks/access-history-shared.mjs
++++ received-v6/scripts/ui-checks/access-history-shared.mjs
+@@ -12,8 +12,8 @@
+ 
+ export const CONTRACT_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json";
+ export const CONTRACT_SHA256 = "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE";
+-export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json";
+-export const EXECUTION_SHA256 = "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35";
++export const EXECUTION_PATH = "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\execution.json";
++export const EXECUTION_SHA256 = "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA";
+ 
+ function sha(d) {
+   return crypto.createHash("sha256").update(d).digest("hex").toUpperCase();
+@@ -428,23 +428,21 @@
+   }
+ }
+ 
+-export function publishWorkerPartial(context, nonceSha256, raw, checks, errors) {
++export function publishWorkerPartial(context, nonceSha256, raw, checks, errors, acquisition) {
+   const partialObj = {
+     status: "FAIL", case: "contract-core", runId: path.basename(context.runDir),
+     context, worker: { pid: process.pid, parentPid: process.ppid, nonceSha256 },
+-    raw, checks: checks || [], errors,
++    raw, checks: checks || [], errors, acquisition: acquisition || { fixtureRows: null, fixtureRequests: [], routeInstalled: false },
+   };
+   const writeAtomic = (t) => { fs.writeFileSync(t + ".tmp", JSON.stringify(partialObj, null, 2)); fs.renameSync(t + ".tmp", t); };
++  const pushEv = (e) => errors.evidence.push({ phase: "evidence", name: e.name || "Error", message: e.message || String(e), stack: e.stack || new Error(String(e)).stack, timeMs: Date.now() });
+   try { writeAtomic(path.join(context.runDir, "core-partial.json")); } catch (e1) {
+-    errors.evidence.push({ phase: "evidence", name: e1.name || "Error", message: e1.message || String(e1), stack: e1.stack || new Error(String(e1)).stack, timeMs: Date.now() });
+-    try { writeAtomic(path.join(context.runDir, "core-partial.fallback.json")); } catch (e2) {
+-      errors.evidence.push({ phase: "evidence", name: e2.name || "Error", message: e2.message || String(e2), stack: e2.stack || new Error(String(e2)).stack, timeMs: Date.now() });
+-    }
++    pushEv(e1);
++    try { writeAtomic(path.join(context.runDir, "core-partial.fallback.json")); } catch (e2) { pushEv(e2); }
+   }
+ }
+ 
+ export async function runContractCore(context, nonceSha256, contract) {
+-  const repo = fs.realpathSync(context.repository);
+   const raw = {
+     viewport: null, origin: null, loginInputs: null, fixtureLabels: null,
+     canonicalLabels: null, fixtureRequestCount: null,
+@@ -452,24 +450,24 @@
+     chrome: null, resources: [], captureId: null,
+   };
+   const errors = { primary: null, cleanup: [], evidence: [], unexpected: [] };
+-  const fixtureRequests = [];
+-  let browser = null, bCtx = null, fixtureRows = null;
++  const acquisition = { fixtureRows: null, fixtureRequests: [], routeInstalled: false };
++  let browser = null, bCtx = null;
+ 
+   try {
++    const repo = fs.realpathSync(context.repository);
+     const canonPath = path.resolve(repo, "dist/server/shared/domain/access-log.js");
+     if (!fs.existsSync(canonPath)) throw new Error("SOL_CORE_CANONICAL_MISSING");
+     const canonBytes = fs.readFileSync(canonPath);
++    raw.canonicalLabels = { path: canonPath, bytes: canonBytes.length, sha256: sha(canonBytes), labels: null };
+     const require = createRequire(import.meta.url);
+     const canonMod = require(canonPath);
+     const canonMap = canonMod.accessLogActionLabels ?? canonMod.default?.accessLogActionLabels;
+     if (!canonMap) throw new Error("SOL_CORE_CANONICAL_MISSING");
+-
+-    raw.canonicalLabels = { path: canonPath, bytes: canonBytes.length, sha256: sha(canonBytes), labels: canonMap };
+-
+-    fixtureRows = createMockAccessLogs(8);
+-    for (const row of fixtureRows) row.actionLabel = canonMap[row.actionType];
+-    raw.fixtureLabels = fixtureRows.map(r => ({ actionType: r.actionType, label: r.actionLabel }));
+-    raw.fixtureRequestCount = 0;
++    raw.canonicalLabels.labels = canonMap;
++
++    acquisition.fixtureRows = createMockAccessLogs(8);
++    for (const row of acquisition.fixtureRows) row.actionLabel = canonMap[row.actionType];
++    raw.fixtureLabels = acquisition.fixtureRows.map(r => ({ actionType: r.actionType, label: r.actionLabel }));
+ 
+     const chrome = findChrome();
+     if (!chrome?.path || !fs.existsSync(chrome.path)) throw new Error("Chrome path missing");
+@@ -485,9 +483,12 @@
+     const page = await bCtx.newPage();
+ 
+     await page.route("**/api/access-logs:list", (route, req) => {
+-      fixtureRequests.push({ url: req.url(), method: req.method() });
+-      route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: fixtureRows }) });
+-    });
++      acquisition.fixtureRequests.push({ url: req.url(), method: req.method() });
++      raw.fixtureRequestCount = acquisition.fixtureRequests.length;
++      route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: acquisition.fixtureRows }) });
++    });
++    acquisition.routeInstalled = true;
++    raw.fixtureRequestCount = 0;
+ 
+     page.on("console", m => { if (m.type() === "error") raw.rawErrors.console.push(m.text()); });
+     page.on("pageerror", e => raw.rawErrors.pageerror.push(e.message));
+@@ -508,7 +509,6 @@
+       throw new Error("SOL_CORE_VIEWPORT_NULL");
+     }
+     raw.viewport = [vp.width, vp.height];
+-    raw.fixtureRequestCount = fixtureRequests.length;
+ 
+     await page.screenshot({ path: path.join(context.runDir, "core-capture.png"), fullPage: false });
+     raw.captureId = "core-capture";
+@@ -530,8 +530,9 @@
+       nonceSha256, checks, status: "PASS",
+       measurement: {
+         viewportSource: "page.viewportSize", originSource: "page.url",
+-        fixtureRoute: "**/api/access-logs:list", fixtureRows, fixtureRequests,
++        fixtureRoute: "**/api/access-logs:list", fixtureRows: acquisition.fixtureRows, fixtureRequests: acquisition.fixtureRequests,
+       },
++      acquisition: { ...acquisition },
+     };
+     fs.writeFileSync(path.join(context.runDir, "worker-final.json"), JSON.stringify(workerFinal, null, 2));
+     return workerFinal;
+@@ -540,7 +541,7 @@
+       errors.primary = { code: "A1_WORKER_FAILED", phase: "execution", name: err?.name || "Error", message: err?.message || String(err), stack: err?.stack || new Error(String(err)).stack, timeMs: Date.now() };
+     }
+     const acquired = collectAcquiredCoreChecks(raw, contract);
+-    publishWorkerPartial(context, nonceSha256, raw, acquired, errors);
++    publishWorkerPartial(context, nonceSha256, raw, acquired, errors, acquisition);
+     const e = new Error(errors.primary.message);
+     e.stack = errors.primary.stack;
+     throw e;

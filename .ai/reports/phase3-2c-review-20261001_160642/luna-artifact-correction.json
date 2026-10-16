@@ -1,0 +1,109 @@
+{
+  "purpose": "Corrected retained-artifact inventory and read-only codebase-map reconstruction; no implementation/acceptance decision",
+  "correction": {
+    "priorMissingConclusionReliable": false,
+    "reason": "Earlier inventory restricted submission-window run folder glob to run-20261001-15*; it did not count owner/helper runs retained under ISO timestamp directory names. The two exact owner run directories below contain their own manifest, action assertions, and owner-final records.",
+    "verifiedOwnerRuns": [
+      {
+        "run": "artifacts/captures/phase3/access-history-errors/run-2026-10-01T06-51-24-715Z",
+        "exists": true,
+        "files": {
+          "manifest.json": {
+            "exists": true,
+            "bytes": 443,
+            "sha256": "948258BFC46C7BB3C0308D0B43A7CD9B8D70DC7D27931033414388068F5CEEE9",
+            "status": "PASS"
+          },
+          "action-assertions.json": {
+            "exists": true,
+            "bytes": 521,
+            "sha256": "0183BA124540A1C40D1291EE31B470CBAC459F9F5B5C2F8AB1DDCE798BDF6CD3",
+            "status": null,
+            "assertionCount": 4,
+            "allPass": true
+          },
+          "owner-final.json": {
+            "exists": true,
+            "bytes": 169,
+            "sha256": "1009D550EB7A979FAA2190D5C7DB8BBD6861746047DA83D9F8AC5B159281900C",
+            "status": "PASS",
+            "exitCode": 0,
+            "tempCleaned": true,
+            "childExitCode": 0
+          }
+        }
+      },
+      {
+        "run": "artifacts/captures/phase3/access-history-session-expired/run-2026-10-01T06-51-37-502Z",
+        "exists": true,
+        "files": {
+          "manifest.json": {
+            "exists": true,
+            "bytes": 770,
+            "sha256": "9E3A9A369E90E4F7295C609B78FEA9742B33B260F27337381FA8506F218359EE",
+            "status": "PASS"
+          },
+          "action-assertions.json": {
+            "exists": true,
+            "bytes": 630,
+            "sha256": "254BCB8E37235D632674589BE2E43FE7F40FE988B85F9DA8C72FDA359B3062BB",
+            "status": null,
+            "assertionCount": 5,
+            "allPass": true
+          },
+          "owner-final.json": {
+            "exists": true,
+            "bytes": 178,
+            "sha256": "63E6B48DAA67C962A08B69CE51586597EF9BC60BD77DAE1039EE29E43FD45C79",
+            "status": "PASS",
+            "exitCode": 0,
+            "tempCleaned": true,
+            "childExitCode": 0
+          }
+        }
+      }
+    ],
+    "sameDateOwnerFinalPathCount": 23,
+    "sameDateOwnerFinalPaths": [
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-50-12-903Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-55-11-513Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-55-26-797Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-55-40-406Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-55-59-691Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-56-17-553Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-56-34-664Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-56-58-292Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-58-09-758Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-58-26-134Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-58-54-856Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-59-13-114Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-empty-fixture/run-2026-10-01T06-59-42-912Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-errors/run-2026-10-01T06-51-24-715Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-filters/run-2026-10-01T06-50-23-056Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-list-fixture/run-2026-10-01T06-50-02-108Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-list-fixture/run-2026-10-01T06-54-29-378Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-live-admin/run-2026-10-01T06-49-50-108Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-regression-home/run-2026-10-01T06-51-50-110Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-regression-shell/run-2026-10-01T06-52-05-215Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-role-guard/run-2026-10-01T06-51-02-988Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-session-expired/run-2026-10-01T06-51-37-502Z/owner-final.json",
+      "artifacts/captures/phase3/access-history-stale-response/run-2026-10-01T06-50-33-836Z/owner-final.json"
+    ]
+  },
+  "codebaseMapReconstruction": {
+    "currentBytes": 12802,
+    "currentSha256": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794",
+    "removedLines": [
+      "| `scripts/ui-checks/access-history-shared.mjs` | 활동 이력 검증 공통 모듈: 엄격 비교기, 고정 커버리지 계약, 도메인 정본 픽스처 및 Held 생명주기 관리 |",
+      "| `scripts/ui-checks/access-history-positive.mjs` | 실제 Chrome 및 runScreenCheck 기반 활동 이력 정상 6개 케이스(목록·빈상태·필터·경합·권한가드 등) 실행 스크립트 |",
+      "| `scripts/ui-checks/access-history-negative.mjs` | 실제 Chrome 기반 활동 이력 예상 오류 2개 케이스(조회 실패·세션 만료) 정밀 드라이버 스크립트 |"
+    ],
+    "literal90Lines": [],
+    "afterOnlyThreeLinesSha256": "6CE07350177776DB638BCEBDA0F7211C4EA50C497B1E9C5B012B961B5AD865E9",
+    "afterThreeLinesAndGlobalLiteral90to87Sha256": "6CE07350177776DB638BCEBDA0F7211C4EA50C497B1E9C5B012B961B5AD865E9",
+    "targetBaselineSha256": "6CE07350177776DB638BCEBDA0F7211C4EA50C497B1E9C5B012B961B5AD865E9",
+    "onlyThreeLinesRestoresBaseline": true,
+    "threeLinesPlus90to87RestoresBaseline": true,
+    "conclusion": "Removing exactly the three access-history helper rows restores the baseline SHA-256. No literal ASCII 90 counter exists in the map, so no count substitution was needed or performed."
+  }
+}

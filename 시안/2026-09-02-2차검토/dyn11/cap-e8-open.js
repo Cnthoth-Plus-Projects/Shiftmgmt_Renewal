@@ -1,0 +1,1 @@
+(()=>{document.getElementById('btn-open-e8').click();return 'ok';})()

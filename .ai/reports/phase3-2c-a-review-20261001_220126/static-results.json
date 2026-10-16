@@ -1,0 +1,169 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "npm.cmd",
+      "run",
+      "typecheck"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:22.584233+00:00",
+    "pid": 27820,
+    "rc": 0,
+    "end": "2026-10-01T13:06:31.056298+00:00",
+    "elapsedSeconds": 8.469,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\typecheck.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\typecheck.stderr.txt"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "npm.cmd",
+      "run",
+      "lint"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:31.057804+00:00",
+    "pid": 44748,
+    "rc": 0,
+    "end": "2026-10-01T13:06:52.242781+00:00",
+    "elapsedSeconds": 21.187,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\lint.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\lint.stderr.txt"
+  },
+  {
+    "name": "map",
+    "command": [
+      "npm.cmd",
+      "run",
+      "validate:map"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:52.243783+00:00",
+    "pid": 51272,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.081134+00:00",
+    "elapsedSeconds": 0.844,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\map.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\map.stderr.txt"
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+      "diff",
+      "--check"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.081134+00:00",
+    "pid": 47852,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.275958+00:00",
+    "elapsedSeconds": 0.187,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\diff-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\diff-check.stderr.txt"
+  },
+  {
+    "name": "syntax-access-history",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/access-history.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.276984+00:00",
+    "pid": 43816,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.397100+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history.stderr.txt"
+  },
+  {
+    "name": "syntax-access-history-shared",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/access-history-shared.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.398110+00:00",
+    "pid": 46096,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.516666+00:00",
+    "elapsedSeconds": 0.11,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-shared.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-shared.stderr.txt"
+  },
+  {
+    "name": "syntax-access-history-positive",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/access-history-positive.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.517803+00:00",
+    "pid": 52900,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.639331+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-positive.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-positive.stderr.txt"
+  },
+  {
+    "name": "syntax-access-history-negative",
+    "command": [
+      "node",
+      "--check",
+      "scripts/ui-checks/access-history-negative.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.640439+00:00",
+    "pid": 42120,
+    "rc": 0,
+    "end": "2026-10-01T13:06:53.756612+00:00",
+    "elapsedSeconds": 0.125,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-negative.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\syntax-access-history-negative.stderr.txt"
+  },
+  {
+    "name": "build",
+    "command": [
+      "npm.cmd",
+      "run",
+      "build"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:53.757651+00:00",
+    "pid": 18204,
+    "rc": 0,
+    "end": "2026-10-01T13:07:03.527050+00:00",
+    "elapsedSeconds": 9.765,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\build.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\build.stderr.txt"
+  },
+  {
+    "name": "focused-tests",
+    "command": [
+      "npx.cmd",
+      "vitest",
+      "run",
+      "src/web/screens/access-history-model.test.ts",
+      "src/main/services/access-log-service.test.ts",
+      "src/main/http/route-registry.test.ts",
+      "--maxWorkers=1",
+      "--minWorkers=1"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:07:03.528050+00:00",
+    "pid": 47492,
+    "rc": 0,
+    "end": "2026-10-01T13:07:11.453955+00:00",
+    "elapsedSeconds": 7.922,
+    "stdout": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\focused-tests.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\focused-tests.stderr.txt"
+  }
+]

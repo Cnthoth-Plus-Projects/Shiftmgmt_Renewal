@@ -1,0 +1,16 @@
+{
+  "name": "case-session-expired",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=session-expired"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:13:40.214599+00:00",
+  "pid": 36328,
+  "rc": 0,
+  "end": "2026-10-01T07:13:44.432967+00:00",
+  "elapsedSeconds": 4.219,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-session-expired.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-session-expired.stderr.txt"
+}

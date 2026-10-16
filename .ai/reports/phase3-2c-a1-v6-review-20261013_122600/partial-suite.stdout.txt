@@ -1,0 +1,12 @@
+{"mode":"capture-failure","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"context-close-failure","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"partial-write-failure","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"measured-viewport","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"measured-origin","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"viewport-null","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"canonical-missing","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"repository-realpath-failure","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"request-then-viewport-null","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"canonical-import-failure","accepted":true,"baselineGap":false,"rc":1}
+{"mode":"route-install-failure","accepted":true,"baselineGap":false,"rc":1}
+{"status":"PASS","artifact":"C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-CbYeJe","modes":11}

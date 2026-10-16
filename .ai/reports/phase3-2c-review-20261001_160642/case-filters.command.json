@@ -1,0 +1,16 @@
+{
+  "name": "case-filters",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=filters"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:13:18.132685+00:00",
+  "pid": 47492,
+  "rc": 0,
+  "end": "2026-10-01T07:13:23.060309+00:00",
+  "elapsedSeconds": 4.922,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-filters.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\case-filters.stderr.txt"
+}

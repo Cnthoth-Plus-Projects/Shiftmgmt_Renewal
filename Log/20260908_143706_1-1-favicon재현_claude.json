@@ -1,0 +1,40 @@
+{
+  "headless/a": {
+    "chrome": "152.0.7977.82",
+    "serverRequests": [
+      "/a",
+      "/favicon.ico"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "responses400": []
+  },
+  "headless/b": {
+    "chrome": "152.0.7977.82",
+    "serverRequests": [
+      "/b"
+    ],
+    "consoleErrors": [],
+    "responses400": []
+  },
+  "headed/a": {
+    "chrome": "152.0.7977.82",
+    "serverRequests": [
+      "/a",
+      "/favicon.ico"
+    ],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "responses400": []
+  },
+  "headed/b": {
+    "chrome": "152.0.7977.82",
+    "serverRequests": [
+      "/b"
+    ],
+    "consoleErrors": [],
+    "responses400": []
+  }
+}

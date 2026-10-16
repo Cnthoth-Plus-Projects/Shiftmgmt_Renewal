@@ -1,0 +1,367 @@
+{
+  "time": "2026-09-30 21:42:22 KST",
+  "verdict": "CORRECT_1",
+  "received": {
+    "time": "2026-09-30T20:58:15.767843+09:00",
+    "receivedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_205815_3-2b-Gemini_수신원본.md",
+    "sha256": "FAEC6383D877C4599CABC4C97A9D182BD3922E4929B6F9AA301245429C6AA72F",
+    "bytes": 39483,
+    "reviewDirectory": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815"
+  },
+  "transitionArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_214222_3-2b-Gemini_CORRECT전환보존.md",
+  "closeout": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_214222_3-2b-Sol-CORRECT1_독립검증종결본.md",
+  "closeoutMetadata": {
+    "bytes": 6298,
+    "sha256": "285D9911F9EA99934DFC50911CF83584E11CEE0F466A3102494D3C82C14C13C7"
+  },
+  "productHEAD": "160940f9aaeb6696538447f83b44658073e382f0",
+  "productStatus": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "sourceChangesBySol": 0,
+  "product338Unchanged": true,
+  "protected320BeforeTransitionUnchanged": true,
+  "canonical13BeforeTransitionUnchanged": true,
+  "static": [
+    {
+      "name": "typecheck",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run typecheck"
+      ],
+      "start": "2026-09-30T21:01:55.558359",
+      "end": "2026-09-30T21:02:02.970449",
+      "exitCode": 0
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "scripts/ui-checks/access-history.mjs"
+      ],
+      "start": "2026-09-30T21:02:02.971448",
+      "end": "2026-09-30T21:02:03.097726",
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run lint"
+      ],
+      "start": "2026-09-30T21:02:03.097726",
+      "end": "2026-09-30T21:02:08.888252",
+      "exitCode": 0
+    },
+    {
+      "name": "map",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run validate:map"
+      ],
+      "start": "2026-09-30T21:02:08.888252",
+      "end": "2026-09-30T21:02:09.723640",
+      "exitCode": 0
+    },
+    {
+      "name": "focused-tests",
+      "command": [
+        "cmd",
+        "/c",
+        "npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1"
+      ],
+      "start": "2026-09-30T21:02:09.723640",
+      "end": "2026-09-30T21:02:14.395538",
+      "exitCode": 0
+    },
+    {
+      "name": "diffcheck",
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-09-30T21:02:14.395538",
+      "end": "2026-09-30T21:02:14.598277",
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run build"
+      ],
+      "start": "2026-09-30T21:02:14.598277",
+      "end": "2026-09-30T21:02:23.505119",
+      "exitCode": 0
+    }
+  ],
+  "independentFocusedTests": {
+    "files": 3,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullTests": {
+    "status": "GEMINI_SELF_REPORTED_NOT_INDEPENDENTLY_RERUN",
+    "reportedFiles": 133,
+    "reportedTests": 919
+  },
+  "chromeProbes": {
+    "chromeVersion": "154.0.8037.58",
+    "browserVersion": "154.0.8037.58",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "groups": [
+      {
+        "name": "badge-design-and-long-row",
+        "status": "FAIL",
+        "actual": {
+          "hideBadge": {
+            "class": "access-history-badge badge-approved",
+            "bg": "rgb(232, 245, 238)",
+            "color": "rgb(30, 122, 70)"
+          },
+          "normalRow": {
+            "height": 59,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "longRow": {
+            "height": 541.5,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "dateInput": {
+            "height": 34,
+            "width": 130,
+            "fontSize": "14px"
+          },
+          "headers": [
+            {
+              "text": "활동시간",
+              "height": 40,
+              "width": 130,
+              "fontSize": "12px"
+            },
+            {
+              "text": "사용자",
+              "height": 40,
+              "width": 161.5625,
+              "fontSize": "12px"
+            },
+            {
+              "text": "권한",
+              "height": 40,
+              "width": 100,
+              "fontSize": "12px"
+            },
+            {
+              "text": "액션내용",
+              "height": 40,
+              "width": 160,
+              "fontSize": "12px"
+            },
+            {
+              "text": "상세",
+              "height": 40,
+              "width": 618.4375,
+              "fontSize": "12px"
+            }
+          ],
+          "tableAccessibleLabel": null,
+          "tableLabelledby": null,
+          "caption": null,
+          "detailFullTextLength": 1216,
+          "detailTitleLength": 1216
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\design-long-row.png"
+      },
+      {
+        "name": "invalid-date-during-loading",
+        "status": "FAIL",
+        "actual": {
+          "loadingBeforeRelease": 1,
+          "loadingAfterRelease": 1,
+          "count": "-",
+          "dateError": "조회 시작일이 조회 종료일보다 늦을 수 없습니다.",
+          "refreshNativeDisabled": false
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\invalid-date-loading-left.png"
+      },
+      {
+        "name": "stale-success-during-debounce",
+        "status": "FAIL",
+        "actual": {
+          "staleVisibleWithinDebounce": true,
+          "observedAfterMs": 4,
+          "count": "전체 1건 중 1건 표시",
+          "keyword": "new-keyword"
+        }
+      },
+      {
+        "name": "stale-auth-during-debounce",
+        "status": "FAIL",
+        "actual": {
+          "loginDisplayed": true,
+          "activityDisplayed": false
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\stale-auth-incorrect-login.png"
+      },
+      {
+        "name": "refresh-does-not-cancel-debounce",
+        "status": "FAIL",
+        "actual": {
+          "matchingRequests": 2,
+          "requests": [
+            {
+              "query": {
+                "dateFrom": "2026-09-01",
+                "dateTo": "2026-09-30",
+                "keyword": "one-refresh"
+              },
+              "time": 1790771070449
+            },
+            {
+              "query": {
+                "dateFrom": "2026-09-01",
+                "dateTo": "2026-09-30",
+                "keyword": "one-refresh"
+              },
+              "time": 1790771070641
+            }
+          ]
+        }
+      },
+      {
+        "name": "users-retry-pending-duplicate",
+        "status": "FAIL",
+        "actual": {
+          "userCalls": 2,
+          "logCalls": 2,
+          "refreshNativeDisabled": true,
+          "retryNativeDisabled": false
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-review-20260930_205815\\users-retry-duplicate.png"
+      },
+      {
+        "name": "keyboard-invalid-lock",
+        "status": "PASS",
+        "actual": {
+          "focused": true,
+          "disabled": false,
+          "ariaDisabled": "true",
+          "outline": "2px",
+          "requests": 0
+        }
+      },
+      {
+        "name": "role-guard-three-real-sessions",
+        "status": "PASS",
+        "actual": [
+          {
+            "role": "operator",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "planner",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "reviewer",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          }
+        ]
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "responses": [],
+    "finished": "2026-09-30T12:24:36.130Z"
+  },
+  "providedUnknownCase": {
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=sol-unknown-case"
+    ],
+    "exitCode": 0,
+    "expected": "nonzero before creating resources",
+    "claimedCaseDoesNotExist": true
+  },
+  "browserClosed": true,
+  "mcpBrowserClosed": true,
+  "ownedServerCleanup": {
+    "time": "2026-09-30T12:25:58.024Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  },
+  "firstPassCleanup": {
+    "time": "2026-09-30T12:13:50.297Z",
+    "tempDataCleaned": true,
+    "serverStopped": true
+  },
+  "firstPassPreconditionErrorsExcluded": [
+    "equal_dates_not_invalid",
+    "missing_role_bootstrap"
+  ],
+  "correctionBaseline": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-20260930_214222\\baseline.json",
+  "correctionBaselineMetadata": {
+    "bytes": 142479,
+    "sha256": "AC2A972F7022D03B6C9A2AC091B9326ADD99F65E545260D6851D0FB09497A6A7"
+  },
+  "correctionAllowed": [
+    "src/web/screens/access-history.ts",
+    "src/web/screens/access-history-model.ts",
+    "src/web/screens/access-history-model.test.ts",
+    "src/web/access-history.css",
+    "scripts/ui-checks/access-history.mjs"
+  ],
+  "correctionProtected": 333,
+  "correctionCanonical": 14,
+  "outgoing": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20260930_214222_3-2b-Sol-CORRECT1_발송본.md",
+  "handoffMetadata": {
+    "bytes": 32073,
+    "sha256": "A25B27EB86567B0647E172857D5D97D432365E9AD6D0D13A03A59D691C9CC18E"
+  },
+  "handoffArchiveIdentical": true,
+  "todoChangedOnlyAfterCloseout": true,
+  "accepted": false,
+  "commitPushDeployment": false
+}

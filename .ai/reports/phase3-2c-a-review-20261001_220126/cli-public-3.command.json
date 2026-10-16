@@ -1,0 +1,16 @@
+{
+  "name": "cli-public-3",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=sol-unknown"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:18:51.887119+00:00",
+  "pid": 37860,
+  "rc": 1,
+  "end": "2026-10-01T13:18:52.305920+00:00",
+  "elapsedSeconds": 0.422,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-3.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\cli-public-3.stderr.txt"
+}

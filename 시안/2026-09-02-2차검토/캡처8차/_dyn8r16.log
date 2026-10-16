@@ -1,0 +1,10 @@
+=============== R16 status div 7곳 — 정적 + 모달 열고 처리 중 실행 후 ===============
+정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 단계 실패: btn-s5-restart 없음
+state-t4 #live-t4 정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 실행 후: 모달열림=true app-body aria-hidden=true live aria-hidden조상=없음 text="처리 중: 삭제 중..."
+state-e6 #live-e6 정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 실행 후: 모달열림=true app-body aria-hidden=true live aria-hidden조상=없음 text="처리 중: 업데이트 중..."
+state-r4 #live-r4 정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 실행 후: 모달열림=true app-body aria-hidden=true live aria-hidden조상=없음 text="처리 중: 게시 중..."
+state-a3-a5 #live-a5 정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 실행 후: 모달열림=true app-body aria-hidden=true live aria-hidden조상=없음 text="처리 중: 승인 중..."
+state-o9-o10 #live-o10 정적: 부모=app-window 다음형제=app-body aria-hidden조상=없음 role=status live=polite text="" | 실행 후: 모달열림=true app-body aria-hidden=true live aria-hidden조상=없음 text="처리 중: 복원 중..."
+=============== R18 S3 펼침 → 재접힘 title ===============
+S3 초기=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 | 펼침=∅/∅/∅/∅/∅/∅/∅ | 재접힘=홈/근무지 관리/인력 관리/근무표 배포/실적 관리/수당 관리/대시보드 | 재접힘 title 수=7/7 collapsed=true
+DONE

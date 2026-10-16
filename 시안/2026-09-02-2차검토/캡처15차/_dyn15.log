@@ -1,0 +1,147 @@
+################ OLD = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차검토/스냅샷14차
+C1 잠금 직후: 라벨=처리 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-c1 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c2 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c2
+   재열기: 모달=true 실행 라벨=처리 중... disabled=true aria-disabled=null ★D12
+C2 잠금 직후: 라벨=처리 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-c2 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c3 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c3
+   재열기: 모달=true 실행 라벨=처리 중... disabled=true aria-disabled=null ★D12
+C3 잠금 직후: 라벨=처리 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-c3 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c4 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c4
+   재열기: 모달=true 실행 라벨=처리 중... disabled=true aria-disabled=null ★D12
+C4 잠금 직후: 라벨=처리 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-c4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=처리 중... disabled=true aria-disabled=null ★D12
+  콘솔: (no console errors) 
+T4 잠금 직후: 라벨=삭제 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-t4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=삭제 중... disabled=true aria-disabled=null ★D12
+  콘솔: (no console errors) 
+R4 잠금 직후: 라벨=게시 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=A.nav-item 모달안=false ★이탈
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=게시 중... disabled=true aria-disabled=null ★D12
+  콘솔: (no console errors) 
+A4 잠금 직후: 라벨=지정 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-a4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=지정 중... disabled=true aria-disabled=null ★D12
+A5 잠금 직후: 라벨=승인 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=A.nav-item 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-a4 모달안=false
+   완료 후: 모달=false 포커스=btn-open-a4
+   재열기: 모달=true 실행 라벨=승인 중... disabled=true aria-disabled=null ★D12
+  콘솔: (no console errors) 
+O10 잠금 직후: 라벨=복원 중... activeElement=BODY. 모달안=false | 합성 Tab keydown 차단(defaultPrevented)=false
+   Tab 1회 후: activeElement=btn-open-o9 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=복원 중... disabled=true aria-disabled=null ★D12
+  콘솔: (no console errors) 
+E3 잠금 직후: 라벨=처리 중... activeElement=modal-e3 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-e3 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-e3-goto-perf 모달안=false
+   완료 후: 모달=false 포커스=btn-e3-goto-perf
+   재열기: 모달=true 실행 라벨=등록 disabled=false aria-disabled=true
+E4 잠금 직후: 라벨=처리 중... activeElement=modal-e4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-e4 모달안=false ★이탈
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=배정 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+E6 잠금 직후: 라벨=업데이트 중... activeElement=modal-e6-confirm 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-e6 모달안=false ★이탈
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=적용 disabled=false aria-disabled=null
+E8 잠금 직후: 라벨=등록 중... activeElement=modal-e8 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-e8 모달안=true
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=등록 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+################ CUR = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차HTML
+C1 잠금 직후: 라벨=처리 중... activeElement=modal-c1 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-c1 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c2 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c2
+   재열기: 모달=true 실행 라벨=확인 disabled=false aria-disabled=null
+C2 잠금 직후: 라벨=처리 중... activeElement=modal-c2 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-c2 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c3 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c3
+   재열기: 모달=true 실행 라벨=배포 disabled=false aria-disabled=null
+C3 잠금 직후: 라벨=처리 중... activeElement=modal-c3 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-c3 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-open-c4 모달안=false
+   완료 후: 모달=false 포커스=btn-open-c4
+   재열기: 모달=true 실행 라벨=삭제 disabled=false aria-disabled=null
+C4 잠금 직후: 라벨=처리 중... activeElement=modal-c4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-c4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=반려 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+T4 잠금 직후: 라벨=삭제 중... activeElement=modal-t4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-t4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=삭제 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+R4 잠금 직후: 라벨=게시 중... activeElement=modal-r4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-r4 모달안=true
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=배포 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+A4 잠금 직후: 라벨=지정 중... activeElement=modal-a4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-a4 모달안=false ★이탈
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=지정 disabled=false aria-disabled=null
+A5 잠금 직후: 라벨=승인 중... activeElement=modal-a5 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-a5 모달안=true
+   Tab 2회 후: activeElement=btn-open-a4 모달안=false
+   완료 후: 모달=false 포커스=btn-open-a4
+   재열기: 모달=true 실행 라벨=승인 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+O10 잠금 직후: 라벨=복원 중... activeElement=modal-o10 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-o10 모달안=true
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=교체 실행 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+E3 잠금 직후: 라벨=처리 중... activeElement=modal-e3 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-e3 모달안=false ★이탈
+   Tab 2회 후: activeElement=btn-e3-goto-perf 모달안=false
+   완료 후: 모달=false 포커스=btn-e3-goto-perf
+   재열기: 모달=true 실행 라벨=등록 disabled=false aria-disabled=true
+E4 잠금 직후: 라벨=처리 중... activeElement=modal-e4 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=btn-open-e4 모달안=false ★이탈
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=배정 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+E6 잠금 직후: 라벨=업데이트 중... activeElement=modal-e6-confirm 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-e6-confirm 모달안=true
+   Tab 2회 후: activeElement=A.nav-item 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=적용 disabled=false aria-disabled=null
+E8 잠금 직후: 라벨=등록 중... activeElement=modal-e8 모달안=true | 합성 Tab keydown 차단(defaultPrevented)=true
+   Tab 1회 후: activeElement=modal-e8 모달안=true
+   Tab 2회 후: activeElement=BODY. 모달안=false
+   완료 후: 모달=false 포커스=
+   재열기: 모달=true 실행 라벨=등록 disabled=false aria-disabled=null
+  콘솔: (no console errors) 
+DONE

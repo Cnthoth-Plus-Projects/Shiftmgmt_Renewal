@@ -1,0 +1,2486 @@
+{
+  "note": "Fresh cache-busted browser navigations; source files unchanged. Times are UTC, KST=UTC+9.",
+  "leaves": {
+    "testedAt": "2026-09-07T03:46:23.528Z",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "results": [
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-1.html",
+        "state": "w1",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-1.html",
+        "state": "w2",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-2.html",
+        "state": "w3",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-2.html",
+        "state": "w4",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-3.html",
+        "state": "w5",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-3.html",
+        "state": "w6",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-08-31-1차HTML/05-sites-wizard-4.html",
+        "state": "w10",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "처리 중: 근무지 저장 중…",
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-09-02-2차HTML/11-operations-1.html",
+        "state": "o1",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      },
+      {
+        "file": "시안/2026-09-02-2차HTML/11-operations-3.html",
+        "state": "o7",
+        "opened": true,
+        "focusInside": true,
+        "box": {
+          "width": 600,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 255,
+          "clientHeight": 255
+        },
+        "backTrap": true,
+        "forwardTrap": true,
+        "escClosed": true,
+        "escFocus": true,
+        "escInputs": true,
+        "stayClosed": true,
+        "stayFocus": true,
+        "stayInputs": true,
+        "discardClosed": true,
+        "discardFocus": true,
+        "toast": [
+          "로그인 화면으로 이동합니다"
+        ]
+      }
+    ]
+  },
+  "locks": {
+    "testedAt": "2026-09-07T03:46:44.500Z",
+    "results": [
+      {
+        "file": "06-employees-1.html",
+        "state": "e9",
+        "id": "btn-e2-new-e9",
+        "ariaDisabled": "true",
+        "description": "e9-lock-desc-1",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "06-employees-1.html",
+        "state": "e9",
+        "id": "btn-e9-wage",
+        "ariaDisabled": "true",
+        "description": "e9-lock-desc-2",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "06-employees-1.html",
+        "state": "e9",
+        "id": "btn-e9-assign",
+        "ariaDisabled": "true",
+        "description": "e9-lock-desc-3",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "06-employees-1.html",
+        "state": "e9",
+        "id": "btn-e9-unassign",
+        "ariaDisabled": "true",
+        "description": "e9-lock-desc-3",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "06-employees-1.html",
+        "state": "e9",
+        "id": "btn-e9-delete",
+        "ariaDisabled": "true",
+        "description": "e9-lock-desc-4",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "07-schedule-3.html",
+        "state": "r7",
+        "id": "btn-r7-excel",
+        "ariaDisabled": "true",
+        "description": "r7-lock-desc",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      },
+      {
+        "file": "07-schedule-3.html",
+        "state": "r7",
+        "id": "btn-r7-publish",
+        "ariaDisabled": "true",
+        "description": "r7-lock-desc",
+        "checks": [
+          {
+            "action": "click",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Enter",
+            "unchanged": true,
+            "visibleModals": []
+          },
+          {
+            "action": "Space",
+            "unchanged": true,
+            "visibleModals": []
+          }
+        ]
+      }
+    ]
+  },
+  "firstModals": {
+    "testedAt": "2026-09-07T03:47:34.387Z",
+    "results": [
+      {
+        "patternOpenerCandidates": [
+          "계속 편집",
+          "변경 버리고 나가기",
+          "menu",
+          "logout로그아웃",
+          "-",
+          "+",
+          "-",
+          "+",
+          "2교대",
+          "3교대",
+          "불러오기",
+          "파일 선택",
+          "뒤로가기",
+          "다음: 근무시간 설정",
+          "close",
+          "파일 가져오기",
+          "패턴 산출",
+          "초안에 반영",
+          "닫기"
+        ]
+      },
+      {
+        "id": "team-setting-modal",
+        "actualOpener": true,
+        "metric": {
+          "width": 600,
+          "height": 307.5,
+          "clientWidth": 600,
+          "scrollWidth": 600,
+          "clientHeight": 308,
+          "scrollHeight": 308,
+          "radius": "10px",
+          "buttons": [
+            {
+              "text": "close",
+              "top": 446.5,
+              "height": 20,
+              "width": 20
+            },
+            {
+              "text": "−",
+              "top": 653.75,
+              "height": 20,
+              "width": 29.015625
+            },
+            {
+              "text": "+",
+              "top": 653.75,
+              "height": 20,
+              "width": 29.015625
+            },
+            {
+              "text": "적용",
+              "top": 702.75,
+              "height": 26,
+              "width": 42
+            },
+            {
+              "text": "취소",
+              "top": 702.75,
+              "height": 26,
+              "width": 42
+            }
+          ]
+        }
+      },
+      {
+        "id": "modal-leave-w7",
+        "defaultOpen": true,
+        "metric": {
+          "width": 600,
+          "height": 255.375,
+          "clientWidth": 600,
+          "scrollWidth": 600,
+          "clientHeight": 255,
+          "scrollHeight": 255,
+          "radius": "10px",
+          "buttons": [
+            {
+              "text": "계속 편집",
+              "top": 1625.6875,
+              "height": 31,
+              "width": 100
+            },
+            {
+              "text": "변경 버리고 나가기",
+              "top": 1625.6875,
+              "height": 31,
+              "width": 137.234375
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "rowsAndPatternModal": {
+    "testedAt": "2026-09-07T03:48:13.656Z",
+    "results": [
+      {
+        "id": "pattern-extract-modal",
+        "metric": {
+          "width": 600,
+          "height": 377.890625,
+          "scrollWidth": 600,
+          "clientWidth": 600,
+          "scrollHeight": 378,
+          "clientHeight": 378,
+          "radius": "10px",
+          "footerButtons": [
+            {
+              "text": "초안에 반영",
+              "top": 638.9375
+            },
+            {
+              "text": "닫기",
+              "top": 648.9375
+            }
+          ]
+        }
+      },
+      {
+        "escFocus": true
+      },
+      {
+        "version": "before",
+        "file": "08-performance-1.html",
+        "state": "p3",
+        "rows": [
+          {
+            "index": 1,
+            "height": 35,
+            "text": "1실적_보라매사업장_2025-05.xlsx05-28 14:20필수 시트 누락 (실적데이터)",
+            "cells": [
+              {
+                "text": "1",
+                "height": 35,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "실적_보라매사업장_2025-05.xlsx",
+                "height": 35,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:20",
+                "height": 35,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "필수 시트 누락 (실적데이터)",
+                "height": 35,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 41,
+            "text": "1본사2025년 5월58건05-28 14:31대기상세 보기",
+            "cells": [
+              {
+                "text": "1",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "본사",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "58건",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:31",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 41,
+            "text": "2지사 A2025년 5월40건05-28 14:12대기상세 보기",
+            "cells": [
+              {
+                "text": "2",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "지사 A",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "40건",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:12",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 41,
+            "text": "3지사 B2025년 5월47건05-28 14:32대기상세 보기",
+            "cells": [
+              {
+                "text": "3",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "지사 B",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "47건",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:32",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 41,
+                "font": "12px",
+                "padding": "8px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "after",
+        "file": "08-performance-1.html",
+        "state": "p3",
+        "rows": [
+          {
+            "index": 1,
+            "height": 43,
+            "text": "1실적_보라매사업장_2025-05.xlsx05-28 14:20필수 시트 누락 (실적데이터)",
+            "cells": [
+              {
+                "text": "1",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "실적_보라매사업장_2025-05.xlsx",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:20",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "필수 시트 누락 (실적데이터)",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 40,
+            "text": "1본사2025년 5월58건05-28 14:31대기상세 보기",
+            "cells": [
+              {
+                "text": "1",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "본사",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "58건",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:31",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 40,
+            "text": "2지사 A2025년 5월40건05-28 14:12대기상세 보기",
+            "cells": [
+              {
+                "text": "2",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "지사 A",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "40건",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:12",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 40,
+            "text": "3지사 B2025년 5월47건05-28 14:32대기상세 보기",
+            "cells": [
+              {
+                "text": "3",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "지사 B",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2025년 5월",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "47건",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-28 14:32",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "상세 보기",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 10px",
+                "whiteSpace": "normal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "before",
+        "file": "08-performance-2.html",
+        "state": "p5",
+        "rows": [
+          {
+            "index": 1,
+            "height": 27.5,
+            "text": "05-23 (금)대체 주간09:00-18:008.008.000.000.0012,000144,000원 05-23 (금)대체 주간09:00-18:008.008.000.000.0012,000확정 후 계산됩니다 변경 없음",
+            "cells": [
+              {
+                "text": "05-23 (금)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대체 주간",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "09:00-18:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "8.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "8.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "144,000원",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-23 (금)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "대체 주간",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "09:00-18:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "8.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "8.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "변경 없음",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 27.5,
+            "text": "05-26 (월)연장18:00-21:003.000.003.000.0012,00054,000원 05-26 (월)연장18:00-21:003.000.003.000.0012,500확정 후 계산됩니다 시급 변경",
+            "cells": [
+              {
+                "text": "05-26 (월)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "54,000원",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-26 (월)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,500",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "시급 변경",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 60.5,
+            "text": "05-27 (화)연장18:00-22:004.000.004.000.0012,00072,000원 05-27 (화)연장18:00-23:305.500.004.001.5012,000확정 후 계산됩니다 시간 변경⚠ 야간 시간 ",
+            "cells": [
+              {
+                "text": "05-27 (화)",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "18:00-22:00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "4.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "4.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "72,000원",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-27 (화)",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "18:00-23:30",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "5.50",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "4.00",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "1.50",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "시간 변경⚠ 야간 시간 초과",
+                "height": 60.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 27.5,
+            "text": "(없음) 05-29 (목)연장18:00-21:003.000.003.000.0012,000확정 후 계산됩니다 행 추가",
+            "cells": [
+              {
+                "text": "(없음)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "05-29 (목)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "3.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "행 추가",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "height": 27.5,
+            "text": "05-30 (금)연장20:00-24:004.000.002.002.0012,00084,000원 (없음) 행 삭제",
+            "cells": [
+              {
+                "text": "05-30 (금)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "연장",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "20:00-24:00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "4.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "0.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "2.00",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "12,000",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "84,000원",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "(없음)",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "행 삭제",
+                "height": 27.5,
+                "font": "11px",
+                "padding": "5px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "after",
+        "file": "08-performance-2.html",
+        "state": "p5",
+        "rows": [
+          {
+            "index": 1,
+            "height": 40,
+            "text": "05-23 (금)대체 주간09:00-18:008.008.000.000.0012,000144,000원 05-23 (금)대체 주간09:00-18:008.008.000.000.0012,000확정 후 계산됩니다 변경 없음",
+            "cells": [
+              {
+                "text": "05-23 (금)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "대체 주간",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "09:00-18:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "8.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "8.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "144,000원",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "05-23 (금)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "대체 주간",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "09:00-18:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "8.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "8.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "변경 없음",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 40,
+            "text": "05-26 (월)연장18:00-21:003.000.003.000.0012,00054,000원 05-26 (월)연장18:00-21:003.000.003.000.0012,500확정 후 계산됩니다 시급 변경",
+            "cells": [
+              {
+                "text": "05-26 (월)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "54,000원",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "05-26 (월)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,500",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "시급 변경",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 43,
+            "text": "05-27 (화)연장18:00-22:004.000.004.000.0012,00072,000원 05-27 (화)연장18:00-23:305.500.004.001.5012,000확정 후 계산됩니다 시간 변경⚠ 야간 시간 ",
+            "cells": [
+              {
+                "text": "05-27 (화)",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "18:00-22:00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "4.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "4.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "72,000원",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "05-27 (화)",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "18:00-23:30",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "5.50",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "4.00",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "1.50",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "시간 변경⚠ 야간 시간 초과",
+                "height": 43,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 40,
+            "text": "(없음) 05-29 (목)연장18:00-21:003.000.003.000.0012,000확정 후 계산됩니다 행 추가",
+            "cells": [
+              {
+                "text": "(없음)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "05-29 (목)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "18:00-21:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "3.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "확정 후 계산됩니다",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "행 추가",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "height": 40,
+            "text": "05-30 (금)연장20:00-24:004.000.002.002.0012,00084,000원 (없음) 행 삭제",
+            "cells": [
+              {
+                "text": "05-30 (금)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "연장",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "20:00-24:00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "4.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "0.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "2.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "2.00",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "12,000",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "84,000원",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "(없음)",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              },
+              {
+                "text": "행 삭제",
+                "height": 40,
+                "font": "14px",
+                "padding": "0px 6px",
+                "whiteSpace": "nowrap"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "before",
+        "file": "05-sites-wizard-3.html",
+        "state": "w7",
+        "rows": [
+          {
+            "index": 1,
+            "height": 25.5,
+            "text": "주간09:00 - 18:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "주간",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "09:00 - 18:00",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 25.5,
+            "text": "야간21:00 - 06:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "야간",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "21:00 - 06:00",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 25.5,
+            "text": "석간13:00 - 22:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "석간",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "13:00 - 22:00",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 25.5,
+            "text": "휴무--",
+            "cells": [
+              {
+                "text": "",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "휴무",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "-",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "-",
+                "height": 25.5,
+                "font": "11px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "version": "after",
+        "file": "05-sites-wizard-3.html",
+        "state": "w7",
+        "rows": [
+          {
+            "index": 1,
+            "height": 30,
+            "text": "주간09:00 - 18:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "주간",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "09:00 - 18:00",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "height": 30,
+            "text": "야간21:00 - 06:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "야간",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "21:00 - 06:00",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "height": 30,
+            "text": "석간13:00 - 22:0060분",
+            "cells": [
+              {
+                "text": "",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "석간",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "13:00 - 22:00",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "60분",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "height": 30,
+            "text": "휴무--",
+            "cells": [
+              {
+                "text": "",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "휴무",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "-",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              },
+              {
+                "text": "-",
+                "height": 30,
+                "font": "14px",
+                "padding": "4px 6px",
+                "whiteSpace": "normal"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "homeRawCss": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Result\n{\"texts\":[{\"text\":\"/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */\\n.user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-siz\",\"rect\":{\"x\":0,\"y\":21,\"width\":1438.859375,\"height\":82}}],\"bodyTextPrefix\":\"/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */ .user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px} .skip-link{position:absolute;left:8px;top:-48px;z-in\",\"stateTop\":136}\n### Ran Playwright code\n```js\nawait (async(page)=>{await page.goto('http://127.0.0.1:8766/'+encodeURI('시안/2026-08-31-1차HTML/03-home-1.html')+'?codex_direct=202609071239',{waitUntil:'networkidle'});const result=await page.evaluate(()=>{const texts=[...document.body.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim()).map(n=>({text:n.textContent.slice(0,160),rect:(()=>{const r=document.createRange();r.selectNode(n);const b=r.getBoundingClientRect();return {x:b.x,y:b.y,width:b.width,height:b.height}})()}));return {texts,bodyTextPrefix:document.body.innerText.slice(0,220),stateTop:document.querySelector('.state-wrapper').getBoundingClientRect().top};});await page.screenshot({path:'C:/Projects/Active/교대근무관리 시스템/Log/codex-0-18g-home-raw-css.png',fullPage:false});return result;})(page);\n```\n### Page\n- Page URL: http://127.0.0.1:8766/%EC%8B%9C%EC%95%88/2026-08-31-1%EC%B0%A8HTML/03-home-1.html?codex_direct=202609071239\n- Page Title: 근무 관리 시스템 — 시안 03-home-1.html\n- Console: 1 errors, 0 warnings"
+      }
+    ]
+  },
+  "e9Panel": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Result\n{\"at\":\"2026-09-07T03:39:40.654Z\",\"before\":{\"role\":\"승인 담당\",\"panels\":[],\"tableRows\":[{\"class\":\"table-data\",\"headers\":[\"사번\",\"이름\",\"직급\",\"상태\",\"입사일\",\"근무지\",\"조\",\"최근 등록 시급\"],\"rows\":[{\"height\":40,\"text\":\"50001박성진사원\\n    재직\\n    2024-06-01보라매 사업장A조\\n    12,000원\"},{\"height\":40,\"text\":\"50002이상민대리\\n    재직\\n    2024-06-01보라매 사업장A조\\n    14,000원\"},{\"height\":40,\"text\":\"50003김하늘사원\\n    재직\\n    2024-06-01보라매 사업장A조\\n    12,000원\"},{\"height\":40,\"text\":\"50004최우진사원\\n    재직\\n    2024-06-01보라매 사업장A조\\n    12,000원\"},{\"height\":40,\"text\":\"50005정해린사원\\n    재직\\n    2024-06-01보라매 사업장B조\\n    12,000원\"},{\"height\":40,\"text\":\"50006김태우사원\\n    재직\\n    2022-09-01보라매 사업장B조\\n    12,000원\"},{\"height\":40,\"text\":\"50007오현석사원\\n    재직\\n    2025-03-03보라매 사업장B조\\n    12,000원\"},{\"height\":40,\"text\":\"50008이시온사원\\n    재직\\n    2024-11-04보라매 사업장B조\\n    12,000원\"}]},{\"class\":\"table-custom\",\"headers\":[\"시급\",\"적용 기간\",\"구분\"],\"rows\":[{\"height\":59,\"text\":\"12,000원2025-06-01 ~적용 예정\"},{\"height\":59,\"text\":\"11,500원2024-06-01 ~ 2025-05-31현재\"}]}]},\"unchangedAfter\":{\"click\":true,\"enter\":true,\"space\":true},\"active\":{\"text\":\"패널 닫기\",\"id\":\"\"}}\n### Ran Playwright code\n```js\nawait (async(page)=>{await page.goto('http://127.0.0.1:8766/'+encodeURI('시안/2026-09-02-2차HTML/06-employees-1.html')+'?codex_direct=202609071241',{waitUntil:'networkidle'});const root=page.locator('#state-e9');await root.scrollIntoViewIfNeeded();const btn=root.getByRole('button',{name:'패널 닫기'});const inspect=()=>root.evaluate(w=>({role:w.querySelector('.role-badge')?.textContent||w.querySelector('.role-chip')?.textContent,panels:[...w.querySelectorAll('[class*=panel]')].map(p=>({class:p.className,display:getComputedStyle(p).display,width:p.getBoundingClientRect().width})),tableRows:[...w.querySelectorAll('table')].map(t=>({class:t.className,headers:[...t.querySelectorAll('th')].map(x=>x.textContent),rows:[...t.querySelectorAll('tbody tr')].map(tr=>({height:tr.getBoundingClientRect().height,text:tr.textContent.trim().slice(0,180)}))}))}));const before=await inspect();await btn.click();const click=await inspect();await btn.focus();await page.keyboard.press('Enter');const enter=await inspect();await page.keyboard.press('Space');const space=await inspect();await page.screenshot({path:'C:/Projects/Active/교대근무관리 시스템/Log/codex-0-18g-e9-panel.png',fullPage:false});return {at:new Date().toISOString(),before,unchangedAfter:{click:JSON.stringify(before)===JSON.stringify(click),enter:JSON.stringify(before)===JSON.stringify(enter),space:JSON.stringify(before)===JSON.stringify(space)},active:await page.evaluate(()=>({text:document.activeElement.getAttribute('aria-label'),id:document.activeElement.id}))};})(page);\n```\n### Page\n- Page URL: http://127.0.0.1:8766/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HTML/06-employees-1.html?codex_direct=202609071241\n- Page Title: 근무 관리 시스템 — 시안 06-employees-1.html\n- Console: 1 errors, 0 warnings"
+      }
+    ]
+  },
+  "e9Layout": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Result\n[{\"id\":\"state-e2\",\"rows\":[{\"height\":40,\"cells\":[{\"text\":\"12,000원\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"},{\"text\":\"2025-06-01 ~\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"},{\"text\":\"적용 예정\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"}]},{\"height\":40,\"cells\":[{\"text\":\"11,500원\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"},{\"text\":\"2024-06-01 ~ 2025-05-31\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"},{\"text\":\"현재\",\"whiteSpace\":\"nowrap\",\"font\":\"14px\"}]}],\"buttons\":[{\"id\":\"\",\"text\":\"패널 닫기\",\"width\":34,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"\",\"text\":\"시급 등록\",\"width\":69.34375,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"\",\"text\":\"배정\",\"width\":42,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"\",\"text\":\"현재 배정 해지\",\"width\":167,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"\",\"text\":\"인력 삭제\",\"width\":167,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"}]},{\"id\":\"state-e9\",\"rows\":[{\"height\":59,\"cells\":[{\"text\":\"12,000원\",\"whiteSpace\":\"normal\",\"font\":\"14px\"},{\"text\":\"2025-06-01 ~\",\"whiteSpace\":\"normal\",\"font\":\"14px\"},{\"text\":\"적용 예정\",\"whiteSpace\":\"normal\",\"font\":\"14px\"}]},{\"height\":59,\"cells\":[{\"text\":\"11,500원\",\"whiteSpace\":\"normal\",\"font\":\"14px\"},{\"text\":\"2024-06-01 ~ 2025-05-31\",\"whiteSpace\":\"normal\",\"font\":\"14px\"},{\"text\":\"현재\",\"whiteSpace\":\"normal\",\"font\":\"14px\"}]}],\"buttons\":[{\"id\":\"\",\"text\":\"패널 닫기\",\"width\":34,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"btn-e9-wage\",\"text\":\"시급 등록\",\"width\":61.796875,\"height\":42,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"btn-e9-assign\",\"text\":\"배정\",\"width\":42,\"height\":26,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"btn-e9-unassign\",\"text\":\"현재 배정 해지\",\"width\":30,\"height\":106,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"},{\"id\":\"btn-e9-delete\",\"text\":\"인력 삭제\",\"width\":30,\"height\":106,\"whiteSpace\":\"normal\",\"flexShrink\":\"1\"}]}]\n### Ran Playwright code\n```js\nawait (async(page)=>{await page.goto('http://127.0.0.1:8766/'+encodeURI('시안/2026-09-02-2차HTML/06-employees-1.html')+'?codex_direct=202609071242',{waitUntil:'networkidle'});return await page.evaluate(()=>{const state=id=>{const w=document.getElementById(id);return {id,aside:()=>0,rows:[...w.querySelectorAll('table.table-custom tbody tr')].map(e=>({height:e.getBoundingClientRect().height,cells:[...e.children].map(c=>({text:c.textContent,whiteSpace:getComputedStyle(c).whiteSpace,font:getComputedStyle(c).fontSize}))})),buttons:[...w.querySelectorAll('.btn-sm')].map(e=>({id:e.id,text:e.getAttribute('aria-label')||e.textContent.trim(),width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height,whiteSpace:getComputedStyle(e).whiteSpace,flexShrink:getComputedStyle(e).flexShrink}))}};return [state('state-e2'),state('state-e9')];});})(page);\n```\n### Page\n- Page URL: http://127.0.0.1:8766/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HTML/06-employees-1.html?codex_direct=202609071242\n- Page Title: 근무 관리 시스템 — 시안 06-employees-1.html\n- Console: 1 errors, 0 warnings"
+      }
+    ]
+  },
+  "sidebar": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Result\n{\"at\":\"2026-09-07T03:39:43.874Z\",\"before\":{\"sidebarWidth\":220,\"sidebarDisplay\":\"flex\",\"hidden\":null,\"expanded\":\"true\",\"visibleMenuLinks\":7,\"groups\":[{\"display\":\"list-item\",\"hidden\":null},{\"display\":\"list-item\",\"hidden\":null},{\"display\":\"list-item\",\"hidden\":null}]},\"collapsed\":{\"sidebarWidth\":0,\"sidebarDisplay\":\"none\",\"hidden\":\"true\",\"expanded\":\"false\",\"visibleMenuLinks\":0,\"groups\":[{\"display\":\"list-item\",\"hidden\":\"true\"},{\"display\":\"list-item\",\"hidden\":\"true\"},{\"display\":\"list-item\",\"hidden\":\"true\"}]},\"restored\":{\"sidebarWidth\":220,\"sidebarDisplay\":\"flex\",\"hidden\":\"false\",\"expanded\":\"true\",\"visibleMenuLinks\":7,\"groups\":[{\"display\":\"list-item\",\"hidden\":null},{\"display\":\"list-item\",\"hidden\":null},{\"display\":\"list-item\",\"hidden\":null}]}}\n### Ran Playwright code\n```js\nawait (async(page)=>{await page.goto('http://127.0.0.1:8766/'+encodeURI('시안/2026-08-31-1차HTML/05-sites-wizard-1.html')+'?codex_direct=202609071241b',{waitUntil:'networkidle'});const w=page.locator('#state-w1'),btn=w.locator('.btn-sidebar-toggle');const read=()=>w.evaluate(w=>{const s=w.querySelector('.sidebar');return {sidebarWidth:s.getBoundingClientRect().width,sidebarDisplay:getComputedStyle(s).display,hidden:s.getAttribute('aria-hidden'),expanded:w.querySelector('.btn-sidebar-toggle').getAttribute('aria-expanded'),visibleMenuLinks:[...s.querySelectorAll('a')].filter(e=>e.getClientRects().length>0).length,groups:[...s.querySelectorAll('.nav-group-header')].map(e=>({display:getComputedStyle(e).display,hidden:e.getAttribute('aria-hidden')}))}});const before=await read();await btn.click();const collapsed=await read();await btn.click();return {at:new Date().toISOString(),before,collapsed,restored:await read()};})(page);\n```\n### Page\n- Page URL: http://127.0.0.1:8766/%EC%8B%9C%EC%95%88/2026-08-31-1%EC%B0%A8HTML/05-sites-wizard-1.html?codex_direct=202609071241b\n- Page Title: 근무 관리 시스템 — 시안 05-sites-wizard-1.html\n- Console: 1 errors, 0 warnings"
+      }
+    ]
+  }
+}

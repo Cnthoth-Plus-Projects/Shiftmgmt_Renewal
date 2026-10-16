@@ -1,0 +1,166 @@
+{
+  "decision": "ACCEPTED",
+  "authorization": "User-specific direct Sol implementation exception 2026-09-30",
+  "protectedPaths": 90,
+  "protectedMismatch": 0,
+  "statusPaths": 92,
+  "statusSHA": "8D4954EE16CAAFDFD5B908D58E42CAF962316D539AAA3DB742DD3B366982D08B",
+  "tests": {
+    "files": 132,
+    "tests": 912,
+    "exitCode": 0,
+    "durationSeconds": 277.24
+  },
+  "typecheck": 0,
+  "lintErrors": 0,
+  "lintExistingWarnings": 5,
+  "mapPaths": 82,
+  "build": "WEB_ASSETS_OK",
+  "chromeRuns": 26,
+  "actionLifetimeAssertions": 28,
+  "manifests": [
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-144210-UAcGqm/manifest.json",
+      "status": "PASS",
+      "captures": 3
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-144214-CHLDXo/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-144230-67nwvh/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-144247-uGjXZi/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-144250-q8ZBmb/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-144254-0Oa23L/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-144257-Wuotvn/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-144301-ba7ErU/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-144305-8qEgcl/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-144308-GFLTpX/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-144312-4x5A1Z/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-144315-6ULmDT/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-144319-cfww5s/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144323-wyaSxE/manifest.json",
+      "status": "PASS",
+      "captures": 4
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144327-ZSuu8M/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144332-44Iczz/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144336-SSHo7h/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144340-3EVVo3/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144343-bygLuG/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144347-XM0eM8/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144351-4v08Cb/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144355-ASg4Vz/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144359-4mqKoL/manifest.json",
+      "status": "PASS",
+      "captures": 1
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-144403-NefXze/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-144407-LdPFhP/manifest.json",
+      "status": "PASS",
+      "captures": 4
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-144412-OAkrS4/manifest.json",
+      "status": "PASS",
+      "captures": 2
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "scripts/ui-checks/home.mjs",
+      "bytes": 46324,
+      "sha256": "2791E3FF6A67069213B48940728018C1329065B9487EFDE9E3064589950A74ED"
+    },
+    {
+      "path": "src/web/screens/home.ts",
+      "bytes": 34757,
+      "sha256": "4F7E3D0CE51D23E55451C3A2E136F87B678D45BDAF001E828A5B42917C485865"
+    }
+  ],
+  "temporaryServerDataCleaned": true
+}

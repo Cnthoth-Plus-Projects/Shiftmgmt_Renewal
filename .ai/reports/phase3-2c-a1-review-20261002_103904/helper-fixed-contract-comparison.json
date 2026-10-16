@@ -1,0 +1,17 @@
+[
+  {
+    "case": "resources-created-only",
+    "fixedContractRejects": true,
+    "reason": "Resource close missing/failed"
+  },
+  {
+    "case": "duplicate-resource-kind",
+    "fixedContractRejects": true,
+    "reason": "Wrong resource kinds"
+  },
+  {
+    "case": "chrome-arbitrary-file-missing-version",
+    "fixedContractRejects": true,
+    "reason": "Chrome fields invalid"
+  }
+]

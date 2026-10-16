@@ -1,0 +1,15 @@
+{
+  "name": "fault-cli-zero-args",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:17:27.001370+00:00",
+  "pid": 14428,
+  "rc": 0,
+  "end": "2026-10-01T07:17:33.134399+00:00",
+  "elapsedSeconds": 6.141,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-cli-zero-args.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-cli-zero-args.stderr.txt"
+}

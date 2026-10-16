@@ -1,0 +1,16 @@
+{
+  "name": "actual-core",
+  "command": [
+    "node",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=contract-core"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:06:22.427533+00:00",
+  "pid": 43276,
+  "rc": 0,
+  "end": "2026-10-01T13:07:54.966176+00:00",
+  "elapsedSeconds": 92.531,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\actual-core.stderr.txt"
+}

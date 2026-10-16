@@ -1,0 +1,357 @@
+[
+  {
+    "case": "live-admin",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-live-admin]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-live-admin/run-20261001-221539-eqUZIq/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-live-admin\\run-20261001-221539-eqUZIq\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:53:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "list-fixture",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-list-fixture]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-list-fixture/run-20261001-221613-U7CUyj/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-221613-U7CUyj\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:85:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "empty-fixture",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-empty-fixture]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-empty-fixture/run-20261001-221647-hjFs8p/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-221647-hjFs8p\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:144:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "filters",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-filters]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-filters/run-20261001-221721-a1cTHi/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-filters\\run-20261001-221721-a1cTHi\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:176:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "errors",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nlocator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs:73:5 {\n  log: [ \"  - waiting for locator('#login-btn')\" ],\n  name: 'TimeoutError'\n}\n\nNode.js v24.13.0\n",
+    "childManifests": [],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "stale-response",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-stale-response]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-stale-response/run-20261001-221828-5JVZmT/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-20261001-221828-5JVZmT\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:227:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "role-guard",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "\nFAIL: [UI 검증 실패: access-history-role-guard]\n- 실행 오류: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n- manifest: artifacts/captures/phase3/access-history-role-guard/run-20261001-221902-ItQFCi/manifest.json\n",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-20261001-221902-ItQFCi\\manifest.json",
+        "status": "FAIL",
+        "errors": {
+          "executionError": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async testRole (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:310:9)\n    at async steps (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-positive.mjs:343:7)\n    at async runScreenCheck (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\lib\\ui-check.mjs:270:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs:48:1",
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": []
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "session-expired",
+    "parentRc": 1,
+    "parentStatus": "FAIL_INCOMPLETE",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "missing",
+      "cleanup",
+      "note"
+    ],
+    "workerStderrTail": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nlocator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#login-btn')\u001b[22m\n\n    at performLogin (C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs:67:36)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs:111:5 {\n  log: [ \"  - waiting for locator('#login-btn')\" ],\n  name: 'TimeoutError'\n}\n\nNode.js v24.13.0\n",
+    "childManifests": [],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "regression-shell",
+    "parentRc": 0,
+    "parentStatus": "PASS",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "checks",
+      "cleanup"
+    ],
+    "workerStderrTail": "",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-222010-FIgAWO\\manifest.json",
+        "status": "PASS",
+        "errors": {
+          "executionError": null,
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": [
+          {
+            "name": "admin-expanded",
+            "filename": "admin-expanded.png",
+            "path": "artifacts/captures/phase3/shell/run-20261001-222010-FIgAWO/admin-expanded.png"
+          },
+          {
+            "name": "admin-collapsed",
+            "filename": "admin-collapsed.png",
+            "path": "artifacts/captures/phase3/shell/run-20261001-222010-FIgAWO/admin-collapsed.png"
+          },
+          {
+            "name": "watch-stopped",
+            "filename": "watch-stopped.png",
+            "path": "artifacts/captures/phase3/shell/run-20261001-222010-FIgAWO/watch-stopped.png"
+          },
+          {
+            "name": "operator",
+            "filename": "operator.png",
+            "path": "artifacts/captures/phase3/shell/run-20261001-222010-FIgAWO/operator.png"
+          }
+        ]
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  },
+  {
+    "case": "regression-home",
+    "parentRc": 0,
+    "parentStatus": "PASS",
+    "parentKeys": [
+      "schema",
+      "stage",
+      "case",
+      "runId",
+      "contractSha256",
+      "status",
+      "exitCode",
+      "checks",
+      "cleanup"
+    ],
+    "workerStderrTail": "",
+    "childManifests": [
+      {
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\home-live-admin\\run-20261001-222016-LOU2lx\\manifest.json",
+        "status": "PASS",
+        "errors": {
+          "executionError": null,
+          "manifestWriteError": null,
+          "consoleErrors": [],
+          "pageErrors": [],
+          "requestFailed": [],
+          "badResponses": [],
+          "cleanupErrors": []
+        },
+        "captures": [
+          {
+            "name": "home-live-admin",
+            "filename": "home-live-admin.png",
+            "path": "artifacts/captures/phase3/home-live-admin/run-20261001-222016-LOU2lx/home-live-admin.png"
+          }
+        ]
+      }
+    ],
+    "parentHasFirstFailure": false,
+    "hasPartialActions": false
+  }
+]

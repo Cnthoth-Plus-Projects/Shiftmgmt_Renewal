@@ -1,0 +1,61 @@
+[
+  {
+    "name": "scope-check",
+    "command": [
+      "python",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+      "--contract-sha",
+      "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "--baseline-sha",
+      "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+      "--scope"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:22.243675+00:00",
+    "pid": 28920,
+    "rc": 0,
+    "end": "2026-10-01T13:06:28.302184+00:00",
+    "elapsedSeconds": 6.063,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\scope-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\scope-check.stderr.txt"
+  },
+  {
+    "name": "submitted-core-check",
+    "command": [
+      "python",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+      "--contract-sha",
+      "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "--baseline-sha",
+      "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+      "--core",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-174842-f2iqH8\\owner-final.json"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:28.304706+00:00",
+    "pid": 52980,
+    "rc": 1,
+    "end": "2026-10-01T13:06:29.385424+00:00",
+    "elapsedSeconds": 1.078,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\submitted-core-check.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\submitted-core-check.stderr.txt"
+  },
+  {
+    "name": "parser-self-test",
+    "command": [
+      "python",
+      "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+      "--contract-sha",
+      "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "--self-test"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:06:29.393835+00:00",
+    "pid": 14600,
+    "rc": 0,
+    "end": "2026-10-01T13:06:29.616628+00:00",
+    "elapsedSeconds": 0.219,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\parser-self-test.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\parser-self-test.stderr.txt"
+  }
+]

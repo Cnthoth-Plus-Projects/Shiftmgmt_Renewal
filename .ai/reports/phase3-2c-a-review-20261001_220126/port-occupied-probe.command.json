@@ -1,0 +1,15 @@
+{
+  "name": "port-occupied-probe",
+  "command": [
+    "node",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-foundation-probes\\run-sol-port-script-i_e330nr\\port-probe.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:23:05.930816+00:00",
+  "pid": 27852,
+  "rc": 0,
+  "end": "2026-10-01T13:23:06.622013+00:00",
+  "elapsedSeconds": 0.687,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\port-occupied-probe.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\port-occupied-probe.stderr.txt"
+}

@@ -1,0 +1,73 @@
+00-shell-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+00-shell-1 parse: OK 1 scripts
+00-shell-1 json=1444B png=67695B
+00-shell-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+00-shell-2 parse: OK 2 scripts
+00-shell-2 json=1690B png=87565B
+01-login-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+01-login-1 parse: OK 1 scripts
+01-login-1 json=873B png=58614B
+01-login-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+01-login-2 parse: OK 1 scripts
+01-login-2 json=707B png=44179B
+02-common-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+02-common-1 parse: OK 1 scripts
+02-common-1 json=1471B png=46550B
+02-common-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+02-common-2 parse: OK 1 scripts
+02-common-2 json=1333B png=72302B
+02-common-3 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+02-common-3 parse: OK 0 scripts
+02-common-3 json=764B png=41216B
+04-sites-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+04-sites-1 parse: OK 2 scripts
+04-sites-1 json=800B png=43552B
+04-sites-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+04-sites-2 parse: OK 2 scripts
+04-sites-2 json=1223B png=60714B
+06-employees-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+06-employees-1 parse: OK 2 scripts
+06-employees-1 json=1200B png=119815B
+06-employees-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+06-employees-2 parse: OK 2 scripts
+06-employees-2 json=1834B png=87777B
+06-employees-3 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+06-employees-3 parse: OK 2 scripts
+06-employees-3 json=1234B png=61418B
+07-schedule-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+07-schedule-1 parse: OK 1 scripts
+07-schedule-1 json=751B png=85689B
+07-schedule-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+07-schedule-2 parse: OK 1 scripts
+07-schedule-2 json=1262B png=123528B
+07-schedule-3 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+07-schedule-3 parse: OK 2 scripts
+07-schedule-3 json=1627B png=104674B
+09-allowance-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+09-allowance-1 parse: OK 2 scripts
+09-allowance-1 json=1255B png=126684B
+09-allowance-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+09-allowance-2 parse: OK 2 scripts
+09-allowance-2 json=1015B png=32085B
+09-allowance-3 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+09-allowance-3 parse: OK 1 scripts
+09-allowance-3 json=1542B png=114875B
+10-dashboard-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+10-dashboard-1 parse: OK 1 scripts
+10-dashboard-1 json=1556B png=135691B
+11-operations-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+11-operations-1 parse: OK 1 scripts
+11-operations-1 json=1526B png=156342B
+11-operations-2 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+11-operations-2 parse: OK 1 scripts
+11-operations-2 json=2045B png=194434B
+11-operations-3 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+11-operations-3 parse: OK 1 scripts
+11-operations-3 json=1941B png=174308B
+11-operations-4 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+11-operations-4 parse: OK 2 scripts
+11-operations-4 json=908B png=30625B
+12-access-logs-1 console: --- BEGIN UNTRUSTED EXTERNAL CONTENT (source: file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/%EC%8B%9C%EC%95%88/2026-09-02-2%EC%B0%A8HT
+12-access-logs-1 parse: OK 2 scripts
+12-access-logs-1 json=1212B png=105516B
+DONE

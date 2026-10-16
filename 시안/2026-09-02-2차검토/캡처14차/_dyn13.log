@@ -1,0 +1,39 @@
+################ OLD = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차검토/스냅샷11차
+=== D9 E3 (06-employees-2) ===
+E3 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=false ✕ disabled=false | 처리 중 Esc → 모달=false | 처리 중 취소 클릭 → 모달=false | 처리 중 ✕ 클릭 → 모달=false
+완료 후 → 모달=false 포커스=btn-open-e3 등록 라벨=등록 취소 disabled=false ✕ disabled=false 토스트=true | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e3 | 이동 버튼 BUTTON id=btn-e3-goto-perf 글="실적 관리로 이동"
+  콘솔: (no console errors) 
+=== D9 E4 (06-employees-2) ===
+E4 열림=true 실행 aria-disabled=null | 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=false ✕ disabled=false | 처리 중 Esc → 모달=false | 처리 중 취소 → 모달=false
+  콘솔: (no console errors) 
+=== D9 E6 (06-employees-3) ===
+E6 확인 모달=true E6=false | 적용 클릭 → 라벨=업데이트 중... 확인모달=true 돌아가기 disabled=false ✕ disabled=false live="처리 중: 업데이트 중..." | 처리 중 Esc → 확인모달=false E6=true | 처리 중 돌아가기 클릭 → 확인모달=false E6=true | 처리 중 ✕ 클릭 → 확인모달=false E6=true
+완료 후 → 확인모달=false E6=false 포커스=btn-open-e6 적용 라벨=적용 돌아가기 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) 확인모달 Esc → 확인모달=false E6=true 포커스=btn-submit-e6 | E6 Esc → E6=false 포커스=btn-open-e6
+  콘솔: (no console errors) 
+=== D9 E8 (06-employees-3) ===
+E8 등록 클릭 → 라벨=등록 중... 모달=true 취소 disabled=false ✕ disabled=false live="처리 중: 등록 중..." | 처리 중 Esc → 모달=false | 처리 중 취소 → 모달=false | 처리 중 ✕ → 모달=false
+완료 후 → 모달=false 포커스=btn-open-e8 등록 라벨=등록 취소 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e8
+  콘솔: (no console errors) 
+=== D8 E3 [실적 관리로 이동] 항해 ===
+클릭 전 위치=스냅샷11차/06-employees-2.html
+클릭 후 위치=스냅샷11차/06-employees-2.html 첫 상태 라벨="── E3. 인력 관리 — 시급 등록 모달 ──"
+################ CUR = C:/Projects/Active/교대근무관리 시스템/시안/2026-09-02-2차HTML
+=== D9 E3 (06-employees-2) ===
+E3 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 클릭 → 모달=true | 처리 중 ✕ 클릭 → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e3 등록 라벨=등록 취소 disabled=false ✕ disabled=false 토스트=true | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e3 | 이동 버튼 BUTTON id=btn-e3-goto-perf 글="실적 관리로 이동"
+  콘솔: (no console errors) 
+=== D9 E4 (06-employees-2) ===
+E4 열림=true 실행 aria-disabled=null | 실행 클릭 → 라벨=처리 중... 모달=true 취소 disabled=true ✕ disabled=true | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true
+  콘솔: (no console errors) 
+=== D9 E6 (06-employees-3) ===
+E6 확인 모달=true E6=false | 적용 클릭 → 라벨=업데이트 중... 확인모달=true 돌아가기 disabled=true ✕ disabled=true live="처리 중: 업데이트 중..." | 처리 중 Esc → 확인모달=true E6=false | 처리 중 돌아가기 클릭 → 확인모달=true E6=false | 처리 중 ✕ 클릭 → 확인모달=true E6=false
+완료 후 → 확인모달=false E6=false 포커스=btn-open-e6 적용 라벨=적용 돌아가기 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) 확인모달 Esc → 확인모달=false E6=true 포커스=btn-submit-e6 | E6 Esc → E6=false 포커스=btn-open-e6
+  콘솔: (no console errors) 
+=== D9 E8 (06-employees-3) ===
+E8 등록 클릭 → 라벨=등록 중... 모달=true 취소 disabled=true ✕ disabled=true live="처리 중: 등록 중..." | 처리 중 Esc → 모달=true | 처리 중 취소 → 모달=true | 처리 중 ✕ → 모달=true
+완료 후 → 모달=false 포커스=btn-open-e8 등록 라벨=등록 취소 disabled=false ✕ disabled=false app-body aria-hidden=null | 재열기 후(처리 아님) Esc → 모달=false 포커스=btn-open-e8
+  콘솔: (no console errors) 
+=== D8 E3 [실적 관리로 이동] 항해 ===
+클릭 전 위치=2026-09-02-2차HTML/06-employees-2.html
+클릭 후 위치=2026-08-31-1차HTML/08-performance-1.html 첫 상태 라벨="── P1. 실적 관리 — ① 접수·복구 정상 (승인 담당) ──"
+DONE

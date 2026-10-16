@@ -1,0 +1,9 @@
+{
+  "sourceControls": "C:\\Projects\\Active\\\uad50\ub300\uadfc\ubb34\uad00\ub9ac \uc2dc\uc2a4\ud15c\\.ai\\contracts\\phase3-2c-a1-v4",
+  "copies": {
+    "runtime-preload.mjs": "19E4AE411CA58BFC25F85720115369696D83B34C7A28FCE3E127CF2FB59AFB41",
+    "partial-preload.mjs": "C1FBFEBBAB31809E624EEA6D9821913DBCC7F4637BE4A258D721B61B2707E9EA",
+    "partial-extra-probes.mjs": "C9DBF39E26113AF62095DFF8F744420348579E57B985E64A6B364EE69BDD80AC"
+  },
+  "immutableOriginalEdits": 0
+}

@@ -1,0 +1,15 @@
+{
+  "published": true,
+  "receiptArchiveExact": true,
+  "outgoingArchiveExact": true,
+  "bodyExactStandaloneReplyBoundary": true,
+  "contractAndBaselineHashesInPacket": true,
+  "sourceFiles": 341,
+  "protected": 337,
+  "dirtyPaths": 12,
+  "productSourceChangesBySol": 0,
+  "phase3_2Accepted": false,
+  "runtimeAfterGeminiUnverified": true,
+  "parserMutationRejections": 19,
+  "time": "2026-10-01 17:24:01 KST"
+}

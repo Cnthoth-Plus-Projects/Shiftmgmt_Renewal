@@ -1,0 +1,743 @@
+{
+  "note": "Explicit expansion: state-t1 => T1 + modal-t2; state-a3-a5 => modal-a3/a4/a5; state-o9-o10 => modal-o9/o10. A9 clone modal variants are one role-example state, not additional design IDs.",
+  "files": [
+    {
+      "file": "시안/2026-08-31-1차HTML/03-home-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-h1",
+          "states": [
+            "H1"
+          ]
+        },
+        {
+          "wrapper": "state-h2",
+          "states": [
+            "H2"
+          ]
+        },
+        {
+          "wrapper": "state-h3",
+          "states": [
+            "H3"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/03-home-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-h4",
+          "states": [
+            "H4"
+          ]
+        },
+        {
+          "wrapper": "state-h5",
+          "states": [
+            "H5"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/05-sites-wizard-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-w1",
+          "states": [
+            "W1"
+          ]
+        },
+        {
+          "wrapper": "state-w2",
+          "states": [
+            "W2"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/05-sites-wizard-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-w3",
+          "states": [
+            "W3"
+          ]
+        },
+        {
+          "wrapper": "state-w4",
+          "states": [
+            "W4"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/05-sites-wizard-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-w5",
+          "states": [
+            "W5"
+          ]
+        },
+        {
+          "wrapper": "state-w6",
+          "states": [
+            "W6"
+          ]
+        },
+        {
+          "wrapper": "state-w7",
+          "states": [
+            "W7"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/05-sites-wizard-4.html",
+      "wrappers": [
+        {
+          "wrapper": "state-w8",
+          "states": [
+            "W8"
+          ]
+        },
+        {
+          "wrapper": "state-w9",
+          "states": [
+            "W9"
+          ]
+        },
+        {
+          "wrapper": "state-w10",
+          "states": [
+            "W10"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/08-performance-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-p1",
+          "states": [
+            "P1"
+          ]
+        },
+        {
+          "wrapper": "state-p2",
+          "states": [
+            "P2"
+          ]
+        },
+        {
+          "wrapper": "state-p3",
+          "states": [
+            "P3"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/08-performance-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-p4",
+          "states": [
+            "P4"
+          ]
+        },
+        {
+          "wrapper": "state-p5",
+          "states": [
+            "P5"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/08-performance-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-p6",
+          "states": [
+            "P6"
+          ]
+        },
+        {
+          "wrapper": "state-p7",
+          "states": [
+            "P7"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-08-31-1차HTML/08-performance-4.html",
+      "wrappers": [
+        {
+          "wrapper": "state-p8",
+          "states": [
+            "P8"
+          ]
+        },
+        {
+          "wrapper": "state-p9",
+          "states": [
+            "P9"
+          ]
+        },
+        {
+          "wrapper": "state-p10",
+          "states": [
+            "P10"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/00-shell-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-s1",
+          "states": [
+            "S1"
+          ]
+        },
+        {
+          "wrapper": "state-s2",
+          "states": [
+            "S2"
+          ]
+        },
+        {
+          "wrapper": "state-s3",
+          "states": [
+            "S3"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/00-shell-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-s4",
+          "states": [
+            "S4"
+          ]
+        },
+        {
+          "wrapper": "state-s5",
+          "states": [
+            "S5"
+          ]
+        },
+        {
+          "wrapper": "state-s6",
+          "states": [
+            "S6"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/01-login-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-l1",
+          "states": [
+            "L1"
+          ]
+        },
+        {
+          "wrapper": "state-l2",
+          "states": [
+            "L2"
+          ]
+        },
+        {
+          "wrapper": "state-l3",
+          "states": [
+            "L3"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/01-login-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-l4",
+          "states": [
+            "L4"
+          ]
+        },
+        {
+          "wrapper": "state-l5",
+          "states": [
+            "L5"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/02-common-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-c1",
+          "states": [
+            "C1"
+          ]
+        },
+        {
+          "wrapper": "state-c2",
+          "states": [
+            "C2"
+          ]
+        },
+        {
+          "wrapper": "state-c3",
+          "states": [
+            "C3"
+          ]
+        },
+        {
+          "wrapper": "state-c4",
+          "states": [
+            "C4"
+          ]
+        }
+      ],
+      "stateCount": 4
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/02-common-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-c5",
+          "states": [
+            "C5"
+          ]
+        },
+        {
+          "wrapper": "state-c6",
+          "states": [
+            "C6"
+          ]
+        },
+        {
+          "wrapper": "state-c7",
+          "states": [
+            "C7"
+          ]
+        },
+        {
+          "wrapper": "state-c8",
+          "states": [
+            "C8"
+          ]
+        },
+        {
+          "wrapper": "state-c9",
+          "states": [
+            "C9"
+          ]
+        }
+      ],
+      "stateCount": 5
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/02-common-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-c10",
+          "states": [
+            "C10"
+          ]
+        },
+        {
+          "wrapper": "state-c11",
+          "states": [
+            "C11"
+          ]
+        },
+        {
+          "wrapper": "state-c12",
+          "states": [
+            "C12"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/04-sites-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-t1",
+          "states": [
+            "T1",
+            "T2"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/04-sites-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-t3",
+          "states": [
+            "T3"
+          ]
+        },
+        {
+          "wrapper": "state-t4",
+          "states": [
+            "T4"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/06-employees-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-e1",
+          "states": [
+            "E1"
+          ]
+        },
+        {
+          "wrapper": "state-e2",
+          "states": [
+            "E2"
+          ]
+        },
+        {
+          "wrapper": "state-e9",
+          "states": [
+            "E9"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/06-employees-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-e3",
+          "states": [
+            "E3"
+          ]
+        },
+        {
+          "wrapper": "state-e4",
+          "states": [
+            "E4"
+          ]
+        },
+        {
+          "wrapper": "state-e5",
+          "states": [
+            "E5"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/06-employees-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-e6",
+          "states": [
+            "E6"
+          ]
+        },
+        {
+          "wrapper": "state-e7",
+          "states": [
+            "E7"
+          ]
+        },
+        {
+          "wrapper": "state-e8",
+          "states": [
+            "E8"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/07-schedule-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-r1",
+          "states": [
+            "R1"
+          ]
+        }
+      ],
+      "stateCount": 1
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/07-schedule-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-r2",
+          "states": [
+            "R2"
+          ]
+        },
+        {
+          "wrapper": "state-r3",
+          "states": [
+            "R3"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/07-schedule-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-r4",
+          "states": [
+            "R4"
+          ]
+        },
+        {
+          "wrapper": "state-r5",
+          "states": [
+            "R5"
+          ]
+        },
+        {
+          "wrapper": "state-r6",
+          "states": [
+            "R6"
+          ]
+        },
+        {
+          "wrapper": "state-r7",
+          "states": [
+            "R7"
+          ]
+        }
+      ],
+      "stateCount": 4
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/09-allowance-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-a1",
+          "states": [
+            "A1"
+          ]
+        },
+        {
+          "wrapper": "state-a2",
+          "states": [
+            "A2"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/09-allowance-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-a3-a5",
+          "states": [
+            "A3",
+            "A4",
+            "A5"
+          ]
+        },
+        {
+          "wrapper": "state-a9",
+          "states": [
+            "A9"
+          ]
+        }
+      ],
+      "stateCount": 4
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/09-allowance-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-a6",
+          "states": [
+            "A6"
+          ]
+        },
+        {
+          "wrapper": "state-a7",
+          "states": [
+            "A7"
+          ]
+        },
+        {
+          "wrapper": "state-a8",
+          "states": [
+            "A8"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/10-dashboard-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-d1",
+          "states": [
+            "D1"
+          ]
+        },
+        {
+          "wrapper": "state-d2",
+          "states": [
+            "D2"
+          ]
+        },
+        {
+          "wrapper": "state-d3",
+          "states": [
+            "D3"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/11-operations-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-o1",
+          "states": [
+            "O1"
+          ]
+        },
+        {
+          "wrapper": "state-o2",
+          "states": [
+            "O2"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/11-operations-2.html",
+      "wrappers": [
+        {
+          "wrapper": "state-o3",
+          "states": [
+            "O3"
+          ]
+        },
+        {
+          "wrapper": "state-o4",
+          "states": [
+            "O4"
+          ]
+        },
+        {
+          "wrapper": "state-o5",
+          "states": [
+            "O5"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/11-operations-3.html",
+      "wrappers": [
+        {
+          "wrapper": "state-o6",
+          "states": [
+            "O6"
+          ]
+        },
+        {
+          "wrapper": "state-o7",
+          "states": [
+            "O7"
+          ]
+        },
+        {
+          "wrapper": "state-o8",
+          "states": [
+            "O8"
+          ]
+        }
+      ],
+      "stateCount": 3
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/11-operations-4.html",
+      "wrappers": [
+        {
+          "wrapper": "state-o9-o10",
+          "states": [
+            "O9",
+            "O10"
+          ]
+        }
+      ],
+      "stateCount": 2
+    },
+    {
+      "file": "시안/2026-09-02-2차HTML/12-access-logs-1.html",
+      "wrappers": [
+        {
+          "wrapper": "state-g1",
+          "states": [
+            "G1"
+          ]
+        },
+        {
+          "wrapper": "state-g2",
+          "states": [
+            "G2"
+          ]
+        }
+      ],
+      "stateCount": 2
+    }
+  ],
+  "wrapperCount": 88,
+  "designStateCount": 92
+}

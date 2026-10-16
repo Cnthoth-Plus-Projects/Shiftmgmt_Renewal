@@ -1,0 +1,501 @@
+{
+  "baseline_count": 87,
+  "baseline_status_sha": "FB704371C520F637E240FCE9F469321170E509FAFF39EA48B73F8B41067F32F4",
+  "current_count": 92,
+  "current_status_sha": "8D4954EE16CAAFDFD5B908D58E42CAF962316D539AAA3DB742DD3B366982D08B",
+  "protected_count": 84,
+  "protected_mismatch": [],
+  "new_paths_match": true,
+  "new_paths": [
+    "scripts/ui-checks/home.mjs",
+    "src/web/home.css",
+    "src/web/screens/home-model.test.ts",
+    "src/web/screens/home-model.ts",
+    "src/web/screens/home.ts"
+  ],
+  "source_docs": [
+    {
+      "path": "12-능력-매트릭스.md",
+      "match": true
+    },
+    {
+      "path": "11-디자인-요청서.md",
+      "match": true
+    },
+    {
+      "path": "10-화면설계-초안.md",
+      "match": true
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/05-디자인-시스템-확정본-v1.3.md",
+      "match": true
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-1.html",
+      "match": true
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-2.html",
+      "match": true
+    }
+  ],
+  "reported_manifests": 19,
+  "reported_manifest_statuses": [
+    {
+      "artifacts/captures/phase3/home-admin-action/run-20260930-095405-40nozT/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/home-empty-fixture/run-20260930-095352-hS7NHY/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/home-live-admin/run-20260930-095344-im6ZL0/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/home-loading-error/run-20260930-095356-fVYlXH/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/home-operator-fixture/run-20260930-095348-zpysOs/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/home-stale-response/run-20260930-095400-4vdYZb/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095413-wWHQmJ/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095418-LhJY9F/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095424-rvHAT4/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095429-LyjgxI/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095433-4JAkhl/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095437-zy7RgQ/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095441-0lqoZh/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095446-iCL9A7/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095450-joM9XU/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095454-qSQrTF/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/login/run-20260930-095459-u8zkqR/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/ready/run-20260930-095409-NZhatI/manifest.json": "PASS"
+    },
+    {
+      "artifacts/captures/phase3/shell/run-20260930-095503-13kMBG/manifest.json": "PASS"
+    }
+  ],
+  "current_day_manifests": [
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-092407-2dAczC/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-092626-3dKUVO/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-093114-NZAJSM/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-093634-yL2cuM/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-095405-40nozT/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-092353-6nASEQ/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-092613-qf6o21/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-093101-XnoT6R/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-093617-QuENxT/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-095352-hS7NHY/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-092023-NWsazZ/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-092322-t68GP4/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-092344-QpDKDM/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-092604-d94rOc/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-093052-VRKa0S/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-093608-VfKYHd/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-095344-im6ZL0/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-092358-liIOpL/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-092617-3qyUKq/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-093105-7Of3VZ/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-093620-K9rJQq/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-095356-fVYlXH/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-092349-sIRRM0/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-092609-V73HDN/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-093057-A8kokj/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-093612-weEdIs/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-095348-zpysOs/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-092402-JeEHtf/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-092622-oHxsOK/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-093109-cY7AVa/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-093629-0UDJbF/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-095400-4vdYZb/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-092634-U25F1y/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-092639-I0utlf/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-092958-kqbVmV/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093122-fYbGut/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093127-l32C3I/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093134-0syrzr/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093138-GOgqqj/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093142-pREKda/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093147-khDb2G/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093556-T6CKJg/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093642-QQN33g/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093647-fPN3Pz/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093653-ZxfXV1/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093658-RJGiXr/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093702-wXzvbj/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093706-eWofD1/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093711-PXqsE6/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093715-nwQMdm/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093720-kcFKa1/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093725-51e0Uk/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093729-DZiIsN/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095413-wWHQmJ/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095418-LhJY9F/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095424-rvHAT4/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095429-LyjgxI/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095433-4JAkhl/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095437-zy7RgQ/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095441-0lqoZh/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095446-iCL9A7/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095450-joM9XU/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095454-qSQrTF/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-095459-u8zkqR/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-092630-PN2gtx/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-093118-5PED91/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-093638-D5NrLw/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-095409-NZhatI/manifest.json",
+      "status": "PASS",
+      "reported": true
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-093734-HqsaKS/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-094233-ox8pTW/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-094653-WbYWlt/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-095331-9wmsZC/manifest.json",
+      "status": "PASS",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-095503-13kMBG/manifest.json",
+      "status": "PASS",
+      "reported": true
+    }
+  ],
+  "missing_failures": [
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-092407-2dAczC/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-092023-NWsazZ/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-093147-khDb2G/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-093734-HqsaKS/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-094233-ox8pTW/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-094653-WbYWlt/manifest.json",
+      "status": "FAIL",
+      "reported": false
+    }
+  ]
+}

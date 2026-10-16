@@ -1,0 +1,791 @@
+// 로그인 및 인증 화면 (L1 ~ L5) 관리
+import type { AuthSession } from "../../shared/domain/model";
+import { getPasswordPolicyChecks, isStrongPasswordSatisfied } from "../../shared/config/auth-password-policy";
+
+export type LoginViewMode = "L1" | "L2" | "L3" | "L4" | "L5";
+export type PostChangeState = "idle" | "checking" | "limited" | "loginChosen" | "accepted";
+
+export interface LoginScreenOptions {
+  container: HTMLElement;
+  initialMode?: LoginViewMode;
+  initialSession?: AuthSession | null;
+  onLoginSuccess: (session: AuthSession) => void;
+}
+
+export class LoginScreen {
+  private container: HTMLElement;
+  private mode: LoginViewMode = "L1";
+  private currentSession: AuthSession | null = null;
+  private onLoginSuccess: (session: AuthSession) => void;
+  private appVersion: string | null = null;
+  private isSubmitting = false;
+
+  // L2/L3 에러 메시지
+  private lastErrorMessage = "";
+  private recoveryConfigured = false;
+
+  // L5 복구 임시 비밀번호 (스토리지 미기록)
+  private tempPasswordNotice: string | null = null;
+
+  // L1 완료 안내 배너 문구 (C31-03)
+  private passwordChangedNotice: string | null = null;
+
+  // L4 세션 재확인 상태 머신 (R31-RACE-01~03)
+  private postChangeState: PostChangeState = "idle";
+  private postChangeErrorMessage = "";
+  private postChangeGeneration = 0;
+  private isCheckingPostChangeSession = false;
+
+  constructor(options: LoginScreenOptions) {
+    this.container = options.container;
+    this.mode = options.initialMode ?? "L1";
+    this.currentSession = options.initialSession ?? null;
+    this.onLoginSuccess = options.onLoginSuccess;
+  }
+
+  public async init(): Promise<void> {
+    const bridge = window.appBridge;
+    if (bridge) {
+      try {
+        const ver = await bridge.getAppVersion();
+        if (ver) {
+          this.appVersion = ver;
+        } else {
+          this.appVersion = null;
+        }
+      } catch {
+        this.appVersion = null;
+      }
+
+      try {
+        const rec = await bridge.getAccountRecoveryAvailability();
+        if (rec.ok && rec.data) {
+          this.recoveryConfigured = rec.data.configured;
+        }
+      } catch {
+        // 기본값 유지
+      }
+    }
+
+    this.render();
+  }
+
+  public setMode(mode: LoginViewMode, session?: AuthSession | null, message?: string): void {
+    this.mode = mode;
+    if (session !== undefined) {
+      this.currentSession = session;
+    }
+    this.lastErrorMessage = message ?? "";
+    if (mode !== "L4") {
+      this.postChangeGeneration++;
+      if (this.postChangeState === "checking") {
+        this.postChangeState = "loginChosen";
+      }
+      this.isCheckingPostChangeSession = false;
+    } else {
+      if (this.postChangeState !== "limited" && this.postChangeState !== "checking") {
+        this.postChangeState = "idle";
+      }
+    }
+    this.render();
+  }
+
+  private render(): void {
+    this.container.innerHTML = "";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "login-container";
+
+    const card = document.createElement("div");
+    card.className = "login-card";
+
+    switch (this.mode) {
+      case "L1":
+      case "L2":
+        this.renderL1OrL2(card);
+        break;
+      case "L3":
+        this.renderL3(card);
+        break;
+      case "L4":
+        this.renderL4(card);
+        break;
+      case "L5":
+        this.renderL5(card);
+        break;
+    }
+
+    wrapper.appendChild(card);
+    this.container.appendChild(wrapper);
+  }
+
+  /** L1 (초기 폼) 및 L2 (인증 실패) 렌더링 */
+  private renderL1OrL2(card: HTMLElement): void {
+    // 헤더
+    const header = document.createElement("div");
+    header.className = "login-header";
+    header.innerHTML = `
+      <h1 class="login-title">
+        <span>교대근무관리 시스템</span>
+        ${this.appVersion ? `<span class="login-version">v${this.escape(this.appVersion)}</span>` : ""}
+      </h1>
+      <p class="login-subtitle">업무를 시작하려면 로그인해 주세요</p>
+    `;
+    card.appendChild(header);
+
+    // L2 에러 배너
+    if (this.mode === "L2") {
+      const banner = document.createElement("div");
+      banner.className = "error-banner";
+      banner.setAttribute("role", "alert");
+      banner.innerHTML = `
+        <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        <span>${this.escape(this.lastErrorMessage || "로그인 ID 또는 비밀번호가 올바르지 않습니다.")}</span>
+      `;
+      card.appendChild(banner);
+    }
+
+    // 복구 성공 임시 비밀번호 안내 (L5 복구 후 진입 시)
+    if (this.tempPasswordNotice) {
+      const notice = document.createElement("div");
+      notice.className = "temp-password-box";
+      notice.innerHTML = `
+        <div class="temp-password-header">계정 복구 완료 (임시 비밀번호 발급됨)</div>
+        <div class="temp-password-sub">로그인 후 반드시 비밀번호를 변경해 주세요.</div>
+        <div class="temp-password-value">${this.escape(this.tempPasswordNotice)}</div>
+      `;
+      card.appendChild(notice);
+      this.tempPasswordNotice = null; // 1회 노출 후 정리
+    }
+
+    // 비밀번호 변경 완료 안내 배너 (L1 - C31-03)
+    if (this.passwordChangedNotice) {
+      const banner = document.createElement("div");
+      banner.className = "password-changed-banner";
+      banner.setAttribute("role", "status");
+      banner.innerHTML = `
+        <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+        <span>${this.escape(this.passwordChangedNotice)}</span>
+      `;
+      card.appendChild(banner);
+      this.passwordChangedNotice = null; // 1회 노출 후 정리
+    }
+
+    // 로그인 폼
+    const form = document.createElement("form");
+    form.className = "login-form";
+
+    // ID 입력
+    const idGroup = document.createElement("div");
+    idGroup.className = "form-group";
+    idGroup.innerHTML = `
+      <label class="form-label" for="login-id">로그인 ID</label>
+      <input type="text" class="form-input ${this.mode === "L2" ? "error" : ""}" id="login-id" name="loginId" placeholder="로그인 ID를 입력하세요" autocomplete="username" required>
+    `;
+    form.appendChild(idGroup);
+
+    // 비밀번호 입력
+    const pwGroup = document.createElement("div");
+    pwGroup.className = "form-group";
+    pwGroup.innerHTML = `
+      <label class="form-label" for="login-password">비밀번호</label>
+      <div class="input-with-eye">
+        <input type="password" class="form-input ${this.mode === "L2" ? "error" : ""}" id="login-password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required>
+        <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+      </div>
+    `;
+    form.appendChild(pwGroup);
+
+    // 제출 버튼
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.className = "btn-primary login-submit-btn";
+    submitBtn.textContent = "로그인";
+    form.appendChild(submitBtn);
+
+    // 눈 토글 바인딩
+    const eyeBtn = pwGroup.querySelector(".btn-eye-toggle") as HTMLButtonElement;
+    const pwInput = pwGroup.querySelector("#login-password") as HTMLInputElement;
+    eyeBtn.addEventListener("click", () => {
+      const isPassword = pwInput.type === "password";
+      pwInput.type = isPassword ? "text" : "password";
+      eyeBtn.setAttribute("aria-label", isPassword ? "비밀번호 숨기기" : "비밀번호 표시");
+      const icon = eyeBtn.querySelector(".material-symbols-outlined");
+      if (icon) {
+        icon.textContent = isPassword ? "visibility_off" : "visibility";
+      }
+    });
+
+    // 도움말 및 복구 링크
+    const footerHelp = document.createElement("div");
+    footerHelp.className = "login-footer-help";
+    footerHelp.innerHTML = "비밀번호를 잊은 경우 관리자에게 문의하세요.";
+
+    if (this.recoveryConfigured) {
+      const recoveryBtn = document.createElement("button");
+      recoveryBtn.type = "button";
+      recoveryBtn.className = "login-recovery-link";
+      recoveryBtn.textContent = "[관리자 복구]";
+      recoveryBtn.addEventListener("click", () => {
+        this.setMode("L5");
+      });
+      footerHelp.appendChild(document.createTextNode(" "));
+      footerHelp.appendChild(recoveryBtn);
+    }
+    form.appendChild(footerHelp);
+
+    // 폼 제출 이벤트
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (this.isSubmitting) return;
+
+      const bridge = window.appBridge;
+      if (!bridge) {
+        this.setMode("L2", null, "서버 연결에 실패했습니다. 다시 시도해 주세요.");
+        return;
+      }
+
+      const idInput = form.querySelector("#login-id") as HTMLInputElement;
+      const loginId = idInput.value.trim();
+      const password = pwInput.value;
+
+      if (!loginId || !password) {
+        return;
+      }
+
+      this.isSubmitting = true;
+      submitBtn.disabled = true;
+
+      try {
+        const result = await bridge.signIn({ loginId, password });
+        if (result.ok && result.data) {
+          if (result.data.passwordChangeRequired) {
+            this.setMode("L4", result.data);
+          } else {
+            this.onLoginSuccess(result.data);
+          }
+        } else if (!result.ok) {
+          if (result.errorCode === "AUTH_ACCOUNT_LOCKED") {
+            this.setMode("L3", null, result.message);
+          } else {
+            // AUTH_INVALID_CREDENTIALS 또는 기타 오류 -> L2
+            this.setMode("L2", null, result.message || "로그인 ID 또는 비밀번호가 올바르지 않습니다.");
+          }
+        }
+      } catch (_err) {
+        this.setMode("L2", null, "서버 연결에 실패했습니다. 다시 시도해 주세요.");
+      } finally {
+        this.isSubmitting = false;
+        submitBtn.disabled = false;
+      }
+    });
+
+    card.appendChild(form);
+  }
+
+  /** L3 (계정 잠김) 렌더링 */
+  private renderL3(card: HTMLElement): void {
+    const body = document.createElement("div");
+    body.className = "lock-card-body";
+
+    body.innerHTML = `
+      <div class="lock-icon-wrapper">
+        <span class="material-symbols-outlined" aria-hidden="true">lock</span>
+      </div>
+      <div>
+        <h1 class="lock-title">계정이 잠겼습니다</h1>
+        <div class="lock-desc">
+          ${this.escape(this.lastErrorMessage || "비밀번호를 여러 번 잘못 입력해 계정이 잠겼습니다. 잠시 후에 다시 시도해 주세요.")}
+        </div>
+        <div class="lock-contact">
+          즉시 해제가 필요하면 관리자에게 문의하세요.
+        </div>
+      </div>
+    `;
+
+    const actions = document.createElement("div");
+    actions.className = "lock-actions";
+
+    const backBtn = document.createElement("button");
+    backBtn.type = "button";
+    backBtn.className = "btn-secondary w-full";
+    backBtn.textContent = "로그인 화면으로 돌아가기";
+    backBtn.addEventListener("click", () => {
+      this.setMode("L1");
+    });
+    actions.appendChild(backBtn);
+
+    if (this.recoveryConfigured) {
+      const recGuide = document.createElement("div");
+      recGuide.className = "lock-recovery-guide";
+      recGuide.innerHTML = "관리자 계정이 잠긴 경우 계정복구키로 복구할 수 있습니다. ";
+      const recLink = document.createElement("button");
+      recLink.type = "button";
+      recLink.className = "login-recovery-link";
+      recLink.textContent = "[계정복구]";
+      recLink.addEventListener("click", () => {
+        this.setMode("L5");
+      });
+      recGuide.appendChild(recLink);
+      actions.appendChild(recGuide);
+    }
+
+    body.appendChild(actions);
+    card.appendChild(body);
+  }
+
+  /** L4 (비밀번호 변경) 렌더링 */
+  private renderL4(card: HTMLElement): void {
+    if (this.postChangeState === "checking" || this.postChangeState === "limited") {
+      this.renderL4PostChangeVerification(card);
+      return;
+    }
+
+    const header = document.createElement("div");
+    header.className = "login-header";
+    header.innerHTML = `
+      <h1 class="login-title">
+        <span>교대근무관리 시스템</span>
+        ${this.appVersion ? `<span class="login-version">v${this.escape(this.appVersion)}</span>` : ""}
+      </h1>
+      <p class="login-subtitle">비밀번호 변경이 필요합니다</p>
+    `;
+    card.appendChild(header);
+
+    if (this.lastErrorMessage) {
+      const banner = document.createElement("div");
+      banner.className = "error-banner";
+      banner.setAttribute("role", "alert");
+      banner.innerHTML = `
+        <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        <span>${this.escape(this.lastErrorMessage)}</span>
+      `;
+      card.appendChild(banner);
+    }
+
+    const form = document.createElement("form");
+    form.className = "login-form";
+
+    // 현재 비밀번호
+    const curGroup = document.createElement("div");
+    curGroup.className = "form-group";
+    curGroup.innerHTML = `
+      <label class="form-label" for="l4-current-pw">현재 비밀번호</label>
+      <div class="input-with-eye">
+        <input type="password" class="form-input" id="l4-current-pw" required autocomplete="current-password">
+        <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+      </div>
+    `;
+    form.appendChild(curGroup);
+
+    // 새 비밀번호
+    const newGroup = document.createElement("div");
+    newGroup.className = "form-group";
+    newGroup.innerHTML = `
+      <label class="form-label" for="l4-new-pw">새 비밀번호</label>
+      <div class="input-with-eye">
+        <input type="password" class="form-input" id="l4-new-pw" required autocomplete="new-password">
+        <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+      </div>
+      <ul class="rule-list" id="l4-rule-list"></ul>
+    `;
+    form.appendChild(newGroup);
+
+    // 새 비밀번호 확인
+    const confGroup = document.createElement("div");
+    confGroup.className = "form-group";
+    confGroup.innerHTML = `
+      <label class="form-label" for="l4-confirm-pw">새 비밀번호 확인</label>
+      <div class="input-with-eye">
+        <input type="password" class="form-input" id="l4-confirm-pw" required autocomplete="new-password">
+        <button type="button" class="btn-eye-toggle" aria-label="비밀번호 표시"><span class="material-symbols-outlined">visibility</span></button>
+      </div>
+    `;
+    form.appendChild(confGroup);
+
+    const desc = document.createElement("div");
+    desc.className = "disabled-desc";
+    desc.id = "l4-rule-desc";
+    desc.textContent = "모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.";
+    form.appendChild(desc);
+
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.className = "btn-primary";
+    submitBtn.id = "l4-btn-submit";
+    submitBtn.setAttribute("aria-disabled", "true");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "비밀번호 변경";
+    form.appendChild(submitBtn);
+
+    // 눈 토글 바인딩
+    form.querySelectorAll(".input-with-eye").forEach((wrapper) => {
+      const input = wrapper.querySelector("input") as HTMLInputElement;
+      const btn = wrapper.querySelector(".btn-eye-toggle") as HTMLButtonElement;
+      btn.addEventListener("click", () => {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        btn.setAttribute("aria-label", isPassword ? "비밀번호 숨기기" : "비밀번호 표시");
+        const icon = btn.querySelector(".material-symbols-outlined");
+        if (icon) {
+          icon.textContent = isPassword ? "visibility_off" : "visibility";
+        }
+      });
+    });
+
+    // 실시간 규칙 검증
+    const newPwInput = newGroup.querySelector("#l4-new-pw") as HTMLInputElement;
+    const confPwInput = confGroup.querySelector("#l4-confirm-pw") as HTMLInputElement;
+    const curPwInput = curGroup.querySelector("#l4-current-pw") as HTMLInputElement;
+    const ruleList = newGroup.querySelector("#l4-rule-list") as HTMLUListElement;
+
+    const validate = () => {
+      const v = newPwInput.value;
+      const c = confPwInput.value;
+      const checks = getPasswordPolicyChecks(v);
+      const isStrong = isStrongPasswordSatisfied(v);
+      const isMatch = v.length > 0 && v === c;
+
+      ruleList.innerHTML = "";
+      for (const check of checks) {
+        const li = document.createElement("li");
+        li.className = `rule-item ${check.met ? "valid" : "invalid"}`;
+        li.innerHTML = `
+          <span class="material-symbols-outlined" aria-hidden="true">${check.met ? "check_circle" : "radio_button_unchecked"}</span>
+          <span class="sr-only">${check.met ? "충족 — " : "미충족 — "}</span>
+          ${this.escape(check.label)}
+        `;
+        ruleList.appendChild(li);
+      }
+
+      if (!isStrong) {
+        desc.textContent = "모든 비밀번호 규칙을 충족해야 변경할 수 있습니다.";
+        desc.classList.remove("policy-desc-hidden");
+        submitBtn.disabled = true;
+        submitBtn.setAttribute("aria-disabled", "true");
+      } else if (!isMatch) {
+        desc.textContent = "새 비밀번호와 확인 입력이 일치하지 않습니다.";
+        desc.classList.remove("policy-desc-hidden");
+        submitBtn.disabled = true;
+        submitBtn.setAttribute("aria-disabled", "true");
+      } else {
+        desc.textContent = "";
+        desc.classList.add("policy-desc-hidden");
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute("aria-disabled");
+      }
+    };
+
+    newPwInput.addEventListener("input", validate);
+    confPwInput.addEventListener("input", validate);
+    validate();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (this.postChangeState !== "idle" || submitBtn.disabled || this.isSubmitting) return;
+
+      const bridge = window.appBridge;
+      if (!bridge) {
+        this.lastErrorMessage = "서버 연결에 실패했습니다.";
+        this.render();
+        return;
+      }
+
+      const currentPassword = curPwInput.value;
+      const nextPassword = newPwInput.value;
+
+      this.isSubmitting = true;
+      submitBtn.disabled = true;
+
+      // 비밀번호 입력값 즉시 정리 (메모리 및 DOM 보호)
+      curPwInput.value = "";
+      newPwInput.value = "";
+      confPwInput.value = "";
+
+      try {
+        const result = await bridge.changePassword({ currentPassword, nextPassword });
+        this.isSubmitting = false;
+
+        if (result.ok && result.data) {
+          // R31-RACE-01: 변경 성공 직후 세션 재확인 - checking 상태 전이 및 새 세대 발급
+          this.postChangeGeneration++;
+          const currentGen = this.postChangeGeneration;
+          this.postChangeState = "checking";
+          this.lastErrorMessage = "";
+          this.render();
+          await this.verifyPostChangeSession(currentGen);
+        } else if (!result.ok) {
+          this.lastErrorMessage = result.message || "비밀번호 변경에 실패했습니다.";
+          this.render();
+        }
+      } catch (_err) {
+        this.isSubmitting = false;
+        // 결과 불명인 changePassword 요청 오류는 "변경 완료"로 단정하지 않고 실패 안내
+        this.lastErrorMessage = "비밀번호 변경 요청 중 통신 오류가 발생했습니다.";
+        this.render();
+      }
+    });
+
+    card.appendChild(form);
+  }
+
+  /** L4 세션 확인 화면 렌더링 (R31-RACE-01~04, R31-R2-01~03) */
+  private renderL4PostChangeVerification(card: HTMLElement): void {
+    const isChecking = this.postChangeState === "checking";
+
+    const container = document.createElement("div");
+    container.className = "session-verify-container";
+
+    const header = document.createElement("div");
+    header.className = "session-verify-icon-box";
+    header.innerHTML = `
+      <div class="session-verify-icon-wrapper">
+        <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+      </div>
+      <h1 class="session-verify-title">비밀번호 변경 완료</h1>
+    `;
+    container.appendChild(header);
+
+    if (!isChecking) {
+      const banner = document.createElement("div");
+      banner.className = "session-verify-banner";
+      banner.setAttribute("role", "alert");
+      banner.innerHTML = `
+        <span class="material-symbols-outlined" aria-hidden="true">warning</span>
+        <span>${this.escape(this.postChangeErrorMessage || "비밀번호는 정상적으로 변경되었으나 세션을 확인하지 못했습니다.")}</span>
+      `;
+      container.appendChild(banner);
+    }
+
+    const desc = document.createElement("p");
+    if (isChecking) {
+      desc.className = "session-verify-desc session-verify-checking";
+      desc.textContent = "비밀번호가 정상적으로 변경되었습니다. 세션 확인 중…";
+    } else {
+      desc.className = "session-verify-desc";
+      desc.textContent = "비밀번호는 서버에 이미 정상 반영되었습니다. 비밀번호를 다시 변경할 필요 없이 세션 상태를 다시 확인하거나 로그인 화면으로 이동해 주세요.";
+    }
+    container.appendChild(desc);
+
+    const actions = document.createElement("div");
+    actions.className = "session-verify-actions";
+
+    if (!isChecking) {
+      const retryBtn = document.createElement("button");
+      retryBtn.type = "button";
+      retryBtn.className = "btn-primary";
+      retryBtn.id = "btn-retry-session";
+      retryBtn.textContent = "세션 다시 확인";
+      retryBtn.addEventListener("click", async () => {
+        if (this.isCheckingPostChangeSession) return;
+        this.isCheckingPostChangeSession = true;
+        retryBtn.disabled = true;
+        retryBtn.textContent = "세션 확인 중…";
+        this.postChangeGeneration++;
+        const currentGen = this.postChangeGeneration;
+        this.postChangeState = "checking";
+        try {
+          await this.verifyPostChangeSession(currentGen);
+        } finally {
+          if (this.postChangeGeneration === currentGen && this.mode === "L4") {
+            this.isCheckingPostChangeSession = false;
+            retryBtn.disabled = false;
+            retryBtn.textContent = "세션 다시 확인";
+          }
+        }
+      });
+      actions.appendChild(retryBtn);
+    }
+
+    const loginBtn = document.createElement("button");
+    loginBtn.type = "button";
+    loginBtn.className = isChecking ? "btn-primary" : "btn-secondary";
+    loginBtn.id = "btn-go-to-login";
+    loginBtn.textContent = "로그인 화면으로 이동";
+    loginBtn.addEventListener("click", () => {
+      this.postChangeGeneration++;
+      this.postChangeState = "loginChosen";
+      this.isCheckingPostChangeSession = false;
+      this.isSubmitting = false;
+      this.passwordChangedNotice = "비밀번호가 정상적으로 변경되었습니다. 새 비밀번호로 다시 로그인해 주세요.";
+      this.setMode("L1");
+    });
+    actions.appendChild(loginBtn);
+
+    container.appendChild(actions);
+    card.appendChild(container);
+  }
+
+  /** 비밀번호 변경 성공 후 세션 상태 재조회 (R31-RACE-01~03) */
+  private async verifyPostChangeSession(gen: number): Promise<void> {
+    this.isCheckingPostChangeSession = true;
+    const bridge = window.appBridge;
+    if (!bridge) {
+      if (this.postChangeGeneration !== gen || this.postChangeState !== "checking" || this.mode !== "L4") {
+        return;
+      }
+      this.postChangeState = "limited";
+      this.postChangeErrorMessage = "서버 연결에 실패했습니다. 다시 시도해 주세요.";
+      this.isCheckingPostChangeSession = false;
+      this.render();
+      return;
+    }
+
+    try {
+      const sessionRes = await bridge.getSession();
+      if (this.postChangeGeneration !== gen || this.postChangeState !== "checking" || this.mode !== "L4") {
+        return;
+      }
+
+      if (sessionRes.ok && sessionRes.data && !sessionRes.data.passwordChangeRequired) {
+        // 확인 성공 -> 셸 정상 진입
+        this.postChangeState = "accepted";
+        this.isCheckingPostChangeSession = false;
+        this.onLoginSuccess(sessionRes.data);
+      } else if (sessionRes.ok && !sessionRes.data) {
+        // null -> 안내 있는 L1으로 전환
+        this.postChangeGeneration++;
+        this.postChangeState = "loginChosen";
+        this.isCheckingPostChangeSession = false;
+        this.passwordChangedNotice = "비밀번호가 정상적으로 변경되었습니다. 새 비밀번호로 다시 로그인해 주세요.";
+        this.setMode("L1");
+      } else {
+        // ok: false 또는 여전히 passwordChangeRequired -> 제한 화면 유지
+        this.postChangeState = "limited";
+        this.isCheckingPostChangeSession = false;
+        const msg = !sessionRes.ok ? sessionRes.message : "세션 확인 결과 비밀번호 변경이 아직 완료되지 않았습니다.";
+        this.postChangeErrorMessage = msg || "비밀번호는 정상적으로 변경되었으나 세션을 확인하지 못했습니다.";
+        this.render();
+      }
+    } catch (_err) {
+      if (this.postChangeGeneration !== gen || this.postChangeState !== "checking" || this.mode !== "L4") {
+        return;
+      }
+      this.postChangeState = "limited";
+      this.isCheckingPostChangeSession = false;
+      this.postChangeErrorMessage = "세션 확인 중 통신 오류가 발생했습니다. 다시 시도해 주세요.";
+      this.render();
+    } finally {
+      if (this.postChangeGeneration === gen) {
+        this.isCheckingPostChangeSession = false;
+      }
+    }
+  }
+
+  /** L5 (관리자 복구키) 렌더링 */
+  private renderL5(card: HTMLElement): void {
+    const header = document.createElement("div");
+    header.className = "login-header";
+    header.innerHTML = `
+      <div class="recovery-header-icon-box">
+        <div class="recovery-icon-wrapper">
+          <span class="material-symbols-outlined" aria-hidden="true">key</span>
+        </div>
+        <h1 class="login-title recovery-title">관리자 복구키 입력</h1>
+        <p class="login-subtitle">복구키는 시스템 설치 시 발급되며, 관리자만 보관하고 있습니다.</p>
+      </div>
+    `;
+    card.appendChild(header);
+
+    if (this.lastErrorMessage) {
+      const banner = document.createElement("div");
+      banner.className = "error-banner";
+      banner.setAttribute("role", "alert");
+      banner.innerHTML = `
+        <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        <span>${this.escape(this.lastErrorMessage)}</span>
+      `;
+      card.appendChild(banner);
+    }
+
+    const form = document.createElement("form");
+    form.className = "login-form";
+
+    const keyGroup = document.createElement("div");
+    keyGroup.className = "form-group";
+    keyGroup.innerHTML = `
+      <label class="form-label" for="l5-key">계정복구키</label>
+      <div class="input-with-eye">
+        <input type="password" class="form-input" id="l5-key" placeholder="계정복구키를 입력하세요" required>
+        <button type="button" class="btn-eye-toggle" aria-label="복구키 표시"><span class="material-symbols-outlined">visibility</span></button>
+      </div>
+    `;
+    form.appendChild(keyGroup);
+
+    const keyInput = keyGroup.querySelector("#l5-key") as HTMLInputElement;
+    const eyeBtn = keyGroup.querySelector(".btn-eye-toggle") as HTMLButtonElement;
+    eyeBtn.addEventListener("click", () => {
+      const isPassword = keyInput.type === "password";
+      keyInput.type = isPassword ? "text" : "password";
+      eyeBtn.setAttribute("aria-label", isPassword ? "복구키 숨기기" : "복구키 표시");
+      const icon = eyeBtn.querySelector(".material-symbols-outlined");
+      if (icon) {
+        icon.textContent = isPassword ? "visibility_off" : "visibility";
+      }
+    });
+
+    const btnGroup = document.createElement("div");
+    btnGroup.className = "recovery-btn-group";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.type = "button";
+    cancelBtn.className = "btn-secondary";
+    cancelBtn.textContent = "취소";
+    cancelBtn.addEventListener("click", () => {
+      this.lastErrorMessage = "";
+      this.setMode("L1");
+    });
+    btnGroup.appendChild(cancelBtn);
+
+    const submitBtn = document.createElement("button");
+    submitBtn.type = "submit";
+    submitBtn.className = "btn-primary";
+    submitBtn.textContent = "확인";
+    btnGroup.appendChild(submitBtn);
+
+    form.appendChild(btnGroup);
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const bridge = window.appBridge;
+      if (!bridge) {
+        this.lastErrorMessage = "서버 연결에 실패했습니다.";
+        this.render();
+        return;
+      }
+
+      const recoveryKey = keyInput.value.trim();
+      if (!recoveryKey || this.isSubmitting) return;
+
+      this.isSubmitting = true;
+      submitBtn.disabled = true;
+
+      try {
+        const result = await bridge.recoverAdminAccount({ recoveryKey });
+        if (result.ok && result.data) {
+          // 복구 성공: 임시 비밀번호를 한 번 안내하고 L1으로 복귀
+          this.tempPasswordNotice = result.data.temporaryPassword;
+          this.lastErrorMessage = "";
+          this.setMode("L1");
+        } else if (!result.ok) {
+          this.lastErrorMessage = result.message || "계정 복구에 실패했습니다.";
+          this.render();
+        }
+      } catch (_err) {
+        this.lastErrorMessage = "복구 요청 중 통신 오류가 발생했습니다.";
+        this.render();
+      } finally {
+        this.isSubmitting = false;
+        submitBtn.disabled = false;
+      }
+    });
+
+    card.appendChild(form);
+  }
+
+  private escape(str: string): string {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+}

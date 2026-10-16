@@ -1,0 +1,1 @@
+[CLI 거부] access-history-shared.mjs는 'contract-core' 케이스만 직접 실행할 수 있습니다: 'sol-unknown'

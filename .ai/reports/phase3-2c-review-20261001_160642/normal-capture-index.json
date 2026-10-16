@@ -1,0 +1,65 @@
+[
+  {
+    "case": "case-live-admin",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-live-admin\\run-20261001-161306-6xJOLN\\live-admin.png"
+    ]
+  },
+  {
+    "case": "case-list-fixture",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161311-FxpAqx\\list-fixture-201.png"
+    ]
+  },
+  {
+    "case": "case-empty-fixture",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-161315-f4ElU5\\empty-fixture-g2.png"
+    ]
+  },
+  {
+    "case": "case-filters",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-filters\\run-20261001-161320-bzCzH1\\filters-validation-lock.png"
+    ]
+  },
+  {
+    "case": "case-stale-response",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-20261001-161325-ElKq15\\stale-response-prevented.png"
+    ]
+  },
+  {
+    "case": "case-role-guard",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-20261001-161330-JnUk9z\\role-guard-operator-planner.png"
+    ]
+  },
+  {
+    "case": "case-errors",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-10-01T07-13-36-334Z\\errors-alert.png"
+    ]
+  },
+  {
+    "case": "case-session-expired",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-13-40-339Z\\session-expired-login.png"
+    ]
+  },
+  {
+    "case": "case-regression-shell",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-161346-oXSFBk\\admin-collapsed.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-161346-oXSFBk\\admin-expanded.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-161346-oXSFBk\\operator.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\shell\\run-20261001-161346-oXSFBk\\watch-stopped.png"
+    ]
+  },
+  {
+    "case": "case-regression-home",
+    "captures": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\home-live-admin\\run-20261001-161353-jvN5aJ\\home-live-admin.png"
+    ]
+  }
+]

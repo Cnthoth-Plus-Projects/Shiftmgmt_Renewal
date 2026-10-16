@@ -1,0 +1,16 @@
+{
+  "name": "lint",
+  "command": [
+    "npm.cmd",
+    "run",
+    "lint"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T07:11:09.115059+00:00",
+  "pid": 34184,
+  "rc": 0,
+  "end": "2026-10-01T07:11:17.923610+00:00",
+  "elapsedSeconds": 8.797,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\lint.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\lint.stderr.txt"
+}

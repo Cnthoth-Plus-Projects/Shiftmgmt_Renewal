@@ -1,0 +1,3548 @@
+{
+  "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "head": "160940f9aaeb6696538447f83b44658073e382f0",
+  "branch": "main",
+  "status": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history-negative.mjs",
+    "?? scripts/ui-checks/access-history-positive.mjs",
+    "?? scripts/ui-checks/access-history-shared.mjs",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "files": {
+    ".gitignore": {
+      "bytes": 91,
+      "sha256": "AF2E46A3A33AC3AEEDF19BD573B5ADD6B7A6C7F1C37D03F78B30D04370F7B36B"
+    },
+    "README.md": {
+      "bytes": 3068,
+      "sha256": "08FA6E3C8B5E142A88314C8F6C85ACF391ACA8C63AD48E5DD96C0C269D7AA277"
+    },
+    "VERSION": {
+      "bytes": 6,
+      "sha256": "E9DD8507F4BF0C6F42458E41AEA833AD0BD3F6127272335EEE9BF4D58541ED67"
+    },
+    "build/installer-update-data.ps1": {
+      "bytes": 2469,
+      "sha256": "F61AB24D11B98518BC0C53FFD2591D94CE87AD0C6146FC7D3D2C7181592869A4"
+    },
+    "docs/api-convention.md": {
+      "bytes": 35535,
+      "sha256": "E177DCF684B76E8CF7AC1074AF67F906AF66637D70EAC18708C66F9F379D7C97"
+    },
+    "docs/codebase-map.md": {
+      "bytes": 12802,
+      "sha256": "4B7FE910A7FA66FDB5427985B76BD85167EE653E85626EFA53861D2112F63794"
+    },
+    "eslint.config.mjs": {
+      "bytes": 1819,
+      "sha256": "DDE60037BCFA2382793E8F6702B819239CB0E28080A9D7CE3C62DC2C5BD3E744"
+    },
+    "package-lock.json": {
+      "bytes": 144389,
+      "sha256": "E60FE10E0AC19014C7EC5FBC18444E07511F429BA1A9638C7BE6D91DFA372743"
+    },
+    "package.json": {
+      "bytes": 1493,
+      "sha256": "162CDF6506031A846F6489BDF35CBDB86B099A659761472EFB1DE191045860E9"
+    },
+    "scripts/capture-screen.mjs": {
+      "bytes": 4498,
+      "sha256": "D594E7529F2B7653642D004B0765E6721B68817ED5A74134F47E9C8F2559F4E1"
+    },
+    "scripts/clean-server-build.mjs": {
+      "bytes": 3740,
+      "sha256": "D007B05BBF5DC8E580A33863938D5D5F43EE0800C2FFA199BE49F232EB84D2E1"
+    },
+    "scripts/copy-web-assets.mjs": {
+      "bytes": 4292,
+      "sha256": "68147FF528AF9C8C6606B31E348554DC48C433549EA330B2EF464AA6F2AF0115"
+    },
+    "scripts/dev.mjs": {
+      "bytes": 6847,
+      "sha256": "77A0B916937185E38390F6E833D96B0104FD83FE301CCE0C1D6421E8D5160B39"
+    },
+    "scripts/generate-built-in-excel-layouts.mjs": {
+      "bytes": 54895,
+      "sha256": "B2C5F946F8D791C699B3E7844688038D2AA507C5FF32A77B303C8C47B981F774"
+    },
+    "scripts/issue-account-recovery-key.mjs": {
+      "bytes": 5977,
+      "sha256": "36B0526C6754252BFDDB5C93B134C54BAB5F9C1B1AE7C9A2469C6CBDD935053D"
+    },
+    "scripts/lib/find-chrome.mjs": {
+      "bytes": 4039,
+      "sha256": "0EF7158EF9657BA3246E05C0662F2A60729C43F75E2E975E0A5C6591AC4A34D9"
+    },
+    "scripts/lib/release-publish-helpers.cjs": {
+      "bytes": 5264,
+      "sha256": "5ABA70811610F78D2E7DDF32C4C427E3C45DB7037C438C8B00D55CAAA8EE035B"
+    },
+    "scripts/lib/ui-check.mjs": {
+      "bytes": 12592,
+      "sha256": "91921E353C05ADEE41D4AA725164146F058A02831EDFE77C919E3B68B897266E"
+    },
+    "scripts/release-check.mjs": {
+      "bytes": 4301,
+      "sha256": "24E9D5CE66AB79D510DB6D260215AAFB494D359FFECCB595B646CD594CACCEB3"
+    },
+    "scripts/smoke-require.mjs": {
+      "bytes": 3887,
+      "sha256": "713FE80E3BB50705278EC7F85397C0971DD63309941E0EA2F28222ABDD4F0FEB"
+    },
+    "scripts/ui-checks/access-history-negative.mjs": {
+      "bytes": 7290,
+      "sha256": "17B2905F59E3DF3891355FAFF466ED4DEBCC3874AA3EFB062E209A4583B0E7BE"
+    },
+    "scripts/ui-checks/access-history-positive.mjs": {
+      "bytes": 18000,
+      "sha256": "BF5E8628576F917517B124B2722A0E2D2C1300BDC54F89906BD72909E29A974A"
+    },
+    "scripts/ui-checks/access-history-shared.mjs": {
+      "bytes": 29907,
+      "sha256": "38D3AF668282BC5B184A59815D5C0726D6F296C5906E428BD7543C4E7CCF7280"
+    },
+    "scripts/ui-checks/access-history.mjs": {
+      "bytes": 29899,
+      "sha256": "9E735F3ED1C8DD46D200AED10F53FE5256DFC2459BE87CFFF6C1D5E5F73C4313"
+    },
+    "scripts/ui-checks/home.mjs": {
+      "bytes": 46324,
+      "sha256": "2791E3FF6A67069213B48940728018C1329065B9487EFDE9E3064589950A74ED"
+    },
+    "scripts/ui-checks/login.mjs": {
+      "bytes": 33821,
+      "sha256": "F6A33A9584D4443AEECE9A552802A231097D699D5D8392CC121A2D695B81EE35"
+    },
+    "scripts/ui-checks/ready.mjs": {
+      "bytes": 1866,
+      "sha256": "5B0BBBB07023684882E483BE5287A40C9D1FDE46572AC64DD4C1AA859C5D9350"
+    },
+    "scripts/ui-checks/shell.mjs": {
+      "bytes": 22563,
+      "sha256": "671A061547168ED1059FDE751C0E86992B14280BDC30BD0A0E6FA34A0D492403"
+    },
+    "scripts/validate-codebase-map.mjs": {
+      "bytes": 2285,
+      "sha256": "9B8BAA501ACE2AABC56304B43415A92378B03745FB73E73664AD925AE13B0019"
+    },
+    "scripts/verify-v3-json-migration.mjs": {
+      "bytes": 28272,
+      "sha256": "AEA45B3DE715E2DFD876CC258B6BA4302D8121745B6CC01D0A2EF10B5F79A7A3"
+    },
+    "scripts/windows-dialog.ps1": {
+      "bytes": 8146,
+      "sha256": "19C1A720E40888F60B80EF6FAA48C081F9213CB6AE7A8D9853F4D83F3BF23E52"
+    },
+    "src/main/http/api-types.ts": {
+      "bytes": 1473,
+      "sha256": "2811C48DCA521E8B667A0467B8C75EF8D4CD5CE4DBD3AC42CFB1D8F23DCFE8F1"
+    },
+    "src/main/http/dialog-bridge.test.ts": {
+      "bytes": 4252,
+      "sha256": "1DD97B514553D2EEA7D0046E318B5B8E068FA777076AACBCFD634F71F195D5A3"
+    },
+    "src/main/http/dialog-bridge.ts": {
+      "bytes": 6501,
+      "sha256": "1ABD5701788AD94031A68A917DEB1D42212C73BA5DD9FD01DD4BE57522EC2C52"
+    },
+    "src/main/http/guards.ts": {
+      "bytes": 3392,
+      "sha256": "EE9B5C4102AED5ED0B4B41D0172A9251DB4EDAEA7799DDADD75FD0728332DC2A"
+    },
+    "src/main/http/health.ts": {
+      "bytes": 681,
+      "sha256": "9E9F0E117CE30FF40A700AEBDA8F60F38BE7F9024A3E616F40692709361AACAB"
+    },
+    "src/main/http/json.ts": {
+      "bytes": 5105,
+      "sha256": "1E7B68CD1C4D6D5CED926420E2BBB5EE8B7FE22B67D14454CCD9483D5CD111D6"
+    },
+    "src/main/http/route-registry.test.ts": {
+      "bytes": 5953,
+      "sha256": "3DAF6CCC789A4FE71DC147AB7A48DD1398B1F8280DD9CAD38BF45455C7CA2AAB"
+    },
+    "src/main/http/route-registry.ts": {
+      "bytes": 5099,
+      "sha256": "DC9E1CFCC556917E52AF28362D29C910932AD3FB7FACC763E13B959EA875D1C5"
+    },
+    "src/main/http/router.ts": {
+      "bytes": 1219,
+      "sha256": "DE6F11D2CB0549FB1813F2D992391C97FB66EF268FB8C55CAD278F73F1861223"
+    },
+    "src/main/http/routes/allowance-routes.test.ts": {
+      "bytes": 12539,
+      "sha256": "CFDDF5963052B09C27E2A5E064017A915E726E06577F99E03C60D5F5AB186B33"
+    },
+    "src/main/http/routes/allowance-routes.ts": {
+      "bytes": 6993,
+      "sha256": "F761D2EACCC26C9F3EDBC801688A308C4CF6194BF6B7FCB1ADCE70E3F2BF8B9E"
+    },
+    "src/main/http/routes/core-routes.test.ts": {
+      "bytes": 10144,
+      "sha256": "91619650024C977320515DB75AEBB0009AC8504134F7370631B863A2C946BA03"
+    },
+    "src/main/http/routes/core-routes.ts": {
+      "bytes": 8971,
+      "sha256": "D8D806F66F15BE739E335B8BE62F6ED7B0ED581698D726BB03EC3A273D05BA82"
+    },
+    "src/main/http/routes/index.ts": {
+      "bytes": 2007,
+      "sha256": "1B0D2B6F4D9AB5D126133111B34171216E1176586993C0D1AFC30828D919B3DA"
+    },
+    "src/main/http/routes/operations-routes.test.ts": {
+      "bytes": 52855,
+      "sha256": "8F93F4BE9E9E28E2C078FBB55C03520D5F728B68F11B319441D5B944184D7482"
+    },
+    "src/main/http/routes/operations-routes.ts": {
+      "bytes": 23104,
+      "sha256": "471B4CD59AA6DC1F8659749FD05CDB6525CE0CA8D390C497ABE204AE05875787"
+    },
+    "src/main/http/routes/performance-routes.test.ts": {
+      "bytes": 15233,
+      "sha256": "1551C785B5325E11AC3233FD1D7D2CCE36977404E76F06BAE0F6A69D39920E34"
+    },
+    "src/main/http/routes/performance-routes.ts": {
+      "bytes": 8832,
+      "sha256": "6FB3FFF06D10A64769E5515993C99BABA62304BB4D92F29F159678ACA0589103"
+    },
+    "src/main/http/routes/workforce-routes.test.ts": {
+      "bytes": 15465,
+      "sha256": "07D9C813C8D88ACF602419FA51B2A387F974341A5A30EAD307D6DDF0BA8ABF87"
+    },
+    "src/main/http/routes/workforce-routes.ts": {
+      "bytes": 13745,
+      "sha256": "DEE10839E87C5020ED5F73788E95E68E09107A4FA74E5BC1939B56A77D79B654"
+    },
+    "src/main/http/security-headers.ts": {
+      "bytes": 980,
+      "sha256": "E196A82993A9945BB63C906CF9FC2A11F03F1D7D666DD1DD1E3DCAEDBFE5FF17"
+    },
+    "src/main/http/session.test.ts": {
+      "bytes": 12411,
+      "sha256": "6C8BF746BD6B91DF31AA37A222527F740E8366A2D0C1CCCE0413DC5BEC62EC60"
+    },
+    "src/main/http/session.ts": {
+      "bytes": 10835,
+      "sha256": "C748AB13BD1B31499420381DF759F24BF26DA84A4CDABCC20F98154FA9B1C681"
+    },
+    "src/main/http/static-files.test.ts": {
+      "bytes": 5804,
+      "sha256": "E5819E14C7B049E3D87A849E01C3477EBB4E0A4A620B0B060EAEC07CFCD086F4"
+    },
+    "src/main/http/static-files.ts": {
+      "bytes": 4058,
+      "sha256": "D0FDB600BE42C205729236C7DCCE67489CDE8CECAD07DA168DCCD54C37072167"
+    },
+    "src/main/ipc/ipc-handler-helpers.test.ts": {
+      "bytes": 9123,
+      "sha256": "5AD8517A2877760BDAFC9DE96827912D30294F7AF47CC823BB66A14AEF50A426"
+    },
+    "src/main/ipc/ipc-handler-helpers.ts": {
+      "bytes": 6176,
+      "sha256": "76D0FC29E9E346F13546D38836662C3D17AAFB8AD20D46A08E0FAC4874B72554"
+    },
+    "src/main/runtime.test.ts": {
+      "bytes": 2702,
+      "sha256": "CA3B1AC15076F5DB04776D6F631544944CE92970DCF690943A9213E150C3AAE2"
+    },
+    "src/main/runtime.ts": {
+      "bytes": 5819,
+      "sha256": "2C622FC6308F8BED939165043C3430FD2EEF1D42348D69DFEB84809BFD96F143"
+    },
+    "src/main/server.test.ts": {
+      "bytes": 21124,
+      "sha256": "3D4FBB5446CB2C66D6CEF81F7B1132EE1F747D407B64B756D86EB18C71856BD1"
+    },
+    "src/main/server.ts": {
+      "bytes": 14146,
+      "sha256": "DDDF194B881FDA4AEFC0B0BBAFEA6A481491E747F8B90C48ACABD5946D11118E"
+    },
+    "src/main/services/access-log-service.test.ts": {
+      "bytes": 2947,
+      "sha256": "5EB6EBFF943C47F8F9ACAD48C091D6BFF04A27D3A59D9332C5C6504F073A9A0D"
+    },
+    "src/main/services/access-log-service.ts": {
+      "bytes": 5473,
+      "sha256": "324F6B0F8F4BA3B9F48288BBE0288961C789A9312833730730E2C8AA5A9A4F38"
+    },
+    "src/main/services/account-recovery-maintenance-script.test.ts": {
+      "bytes": 2724,
+      "sha256": "B9E8DB0F4A0C33A294CB0683A0677C89AF2CD92E381AD05778D97512580450E0"
+    },
+    "src/main/services/account-recovery-service.test.ts": {
+      "bytes": 4445,
+      "sha256": "B3DD31DD70ED5BB5501477154C8336E79122BAAF58A8F62BADE2FB5642674D6D"
+    },
+    "src/main/services/account-recovery-service.ts": {
+      "bytes": 9306,
+      "sha256": "BBA5AA9BEE02FAFC39BE01F2AF39ECCF65341FA6668FAE3FCD7B5243BBF2A090"
+    },
+    "src/main/services/allowance-approval-service.test.ts": {
+      "bytes": 20579,
+      "sha256": "EAB544EB06D179030FCE184656A3AEECF686A3D5B942A015FB2FC741030F7BD2"
+    },
+    "src/main/services/allowance-approval-service.ts": {
+      "bytes": 14976,
+      "sha256": "C2953991E6B409FD8E55737C5925153CD8E144DBB0BE72412B238FBB7C7ED015"
+    },
+    "src/main/services/allowance-document-export-history-service.ts": {
+      "bytes": 4028,
+      "sha256": "F190C5E8B36B719FA7A99A0125764439545DCE5B062964C27F74972938E48383"
+    },
+    "src/main/services/allowance-document-export-service.test.ts": {
+      "bytes": 106608,
+      "sha256": "886CEA90EDC5F795A2327016E1FD22B15515A9851BC53271D51FEB81F40E2130"
+    },
+    "src/main/services/allowance-document-export-service.ts": {
+      "bytes": 102964,
+      "sha256": "C2F523C99C6ACF42EADFAEA718C6D4CCEA67072E2E27885E12EDF6BD150A4EC4"
+    },
+    "src/main/services/allowance-document-pdf-service.test.ts": {
+      "bytes": 26972,
+      "sha256": "02AB947ACE4643663F075D407C459F4251D5268406FF84FDBEB969418B85CB01"
+    },
+    "src/main/services/allowance-document-pdf-service.ts": {
+      "bytes": 81131,
+      "sha256": "895259205EDBB727DF202CC11BC069CDA96F72D73FDCB3A049920C8FE217BF6C"
+    },
+    "src/main/services/allowance-preview-service.test.ts": {
+      "bytes": 1335,
+      "sha256": "4BCF7BA74AA8779E6CBC048A83DC8D5F677E5BA46BE23D4DE799137DCAAAA2EF"
+    },
+    "src/main/services/allowance-preview-service.ts": {
+      "bytes": 1798,
+      "sha256": "69EDFECBC6FE7170118AF758C52A455ACA47C0017559E9482141A4DC534F5450"
+    },
+    "src/main/services/allowance-proposal-approval-service.test.ts": {
+      "bytes": 8183,
+      "sha256": "79C7AA5D6F9AF8B7C47B13B449FC4E686EAC5F54F95CE0C1234E0B32C2D05872"
+    },
+    "src/main/services/allowance-proposal-approval-service.ts": {
+      "bytes": 10160,
+      "sha256": "578AFEEE7E2A2746A51169893D68E632F4560D135F64D258D63606A3059B3C78"
+    },
+    "src/main/services/app-settings-service.test.ts": {
+      "bytes": 5327,
+      "sha256": "321ABB668F73750239CADABC2402FBF5374D8C05891B6B635A4B46DA31373AC8"
+    },
+    "src/main/services/app-settings-service.ts": {
+      "bytes": 6115,
+      "sha256": "29FE87EDC1D00C8C27C9AF8B0F89CA5C99E6EF819D4AB4CC32BBEAF00CDB0EB1"
+    },
+    "src/main/services/app-settings-storage-service.test.ts": {
+      "bytes": 7850,
+      "sha256": "5CD8BF8DB2BBD384052D6C334B7F9B2623D7063C2A3B35F680B2329E2DC78636"
+    },
+    "src/main/services/app-settings-storage-service.ts": {
+      "bytes": 19100,
+      "sha256": "5263B343E8A5E87A73C29EE0F3A87C8A27B178650859356D7FA72AA500D732D9"
+    },
+    "src/main/services/approved-allowance-calculation-service.test.ts": {
+      "bytes": 16269,
+      "sha256": "34C6582EDD8EB0CEB954C9B77A821FB9B73A74F9BF46CE195249C8A8867BD37F"
+    },
+    "src/main/services/approved-allowance-calculation-service.ts": {
+      "bytes": 21270,
+      "sha256": "EB99CB512F2DCAE4A96698C3C57B5CF2D285D44E8E9CA35C98181D53A9D0CBF5"
+    },
+    "src/main/services/approved-allowance-rate-selection.test.ts": {
+      "bytes": 2243,
+      "sha256": "54B7A263E9DA8CA73547A66F284DA453EF4E855895017AFF7565A0C1D787FC57"
+    },
+    "src/main/services/attachment1-rank-master-data.test.ts": {
+      "bytes": 11547,
+      "sha256": "14573CABA9D979C6C00CF18E6CF5B30234A1FD905C80223813EEEF6FACB34078"
+    },
+    "src/main/services/attachment1-rank-name-fallback.test.ts": {
+      "bytes": 9332,
+      "sha256": "2F7E687F93682B9C1376248334897B561F68D2302DF1471BBFD76D17D77B62BB"
+    },
+    "src/main/services/attachment1-rank-pdf-column.test.ts": {
+      "bytes": 4569,
+      "sha256": "779B15489E4A52C1F3A62503F9584D1BA1E4080E3F3F18A3D2A6AD2601FC64FD"
+    },
+    "src/main/services/attachment1-rank-shipped-defect.test.ts": {
+      "bytes": 11203,
+      "sha256": "C0F58C645C032140C20D3CE8CAD6169416FDC86A43AC28C4572C39B9D33A7E02"
+    },
+    "src/main/services/auth-bootstrap-service.test.ts": {
+      "bytes": 4925,
+      "sha256": "90DF54678DE3B66059F730F40BE1CB3A73B67EC85D506F4B4CC989880F825E46"
+    },
+    "src/main/services/auth-bootstrap-service.ts": {
+      "bytes": 8932,
+      "sha256": "A908A8ACD6C8D018AEB0A02D3DAAF7196FE3DB008CF479242E9666B15C6B16BE"
+    },
+    "src/main/services/auth-password-service.test.ts": {
+      "bytes": 917,
+      "sha256": "2301C69444A49B4A8512E2D802CD139931CB937CFEC2B883BE02016EA0955A5C"
+    },
+    "src/main/services/auth-password-service.ts": {
+      "bytes": 2917,
+      "sha256": "C7962B3B328FE120DFE1E3C3828F8DEF9116B76C9E932D16E971634592A430A9"
+    },
+    "src/main/services/auth-seed-users.ts": {
+      "bytes": 1105,
+      "sha256": "83951C2D57BCC534E55C8A55A8E4C7F1BCC050269335A172E19AA01150125ECE"
+    },
+    "src/main/services/auth-service.test.ts": {
+      "bytes": 13369,
+      "sha256": "A107781FC2A80BC705BEEBACAB2F4E9102958DCC6F633E36855FAB40572C7EB7"
+    },
+    "src/main/services/auth-service.ts": {
+      "bytes": 7098,
+      "sha256": "FF27AE01B3FD3B12BA0116D6E4F746F274D932561C193BF7A32948B2C4403F3F"
+    },
+    "src/main/services/boramae-holiday-weekday-diagnosis.test.ts": {
+      "bytes": 11822,
+      "sha256": "BCE380AD250E89D028E2138CCE378DDB7B4D8B4D783E3BA6CE29001AE78B5CE7"
+    },
+    "src/main/services/boramae-holiday-weekend-crosscheck.test.ts": {
+      "bytes": 9101,
+      "sha256": "3CA726F5F02F546393E20651B901370C65035AD2D4FE81655947B5CA120CA214"
+    },
+    "src/main/services/built-in-excel-layout-service.test.ts": {
+      "bytes": 31904,
+      "sha256": "6618E5EFC644493B64813D5C6F107ACB6EE1665CBF1D8331FBF0B490E88E4C0B"
+    },
+    "src/main/services/built-in-excel-layout-service.ts": {
+      "bytes": 49190,
+      "sha256": "77E6F9348A6C5AB6B2D46C89F54896D9A2D78C151EE76AD53493235C06F71748"
+    },
+    "src/main/services/changed-slot-priority-rule.test.ts": {
+      "bytes": 17443,
+      "sha256": "9820A8B84AD5217979014C2F213959354A8E371291FDD8097877B2120681B429"
+    },
+    "src/main/services/dashboard-chart-export-service.test.ts": {
+      "bytes": 25605,
+      "sha256": "6D183613EEBD20937EA6247DB26C86189BC99DEBC6D51E9380945F52A3AE66AD"
+    },
+    "src/main/services/dashboard-chart-export-service.ts": {
+      "bytes": 33030,
+      "sha256": "9BEB03D5143E6677D9A478378862BBF319A72BC5D58FAB9F17822F96C2223C45"
+    },
+    "src/main/services/database-backup-service.test.ts": {
+      "bytes": 11690,
+      "sha256": "A012E70F17FAFB09030FDBD760F37FAC30E6953F276812D77F5EFD39AFADB693"
+    },
+    "src/main/services/database-backup-service.ts": {
+      "bytes": 7639,
+      "sha256": "E429FF69F069BF33264FCE17C566558530852D0D7B2550946FEA13B2CECC29CE"
+    },
+    "src/main/services/database-file-policy-service.test.ts": {
+      "bytes": 3232,
+      "sha256": "0337FC4F4C47A2CF33EC6305C5D8D248F1ADE691AA8099D6E735B96AF932BD2E"
+    },
+    "src/main/services/database-file-policy-service.ts": {
+      "bytes": 1732,
+      "sha256": "771DFF1A109D46C0210F2F1C13CFBB6546B96C38E5EE6C326DF178C264697EBB"
+    },
+    "src/main/services/database-migration-service.test.ts": {
+      "bytes": 69480,
+      "sha256": "C931D5222A43F2EBDA5E3C2BC291BC5E7915913422FC83367986EEBBBB3EEF04"
+    },
+    "src/main/services/database-migration-service.ts": {
+      "bytes": 89033,
+      "sha256": "AFE1B6A61B26203868D6753F0915EA5025B3EE0FAE09B59C243966D3FEA5B902"
+    },
+    "src/main/services/database-replacement-service.test.ts": {
+      "bytes": 5388,
+      "sha256": "C772BEEDB3B66FDD6F47376C7A0132D3DA2ECFFEA8025D4F5E5D99257C289911"
+    },
+    "src/main/services/database-replacement-service.ts": {
+      "bytes": 4770,
+      "sha256": "D13190A9BA4336E1E120282F19E45E45A77286A6712A5821618311FF1A213D43"
+    },
+    "src/main/services/document-brand-logo-service.test.ts": {
+      "bytes": 2112,
+      "sha256": "4A4E9737093C60035B7675BA382E11CF8F4F31056045DA70FD08029E58D7BBD2"
+    },
+    "src/main/services/document-brand-logo-service.ts": {
+      "bytes": 4866,
+      "sha256": "9EB5CE05F25DBC9107A402C923105B7246AE1E5969BDFA98F2253212CA6CCA4F"
+    },
+    "src/main/services/document-layout-definition-service.test.ts": {
+      "bytes": 48178,
+      "sha256": "41D54918DD55A2275D833F5C709998483A52F7496345F7BDB77E290E83B72AC4"
+    },
+    "src/main/services/document-layout-definition-service.ts": {
+      "bytes": 64896,
+      "sha256": "16DB58CDDCBF88AE857B86643225AE33B779607A015917BD4AE0EB7C23358B44"
+    },
+    "src/main/services/document-layout-excel-render-service.test.ts": {
+      "bytes": 26111,
+      "sha256": "6522F0B975E966C8E20D076F1BC01EAD9233C0873B311855FDF4FB48F559C4F8"
+    },
+    "src/main/services/document-layout-excel-render-service.ts": {
+      "bytes": 34300,
+      "sha256": "30304FE89BCC563714FE9C7603CA82630F72AEE42C6BAF98771EACA306BB9B0A"
+    },
+    "src/main/services/document-layout-preview-artifact-service.test.ts": {
+      "bytes": 22374,
+      "sha256": "05244594E34D596989C0D7FF3802E2C8CCF4443EE119FEAE0C10A18687CD204B"
+    },
+    "src/main/services/document-layout-preview-artifact-service.ts": {
+      "bytes": 14680,
+      "sha256": "5EB9940F6B62C2A95A31D12FE9162A8E2FCA2BC775C943169A679FDD10BAB2C9"
+    },
+    "src/main/services/document-layout-preview-service.test.ts": {
+      "bytes": 11617,
+      "sha256": "9ADF996B32A70943648B3752213295AD968522CF38CA8B4D35501BFF5148E282"
+    },
+    "src/main/services/document-layout-preview-service.ts": {
+      "bytes": 17566,
+      "sha256": "6EA4FF4482AD819B0CE85AAEB8984BA147A26E55EE933428F5F354CA8E2CCD10"
+    },
+    "src/main/services/document-layout-storage-service.test.ts": {
+      "bytes": 21349,
+      "sha256": "9BC1CA6C9CCBB78E0E1186E6F83D6EA9284895A2EACB0B82571DC01A4580C3FE"
+    },
+    "src/main/services/document-layout-storage-service.ts": {
+      "bytes": 12452,
+      "sha256": "1A2E105830081A79828E19194920C039FD44357E496D1806555FF268FAC0A41D"
+    },
+    "src/main/services/document-layouts/attachment1.json": {
+      "bytes": 553329,
+      "sha256": "7988109B857399EAD2C35352AF99B04A7F28F46812295E646E373C63537DCC16"
+    },
+    "src/main/services/document-layouts/attachment2.json": {
+      "bytes": 574440,
+      "sha256": "9BD0CC8102C0B9E229C8A16C48F4BFFC5BD3053A90C47BAB144142D648BEB3F0"
+    },
+    "src/main/services/document-layouts/proposal.json": {
+      "bytes": 135211,
+      "sha256": "0C55DCA2688A724EE3D91F07B089ADF497D3D9A651ED439726D56D53AC2EFF3D"
+    },
+    "src/main/services/document-layouts/schedule-template1.json": {
+      "bytes": 2605659,
+      "sha256": "61A5914B221F374A8AE16BD17BCE9D35D9F834C6083BF99D1243C39E4531BC60"
+    },
+    "src/main/services/document-layouts/schedule-template2.json": {
+      "bytes": 2831936,
+      "sha256": "4FE3A7D7D408229322BA4645A74838620F454110F477BAEFC2CAD7886730FDE4"
+    },
+    "src/main/services/document-template-canvas-service.test.ts": {
+      "bytes": 5284,
+      "sha256": "57A431E076F5CE03412665BB2B614F850E5CEBABD3F671282C272D717571E762"
+    },
+    "src/main/services/document-template-canvas-service.ts": {
+      "bytes": 9285,
+      "sha256": "176E200DD1D3E1484935450787DB891022F1BCD470F3D601EF08F78DEC07FC53"
+    },
+    "src/main/services/document-template-management-service.test.ts": {
+      "bytes": 10601,
+      "sha256": "44F70D50E25689CD8A664491CDAC3D7EE8C96BB9731A02375B3489787DD4B4E5"
+    },
+    "src/main/services/document-template-management-service.ts": {
+      "bytes": 14995,
+      "sha256": "CDD4CE16EB56E146738915EC3C24536B8A7E3BE1725C976A953F0ED74BC2042A"
+    },
+    "src/main/services/document-template-output-file-name-service.ts": {
+      "bytes": 3394,
+      "sha256": "93471079CE0D926A6F044BED3769CD8772FF5BA263C8E918E2F68B0719BC1732"
+    },
+    "src/main/services/document-template-preview-service.test.ts": {
+      "bytes": 5676,
+      "sha256": "9D9D6235332FF7DFF52A6F972CD00F5CE7B711170C0EA1B89E4918D8BC37ED14"
+    },
+    "src/main/services/document-template-preview-service.ts": {
+      "bytes": 11353,
+      "sha256": "5948164D4F2762872398C20C96A98A97BA48BED5F70587B8B475937F6EE54617"
+    },
+    "src/main/services/document-template-profile-service.ts": {
+      "bytes": 21432,
+      "sha256": "432A0224DA5A6689360BB44D5DC493AE3C5487A36A6DC76F6AF19246623E55E3"
+    },
+    "src/main/services/document-template-source-path-service.test.ts": {
+      "bytes": 1373,
+      "sha256": "D87B27CA0DCB974D555E24D28FA93AC111F4A370655184D67E68B837DCD0108D"
+    },
+    "src/main/services/document-template-source-path-service.ts": {
+      "bytes": 2962,
+      "sha256": "470D83FD966DEC1437292355894392938CF00E82FF870A4D6355C0FD77BBDCAE"
+    },
+    "src/main/services/document-template-style-apply-service.test.ts": {
+      "bytes": 1885,
+      "sha256": "0A1A9C735F82401F76F5AE543CC902305706B027801790A63A44018C46E10118"
+    },
+    "src/main/services/document-template-style-apply-service.ts": {
+      "bytes": 13977,
+      "sha256": "61D79B7F403C0248E3CC4A90B536977694986FB8C1893B7CFB8A53E668AE85FC"
+    },
+    "src/main/services/dongjak-hong-yuseong-verification.test.ts": {
+      "bytes": 15123,
+      "sha256": "747A79725FFEC68F4DAF5E31B03AF65BAD466262F249684B37F5A5547B67786D"
+    },
+    "src/main/services/employee-history-service.test.ts": {
+      "bytes": 13908,
+      "sha256": "5BB2FD627D0CDAA821AAD60707B11D2F2022D6AEF3CC38B276CD7559DCA6AE76"
+    },
+    "src/main/services/employee-history-service.ts": {
+      "bytes": 18919,
+      "sha256": "C4116B45F5707AA585A5790451A32336C8E17AF39549BBDE8432BC03013F8BA2"
+    },
+    "src/main/services/employee-storage-service.test.ts": {
+      "bytes": 11082,
+      "sha256": "0FBD3237300B5B625748F7E9BDFA2ADDB44704EC4F34B69CA1C0775E69DDA1FB"
+    },
+    "src/main/services/employee-storage-service.ts": {
+      "bytes": 20111,
+      "sha256": "F2B7DFD7A63D0139FDCA568D15D155B27BB9FCF75AE65CEDCCB0530256595BAE"
+    },
+    "src/main/services/excel-import-gap-campaign.test.ts": {
+      "bytes": 30364,
+      "sha256": "EFA688F26215E29B1E05C9408AE201755952D40122EC680D26E620BB6F0A0B6A"
+    },
+    "src/main/services/excel-import-stress-campaign.test.ts": {
+      "bytes": 9696,
+      "sha256": "FF518A3440CAE46C0DF7D05CCDFD17822C836243BCA508894B874F68E89B618D"
+    },
+    "src/main/services/excel-template-parser.test.ts": {
+      "bytes": 1463,
+      "sha256": "0810C7207FA8FC3EDBA57F905C859C1AB3E02783BDA1B59A61AAB4F040905E82"
+    },
+    "src/main/services/excel-template-parser.ts": {
+      "bytes": 3540,
+      "sha256": "DD490308AA035D0BABCE6D9998C1C387FEE05AED7E6AC65BF7115B3AA32C4CD0"
+    },
+    "src/main/services/file-watch-runtime-service.test.ts": {
+      "bytes": 5162,
+      "sha256": "DCEF395FA5D00C6289B0683803F8C1F03DD57B1CFC1828755C86E2893D5F972A"
+    },
+    "src/main/services/file-watch-runtime-service.ts": {
+      "bytes": 8233,
+      "sha256": "245F26BD04073FB2196BE4AAB5310CE34F834FE1333FC09A03CB2DC1AE4B844C"
+    },
+    "src/main/services/file-watch-service.test.ts": {
+      "bytes": 3957,
+      "sha256": "86DBFC5C17CED1F44F5255385A816C169B1BDB358820FB0C73EF6C1DA361D4D0"
+    },
+    "src/main/services/file-watch-service.ts": {
+      "bytes": 2926,
+      "sha256": "06C52E4F230A714F46E840A91A46269547691085718EC85FBFE6F836BD2B6645"
+    },
+    "src/main/services/holiday-allbase-followups.test.ts": {
+      "bytes": 4855,
+      "sha256": "803497911485D087DF0FFCE9DC48BA9BBC7628F1863DD8A70E2E815E1F56E187"
+    },
+    "src/main/services/holiday-api-service.test.ts": {
+      "bytes": 1263,
+      "sha256": "2712B3F62A11F5E2B1C8D8D2EDD8B20A0223CDDC64976A2015CFBF8319026B63"
+    },
+    "src/main/services/holiday-api-service.ts": {
+      "bytes": 2688,
+      "sha256": "FB42BD9CF2B70CCB2F94644CEF67F17B7E6D33A3E104A6EDCDA205DA504DE873"
+    },
+    "src/main/services/holiday-none-regular-credit.test.ts": {
+      "bytes": 7373,
+      "sha256": "7EAA7DEDB06C22EA4B6F0A0E90FEE2F41644DCEB7478F09E1B5313C3CB557515"
+    },
+    "src/main/services/holiday-substitute-cancellation-fix.test.ts": {
+      "bytes": 13375,
+      "sha256": "301BA884B1ACE4A03C8856DAA969B45BFA925A5742BC3F940351E58E55CCFB7A"
+    },
+    "src/main/services/holiday-substitute-redesign.test.ts": {
+      "bytes": 9289,
+      "sha256": "D99FD21ED0DC1616E92A49B2C6D1C8556BBBD8EC2A4E17A2F53D5EFAB992338E"
+    },
+    "src/main/services/installed-chrome-pdf-service.test.ts": {
+      "bytes": 14951,
+      "sha256": "786F7C094C878E7816C73EDAEE35197F3894F06E1E328BADF1DE4F90EF5EBE42"
+    },
+    "src/main/services/installed-chrome-pdf-service.ts": {
+      "bytes": 16172,
+      "sha256": "CF845EB5472A1AAD75776255BF6D2CF40646A95EB8918E0326AF53A94A0AFFB1"
+    },
+    "src/main/services/installer-update-data-script.test.ts": {
+      "bytes": 2452,
+      "sha256": "7E1C76302AAE94F2A0E718429BBED13CF91BDD00CAB0496C8B87EB0A00703C56"
+    },
+    "src/main/services/ipc-auth-guard-service.test.ts": {
+      "bytes": 4301,
+      "sha256": "650905C716BB6FE2F41E7CB12033A139484925987AEFB394FB762410D4EF5A89"
+    },
+    "src/main/services/ipc-auth-guard-service.ts": {
+      "bytes": 2742,
+      "sha256": "3E38398D8BE039799E036294AEF01CF6043047D815941BBB2884C7D62850D5A6"
+    },
+    "src/main/services/monthly-schedule-restore-service.test.ts": {
+      "bytes": 9294,
+      "sha256": "802DA6C37CF37D234C0062EA7BFC112773C80D484BEDE2389CB8D4EEB77DFEA5"
+    },
+    "src/main/services/monthly-schedule-restore-service.ts": {
+      "bytes": 24295,
+      "sha256": "166E362101CE59FF52325DEC8CE5AD3ECB2EB8C97181D8192655E14516E4DB89"
+    },
+    "src/main/services/monthly-schedule-storage-service.test.ts": {
+      "bytes": 6259,
+      "sha256": "EDA8E83250E01E2849438BABA2B4EE6113870B76E0652FFD1608B31AFD4E621D"
+    },
+    "src/main/services/monthly-schedule-storage-service.ts": {
+      "bytes": 9240,
+      "sha256": "4BB8568D40685627EE8C50D57F2AEFCFBE5A67D7BE27EE37BC1BAF1CC83C0C1D"
+    },
+    "src/main/services/operations-storage-service.test.ts": {
+      "bytes": 23637,
+      "sha256": "3ED99F368DF8D5EC3949E6BF1FB408B754B17857ACDB7D4C54CA70F912A5D532"
+    },
+    "src/main/services/operations-storage-service.ts": {
+      "bytes": 77749,
+      "sha256": "B67134AE95DA3CCE943E1A9A596539E569AAD70DF0E7DE460E298A5E8D1ACD68"
+    },
+    "src/main/services/performance-approval-flow-service.test.ts": {
+      "bytes": 32110,
+      "sha256": "104A5B31813FE1A562242E1E9075C5A49A84A219D3CEC667CC88173C23AE4F06"
+    },
+    "src/main/services/performance-approval-flow-service.ts": {
+      "bytes": 26458,
+      "sha256": "B705AA7D3F010C3DDBC095EA11494A6148541B80C7ED948D0C1C3A5D95E00B60"
+    },
+    "src/main/services/performance-approval-resolution-service.test.ts": {
+      "bytes": 11574,
+      "sha256": "496C56AABDE39CDF33E44E837F305E40DEE3F5C52E5A633F12E33265B0FFC260"
+    },
+    "src/main/services/performance-approval-resolution-service.ts": {
+      "bytes": 5752,
+      "sha256": "141C94C44832578796770946FCD4F68D16D9931FEE5CA1CF5A6550D4421F7FFF"
+    },
+    "src/main/services/performance-approval-service.test.ts": {
+      "bytes": 3709,
+      "sha256": "263D6BB03B234A11D13CF192642D1D4BF2576FB5AF9BD7294638FA9A199D2C34"
+    },
+    "src/main/services/performance-approval-service.ts": {
+      "bytes": 16031,
+      "sha256": "84619CEB3446DBE612BCBE19B0CB4CD4457E190357EF9C6970EB9D6A1F5CC0AD"
+    },
+    "src/main/services/performance-approval-snapshot-service.ts": {
+      "bytes": 7274,
+      "sha256": "D1115B009B47BDE0E49E7DB1FFBA635BD7FE18EC80B2765BFA41D9C030BEB7A9"
+    },
+    "src/main/services/performance-approved-row-management-service.test.ts": {
+      "bytes": 4581,
+      "sha256": "769D7043E2D06A7847DAF3E04D55ACB4E5365EC7B78167C5E4BA76E376EEF816"
+    },
+    "src/main/services/performance-approved-row-management-service.ts": {
+      "bytes": 2876,
+      "sha256": "FAEAB34D3B4237F00A73BFAC7742CF19AFD6A319C33E61BE6D491D73AD5AF007"
+    },
+    "src/main/services/performance-approved-row-visibility-service.ts": {
+      "bytes": 3482,
+      "sha256": "69318D5A5FF97EE627FBC611E96666D936DBD51BD8AEF9907D6ED27F2881F512"
+    },
+    "src/main/services/performance-archive-retention-service.test.ts": {
+      "bytes": 8308,
+      "sha256": "D63FEC63C4E22A2391B18CD8EE6591ACAA78FF66A36F5236AD5C9293B3B38056"
+    },
+    "src/main/services/performance-archive-retention-service.ts": {
+      "bytes": 4543,
+      "sha256": "0652DCF9746228FBAB875C9127D78E1D2D82C0EE57C01B6771478FAF12B2A979"
+    },
+    "src/main/services/performance-file-archive-service.ts": {
+      "bytes": 5835,
+      "sha256": "A68CDD1A82E9143F60F9311859D967C8EA2ABC7586028843D42F4D0BCA5CD1B0"
+    },
+    "src/main/services/performance-file-case-normalization.test.ts": {
+      "bytes": 2415,
+      "sha256": "747890B83F4D12D3AC2012E6C77EFAB27D9CD9CAA459757833B3611E3A3AAC00"
+    },
+    "src/main/services/performance-file-intake-service.test.ts": {
+      "bytes": 57479,
+      "sha256": "CEE10CBA7276497A163FDFB2AEE7491F10F114E5C1DF1E96D8107F8CA242DBDD"
+    },
+    "src/main/services/performance-file-intake-service.ts": {
+      "bytes": 33510,
+      "sha256": "D0FE5110CC78691891B6C1C866D726553CE99D7F3D23A0DCADAC15D4A36C5628"
+    },
+    "src/main/services/performance-file-metadata-service.test.ts": {
+      "bytes": 2944,
+      "sha256": "F598866CD8F4C6F31AC6B93D4B7B4BA4986E10A14974036233042F9B6CFF1DA3"
+    },
+    "src/main/services/performance-file-metadata-service.ts": {
+      "bytes": 1626,
+      "sha256": "7ABEB4392CB9E1148A044FE3A39498800C3E69E347FF484D6E468FA5935B5AA0"
+    },
+    "src/main/services/performance-file-storage-service.test.ts": {
+      "bytes": 8490,
+      "sha256": "38C2BFF645DE36392CBB0C3CCBBF31CE3A78FF622C6E1D4ACC790DCC88B9FF54"
+    },
+    "src/main/services/performance-file-storage-service.ts": {
+      "bytes": 29270,
+      "sha256": "DDDC00DDF09860CA1B0F78EE51C1CC4C22E62EEEC21073889052D76349DC8F3A"
+    },
+    "src/main/services/performance-holiday-gap-service.test.ts": {
+      "bytes": 3189,
+      "sha256": "A8FC7861291F6B9F2DA3DDE450C4138380B3F75A77947FB1E4A17C77EA3A59B5"
+    },
+    "src/main/services/performance-holiday-gap-service.ts": {
+      "bytes": 2769,
+      "sha256": "C28BB6A556E7CF58F577B2328330AAA8862E42A51512D864EE056AFDF75134E7"
+    },
+    "src/main/services/performance-legacy-name-normalization-service.test.ts": {
+      "bytes": 7374,
+      "sha256": "B635E01F3A2AB7D6CABA60882191BDDDA8CC9251EE5F449F1EBA9F8FC4541A45"
+    },
+    "src/main/services/performance-legacy-name-normalization-service.ts": {
+      "bytes": 8501,
+      "sha256": "9F28A853C72D34E82AC1D53D99C6E4D43AB0BEEFE9818F4D5B382C0B2649E2DF"
+    },
+    "src/main/services/performance-management-service.test.ts": {
+      "bytes": 36588,
+      "sha256": "737B4A58C4B4DE361EE30B124E7D650751FF0CB9D393269C8C7271E69C84B48F"
+    },
+    "src/main/services/performance-management-service.ts": {
+      "bytes": 29683,
+      "sha256": "8BAEDB9D4133397FDCE108E036C5A962029E7A9A194BFEE1917FCC31720CF8BC"
+    },
+    "src/main/services/performance-orphan-file-healing-service.test.ts": {
+      "bytes": 5203,
+      "sha256": "4C140B2A7EAA635C1E70C7626C932B8D7C178D1F1FF78DD64D256983F407D151"
+    },
+    "src/main/services/performance-orphan-file-healing-service.ts": {
+      "bytes": 5515,
+      "sha256": "E63993F4A1AF5CE326DC954CEC4963D1EF607ED19A129CF23ED52FB4FAF0B40A"
+    },
+    "src/main/services/performance-overtime-repair-service.test.ts": {
+      "bytes": 7413,
+      "sha256": "CC07F696ADB3D3BDCE37057E12233BB9E73065C2BD56CF81F4D76E3CD51291F2"
+    },
+    "src/main/services/performance-overtime-repair-service.ts": {
+      "bytes": 10066,
+      "sha256": "72C774A55FCA37412AFC1A77AD574977C61FE4B2CA2D42733D7258B05A12ED50"
+    },
+    "src/main/services/performance-queue-service.test.ts": {
+      "bytes": 5927,
+      "sha256": "9D7CA8AF4294E9CFDAA6E3CC720E46B99029F7A670770C12423779A334D71461"
+    },
+    "src/main/services/performance-queue-service.ts": {
+      "bytes": 4391,
+      "sha256": "5D83657CFF86BD535F98CCF1878E961CC15869D5E725420DDE4B9761CC52B576"
+    },
+    "src/main/services/performance-startup-recovery-service.ts": {
+      "bytes": 3501,
+      "sha256": "EBD4E5B031E442BA90BC689C48E6A16475DB58093BD12A39E4BE844BE85606FD"
+    },
+    "src/main/services/performance-startup-recovery-status-service.ts": {
+      "bytes": 1908,
+      "sha256": "00FC9C15CB3D2CB4523E4015D14D23183C4AD18FD59CCF2050E561245C08F4D9"
+    },
+    "src/main/services/performance-test-helpers.ts": {
+      "bytes": 16436,
+      "sha256": "25837DC1E6BC0D0685C54AB58449C474B6F1E4B4852EE0EFB18EA87176D0ED07"
+    },
+    "src/main/services/proposal-template-layout.ts": {
+      "bytes": 3005,
+      "sha256": "5C0603D41DB3D69AAFB4A5692364E8A5229A20ED309000264A4604E583A71FBD"
+    },
+    "src/main/services/release-history-service.test.ts": {
+      "bytes": 1809,
+      "sha256": "C254F0A8DA7658C13B13F84A01287C6021BE3FE325202FB9EAAA88F34418168A"
+    },
+    "src/main/services/release-history-service.ts": {
+      "bytes": 8039,
+      "sha256": "EC2B648CE2D8452F43F9CAE4223BD54875D78346040582DEB2CCD156DED0802C"
+    },
+    "src/main/services/release-publish-helpers.test.ts": {
+      "bytes": 3406,
+      "sha256": "E25C19702D3C1052366483CF26238F02972EAE5EFC8770C40131A5F5FB66984E"
+    },
+    "src/main/services/schedule-plan-adapter.test.ts": {
+      "bytes": 20538,
+      "sha256": "7BF95939214FED132CAB9F98C51649F019229D94DD076439C2DF473D0CEEBE82"
+    },
+    "src/main/services/schedule-plan-adapter.ts": {
+      "bytes": 34734,
+      "sha256": "36B7CCE3D7BF0F9B03A6CC5AEA99F7CE714C4253D5B7D66188703D669984430F"
+    },
+    "src/main/services/schedule-plan-export-history-service.test.ts": {
+      "bytes": 1598,
+      "sha256": "8CF397A2895D3242B3EBB5F0CF969811089F324BFEE6DF521B0F1547A76AA2AD"
+    },
+    "src/main/services/schedule-plan-export-history-service.ts": {
+      "bytes": 3804,
+      "sha256": "796C8FF5E70531ECF7341E35353FD7C2866A81EBC90FFEFC6E47EC5F2D739E9E"
+    },
+    "src/main/services/schedule-plan-export-service.test.ts": {
+      "bytes": 40817,
+      "sha256": "3B1528EABEF172BF722A59E17495887DD8DF7C3C82DC20D01A1E7B07D82E4553"
+    },
+    "src/main/services/schedule-plan-export-service.ts": {
+      "bytes": 6296,
+      "sha256": "E74890B221ED12EEEBDBB1E528BFD8C3509A0501135C6BD5FA1B0361BF156592"
+    },
+    "src/main/services/schedule-plan-preview-service.test.ts": {
+      "bytes": 12700,
+      "sha256": "4A046AFF42DA3712223A08204D2CC2FF0365D146B75F37435E1729C2BCF9D7AE"
+    },
+    "src/main/services/schedule-plan-preview-service.ts": {
+      "bytes": 19544,
+      "sha256": "544C9046B3BB577C9667B6E6E174D378148D1CB924826D99FAF194B1C0D3B0F6"
+    },
+    "src/main/services/schedule-plan-publish-service.test.ts": {
+      "bytes": 6176,
+      "sha256": "F1CCCEA1693468E845B52102CC91A67AAF96A9B230C543D015D4EF507BF858BE"
+    },
+    "src/main/services/schedule-plan-publish-service.ts": {
+      "bytes": 1580,
+      "sha256": "576A8FAB996F678ACEC0A666600ABD46AF1FB0A704AB492CE7D44F765A44AB09"
+    },
+    "src/main/services/schedule-plan-team-member-order.test.ts": {
+      "bytes": 7427,
+      "sha256": "F2357ED1DF80F9A09C0C0E4F09B6B7A3E6B8370BC49C3DE16E45EB56B6E65D12"
+    },
+    "src/main/services/schedule-plan-template-service.ts": {
+      "bytes": 2236,
+      "sha256": "A3D2F99D93AAE75C1854FE0B26B452565185EBBB0A428FA9C3BB53618EFB0FA7"
+    },
+    "src/main/services/schedule-return-performance-parser.test.ts": {
+      "bytes": 60412,
+      "sha256": "4119B76B8F0F3BA4478ABB26708C602464943FA612EB570FA681693EB139A1C5"
+    },
+    "src/main/services/schedule-return-performance-parser.ts": {
+      "bytes": 72324,
+      "sha256": "5F3D26DE70037D99F4602A4C72DCB5617B96B240AEE2B9F6349556CCEE6042A4"
+    },
+    "src/main/services/shift-pattern-storage-service.test.ts": {
+      "bytes": 36975,
+      "sha256": "429ECE493F84192DE641EE430406612698DFEA0A2A0C8E5146D1A73A4E06AB51"
+    },
+    "src/main/services/shift-pattern-storage-service.ts": {
+      "bytes": 46813,
+      "sha256": "8C874A94ADC51BAB354592FEDBB56F1368063BFCD2DC321BE776DEA11570AFF3"
+    },
+    "src/main/services/site-pattern-extraction-service.test.ts": {
+      "bytes": 5644,
+      "sha256": "E437EE2D7CDEF7C3B792AD0A0F29446CF35FEF4B4C74F593F260047C3585BA4D"
+    },
+    "src/main/services/site-pattern-extraction-service.ts": {
+      "bytes": 21491,
+      "sha256": "491999CE4E48735B24E61FE7E10F8F28E7D94FF7944FA395A072D1268159FEE6"
+    },
+    "src/main/services/site-storage-service.test.ts": {
+      "bytes": 3116,
+      "sha256": "85EFAD2AC1F5EA200C60E647AFEB7602BD8DB03BCA977A178C3E7BA052497675"
+    },
+    "src/main/services/site-storage-service.ts": {
+      "bytes": 6688,
+      "sha256": "9C86FE5D9EF405FF36442E5D3D2B310A2EA972EDF27260AFF7068E33DFC5ABF8"
+    },
+    "src/main/services/sqlite-storage-service.test.ts": {
+      "bytes": 15167,
+      "sha256": "2478959D4B1D800D3FDAF775123B5B75A68FB408A6DCE98B5D1576872FB90579"
+    },
+    "src/main/services/sqlite-storage-service.ts": {
+      "bytes": 38531,
+      "sha256": "0090AE4B06D77BBE95DC57CE3E13CEC718549D099A8F7B06F5B778652EC03D4B"
+    },
+    "src/main/services/substitute-allowance-team-policy.test.ts": {
+      "bytes": 9957,
+      "sha256": "8B65F9A647884941921D177A3DF7A64C164F8784A0636871B1EEE021B7D370BD"
+    },
+    "src/main/services/template-management-workflow.test.ts": {
+      "bytes": 5458,
+      "sha256": "1C1AB89A0C212E37DFD2AA3F5F785CE5E98396403A86C6DC5A234C4838FE2703"
+    },
+    "src/main/services/workforce-wage-bulk-update-service.test.ts": {
+      "bytes": 4202,
+      "sha256": "29DBFBB03168C5F971FA9D1649FD8DF8E418A4D1E0F1CFC6AFC7C431F3378B02"
+    },
+    "src/main/services/workforce-wage-bulk-update-service.ts": {
+      "bytes": 15633,
+      "sha256": "5DA6A3D908328C3C6D9202FEF6EBF4B993FAF464187075F3AF5FB06501CEF84D"
+    },
+    "src/renderer/assets/brand-logo-clean.png": {
+      "bytes": 164160,
+      "sha256": "48D24D72B6360738B30BBCB324914F20867993A4DA2B571C2138A521266CFA85"
+    },
+    "src/shared/bridge/channel-contracts.test.ts": {
+      "bytes": 3895,
+      "sha256": "A7BD8575E6E00FE2C4B7283FBD93E4ED3985C2A07B66AEC47665045BF5EE85C9"
+    },
+    "src/shared/bridge/channel-contracts.ts": {
+      "bytes": 23711,
+      "sha256": "84977FBD5AF8E2468F514574606A4DB6DDC24361C0A9997F66C19D2866498A11"
+    },
+    "src/shared/bridge/contracts.ts": {
+      "bytes": 34625,
+      "sha256": "6CDD89F98A917326F479A6C10E11416D555141347ED0FF01CACD6EFDCA900503"
+    },
+    "src/shared/config/app-brand.ts": {
+      "bytes": 349,
+      "sha256": "8CA87A0D76C1A5E1A309E549143D3C7135388267BEB512B1B2556825CEA32015"
+    },
+    "src/shared/config/auth-password-policy.ts": {
+      "bytes": 1699,
+      "sha256": "56E372B74D404D5FC8952D6833BFA0482EAA717930919D9301BA3AC3902D0553"
+    },
+    "src/shared/config/auth-session-policy.ts": {
+      "bytes": 573,
+      "sha256": "5F8F9898B2FB5CCD340DBFD68E02F0E33DFFD785E09A7882CED8A5F9C564368D"
+    },
+    "src/shared/config/routes.ts": {
+      "bytes": 164,
+      "sha256": "18479C1AACC6C96D7EE139089E53EAD69861B2792D1003A8A38E54B3631C0BBF"
+    },
+    "src/shared/domain/access-log.ts": {
+      "bytes": 3811,
+      "sha256": "525E2F622A9E1D7CF11791A3268E4953F7EE90DB3B15DD45ED03EED9501BB196"
+    },
+    "src/shared/domain/allowance-document.test.ts": {
+      "bytes": 723,
+      "sha256": "C794B31A72569EA5EE7B16FB896D146DEB9A12C0F15D50A429E03973A807798A"
+    },
+    "src/shared/domain/allowance-document.ts": {
+      "bytes": 1826,
+      "sha256": "198759C66173541A8524F56B3853C232D1935E5724900925F19EBC8414CB07B2"
+    },
+    "src/shared/domain/allowance-rate-fixtures.ts": {
+      "bytes": 1230,
+      "sha256": "5EC8EE9C816D44105073114EE1DD13F7F4DF7DA591DD5E41BA9596C503C7B22B"
+    },
+    "src/shared/domain/allowance-rate-impact.test.ts": {
+      "bytes": 2748,
+      "sha256": "9771582B4A907356CE039AD121C96354A1B4AB99E1BF5D3D167DDB462D6D9E7E"
+    },
+    "src/shared/domain/allowance-rate-impact.ts": {
+      "bytes": 3884,
+      "sha256": "BE47027B492FDCDC7D178AC43A84262BB7160A4230489204BD62A08FAD623ABE"
+    },
+    "src/shared/domain/allowance-rate-matrix.ts": {
+      "bytes": 5798,
+      "sha256": "F31156ECAFE465F0534BCE498DA8739D4423DFD346B10816C68A7C5D4A0309A6"
+    },
+    "src/shared/domain/allowance-rate-service.test.ts": {
+      "bytes": 1056,
+      "sha256": "03CC4ACC41604193DBDAA142ECE1E0E18781153EC65DAF9E24A2415695FCA77E"
+    },
+    "src/shared/domain/allowance-rate-service.ts": {
+      "bytes": 1265,
+      "sha256": "436AFD8D052DB633152AC288E8591F6D76619F1BBA1A92B7EA54BADBE8829AF2"
+    },
+    "src/shared/domain/allowance-service.test.ts": {
+      "bytes": 7449,
+      "sha256": "9B5DAA3771270F370E9186C4D493F08A9F8F5B01A56D18EB5A536176E4A4DA75"
+    },
+    "src/shared/domain/allowance-service.ts": {
+      "bytes": 5927,
+      "sha256": "0454B1455121DBE203B222F5AC0C1CE00C503AA54B99AA21026F0FDD756C0C07"
+    },
+    "src/shared/domain/allowance-workflow.ts": {
+      "bytes": 2785,
+      "sha256": "4789403069983965A3F9B047ABE82D8F65C61F15358F356E2F59FD8C806CE74D"
+    },
+    "src/shared/domain/app-update.ts": {
+      "bytes": 4109,
+      "sha256": "7241D88DC8B464C523C927B2FD1E2AB16AEE10620503D4CC4BD322AFB3286A7E"
+    },
+    "src/shared/domain/authorization.test.ts": {
+      "bytes": 4162,
+      "sha256": "700193D99D15402BAAD1D1A284F52BEB40646EC26E470C14837DF401C27C75E3"
+    },
+    "src/shared/domain/authorization.ts": {
+      "bytes": 1972,
+      "sha256": "786291B7156890FA3B4EA458CB00140CF22EE23B1ADF4AEB1917BD1906044526"
+    },
+    "src/shared/domain/boramae-holiday-verify-adversarial.test.ts": {
+      "bytes": 6265,
+      "sha256": "6DF0092FD7752F107EEEC75D0F848EBF1D4091D9B84BF33FF1BE246919515AB7"
+    },
+    "src/shared/domain/calculation-fixtures.ts": {
+      "bytes": 4757,
+      "sha256": "7F9E54962C865F7942572BE066C5156EF21D0AE77BB326D587F29CD7C7BA673B"
+    },
+    "src/shared/domain/calculation.test.ts": {
+      "bytes": 3516,
+      "sha256": "70D3C6D6A67568393F3B139E745324657E6827A32F2A8572572C092A6CB23A2E"
+    },
+    "src/shared/domain/calculation.ts": {
+      "bytes": 5972,
+      "sha256": "2A366BAF35902F5D5F07E8CD128BF7FD4E8645ED863E2A4E24429D50FBE09B28"
+    },
+    "src/shared/domain/changed-slot-priority-policy.test.ts": {
+      "bytes": 1760,
+      "sha256": "AE45C75077936D4CDE067C9EC38C98DEB9FC75D62628F78A354819579E778537"
+    },
+    "src/shared/domain/changed-slot-priority-policy.ts": {
+      "bytes": 1630,
+      "sha256": "8FA4C6537DC893171EC381C18E8B4A7CBDAB228D1239C9470ABDB4691E8A1F39"
+    },
+    "src/shared/domain/database-migration.test.ts": {
+      "bytes": 1258,
+      "sha256": "5DE1EF2162FAAF8BCA09D617678F7DD354E81357402C495D13F6F07F9560F9F7"
+    },
+    "src/shared/domain/database-migration.ts": {
+      "bytes": 615,
+      "sha256": "A38D57D176A801F77D3BD87F38F5628953B1413F786B04BE783930460B915851"
+    },
+    "src/shared/domain/document-layout.ts": {
+      "bytes": 5096,
+      "sha256": "682539197F0A64CF8D1F62CA3A01D44664A9E6564663FFFA3D22D3E4D1FCB898"
+    },
+    "src/shared/domain/document-template.ts": {
+      "bytes": 4093,
+      "sha256": "42EE2762DF3F22EBCA1EE8A39134115436DD9484C3D5A984B9BCD009EEEC5060"
+    },
+    "src/shared/domain/duty-type-catalog.test.ts": {
+      "bytes": 15089,
+      "sha256": "1A80E5BEFDE386681C56D5CB1EBE7D7E6AD716F7AFDE5D16C113260A785A2D46"
+    },
+    "src/shared/domain/duty-type-catalog.ts": {
+      "bytes": 9584,
+      "sha256": "E29D53EA5B4202E6454BCE9345330AA855EDDEE58AC200F03D18337582FE5660"
+    },
+    "src/shared/domain/employee-rank.test.ts": {
+      "bytes": 650,
+      "sha256": "5697308D40E633CF81C36290E9C40645703919FD2C5CF87F10DC5559AB5BDA46"
+    },
+    "src/shared/domain/employee-rank.ts": {
+      "bytes": 664,
+      "sha256": "1370D798A371960520314BB69DDB60EA708EE9A1E492B25F0FE62798C8F89DCD"
+    },
+    "src/shared/domain/employment-type.test.ts": {
+      "bytes": 1947,
+      "sha256": "E49633C52005FFBE7AB22DB2CDD46EA52AADD9152AB3A50A0CB897A915CC7CE1"
+    },
+    "src/shared/domain/employment-type.ts": {
+      "bytes": 1870,
+      "sha256": "7FFE1DC598CA0E85665C40C714539FB8D3A2D35BA6169F87660F414E95CDA948"
+    },
+    "src/shared/domain/model.ts": {
+      "bytes": 8762,
+      "sha256": "BFA6DA06B38B9FB373729AF0E05819E20B7ED022505B2D09969665F8F90E2722"
+    },
+    "src/shared/domain/monthly-schedule-draft.test.ts": {
+      "bytes": 35028,
+      "sha256": "E95788DD1A59EC2B6776D00141D1E2919E2A1482EAD9EA2607E028D151123AF2"
+    },
+    "src/shared/domain/monthly-schedule-draft.ts": {
+      "bytes": 16027,
+      "sha256": "0AAB6049C87BBA5346ACC1E29D4D552D184686D14F95E9A5FEA80A5490E8EBC2"
+    },
+    "src/shared/domain/performance-file.test.ts": {
+      "bytes": 5505,
+      "sha256": "A8DA7C2D60E3F8D2F70DC065D41C0574824CE5F5D5CFE7881A4D89C11F8F1BCC"
+    },
+    "src/shared/domain/performance-file.ts": {
+      "bytes": 15687,
+      "sha256": "E659B7FF2958823703124C4E6BC8B344E243D1660F7567EF9FAEE15BBD918396"
+    },
+    "src/shared/domain/rotation-index.test.ts": {
+      "bytes": 4512,
+      "sha256": "786C57B3988A8B57FB45F70F6CDBDFFC78987E703753E657F71EC9A07C59D8C1"
+    },
+    "src/shared/domain/rotation-index.ts": {
+      "bytes": 2129,
+      "sha256": "57EB7DD97FD804C8EF6CF4666A887ADC5ACEF72D038598C64BAFA4185000DB3E"
+    },
+    "src/shared/domain/rounding.test.ts": {
+      "bytes": 901,
+      "sha256": "BBD0FA8B0B76958FEB11E206336F6A3740D2EF0B80677A2B2726B70148C8D95D"
+    },
+    "src/shared/domain/rounding.ts": {
+      "bytes": 208,
+      "sha256": "BA1004DE89A8963CDF7BCF4E28E7797CF5692C7471584EFF1E1B100CA5C9AED3"
+    },
+    "src/shared/domain/schedule-plan.ts": {
+      "bytes": 2064,
+      "sha256": "CBBC43344D3AFBA9786E6BC6208F13A2E5213D8B8D146B882571B63F29FA6691"
+    },
+    "src/shared/domain/schedule-rule-warning.test.ts": {
+      "bytes": 2669,
+      "sha256": "6E72D053558FD9B90326686CA45079DD6B0EA0D748F42386423746F9A15E78AD"
+    },
+    "src/shared/domain/schedule-rule-warning.ts": {
+      "bytes": 9471,
+      "sha256": "4E9938945A522891BA78460B97F9F1B697D7DEEE5C4D2228E16F096ACBE7D0B8"
+    },
+    "src/shared/domain/shift-pattern-compression.test.ts": {
+      "bytes": 6769,
+      "sha256": "0334AA34A0B8F5B14498D14B5CDC7DB2AEBD4EBCD8BB0B5D1B7F17678282D629"
+    },
+    "src/shared/domain/shift-pattern-compression.ts": {
+      "bytes": 14599,
+      "sha256": "5FB2CAAE9AFF96A656E59C3F570E709AAE357414421C6E6D889C9373C6C5E627"
+    },
+    "src/shared/domain/shift-pattern-rotation-rules.test.ts": {
+      "bytes": 10890,
+      "sha256": "96358B8E3594F6CA824B2CFDF7598B62504C6141646CFDC5566A72C1542FD0F8"
+    },
+    "src/shared/domain/shift-pattern-version.test.ts": {
+      "bytes": 6155,
+      "sha256": "676D135098500C97BF4AA4AE36AD199A16D7CD1721B9CCE2F87B7C851A9183F9"
+    },
+    "src/shared/domain/shift-pattern-version.ts": {
+      "bytes": 5152,
+      "sha256": "0922644266FBC9569FB2EF34FA5A8813B943704962943E20BCA2848BFD4150C5"
+    },
+    "src/shared/domain/site-pattern-detection.test.ts": {
+      "bytes": 2187,
+      "sha256": "C56209285A716FFEBC9CA410786A2A6098C66A0FB7AD280917BC64158CD6127B"
+    },
+    "src/shared/domain/site-pattern-detection.ts": {
+      "bytes": 6335,
+      "sha256": "8BFA0708ECBFD4F0AD14B61210AD87632953510309F31343EFA9F473B316F14B"
+    },
+    "src/shared/domain/six-team-two-cycle-feasibility.test.ts": {
+      "bytes": 7291,
+      "sha256": "4ED2F733E2560FB9CDCDF758C86C851A11BA4525922AC826CC497726613102A9"
+    },
+    "src/shared/domain/substitute-allowance-policy.test.ts": {
+      "bytes": 5068,
+      "sha256": "7F08D3D51180394D276171B4E2F5686012C09E410D699431BFAE62FFDA695DC2"
+    },
+    "src/shared/domain/substitute-allowance-policy.ts": {
+      "bytes": 5619,
+      "sha256": "8EF1A77751AE82964324707C7AF201870A56BA6AF6C7D6E2A72C03C853556192"
+    },
+    "src/shared/domain/team-label.test.ts": {
+      "bytes": 1066,
+      "sha256": "9DBD571CCE07ADFD87DF5A9884682810233C7AA1E163FCC6BBC916530CB1CCEB"
+    },
+    "src/shared/domain/team-label.ts": {
+      "bytes": 1782,
+      "sha256": "8CAC6370B0A50D7504934EA1C51583CA163240D08EF4B7F35379A9A092E00206"
+    },
+    "src/shared/domain/team-membership.test.ts": {
+      "bytes": 5005,
+      "sha256": "A1858EA6D4FD50186D5ED3F421EA496BF2541E6801ECDAD5354CBA2E6A1A1C72"
+    },
+    "src/shared/domain/team-membership.ts": {
+      "bytes": 4142,
+      "sha256": "953C7A811C7F16A53E038B9BF4A75AF6F679CC578EDFB7F2FE8F7EA483DC130B"
+    },
+    "src/shared/domain/team-work-type.test.ts": {
+      "bytes": 1904,
+      "sha256": "A9875C826684AE88E3D7E6A9B0D8A062AC950C0A114ED916C97495FF2CCCAE79"
+    },
+    "src/shared/domain/team-work-type.ts": {
+      "bytes": 1706,
+      "sha256": "46731F28FA9087084B0D83B4D76F09154807AFB193465F2D958316E17FA45B50"
+    },
+    "src/shared/lib/excel-column.test.ts": {
+      "bytes": 1418,
+      "sha256": "E975000CEC150AA7FE8D0E9FAE8A0382893FC7F9DBBE35D34BF52D068476816C"
+    },
+    "src/shared/lib/excel-column.ts": {
+      "bytes": 1153,
+      "sha256": "B34A927412E1AE41EE3AB949193828A70342995B0F832F1BAE777612FEEAA030"
+    },
+    "src/shared/lib/formatCurrency.test.ts": {
+      "bytes": 364,
+      "sha256": "6EF2E566AF102F418BF37E1D0FABAF3EB38559EB3BE35CC56642F727D3BCC333"
+    },
+    "src/shared/lib/formatCurrency.ts": {
+      "bytes": 484,
+      "sha256": "F0AC2B331720DA945DD42BFEF24D128D81BBD1AEA98069A562E65B9FFDB2C1AE"
+    },
+    "src/shared/lib/local-date.ts": {
+      "bytes": 525,
+      "sha256": "1DF3C73EB70B89D858595A3AC67C5955039EA4EC7566D8AB071176A856016A94"
+    },
+    "src/test-utils/document-layout-semantic-snapshot.ts": {
+      "bytes": 5425,
+      "sha256": "6574881CE8F29C699EF969F8D234C2B5667CDA73ED1DD306B40EBB490137AF20"
+    },
+    "src/web/access-history.css": {
+      "bytes": 7261,
+      "sha256": "286A0DF91BB3B0EEDEEE7B21A01CA26521BB441051B23F3FF8C10F3381B1E8A1"
+    },
+    "src/web/app.ts": {
+      "bytes": 4038,
+      "sha256": "43E89426C0C56230D62939285E66CAFA7E54E270608267082849230B046EB431"
+    },
+    "src/web/bridge/app-bridge.test.ts": {
+      "bytes": 5727,
+      "sha256": "C056F38D4ECA7D465A8F3B5A5647C3C01011645A8E8A1B4582B3C7B6F8663C52"
+    },
+    "src/web/bridge/app-bridge.ts": {
+      "bytes": 4889,
+      "sha256": "EF175FDBAEA8657304AB1642CCCC520CEE3D753DB558D38FAAFCC2BFA49500B1"
+    },
+    "src/web/home.css": {
+      "bytes": 8518,
+      "sha256": "1AA323A7F2375AB874A66EFFA7E7176B1EC938670F2DE0CC5A482EBF07913DE8"
+    },
+    "src/web/index.html": {
+      "bytes": 601,
+      "sha256": "1E3AAE08F0D97B2D1F41E65A63E761180DA10BDE7C7BD0683462B629F41C8CE2"
+    },
+    "src/web/login.css": {
+      "bytes": 7082,
+      "sha256": "911232494F3A56738E82DC9F710301B2FF79E0F791AA4FF40671B8DCD1FD8931"
+    },
+    "src/web/screens/access-history-model.test.ts": {
+      "bytes": 10177,
+      "sha256": "29ED9EA2CC5637B36A475753F523EAD180F09BA029C7A3E9F681862F66871F3E"
+    },
+    "src/web/screens/access-history-model.ts": {
+      "bytes": 6786,
+      "sha256": "03C511282B010774CBEFAE9C0CC0377A8A5CBBEB4C70168663E1695E48765265"
+    },
+    "src/web/screens/access-history.ts": {
+      "bytes": 29601,
+      "sha256": "E6BB9E4A7487EB791F9534340A65F89C1B61D5B19F7014EB9C3F545E8FD25979"
+    },
+    "src/web/screens/home-model.test.ts": {
+      "bytes": 23459,
+      "sha256": "C1532B7A94464D3980339DFEBC8B0CA5B77B17C3105F224A3D7086666B6DE484"
+    },
+    "src/web/screens/home-model.ts": {
+      "bytes": 17248,
+      "sha256": "6A063074796B389F5AA8FE2294D67D7DB537B41AB22598924378FD1275389658"
+    },
+    "src/web/screens/home.ts": {
+      "bytes": 34757,
+      "sha256": "4F7E3D0CE51D23E55451C3A2E136F87B678D45BDAF001E828A5B42917C485865"
+    },
+    "src/web/screens/login.ts": {
+      "bytes": 30897,
+      "sha256": "D0D176C8CD833BCB1FF137A2635BE15AEAB793EC881B9B30C99783CE0CCAFC67"
+    },
+    "src/web/screens/shell.ts": {
+      "bytes": 16334,
+      "sha256": "27750E549BCACDFFD90C9404491C5D4DFC0301B37C10787ECE9D06BD483F2130"
+    },
+    "src/web/screens/status-bar.ts": {
+      "bytes": 10223,
+      "sha256": "0F007B1D2F21E1C0372AEB8845D5E74B45BAA4AF352CB35F748149ED92054A02"
+    },
+    "src/web/shell.css": {
+      "bytes": 5539,
+      "sha256": "DD708E050907ACB4EF48E70B15EAE8B18D1F342A928C1709681D670DB7D4BC67"
+    },
+    "src/web/styles.css": {
+      "bytes": 3303,
+      "sha256": "8C212AB3F65A7CCAD8514F27A13394AFE750FF320D7EFF263640A97398BEFAFF"
+    },
+    "test-fixtures/legacy-resources/release-history/v0.4.5/RELEASE_MANIFEST.json": {
+      "bytes": 3036,
+      "sha256": "B65F333A937D77F1C70756C6246495F63EB144D7E7B1D8A28A995D5EF31BA9D8"
+    },
+    "test-fixtures/legacy-resources/release-history/v0.4.6/RELEASE_MANIFEST.json": {
+      "bytes": 5157,
+      "sha256": "D37E306A7363D6392EB6F728E6FD9A4327C16EF3F65E6197D112BC5A9AA9995B"
+    },
+    "tsconfig.browser.json": {
+      "bytes": 512,
+      "sha256": "44972CFA55468D3DBA24C7F7E507907E5A3252DCD4B4B5E48033D3477FBEAF3F"
+    },
+    "tsconfig.server.json": {
+      "bytes": 487,
+      "sha256": "7D87224B9914AEB7B8BE8FC9E4ED228E55479F25D600D098A0F8A15F3C11B7B5"
+    },
+    "vitest.config.ts": {
+      "bytes": 519,
+      "sha256": "2ACC4FB32998B74161F8938E41C4321A9B7116F6CDBF13714AC162BB2E406C6A"
+    },
+    "vitest.setup.ts": {
+      "bytes": 181,
+      "sha256": "66B81AA9919013C8A4B368424AA27AC07179802DAB23FBB999D7B6C3EB410AF2"
+    },
+    "양식샘플/DT사업1팀 교대근무 조직 연장근로 수당 품의서_수정분.xlsx": {
+      "bytes": 41790,
+      "sha256": "D3055B29654F6602B612F222A55EEE8DF9806DA00CC3C316207BE3D199D6DAFF"
+    },
+    "양식샘플/근무표_샘플1.xlsx": {
+      "bytes": 30730,
+      "sha256": "D0D3EE7495BE51B96E244A5156665DBFD403E74FEF8E4333EC00C93EFD22218E"
+    },
+    "양식샘플/근무표_샘플2.xlsx": {
+      "bytes": 31450,
+      "sha256": "446FBF26C3B3529864003C5642A235F839B084C95C3012A2E3869C282D84F59D"
+    },
+    "양식샘플/근무표_템플릿1.xlsx": {
+      "bytes": 21727,
+      "sha256": "E09DA2FAA5571668F9BBC67C08D83CACBD89A6B86E4CC5028493A5A579F8F413"
+    },
+    "양식샘플/근무표_템플릿2.xlsx": {
+      "bytes": 21332,
+      "sha256": "75C374E55FF21335E51F1EB480D1E57814213EEB53B485CDE533C2A6EF86F2D0"
+    },
+    "양식샘플/별첨1_2026-04_수정본.xlsx": {
+      "bytes": 665801,
+      "sha256": "248A5A28BC6CBAD739F35D9252D56922556D625BE07EE120242EB0DFB0A5B4B7"
+    },
+    "양식샘플/별첨1_샘플.xlsx": {
+      "bytes": 27845,
+      "sha256": "5FC8CB2CFB5B8AE4F8E393E80E039E078ECC4A33C7979B57DF5954B7466AC224"
+    },
+    "양식샘플/별첨2_샘플.xlsx": {
+      "bytes": 19090,
+      "sha256": "AD0FE1CAD90A41F217A6582219FECD862E005B016D2427B98339323992A9FB56"
+    },
+    "양식샘플/품의서_2026-04_수정본.xlsx": {
+      "bytes": 37925,
+      "sha256": "D45C4F98EB08F78C51C613B309E1F54D4076A7C6B1F158CDBF2DB02726D3A057"
+    }
+  },
+  "timeUtc": "2026-10-13T04:50:27.116023+00:00",
+  "allowed": [
+    "scripts/ui-checks/access-history.mjs",
+    "scripts/ui-checks/access-history-shared.mjs"
+  ],
+  "control": {
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\baseline.json": {
+      "bytes": 64773,
+      "sha256": "189B304051EE90E94148DE3D6E3B13B1E607D3840C7FC6E47A7B6D4DE46E8933"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\component-probes.mjs": {
+      "bytes": 4467,
+      "sha256": "0FA2849223DD76020E2B0E696319BAF8C2831E2605D4E85FDE6841220B10DCC5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\execution.json": {
+      "bytes": 3918,
+      "sha256": "66C973A13D653C7A4D745ED2DE7B72C03E96BFE793148F677A61E5CBAF2F5494"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\gate-evidence.py": {
+      "bytes": 19393,
+      "sha256": "8ED284BCF771209C04BC84F27D64E84E34846C7F7416DDD06F4D2677ECF3DFBE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\ipc-probes.mjs": {
+      "bytes": 11632,
+      "sha256": "8A0E2E7B3D5338BAAD7BA20E69BC1007E134E3926F1CB6CCF2C65B72EC4AFACE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-preload.mjs": {
+      "bytes": 9464,
+      "sha256": "78DDB1BA0F07176CC8217D2B6D91AECA1028EBE7623DB0AB5DB1F39EA9AE549D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\runtime-probes.py": {
+      "bytes": 11976,
+      "sha256": "99936EF48641BBDC4050BE27217F5765DA67463C7777C60BA4D45B02632D3404"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v2\\STRATEGY.md": {
+      "bytes": 26710,
+      "sha256": "7E30C3F0987DFF4C531EC9CCE18F0378D5F5CEB1C80BB3DE2D5BF0685B5F640B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\baseline.json": {
+      "bytes": 68576,
+      "sha256": "8E24BC378E4FCA093A36AB902F04C92BD09567B78F7995AA030A60B5634C22E6"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\component-probes.mjs": {
+      "bytes": 6384,
+      "sha256": "7A5C242D0EE6429743D38D923ACF053D6D746D43EF889D9AB9B40942691942EC"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\execution.json": {
+      "bytes": 5092,
+      "sha256": "B2D297394AF8FA7C3D2C72A881B2BD4F713032DB48E905058C9E6257658AE86C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\gate-evidence.py": {
+      "bytes": 21988,
+      "sha256": "0464704230DE376908ADB910F821E3F015870733347A5C749ED2930C734FAA4A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\ipc-probes.mjs": {
+      "bytes": 13805,
+      "sha256": "DCC854B033C134017D1135B5C07FD6DBEE162B4393958B1B0A76400AC1B50F7E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\observer-canary.mjs": {
+      "bytes": 3307,
+      "sha256": "91436F247FD06E4A05936CCBB4A630B44B613ABDEC032C74294F41862EE6E299"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\observer-selfcheck.py": {
+      "bytes": 11866,
+      "sha256": "0B5D754F4A61B4004E77F64F84C466109C99E6922DA5DB8BA05E77C287E6EDE0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-preload.mjs": {
+      "bytes": 14396,
+      "sha256": "B2E4FCA5ABCB47506658786BCA0261359E444437E6D8D7954429DFC8FDAB5A8F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\runtime-probes.py": {
+      "bytes": 19264,
+      "sha256": "41256EBDC133F549B47FC5E80547861722A9446F0AF2C15C7B08173319D53247"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v3\\STRATEGY.md": {
+      "bytes": 14207,
+      "sha256": "636B31777C98D75757184A4491E45C8BD9C416C1146539A3051EC34272E1F86C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\baseline.json": {
+      "bytes": 71400,
+      "sha256": "86F9EEF2D499B88CD9717BE40C2E14139B57422A69C7CDEF5B5476F2D063B208"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\component-probes.mjs": {
+      "bytes": 6965,
+      "sha256": "AA844D76F2A84E1F77737BFF3FEBC254CEAC604F6307FF5E0E70E4F9043E888B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\execution.json": {
+      "bytes": 5544,
+      "sha256": "BF35D6B048B436DCEDEB297E2751A2ED5E5F4804C2546FEBAB5EB19BBF76B280"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\gate-evidence.py": {
+      "bytes": 25751,
+      "sha256": "21D88C1662D2EE87D89BFA22332255466BEBE6E3C84F2B15E57AB4BB64314B84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\ipc-probes.mjs": {
+      "bytes": 14426,
+      "sha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\observer-canary.mjs": {
+      "bytes": 3702,
+      "sha256": "901DEDFFF555061F0A435B68B799FFB4B61ADA63D9717D03B5ED350F39B3F4F2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\observer-selfcheck.py": {
+      "bytes": 12270,
+      "sha256": "96B93D98DBB292E589FFCD92245CF23A16E0DE6E343A4BA6A9405EBAFBEA4093"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\partial-preload.mjs": {
+      "bytes": 3848,
+      "sha256": "9844BBA1129BDBB9E13B259A2E2A41695EA1ACBE04415488677331263B88354D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\partial-probes.mjs": {
+      "bytes": 10882,
+      "sha256": "9F6B4B552D3970AD2C87263526289083DE3E653D3D4C17FAFA42AC028B7C7732"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\runtime-preload.mjs": {
+      "bytes": 16013,
+      "sha256": "CA332C0049C2E369217CC7656B01490D7D2B2BB7D6E82D8D821C3B50A06CEE57"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\runtime-probes.py": {
+      "bytes": 24173,
+      "sha256": "98386DD973DA86EF8BB8BFAA1F46090E510528D29BC8FEC72735F2C46862A063"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v4\\STRATEGY.md": {
+      "bytes": 16810,
+      "sha256": "FF55D8ABA935829278ABAE4138D062E7115DB4FFC263A3BF237E214BCF3974C1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\baseline.json": {
+      "bytes": 111943,
+      "sha256": "EB224ABFAC5B1898A734CEDED34336A3EA0B3ECCDC29A4DBE6F82C0FAB39CC6E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\component-probes.mjs": {
+      "bytes": 7877,
+      "sha256": "4BEF28AACB8DA6CFDB48DEC822E96AF3CC387985CE7D8923B308D1F0515449A0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\evidence-v5.py": {
+      "bytes": 12337,
+      "sha256": "45BDBB2AE8D47A4CAC6BE1C5BCD18EE5C753B34612E0BEF934991EA24D0985F9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json": {
+      "bytes": 6862,
+      "sha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\gate-evidence.py": {
+      "bytes": 26638,
+      "sha256": "16E11984E3449545CBAF44BDC83C472D825CFDF2CB1F4C8C4AB2466A3C3EBC5C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\ipc-probes.mjs": {
+      "bytes": 14426,
+      "sha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\observer-canary.mjs": {
+      "bytes": 5010,
+      "sha256": "5E7A25618BA2B58C7D5922680DA6A5541D51D773F1ADC799832074AD14D2BE0C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\observer-selfcheck.py": {
+      "bytes": 13876,
+      "sha256": "D6D6CC1927DC43D9F60B75546B50FB3F0808A1D14C622F44554B86797CE76675"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\partial-preload.mjs": {
+      "bytes": 4681,
+      "sha256": "D063F2516CBBFF31E14D6F4802510F35E30CECBB5AE1317A43AFAA852DE00957"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\partial-probes.mjs": {
+      "bytes": 12344,
+      "sha256": "16F0C8741AEC81BD8ECF734E84BD9AF689BDF74F98E602ABCA99017E56874B9E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-preload.mjs": {
+      "bytes": 17212,
+      "sha256": "07AC1DD16CD97BE5050466643F0F5E8895F51C51AE6A3C733607ECEA917FDD45"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\runtime-probes.py": {
+      "bytes": 25710,
+      "sha256": "84AF35E0DE14276F4701629D141669523226469C080545A10B5B7AC5AD6E6B32"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\STRATEGY.md": {
+      "bytes": 16841,
+      "sha256": "212C516A9879263F5DC8AC4409D47689E18DDCEBFA493C8DED374232FFB242FA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\baseline.json": {
+      "bytes": 128778,
+      "sha256": "45C56DB27091804BDC1DBBC83049123F9EE135799B659616F7528EAC245C3C3D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\component-probes.mjs": {
+      "bytes": 7877,
+      "sha256": "C5520F7A23E6C40E5E59E5FD22E26C4D8916BCE517711B8D2AB7ABB594AE3B99"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\evidence-v6.py": {
+      "bytes": 16290,
+      "sha256": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\execution.json": {
+      "bytes": 7429,
+      "sha256": "9109D44EA31DA576720AEF3A2241FBECF42CDE5205736EB54969119D4E1FCEDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\gate-evidence.py": {
+      "bytes": 26697,
+      "sha256": "E365B4C93DF1D745316C69AA6FD7F3E2D9E5B6AC6B8D7285B673D3693ED74B31"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\ipc-probes.mjs": {
+      "bytes": 14426,
+      "sha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\observer-canary.mjs": {
+      "bytes": 8464,
+      "sha256": "286B0D22FA7C57A82173D1FFCCCFA82014445EC1251058D839C2D45A833BF318"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\observer-selfcheck.py": {
+      "bytes": 16207,
+      "sha256": "7CD74BA370E3410BFAD38D98D15C168605A9326280A36F17A157DD6F6A6DF39F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\partial-preload.mjs": {
+      "bytes": 7176,
+      "sha256": "1F1EAE161E3386B108740A9185229FDDFAD7B79EEC5A5E42F6451FA4DD55809B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\partial-probes.mjs": {
+      "bytes": 12912,
+      "sha256": "A0178B83954AC2822B7750509278BA471BADB4141C74B2BB5862224C494FF36B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\runtime-preload.mjs": {
+      "bytes": 20345,
+      "sha256": "825D1EEB5D087604F3CED455A3FD16FA9C3B6068658B00566121AFF71C88F943"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\runtime-probes.py": {
+      "bytes": 33804,
+      "sha256": "09B8F2DA751D1BCA283E5D4D8A13773DFB3AFA4B8C81005A871E67C955E70F3E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v6\\STRATEGY.md": {
+      "bytes": 17234,
+      "sha256": "8F7AA5C30670F9A3505AD9E9C4D3D44723EF1A8891BEFA11D4D660826988A3C3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\component-probes.mjs": {
+      "bytes": 7877,
+      "sha256": "39C4559D712665C4B56E1BD4870F556A22DB722C7D0BC97BCE18E3C1E9F14B62"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\evidence-v7.py": {
+      "bytes": 16290,
+      "sha256": "50D86624D1FE94E3935B0F5707A8F3373C7D97DFD887451948A2AA782A079D03"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\execution.json": {
+      "bytes": 7782,
+      "sha256": "3BEACF9A206E550A765E9040EA6FE49BF510740D9A9A8D57C82F08A6EF1A13B9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\frozen-shared.json": {
+      "bytes": 7433,
+      "sha256": "5EEC6E933B2A555D42CBC31E31FF0A8F8C46239F192011C9FCB7076513C7ECDA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\gate-evidence.py": {
+      "bytes": 26697,
+      "sha256": "3F58D07C17DC0980EBF950FCDA5AA39A13DA3F16BCAD4010F497DE436C0A5291"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\implementation-checks.py": {
+      "bytes": 6244,
+      "sha256": "792E2840BF08E6D02DAE3DFA346A0C9C24595AFE8B46F0688CCB2135BD66C963"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\ipc-probes.mjs": {
+      "bytes": 14426,
+      "sha256": "3794EEE74E9CEFDA58777D562F3E15D032CAB6D5C1C1B3B44E3C51E319CC2A0B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-canary.mjs": {
+      "bytes": 5312,
+      "sha256": "C73768F302AE40AA4E7572972C92CF7482F33576C0227FD02BBF16ED7BDA1DAB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-extension.mjs": {
+      "bytes": 5280,
+      "sha256": "E700B3CA2B50FEF8C3D32A018B88C04B88CCC630C4C1474E38987DDBB566E36D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-preload.mjs": {
+      "bytes": 25626,
+      "sha256": "0372FE03729F23B8A5E9436E2AFF3A898DD723AF8FDDB729042F4C7547095C49"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-probes.py": {
+      "bytes": 19216,
+      "sha256": "0985EE5280D9E0044920528EBCFF2388013D396C0E8875DE025DD515EC72B2FD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\observer-canary.mjs": {
+      "bytes": 8464,
+      "sha256": "3C5CC18435FB06E5A7DB7701426C11947853DD6B5647A9BE9A37BE552C10B6FF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\observer-selfcheck.py": {
+      "bytes": 16207,
+      "sha256": "376AF09920F46305CD2A4FDB4116DB5C8CDA777E2B58D2F2F44DBFA0C16FA786"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\partial-preload.mjs": {
+      "bytes": 7176,
+      "sha256": "1F1EAE161E3386B108740A9185229FDDFAD7B79EEC5A5E42F6451FA4DD55809B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\partial-probes.mjs": {
+      "bytes": 12908,
+      "sha256": "81600E6C56BB09F02A384B4330A91639815D4904C24D703844F83BE9DC89B240"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\replay-v6.py": {
+      "bytes": 2185,
+      "sha256": "C402297B5CD74478BC306907032AD036A4884EA01B9A8844CCE24168CE646E3E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\runtime-preload.mjs": {
+      "bytes": 20345,
+      "sha256": "90DFF6BD959035EA1CF3AAF10B51CE91D96995525CDA56A42CE7CEAE946C99EE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\runtime-probes.py": {
+      "bytes": 33804,
+      "sha256": "BA60E7F5AC583FB87BAB819E4BD7FD0F9991C9DC45779D9BCF18C27BE6FDB538"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\STRATEGY.md": {
+      "bytes": 12057,
+      "sha256": "FAE231D6D81E58D7FAF52BCFA02E48320ED88419A96C82011E6F9D066600E14F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\baseline.json": {
+      "bytes": 61201,
+      "sha256": "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json": {
+      "bytes": 29515,
+      "sha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\HANDOFF.preview.md": {
+      "bytes": 29974,
+      "sha256": "588DBC12078DAE556F243F17F016227F311F4C44465E765DFAE1D091D2BD464E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\issue-packet.py": {
+      "bytes": 41869,
+      "sha256": "54D276C723A312EB4C2BDAE7BB541073C4D3C5EA213350655AB6731889E198C6"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\pending-dispatch.json": {
+      "bytes": 2256,
+      "sha256": "50FB05204A2B5A89835D5B632E51BEC737BBDCAAEFAB09DD3150EDA60EE5A934"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\prepare-packet.py": {
+      "bytes": 29213,
+      "sha256": "E0EC6D8AD6F18AC433AD8B2A334D89ED13E6A716C8D8598F92F0EE0569686B0E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\STRATEGY.md": {
+      "bytes": 26069,
+      "sha256": "0A6136FD23F989F7065993449F8A705CD4047FA358248218BB0719497B9F12D1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py": {
+      "bytes": 19880,
+      "sha256": "24244C9C2098F1C587BE633FF017979CB1EE982C38038A6FDC90F752A921A954"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\current-state.md": {
+      "bytes": 193394,
+      "sha256": "237497617BBF8CF7DA488697C0E33DFA1103001BC4962C7A456597983EB5C9F0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\GEMINI_HANDOFF_TEMPLATE.md": {
+      "bytes": 7503,
+      "sha256": "1C44BE203370FD9204A0CAB36E921931B99A99C965F8B96212F3E6661CDFC409"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\HARNESS.md": {
+      "bytes": 9347,
+      "sha256": "7856E7A72158423648FEAAD7935533C3B2D2AB6BCE2A4C7E21F3620939659805"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\lessons\\verifier-measurements-and-output-isolation.md": {
+      "bytes": 1989,
+      "sha256": "37F70052FF079007C2822E178AE3328947AE334B8D5099E32E30FF4644DB4E4A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-replan-20261012_110625\\observer-selfcheck-result.json": {
+      "bytes": 55934,
+      "sha256": "5F28B26C72EA48C7501C8BFBBD167AFAE1DA4E8E8C8C3ACE6C17AA052DBBB81D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\control-validation.json": {
+      "bytes": 10096,
+      "sha256": "A9C55D518DBCB981990D7F14A8C81712614DAA3498F2826C6BE805990A1DD487"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\initial-evidence.json": {
+      "bytes": 66487,
+      "sha256": "F5225D587514472E6494BC74630D3F6DE43EB674983021F5F8B217E8B40F0206"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\received-product\\access-history-shared.mjs": {
+      "bytes": 26372,
+      "sha256": "1F76243755359C0BC5F4A3FC8C5EA1144C3E2216946AF80AF321B7756E5A5C9B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\received-product\\access-history.mjs": {
+      "bytes": 29269,
+      "sha256": "EDAD35833644B900A729588504FAB1FE36B447EC09AD3AA8D46C731FB8DFD7FD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-replan-20261012_154142\\resume-evidence.json": {
+      "bytes": 1679,
+      "sha256": "3376617C88B2072953F4363DCBF09122AFB8E44B8D63A6F53486E5B107165A52"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\final-evidence.json": {
+      "bytes": 408547,
+      "sha256": "0024BB73DEA7C6AB33C84F7C0C601C93997ECE8B229A0CBF5C35B9BDED7F8635"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\findings.json": {
+      "bytes": 3301,
+      "sha256": "2224EDCD1C5D9DEFD800578327FBC55A289803F3C32208D393354445F1AD5B59"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233839_syntax-component-probes.command.json": {
+      "bytes": 841,
+      "sha256": "C914F5DF7D5A8B432F2E15FAE0BF4F7D4025A84AEF5A08281A8C854844550751"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233839_syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233839_syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_gate-parser.command.json": {
+      "bytes": 980,
+      "sha256": "44E6624EB4305104AF7D90D33A49B37AC3361DBE121BB4C2E48311724C438742"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_gate-parser.stdout.txt": {
+      "bytes": 2329,
+      "sha256": "072B084CD9B615BF7196EAE6E73AE5BD834F12F14C726857BD76904791779B3C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_runtime-parser.command.json": {
+      "bytes": 1081,
+      "sha256": "C7EFF9C6FBC63D00A57563385B494E242AA8BA38618289557BF3DF56208A12C7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_runtime-parser.stdout.txt": {
+      "bytes": 1752,
+      "sha256": "E7478F28E1741653490EC75C97E73729C5CD0E5CF069BDAF73D712A74D754739"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-ipc-probes.command.json": {
+      "bytes": 823,
+      "sha256": "DA9DF04BB75A621893021F35953A36FB2C95FEFCB3807E25EE95C0A9AB2100AF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-observer-canary.command.json": {
+      "bytes": 838,
+      "sha256": "EDF98A65982326EB01FE5256E7CB7038FBD3E1418EB5202AA5D393FF31C1B0D0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-preload.command.json": {
+      "bytes": 838,
+      "sha256": "E0C0314BBEF0286468CBFDB306A7C47107885137143AC0397A66CD9504E21C9F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-probes.command.json": {
+      "bytes": 835,
+      "sha256": "3C668F87608FC6FE6F78029F6AD5AB3C1FE2B8ED1F09143F2E4504AB4D9B962E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-runtime-preload.command.json": {
+      "bytes": 838,
+      "sha256": "CD203D00BDD3AB0195EE8E26FF456F3DF137D6AFFC3483F7758C5A9AEF55DF0D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233840_syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_actual-v4-partial-coverage.command.json": {
+      "bytes": 852,
+      "sha256": "6B7ACA7089CC48AEE267C4EBF33B22BC6EB3890D8E01D7106AD5107D7848412E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_actual-v4-partial-coverage.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_actual-v4-partial-coverage.stdout.txt": {
+      "bytes": 1951,
+      "sha256": "F6110C91D98EFFF4047D354866CF1104AC874E4508D5A1382B5F693C71274C5E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_component-plan.command.json": {
+      "bytes": 822,
+      "sha256": "D8CAC983D14C27C7AD2DF359888560F4DEB0D0AD5FCA4B93D1A6B594EB63596F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_ipc-plan.command.json": {
+      "bytes": 804,
+      "sha256": "54DF67ABD65692B69B986B23F4531674B379392443FCC4A7144B43A3F1DD637D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_partial-plan.command.json": {
+      "bytes": 816,
+      "sha256": "EC344D23A681CB0AE73F892670D3EDD57E30A33FE5BE5A0143D0696267AF46CF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_partial-plan.stdout.txt": {
+      "bytes": 180,
+      "sha256": "9E8E473576A7C282DBB4E50C1E4DE0B9F88A3FED89F6EB7E7CA24A3C0D917601"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_runtime-plan.command.json": {
+      "bytes": 1072,
+      "sha256": "D220980CD758915D0CDE3C51DDADCDF0E3C2D1CFFF1A0837307280A5825A03FF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_233841_runtime-plan.stdout.txt": {
+      "bytes": 2466,
+      "sha256": "D39FD7F94CC9AF1B09D2E598E1BB7090719A08E45FED42E276D13278733D7165"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234038_syntax-component-probes.command.json": {
+      "bytes": 841,
+      "sha256": "06769BBA3DDBC7783969D49233C51B68F2022DFABD33F89C7CB54AE2F1708199"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234038_syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234038_syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_gate-parser.command.json": {
+      "bytes": 980,
+      "sha256": "80CA4E579606EAA045E63E7A4827485257668CB91EFD333DD599AB6D27BAF561"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_gate-parser.stdout.txt": {
+      "bytes": 2329,
+      "sha256": "072B084CD9B615BF7196EAE6E73AE5BD834F12F14C726857BD76904791779B3C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_runtime-parser.command.json": {
+      "bytes": 1081,
+      "sha256": "4FED76F43618F0F9315FBBADFA2FB6862A7C6D6552EEEBD8FB7E2D157264B986"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_runtime-parser.stdout.txt": {
+      "bytes": 1752,
+      "sha256": "E7478F28E1741653490EC75C97E73729C5CD0E5CF069BDAF73D712A74D754739"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-ipc-probes.command.json": {
+      "bytes": 823,
+      "sha256": "E23D464436DCA2B2FB5BABC9D16251DA911904BE885DE1688CF77B27F1FC7B5D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-observer-canary.command.json": {
+      "bytes": 838,
+      "sha256": "BE419504D00CEE53F33B3A3FFFA5702215B2924F05C484F5D73AC607E291425F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-preload.command.json": {
+      "bytes": 838,
+      "sha256": "7CDD9C668CA49507E5365FF0CBB3E8ADEF94592BED31DBCAC325116373258CE3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-probes.command.json": {
+      "bytes": 835,
+      "sha256": "3D059AE4549E10FC538C6F7F98ACCEF5198DCC41786C394B4F38E18552F267CB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-runtime-preload.command.json": {
+      "bytes": 838,
+      "sha256": "A8554D13480B19082345FAFC94CB47E65311D9B6BAEEED872DF50AD8F6F48C5E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234039_syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_actual-v4-partial-coverage.command.json": {
+      "bytes": 852,
+      "sha256": "702C87B1D2C6C88A131D9D7BA1724A3FFEF91D2113B2AE904025980C2CBD1847"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_actual-v4-partial-coverage.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_actual-v4-partial-coverage.stdout.txt": {
+      "bytes": 1951,
+      "sha256": "9343114A7521A5D4524FBA0485EE3103A593D7346F0700CF4040FA0127CAD145"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_component-plan.command.json": {
+      "bytes": 822,
+      "sha256": "565357AD5D8D846D673DD42995FFB523B9FFFF0FBB5FBCA868FE3A19571E1C58"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_ipc-plan.command.json": {
+      "bytes": 804,
+      "sha256": "7C64A41B47D52A00520846C3D735D227C49F2E5826E3F20256106010364CE06B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_partial-plan.command.json": {
+      "bytes": 816,
+      "sha256": "C5720E2CDD9049685CA898D8CADC3E1C399A9A532F83C4185BF42DE4996EDDA9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_partial-plan.stdout.txt": {
+      "bytes": 180,
+      "sha256": "9E8E473576A7C282DBB4E50C1E4DE0B9F88A3FED89F6EB7E7CA24A3C0D917601"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_runtime-plan.command.json": {
+      "bytes": 1071,
+      "sha256": "136A9D9938077713249E73EE331F2C0D9917EFE46CAD64612BE0491117B21EAA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\20261012_234040_runtime-plan.stdout.txt": {
+      "bytes": 2466,
+      "sha256": "D39FD7F94CC9AF1B09D2E598E1BB7090719A08E45FED42E276D13278733D7165"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-collector-gap-vectors.command.json": {
+      "bytes": 835,
+      "sha256": "C195F3EFA94BE8EAB34416D998C89707B394CEF20E45D171F876D5FEC8055198"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-collector-gap-vectors.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-collector-gap-vectors.stdout.txt": {
+      "bytes": 1058,
+      "sha256": "9F1E7E1E85D752D146780092D4552ABC5F0CB2E7DE6FACF51707778F439F166B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-partial-coverage.command.json": {
+      "bytes": 820,
+      "sha256": "AE2FD84511697A30511158644176C3023738144FC206AA518977F9F03A69BD06"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-partial-coverage.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\actual-v4-partial-coverage.stdout.txt": {
+      "bytes": 1951,
+      "sha256": "CD50FCA9A831723B364322131BF78E7CFB7ADB93383497EC9D4FFAE1D25170DC"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\component-gap-replay.mjs": {
+      "bytes": 2610,
+      "sha256": "5B0ABBBB1B4EA9DDE718F54751E5C418E06317CE6CB30CAC99E6F8B1098265E8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\component-plan.command.json": {
+      "bytes": 790,
+      "sha256": "6E88A7FDB785D1A150037B5907895D0F28BFF1947F633D4659D3E165469549E2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\control-validation-final.json": {
+      "bytes": 11883,
+      "sha256": "89C69AAEAEFC302667079584C822BCB1802E48FCAF62DE5420A6C2DE8DEA4537"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\control-validation-sealed.json": {
+      "bytes": 13454,
+      "sha256": "978A6E54563093FCE1EB6D67DF51B0D337F8E47B73C0CEBE02BBF42E88B55EEB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\control-validation.json": {
+      "bytes": 11883,
+      "sha256": "8FE022142AA4D028B5A0C97B7F61C2BE92263F702E8E06F977C04DE9575B5E27"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\current-state.before-seal.md": {
+      "bytes": 177102,
+      "sha256": "44831FFF936B20030D9F7C9A329A52025F8305F58D3AA6C55F57BD08CAE04BBF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-plan.command.json": {
+      "bytes": 802,
+      "sha256": "C8F0CDD07BDBD5FCD0B31F5E1DA9CD1FF82BC88005B228B00BD69BEA6B5BF0BF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-syntax.command.json": {
+      "bytes": 807,
+      "sha256": "AF3EA0D861BE475D5C5BB63574EB67EB8C9ADD2F5B4D12570D5E90A9D5596472"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-syntax.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\final-component-syntax.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\gate-parser.command.json": {
+      "bytes": 948,
+      "sha256": "844588F12479C206EAE192F6F33BCB1E61601CC13E9DE7096A55F9E5434B6AA3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\gate-parser.stdout.txt": {
+      "bytes": 2295,
+      "sha256": "D8F187093FF264A4FC431C02410974F8F0144661E6A95232D7BC52437D6B3B51"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\initial-evidence.json": {
+      "bytes": 69824,
+      "sha256": "23D133BB09842D5F961B87DD5AA7812032FF02116D17FE45AB4B106CEF217E62"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\ipc-plan.command.json": {
+      "bytes": 772,
+      "sha256": "0412239054C5FA635AB2690B02285307821250A16D7C09AAB2947A436068F2C8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\partial-plan.command.json": {
+      "bytes": 784,
+      "sha256": "96D110BBB9C8E43D925A597CBC92E8970F3D80B5435CAD5467637033A7DC5193"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\partial-plan.stdout.txt": {
+      "bytes": 180,
+      "sha256": "9E8E473576A7C282DBB4E50C1E4DE0B9F88A3FED89F6EB7E7CA24A3C0D917601"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\pre-seal-evidence.json": {
+      "bytes": 860,
+      "sha256": "D1C63D646F9D0A8565C32A8B4BB75F4AE69DF805F63DC9E7F9B4168819F7A01B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\received-product\\access-history-shared.mjs": {
+      "bytes": 29986,
+      "sha256": "FC963E330B6290C3E89FDE5ED989A5CE1545F676EC9CEB7D367801BEC59D69DC"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\received-product\\access-history.mjs": {
+      "bytes": 29974,
+      "sha256": "642340EDC48A1F7D25EC220BB811EC823402E2A1E434CF8461D58A70BD21875B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-parser.command.json": {
+      "bytes": 1049,
+      "sha256": "BCC8F3FE46EDE7BA81A81064121D441E531190E4A7F2E122A904762B0E666530"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-parser.stdout.txt": {
+      "bytes": 1752,
+      "sha256": "E7478F28E1741653490EC75C97E73729C5CD0E5CF069BDAF73D712A74D754739"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-plan.command.json": {
+      "bytes": 1040,
+      "sha256": "F1CF2316F9EB002D6A086F11EE9DCF98898F24E58806D56B29BC167A3BE8D1C8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\runtime-plan.stdout.txt": {
+      "bytes": 2466,
+      "sha256": "D39FD7F94CC9AF1B09D2E598E1BB7090719A08E45FED42E276D13278733D7165"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-component-probes.command.json": {
+      "bytes": 809,
+      "sha256": "34397B446557B808A4BE5EAA9CE673FAA8791A9BAB2901703E67BAB6FE6EF931"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-ipc-probes.command.json": {
+      "bytes": 791,
+      "sha256": "264EAD3625EE1E098C2C9F3D383E3721DC5717E49FD631D45A56B5C3BEA5F1C5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-observer-canary.command.json": {
+      "bytes": 806,
+      "sha256": "250BD8FA47DB77FB02983E4860ED00A4D0A1056ED0415265FA3E4E71598DFB76"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-preload.command.json": {
+      "bytes": 806,
+      "sha256": "0A7647A8D5DCB2EE07BCEE2D023EF256B3960B24E3540F7BB0EA9D14CA66C853"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-probes.command.json": {
+      "bytes": 803,
+      "sha256": "F8F2B0763A306A8D07D9A9944D1CD8BA6CA3162D37F052991C5EB44B5FFA84E9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-runtime-preload.command.json": {
+      "bytes": 806,
+      "sha256": "D52E47707D8A4DBFBA2CC38AF45EEC88CBF0030F9FAD0614755DBDBDBF9ADDA6"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-replan-20261012_231342\\TODO.before-seal.md": {
+      "bytes": 308913,
+      "sha256": "3F8D78AE84811249913F6DAB90C709B4E84FFEF5A319B95478988585F353D405"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\final-evidence.json": {
+      "bytes": 146470,
+      "sha256": "31DE39BCF63BE15A625CA4C58337EA202E685D02A2C435733629553BE4D87353"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\findings.json": {
+      "bytes": 7183,
+      "sha256": "A2D1A9FF4FA6BD239DF9BA81CAF379D02B9A76D11750C790BEBC866537BFA6D7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\component-plan.command.json": {
+      "bytes": 790,
+      "sha256": "4EC86801FDD255D3ED9A42D93AD9D4B2EE80E0129C53AE982A4DB38272D3C828"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\control-validation.json": {
+      "bytes": 13592,
+      "sha256": "80A5BE5B652E36A3798436A7DC7ED052D0A2D297FFDAAEACA655652A590036AD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\current-state.before-seal.md": {
+      "bytes": 183158,
+      "sha256": "A9FAE69DE83DCB98D8F33730FB4695CD9B5FB4058FC15C8E9EFB6CCDAD7660B1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\focused-review.json": {
+      "bytes": 783,
+      "sha256": "9CC3D11C82BC7FF6DFB11D82EBB2CD8A3D33EE9435D41E6919963B973365A80B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\gate-parser.command.json": {
+      "bytes": 948,
+      "sha256": "C88D4F4DCAC620C5AC8EEA63ACB120BC80D35B1C9CE4A17A12C61D8CB236F2F9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\gate-parser.stdout.txt": {
+      "bytes": 2607,
+      "sha256": "97FC723065D550E4AF928DCA5424B198044C269083B378A67620637AC1B029A9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\initial-evidence.json": {
+      "bytes": 73585,
+      "sha256": "DC7D2DA385F03E9F6DFD519604B086A8FE8C8F05D24961B738CB93AF9BA2A2E8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\ipc-plan.command.json": {
+      "bytes": 772,
+      "sha256": "886D6CBC2DAED420C5BEDA8CD99BA828EDBFC62D0C92E3F140BE5AE762195E8A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\observer-control-receipt.json": {
+      "bytes": 80247,
+      "sha256": "99FCBE4DEE1DA16E3E4A97A3991325ABB362FE8517ACC2DF6327688F24C100B5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\partial-bootstrap-receipt.json": {
+      "bytes": 40013,
+      "sha256": "13C19531BF9F90FBFD93E46422141A419B2BBBED05869566F04EB1772B3960FB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\partial-plan.command.json": {
+      "bytes": 784,
+      "sha256": "CD2A75A71D123ABBAB38F18BD8B3EDCF5074F1C94025EA5AEABE50EA5F683666"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\partial-plan.stdout.txt": {
+      "bytes": 419,
+      "sha256": "82BECD5836022E8D32555FF9B7FAD5635BBC2D9420328D89584605F6DF3354F0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\partial-probes.v5-copy.mjs": {
+      "bytes": 12350,
+      "sha256": "4E60A8FEB99AFD33211D0131AA2B57BC98A3FD1C769D34637BEE77A9D4AD466F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\pre-seal-evidence.json": {
+      "bytes": 891,
+      "sha256": "B7FE3FC96C6302C07EB1F1999A24C85042411A8CB3B9F7D22060C46FF55AE63D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\received-product\\access-history-shared.mjs": {
+      "bytes": 29642,
+      "sha256": "9813475D58FB5474C9533F532A2E171AB0DFB7977877EB783B3088C0A475069F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\received-product\\access-history.mjs": {
+      "bytes": 29645,
+      "sha256": "A47421706CCBEB6AED76002A88177E592FF743F72A4CED8FE21A7AAD718BE435"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-parser.command.json": {
+      "bytes": 1049,
+      "sha256": "695DBA824FD86A4F9635BB9CEC0EDBFC436CA051688BFD7FAB791AC78E94CC4C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-parser.stdout.txt": {
+      "bytes": 2159,
+      "sha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-plan.command.json": {
+      "bytes": 1040,
+      "sha256": "81A1ECCB84BC008CB850880D6AEB04368AC01C982598B373D916847300A97713"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\runtime-plan.stdout.txt": {
+      "bytes": 2747,
+      "sha256": "85EF225E5FD8F77EFCA07EA6194A8883792B6BCB446EF76C3322DF7A850C5FF3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-component-probes.command.json": {
+      "bytes": 809,
+      "sha256": "DB43156BFD6222530EBC85AD4EBE1DE7F70E1356AD13319910D33848CCF2C6D9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-ipc-probes.command.json": {
+      "bytes": 791,
+      "sha256": "AD62616CE86061FD9B68E8664D8580B56D00E4E78964CDBEC7E1C872CAEF9027"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-observer-canary.command.json": {
+      "bytes": 806,
+      "sha256": "5692C5BF454447859621C58F5E984B9D2EBEB6CE0C36F32D104E317597C77B76"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-preload.command.json": {
+      "bytes": 806,
+      "sha256": "316282B9A524CCD288B7335B24C6B5A1E66F67AD936B466702E503E3D377C73E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-probes.command.json": {
+      "bytes": 803,
+      "sha256": "4302AFEFCAFDF2CC211D355B1253C2464C63D4B1D2E1E35893F0752BE26F7CAB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-runtime-preload.command.json": {
+      "bytes": 806,
+      "sha256": "3BFECAD6DE81337894E56265577A5E80D39E0E02C8BD20762619F78D9E6ABF23"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-replan-20261013_100555\\TODO.before-seal.md": {
+      "bytes": 310870,
+      "sha256": "9360FB5A4FC61E868EEF25167AC9BC9E9867F4CAC2BC1768518AC3B937A1F901"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\access-history-shared.diff": {
+      "bytes": 6975,
+      "sha256": "7EBD4262ACA3EBA3BD6E18A70641FA5DAF0BE52DDC8DE040BFC38AFCE0E157D4"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\access-history.diff": {
+      "bytes": 47062,
+      "sha256": "94A6370339F001A71E5DA81EC07AD96EBCBD544DD0147FEF34E7950D1EFF2F99"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\actual-runtime-original-controls.command.json": {
+      "bytes": 1156,
+      "sha256": "EDE1B6F361C046ACA1BE45C4CD56E2215258ABF1A49A7F533B97AE0A12B73A7A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\actual-runtime-original-controls.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\actual-runtime-original-controls.stdout.txt": {
+      "bytes": 10812,
+      "sha256": "2A031054A970038D9E343EC491B85C3A0872147F9D9F418FEAFAB9ABD071B63B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\audit-resumed-review.py": {
+      "bytes": 9952,
+      "sha256": "6C9F6F207CEB6BC51996A4F00D68BEDB66E3877FB6343F91EA8BFAB63697BF70"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\build.command.json": {
+      "bytes": 763,
+      "sha256": "13D487EF2BC3BB37847E18C4E35B81AAB47B640D88F9FC282523607D41FEC062"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\build.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\build.stdout.txt": {
+      "bytes": 528,
+      "sha256": "F983FCC063573D8BFFBA51A93DB3BD4A3E0B1828464E318A24ECF2CCCC7B3184"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\check-results.json": {
+      "bytes": 16607,
+      "sha256": "5E1692AC8236C30D0E9CB8AB741EFE1ACD811EBFE93F3AC6E223E458B0B354C0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\close-resumed-review.py": {
+      "bytes": 28654,
+      "sha256": "0BE133E789C783E1B2488A4D431348CA8DA418A77BEA05D77220C8131790C008"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\component-suite.command.json": {
+      "bytes": 1209,
+      "sha256": "3D5F3B7F7FF7725EA2DBB6791D8EFDA7D4E8489F878B9BCCF58F2889518B893E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\component-suite.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\component-suite.stdout.txt": {
+      "bytes": 2804,
+      "sha256": "FDD0B1747BB28A4A56B6B3BFA6F7967EEB8C55A21320D36B18340212029C48AC"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\control-before-close\\current-state.md": {
+      "bytes": 185899,
+      "sha256": "39B9E426703F819CBE014CA37765B692C5FD1C6B99B22106A71A09253FD31981"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\control-before-close\\TODO.md": {
+      "bytes": 311605,
+      "sha256": "DF5E577E5E9357DD6E3A3537B6F8CD8BE997B252F324E7F85F5F56DC56DBDA95"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\diff-check.command.json": {
+      "bytes": 743,
+      "sha256": "7B7DD3E35C29C524792C54648A028AFFEA5939D845749650175DED835D8F1D43"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\diff-check.stderr.txt": {
+      "bytes": 461,
+      "sha256": "1E26F689A6DBB704CA2667251360782B369BAF48FDB216A21A1D31EB99CB5D84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\diff-check.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resume2-summary.json": {
+      "bytes": 461,
+      "sha256": "693996C9A5DC845791FAE2FD9E743DA49A8A944B47C08E95ECF44E43EB1B88F5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resume2.command.json": {
+      "bytes": 950,
+      "sha256": "BEB63B8775486E7E6FCA3F83569397E8DCDAC85AF7C25552F5007EF5BBDC1B4B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resume2.py": {
+      "bytes": 5883,
+      "sha256": "CCDD1E39795580920A8B5E027F5733D4145EA0223928B23B9C8B349C13A05670"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resume2.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resume2.stdout.txt": {
+      "bytes": 1066,
+      "sha256": "4ED28D003A730AE258621058302FCFF075F5F44BBA0FE459C77BCE7758B2F8B8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resumed.command.json": {
+      "bytes": 942,
+      "sha256": "FD2FBF033C11B751F9FD6D1585ADE710F5187F8D011E8BF6B1C88A1C934DA403"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resumed.stderr.txt": {
+      "bytes": 502,
+      "sha256": "F4143973EF0D9BF41A5470E6146939DBABC4705E4ACE4AD43B431AA49B6C8F38"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner-resumed.stdout.txt": {
+      "bytes": 552,
+      "sha256": "761AEEDCE10FB5D20E40491D1EDE22C22315E0CFFBE563A76A5C5749CF0EF6D5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\extra-owner.py": {
+      "bytes": 4153,
+      "sha256": "007882CC0E2ECA28EAE32507EB250D212E28DC71DEF982738D3F06738874E609"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\final-audit-before-close.json": {
+      "bytes": 70182,
+      "sha256": "FB3571644ACF4A5F443B139DA0B99D93A7D44C6FB443D206A3A34369443BD31C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\final-evidence.json": {
+      "bytes": 126364,
+      "sha256": "76A22623C20E0BC5669BF53CE55EEB87D6CB76BA939613D1B30BC37C7C00DDDD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\findings.json": {
+      "bytes": 3662,
+      "sha256": "27D8C7C3CF2D7F4D85EE7FF0CD97C656698AFDD7840E5BF7CBDB625F2EBDF06B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\focused-tests.command.json": {
+      "bytes": 985,
+      "sha256": "7C0CC8F9A964CE67A6E078EC52AC077C9676AF49025316E8F98F07FACE639405"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\focused-tests.stderr.txt": {
+      "bytes": 338,
+      "sha256": "280468406BF039D57652712641D50046B3A3D598A2EC2E68003C8BDFF3AB650C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\focused-tests.stdout.txt": {
+      "bytes": 418,
+      "sha256": "AC19936012E6E0AD7A370D33B0953A263073081A0F11ADC707A8D271A0815D3B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\gate-parser.command.json": {
+      "bytes": 1112,
+      "sha256": "091210D5F782D16AE5878752B4D6FCE8A316E107B668474690FE1797E6887B06"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\gate-parser.stdout.txt": {
+      "bytes": 2607,
+      "sha256": "97FC723065D550E4AF928DCA5424B198044C269083B378A67620637AC1B029A9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\initial-evidence.json": {
+      "bytes": 136553,
+      "sha256": "A416196F65A9C3BDD413F3810321497E7F96B99AB35C7597A40A11F222D666E2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\ipc-suite.command.json": {
+      "bytes": 820,
+      "sha256": "AC1567D3DF3127DA2F5EF1A05D848116D154533959AFCF749C23AA00B44941C7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\ipc-suite.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\ipc-suite.stdout.txt": {
+      "bytes": 28285,
+      "sha256": "1AEEB0BE3687A9C89DB5D72F33B099A9D049AE356BE613A6B839E07868ED7BC9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\lint.command.json": {
+      "bytes": 759,
+      "sha256": "B54CD5C44DC57A9E354759187171BD618D606D793C554C5059657A36AA67FFDF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\lint.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\lint.stdout.txt": {
+      "bytes": 1028,
+      "sha256": "B92339FEA803D807646646FB0E22CAC4EB843FF070538A93238E12277095B326"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\map.command.json": {
+      "bytes": 764,
+      "sha256": "20ABB6832E463F2F2AEA9F4588116D6B99E8D107698BCBBC5EC1FF6E9B165B71"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\map.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\map.stdout.txt": {
+      "bytes": 131,
+      "sha256": "0D9C0EBE7374C43D8C81DAF6296B8568875FFE7E0FC9D9307243A19CEEE4D793"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\partial-suite.command.json": {
+      "bytes": 836,
+      "sha256": "32F4A5F72F58DE2F33E57D5230882FC4212E93313C94F3907344F335DB6F3C38"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\partial-suite.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\partial-suite.stdout.txt": {
+      "bytes": 939,
+      "sha256": "71D3AD6273A2BE8F4037A1B3439F62316084F1235372C0E25CDD54915717C6FA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\prepare-extra-controls.py": {
+      "bytes": 2875,
+      "sha256": "8327017EEA28C0BF79EC782D25A47DB72E9BAC06D6CF6FE438B242DBE094F6CA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-input.json": {
+      "bytes": 14211,
+      "sha256": "114305288289A1900EF750BDCE14C079E680490F82E083939BE9C9325ABFB84A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-result.json": {
+      "bytes": 16442,
+      "sha256": "FD6E2FCF5121304E2C63D140747903FB46A787559EA9D88BB09E0591623BEDAB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-resume-confirm.command.json": {
+      "bytes": 1025,
+      "sha256": "EC8C93D0EE7156E742DEC74FEB101A6DD5505AEAAB5BE4C2889B558765749C81"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-resume-confirm.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-resume-confirm.stdout.txt": {
+      "bytes": 554,
+      "sha256": "AED282FA863CC9064B00EAA8B770F5DB0217CE8321C8095F72B17AEBC380782D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard.mjs": {
+      "bytes": 1080,
+      "sha256": "167B678169F750EE301BF1C17B6B7EA325258E0659E8FC1CE3F81D0B765FF9CE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard.py": {
+      "bytes": 1983,
+      "sha256": "825A56677FD8484335B0F168859DEB91D038B613040D17FDAF287418BB4F85BD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\received-product\\access-history-shared.mjs": {
+      "bytes": 29907,
+      "sha256": "38D3AF668282BC5B184A59815D5C0726D6F296C5906E428BD7543C4E7CCF7280"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\received-product\\access-history.mjs": {
+      "bytes": 29899,
+      "sha256": "9E735F3ED1C8DD46D200AED10F53FE5256DFC2459BE87CFFF6C1D5E5F73C4313"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\run-checks.py": {
+      "bytes": 4398,
+      "sha256": "B0D142A7688B8BA0FFC0067DBE7A20FDF9F762352AD3F8EC230A5F30278E606A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\runtime-original-summary.json": {
+      "bytes": 190,
+      "sha256": "5C6FA04D47C8AA244F834D4E9EEB6997E3C098D26C8B869F6C57B882FDAF6F9B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\runtime-parser.command.json": {
+      "bytes": 1122,
+      "sha256": "12BD0A0F050604F58F7535747E21AEEC1C48B0D842E4A7C949D29B1FC3EA1D22"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\runtime-parser.stdout.txt": {
+      "bytes": 2159,
+      "sha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\runtime-preload.mjs": {
+      "bytes": 22716,
+      "sha256": "5CAB2C0CB66F415410EE89725EC3D5010F23FBE906AC2AE8381084C97EE2D605"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-after.command.json": {
+      "bytes": 1108,
+      "sha256": "AC254C759D231537FC433F09246F72CD23D70EED4C017024EBCB54C5C97CB9F8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-after.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-after.stdout.txt": {
+      "bytes": 189,
+      "sha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before-close-resumed.command.json": {
+      "bytes": 1153,
+      "sha256": "6DB4A4C89754A7A153667661A0DCDE8A02B874713AECBC2CC3A1A88097B3E0D1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before-close-resumed.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before-close-resumed.stdout.txt": {
+      "bytes": 189,
+      "sha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before.command.json": {
+      "bytes": 1111,
+      "sha256": "F614ECDEECA141B3364BAE011A5E1FBFFD2C35CDED7BF2E6ED38299E504E4CA7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\scope-before.stdout.txt": {
+      "bytes": 189,
+      "sha256": "96013F8D67C5784BB6F044FC42BEEEC32428B7B7767AA5CF16B9D23F70459C48"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-owner.command.json": {
+      "bytes": 781,
+      "sha256": "5346BE65B17E247D4A9A58CAAA81F95A84647AFEA448EA7C19CD28F00B774AB2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-owner.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-owner.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-shared.command.json": {
+      "bytes": 792,
+      "sha256": "91C9716C3618D496A2448FB68F5E433A77FEA25EA7E705184ABC720AD39A9E1F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-shared.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\syntax-shared.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\typecheck.command.json": {
+      "bytes": 779,
+      "sha256": "351DE833F0306E098AB2D3272A0D4F4A27C98F695D90EA8C183F0D698361F101"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\typecheck.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\typecheck.stdout.txt": {
+      "bytes": 110,
+      "sha256": "EB0C68245B291B33DD886D88F9CFB76DECBF3D9E93BDBDEA5666CE1D4BA515B3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\actual-v6-guard-gaps.command.json": {
+      "bytes": 891,
+      "sha256": "B1ACC46EDA1642E55F8C0F3C2FD89FEFD5BC39004A1754CBD60FC3DF2B1591AA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\actual-v6-guard-gaps.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\actual-v6-guard-gaps.stdout.txt": {
+      "bytes": 307,
+      "sha256": "8AB967D788347C7C4573837DA317B6B4403018FC55CB152E41B15148703BEAFD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\component-plan.command.json": {
+      "bytes": 801,
+      "sha256": "E0AC1A76F23DE33669781D0B9090F773C38DA8CF4C29A5114ED6E89BCCD655C2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\control-validation-final.json": {
+      "bytes": 19224,
+      "sha256": "64AC3EFF9FAC47CFD66C04E1C4323BC450492125545B8DEC1B060343F11E1B10"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\control-validation-ready.json": {
+      "bytes": 19563,
+      "sha256": "D2FA341084B51AAFB540B4F3F5EA9E5882D8B512E7D0751A59C2A6F9E10F6AE4"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\control-validation-sealed.json": {
+      "bytes": 19343,
+      "sha256": "29089D1F3A52CB9493C6193F96F02C7099296023959691E7B98A048E4B16B05E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\control-validation-v2.json": {
+      "bytes": 17817,
+      "sha256": "775BB241534B70F5E41FCDF30348A64740349950548B3DA7BF79DF440D5CFF5D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\control-validation.json": {
+      "bytes": 17517,
+      "sha256": "E1EC413A884FCB763C14989299BB9847F239AE9548084BED2CB28774D50CB98A"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\gate-parser.command.json": {
+      "bytes": 964,
+      "sha256": "0248BA26B9DEC4DAC8674679732D2B59BD6A5A557E2BFBF2E4D312CF6CD83B69"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\gate-parser.stdout.txt": {
+      "bytes": 2607,
+      "sha256": "29AE1EB0900A6E52E5204E29EA7CB9DF56EB1EFE4C9C00CEEC31A634FDA52E62"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\initial-evidence.json": {
+      "bytes": 76547,
+      "sha256": "633E8BD60963E3A5E046653D6508968CC9B2EDD5305FF3AA94360854260BDBA2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\ipc-plan.command.json": {
+      "bytes": 783,
+      "sha256": "F02595986683F5C5638009FB443922508AC7DB8516A522E04159A3671722F8E9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-canaries.command.json": {
+      "bytes": 883,
+      "sha256": "889102E28D9E11F491B883EA774E7EA8D427BCA821EE1354C1D8C6BBD08E7800"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-canaries.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-canaries.stdout.txt": {
+      "bytes": 2651,
+      "sha256": "A1E3D94F864839E182B9EF93E5CC2EC974F4B46548BC6778BEBA8B3289F85847"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-control-receipt-v2.json": {
+      "bytes": 41400,
+      "sha256": "680CF0D9EA1D46F963B6754DDDBB783B92C7BBF6AA0B25DEE75EE0EB101E76F3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-control-receipt.json": {
+      "bytes": 41264,
+      "sha256": "E9744D3813C71630B6F77428924BCBCF10637977D3CB54C04C7E82691E09327C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-plan.command.json": {
+      "bytes": 871,
+      "sha256": "89D7336F0F76EE60518C7B599F74B12253712D9FAA1DC65E5CF090E9C263EFC5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-plan.stdout.txt": {
+      "bytes": 510,
+      "sha256": "C77CA1A5D9778F1FED0C74ACC2AD2A8CBF9DD86DC728B2E22929EC6916FC5E83"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-bootstrap-v6.command.json": {
+      "bytes": 895,
+      "sha256": "2FE9839323241ED377BE5600051D8F4A7B7A08756CF150B426F1932873C4E269"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-bootstrap-v6.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-bootstrap-v6.stdout.txt": {
+      "bytes": 4395,
+      "sha256": "71FC59479557AAF85104207C44370FE5CB69FCA2A36EE712FC5889E8E666B280"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-control-receipt-v2.json": {
+      "bytes": 82178,
+      "sha256": "CBD5FC95A85458C511406B27D59E0844D05930BC221AC320740EC52A94011522"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\observer-control-receipt.json": {
+      "bytes": 82185,
+      "sha256": "52FBDE228DEE4AFE126D1F1E4D64E93CA06455DBF407359A9E2691E371082CAD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\partial-plan.command.json": {
+      "bytes": 795,
+      "sha256": "E1E4A887BB954D9EFE188A6824CB75034ADD6B7CA37F08B9D1E4FEBB42F6C412"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\partial-plan.stdout.txt": {
+      "bytes": 419,
+      "sha256": "82BECD5836022E8D32555FF9B7FAD5635BBC2D9420328D89584605F6DF3354F0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\pre-seal-evidence.json": {
+      "bytes": 762,
+      "sha256": "3091164C91D429A63B4112B37DA1CC7F27F348566996C792FA6E5317507E0F39"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\received-product\\access-history-shared.mjs": {
+      "bytes": 29907,
+      "sha256": "38D3AF668282BC5B184A59815D5C0726D6F296C5906E428BD7543C4E7CCF7280"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\received-product\\access-history.mjs": {
+      "bytes": 29899,
+      "sha256": "9E735F3ED1C8DD46D200AED10F53FE5256DFC2459BE87CFFF6C1D5E5F73C4313"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\retained-v6-replay.command.json": {
+      "bytes": 857,
+      "sha256": "124BBDA33E080F50DB36B5FC562AAA814EAA45DB2965830DC6E455F866B219F0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\retained-v6-replay.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\retained-v6-replay.stdout.txt": {
+      "bytes": 1423,
+      "sha256": "8517734FAB9991F27F3B6976E67DD1D96DCBFBB5AFFF1F0087D441B18DF01121"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-parser.command.json": {
+      "bytes": 1067,
+      "sha256": "C22848C74D50742A4415EF5D69CF2C06A7D880A973BE46F5CABE2ADAF714FCAA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-parser.stdout.txt": {
+      "bytes": 2159,
+      "sha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-plan.command.json": {
+      "bytes": 1058,
+      "sha256": "D307D464BACF3FF2B7FC96D4218D74AD67A2CD20BA38586935B191964CC18654"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\runtime-plan.stdout.txt": {
+      "bytes": 2747,
+      "sha256": "85EF225E5FD8F77EFCA07EA6194A8883792B6BCB446EF76C3322DF7A850C5FF3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-component-probes.command.json": {
+      "bytes": 820,
+      "sha256": "4246E639F3D4B132E0B8401474759F6AB5F3A2E3B4C86C8185ED458E1A06B8E1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-ipc-probes.command.json": {
+      "bytes": 802,
+      "sha256": "89C4695ED332B5FB7346F3B1770E864F46D7E4A41D0255AB241E0EE3BD48267C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-canary.command.json": {
+      "bytes": 820,
+      "sha256": "868EA62F042B99F4B5347B577F3139DFBCF4EBD5EC34FB286B9D590AE52A0E09"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-extension.command.json": {
+      "bytes": 829,
+      "sha256": "5955E316BE8F731502E85FFD4B729422D02A32EB6D281C27E9A3C0CD321C2E52"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-extension.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-extension.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-preload.command.json": {
+      "bytes": 823,
+      "sha256": "EFE4D97CEC364D5A71A30350360A504F76925A70F36E1C9F8D88BE73EE76E14D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-lifecycle-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-observer-canary.command.json": {
+      "bytes": 817,
+      "sha256": "7DF24F111C077937C2C710957F3848AAE297F0545686149B4D87E40422B59AB5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-preload.command.json": {
+      "bytes": 817,
+      "sha256": "CA1529C3FCBD7CE3F8CC421660FBB7662BF1B95D3D3CB8B5A6B9A30842297C73"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-probes.command.json": {
+      "bytes": 814,
+      "sha256": "E3C8C31C07B36F2139DB41DC993928F0837B150F075DC9F11313018B48CAD850"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-runtime-preload.command.json": {
+      "bytes": 817,
+      "sha256": "C9E4C21D009450C10E0365D09C0524610D256C3C49A3DE1A851F2F1FB159A1A5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-actual-v6-guard-gaps.command.json": {
+      "bytes": 896,
+      "sha256": "36033A0A46ECE70469D35FDE6B6064FA548E9E225D41FC546422E2BBA4C6A027"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-actual-v6-guard-gaps.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-actual-v6-guard-gaps.stdout.txt": {
+      "bytes": 307,
+      "sha256": "F0DC26ECB4CB37495593770DDC6AE61B58814FC0C3AA725DB77FE4FD35EEF483"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-component-plan.command.json": {
+      "bytes": 806,
+      "sha256": "434C0AFE386CC9C2277854F70209009737DE642A39BBE3BF254330CAD8DD07AB"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-component-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-component-plan.stdout.txt": {
+      "bytes": 345,
+      "sha256": "940E10AD3F416F5A45DD67BF456BAD964095900B6AF3B4AB6196C48D007C7553"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-canaries.command.json": {
+      "bytes": 901,
+      "sha256": "1B4188DA33C22D6BBA306EDC81B19E63B5B4E4097BA737C27B71E54F94DD6990"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-canaries.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-canaries.stdout.txt": {
+      "bytes": 2651,
+      "sha256": "6DBA5E714F7AE3267717E167A5BEADA2EF62B01ADCAF40B58702D463F7A586EA"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-plan.command.json": {
+      "bytes": 889,
+      "sha256": "7C28A642E3AA28138A022208A3C9A177999AA034BF8E347399BA01C02E7EBD32"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-final-lifecycle-plan.stdout.txt": {
+      "bytes": 510,
+      "sha256": "075A1ED459315F8E87F7447259A4A29F4C3FA15E74F398340A9734B56214FDFE"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-gate-parser.command.json": {
+      "bytes": 970,
+      "sha256": "7096F6CE4341B873689B732376921AE0101C67F24783ABA6856A8F432DBBD12E"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-gate-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-gate-parser.stdout.txt": {
+      "bytes": 2607,
+      "sha256": "29AE1EB0900A6E52E5204E29EA7CB9DF56EB1EFE4C9C00CEEC31A634FDA52E62"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-ipc-plan.command.json": {
+      "bytes": 789,
+      "sha256": "5B894FC67CFB5F4E147EA9073E60002E562F30F841D41CB2D7E99C2D3E73FBA9"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-ipc-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-ipc-plan.stdout.txt": {
+      "bytes": 393,
+      "sha256": "87347E23A50E0E1B5E68CB416C122BA5E68C18C8CA42F1AAA38F4234068D0E72"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-canaries.command.json": {
+      "bytes": 889,
+      "sha256": "C3A2117C4F045E6D8A605119CCB2CF0D3E8E91D020F0583D53240C41A2A1BD3F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-canaries.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-canaries.stdout.txt": {
+      "bytes": 2651,
+      "sha256": "7D8733B7F22EF8CDBBE83B479E3BCF5C83AF8A53A9E563E1D3AD851032B450FC"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-plan.command.json": {
+      "bytes": 877,
+      "sha256": "A225234D4739C5D0375208F887BAF0B0C50C9929B0AA415E73FBB19A7B90E7C6"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-lifecycle-plan.stdout.txt": {
+      "bytes": 510,
+      "sha256": "BA4F643C23661A3A31827260D4FE49C46F6D4111560108FC07820E4F9931FAA5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-observer-bootstrap-v6.command.json": {
+      "bytes": 901,
+      "sha256": "33EB7149C1AD5943127C64ACE05D6EFD0F307BE5285CAFF3475A6249C7E9C346"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-observer-bootstrap-v6.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-observer-bootstrap-v6.stdout.txt": {
+      "bytes": 4395,
+      "sha256": "B0AF7CD7278F362A6F8DC9DC4B3B61525F5638E9CF6C90A77D780F94BB0B579B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-partial-plan.command.json": {
+      "bytes": 801,
+      "sha256": "7E1FC3777A55E6D3B10290E8203223AF2891F130C2A97A5E3E222234B3E6BE5B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-partial-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-partial-plan.stdout.txt": {
+      "bytes": 419,
+      "sha256": "82BECD5836022E8D32555FF9B7FAD5635BBC2D9420328D89584605F6DF3354F0"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-retained-v6-replay.command.json": {
+      "bytes": 863,
+      "sha256": "308158ABBB3FEB91C782DAC1867DB84250A91B57CC64152957B1BE4CF3A72F2B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-retained-v6-replay.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-retained-v6-replay.stdout.txt": {
+      "bytes": 1423,
+      "sha256": "8517734FAB9991F27F3B6976E67DD1D96DCBFBB5AFFF1F0087D441B18DF01121"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-parser.command.json": {
+      "bytes": 1073,
+      "sha256": "C36AA6F1FE6AE612CA7940D789D67096A6B0B02A3D3908C861D42BAA5216A828"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-parser.stdout.txt": {
+      "bytes": 2159,
+      "sha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-plan.command.json": {
+      "bytes": 1064,
+      "sha256": "E3EB888D6FCF5CB23C45BC53FD294A6A907BA4C2069AB879DED68516974E3670"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-plan.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-runtime-plan.stdout.txt": {
+      "bytes": 2747,
+      "sha256": "85EF225E5FD8F77EFCA07EA6194A8883792B6BCB446EF76C3322DF7A850C5FF3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-component-probes.command.json": {
+      "bytes": 826,
+      "sha256": "47369F6FFEEA0EF25F3F74EF8950F9097BF85140FE334F445716DD4ACA18DB2C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-component-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-component-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-ipc-probes.command.json": {
+      "bytes": 808,
+      "sha256": "CF56D635DE53DB29AA7A80282E2D15374E0D25D9BE06AD9E8877B4AD6E87354D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-ipc-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-ipc-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-canary.command.json": {
+      "bytes": 826,
+      "sha256": "C27B188770D34979B7962D83E0C1B2DA9AD13A145E60B43CC55E848EBE4CED50"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-extension.command.json": {
+      "bytes": 835,
+      "sha256": "FEAE012A0BFCFB89DA2CB4232A178D73FAAC2411BAE91EA78D2BB316744DE7F3"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-extension.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-extension.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-preload.command.json": {
+      "bytes": 829,
+      "sha256": "033D84A1199321761B38C5C3EB8F989A28891BCDBF003F29C92473C06EC71405"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-lifecycle-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-observer-canary.command.json": {
+      "bytes": 823,
+      "sha256": "A23DC1F36BDE1E9946C5FD2F70E5399D7B86C538D55815947153C03353BAC882"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-observer-canary.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-observer-canary.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-preload.command.json": {
+      "bytes": 823,
+      "sha256": "C82DFC46395A89C16B6E2F49DF9F15C8B3EF4E8C73A72C5A59F4CC9BF03AAE83"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-probes.command.json": {
+      "bytes": 820,
+      "sha256": "AD1BE4FB9261AFE4801FA4FA4A9B965C990A21A12BF430CE4D0EB7DD907EAD56"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-probes.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-partial-probes.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-runtime-preload.command.json": {
+      "bytes": 823,
+      "sha256": "1523319A9279072C47A0C9D40ABC949DEF5DB1B787EDBB1732B534E7F5957978"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-runtime-preload.stderr.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\v2-syntax-runtime-preload.stdout.txt": {
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\close-a1-v6-review-gaps.py": {
+      "bytes": 8618,
+      "sha256": "A3F4881E3926E9DA009A11365AF83D7B6C4B731DA2D610F394CF4C3D21A8CC28"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\final-validate-a1-v7.py": {
+      "bytes": 3044,
+      "sha256": "0721B17A1D6A46D7553B215AA1D2B9C12528E7453416A2250BD03B52CBC24EF4"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\issue-a1-v5.py": {
+      "bytes": 26520,
+      "sha256": "3305D634D8B9C6B4AA731DF9257B430E295C648C378020E28ECA09BC4FC7BC29"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\issue-a1-v6.py": {
+      "bytes": 29617,
+      "sha256": "CF10A656461403FC46E684F8426C16DAA0188F6462845741A0B77A015F149181"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\issue-a1-v7.py": {
+      "bytes": 24552,
+      "sha256": "384F527D9D8F4EA83084141D6DA924C223D90EC37441FE247EA199B45EF1F4C2"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\prepare-a1-v5.py": {
+      "bytes": 3962,
+      "sha256": "330872D7B381A5539A4493F5B4AEDD0505863106B65F016F55B779EE3F5D766B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\prepare-a1-v6.py": {
+      "bytes": 4567,
+      "sha256": "F9D2228E5875D66BAA2F5CE6221EEB499B784DF4B2E1CE1139CB1B25AB2DFF9C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\prepare-a1-v7.py": {
+      "bytes": 4783,
+      "sha256": "7BBCA88B076941F65E96BE7BFD7C60978538AD07D77AE6B362D5F9A3AE035690"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\upgrade-a1-v5.py": {
+      "bytes": 12162,
+      "sha256": "14016F66E1DD041486897A44116DC7D762D633991F6146BC9FDBE891A56B525C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\upgrade-a1-v6-partial.py": {
+      "bytes": 3268,
+      "sha256": "A95CD4C60C4D69BF0F626BDAC80DD99AE50F72BB8739E1163C4215BEB7C8F39C"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\upgrade-a1-v6.py": {
+      "bytes": 10251,
+      "sha256": "F13E1F6452C2FABCD20C4F3F42B664EE8C52C84E968997BABA4E3ED14CC4F0C6"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\validate-a1-v5.py": {
+      "bytes": 6012,
+      "sha256": "321F54BE684FE25791B3DC2AAD384112410D6B181C9E70FC347456AE783569BD"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\validate-a1-v6.py": {
+      "bytes": 6152,
+      "sha256": "547F1EEBE0A72207BD6282E17C58DFD6DC0281609CD100B324A9CBC78E62E206"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\validate-a1-v7.py": {
+      "bytes": 7257,
+      "sha256": "B6E75C2D2867119A5F3D84AAFA5E2FD9F978B259766CE75B3EFB3510F27952C8"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\05-screen-spec.md": {
+      "bytes": 15544,
+      "sha256": "757A12FE05D3B84326A7A4308AABABFF576E9759A58713A807B06E203996C8F5"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\07-invariants-and-pitfalls.md": {
+      "bytes": 19084,
+      "sha256": "076A3DD8B96A19BF35652AC4D33808FE4B8B3C42A2D4EC1416EB6CFC5C14C0CF"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\11-디자인-요청서.md": {
+      "bytes": 93598,
+      "sha256": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\12-능력-매트릭스.md": {
+      "bytes": 80457,
+      "sha256": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\AGENTS.md": {
+      "bytes": 6160,
+      "sha256": "71EF3E3DEF51DEEE5E15D15DBFBA1CF0366311466DC7BF0087829F477A27326D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\CLAUDE.md": {
+      "bytes": 17618,
+      "sha256": "6564441C6E530C6F452954EF11BF030CDCFC58EDBEFC113E2BCC26181753289F"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\GEMINI.md": {
+      "bytes": 6685,
+      "sha256": "8B1D2FA9681A392685B3A2D9D3C5EE406179658DB84FA88E9743409249F43E4D"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_154142_3-2c-A1-v3-Sol-FAILED_次패킷전보존본.md": {
+      "bytes": 16738,
+      "sha256": "2AE144A6A5B564E1545D38A774DF83581D7C379C91E7A95E3B456A938E741E41"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261012_232236_3-2c-A1-v4-FAILED再확인본_v5재설계전보존.md": {
+      "bytes": 17400,
+      "sha256": "37C64BF73EBE0F6360A1C4BB1CF6C1FE69C8AF47C15F3C4E737D4E31E2BE09B1"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_100655_3-2c-A1-v5-Sol-FAILED_v6재설계전보존.md": {
+      "bytes": 15264,
+      "sha256": "7CA34BE2868D31CB685E5A361288725CFEB5E123C5C53CC5A3D36767E127A023"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_132225_3-2c-A1-v6-Sol-FAILED_v7재설계전보존.md": {
+      "bytes": 14555,
+      "sha256": "B4C6B2E205C6D14F1C2D00076565895B185BC8641243470BA733D945C5B7F654"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261013_135026_3-2c-A1-v6-Sol-FAILED_v7발송전보존.md": {
+      "bytes": 14555,
+      "sha256": "B4C6B2E205C6D14F1C2D00076565895B185BC8641243470BA733D945C5B7F654"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\PROTOCOL.md": {
+      "bytes": 20925,
+      "sha256": "11E1C4DC06D81E4BCD35D232DABB66869945A5A187431C0500CEB00DE1FCBC8B"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md": {
+      "bytes": 313374,
+      "sha256": "16D1F67F0885867DF8BBBCA2B40D46606D936E9E28F44CBAAF582941657BB6A7"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\시안\\2026-09-02-2차HTML\\12-access-logs-1.html": {
+      "bytes": 30649,
+      "sha256": "A93A67B504F5C3461F40AF2F9C368054C69FC3098208D706D71C1B7C01A28801"
+    },
+    "C:\\Projects\\Active\\교대근무관리 시스템\\시안\\2026-09-06-최종정리\\05-디자인-시스템-확정본-v1.3.md": {
+      "bytes": 17793,
+      "sha256": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4"
+    }
+  },
+  "previousReview": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\final-evidence.json",
+  "stageSlice": "A1",
+  "acceptance": "A1 prerequisite only; A2/B remain unaccepted",
+  "retryHistory": 0
+}

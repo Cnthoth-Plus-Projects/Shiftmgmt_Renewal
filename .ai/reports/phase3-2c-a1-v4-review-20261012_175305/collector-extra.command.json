@@ -1,0 +1,18 @@
+{
+  "name": "collector-extra",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\collector-extra.mjs",
+    "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261012-174854-GklWdI\\core-observations.json"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 2072,
+  "start": "2026-10-12T09:02:20.199249+00:00",
+  "end": "2026-10-12T09:02:21.581589+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\collector-extra.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v4-review-20261012_175305\\collector-extra.stderr.txt",
+  "stdoutSha256": "67774293246D146341E4E9495CF259D5C28DFBF33FF5D4A99BAFE8F6E986C472",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

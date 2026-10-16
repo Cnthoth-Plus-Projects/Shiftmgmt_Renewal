@@ -1,0 +1,10 @@
+{
+  "target": "6ae9320773d52a58b9a57f2ad12928395f44ecdd",
+  "candidate_files": 111,
+  "mismatches": 0,
+  "policy_count": 26,
+  "policy_bytes_unchanged": 26,
+  "yaml_parse": "PASS",
+  "project_overlay": "4.0",
+  "project_initialized_with": "3.0"
+}

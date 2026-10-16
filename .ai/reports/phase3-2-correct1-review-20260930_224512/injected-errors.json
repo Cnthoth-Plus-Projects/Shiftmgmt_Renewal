@@ -1,0 +1,15 @@
+{
+  "synthetic": true,
+  "purpose": "test verifier rejection of unexpected browser errors",
+  "temps": [
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-6VjoH1"
+  ],
+  "serverPid": null,
+  "consoleErrors": [
+    "SOL_VERIFIER_FAULT_CONSOLE"
+  ],
+  "pageErrors": [
+    "SOL_VERIFIER_FAULT_PAGE",
+    "SOL_VERIFIER_FAULT_PAGE"
+  ]
+}

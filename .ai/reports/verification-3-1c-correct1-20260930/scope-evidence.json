@@ -1,0 +1,714 @@
+{
+  "requestBodyTextUnchanged": true,
+  "baselineRows": 92,
+  "currentRows": 92,
+  "statusSHA": "8D4954EE16CAAFDFD5B908D58E42CAF962316D539AAA3DB742DD3B366982D08B",
+  "statusRowsMatch": true,
+  "protectedCount": 90,
+  "protectedMismatch": [],
+  "controlCount": 9,
+  "controlMismatch": [],
+  "sourceDocs": [
+    {
+      "path": "12-능력-매트릭스.md",
+      "expectedBytes": 80457,
+      "bytes": 80457,
+      "expectedSHA": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794",
+      "sha256": "ED6D8ADC632C2D81A3CF60FDCF42BADA65A593369A3BA19562BF7B3E6F579794"
+    },
+    {
+      "path": "11-디자인-요청서.md",
+      "expectedBytes": 93598,
+      "bytes": 93598,
+      "expectedSHA": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73",
+      "sha256": "B683DC2C760845CA14482DB4135E9C6B72DE097E7872116129BF7FEF399F4F73"
+    },
+    {
+      "path": "10-화면설계-초안.md",
+      "expectedBytes": 38129,
+      "bytes": 38129,
+      "expectedSHA": "DF99AF07C33F09DBE90410D255562891D73282132349ED8B35BC48156801CD08",
+      "sha256": "DF99AF07C33F09DBE90410D255562891D73282132349ED8B35BC48156801CD08"
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/05-디자인-시스템-확정본-v1.3.md",
+      "expectedBytes": 17793,
+      "bytes": 17793,
+      "expectedSHA": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4",
+      "sha256": "0975102B82DFBCE518CAACDF94C79C84A5C7236BE4DCAA6728615192507535D4"
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-1.html",
+      "expectedBytes": 44697,
+      "bytes": 44697,
+      "expectedSHA": "C8042DC8797E90123CAAE5ABCBD29B493017C18BF81C750A06ADA43CA25BD1BF",
+      "sha256": "C8042DC8797E90123CAAE5ABCBD29B493017C18BF81C750A06ADA43CA25BD1BF"
+    },
+    {
+      "path": "시안/2026-09-06-최종정리/스냅샷-1차-승인본/03-home-2.html",
+      "expectedBytes": 28592,
+      "bytes": 28592,
+      "expectedSHA": "A52EEB3627E7F224FF318909D711788A24D0341E2FC207EB41DC2C128EDFA259",
+      "sha256": "A52EEB3627E7F224FF318909D711788A24D0341E2FC207EB41DC2C128EDFA259"
+    }
+  ],
+  "files": [
+    {
+      "path": "scripts/ui-checks/home.mjs",
+      "bytes": 36168,
+      "sha256": "FE79578666E2765A6DF897329E20C4E44BB80DF26C1C9D50F5E601721EA57145",
+      "beforeBytes": 18709,
+      "beforeSHA": "31DE653BD94BB2B51331CED03D7EB0C8B0C832D957A6E7073E922F57F6116ABD",
+      "beforeSHAMatchesPacket": true,
+      "diffExit": 1,
+      "diffLineCounts": [
+        "426",
+        "0"
+      ]
+    },
+    {
+      "path": "src/web/screens/home.ts",
+      "bytes": 37972,
+      "sha256": "10A0A32F19BD8544EFA557502F531B09E01EE0002875FA84386BA71FE090E577",
+      "beforeBytes": 30562,
+      "beforeSHA": "A8E49E05315F2A59DC7A60B60FAFB108F979C4ED328139D8FD8E1D47ADDAD0A1",
+      "beforeSHAMatchesPacket": true,
+      "diffExit": 1,
+      "diffLineCounts": [
+        "214",
+        "31"
+      ]
+    }
+  ],
+  "reportedManifestCount": 26,
+  "reportedManifests": [
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-133632-3Wvnte/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-133636-3qw1Qi/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-133618-hXPhfp/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133610-xSZKSA/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-133623-tO1hOq/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-133613-lYslCl/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-133648-tVoaX1/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-133640-IsDH9d/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-133627-0konP0/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-133656-7jQWKT/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-133700-o993Eg/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-133644-OxglP0/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-133651-HqvfNn/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133704-Rtq68a/manifest.json",
+      "status": "PASS",
+      "captureCount": 4,
+      "captureExistence": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133708-7newnq/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133714-AfzlFQ/manifest.json",
+      "status": "PASS",
+      "captureCount": 2,
+      "captureExistence": [
+        true,
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133718-IaPibG/manifest.json",
+      "status": "PASS",
+      "captureCount": 2,
+      "captureExistence": [
+        true,
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133722-ArWHTt/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133726-H0zZDn/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133730-LaFq0l/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133734-ZLsObN/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133739-l1pwTJ/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133743-rN4jUu/manifest.json",
+      "status": "PASS",
+      "captureCount": 1,
+      "captureExistence": [
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133747-BxX98J/manifest.json",
+      "status": "PASS",
+      "captureCount": 2,
+      "captureExistence": [
+        true,
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-133757-CoOYsn/manifest.json",
+      "status": "PASS",
+      "captureCount": 2,
+      "captureExistence": [
+        true,
+        true
+      ],
+      "assertionFields": []
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-133751-8LcIDp/manifest.json",
+      "status": "PASS",
+      "captureCount": 4,
+      "captureExistence": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "assertionFields": []
+    }
+  ],
+  "recentRuns": [
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-133241-f0Exq5/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-133632-3Wvnte/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-132239-O42z1y/manifest.json",
+      "status": "FAIL",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-132432-Lmdlxo/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-133245-QtANOD/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-133636-3qw1Qi/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-133227-V5C0HD/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-133618-hXPhfp/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133005-NJJheQ/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133220-4uGIvv/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133610-xSZKSA/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-133232-08F0te/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-133623-tO1hOq/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-133224-85X8XQ/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-133613-lYslCl/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-132658-7fdgWR/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-133258-q5Hl49/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-133648-tVoaX1/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-132447-De79Fz/manifest.json",
+      "status": "FAIL",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-132527-W6PSC0/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-133249-wyqmj4/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-133640-IsDH9d/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-133236-BsgCNO/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-133627-0konP0/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-132721-CFn4B6/manifest.json",
+      "status": "FAIL",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-132928-DKQsE5/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-133307-sPMiIr/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-133656-7jQWKT/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-132938-99Tswu/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-133311-ZOqJDB/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-133700-o993Eg/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-132647-Y11aOt/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-133253-420c9M/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-133644-OxglP0/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-132710-km4JWP/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-133302-CwgZ1r/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-133651-HqvfNn/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133316-Ufpve6/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133320-FEVXJi/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133704-Rtq68a/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133708-7newnq/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133714-AfzlFQ/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133718-IaPibG/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133722-ArWHTt/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133726-H0zZDn/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133730-LaFq0l/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133734-ZLsObN/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133739-l1pwTJ/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133743-rN4jUu/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133747-BxX98J/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/ready/run-20260930-133757-CoOYsn/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    },
+    {
+      "path": "artifacts/captures/phase3/shell/run-20260930-133751-8LcIDp/manifest.json",
+      "status": "PASS",
+      "mentioned": true
+    }
+  ],
+  "unreportedRecentRuns": [
+    {
+      "path": "artifacts/captures/phase3/home-admin-action/run-20260930-133241-f0Exq5/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-132239-O42z1y/manifest.json",
+      "status": "FAIL",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-132432-Lmdlxo/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-employees-error/run-20260930-133245-QtANOD/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-133227-V5C0HD/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133005-NJJheQ/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-live-admin/run-20260930-133220-4uGIvv/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-loading-error/run-20260930-133232-08F0te/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-operator-fixture/run-20260930-133224-85X8XQ/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-132658-7fdgWR/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-recovery-error/run-20260930-133258-q5Hl49/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-132447-De79Fz/manifest.json",
+      "status": "FAIL",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-132527-W6PSC0/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sites-error/run-20260930-133249-wyqmj4/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-response/run-20260930-133236-BsgCNO/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-133307-sPMiIr/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-132938-99Tswu/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-stale-watch-action/run-20260930-133311-ZOqJDB/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-132647-Y11aOt/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-sync-error/run-20260930-133253-420c9M/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-132710-km4JWP/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/home-watch-error/run-20260930-133302-CwgZ1r/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133316-Ufpve6/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    },
+    {
+      "path": "artifacts/captures/phase3/login/run-20260930-133320-FEVXJi/manifest.json",
+      "status": "PASS",
+      "mentioned": false
+    }
+  ]
+}

@@ -1,0 +1,896 @@
+{
+  "status": "EXPECTED_V5_REGRESSIONS_DETECTED",
+  "proof": "BOOTSTRAP_V5_CONTROL_ONLY_NOT_V6_ACCEPTANCE",
+  "results": [
+    {
+      "mode": "repository-realpath-failure",
+      "bootstrap": true,
+      "accepted": false,
+      "baselineGap": true,
+      "physical": true,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs",
+        "scripts/ui-checks/access-history-shared.mjs",
+        "--case=contract-core"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 23380,
+      "startMs": 1791854679841,
+      "endMs": 1791854680629,
+      "exit": {
+        "code": 1,
+        "signal": null,
+        "timeMs": 1791854680626
+      },
+      "timedOut": false,
+      "ack": {
+        "type": "worker-ack",
+        "protocol": 2,
+        "case": "contract-core",
+        "ownerPid": 15092,
+        "workerPid": 23380,
+        "nonce": "0e030a0b899676e0612cef882d1208c7d590e2087f2c7e5b3a346c0a9f59222e",
+        "contextSha256": "E12BEBEE54891431B4CE506A25FD37EEC94C3DD49695BB68AB42DC8FA33239D2"
+      },
+      "stdout": "",
+      "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v6-partial-MpqnLx\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_REPOSITORY_REALPATH_FAILURE_AFTER_RUN\",\"stack\":\"Error: SOL_CORE_REPOSITORY_REALPATH_FAILURE_AFTER_RUN\\n    at fs.realpathSync (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs:64:229)\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:447:19)\\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\"}}\n",
+      "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-V5XVZ7\\repository-realpath-failure.events.jsonl",
+      "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-MpqnLx\\core-partial.json",
+      "partial": null,
+      "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-MpqnLx",
+      "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-i40CEb",
+      "reason": "Error: ENOENT: no such file or directory, open 'C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-MpqnLx\\core-partial.json'\n    at Object.readFileSync (node:fs:439:20)\n    at file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-probes.mjs:32:25\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+    },
+    {
+      "mode": "request-then-viewport-null",
+      "bootstrap": true,
+      "accepted": false,
+      "baselineGap": true,
+      "physical": true,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs",
+        "scripts/ui-checks/access-history-shared.mjs",
+        "--case=contract-core"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 31396,
+      "startMs": 1791854680637,
+      "endMs": 1791854683156,
+      "exit": {
+        "code": 1,
+        "signal": null,
+        "timeMs": 1791854683153
+      },
+      "timedOut": false,
+      "ack": {
+        "type": "worker-ack",
+        "protocol": 2,
+        "case": "contract-core",
+        "ownerPid": 15092,
+        "workerPid": 31396,
+        "nonce": "1fd879aba2147f613863aca4e1d1655209acc334b4c27feaf24351b6c9b540d4",
+        "contextSha256": "769DF641436D56CF7979EBB6F62659796727B230A47D2A7E3C0487FA6B9A89FA"
+      },
+      "stdout": "",
+      "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v6-partial-AozDjU\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_VIEWPORT_NULL\",\"stack\":\"Error: SOL_CORE_VIEWPORT_NULL\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:508:13)\\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5\"}}\n",
+      "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-V5XVZ7\\request-then-viewport-null.events.jsonl",
+      "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-AozDjU\\core-partial.json",
+      "partial": {
+        "status": "FAIL",
+        "case": "contract-core",
+        "runId": "run-sol-a1v6-partial-AozDjU",
+        "context": {
+          "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-AozDjU",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-KRHSRp",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-KRHSRp\\data\\bootstrap-credentials.json",
+          "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+          "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+          "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+          "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+        },
+        "worker": {
+          "pid": 31396,
+          "parentPid": 15092,
+          "nonceSha256": "A570FDC377D8AF924644AB9E131D4E63EB6091AABE0394CB398724EB80A0F040"
+        },
+        "raw": {
+          "viewport": null,
+          "origin": "http://127.0.0.1:18741/",
+          "loginInputs": {
+            "id": {
+              "count": 1,
+              "visible": true
+            },
+            "password": {
+              "count": 1,
+              "visible": true
+            }
+          },
+          "fixtureLabels": [
+            {
+              "actionType": "performance-approve",
+              "label": "실적 승인"
+            },
+            {
+              "actionType": "performance-reapprove",
+              "label": "실적 승인 확정"
+            },
+            {
+              "actionType": "performance-hide-approved",
+              "label": "승인완료 목록삭제"
+            },
+            {
+              "actionType": "schedule-publish",
+              "label": "근무표 배포"
+            },
+            {
+              "actionType": "sign-in",
+              "label": "로그인"
+            },
+            {
+              "actionType": "route-view",
+              "label": "화면 이동"
+            },
+            {
+              "actionType": "performance-reject",
+              "label": "실적 반려"
+            },
+            {
+              "actionType": "site-save",
+              "label": "근무지 저장"
+            }
+          ],
+          "canonicalLabels": {
+            "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\shared\\domain\\access-log.js",
+            "bytes": 3575,
+            "sha256": "D873CF5FF4FFEB34CB2AC1E44A60D5E63E41AEB4992A043361AACF4B5F97D81B",
+            "labels": {
+              "sign-in": "로그인",
+              "sign-in-failed": "로그인 실패",
+              "password-change": "비밀번호 변경",
+              "account-recovery": "계정 복구",
+              "account-recovery-key-rotate": "계정복구키 발급",
+              "sign-out": "로그아웃",
+              "route-view": "화면 이동",
+              "app-update-check": "업데이트 확인",
+              "app-update-download": "업데이트 다운로드",
+              "app-update-install": "업데이트 적용",
+              "release-notes-view": "패치노트 확인",
+              "dashboard-export": "대시보드 출력",
+              "employee-save": "인력 저장",
+              "employee-delete": "인력 삭제",
+              "employee-wage-save": "시급 저장",
+              "employee-wage-close": "시급 종료",
+              "employee-assignment-save": "배정 저장",
+              "employee-assignment-close": "배정 종료",
+              "employee-assignment-reorder": "배정 순서 변경",
+              "employee-wage-bulk-apply": "시급 일괄 적용",
+              "site-save": "근무지 저장",
+              "site-delete": "근무지 삭제",
+              "app-settings-save": "앱 설정 저장",
+              "database-backup-run": "DB 수동 백업",
+              "database-migration-preview": "DB 복원 미리보기",
+              "database-migration-update": "DB 복원 반영",
+              "file-watch-restart": "파일 감시 재시작",
+              "file-watch-stop": "파일 감시 중지",
+              "holiday-fetch": "공휴일 불러오기",
+              "holiday-save": "공휴일 등록",
+              "holiday-rename": "공휴일 수정",
+              "holiday-delete": "공휴일 삭제",
+              "holiday-replace": "공휴일 일괄 반영",
+              "allowance-rate-save": "요율 저장",
+              "allowance-rate-delete": "요율 삭제",
+              "user-save": "사용자 저장",
+              "user-delete": "사용자 삭제",
+              "site-name-save": "사이트 명 저장",
+              "site-name-delete": "사이트 명 삭제",
+              "template-inspect": "양식 검증",
+              "template-preview": "양식 미리보기",
+              "template-save": "양식 등록",
+              "template-approve": "양식 승인",
+              "template-set-default": "기본 양식 지정",
+              "template-file-name-update": "출력 파일명 규칙 저장",
+              "template-delete": "양식 삭제",
+              "layout-save": "문서 레이아웃 저장",
+              "layout-reset": "문서 레이아웃 초기화",
+              "layout-preview": "문서 레이아웃 미리보기",
+              "shift-pattern-import": "근무패턴 분석",
+              "shift-pattern-save": "근무패턴 저장",
+              "shift-pattern-deactivate": "근무패턴 비활성화",
+              "schedule-save": "근무표 저장",
+              "schedule-preview": "근무표 미리보기",
+              "schedule-export": "근무표 생성",
+              "schedule-publish": "근무표 배포",
+              "performance-approve": "실적 승인",
+              "performance-reapprove": "실적 승인 확정",
+              "performance-reject": "실적 반려",
+              "performance-hide-approved": "승인완료 목록삭제",
+              "performance-return-to-pending": "승인대기로 되돌리기",
+              "performance-open-file": "원본 파일 열기",
+              "allowance-calculate": "수당 계산",
+              "allowance-approve": "수당 승인",
+              "allowance-reject": "수당 반려",
+              "allowance-early-payout": "선지급 지정",
+              "allowance-export": "품의 출력",
+              "allowance-proposal-preview": "품의 미리보기",
+              "allowance-proposal-approve": "품의 승인"
+            }
+          },
+          "fixtureRequestCount": 0,
+          "rawErrors": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          },
+          "chrome": {
+            "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "version": "155.0.8059.40",
+            "browserVersion": "155.0.8059.39"
+          },
+          "resources": [
+            {
+              "kind": "browser",
+              "id": "browser-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1791854682204
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1791854682945
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1791854683131
+                }
+              ]
+            },
+            {
+              "kind": "context",
+              "id": "context-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1791854682222
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1791854682924
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1791854682945
+                }
+              ]
+            }
+          ],
+          "captureId": null
+        },
+        "checks": [
+          {
+            "id": "CORE-02",
+            "sourceArtifact": "core-observations",
+            "pointer": "/origin",
+            "actual": "http://127.0.0.1:18741/"
+          },
+          {
+            "id": "CORE-03",
+            "sourceArtifact": "core-observations",
+            "pointer": "/loginInputs",
+            "actual": {
+              "id": {
+                "count": 1,
+                "visible": true
+              },
+              "password": {
+                "count": 1,
+                "visible": true
+              }
+            }
+          },
+          {
+            "id": "CORE-04",
+            "sourceArtifact": "core-observations",
+            "pointer": "/fixtureLabels",
+            "actual": [
+              {
+                "actionType": "performance-approve",
+                "label": "실적 승인"
+              },
+              {
+                "actionType": "performance-reapprove",
+                "label": "실적 승인 확정"
+              },
+              {
+                "actionType": "performance-hide-approved",
+                "label": "승인완료 목록삭제"
+              },
+              {
+                "actionType": "schedule-publish",
+                "label": "근무표 배포"
+              },
+              {
+                "actionType": "sign-in",
+                "label": "로그인"
+              },
+              {
+                "actionType": "route-view",
+                "label": "화면 이동"
+              },
+              {
+                "actionType": "performance-reject",
+                "label": "실적 반려"
+              },
+              {
+                "actionType": "site-save",
+                "label": "근무지 저장"
+              }
+            ]
+          },
+          {
+            "id": "CORE-05",
+            "sourceArtifact": "core-observations",
+            "pointer": "/fixtureRequestCount",
+            "actual": 0
+          },
+          {
+            "id": "CORE-06",
+            "sourceArtifact": "core-observations",
+            "pointer": "/rawErrors",
+            "actual": {
+              "console": [],
+              "pageerror": [],
+              "requestfailed": [],
+              "badResponses": []
+            }
+          },
+          {
+            "id": "CORE-07",
+            "sourceArtifact": "core-observations",
+            "pointer": "/chrome",
+            "actual": {
+              "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+              "version": "155.0.8059.40",
+              "browserVersion": "155.0.8059.39"
+            }
+          },
+          {
+            "id": "CORE-08",
+            "sourceArtifact": "core-observations",
+            "pointer": "/resources",
+            "actual": [
+              {
+                "kind": "browser",
+                "id": "browser-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791854682204
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791854682945
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791854683131
+                  }
+                ]
+              },
+              {
+                "kind": "context",
+                "id": "context-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791854682222
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791854682924
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791854682945
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "errors": {
+          "primary": {
+            "code": "A1_WORKER_FAILED",
+            "phase": "execution",
+            "name": "Error",
+            "message": "SOL_CORE_VIEWPORT_NULL",
+            "stack": "Error: SOL_CORE_VIEWPORT_NULL\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:508:13)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5",
+            "timeMs": 1791854682924
+          },
+          "cleanup": [],
+          "evidence": [],
+          "unexpected": []
+        }
+      },
+      "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-AozDjU",
+      "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-KRHSRp",
+      "reason": "TypeError: Cannot read properties of undefined (reading 'fixtureRequests')\n    at file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-probes.mjs:35:159\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+    },
+    {
+      "mode": "canonical-import-failure",
+      "bootstrap": true,
+      "accepted": false,
+      "baselineGap": true,
+      "physical": true,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs",
+        "scripts/ui-checks/access-history-shared.mjs",
+        "--case=contract-core"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 5832,
+      "startMs": 1791854683161,
+      "endMs": 1791854683841,
+      "exit": {
+        "code": 1,
+        "signal": null,
+        "timeMs": 1791854683838
+      },
+      "timedOut": false,
+      "ack": {
+        "type": "worker-ack",
+        "protocol": 2,
+        "case": "contract-core",
+        "ownerPid": 15092,
+        "workerPid": 5832,
+        "nonce": "80a1378ba92128b5dff722ed4eebf74d5ba99be6a468dd049d4076667cf84a93",
+        "contextSha256": "BBDE6A63F13747133231B22129A71494867B2B48C40A365A3E252C9D2E7C44E6"
+      },
+      "stdout": "",
+      "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v6-partial-OKrgKA\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\",\"stack\":\"Error: SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\\n    at Module._load (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs:68:289)\\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\\n    at require (node:internal/modules/helpers:152:16)\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:463:22)\\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\"}}\n",
+      "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-V5XVZ7\\canonical-import-failure.events.jsonl",
+      "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-OKrgKA\\core-partial.json",
+      "partial": {
+        "status": "FAIL",
+        "case": "contract-core",
+        "runId": "run-sol-a1v6-partial-OKrgKA",
+        "context": {
+          "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-OKrgKA",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-fICd7r",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-fICd7r\\data\\bootstrap-credentials.json",
+          "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+          "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+          "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+          "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+        },
+        "worker": {
+          "pid": 5832,
+          "parentPid": 15092,
+          "nonceSha256": "A73A045EAF666447D2BAAC2B7AF86A65422119073A16272C9CBBD3EB472FAC7D"
+        },
+        "raw": {
+          "viewport": null,
+          "origin": null,
+          "loginInputs": null,
+          "fixtureLabels": null,
+          "canonicalLabels": null,
+          "fixtureRequestCount": null,
+          "rawErrors": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          },
+          "chrome": null,
+          "resources": [],
+          "captureId": null
+        },
+        "checks": [
+          {
+            "id": "CORE-06",
+            "sourceArtifact": "core-observations",
+            "pointer": "/rawErrors",
+            "actual": {
+              "console": [],
+              "pageerror": [],
+              "requestfailed": [],
+              "badResponses": []
+            }
+          },
+          {
+            "id": "CORE-08",
+            "sourceArtifact": "core-observations",
+            "pointer": "/resources",
+            "actual": []
+          }
+        ],
+        "errors": {
+          "primary": {
+            "code": "A1_WORKER_FAILED",
+            "phase": "execution",
+            "name": "Error",
+            "message": "SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES",
+            "stack": "Error: SOL_CORE_CANONICAL_IMPORT_FAILURE_AFTER_BYTES\n    at Module._load (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs:68:289)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)\n    at Module.require (node:internal/modules/cjs/loader:1504:12)\n    at require (node:internal/modules/helpers:152:16)\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:463:22)\n    at file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)",
+            "timeMs": 1791854683810
+          },
+          "cleanup": [],
+          "evidence": [],
+          "unexpected": []
+        }
+      },
+      "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-OKrgKA",
+      "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-fICd7r",
+      "reason": "TypeError: Cannot read properties of undefined (reading 'fixtureRequests')\n    at file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-probes.mjs:35:159\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+    },
+    {
+      "mode": "route-install-failure",
+      "bootstrap": true,
+      "accepted": false,
+      "baselineGap": true,
+      "physical": true,
+      "argv": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs",
+        "scripts/ui-checks/access-history-shared.mjs",
+        "--case=contract-core"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "pid": 17144,
+      "startMs": 1791854683847,
+      "endMs": 1791854685548,
+      "exit": {
+        "code": 1,
+        "signal": null,
+        "timeMs": 1791854685545
+      },
+      "timedOut": false,
+      "ack": {
+        "type": "worker-ack",
+        "protocol": 2,
+        "case": "contract-core",
+        "ownerPid": 15092,
+        "workerPid": 17144,
+        "nonce": "b6707be1fb47517be5484b6ba28c14795bedc50ddb10af03db9f537f83c4fb3d",
+        "contextSha256": "D8C31AC64A64D940A7A8784C179DBC7A164A5E43FC1FB698C89AF19866249D75"
+      },
+      "stdout": "",
+      "stderr": "{\"status\":\"FAIL\",\"code\":\"A1_WORKER_FAILED\",\"phase\":\"execution\",\"case\":\"contract-core\",\"runId\":\"run-sol-a1v6-partial-LgoUmP\",\"error\":{\"name\":\"Error\",\"message\":\"SOL_CORE_ROUTE_INSTALL_FAILURE_AFTER_ROWS\",\"stack\":\"Error: SOL_CORE_ROUTE_INSTALL_FAILURE_AFTER_ROWS\\n    at page.route (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs:30:123)\\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:487:16)\\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5\"}}\n",
+      "eventsPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v6-partial-V5XVZ7\\route-install-failure.events.jsonl",
+      "partialPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-LgoUmP\\core-partial.json",
+      "partial": {
+        "status": "FAIL",
+        "case": "contract-core",
+        "runId": "run-sol-a1v6-partial-LgoUmP",
+        "context": {
+          "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-LgoUmP",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RFZOid",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RFZOid\\data\\bootstrap-credentials.json",
+          "contractPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\contract.json",
+          "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+          "executionPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\execution.json",
+          "executionSha256": "65AD7BAE518272D79D87079B77B67FFDD10ACD4D9F339EE682E5B093F6ADFB35"
+        },
+        "worker": {
+          "pid": 17144,
+          "parentPid": 15092,
+          "nonceSha256": "905163EC8888488DC70302A1AAF291C432E3D689C8BF6E05B76575CB2D510EA9"
+        },
+        "raw": {
+          "viewport": null,
+          "origin": null,
+          "loginInputs": null,
+          "fixtureLabels": [
+            {
+              "actionType": "performance-approve",
+              "label": "실적 승인"
+            },
+            {
+              "actionType": "performance-reapprove",
+              "label": "실적 승인 확정"
+            },
+            {
+              "actionType": "performance-hide-approved",
+              "label": "승인완료 목록삭제"
+            },
+            {
+              "actionType": "schedule-publish",
+              "label": "근무표 배포"
+            },
+            {
+              "actionType": "sign-in",
+              "label": "로그인"
+            },
+            {
+              "actionType": "route-view",
+              "label": "화면 이동"
+            },
+            {
+              "actionType": "performance-reject",
+              "label": "실적 반려"
+            },
+            {
+              "actionType": "site-save",
+              "label": "근무지 저장"
+            }
+          ],
+          "canonicalLabels": {
+            "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\shared\\domain\\access-log.js",
+            "bytes": 3575,
+            "sha256": "D873CF5FF4FFEB34CB2AC1E44A60D5E63E41AEB4992A043361AACF4B5F97D81B",
+            "labels": {
+              "sign-in": "로그인",
+              "sign-in-failed": "로그인 실패",
+              "password-change": "비밀번호 변경",
+              "account-recovery": "계정 복구",
+              "account-recovery-key-rotate": "계정복구키 발급",
+              "sign-out": "로그아웃",
+              "route-view": "화면 이동",
+              "app-update-check": "업데이트 확인",
+              "app-update-download": "업데이트 다운로드",
+              "app-update-install": "업데이트 적용",
+              "release-notes-view": "패치노트 확인",
+              "dashboard-export": "대시보드 출력",
+              "employee-save": "인력 저장",
+              "employee-delete": "인력 삭제",
+              "employee-wage-save": "시급 저장",
+              "employee-wage-close": "시급 종료",
+              "employee-assignment-save": "배정 저장",
+              "employee-assignment-close": "배정 종료",
+              "employee-assignment-reorder": "배정 순서 변경",
+              "employee-wage-bulk-apply": "시급 일괄 적용",
+              "site-save": "근무지 저장",
+              "site-delete": "근무지 삭제",
+              "app-settings-save": "앱 설정 저장",
+              "database-backup-run": "DB 수동 백업",
+              "database-migration-preview": "DB 복원 미리보기",
+              "database-migration-update": "DB 복원 반영",
+              "file-watch-restart": "파일 감시 재시작",
+              "file-watch-stop": "파일 감시 중지",
+              "holiday-fetch": "공휴일 불러오기",
+              "holiday-save": "공휴일 등록",
+              "holiday-rename": "공휴일 수정",
+              "holiday-delete": "공휴일 삭제",
+              "holiday-replace": "공휴일 일괄 반영",
+              "allowance-rate-save": "요율 저장",
+              "allowance-rate-delete": "요율 삭제",
+              "user-save": "사용자 저장",
+              "user-delete": "사용자 삭제",
+              "site-name-save": "사이트 명 저장",
+              "site-name-delete": "사이트 명 삭제",
+              "template-inspect": "양식 검증",
+              "template-preview": "양식 미리보기",
+              "template-save": "양식 등록",
+              "template-approve": "양식 승인",
+              "template-set-default": "기본 양식 지정",
+              "template-file-name-update": "출력 파일명 규칙 저장",
+              "template-delete": "양식 삭제",
+              "layout-save": "문서 레이아웃 저장",
+              "layout-reset": "문서 레이아웃 초기화",
+              "layout-preview": "문서 레이아웃 미리보기",
+              "shift-pattern-import": "근무패턴 분석",
+              "shift-pattern-save": "근무패턴 저장",
+              "shift-pattern-deactivate": "근무패턴 비활성화",
+              "schedule-save": "근무표 저장",
+              "schedule-preview": "근무표 미리보기",
+              "schedule-export": "근무표 생성",
+              "schedule-publish": "근무표 배포",
+              "performance-approve": "실적 승인",
+              "performance-reapprove": "실적 승인 확정",
+              "performance-reject": "실적 반려",
+              "performance-hide-approved": "승인완료 목록삭제",
+              "performance-return-to-pending": "승인대기로 되돌리기",
+              "performance-open-file": "원본 파일 열기",
+              "allowance-calculate": "수당 계산",
+              "allowance-approve": "수당 승인",
+              "allowance-reject": "수당 반려",
+              "allowance-early-payout": "선지급 지정",
+              "allowance-export": "품의 출력",
+              "allowance-proposal-preview": "품의 미리보기",
+              "allowance-proposal-approve": "품의 승인"
+            }
+          },
+          "fixtureRequestCount": 0,
+          "rawErrors": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          },
+          "chrome": {
+            "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "version": "155.0.8059.40",
+            "browserVersion": "155.0.8059.39"
+          },
+          "resources": [
+            {
+              "kind": "browser",
+              "id": "browser-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1791854684937
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1791854685323
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1791854685525
+                }
+              ]
+            },
+            {
+              "kind": "context",
+              "id": "context-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1791854684956
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1791854685307
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1791854685323
+                }
+              ]
+            }
+          ],
+          "captureId": null
+        },
+        "checks": [
+          {
+            "id": "CORE-04",
+            "sourceArtifact": "core-observations",
+            "pointer": "/fixtureLabels",
+            "actual": [
+              {
+                "actionType": "performance-approve",
+                "label": "실적 승인"
+              },
+              {
+                "actionType": "performance-reapprove",
+                "label": "실적 승인 확정"
+              },
+              {
+                "actionType": "performance-hide-approved",
+                "label": "승인완료 목록삭제"
+              },
+              {
+                "actionType": "schedule-publish",
+                "label": "근무표 배포"
+              },
+              {
+                "actionType": "sign-in",
+                "label": "로그인"
+              },
+              {
+                "actionType": "route-view",
+                "label": "화면 이동"
+              },
+              {
+                "actionType": "performance-reject",
+                "label": "실적 반려"
+              },
+              {
+                "actionType": "site-save",
+                "label": "근무지 저장"
+              }
+            ]
+          },
+          {
+            "id": "CORE-05",
+            "sourceArtifact": "core-observations",
+            "pointer": "/fixtureRequestCount",
+            "actual": 0
+          },
+          {
+            "id": "CORE-06",
+            "sourceArtifact": "core-observations",
+            "pointer": "/rawErrors",
+            "actual": {
+              "console": [],
+              "pageerror": [],
+              "requestfailed": [],
+              "badResponses": []
+            }
+          },
+          {
+            "id": "CORE-07",
+            "sourceArtifact": "core-observations",
+            "pointer": "/chrome",
+            "actual": {
+              "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+              "version": "155.0.8059.40",
+              "browserVersion": "155.0.8059.39"
+            }
+          },
+          {
+            "id": "CORE-08",
+            "sourceArtifact": "core-observations",
+            "pointer": "/resources",
+            "actual": [
+              {
+                "kind": "browser",
+                "id": "browser-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791854684937
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791854685323
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791854685525
+                  }
+                ]
+              },
+              {
+                "kind": "context",
+                "id": "context-1",
+                "events": [
+                  {
+                    "state": "created",
+                    "timeMs": 1791854684956
+                  },
+                  {
+                    "state": "close-start",
+                    "timeMs": 1791854685307
+                  },
+                  {
+                    "state": "closed",
+                    "timeMs": 1791854685323
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "errors": {
+          "primary": {
+            "code": "A1_WORKER_FAILED",
+            "phase": "execution",
+            "name": "Error",
+            "message": "SOL_CORE_ROUTE_INSTALL_FAILURE_AFTER_ROWS",
+            "stack": "Error: SOL_CORE_ROUTE_INSTALL_FAILURE_AFTER_ROWS\n    at page.route (file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-preload.mjs:30:123)\n    at runContractCore (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:487:16)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs:570:5",
+            "timeMs": 1791854685306
+          },
+          "cleanup": [],
+          "evidence": [],
+          "unexpected": []
+        }
+      },
+      "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-sol-a1v6-partial-LgoUmP",
+      "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RFZOid",
+      "reason": "TypeError: Cannot read properties of undefined (reading 'fixtureRequests')\n    at file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/contracts/phase3-2c-a1-v6/partial-probes.mjs:35:159\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)"
+    }
+  ],
+  "requests": [
+    {
+      "mode": "request-then-viewport-null",
+      "url": "/"
+    }
+  ],
+  "retention": "Retain exact owned fixtures/artifacts; no historical/foreign cleanup"
+}

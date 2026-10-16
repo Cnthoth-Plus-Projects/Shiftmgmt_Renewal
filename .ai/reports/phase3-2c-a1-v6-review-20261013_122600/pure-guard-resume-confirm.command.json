@@ -1,0 +1,18 @@
+{
+  "name": "pure-guard-resume-confirm",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard.mjs",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-input.json"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 17148,
+  "start": "2026-10-13T03:49:27.005659+00:00",
+  "end": "2026-10-13T03:49:27.153166+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-resume-confirm.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v6-review-20261013_122600\\pure-guard-resume-confirm.stderr.txt",
+  "stdoutSha256": "AED282FA863CC9064B00EAA8B770F5DB0217CE8321C8095F72B17AEBC380782D",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

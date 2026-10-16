@@ -1,0 +1,322 @@
+[
+  {
+    "name": "fault-date-90x24",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:16:54.853743+00:00",
+    "pid": 43316,
+    "rc": 1,
+    "end": "2026-10-01T07:16:59.687649+00:00",
+    "elapsedSeconds": 4.829,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-90x24.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-90x24.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": true,
+    "events": [
+      {
+        "time": "2026-10-01T07:16:59.370Z",
+        "pid": 17468,
+        "fault": "date-90x24",
+        "type": "browser-observation",
+        "observation": {
+          "type": "date-90x24",
+          "width": 90,
+          "height": 24,
+          "tableName": "활동 이력 목록"
+        }
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-10-01T07-16-55-400Z\\owner-final.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161657-rswuMu\\manifest.json"
+    ]
+  },
+  {
+    "name": "fault-date-tolerance",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:16:59.735815+00:00",
+    "pid": 5920,
+    "rc": 0,
+    "end": "2026-10-01T07:17:04.905060+00:00",
+    "elapsedSeconds": 5.172,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-tolerance.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-date-tolerance.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:04.399Z",
+        "pid": 47632,
+        "fault": "date-tolerance",
+        "type": "browser-observation",
+        "observation": {
+          "type": "date-tolerance",
+          "width": 133.5,
+          "height": 34,
+          "tableName": "활동 이력 목록"
+        }
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-10-01T07-17-00-254Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-10-01T07-17-00-254Z\\owner-final.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161702-g0IgIl\\list-fixture-201.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161702-g0IgIl\\manifest.json"
+    ]
+  },
+  {
+    "name": "fault-list-values",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:04.936264+00:00",
+    "pid": 46992,
+    "rc": 0,
+    "end": "2026-10-01T07:17:09.561013+00:00",
+    "elapsedSeconds": 4.625,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-list-values.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-list-values.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:09.095Z",
+        "pid": 50880,
+        "fault": "list-values",
+        "type": "browser-observation",
+        "observation": {
+          "type": "row-order",
+          "firstIds": [
+            "log-row-log-record-2",
+            "log-row-log-record-1",
+            "log-row-log-record-3"
+          ]
+        }
+      },
+      {
+        "time": "2026-10-01T07:17:09.097Z",
+        "pid": 50880,
+        "fault": "list-values",
+        "type": "browser-observation",
+        "observation": {
+          "type": "count-label",
+          "actual": "전체 999건 중 999건 표시",
+          "expectedTotal": 201
+        }
+      },
+      {
+        "time": "2026-10-01T07:17:09.097Z",
+        "pid": 50880,
+        "fault": "list-values",
+        "type": "browser-observation",
+        "observation": {
+          "type": "truncated-title",
+          "actual": "상세 활동 내용"
+        }
+      },
+      {
+        "time": "2026-10-01T07:17:09.099Z",
+        "pid": 50880,
+        "fault": "list-values",
+        "type": "browser-observation",
+        "observation": {
+          "type": "badge-color",
+          "actual": "rgb(255, 0, 255)",
+          "className": "access-history-badge badge-approved"
+        }
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-10-01T07-17-05-337Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-10-01T07-17-05-337Z\\owner-final.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161707-1o7Ib0\\list-fixture-201.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-161707-1o7Ib0\\manifest.json"
+    ]
+  },
+  {
+    "name": "fault-unexpected-console-401",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=session-expired"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:09.592106+00:00",
+    "pid": 32116,
+    "rc": 0,
+    "end": "2026-10-01T07:17:13.805816+00:00",
+    "elapsedSeconds": 4.219,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-unexpected-console-401.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-unexpected-console-401.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:12.820Z",
+        "pid": 32616,
+        "fault": "unexpected-console-401",
+        "type": "browser-observation",
+        "observation": {
+          "type": "unexpected-console-401",
+          "message": "SOL_UNEXPECTED_UNRELATED_CONSOLE_ERROR_401"
+        }
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-09-962Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-09-962Z\\manifest.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-09-962Z\\owner-final.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-09-962Z\\session-expired-login.png"
+    ]
+  },
+  {
+    "name": "fault-no-cookie-500",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=session-expired"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:13.836386+00:00",
+    "pid": 49904,
+    "rc": 0,
+    "end": "2026-10-01T07:17:17.740016+00:00",
+    "elapsedSeconds": 3.906,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-no-cookie-500.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-no-cookie-500.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:17.436Z",
+        "pid": 1788,
+        "fault": "no-cookie-500",
+        "type": "no-cookie-response-replaced",
+        "url": "http://127.0.0.1:18741/api/access-logs:list",
+        "status": 500,
+        "errorCode": "SOL_UNRELATED_SERVER_FAILURE"
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-14-195Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-14-195Z\\manifest.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-14-195Z\\owner-final.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-10-01T07-17-14-195Z\\session-expired-login.png"
+    ]
+  },
+  {
+    "name": "fault-negative-context-close",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=errors"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:17.767695+00:00",
+    "pid": 52456,
+    "rc": 0,
+    "end": "2026-10-01T07:17:22.027964+00:00",
+    "elapsedSeconds": 4.265,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-negative-context-close.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-negative-context-close.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:21.766Z",
+        "pid": 41852,
+        "fault": "negative-context-close",
+        "type": "context-close-error",
+        "message": "SOL_INJECTED_CONTEXT_CLOSE_FAILURE",
+        "resourcesActuallyClosed": true
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-10-01T07-17-18-131Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-10-01T07-17-18-131Z\\errors-alert.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-10-01T07-17-18-131Z\\manifest.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-2026-10-01T07-17-18-131Z\\owner-final.json"
+    ]
+  },
+  {
+    "name": "fault-owner-manifest-write",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/sol-review-32c-hydrr51s/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=empty-fixture"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:22.048187+00:00",
+    "pid": 27516,
+    "rc": 0,
+    "end": "2026-10-01T07:17:26.958236+00:00",
+    "elapsedSeconds": 4.922,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-owner-manifest-write.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-owner-manifest-write.stderr.txt",
+    "expectedRcNonzero": true,
+    "rejected": false,
+    "events": [
+      {
+        "time": "2026-10-01T07:17:26.933Z",
+        "pid": 27516,
+        "fault": "owner-manifest-write",
+        "type": "owner-manifest-write-rejected",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-2026-10-01T07-17-22-438Z\\owner-final.json"
+      }
+    ],
+    "artifact": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\sol-review-32c-hydrr51s",
+    "createdEvidence": [
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-2026-10-01T07-17-22-438Z\\action-assertions.json",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-161724-PMAZQ0\\empty-fixture-g2.png",
+      "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-161724-PMAZQ0\\manifest.json"
+    ]
+  },
+  {
+    "name": "fault-cli-zero-args",
+    "command": [
+      "node",
+      "scripts/ui-checks/access-history.mjs"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T07:17:27.001370+00:00",
+    "pid": 14428,
+    "rc": 0,
+    "end": "2026-10-01T07:17:33.134399+00:00",
+    "elapsedSeconds": 6.141,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-cli-zero-args.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-review-20261001_160642\\fault-cli-zero-args.stderr.txt",
+    "expectedRcNonzero": true
+  }
+]

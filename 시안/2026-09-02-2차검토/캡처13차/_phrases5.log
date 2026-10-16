@@ -1,0 +1,24 @@
+00-shell-1.html [36개 검사] 전부 ✓
+00-shell-2.html [46개 검사] 전부 ✓
+01-login-1.html [22개 검사] 없음: 비밀번호를 여러 번 잘못 입력해 계정이 잠겼습니다. 약 30분 후에 다시 시도해 주세요.
+01-login-2.html [24개 검사] 전부 ✓
+02-common-1.html [17개 검사] 전부 ✓
+02-common-2.html [13개 검사] 전부 ✓
+02-common-3.html [11개 검사] 전부 ✓
+04-sites-1.html [28개 검사] 전부 ✓
+04-sites-2.html [18개 검사] 전부 ✓
+06-employees-1.html [36개 검사] 전부 ✓
+06-employees-2.html [30개 검사] 전부 ✓
+06-employees-3.html [57개 검사] 전부 ✓
+07-schedule-1.html [23개 검사] 전부 ✓
+07-schedule-2.html [27개 검사] 없음: 주간 총시간 0건 기준 내 | 없음: 연속 야간 0건 기준 내 | 없음: 휴식시간 103건 상세 확인 필요 | 없음: 주휴 0건 기준 내
+07-schedule-3.html [25개 검사] 전부 ✓
+09-allowance-1.html [29개 검사] 전부 ✓
+09-allowance-2.html [28개 검사] 전부 ✓
+09-allowance-3.html [25개 검사] 전부 ✓
+10-dashboard-1.html [25개 검사] 전부 ✓
+11-operations-1.html [83개 검사] 전부 ✓
+11-operations-2.html [47개 검사] 전부 ✓
+11-operations-3.html [46개 검사] 전부 ✓
+11-operations-4.html [32개 검사] 전부 ✓
+12-access-logs-1.html [50개 검사] 금지문구 있음: (admin)

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "C:\\Users\\pangyo\\anaconda3\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v7\\lifecycle-probes.py",
+    "--list"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 35228,
+  "startUtc": "2026-10-13T04:33:22.841735+00:00",
+  "endUtc": "2026-10-13T04:33:23.064003+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-plan.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v7-replan\\lifecycle-plan.stderr.txt",
+  "stdoutSha256": "C77CA1A5D9778F1FED0C74ACC2AD2A8CBF9DD86DC728B2E22929EC6916FC5E83",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

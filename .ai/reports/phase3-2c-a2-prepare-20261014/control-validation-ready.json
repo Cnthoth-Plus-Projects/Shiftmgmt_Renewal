@@ -1,0 +1,609 @@
+{
+  "status": "PASS",
+  "proof": "SOL_CONTROL_PREPARATION_ONLY_NOT_A2_IMPLEMENTATION",
+  "syntaxPython": 14,
+  "syntaxNode": 10,
+  "commands": [
+    {
+      "name": "final-syntax-component-probes",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\component-probes.mjs"
+      ],
+      "pid": 21300,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.219704+00:00",
+      "endUtc": "2026-10-13T23:15:56.377315+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-component-probes.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-component-probes.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-ipc-probes",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\ipc-probes.mjs"
+      ],
+      "pid": 51020,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.378370+00:00",
+      "endUtc": "2026-10-13T23:15:56.518212+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-ipc-probes.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-ipc-probes.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-lifecycle-canary",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\lifecycle-canary.mjs"
+      ],
+      "pid": 53524,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.518782+00:00",
+      "endUtc": "2026-10-13T23:15:56.657989+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-canary.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-canary.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-lifecycle-extension",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\lifecycle-extension.mjs"
+      ],
+      "pid": 12716,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.659643+00:00",
+      "endUtc": "2026-10-13T23:15:56.803004+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-extension.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-extension.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-lifecycle-preload",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\lifecycle-preload.mjs"
+      ],
+      "pid": 41008,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.803549+00:00",
+      "endUtc": "2026-10-13T23:15:56.939856+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-preload.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-lifecycle-preload.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-observer-canary",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\observer-canary.mjs"
+      ],
+      "pid": 7008,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:56.941066+00:00",
+      "endUtc": "2026-10-13T23:15:57.077480+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-observer-canary.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-observer-canary.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-partial-preload",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\partial-preload.mjs"
+      ],
+      "pid": 51364,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.078569+00:00",
+      "endUtc": "2026-10-13T23:15:57.222753+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-partial-preload.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-partial-preload.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-partial-probes",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\partial-probes.mjs"
+      ],
+      "pid": 13476,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.223825+00:00",
+      "endUtc": "2026-10-13T23:15:57.359737+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-partial-probes.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-partial-probes.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-recon",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\recon.mjs"
+      ],
+      "pid": 55116,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.360737+00:00",
+      "endUtc": "2026-10-13T23:15:57.500961+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-recon.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-recon.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-syntax-runtime-preload",
+      "argv": [
+        "node",
+        "--check",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\runtime-preload.mjs"
+      ],
+      "pid": 37396,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.502128+00:00",
+      "endUtc": "2026-10-13T23:15:57.639443+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-runtime-preload.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-syntax-runtime-preload.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-gate-parser",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\gate-evidence.py",
+        "--execution-sha",
+        "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+        "--self-test"
+      ],
+      "pid": 16004,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.643077+00:00",
+      "endUtc": "2026-10-13T23:15:57.948267+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-gate-parser.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-gate-parser.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 3252,
+        "sha256": "A43E7815B2C0B644CA7665B0E8557ADC5CEE96A663AE8D944F716941D3E3229C"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-runtime-parser",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\runtime-probes.py",
+        "--execution-sha",
+        "FDBBC4B9A93E58B1AE50AEE2925BC1CA676AE34503EB7BA6147F0C523C09619D",
+        "--baseline-sha",
+        "PARSER_MODE_NOT_USED",
+        "--self-test"
+      ],
+      "pid": 6716,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:57.964474+00:00",
+      "endUtc": "2026-10-13T23:15:58.223295+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-runtime-parser.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-runtime-parser.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 2159,
+        "sha256": "6F30BA77835CDB13C6EB5E113DEDFD850506C190F151903FE7C6E76E8F766F84"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    },
+    {
+      "name": "final-normal-parser-fixtures",
+      "argv": [
+        "C:\\Users\\pangyo\\anaconda3\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-v1\\normal-parser-fixtures.py"
+      ],
+      "pid": 49392,
+      "cwd": "C:\\Projects\\Active\\교대근무관리 시스템",
+      "startUtc": "2026-10-13T23:15:58.234659+00:00",
+      "endUtc": "2026-10-13T23:15:59.435716+00:00",
+      "rc": 0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-normal-parser-fixtures.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-prepare-20261014\\final-normal-parser-fixtures.stderr.txt",
+      "stdoutMeta": {
+        "bytes": 191,
+        "sha256": "F0CE85E255B3843810E530C48100AC8AAC4804C53A975F2B8CD91DE4C5CA3D43"
+      },
+      "stderrMeta": {
+        "bytes": 0,
+        "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+      }
+    }
+  ],
+  "gateParser": {
+    "status": "PASS",
+    "result": {
+      "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+      "original": {
+        "positiveComparisons": 2,
+        "rejectedMutations": 19,
+        "mutations": [
+          "missing-id",
+          "duplicate-id",
+          "unknown-id",
+          "viewport",
+          "loginInputs",
+          "fixtureRequestCount",
+          "rawErrors",
+          "constant-actual",
+          "caller-tolerance",
+          "caller-expected",
+          "canonical-label-drift",
+          "nonfinite-nan",
+          "nonfinite-inf",
+          "numeric-tolerance-2",
+          "numeric-tolerance-4",
+          "numeric-tolerance-nan",
+          "date-133.5",
+          "close-error",
+          "truncated-png"
+        ],
+        "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE"
+      },
+      "extraRejectedMutations": [
+        "protected-executionError",
+        "protected-manifestWriteError",
+        "protected-consoleErrors",
+        "protected-pageErrors",
+        "protected-requestFailed",
+        "protected-badResponses",
+        "protected-cleanupErrors",
+        "protected-extra-error-field",
+        "recursive-nan",
+        "numeric-bool",
+        "log-before-close",
+        "log-boolean-time",
+        "log-missing-stderr",
+        "log-extra-finish",
+        "stdout-logFinishSeen-missing",
+        "stdout-logFinishSeen-false",
+        "stdout-logCloseSeen-missing",
+        "stdout-logCloseSeen-false",
+        "stdout-close-null",
+        "stdout-close-bool",
+        "stdout-close-zero",
+        "stdout-close-before-finish",
+        "stdout-close-nan",
+        "stderr-logFinishSeen-missing",
+        "stderr-logFinishSeen-false",
+        "stderr-logCloseSeen-missing",
+        "stderr-logCloseSeen-false",
+        "stderr-close-null",
+        "stderr-close-bool",
+        "stderr-close-zero",
+        "stderr-close-before-finish",
+        "stderr-close-nan",
+        "logFinishSeen-extra",
+        "logCloseSeen-extra",
+        "logCloseAtMs-extra"
+      ],
+      "v7ReceiptRules": {
+        "proof": "PARSER_ONLY_NO_RUNTIME_ACCEPTANCE",
+        "positives": 10,
+        "rejected": [
+          "missing-callbackEvents",
+          "missing-exitCode",
+          "missing-exitSignal",
+          "missing-closeCode",
+          "missing-closeSignal",
+          "missing-createdAtMs",
+          "missing-exitAtMs",
+          "missing-closeAtMs",
+          "missing-logFinishSeen",
+          "missing-logCloseSeen",
+          "missing-logFinishAtMs",
+          "missing-logCloseAtMs",
+          "rewritten-createdAtMs",
+          "rewritten-exitAtMs",
+          "rewritten-closeAtMs",
+          "rewritten-logFinishAtMs-stdout",
+          "rewritten-logFinishAtMs-stderr",
+          "rewritten-logCloseAtMs-stdout",
+          "rewritten-logCloseAtMs-stderr",
+          "rewritten-exit-False",
+          "rewritten-exit-1",
+          "rewritten-exit-0",
+          "event-extra",
+          "event-duplicate",
+          "event-order-0",
+          "event-order-3",
+          "clock-regression-success",
+          "spawn-error-fabricated-zero",
+          "acquired-empty",
+          "acquired-extra",
+          "acquired-value-rewritten",
+          "ack-extra",
+          "ack-bad-binding",
+          "acquisition-missing-fixtureRows",
+          "acquisition-missing-fixtureRequests",
+          "acquisition-missing-routeInstalled",
+          "acquisition-empty",
+          "premature-count-zero",
+          "actual-request-lost",
+          "boolean-route-install",
+          "request-extra-key",
+          "prepared-label-rewritten",
+          "canonical-byte-bool"
+        ],
+        "rejectedCount": 43
+      },
+      "normalParser": {
+        "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+        "validCoverageIncomplete": 1,
+        "validNumericBoundary": 2,
+        "validHTTPClassifications": 3,
+        "rejected": [
+          "unknown-case",
+          "duplicate-legacy",
+          "tolerance-2",
+          "tolerance-4",
+          "tolerance-nan",
+          "actual-nan",
+          "actual-inf",
+          "actual-133.5",
+          "secret-headers",
+          "secret-currentPassword",
+          "secret-nextPassword",
+          "secret-cookie",
+          "secret-sessionToken",
+          "secret-authorization",
+          "secret-nonce",
+          "secret-cookies",
+          "secret-password",
+          "trusted-selfpass",
+          "wrong-actual",
+          "unrelated-401",
+          "401-location-absent",
+          "duplicate-401-console",
+          "401-before-signout",
+          "401-wrong-errorCode",
+          "pageerror"
+        ],
+        "count": 25
+      }
+    }
+  },
+  "runtimeParser": {
+    "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+    "validPreflight": 1,
+    "rejectedPreflightMutations": [
+      [
+        "observerHealthy",
+        false
+      ],
+      [
+        "sideEffectFree",
+        false
+      ],
+      [
+        "rc",
+        0
+      ],
+      [
+        "timeout",
+        true
+      ],
+      [
+        "errors",
+        ""
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_LOCK_MISMATCH\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}"
+      ],
+      [
+        "output",
+        "{\"status\":\"PASS\"}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\n"
+      ],
+      [
+        "errors",
+        "{\"status\": \"FAIL\", \"code\": \"A1_CLI_INVALID\", \"phase\": \"preflight\", \"case\": null, \"runId\": null, \"error\": {\"name\": \"Error\", \"message\": \"CLI rejected\", \"stack\": \"actual CLI error stack\"}}\nunrelated fatal crash\n"
+      ],
+      [
+        "output",
+        "PASS"
+      ]
+    ],
+    "earlyRemovalRejected": true,
+    "unsettledRetainedLogRejected": true,
+    "richFailurePositive": 1,
+    "richFailureRejected": [
+      "missing-pid",
+      "missing-exitCode",
+      "missing-exitSeen",
+      "missing-closeSeen",
+      "missing-aliveAfterClose",
+      "missing-createdAtMs",
+      "missing-exitAtMs",
+      "missing-closeAtMs",
+      "missing-logsSettled",
+      "missing-logFinishSeen",
+      "missing-logCloseSeen",
+      "missing-logFinishAtMs",
+      "missing-logCloseAtMs",
+      "missing-exitSignal",
+      "missing-closeCode",
+      "missing-closeSignal",
+      "missing-callbackEvents",
+      "fabricated-logFinish-time",
+      "fabricated-logClose-time"
+    ],
+    "observationRules": {
+      "proof": "PARSER_ONLY_NOT_SUT_EXECUTION",
+      "orderingPublicationPositive": 1,
+      "coreBindingPositives": 2,
+      "rejectedCount": 13,
+      "rejected": [
+        "no-reads",
+        "missing-stderr-read",
+        "missing-child-close",
+        "missing-log-close",
+        "early-read",
+        "direct-candidate-write",
+        "missing-rename-completion",
+        "early-rename",
+        "wrong-stage",
+        "lost-raw",
+        "lost-checks",
+        "lost-acquisition",
+        "lost-partial-path"
+      ]
+    }
+  },
+  "normalCandidateFinalParser": {
+    "status": "PASS",
+    "artifact": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a2-parser-l3ov5sz1",
+    "proof": "SYNTHETIC_CANDIDATE_FINAL_PARSER_ONLY_NOT_SUT_ACCEPTANCE",
+    "count": 21
+  },
+  "observer37": {
+    "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-selfcheck-dtnoldv_\\selfcheck-result.json",
+    "requiredProof": "BOOTSTRAP_ACCEPTED_A1_CONTROL_ONLY_NOT_A2_ACCEPTANCE",
+    "meta": {
+      "bytes": 71108,
+      "sha256": "E0213640D2C6CEDF7E310FC6819830D92128E4EF2C9A1D2235E6CE9103968A71"
+    }
+  },
+  "lifecycleCanary15": {
+    "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a1v7-lifecycle-juig74kp\\suite-result.json",
+    "requiredProof": "ACTUAL_CONTROL_CANARIES_ONLY_NOT_SUT_ACCEPTANCE",
+    "meta": {
+      "bytes": 41440,
+      "sha256": "24049E8856ED4B4508B8DF6F42FCB1D3D12A702FF6BF828B46D1FBB5CB340253"
+    }
+  },
+  "recon": {
+    "proof": "INSPECTED_REAL_CHROME_RECON_NOT_A2_IMPLEMENTATION",
+    "chrome": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "version": "155.0.8059.40"
+    },
+    "viewport": [
+      1440,
+      900
+    ],
+    "origin": "http://127.0.0.1:18741",
+    "reconPath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-a2-recon-d1gGYd\\recon.json",
+    "reconSha256": "6BEA24BB49C68FAAF9CADBEC707D4DFAF40F7660B2AF858D64DAC52B47BD14C6"
+  },
+  "historicalControlsUnchanged": 89,
+  "sourceUnchanged": 341,
+  "productEdits": 0,
+  "port18741Free": true,
+  "A1Accepted": true,
+  "A2Accepted": false,
+  "BAccepted": false,
+  "v8Created": false
+}

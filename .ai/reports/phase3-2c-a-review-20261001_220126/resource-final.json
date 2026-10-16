@@ -1,0 +1,753 @@
+{
+  "time": "2026-10-01T13:43:38.611843+00:00",
+  "knownRunManifests": [
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-220622-5NxZB9\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261001-221143-SkyS6L\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-live-admin\\run-20261001-221537-irBSHC\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-20261001-221611-7sYf7b\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-empty-fixture\\run-20261001-221645-NQY8Ha\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-filters\\run-20261001-221719-WJ38L2\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-errors\\run-20261001-221753-hKRtw4\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-20261001-221826-ttVae9\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-20261001-221900-CixFmG\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-20261001-221934-mpHSd6\\owner-final.json",
+      "status": "FAIL_INCOMPLETE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261001-222008-olzOaN\\owner-final.json",
+      "status": "PASS"
+    },
+    {
+      "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-home\\run-20261001-222014-CCPTpF\\owner-final.json",
+      "status": "PASS"
+    }
+  ],
+  "isolatedTemps": [
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-AwtmpE",
+      "exists": false
+    },
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RbOUbC",
+      "exists": false
+    },
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-f7J8rR",
+      "exists": false
+    },
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-0Spg92",
+      "exists": false
+    },
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-tuiU9z",
+      "exists": false
+    },
+    {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-UP5uiR",
+      "exists": false
+    }
+  ],
+  "processes": [
+    {
+      "pid": 11924,
+      "reviewIntervalEndMs": 1790860604960.136,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 12512,
+      "reviewIntervalEndMs": 1790860283049.5952,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 13388,
+      "reviewIntervalEndMs": 1790860774180.814,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 13448,
+      "reviewIntervalEndMs": 1790860283049.5952,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 13460,
+      "reviewIntervalEndMs": 1790860305318.836,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 15428,
+      "reviewIntervalEndMs": 1790860818350.644,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 15508,
+      "reviewIntervalEndMs": 1790860305318.836,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 17064,
+      "reviewIntervalEndMs": 1790860739813.222,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 19136,
+      "reviewIntervalEndMs": 1790860308825.702,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 20372,
+      "reviewIntervalEndMs": 1790860308825.702,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 20424,
+      "reviewIntervalEndMs": 1790860706001.089,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 21580,
+      "reviewIntervalEndMs": 1790860292496.413,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 22772,
+      "reviewIntervalEndMs": 1790860672564.481,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 25524,
+      "reviewIntervalEndMs": 1790860638785.788,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 25736,
+      "reviewIntervalEndMs": 1790860571136.002,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 27852,
+      "reviewIntervalEndMs": 1790860986622.0132,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 28660,
+      "reviewIntervalEndMs": 1790860706001.089,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 29956,
+      "reviewIntervalEndMs": 1790860287763.676,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 31732,
+      "reviewIntervalEndMs": 1790860808026.23,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 32116,
+      "reviewIntervalEndMs": 1790860305318.836,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 33824,
+      "reviewIntervalEndMs": 1790860672564.481,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 34572,
+      "reviewIntervalEndMs": 1790860604960.136,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 34988,
+      "reviewIntervalEndMs": 1790860818350.644,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 35044,
+      "reviewIntervalEndMs": 1790860814407.967,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 36068,
+      "reviewIntervalEndMs": 1790860808026.23,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 36540,
+      "reviewIntervalEndMs": 1790860774180.814,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 37596,
+      "reviewIntervalEndMs": 1790860814407.967,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 40620,
+      "reviewIntervalEndMs": 1790860774180.814,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 40668,
+      "reviewIntervalEndMs": 1790860589337,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 40820,
+      "reviewIntervalEndMs": 1790860739813.222,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 41680,
+      "reviewIntervalEndMs": 1790860302361.55,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 43276,
+      "reviewIntervalEndMs": 1790860074966.176,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 43840,
+      "reviewIntervalEndMs": 1790860292496.413,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 45468,
+      "reviewIntervalEndMs": 1790860074966.176,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 45480,
+      "reviewIntervalEndMs": 1790860870094.1228,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 45508,
+      "reviewIntervalEndMs": 1790860814407.967,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 45584,
+      "reviewIntervalEndMs": 1790860818350.644,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 47296,
+      "reviewIntervalEndMs": 1790860287763.676,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 47596,
+      "reviewIntervalEndMs": 1790860739813.222,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 47724,
+      "reviewIntervalEndMs": 1790860287763.676,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 48352,
+      "reviewIntervalEndMs": 1790860074966.176,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 48464,
+      "reviewIntervalEndMs": 1790860808026.23,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 49392,
+      "reviewIntervalEndMs": 1790860283049.5952,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 49664,
+      "reviewIntervalEndMs": 1790860292496.413,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 49824,
+      "reviewIntervalEndMs": 1790860638785.788,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 49952,
+      "reviewIntervalEndMs": 1790860302361.55,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 50128,
+      "reviewIntervalEndMs": 1790860589357.398,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 50756,
+      "reviewIntervalEndMs": 1790860571136.002,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 50840,
+      "reviewIntervalEndMs": 1790860571136.002,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 51076,
+      "reviewIntervalEndMs": 1790860672564.481,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 51148,
+      "reviewIntervalEndMs": 1790860604960.136,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 51452,
+      "reviewIntervalEndMs": 1790860638785.788,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 51856,
+      "reviewIntervalEndMs": 1790860706001.089,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 52112,
+      "reviewIntervalEndMs": 1790860308825.702,
+      "state": "absent",
+      "currentProcess": null
+    },
+    {
+      "pid": 52548,
+      "reviewIntervalEndMs": 1790860302361.55,
+      "state": "absent",
+      "currentProcess": null
+    }
+  ],
+  "realChildCloseEvents": [
+    {
+      "time": 1790860282906,
+      "pid": 49392,
+      "fault": "png-24-byte-header",
+      "type": "owned-child-really-closed",
+      "childPid": 12512,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860282934,
+      "pid": 49392,
+      "fault": "png-24-byte-header",
+      "type": "owned-child-really-closed",
+      "childPid": 13448,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860287621,
+      "pid": 29956,
+      "fault": "duplicate-core-ids",
+      "type": "owned-child-really-closed",
+      "childPid": 47724,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860287648,
+      "pid": 29956,
+      "fault": "duplicate-core-ids",
+      "type": "owned-child-really-closed",
+      "childPid": 47296,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860292354,
+      "pid": 43840,
+      "fault": "unexpected-raw-error",
+      "type": "owned-child-really-closed",
+      "childPid": 21580,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860292380,
+      "pid": 43840,
+      "fault": "unexpected-raw-error",
+      "type": "owned-child-really-closed",
+      "childPid": 49664,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860296885,
+      "pid": 49952,
+      "fault": "server-close-not-observed",
+      "type": "owned-child-really-closed",
+      "childPid": 41680,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860296911,
+      "pid": 49952,
+      "fault": "server-close-not-observed",
+      "type": "owned-child-really-closed",
+      "childPid": 52548,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860305195,
+      "pid": 13460,
+      "fault": "regression-no-evidence",
+      "type": "owned-child-really-closed",
+      "childPid": 32116,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860305214,
+      "pid": 13460,
+      "fault": "regression-no-evidence",
+      "type": "owned-child-really-closed",
+      "childPid": 15508,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860308682,
+      "pid": 20372,
+      "fault": "owner-final-write",
+      "type": "owned-child-really-closed",
+      "childPid": 52112,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860308707,
+      "pid": 20372,
+      "fault": "owner-final-write",
+      "type": "owned-child-really-closed",
+      "childPid": 19136,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860570999,
+      "pid": 25736,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 50840,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860571017,
+      "pid": 25736,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 50756,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860604836,
+      "pid": 34572,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 11924,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860604851,
+      "pid": 34572,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 51148,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860638650,
+      "pid": 51452,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 49824,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860638667,
+      "pid": 51452,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 25524,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860672424,
+      "pid": 51076,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 33824,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860672441,
+      "pid": 51076,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 22772,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860705861,
+      "pid": 51856,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 20424,
+      "isServer": false,
+      "code": 1,
+      "signal": null
+    },
+    {
+      "time": 1790860705877,
+      "pid": 51856,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 28660,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860739670,
+      "pid": 40820,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 47596,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860739688,
+      "pid": 40820,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 17064,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860774041,
+      "pid": 13388,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 40620,
+      "isServer": false,
+      "code": 2,
+      "signal": null
+    },
+    {
+      "time": 1790860774058,
+      "pid": 13388,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 36540,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860807887,
+      "pid": 36068,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 31732,
+      "isServer": false,
+      "code": 1,
+      "signal": null
+    },
+    {
+      "time": 1790860807906,
+      "pid": 36068,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 48464,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860814269,
+      "pid": 35044,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 45508,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860814289,
+      "pid": 35044,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 37596,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    },
+    {
+      "time": 1790860818218,
+      "pid": 15428,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 34988,
+      "isServer": false,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "time": 1790860818237,
+      "pid": 15428,
+      "fault": "timer-only",
+      "type": "owned-child-really-closed",
+      "childPid": 45584,
+      "isServer": true,
+      "code": null,
+      "signal": "SIGTERM"
+    }
+  ],
+  "port18741Listening": false,
+  "ipcStubClosed": true,
+  "portStubClosed": true,
+  "boundary": "Read-only check of observed review PIDs/temp paths; no PID killed or historical/foreign temp/profile removed. Missing final-file write probe retains real child-close events and stderr but no final manifest."
+}

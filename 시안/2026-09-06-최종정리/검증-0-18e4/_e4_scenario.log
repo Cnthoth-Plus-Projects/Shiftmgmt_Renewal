@@ -1,0 +1,31 @@
+### 19:29:53 잔여 1 — 셸 S1~S6: main 속성·배치(18차 ↔ 현재) · 실제 키(focus→Enter→Tab) · Enter 뒤 콘솔 'aria-hidden' 경고 · AX 트리 main 노출
+00-shell-1 18차 {"id":"main-content-s1","hidden":"true","tabindex":"-1","rect":[220,112,1220,812]}
+00-shell-1 18차 {"id":"main-content-s2","hidden":"true","tabindex":"-1","rect":[220,1080,1220,812]}
+00-shell-1 18차 {"id":"main-content-s3","hidden":"true","tabindex":"-1","rect":[64,2048,1376,812]}
+00-shell-1 현재 {"id":"main-content-s1","hidden":null,"tabindex":"-1","rect":[220,112,1220,812]}
+00-shell-1 현재 {"id":"main-content-s2","hidden":null,"tabindex":"-1","rect":[220,1080,1220,812]}
+00-shell-1 현재 {"id":"main-content-s3","hidden":null,"tabindex":"-1","rect":[64,2048,1376,812]}
+00-shell-1 main-content-s1 Enter={"el":"MAIN#main-content-s1","inMain":"main-content-s1","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"A#","inMain":null,"inNav":false,"text":"본문으로 바로가기"} AX-main노드수=3
+00-shell-1 main-content-s2 Enter={"el":"MAIN#main-content-s2","inMain":"main-content-s2","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"A#","inMain":null,"inNav":false,"text":"본문으로 바로가기"} AX-main노드수=3
+00-shell-1 main-content-s3 Enter={"el":"MAIN#main-content-s3","inMain":"main-content-s3","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"A#","inMain":null,"inNav":false,"text":"본문으로 바로가기"} AX-main노드수=3
+00-shell-2 18차 {"id":"main-content-s4","hidden":"true","tabindex":"-1","rect":[220,112,1220,812]}
+00-shell-2 18차 {"id":"main-content-s5","hidden":"true","tabindex":"-1","rect":[220,1127,1220,765]}
+00-shell-2 18차 {"id":"main-content-s6","hidden":"true","tabindex":"-1","rect":[220,2091,1220,769]}
+00-shell-2 현재 {"id":"main-content-s4","hidden":null,"tabindex":"-1","rect":[220,112,1220,812]}
+00-shell-2 현재 {"id":"main-content-s5","hidden":null,"tabindex":"-1","rect":[220,1127,1220,765]}
+00-shell-2 현재 {"id":"main-content-s6","hidden":null,"tabindex":"-1","rect":[220,2091,1220,769]}
+00-shell-2 main-content-s4 Enter={"el":"MAIN#main-content-s4","inMain":"main-content-s4","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"A#","inMain":null,"inNav":false,"text":"본문으로 바로가기"} AX-main노드수=3
+00-shell-2 main-content-s5 Enter={"el":"MAIN#main-content-s5","inMain":"main-content-s5","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"BUTTON#btn-s5-status-restart","inMain":null,"inNav":false,"text":"다시 시작"} AX-main노드수=3
+00-shell-2 main-content-s6 Enter={"el":"MAIN#main-content-s6","inMain":"main-content-s6","inNav":false,"text":""} 경고(aria-hidden)=0 Tab={"el":"BUTTON#btn-s6-status-detail","inMain":null,"inNav":false,"text":"[자세히 보기]"} AX-main노드수=3
+### 19:30:21 잔여 1 — 18차(수정 전) 같은 단계의 경고 수(대조): 00-shell-1 s1
+18차 s1 Enter 뒤 경고(aria-hidden)=0 · 경고 원문: 
+### 19:30:24 잔여 2 — audit1d(상태 조건) W7 닫기 3경로 뒤 #state-w7 (노출/배경 12px 미만 · b 예외 · b 범위 밖)
+열린 상태(초기): {"bAllowed": true, "small": {"n": 0, "bEx": 0, "bOut": 0, "sample": []}, "hidden": {"n": 0, "bEx": 7, "bOut": 0, "sample": []}, "mainHidden": null, "mainOv": "1220/1220", "w2": {"fs": "12px", "bfs": "10px", "h": 39, "minH": "26px", "pad": "2px 0px"}}
+Esc 뒤: {"bAllowed": true, "small": {"n": 0, "bEx": 7, "bOut": 0, "sample": []}, "hidden": {"n": 0, "bEx": 0, "bOut": 0, "sample": []}, "mainHidden": null, "mainOv": "1220/1220", "w2": {"fs": "12px", "bfs": "10px", "h": 39, "minH": "26px", "pad": "2px 0px"}}
+[계속 편집] 뒤: {"bAllowed": true, "small": {"n": 0, "bEx": 7, "bOut": 0, "sample": []}, "hidden": {"n": 0, "bEx": 0, "bOut": 0, "sample": []}, "mainHidden": null, "mainOv": "1220/1220", "w2": {"fs": "12px", "bfs": "10px", "h": 39, "minH": "26px", "pad": "2px 0px"}}
+[변경 버리고 나가기] 뒤: {"bAllowed": true, "small": {"n": 0, "bEx": 7, "bOut": 0, "sample": []}, "hidden": {"n": 0, "bEx": 0, "bOut": 0, "sample": []}, "mainHidden": null, "mainOv": "1220/1220", "w2": {"fs": "12px", "bfs": "10px", "h": 39, "minH": "26px", "pad": "2px 0px"}}
+### 19:30:32 잔여 2 — audit1d 범위 검증: wizard-1/2/3에서 b 예외가 상태 밖(bOut)에 적용된 곳 0인지 + 다른 상태의 .c-cell b 존재 여부
+05-sites-wizard-1 state-w1 bAllowed=False bEx=0/0 bOut=0/0 small=0/0 | state-w2 bAllowed=True bEx=92/0 bOut=0/0 small=0/0
+05-sites-wizard-2 state-w3 bAllowed=True bEx=92/0 bOut=0/0 small=0/0 | state-w4 bAllowed=True bEx=92/0 bOut=0/0 small=0/0
+05-sites-wizard-3 state-w5 bAllowed=False bEx=0/0 bOut=0/0 small=0/0 | state-w6 bAllowed=False bEx=0/0 bOut=0/0 small=0/0 | state-w7 bAllowed=True bEx=0/7 bOut=0/0 small=0/0
+### 끝 19:30:36

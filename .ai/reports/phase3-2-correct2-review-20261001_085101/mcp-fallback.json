@@ -1,0 +1,7 @@
+{
+  "server": "playwright",
+  "attempt": "navigate owned http://127.0.0.1:18742/",
+  "failure": "Browser already in use for mcp-chrome profile",
+  "fallback": "isolated installed Chrome154 actual browser",
+  "ownedMcpPageCreated": false
+}

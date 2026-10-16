@@ -1,0 +1,18 @@
+{
+  "name": "faults-unexpected-raw-error-contract-core",
+  "command": [
+    "node",
+    "--import",
+    "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+    "scripts/ui-checks/access-history.mjs",
+    "--case=contract-core"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "start": "2026-10-01T13:11:28.836405+00:00",
+  "pid": 43840,
+  "rc": 0,
+  "end": "2026-10-01T13:11:32.496413+00:00",
+  "elapsedSeconds": 3.656,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-unexpected-raw-error-contract-core.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-unexpected-raw-error-contract-core.stderr.txt"
+}

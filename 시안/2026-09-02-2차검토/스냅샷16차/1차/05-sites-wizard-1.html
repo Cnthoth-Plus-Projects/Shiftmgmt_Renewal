@@ -1,0 +1,330 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>근무 관리 시스템 — 시안 05-sites-wizard-1.html</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><style>:root{--bg:#F4F5F7;--surface:#FFF;--line:#E2E5EA;--line-strong:#848A93;--text:#1F2430;--text-sub:#4B5563;--accent:#3E56B6;--row-selected:#EEF1FB;--badge-approved-text:#1E7A46;--badge-approved-bg:#E8F5EE}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,'Segoe UI','Malgun Gothic',sans-serif;background:#E5E7EB;color:var(--text);line-height:1.5;font-size:14px;display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:32px}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;font-size:20px;line-height:1;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;width:20px;height:20px;overflow:hidden;user-select:none}
+.icon-18{font-size:18px;width:18px;height:18px}
+*:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.state-wrapper{display:flex;flex-direction:column;width:1440px;background:#FFF;box-shadow:0 4px 16px rgba(0,0,0,.08);border-radius:6px;overflow:hidden}
+.status-label-bar{height:36px;background:#E2E5EA;color:#4B5563;font-size:12px;font-weight:600;display:flex;align-items:center;padding-left:16px;border-bottom:1px solid #D1D5DB}
+.app-window{width:1440px;height:900px;display:flex;flex-direction:column;background:var(--bg);position:relative}
+.app-body{display:flex;flex:1;height:calc(900px - 32px);overflow:hidden}
+.sidebar{width:220px;background:#FFF;border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0}
+.nav-list{list-style:none;padding:8px 0;flex:1;overflow-y:auto}
+.nav-group-header{padding:12px 16px 4px;font-size:12px;font-weight:600;color:var(--text-sub)}
+.nav-item{height:44px;display:flex;align-items:center;padding:0 16px;color:var(--text);text-decoration:none;gap:10px;font-size:14px;position:relative}
+.nav-item:hover{background:#F8F9FA}
+.nav-item.active{background:#EEF1FB;color:var(--accent);font-weight:600}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.nav-badge{margin-left:auto;background:var(--accent);color:#FFF;font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;line-height:1}
+.main-wrapper{flex:1;display:flex;flex-direction:column;width:1220px;overflow:hidden}
+.header-bar{height:56px;background:#FFF;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 12px;flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:8px}
+.btn-sidebar-toggle{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;background:none;border:1px solid transparent;border-radius:6px;cursor:pointer;color:var(--text)}
+.btn-sidebar-toggle:hover{background:#F1F2F4}
+.app-logo{width:28px;height:28px;border-radius:6px;background:var(--accent);display:inline-flex;align-items:center;justify-content:center}
+.app-title{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap}
+.header-divider{width:1px;height:18px;background:var(--line);margin:0 4px}
+.header-title{font-size:20px;font-weight:600;color:var(--text);white-space:nowrap}
+.header-user-actions{display:flex;align-items:center;gap:12px}
+.role-badge{background:#EEF1FB;color:var(--accent);font-size:12px;font-weight:600;padding:3px 8px;border-radius:12px;border:1px solid #D5DCF5}
+.user-info-btn{display:flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px;text-decoration:none;background:none;border:none;cursor:pointer}
+.page-content{width:1220px;height:812px;padding:14px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.wizard-top{display:flex;justify-content:space-between;align-items:center;background:#FFF;padding:10px 16px;border:1px solid var(--line);border-radius:6px;flex-shrink:0}
+.wizard-title{font-size:16px;font-weight:600;color:var(--text)}
+.unsaved-badge{font-size:12px;color:#C0392B;font-weight:600;margin-left:8px}
+.stepper{display:flex;align-items:flex-start;gap:0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--text-sub);text-align:center}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:#F1F2F4;color:#4B5563}
+.step-item.active .step-circle{background:#FFF;border:2px solid var(--accent);color:var(--accent)}
+.step-item.active{color:var(--accent);font-weight:600}
+.step-item.completed .step-circle{background:var(--accent);color:#FFF}
+.step-divider{width:28px;height:2px;background:var(--line);margin-top:13px}
+.step-divider.completed{background:var(--accent)}
+.wizard-info-bar{background:#EEF1FB;border:1px solid #D5DCF5;border-radius:6px;padding:8px 14px;font-size:12px;display:flex;align-items:center;gap:12px;color:var(--text);flex-shrink:0}
+.card{background:#FFF;border:1px solid var(--line);border-radius:6px;padding:16px}
+.form-grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-group{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.form-group:last-child{margin-bottom:0}
+.form-label{font-size:13px;font-weight:600;color:var(--text)}
+.required-mark{color:#C0392B;font-size:12px;margin-left:2px}
+.form-help-text{font-size:12px;color:var(--text-sub);margin-top:2px;display:flex;align-items:center;gap:4px}
+.form-input{height:34px;border:1px solid var(--line-strong);border-radius:4px;padding:0 10px;font-size:13px;color:var(--text);background:#FFF}
+.form-input[readonly]{background:#F4F5F7;color:var(--text-sub);border-color:var(--line)}
+.radio-group{display:flex;gap:16px;align-items:center;height:34px}
+.radio-label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.stepper-control{display:inline-flex;align-items:center;border:1px solid var(--line-strong);border-radius:4px;overflow:hidden;height:34px;width:fit-content;background:#FFF}
+.stepper-btn{width:28px;height:28px;border-radius:50%;background:#FFF;border:none;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--text)}
+.stepper-btn:hover:not([aria-disabled="true"]){background:#F1F2F4}
+.stepper-val{width:44px;text-align:center;font-size:13px;font-weight:600}
+.quick-start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.quick-card{border:1px solid var(--line);border-radius:6px;padding:12px;background:#FFF;display:flex;flex-direction:column;gap:6px;text-align:left;position:relative}
+.quick-card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.quick-card-desc{font-size:12px;color:var(--text-sub);line-height:1.3}
+.chip-btn-wrap{display:flex;gap:6px;margin-top:4px}
+.chip-btn{background:#FFF;border:1px solid var(--accent);color:var(--accent);font-size:12px;padding:2px 8px;border-radius:4px;font-weight:600;cursor:pointer}
+.btn-primary{background:var(--accent);color:#FFF;border:1px solid var(--accent);padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:#32479B}
+.btn-secondary{background:#FFF;color:var(--text);border:1px solid var(--line-strong);padding:6px 12px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-secondary:hover{background:#F8F9FA}
+.btn-sm{padding:4px 8px;font-size:12px}
+.wizard-footer-actions{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px}
+.w2-layout{display:grid;grid-template-columns:340px minmax(0,1fr) 380px;gap:12px;height:610px}.w2-layout>*{min-width:0}
+.w2-col{background:#FFF;border:1px solid var(--line);border-radius:6px;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.col-title{font-size:14px;font-weight:600;color:var(--text);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:6px}
+.palette-table{width:100%;border-collapse:collapse;font-size:14px}
+.palette-table th{background:#F8F9FA;border-bottom:1px solid var(--line);padding:0 8px;height:40px;white-space:nowrap;text-align:left;color:var(--text-sub);font-weight:600;font-size:12px}
+.palette-table td{border-bottom:1px solid var(--line);padding:0 8px;height:40px;font-size:14px;white-space:nowrap}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 0}
+.toggle-switch{width:36px;height:20px;background:#9AA1AC;border-radius:10px;position:relative;display:inline-block}
+.toggle-switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:#FFF;border-radius:50%}
+.toggle-switch.on{background:var(--accent)}
+.toggle-switch.on::after{left:auto;right:2px}
+.pattern-strip-wrap{display:flex;gap:6px;align-items:center;overflow-x:auto;padding:4px 0}
+.pattern-day-box{min-width:64px;height:48px;border:1px solid var(--line-strong);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FFF;font-size:11px}
+.pattern-day-box.day{background:#E8F5EE;border-color:#1E7A46;color:#1E7A46;font-weight:600}
+.pattern-day-box.night{background:#EEF1FB;border-color:#3E56B6;color:#3E56B6;font-weight:600}
+.pattern-day-box.mid{background:#FDF3E4;border-color:#A05200;color:#A05200;font-weight:600}
+.pattern-day-box.off{background:#F1F2F4;border-color:#848A93;color:#4B5563}
+.pattern-add-btn{min-width:36px;height:48px;border:1px dashed var(--line-strong);border-radius:6px;background:#FAFAFA;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-sub)}
+.teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.team-card{border:1px solid var(--line);border-radius:6px;padding:8px;background:#FAFAFA;font-size:12px}
+.team-card-header{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin-bottom:4px}
+.team-members-list{color:var(--text-sub);line-height:1.3}
+.badge-full{background:#FDF3E4;color:#A05200;font-size:12px;padding:1px 4px;border-radius:4px;font-weight:600}
+.sim-scroll-panel{max-height:480px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:2px}
+.sim-month-section{margin-bottom:4px}
+.sim-month-title{font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.c-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px}
+.c-head{font-weight:600;color:var(--text-sub);padding:2px 0;background:#F4F5F7}
+.c-cell{padding:2px 0;border-radius:2px;display:flex;flex-direction:column;align-items:center;min-height:26px;background:#FFF;border:1px solid #ECEEF1;font-size:9px;color:#848A93}
+.c-cell b{font-size:10px}
+.c-cell.e{background:#F9FAFB!important;border-color:transparent!important}
+.dd{color:#1E7A46}
+.dn{color:#3E56B6}
+.dm{color:#A05200}
+.do{color:#4B5563}
+.legend-chip{width:12px;height:12px;border-radius:2px;display:inline-block}
+.dot-g,.dot-b,.dot-o,.dot-x{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot-g{background:#1E7A46}.dot-b{background:#3E56B6}.dot-o{background:#A05200}.dot-x{background:#4B5563}
+.act-gap{display:flex;gap:2px}
+.c-red{color:#C0392B}.c-blue{color:var(--accent)}.c-green{color:#1E7A46}.c-orange{color:#A05200}.text-white{color:#FFF}
+.pos-cell{background:#F4F5F7;padding:3px;border-radius:4px;font-size:12px}
+[aria-disabled="true"]{opacity:.45;cursor:default!important}
+.disabled-desc{font-size:12px;color:var(--text-sub);margin-top:2px}
+.modal-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal-box{width:600px;background:#FFF;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:flex;flex-direction:column;overflow:hidden}
+.modal-header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.modal-title{font-size:15px;font-weight:600;color:var(--text)}
+.modal-body{padding:18px;display:flex;flex-direction:column;gap:14px;font-size:13px}
+.modal-footer{padding:10px 18px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;background:#F8F9FA}
+.footer-statusbar{height:32px;background:#FFF;border-top:1px solid var(--line);display:flex;align-items:center;padding:0 16px;font-size:12px;color:var(--text-sub);width:1440px;box-sizing:border-box;flex-shrink:0}
+.status-cell{display:flex;align-items:center;gap:6px;padding:0 12px;border-right:1px solid var(--line);height:100%}
+.status-cell:first-child{padding-left:0}
+.status-cell:last-child{border-right:none;margin-left:auto;padding-right:0}
+.status-dot-green{width:8px;height:8px;background:#1E7A46;border-radius:50%;display:inline-block}
+/* 0-18 소급(v1.8): B-4 계정 텍스트·본문 바로가기 · B-7 접힘 그룹 머리 · 동작 13 토스트 */
+.user-info-text{display:inline-flex;align-items:center;gap:4px;color:var(--text-sub);font-size:13px}
+.skip-link{position:absolute;left:8px;top:-48px;z-index:1300;background:var(--accent);color:#FFF;padding:8px 12px;border-radius:6px;font-size:13px;text-decoration:none}
+.skip-link:focus{top:8px;outline:2px solid #FFF}
+.sidebar.collapsed .nav-group-header{height:1px;margin:8px 12px;padding:0;background:var(--line);font-size:0;overflow:hidden}
+.demo-toast{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);background:#1F2430;color:#FFF;font-size:13px;padding:10px 16px;border-radius:6px;z-index:1200;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+</style></head><body><div class="state-wrapper" id="state-w1"><div class="status-label-bar">── W1. 근무지 관리 — 마법사 1-A 기본 설정 (계획 담당) ──</div><div class="app-window"><a class="skip-link" href="#main-state-w1">본문으로 바로가기</a><div class="modal-overlay modal-leave" id="modal-leave-w1" role="dialog" aria-modal="true" aria-labelledby="modal-leave-title-w1" tabindex="-1" style="display:none;"><div class="modal-box" style="width:600px;text-align:center;padding:24px 20px;"><div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="width:72px;height:72px;border-radius:50%;background:#FDF3E4;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" aria-hidden="true" style="font-size:36px;color:#A05200;">warning</span></div><h2 id="modal-leave-title-w1" style="font-size:16px;font-weight:700;color:#1F2430;">저장하지 않은 변경이 있습니다</h2><div style="font-size:13px;color:var(--text-sub);line-height:1.4;">근무지 '보라매 사업장' 등록 마법사를 편집 중입니다.<br>지금 나가면 변경 내용이 사라집니다.</div></div><div style="display:flex;justify-content:center;gap:10px;margin-top:20px;"><button type="button" class="btn-primary btn-leave-stay" style="min-width:100px;">계속 편집</button><button type="button" class="btn-secondary btn-leave-discard" style="color:#C0392B;min-width:130px;">변경 버리고 나가기</button></div></div></div><div class="app-body" id="main-state-w1"><aside class="sidebar"><nav aria-label="주 메뉴"><ul class="nav-list" style="padding-top:12px;"><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li><li class="nav-group-header">─ 준비 ─</li><li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li><li class="nav-group-header">─ 운영 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge">128</span></a></li><li class="nav-group-header">─ 정산 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li></ul></nav></aside><div class="main-wrapper"><header class="header-bar"><div class="header-left"><button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button><div class="header-divider"></div><h1 class="header-title">근무지 관리</h1></div><div class="header-user-actions"><span class="role-badge">계획 담당</span><span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span><button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button></div></header><main class="page-content"><div class="wizard-top"><span class="wizard-title">근무지 등록 마법사</span><div class="stepper" aria-label="등록 단계"><div class="step-item active"><div class="step-circle">1-A</div><span>기본 설정</span></div><div class="step-divider"></div><div class="step-item"><div class="step-circle">1-B</div><span>근무시간 설정</span></div><div class="step-divider"></div><div class="step-item"><div class="step-circle">1-C</div><span>검토</span></div><div class="step-divider"></div><div class="step-item"><div class="step-circle">2</div><span>조직 구성</span></div></div></div><div class="card"><div style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">* 필수 입력 항목입니다</div><div class="form-grid-2col"><div><div class="form-group"><label class="form-label" for="w1-site-name">근무지 이름 <span class="required-mark">*</span></label><input type="text" id="w1-site-name" class="form-input" value="보라매 사업장"></div><div class="form-group"><label class="form-label" for="w1-client-name">고객사</label><input type="text" id="w1-client-name" class="form-input" value="㈜한빛에프엠"></div><div class="form-group"><label class="form-label">상태</label><div class="radio-group"><label class="radio-label"><input type="radio" name="w1-status" value="use" checked><span>사용</span></label><label class="radio-label"><input type="radio" name="w1-status" value="unuse"><span>사용 안 함</span></label></div></div><div class="form-group"><label class="form-label" for="w1-site-code">근무지 코드 (자동 생성)</label><input type="text" id="w1-site-code" class="form-input" value="SITE-005" readonly></div><div class="form-group"><label class="form-label" for="w1-start-date">설정 적용 시작일 <span class="required-mark">*</span></label><input type="text" id="w1-start-date" class="form-input" value="2025-06-01 (일)"><div class="form-help-text"><span class="material-symbols-outlined icon-18" aria-hidden="true">info</span><span>이 날짜부터 새 설정이 적용됩니다</span></div></div></div><div><div class="form-group"><label class="form-label">교대 방식</label><div class="radio-group"><label class="radio-label"><input type="radio" name="w1-shift-mode" value="shift" checked><span>교대제</span></label><label class="radio-label"><input type="radio" name="w1-shift-mode" value="fixed"><span>고정 근무</span></label></div></div><div class="form-group"><label class="form-label" for="w1-team-count-val">조 개수 <span class="required-mark">*</span></label><div style="display:flex; align-items:center; gap:8px;"><div class="stepper-control"><button type="button" class="stepper-btn" id="w1-team-minus" aria-label="조 개수 감소">-</button><span class="stepper-val" id="w1-team-count-val">4</span><button type="button" class="stepper-btn" id="w1-team-plus" aria-label="조 개수 증가">+</button></div><span id="w1-shift-min-desc" class="disabled-desc" style="display:none;">조는 최소 2개입니다</span><span id="w1-shift-max-desc" class="disabled-desc" style="display:none;">조는 최대 8개입니다</span></div><div class="form-help-text"><span class="material-symbols-outlined icon-18" aria-hidden="true">info</span><span>교대를 구성하는 조의 수입니다</span></div></div><div class="form-group"><label class="form-label" for="w1-bundle-count-val">묶음 개수 <span class="required-mark">*</span></label><div style="display:flex; align-items:center; gap:8px;"><div class="stepper-control"><button type="button" class="stepper-btn" id="w1-bundle-minus" aria-label="묶음 개수 감소">-</button><span class="stepper-val" id="w1-bundle-count-val">2</span><button type="button" class="stepper-btn" id="w1-bundle-plus" aria-label="묶음 개수 증가">+</button></div><span id="w1-group-min-desc" class="disabled-desc" style="display:none;">묶음은 최소 1개입니다</span><span id="w1-group-max-desc" class="disabled-desc" style="display:none;">묶음은 최대 8개입니다</span></div></div><div class="form-group"><label class="form-label">별도 근무(Pool) 사용</label><div class="radio-group"><label class="radio-label"><input type="radio" name="w1-pool" value="yes" checked><span>사용함</span></label><label class="radio-label"><input type="radio" name="w1-pool" value="no"><span>사용 안 함</span></label></div></div><div class="form-group"><label class="form-label" for="w1-pool-time">별도 근무 시간</label><input type="text" id="w1-pool-time" class="form-input" value="22:00 ~ 06:00"></div></div></div><div style="margin-top:14px; border-top:1px solid var(--line); padding-top:12px;"><div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:6px;">빠른 시작</div><div class="quick-start-grid"><div class="quick-card"><div class="quick-card-title"><span class="material-symbols-outlined c-blue" aria-hidden="true">bolt</span><span>자주 쓰는 패턴으로 시작</span></div><div class="quick-card-desc">표준 교대 근무 패턴을 선택하여 빠르게 설정을 구성합니다.</div><div class="chip-btn-wrap"><button type="button" class="chip-btn" aria-disabled="true" aria-describedby="w1-tpl-desc">2교대</button><button type="button" class="chip-btn" aria-disabled="true" aria-describedby="w1-tpl-desc">3교대</button></div><div id="w1-tpl-desc" class="disabled-desc">검수용 시안에서는 템플릿 적용이 동작하지 않습니다.</div></div><div class="quick-card"><div class="quick-card-title"><span class="material-symbols-outlined c-green" aria-hidden="true">content_copy</span><span>패턴 및 설정정보 불러오기</span></div><div class="quick-card-desc">이미 등록된 다른 근무지의 교대 설정과 규칙을 복사해 옵니다.</div><div style="margin-top:4px;"><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w1-copy-desc">불러오기</button></div><div id="w1-copy-desc" class="disabled-desc">검수용 시안에서는 불러올 근무지를 선택할 수 없습니다.</div></div><div class="quick-card"><div class="quick-card-title"><span class="material-symbols-outlined c-orange" aria-hidden="true">upload_file</span><span>기존 엑셀에서 패턴 추출</span></div><div class="quick-card-desc">기존 근무표 엑셀 파일을 분석하여 반복 패턴을 자동으로 산출합니다.</div><div style="margin-top:4px;"><button type="button" class="btn-primary btn-sm" id="btn-open-w1-fast-modal" aria-haspopup="dialog">파일 선택</button></div></div></div></div></div><div class="wizard-footer-actions"><button type="button" class="btn-secondary">뒤로가기</button><button type="button" class="btn-primary">다음: 근무시간 설정</button></div></main></div></div><footer class="footer-statusbar"><div class="status-cell"><span class="status-dot-green"></span>DB 연결됨</div><div class="status-cell">최근 인테이크: 마지막 처리 완료 14:32</div><div class="status-cell">대기 파일 3개</div><div class="status-cell">최신</div><div class="status-cell">v2.3.1</div></footer><div class="modal-overlay" id="pattern-extract-modal" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-extract-title"><div class="modal-box"><div class="modal-header"><h2 id="modal-extract-title" class="modal-title">기존 엑셀에서 패턴 추출</h2><button type="button" class="user-info-btn" id="btn-close-extract-x" aria-label="닫기"><span class="material-symbols-outlined" aria-hidden="true">close</span></button></div><div class="modal-body"><p style="color:var(--text-sub); font-size:13px;">근무표 엑셀에서 반복 패턴과 조별 시작 위치를 찾아 이 근무지의 설정 초안으로 채웁니다.</p><div style="border:1px solid var(--line); border-radius:6px; padding:14px; background:#FAFAFA; display:flex; flex-direction:column; gap:8px;"><div style="font-size:13px; color:var(--text-sub);">아직 선택된 파일이 없습니다.</div><div style="display:flex; gap:8px; flex-wrap:wrap;"><div><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="desc-file-select">파일 가져오기</button><div id="desc-file-select" class="disabled-desc">검수용 시안에서는 파일을 선택할 수 없습니다.</div></div><div><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="desc-pattern-calc">패턴 산출</button><div id="desc-pattern-calc" class="disabled-desc">파일을 먼저 가져와야 합니다.</div></div></div></div><div style="background:#F8F9FA; border:1px solid var(--line); border-radius:6px; padding:10px; font-size:12px; color:var(--text-sub); line-height:1.4;"><div style="font-weight:600; color:var(--text);">형식 안내</div><div>첫 번째 시트를 기준으로 읽습니다. 1행 날짜, 2행 요일, 3행 공휴일, 4행부터 근무자별 근무 코드 형식이어야 합니다.</div></div></div><div class="modal-footer"><div style="display:flex; align-items:center; gap:8px;"><div style="text-align:right;"><button type="button" class="btn-primary btn-sm" aria-disabled="true" aria-describedby="desc-draft-apply">초안에 반영</button><div id="desc-draft-apply" class="disabled-desc">패턴 산출 결과가 있어야 반영할 수 있습니다.</div></div><button type="button" class="btn-secondary btn-sm" id="btn-close-extract-modal">닫기</button></div></div></div></div></div></div><div class="state-wrapper" id="state-w2"><div class="status-label-bar">── W2. 근무지 관리 — 마법사 1-B 근무시간 설정 (계획 담당) ──</div><div class="app-window"><a class="skip-link" href="#main-state-w2">본문으로 바로가기</a><div class="modal-overlay modal-leave" id="modal-leave-w2" role="dialog" aria-modal="true" aria-labelledby="modal-leave-title-w2" tabindex="-1" style="display:none;"><div class="modal-box" style="width:600px;text-align:center;padding:24px 20px;"><div style="display:flex;flex-direction:column;align-items:center;gap:12px;"><div style="width:72px;height:72px;border-radius:50%;background:#FDF3E4;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" aria-hidden="true" style="font-size:36px;color:#A05200;">warning</span></div><h2 id="modal-leave-title-w2" style="font-size:16px;font-weight:700;color:#1F2430;">저장하지 않은 변경이 있습니다</h2><div style="font-size:13px;color:var(--text-sub);line-height:1.4;">근무지 '보라매 사업장' 등록 마법사를 편집 중입니다.<br>지금 나가면 변경 내용이 사라집니다.</div></div><div style="display:flex;justify-content:center;gap:10px;margin-top:20px;"><button type="button" class="btn-primary btn-leave-stay" style="min-width:100px;">계속 편집</button><button type="button" class="btn-secondary btn-leave-discard" style="color:#C0392B;min-width:130px;">변경 버리고 나가기</button></div></div></div><div class="app-body" id="main-state-w2"><aside class="sidebar"><nav aria-label="주 메뉴"><ul class="nav-list" style="padding-top:12px;"><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">home</span><span>홈</span></a></li><li class="nav-group-header">─ 준비 ─</li><li><a href="#" class="nav-item active" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">domain</span><span>근무지 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">group</span><span>인력 관리</span></a></li><li class="nav-group-header">─ 운영 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span><span>근무표 배포</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">fact_check</span><span>실적 관리</span><span class="nav-badge">128</span></a></li><li class="nav-group-header">─ 정산 ─</li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">payments</span><span>수당 관리</span></a></li><li><a href="#" class="nav-item"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span><span>대시보드</span></a></li></ul></nav></aside><div class="main-wrapper"><header class="header-bar"><div class="header-left"><button type="button" class="btn-sidebar-toggle" aria-label="메뉴 접기/펼치기" aria-expanded="true"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button><div class="header-divider"></div><h1 class="header-title">근무지 관리</h1></div><div class="header-user-actions"><span class="role-badge">계획 담당</span><span class="user-info-text"><span class="material-symbols-outlined" aria-hidden="true">person</span><span>김지현</span></span><button type="button" class="user-info-btn btn-logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span><span>로그아웃</span></button></div></header><main class="page-content"><div class="wizard-top"><div style="display:flex; align-items:center;"><span class="wizard-title">근무지 등록 마법사</span><span class="unsaved-badge">● 저장되지 않음</span></div><div class="stepper" aria-label="등록 단계"><div class="step-item completed"><div class="step-circle"><span class="material-symbols-outlined icon-18" aria-hidden="true">check</span></div><span>기본 설정</span></div><div class="step-divider completed"></div><div class="step-item active"><div class="step-circle">1-B</div><span>근무시간 설정</span></div><div class="step-divider"></div><div class="step-item"><div class="step-circle">1-C</div><span>검토</span></div><div class="step-divider"></div><div class="step-item"><div class="step-circle">2</div><span>조직 구성</span></div></div></div><div class="wizard-info-bar"><span style="font-weight:600;">근무지</span><span>보라매 사업장</span><button type="button" class="btn-secondary btn-sm" style="padding:1px 5px; font-size:12px;">변경</button><span style="color:var(--line-strong);">│</span><span style="font-weight:600;">적용 시작일</span><span>2025-06-01 ~</span></div><div class="w2-layout"><div class="w2-col"><div class="col-title"><span>근무 유형 팔레트</span><span style="font-size:12px; color:var(--text-sub); font-weight:normal;">근무 3/3 · 휴무 1</span></div><table class="palette-table"><thead><tr><th>도트</th><th>유형</th><th>시간</th><th>휴게</th><th>조치</th></tr></thead><tbody><tr><td><span class="dot-g"></span></td><td><span class="c-green" style="font-weight:600;">주간</span></td><td>09:00 - 18:00</td><td>60분</td><td><div class="act-gap"><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="주간 수정"><span class="material-symbols-outlined icon-18" aria-hidden="true">edit</span></button><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="주간 더보기"><span class="material-symbols-outlined icon-18" aria-hidden="true">more_vert</span></button></div></td></tr><tr><td><span class="dot-b"></span></td><td><span class="c-blue" style="font-weight:600;">야간</span></td><td>21:00 - 06:00</td><td>60분</td><td><div class="act-gap"><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="야간 수정"><span class="material-symbols-outlined icon-18" aria-hidden="true">edit</span></button><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="야간 더보기"><span class="material-symbols-outlined icon-18" aria-hidden="true">more_vert</span></button></div></td></tr><tr><td><span class="dot-o"></span></td><td><span class="c-orange" style="font-weight:600;">석간</span></td><td>13:00 - 22:00</td><td>60분</td><td><div class="act-gap"><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="석간 수정"><span class="material-symbols-outlined icon-18" aria-hidden="true">edit</span></button><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="석간 더보기"><span class="material-symbols-outlined icon-18" aria-hidden="true">more_vert</span></button></div></td></tr><tr><td><span class="dot-x"></span></td><td><span style="color:#4B5563; font-weight:600;">휴무</span></td><td>-</td><td>-</td><td><div class="act-gap"><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="휴무 수정"><span class="material-symbols-outlined icon-18" aria-hidden="true">edit</span></button><button type="button" class="btn-secondary btn-sm" aria-disabled="true" aria-describedby="w2-edit-desc" aria-label="휴무 더보기"><span class="material-symbols-outlined icon-18" aria-hidden="true">more_vert</span></button></div></td></tr></tbody></table><div id="w2-edit-desc" class="disabled-desc">검수용 시안에서는 유형 편집이 동작하지 않습니다.</div><div style="display:flex; flex-direction:column; gap:4px; margin-top:4px;"><div><button type="button" class="btn-secondary btn-sm" style="width:100%;" aria-disabled="true" aria-describedby="desc-max-duty-w2">+ 근무 유형 추가</button><div id="desc-max-duty-w2" class="disabled-desc">근무형은 최대 3개입니다</div></div><button type="button" class="btn-secondary btn-sm" style="width:100%;">+ 휴무 유형 추가</button></div></div><div class="w2-col"><div class="col-title"><span>묶음별 설정</span><div style="display:flex; gap:4px;"><button type="button" class="btn-primary btn-sm" style="padding:1px 6px; font-size:12px;">운영 교대조</button><button type="button" class="btn-secondary btn-sm" style="padding:1px 6px; font-size:12px;">야간 전담조</button></div></div><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; background:#F8F9FA; padding:8px; border-radius:4px;"><div class="form-group" style="margin-bottom:0;"><label class="form-label" style="font-size:12px;" for="w2-bundle-name">묶음 이름</label><input type="text" id="w2-bundle-name" class="form-input" style="height:28px; font-size:12px;" value="운영 교대조"></div><div class="form-group" style="margin-bottom:0;"><label class="form-label" style="font-size:12px;" for="w2-shift-count">하루 교대 횟수</label><select id="w2-shift-count" class="form-input" style="height:28px; font-size:12px;"><option value="1">1회</option><option value="2">2회</option><option value="3" selected>3회</option></select></div><div class="form-group" style="margin-bottom:0;"><label class="form-label" style="font-size:12px;" for="w2-pattern-start">패턴 시작일</label><input type="text" id="w2-pattern-start" class="form-input" style="height:28px; font-size:12px;" value="2025-06-01"></div></div><div><div style="font-size:12px; font-weight:600; margin-bottom:2px;">조별 시작 위치</div><div style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px; text-align:center; font-size:12px;"><div class="pos-cell">A조: <strong>0</strong></div><div class="pos-cell">B조: <strong>1</strong></div><div class="pos-cell">C조: <strong>2</strong></div><div class="pos-cell">D조: <strong>3</strong></div></div></div><div><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;"><span style="font-size:12px; font-weight:600;">패턴 스트립 (4일 주기)</span><button type="button" class="btn-secondary btn-sm" style="padding:1px 5px; font-size:12px;">되돌리기</button></div><div class="pattern-strip-wrap"><div class="pattern-day-box day"><span style="font-size:9px;">1일차</span><span>주간</span></div><div class="pattern-day-box night"><span style="font-size:9px;">2일차</span><span>야간</span></div><div class="pattern-day-box mid"><span style="font-size:9px;">3일차</span><span>석간</span></div><div class="pattern-day-box off"><span style="font-size:9px;">4일차</span><span>휴무</span></div><button type="button" class="pattern-add-btn" aria-label="일차 추가"><span class="material-symbols-outlined icon-18" aria-hidden="true">add</span></button></div><div style="font-size:12px; color:var(--text-sub);">칸을 클릭해 근무 유형을 배치하세요</div></div><div style="display:flex; flex-direction:column; gap:6px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:6px 0;"><div class="toggle-row"><span>조별 개별 패턴</span><span style="display:flex; align-items:center; gap:6px;"><span class="toggle-switch" aria-label="조별 개별 패턴 끔"></span><span style="font-size:12px; color:var(--text-sub);">끔</span></span></div><div class="toggle-row"><span>평일/휴일 시간 분리</span><span style="display:flex; align-items:center; gap:6px;"><span class="toggle-switch" aria-label="평일/휴일 시간 분리 끔"></span><span style="font-size:12px; color:var(--text-sub);">끔</span></span></div></div><div><div style="font-size:12px; font-weight:600; margin-bottom:4px;">조별 인력 현황 (읽기 전용)</div><div class="teams-grid"><div class="team-card"><div class="team-card-header"><span>A조</span><span>4/5명</span></div><div class="team-members-list">박성진, 이상민, 김하늘, 최우진</div></div><div class="team-card"><div class="team-card-header"><span>B조</span><span class="badge-full">5/5 (정원 참)</span></div><div class="team-members-list">정해린, 김태우, 오현석, 이시온, 조한별</div></div><div class="team-card"><div class="team-card-header"><span>C조</span><span>3/5명</span></div><div class="team-members-list">백민수, 유지선, 정민호</div></div><div class="team-card"><div class="team-card-header"><span>D조</span><span>2/5명</span></div><div class="team-members-list">한지우, 최민서</div></div></div></div></div><div class="w2-col"><div class="col-title"><span>3개월 시뮬레이션</span><span style="font-size:12px; color:var(--accent); font-weight:600;">A조 기준</span></div><div style="display:flex; gap:8px; font-size:12px; align-items:center;"><span style="display:flex; align-items:center; gap:3px;"><span class="legend-chip" style="background:#E8F5EE; border:1px solid #1E7A46;"></span><span style="color:#1E7A46; font-weight:600;">주간</span></span><span style="display:flex; align-items:center; gap:3px;"><span class="legend-chip" style="background:#EEF1FB; border:1px solid #3E56B6;"></span><span style="color:#3E56B6; font-weight:600;">야간</span></span><span style="display:flex; align-items:center; gap:3px;"><span class="legend-chip" style="background:#FDF3E4; border:1px solid #A05200;"></span><span style="color:#A05200; font-weight:600;">석간</span></span><span style="display:flex; align-items:center; gap:3px;"><span class="legend-chip" style="background:#F1F2F4; border:1px solid #4B5563;"></span><span style="color:#4B5563; font-weight:600;">휴무</span></span></div><div class="sim-scroll-panel"><div class="sim-month-section"><div class="sim-month-title">2025년 6월 (30일)</div><div class="c-grid"><b class="c-head c-red">일</b><b class="c-head">월</b><b class="c-head">화</b><b class="c-head">수</b><b class="c-head">목</b><b class="c-head">금</b><b class="c-head c-blue">토</b><div class="c-cell">1<b class="dd">주간</b></div><div class="c-cell">2<b class="dn">야간</b></div><div class="c-cell">3<b class="dm">석간</b></div><div class="c-cell">4<b class="do">휴무</b></div><div class="c-cell">5<b class="dd">주간</b></div><div class="c-cell">6<b class="dn">야간</b></div><div class="c-cell">7<b class="dm">석간</b></div><div class="c-cell">8<b class="do">휴무</b></div><div class="c-cell">9<b class="dd">주간</b></div><div class="c-cell">10<b class="dn">야간</b></div><div class="c-cell">11<b class="dm">석간</b></div><div class="c-cell">12<b class="do">휴무</b></div><div class="c-cell">13<b class="dd">주간</b></div><div class="c-cell">14<b class="dn">야간</b></div><div class="c-cell">15<b class="dm">석간</b></div><div class="c-cell">16<b class="do">휴무</b></div><div class="c-cell">17<b class="dd">주간</b></div><div class="c-cell">18<b class="dn">야간</b></div><div class="c-cell">19<b class="dm">석간</b></div><div class="c-cell">20<b class="do">휴무</b></div><div class="c-cell">21<b class="dd">주간</b></div><div class="c-cell">22<b class="dn">야간</b></div><div class="c-cell">23<b class="dm">석간</b></div><div class="c-cell">24<b class="do">휴무</b></div><div class="c-cell">25<b class="dd">주간</b></div><div class="c-cell">26<b class="dn">야간</b></div><div class="c-cell">27<b class="dm">석간</b></div><div class="c-cell">28<b class="do">휴무</b></div><div class="c-cell">29<b class="dd">주간</b></div><div class="c-cell">30<b class="dn">야간</b></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div></div></div><div class="sim-month-section"><div class="sim-month-title">2025년 7월 (31일)</div><div class="c-grid"><b class="c-head c-red">일</b><b class="c-head">월</b><b class="c-head">화</b><b class="c-head">수</b><b class="c-head">목</b><b class="c-head">금</b><b class="c-head c-blue">토</b><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell">1<b class="dm">석간</b></div><div class="c-cell">2<b class="do">휴무</b></div><div class="c-cell">3<b class="dd">주간</b></div><div class="c-cell">4<b class="dn">야간</b></div><div class="c-cell">5<b class="dm">석간</b></div><div class="c-cell">6<b class="do">휴무</b></div><div class="c-cell">7<b class="dd">주간</b></div><div class="c-cell">8<b class="dn">야간</b></div><div class="c-cell">9<b class="dm">석간</b></div><div class="c-cell">10<b class="do">휴무</b></div><div class="c-cell">11<b class="dd">주간</b></div><div class="c-cell">12<b class="dn">야간</b></div><div class="c-cell">13<b class="dm">석간</b></div><div class="c-cell">14<b class="do">휴무</b></div><div class="c-cell">15<b class="dd">주간</b></div><div class="c-cell">16<b class="dn">야간</b></div><div class="c-cell">17<b class="dm">석간</b></div><div class="c-cell">18<b class="do">휴무</b></div><div class="c-cell">19<b class="dd">주간</b></div><div class="c-cell">20<b class="dn">야간</b></div><div class="c-cell">21<b class="dm">석간</b></div><div class="c-cell">22<b class="do">휴무</b></div><div class="c-cell">23<b class="dd">주간</b></div><div class="c-cell">24<b class="dn">야간</b></div><div class="c-cell">25<b class="dm">석간</b></div><div class="c-cell">26<b class="do">휴무</b></div><div class="c-cell">27<b class="dd">주간</b></div><div class="c-cell">28<b class="dn">야간</b></div><div class="c-cell">29<b class="dm">석간</b></div><div class="c-cell">30<b class="do">휴무</b></div><div class="c-cell">31<b class="dd">주간</b></div><div class="c-cell e"></div><div class="c-cell e"></div></div></div><div class="sim-month-section"><div class="sim-month-title">2025년 8월 (31일)</div><div class="c-grid"><b class="c-head c-red">일</b><b class="c-head">월</b><b class="c-head">화</b><b class="c-head">수</b><b class="c-head">목</b><b class="c-head">금</b><b class="c-head c-blue">토</b><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell">1<b class="dn">야간</b></div><div class="c-cell">2<b class="dm">석간</b></div><div class="c-cell">3<b class="do">휴무</b></div><div class="c-cell">4<b class="dd">주간</b></div><div class="c-cell">5<b class="dn">야간</b></div><div class="c-cell">6<b class="dm">석간</b></div><div class="c-cell">7<b class="do">휴무</b></div><div class="c-cell">8<b class="dd">주간</b></div><div class="c-cell">9<b class="dn">야간</b></div><div class="c-cell">10<b class="dm">석간</b></div><div class="c-cell">11<b class="do">휴무</b></div><div class="c-cell">12<b class="dd">주간</b></div><div class="c-cell">13<b class="dn">야간</b></div><div class="c-cell">14<b class="dm">석간</b></div><div class="c-cell">15<b class="do">휴무</b></div><div class="c-cell">16<b class="dd">주간</b></div><div class="c-cell">17<b class="dn">야간</b></div><div class="c-cell">18<b class="dm">석간</b></div><div class="c-cell">19<b class="do">휴무</b></div><div class="c-cell">20<b class="dd">주간</b></div><div class="c-cell">21<b class="dn">야간</b></div><div class="c-cell">22<b class="dm">석간</b></div><div class="c-cell">23<b class="do">휴무</b></div><div class="c-cell">24<b class="dd">주간</b></div><div class="c-cell">25<b class="dn">야간</b></div><div class="c-cell">26<b class="dm">석간</b></div><div class="c-cell">27<b class="do">휴무</b></div><div class="c-cell">28<b class="dd">주간</b></div><div class="c-cell">29<b class="dn">야간</b></div><div class="c-cell">30<b class="dm">석간</b></div><div class="c-cell">31<b class="do">휴무</b></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div><div class="c-cell e"></div></div></div></div></div></div><div class="wizard-footer-actions"><button type="button" class="btn-secondary">이전: 기본 설정</button><button type="button" class="btn-primary">입력 검토</button></div></main></div></div><footer class="footer-statusbar"><div class="status-cell"><span class="status-dot-green"></span>DB 연결됨</div><div class="status-cell">최근 인테이크: 마지막 처리 완료 14:32</div><div class="status-cell">대기 파일 3개</div><div class="status-cell">최신</div><div class="status-cell">v2.3.1</div></footer></div></div><script>
+    (function() {
+      // ☰ 메뉴 접기/펼치기 (동작 9)
+      document.querySelectorAll('.state-wrapper').forEach(function(stateWrap) {
+        var toggleBtn = stateWrap.querySelector('.btn-sidebar-toggle');
+        var sidebar = stateWrap.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener('click', function() {
+            var isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+              toggleBtn.setAttribute('aria-expanded', 'false');
+              sidebar.style.display = 'none';
+              sidebar.setAttribute('aria-hidden', 'true');
+            } else {
+              toggleBtn.setAttribute('aria-expanded', 'true');
+              sidebar.style.display = 'flex';
+              sidebar.setAttribute('aria-hidden', 'false');
+            }
+          });
+        }
+      });
+
+      // W1 패턴 추출 모달 (단일 Opener: 파일 선택)
+      var openBtn = document.getElementById('btn-open-w1-fast-modal');
+      var modal = document.getElementById('pattern-extract-modal');
+      var closeBtn = document.getElementById('btn-close-extract-modal');
+      var closeX = document.getElementById('btn-close-extract-x');
+      if (openBtn && modal) {
+        function openModal() {
+          modal.style.display = 'flex';
+          if (closeBtn) closeBtn.focus();
+        }
+        function closeModal() {
+          modal.style.display = 'none';
+          openBtn.focus();
+        }
+        openBtn.addEventListener('click', openModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (closeX) closeX.addEventListener('click', closeModal);
+        modal.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') { closeModal(); return; }
+          if (e.key === 'Tab') {
+            var focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+            if (e.shiftKey) {
+              if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+            } else {
+              if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+            }
+          }
+        });
+      }
+
+      // W1 스테퍼 동작 10 연동
+      var teamVal = document.getElementById('w1-team-count-val');
+      var teamMinus = document.getElementById('w1-team-minus');
+      var teamPlus = document.getElementById('w1-team-plus');
+      var shiftMinDesc = document.getElementById('w1-shift-min-desc');
+      var shiftMaxDesc = document.getElementById('w1-shift-max-desc');
+
+      var bundleVal = document.getElementById('w1-bundle-count-val');
+      var bundleMinus = document.getElementById('w1-bundle-minus');
+      var bundlePlus = document.getElementById('w1-bundle-plus');
+      var groupMinDesc = document.getElementById('w1-group-min-desc');
+      var groupMaxDesc = document.getElementById('w1-group-max-desc');
+
+      function updateStepperState() {
+        if (teamVal && teamMinus && teamPlus) {
+          var t = parseInt(teamVal.textContent, 10);
+          if (t <= 2) {
+            teamMinus.setAttribute('aria-disabled', 'true');
+            teamMinus.setAttribute('aria-describedby', 'w1-shift-min-desc');
+            if (shiftMinDesc) shiftMinDesc.style.display = 'inline-block';
+          } else {
+            teamMinus.removeAttribute('aria-disabled');
+            teamMinus.removeAttribute('aria-describedby');
+            if (shiftMinDesc) shiftMinDesc.style.display = 'none';
+          }
+          if (t >= 8) {
+            teamPlus.setAttribute('aria-disabled', 'true');
+            teamPlus.setAttribute('aria-describedby', 'w1-shift-max-desc');
+            if (shiftMaxDesc) shiftMaxDesc.style.display = 'inline-block';
+          } else {
+            teamPlus.removeAttribute('aria-disabled');
+            teamPlus.removeAttribute('aria-describedby');
+            if (shiftMaxDesc) shiftMaxDesc.style.display = 'none';
+          }
+        }
+        if (bundleVal && bundleMinus && bundlePlus) {
+          var b = parseInt(bundleVal.textContent, 10);
+          if (b <= 1) {
+            bundleMinus.setAttribute('aria-disabled', 'true');
+            bundleMinus.setAttribute('aria-describedby', 'w1-group-min-desc');
+            if (groupMinDesc) groupMinDesc.style.display = 'inline-block';
+          } else {
+            bundleMinus.removeAttribute('aria-disabled');
+            bundleMinus.removeAttribute('aria-describedby');
+            if (groupMinDesc) groupMinDesc.style.display = 'none';
+          }
+          if (b >= 8) {
+            bundlePlus.setAttribute('aria-disabled', 'true');
+            bundlePlus.setAttribute('aria-describedby', 'w1-group-max-desc');
+            if (groupMaxDesc) groupMaxDesc.style.display = 'inline-block';
+          } else {
+            bundlePlus.removeAttribute('aria-disabled');
+            bundlePlus.removeAttribute('aria-describedby');
+            if (groupMaxDesc) groupMaxDesc.style.display = 'none';
+          }
+        }
+      }
+
+      if (teamMinus && teamPlus && teamVal) {
+        teamMinus.addEventListener('click', function(e) {
+          var v = parseInt(teamVal.textContent, 10);
+          if (v <= 2) { e.preventDefault(); return; }
+          teamVal.textContent = v - 1;
+          updateStepperState();
+        });
+        teamPlus.addEventListener('click', function(e) {
+          var v = parseInt(teamVal.textContent, 10);
+          if (v >= 8) { e.preventDefault(); return; }
+          teamVal.textContent = v + 1;
+          updateStepperState();
+        });
+      }
+
+      if (bundleMinus && bundlePlus && bundleVal) {
+        bundleMinus.addEventListener('click', function(e) {
+          var v = parseInt(bundleVal.textContent, 10);
+          if (v <= 1) { e.preventDefault(); return; }
+          bundleVal.textContent = v - 1;
+          updateStepperState();
+        });
+        bundlePlus.addEventListener('click', function(e) {
+          var v = parseInt(bundleVal.textContent, 10);
+          if (v >= 8) { e.preventDefault(); return; }
+          bundleVal.textContent = v + 1;
+          updateStepperState();
+        });
+      }
+
+      // aria-disabled="true" 요소 클릭/키입력 차단
+      document.querySelectorAll('[aria-disabled="true"]').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+        el.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        });
+      });
+
+      updateStepperState();
+    })();
+  </script>
+<script>
+/* 0-18 소급(v1.8) 동작 9 보강(B-7)·동작 13 로그아웃 데모 전이(B-4) — 데이터 연동·라우팅·auth:sign-out 호출 없음 */
+(function(){
+  document.querySelectorAll('.btn-sidebar-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'); if (!w) return;
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      w.querySelectorAll('.nav-group-header').forEach(function(h){ if (expanded) h.removeAttribute('aria-hidden'); else h.setAttribute('aria-hidden', 'true'); });
+    });
+  });
+  var UNSAVED = {'state-w1':1,'state-w2':1};
+  function showToast(appWin){
+    if (!appWin) return;
+    var t = document.createElement('div'); t.className = 'demo-toast'; t.setAttribute('role', 'status'); t.textContent = '로그인 화면으로 이동합니다';
+    appWin.appendChild(t); setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 1500);
+  }
+  function openLeave(modal, opener, appWin){
+    var body = appWin.querySelector('.app-body');
+    function close(){ modal.style.display = 'none'; if (body) body.removeAttribute('aria-hidden'); if (opener) opener.focus(); }
+    modal.style.display = 'flex'; if (body) body.setAttribute('aria-hidden', 'true');
+    var stay = modal.querySelector('.btn-leave-stay'), discard = modal.querySelector('.btn-leave-discard');
+    stay.onclick = close;
+    discard.onclick = function(){ close(); showToast(appWin); };
+    modal.onkeydown = function(e){
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key === 'Tab') { var f = [stay, discard]; if (e.shiftKey) { if (document.activeElement === f[0]) { f[1].focus(); e.preventDefault(); } } else { if (document.activeElement === f[1]) { f[0].focus(); e.preventDefault(); } } }
+    };
+    stay.focus();
+  }
+  document.querySelectorAll('.btn-logout').forEach(function(btn){
+    if (btn.disabled) return;
+    btn.addEventListener('click', function(){
+      var w = btn.closest('.state-wrapper'), appWin = btn.closest('.app-window'); if (!w || !appWin) return;
+      var m = w.querySelector('.modal-leave');
+      if (m && UNSAVED[w.id]) openLeave(m, btn, appWin); else showToast(appWin);
+    });
+  });
+  
+})();
+</script>
+</body></html>

@@ -1,0 +1,17 @@
+{
+  "name": "ipc-suite",
+  "argv": [
+    "node",
+    "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a1-v5\\ipc-probes.mjs"
+  ],
+  "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "pid": 49116,
+  "start": "2026-10-13T00:39:48.634780+00:00",
+  "end": "2026-10-13T00:40:05.045544+00:00",
+  "rc": 0,
+  "timeout": false,
+  "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stdout.txt",
+  "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a1-v5-review-20261013_093034\\ipc-suite.stderr.txt",
+  "stdoutSha256": "E3BA13DC687A5E0AFB29644FB6B63E2EA6F5D29E8FFA9ED0E602C7F654F9EF56",
+  "stderrSha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+}

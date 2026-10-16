@@ -1,0 +1,1644 @@
+[
+  {
+    "name": "faults-png-24-byte-header-contract-core",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:19.364725+00:00",
+    "pid": 49392,
+    "rc": 0,
+    "end": "2026-10-01T13:11:23.049595+00:00",
+    "elapsedSeconds": 3.672,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-png-24-byte-header-contract-core.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-png-24-byte-header-contract-core.stderr.txt",
+    "fault": "png-24-byte-header",
+    "case": "contract-core",
+    "events": [
+      {
+        "time": 1790860279805,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "owned-child-spawn",
+        "childPid": 13448,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860281001,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "owned-child-spawn",
+        "childPid": 12512,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      },
+      {
+        "time": 1790860281441,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 90000
+      },
+      {
+        "time": 1790860282906,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "owned-child-really-closed",
+        "childPid": 12512,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860282906,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 90000,
+        "childPid": 12512
+      },
+      {
+        "time": 1790860282913,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "capture-truncated-on-disk",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\core-capture.png",
+        "originalBytes": 25688,
+        "actualBytes": 24
+      },
+      {
+        "time": 1790860282934,
+        "pid": 49392,
+        "fault": "png-24-byte-header",
+        "type": "owned-child-really-closed",
+        "childPid": 13448,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-contract-core",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "contract-core",
+      "runId": "run-20261001-221119-fxjph3",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "owner": {
+        "pid": 49392,
+        "nonceSha256": "3FA82E933CBABB58B810FA2C12ABE9653F6E41E84858CB78F353FDA1424BB6AA",
+        "context": {
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RbOUbC",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-RbOUbC\\data\\bootstrap-credentials.json"
+        }
+      },
+      "worker": {
+        "pid": 12512,
+        "parentPid": 49392,
+        "nonceSha256": "3FA82E933CBABB58B810FA2C12ABE9653F6E41E84858CB78F353FDA1424BB6AA",
+        "contextAck": true,
+        "exitCode": 0,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "createdAtMs": 1790860280981,
+        "exitAtMs": 1790860282906,
+        "closeAtMs": 1790860282907
+      },
+      "server": {
+        "pid": 13448,
+        "stdoutListenVerified": true,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "portListeningAfterClose": false,
+        "createdAtMs": 1790860279787,
+        "exitAtMs": 1790860282934,
+        "closeAtMs": 1790860282935
+      },
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "errors": {
+        "primary": null,
+        "cleanup": [],
+        "evidence": [],
+        "unexpected": []
+      },
+      "artifacts": [
+        {
+          "id": "server-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\server-stdout.log",
+          "bytes": 745,
+          "sha256": "2973F0E40D1B4A9FDF0D055989017FDA203466EA83E9AD25B657E9B4250B9790"
+        },
+        {
+          "id": "server-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\server-stderr.log",
+          "bytes": 169,
+          "sha256": "D6F5363592C3E73E3486CC3C35E6B4CEB09183587F3BDC1737E907FA6CF46305"
+        },
+        {
+          "id": "worker-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\worker-stdout.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\worker-stderr.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-final",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\worker-final.json",
+          "bytes": 3676,
+          "sha256": "34D964F750F6A1877909D7F9C8040B7A1EE32EF70D543658D74042A08EFFDB07"
+        },
+        {
+          "id": "core-observations",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\core-observations.json",
+          "bytes": 5620,
+          "sha256": "EFEF5C00CAA1F1F61C2B3572E6E37BB6A27DEFC614C6F1219E4B92C7331A1482"
+        },
+        {
+          "id": "core-capture",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\core-capture.png",
+          "bytes": 24,
+          "sha256": "5324EA63E098775373A3379D85976AE9048BB3E25F3F850354AAFECBDCD039F0"
+        }
+      ],
+      "checks": [
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-02",
+          "sourceArtifact": "core-observations",
+          "pointer": "/origin",
+          "actual": "http://127.0.0.1:18741/"
+        },
+        {
+          "id": "CORE-03",
+          "sourceArtifact": "core-observations",
+          "pointer": "/loginInputs",
+          "actual": {
+            "id": {
+              "count": 1,
+              "visible": true
+            },
+            "password": {
+              "count": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "CORE-04",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureLabels",
+          "actual": [
+            {
+              "actionType": "performance-approve",
+              "label": "실적 승인"
+            },
+            {
+              "actionType": "performance-reapprove",
+              "label": "실적 승인 확정"
+            },
+            {
+              "actionType": "performance-hide-approved",
+              "label": "승인완료 목록삭제"
+            },
+            {
+              "actionType": "schedule-publish",
+              "label": "근무표 배포"
+            },
+            {
+              "actionType": "sign-in",
+              "label": "로그인"
+            },
+            {
+              "actionType": "route-view",
+              "label": "화면 이동"
+            },
+            {
+              "actionType": "performance-reject",
+              "label": "실적 반려"
+            },
+            {
+              "actionType": "site-save",
+              "label": "근무지 저장"
+            }
+          ]
+        },
+        {
+          "id": "CORE-05",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureRequestCount",
+          "actual": 0
+        },
+        {
+          "id": "CORE-06",
+          "sourceArtifact": "core-observations",
+          "pointer": "/rawErrors",
+          "actual": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          }
+        },
+        {
+          "id": "CORE-07",
+          "sourceArtifact": "core-observations",
+          "pointer": "/chrome",
+          "actual": {
+            "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "version": "154.0.8037.58",
+            "browserVersion": "154.0.8037.58"
+          }
+        },
+        {
+          "id": "CORE-08",
+          "sourceArtifact": "core-observations",
+          "pointer": "/resources",
+          "actual": [
+            {
+              "kind": "browser",
+              "id": "browser-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860281539
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860282720
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860282884
+                }
+              ]
+            },
+            {
+              "kind": "context",
+              "id": "context-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860281539
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860282711
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860282720
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CORE-09",
+          "sourceArtifact": "core-observations",
+          "pointer": "/captureId",
+          "actual": "core-capture"
+        }
+      ]
+    },
+    "checker": {
+      "name": "faults-check-png-24-byte-header",
+      "command": [
+        "python",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+        "--contract-sha",
+        "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+        "--baseline-sha",
+        "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+        "--core",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221119-fxjph3\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "start": "2026-10-01T13:11:23.091364+00:00",
+      "pid": 10840,
+      "rc": 1,
+      "end": "2026-10-01T13:11:24.244514+00:00",
+      "elapsedSeconds": 1.156,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-png-24-byte-header.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-png-24-byte-header.stderr.txt"
+    }
+  },
+  {
+    "name": "faults-duplicate-core-ids-contract-core",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:24.255356+00:00",
+    "pid": 29956,
+    "rc": 0,
+    "end": "2026-10-01T13:11:27.763676+00:00",
+    "elapsedSeconds": 3.5,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-duplicate-core-ids-contract-core.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-duplicate-core-ids-contract-core.stderr.txt",
+    "fault": "duplicate-core-ids",
+    "case": "contract-core",
+    "events": [
+      {
+        "time": 1790860284688,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "owned-child-spawn",
+        "childPid": 47296,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860285869,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "owned-child-spawn",
+        "childPid": 47724,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      },
+      {
+        "time": 1790860286303,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 90000
+      },
+      {
+        "time": 1790860287621,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "owned-child-really-closed",
+        "childPid": 47724,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860287622,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 90000,
+        "childPid": 47724
+      },
+      {
+        "time": 1790860287626,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "worker-checks-replaced",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\worker-final.json",
+        "count": 9,
+        "ids": [
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01",
+          "CORE-01"
+        ]
+      },
+      {
+        "time": 1790860287648,
+        "pid": 29956,
+        "fault": "duplicate-core-ids",
+        "type": "owned-child-really-closed",
+        "childPid": 47296,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-contract-core",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "contract-core",
+      "runId": "run-20261001-221124-bTp4H8",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "owner": {
+        "pid": 29956,
+        "nonceSha256": "F2B9C6C8B4B375818665D713D5B6C05807AEC202586F548E0F022DECA8E8D640",
+        "context": {
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-f7J8rR",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-f7J8rR\\data\\bootstrap-credentials.json"
+        }
+      },
+      "worker": {
+        "pid": 47724,
+        "parentPid": 29956,
+        "nonceSha256": "F2B9C6C8B4B375818665D713D5B6C05807AEC202586F548E0F022DECA8E8D640",
+        "contextAck": true,
+        "exitCode": 0,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "createdAtMs": 1790860285851,
+        "exitAtMs": 1790860287621,
+        "closeAtMs": 1790860287622
+      },
+      "server": {
+        "pid": 47296,
+        "stdoutListenVerified": true,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "portListeningAfterClose": false,
+        "createdAtMs": 1790860284670,
+        "exitAtMs": 1790860287648,
+        "closeAtMs": 1790860287648
+      },
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "errors": {
+        "primary": null,
+        "cleanup": [],
+        "evidence": [],
+        "unexpected": []
+      },
+      "artifacts": [
+        {
+          "id": "server-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\server-stdout.log",
+          "bytes": 745,
+          "sha256": "C79C792E61B1BBEF3AFF8AFD38904611F0331B49FD74EDBC3463918467B40F14"
+        },
+        {
+          "id": "server-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\server-stderr.log",
+          "bytes": 169,
+          "sha256": "4D1CD2B5A964100FD0753307A369742DE85C977C81BBE06EC8D7F190EEA4A74B"
+        },
+        {
+          "id": "worker-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\worker-stdout.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\worker-stderr.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-final",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\worker-final.json",
+          "bytes": 1786,
+          "sha256": "798AC92BEA1BD4BE0B1A9C9F62D762D805C7CB1F3B8EB17AF819ED763C215F47"
+        },
+        {
+          "id": "core-observations",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\core-observations.json",
+          "bytes": 5620,
+          "sha256": "FE1F7A810630C277833C0BC3FF1B688C18C21173DD83B12CDD179344B48CCBF6"
+        },
+        {
+          "id": "core-capture",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\core-capture.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        }
+      ],
+      "checks": [
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        }
+      ]
+    },
+    "checker": {
+      "name": "faults-check-duplicate-core-ids",
+      "command": [
+        "python",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+        "--contract-sha",
+        "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+        "--baseline-sha",
+        "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+        "--core",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221124-bTp4H8\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "start": "2026-10-01T13:11:27.804442+00:00",
+      "pid": 50564,
+      "rc": 1,
+      "end": "2026-10-01T13:11:28.824178+00:00",
+      "elapsedSeconds": 1.015,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-duplicate-core-ids.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-duplicate-core-ids.stderr.txt"
+    }
+  },
+  {
+    "name": "faults-unexpected-raw-error-contract-core",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:28.836405+00:00",
+    "pid": 43840,
+    "rc": 0,
+    "end": "2026-10-01T13:11:32.496413+00:00",
+    "elapsedSeconds": 3.656,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-unexpected-raw-error-contract-core.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-unexpected-raw-error-contract-core.stderr.txt",
+    "fault": "unexpected-raw-error",
+    "case": "contract-core",
+    "events": [
+      {
+        "time": 1790860289310,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "owned-child-spawn",
+        "childPid": 49664,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860290490,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "owned-child-spawn",
+        "childPid": 21580,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      },
+      {
+        "time": 1790860290961,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 90000
+      },
+      {
+        "time": 1790860292354,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "owned-child-really-closed",
+        "childPid": 21580,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860292355,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 90000,
+        "childPid": 21580
+      },
+      {
+        "time": 1790860292360,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "raw-error-injected-on-disk",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\core-observations.json",
+        "rawErrors": {
+          "console": [
+            "SOL_A_UNEXPECTED_UNRELATED_CONSOLE_ERROR_401"
+          ],
+          "pageerror": [],
+          "requestfailed": [],
+          "badResponses": []
+        }
+      },
+      {
+        "time": 1790860292380,
+        "pid": 43840,
+        "fault": "unexpected-raw-error",
+        "type": "owned-child-really-closed",
+        "childPid": 49664,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-contract-core",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "contract-core",
+      "runId": "run-20261001-221129-hEf5a1",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "owner": {
+        "pid": 43840,
+        "nonceSha256": "EBBEE2AE0DE4033BBED68886785FEBD75DB4F0342609C2EB567049D902D5CB63",
+        "context": {
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-0Spg92",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-0Spg92\\data\\bootstrap-credentials.json"
+        }
+      },
+      "worker": {
+        "pid": 21580,
+        "parentPid": 43840,
+        "nonceSha256": "EBBEE2AE0DE4033BBED68886785FEBD75DB4F0342609C2EB567049D902D5CB63",
+        "contextAck": true,
+        "exitCode": 0,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "createdAtMs": 1790860290470,
+        "exitAtMs": 1790860292354,
+        "closeAtMs": 1790860292355
+      },
+      "server": {
+        "pid": 49664,
+        "stdoutListenVerified": true,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "portListeningAfterClose": false,
+        "createdAtMs": 1790860289291,
+        "exitAtMs": 1790860292380,
+        "closeAtMs": 1790860292381
+      },
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "errors": {
+        "primary": null,
+        "cleanup": [],
+        "evidence": [],
+        "unexpected": []
+      },
+      "artifacts": [
+        {
+          "id": "server-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\server-stdout.log",
+          "bytes": 745,
+          "sha256": "52130BB06A869D9B61D938ECC34B3F1706DF36C74ED83FDE986B1FD6D3D6E353"
+        },
+        {
+          "id": "server-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\server-stderr.log",
+          "bytes": 169,
+          "sha256": "AF41086A6234D7B748615869A061CDB7972F6022E762574C9504DC377933ED6A"
+        },
+        {
+          "id": "worker-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\worker-stdout.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\worker-stderr.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-final",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\worker-final.json",
+          "bytes": 3676,
+          "sha256": "3E6A4767312DE1B13D827DC8ABEA4B614C939924F7CFF68FE2EADAB5A665D23E"
+        },
+        {
+          "id": "core-observations",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\core-observations.json",
+          "bytes": 5678,
+          "sha256": "0C5975B56AA3F81DD7285F60EE76E18E11ACDAC17C17A81BE7DCBE0AB6465F7D"
+        },
+        {
+          "id": "core-capture",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\core-capture.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        }
+      ],
+      "checks": [
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-02",
+          "sourceArtifact": "core-observations",
+          "pointer": "/origin",
+          "actual": "http://127.0.0.1:18741/"
+        },
+        {
+          "id": "CORE-03",
+          "sourceArtifact": "core-observations",
+          "pointer": "/loginInputs",
+          "actual": {
+            "id": {
+              "count": 1,
+              "visible": true
+            },
+            "password": {
+              "count": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "CORE-04",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureLabels",
+          "actual": [
+            {
+              "actionType": "performance-approve",
+              "label": "실적 승인"
+            },
+            {
+              "actionType": "performance-reapprove",
+              "label": "실적 승인 확정"
+            },
+            {
+              "actionType": "performance-hide-approved",
+              "label": "승인완료 목록삭제"
+            },
+            {
+              "actionType": "schedule-publish",
+              "label": "근무표 배포"
+            },
+            {
+              "actionType": "sign-in",
+              "label": "로그인"
+            },
+            {
+              "actionType": "route-view",
+              "label": "화면 이동"
+            },
+            {
+              "actionType": "performance-reject",
+              "label": "실적 반려"
+            },
+            {
+              "actionType": "site-save",
+              "label": "근무지 저장"
+            }
+          ]
+        },
+        {
+          "id": "CORE-05",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureRequestCount",
+          "actual": 0
+        },
+        {
+          "id": "CORE-06",
+          "sourceArtifact": "core-observations",
+          "pointer": "/rawErrors",
+          "actual": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          }
+        },
+        {
+          "id": "CORE-07",
+          "sourceArtifact": "core-observations",
+          "pointer": "/chrome",
+          "actual": {
+            "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "version": "154.0.8037.58",
+            "browserVersion": "154.0.8037.58"
+          }
+        },
+        {
+          "id": "CORE-08",
+          "sourceArtifact": "core-observations",
+          "pointer": "/resources",
+          "actual": [
+            {
+              "kind": "browser",
+              "id": "browser-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860291056
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860292183
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860292334
+                }
+              ]
+            },
+            {
+              "kind": "context",
+              "id": "context-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860291056
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860292173
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860292183
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CORE-09",
+          "sourceArtifact": "core-observations",
+          "pointer": "/captureId",
+          "actual": "core-capture"
+        }
+      ]
+    },
+    "checker": {
+      "name": "faults-check-unexpected-raw-error",
+      "command": [
+        "python",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+        "--contract-sha",
+        "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+        "--baseline-sha",
+        "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+        "--core",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221129-hEf5a1\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "start": "2026-10-01T13:11:32.537313+00:00",
+      "pid": 3848,
+      "rc": 1,
+      "end": "2026-10-01T13:11:33.538183+00:00",
+      "elapsedSeconds": 1.0,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-unexpected-raw-error.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-unexpected-raw-error.stderr.txt"
+    }
+  },
+  {
+    "name": "faults-server-close-not-observed-contract-core",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:33.548610+00:00",
+    "pid": 49952,
+    "rc": 0,
+    "end": "2026-10-01T13:11:42.361550+00:00",
+    "elapsedSeconds": 8.812,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-server-close-not-observed-contract-core.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-server-close-not-observed-contract-core.stderr.txt",
+    "fault": "server-close-not-observed",
+    "case": "contract-core",
+    "events": [
+      {
+        "time": 1790860293986,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "owned-child-spawn",
+        "childPid": 52548,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860295163,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "owned-child-spawn",
+        "childPid": 41680,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      },
+      {
+        "time": 1790860295606,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 90000
+      },
+      {
+        "time": 1790860296885,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "owned-child-really-closed",
+        "childPid": 41680,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860296886,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 90000,
+        "childPid": 41680
+      },
+      {
+        "time": 1790860296911,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "owned-child-really-closed",
+        "childPid": 52548,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      },
+      {
+        "time": 1790860296911,
+        "pid": 49952,
+        "fault": "server-close-not-observed",
+        "type": "server-close-handler-suppressed-after-real-close",
+        "childPid": 52548,
+        "values": [
+          null,
+          "SIGTERM"
+        ]
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-contract-core",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "contract-core",
+      "runId": "run-20261001-221133-KPStbE",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "owner": {
+        "pid": 49952,
+        "nonceSha256": "6A3E321EEEBACD3EA5342494ED0FA77CA9175C8513EA86DE7AB0EFEF23C05257",
+        "context": {
+          "url": "http://127.0.0.1:18741/",
+          "runDir": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE",
+          "tempDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-tuiU9z",
+          "bootstrapFile": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32v-tuiU9z\\data\\bootstrap-credentials.json"
+        }
+      },
+      "worker": {
+        "pid": 41680,
+        "parentPid": 49952,
+        "nonceSha256": "6A3E321EEEBACD3EA5342494ED0FA77CA9175C8513EA86DE7AB0EFEF23C05257",
+        "contextAck": true,
+        "exitCode": 0,
+        "exitSeen": true,
+        "closeSeen": true,
+        "aliveAfterClose": false,
+        "createdAtMs": 1790860295144,
+        "exitAtMs": 1790860296885,
+        "closeAtMs": 1790860296886
+      },
+      "server": {
+        "pid": 52548,
+        "stdoutListenVerified": true,
+        "exitSeen": true,
+        "closeSeen": false,
+        "aliveAfterClose": false,
+        "portListeningAfterClose": false,
+        "createdAtMs": 1790860293967,
+        "exitAtMs": 1790860296911,
+        "closeAtMs": 1790860302344
+      },
+      "cleanup": {
+        "tempRemoved": true
+      },
+      "errors": {
+        "primary": null,
+        "cleanup": [],
+        "evidence": [],
+        "unexpected": []
+      },
+      "artifacts": [
+        {
+          "id": "server-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\server-stdout.log",
+          "bytes": 745,
+          "sha256": "E73476E3712F65ABCB9E9F90E350BF3F57A656F3A0D76DAB15DFC03D0D9BF07C"
+        },
+        {
+          "id": "server-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\server-stderr.log",
+          "bytes": 169,
+          "sha256": "FD4085448CB00E7BBFC678AB4C2060EB3EA48AD05B6744DDC867099BB8FCE75C"
+        },
+        {
+          "id": "worker-stdout",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\worker-stdout.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-stderr",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\worker-stderr.log",
+          "bytes": 0,
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "id": "worker-final",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\worker-final.json",
+          "bytes": 3676,
+          "sha256": "7C7FDD381FA7DCD81F0F3A152DBE3535D356BB319EE82A8BAA5BF7A22EAD7ABE"
+        },
+        {
+          "id": "core-observations",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\core-observations.json",
+          "bytes": 5620,
+          "sha256": "E7C3248247C9E9DBEA93024037092649C419CA6769EDDD59810F5BF5E3E17824"
+        },
+        {
+          "id": "core-capture",
+          "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\core-capture.png",
+          "bytes": 25688,
+          "sha256": "C167ABE077C0568593103AF8941A08EA8D9CBF928C788E20FC206A8F5CB28F8D"
+        }
+      ],
+      "checks": [
+        {
+          "id": "CORE-01",
+          "sourceArtifact": "core-observations",
+          "pointer": "/viewport",
+          "actual": [
+            1440,
+            900
+          ]
+        },
+        {
+          "id": "CORE-02",
+          "sourceArtifact": "core-observations",
+          "pointer": "/origin",
+          "actual": "http://127.0.0.1:18741/"
+        },
+        {
+          "id": "CORE-03",
+          "sourceArtifact": "core-observations",
+          "pointer": "/loginInputs",
+          "actual": {
+            "id": {
+              "count": 1,
+              "visible": true
+            },
+            "password": {
+              "count": 1,
+              "visible": true
+            }
+          }
+        },
+        {
+          "id": "CORE-04",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureLabels",
+          "actual": [
+            {
+              "actionType": "performance-approve",
+              "label": "실적 승인"
+            },
+            {
+              "actionType": "performance-reapprove",
+              "label": "실적 승인 확정"
+            },
+            {
+              "actionType": "performance-hide-approved",
+              "label": "승인완료 목록삭제"
+            },
+            {
+              "actionType": "schedule-publish",
+              "label": "근무표 배포"
+            },
+            {
+              "actionType": "sign-in",
+              "label": "로그인"
+            },
+            {
+              "actionType": "route-view",
+              "label": "화면 이동"
+            },
+            {
+              "actionType": "performance-reject",
+              "label": "실적 반려"
+            },
+            {
+              "actionType": "site-save",
+              "label": "근무지 저장"
+            }
+          ]
+        },
+        {
+          "id": "CORE-05",
+          "sourceArtifact": "core-observations",
+          "pointer": "/fixtureRequestCount",
+          "actual": 0
+        },
+        {
+          "id": "CORE-06",
+          "sourceArtifact": "core-observations",
+          "pointer": "/rawErrors",
+          "actual": {
+            "console": [],
+            "pageerror": [],
+            "requestfailed": [],
+            "badResponses": []
+          }
+        },
+        {
+          "id": "CORE-07",
+          "sourceArtifact": "core-observations",
+          "pointer": "/chrome",
+          "actual": {
+            "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+            "version": "154.0.8037.58",
+            "browserVersion": "154.0.8037.58"
+          }
+        },
+        {
+          "id": "CORE-08",
+          "sourceArtifact": "core-observations",
+          "pointer": "/resources",
+          "actual": [
+            {
+              "kind": "browser",
+              "id": "browser-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860295698
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860296692
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860296867
+                }
+              ]
+            },
+            {
+              "kind": "context",
+              "id": "context-1",
+              "events": [
+                {
+                  "state": "created",
+                  "timeMs": 1790860295698
+                },
+                {
+                  "state": "close-start",
+                  "timeMs": 1790860296682
+                },
+                {
+                  "state": "closed",
+                  "timeMs": 1790860296692
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "CORE-09",
+          "sourceArtifact": "core-observations",
+          "pointer": "/captureId",
+          "actual": "core-capture"
+        }
+      ]
+    },
+    "checker": {
+      "name": "faults-check-server-close-not-observed",
+      "command": [
+        "python",
+        "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-v1\\verify-evidence.py",
+        "--contract-sha",
+        "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+        "--baseline-sha",
+        "E590E18BF5C79CDD19B4F93AD86D4D194D4E280DAF26C60A57BB59E43CE4AA50",
+        "--core",
+        "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221133-KPStbE\\owner-final.json"
+      ],
+      "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+      "start": "2026-10-01T13:11:42.408856+00:00",
+      "pid": 27320,
+      "rc": 1,
+      "end": "2026-10-01T13:11:43.383309+00:00",
+      "elapsedSeconds": 0.985,
+      "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-server-close-not-observed.stdout.txt",
+      "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-check-server-close-not-observed.stderr.txt"
+    }
+  },
+  {
+    "name": "faults-regression-no-evidence-regression-shell",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=regression-shell"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:43.399477+00:00",
+    "pid": 13460,
+    "rc": 0,
+    "end": "2026-10-01T13:11:45.318836+00:00",
+    "elapsedSeconds": 1.922,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-regression-no-evidence-regression-shell.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-regression-no-evidence-regression-shell.stderr.txt",
+    "fault": "regression-no-evidence",
+    "case": "regression-shell",
+    "events": [
+      {
+        "time": 1790860303856,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "owned-child-spawn",
+        "childPid": 15508,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860305017,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "regression-child-replaced",
+        "originalArgs": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\shell.mjs",
+          "http://127.0.0.1:18741/"
+        ],
+        "actualArgs": [
+          "--input-type=module",
+          "-e",
+          "process.stdout.write(\"SOL_REGRESSION_ZERO_EXIT_WITHOUT_MANIFEST_OR_CAPTURE\\n\");"
+        ]
+      },
+      {
+        "time": 1790860305042,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "owned-child-spawn",
+        "childPid": 32116,
+        "isServer": false,
+        "isRegression": true,
+        "args": [
+          "--input-type=module",
+          "-e",
+          "process.stdout.write(\"SOL_REGRESSION_ZERO_EXIT_WITHOUT_MANIFEST_OR_CAPTURE\\n\");"
+        ]
+      },
+      {
+        "time": 1790860305043,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 120000
+      },
+      {
+        "time": 1790860305195,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "owned-child-really-closed",
+        "childPid": 32116,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860305196,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 120000,
+        "childPid": 32116
+      },
+      {
+        "time": 1790860305214,
+        "pid": 13460,
+        "fault": "regression-no-evidence",
+        "type": "owned-child-really-closed",
+        "childPid": 15508,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-regression-shell",
+      "status": "PASS",
+      "exitCode": 0,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-regression-shell\\run-20261001-221143-SkyS6L\\owner-final.json"
+    },
+    "manifest": {
+      "schema": "shiftmgmt.verifier.evidence.v1",
+      "stage": "foundation",
+      "case": "regression-shell",
+      "runId": "run-20261001-221143-SkyS6L",
+      "contractSha256": "014FE49BA87154716ED82CC5BC584AD3080B8000AEEAC34ABDD4D7BCFF7104BE",
+      "status": "PASS",
+      "exitCode": 0,
+      "checks": [
+        {
+          "id": "REGSHELL-01",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/exitCode",
+          "actual": 0
+        },
+        {
+          "id": "REGSHELL-02",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/closeSeen",
+          "actual": true
+        },
+        {
+          "id": "REGSHELL-03",
+          "sourceArtifact": "worker-stdout",
+          "pointer": "/status",
+          "actual": "PASS"
+        }
+      ],
+      "cleanup": {
+        "tempRemoved": true
+      }
+    }
+  },
+  {
+    "name": "faults-owner-final-write-contract-core",
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/ShiftMgmt_V4/artifacts/captures/phase3/access-history-foundation-probes/run-sol-a-review-92b3ac64/fault-preload.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=contract-core"
+    ],
+    "cwd": "C:\\Projects\\Active\\ShiftMgmt_V4",
+    "start": "2026-10-01T13:11:45.359384+00:00",
+    "pid": 20372,
+    "rc": 1,
+    "end": "2026-10-01T13:11:48.825702+00:00",
+    "elapsedSeconds": 3.469,
+    "stdout": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-owner-final-write-contract-core.stdout.txt",
+    "stderr": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a-review-20261001_220126\\faults-owner-final-write-contract-core.stderr.txt",
+    "fault": "owner-final-write",
+    "case": "contract-core",
+    "events": [
+      {
+        "time": 1790860305786,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owned-child-spawn",
+        "childPid": 19136,
+        "isServer": true,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\dist\\server\\main\\server.js"
+        ]
+      },
+      {
+        "time": 1790860306961,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owned-child-spawn",
+        "childPid": 52112,
+        "isServer": false,
+        "isRegression": false,
+        "args": [
+          "C:\\Projects\\Active\\ShiftMgmt_V4\\scripts\\ui-checks\\access-history-shared.mjs",
+          "--case=contract-core"
+        ]
+      },
+      {
+        "time": 1790860307392,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owner-uncleared-timeout-observed",
+        "delay": 90000
+      },
+      {
+        "time": 1790860308682,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owned-child-really-closed",
+        "childPid": 52112,
+        "isServer": false,
+        "code": 0,
+        "signal": null
+      },
+      {
+        "time": 1790860308683,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "review-only-keepalive-timer-cleared-after-real-child-close",
+        "delay": 90000,
+        "childPid": 52112
+      },
+      {
+        "time": 1790860308707,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owned-child-really-closed",
+        "childPid": 19136,
+        "isServer": true,
+        "code": null,
+        "signal": "SIGTERM"
+      },
+      {
+        "time": 1790860308807,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owner-final-write-rejected",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221145-zf7rJ5\\owner-final.json"
+      },
+      {
+        "time": 1790860308808,
+        "pid": 20372,
+        "fault": "owner-final-write",
+        "type": "owner-final-write-rejected",
+        "path": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221145-zf7rJ5\\owner-final.json"
+      }
+    ],
+    "ownerFinal": {
+      "label": "access-history-contract-core",
+      "status": "FAIL",
+      "exitCode": 1,
+      "tempCleaned": true,
+      "manifestPath": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-contract-core\\run-20261001-221145-zf7rJ5\\owner-final.json"
+    }
+  }
+]

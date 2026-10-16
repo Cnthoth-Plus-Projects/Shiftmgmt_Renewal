@@ -1,0 +1,6 @@
+{
+  "legacyWorkerPid": 48016,
+  "legacyWorkerCreatedAtMs": 1790844523852,
+  "currentProcess": "{\"Id\":48016,\"ProcessName\":\"chrome\",\"StartTime\":\"\\/Date(1790845114465)\\/\"}\r\n",
+  "assessment": "Current Chrome process started17:58:34 after original worker17:48:43; historical checker liveness failure is PID reuse, not evidence of original leaked worker. No foreignPID terminated."
+}

@@ -1,0 +1,29 @@
+--- verified-previous-styles.css
++++ received-styles.css
+@@ -3,20 +3,20 @@
+ @import url("/web/assets/outlined.css");
+ 
+ :root {
+-  --bg: #F5F6F8;
++  --bg: #F4F5F7;
+   --surface: #FFFFFF;
+-  --line: #D8DCE2;
++  --line: #E2E5EA;
+   --line-strong: #848A93;
+-  --text: #191B1F;
+-  --text-sub: #606877;
++  --text: #1F2430;
++  --text-sub: #4B5563;
+   --accent: #3E56B6;
+-  --accent-hover: #32479A;
++  --accent-hover: #32479B;
+   --accent-subtle: #EEF1FB;
+   --danger: #C0392B;
+   --danger-bg: #FCEBE9;
+   --danger-border: #E0B4B0;
+   --success: #1E7A46;
+-  --success-bg: #EAF5ED;
++  --success-bg: #E8F5EE;
+ }
+ 
+ * {

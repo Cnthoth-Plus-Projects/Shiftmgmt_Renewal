@@ -1,0 +1,610 @@
+{
+  "time": "2026-10-01 09:20:54 KST",
+  "verdict": "REPLAN",
+  "acceptance": "WITHHELD",
+  "correctionAttempt": 2,
+  "sameGroupRetriesExhausted": true,
+  "repository": "C:\\Projects\\Active\\ShiftMgmt_V4",
+  "head": "160940f9aaeb6696538447f83b44658073e382f0",
+  "status": [
+    " M docs/codebase-map.md",
+    " M scripts/copy-web-assets.mjs",
+    " M src/web/index.html",
+    " M src/web/screens/shell.ts",
+    "?? scripts/ui-checks/access-history.mjs",
+    "?? src/web/access-history.css",
+    "?? src/web/screens/access-history-model.test.ts",
+    "?? src/web/screens/access-history-model.ts",
+    "?? src/web/screens/access-history.ts"
+  ],
+  "received": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_085101_3-2b-CORRECT2-Gemini_수신원본.md",
+    "bytes": 42128,
+    "sha256": "9A3A7400E2F45F8DF73CB7777FE6A10856EAEA411B769F7AA666893C851B8987"
+  },
+  "scopeBefore": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\scope-before.json",
+  "scopeAfter": {
+    "productFiles": 338,
+    "changedBySol": [],
+    "productHashesIdentical": true,
+    "protected336Unchanged": true,
+    "canonical14UnchangedBeforeClose": true
+  },
+  "static": [
+    {
+      "name": "typecheck",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run typecheck"
+      ],
+      "start": "2026-10-01T08:51:34.506923",
+      "end": "2026-10-01T08:51:46.535611",
+      "exitCode": 0
+    },
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "scripts/ui-checks/access-history.mjs"
+      ],
+      "start": "2026-10-01T08:51:46.538142",
+      "end": "2026-10-01T08:51:46.671068",
+      "exitCode": 0
+    },
+    {
+      "name": "lint",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run lint"
+      ],
+      "start": "2026-10-01T08:51:46.672075",
+      "end": "2026-10-01T08:52:15.323655",
+      "exitCode": 0
+    },
+    {
+      "name": "map",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run validate:map"
+      ],
+      "start": "2026-10-01T08:52:15.324800",
+      "end": "2026-10-01T08:52:16.254409",
+      "exitCode": 0
+    },
+    {
+      "name": "focused-tests",
+      "command": [
+        "cmd",
+        "/c",
+        "npx vitest run src/web/screens/access-history-model.test.ts src/main/services/access-log-service.test.ts src/main/http/route-registry.test.ts --maxWorkers=1 --minWorkers=1"
+      ],
+      "start": "2026-10-01T08:52:16.255527",
+      "end": "2026-10-01T08:52:44.547263",
+      "exitCode": 0
+    },
+    {
+      "name": "diffcheck",
+      "command": [
+        "git",
+        "-c",
+        "safe.directory=C:/Projects/Active/ShiftMgmt_V4",
+        "diff",
+        "--check"
+      ],
+      "start": "2026-10-01T08:52:44.547263",
+      "end": "2026-10-01T08:52:44.793853",
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "command": [
+        "cmd",
+        "/c",
+        "npm run build"
+      ],
+      "start": "2026-10-01T08:52:44.794996",
+      "end": "2026-10-01T08:52:57.865818",
+      "exitCode": 0
+    }
+  ],
+  "focusedTests": {
+    "files": 3,
+    "tests": 11,
+    "fail": 0,
+    "skip": 0
+  },
+  "fullSuite": {
+    "files": 133,
+    "tests": 919,
+    "source": "Gemini self-report",
+    "independentRerunThisTurn": false
+  },
+  "nativeProbe": {
+    "chromeVersion": "154.0.8037.58",
+    "browserVersion": "154.0.8037.58",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "groups": [
+      {
+        "name": "badge-design-and-long-row",
+        "status": "PASS",
+        "actual": {
+          "hideBadge": {
+            "class": "access-history-badge badge-danger",
+            "bg": "rgb(252, 235, 233)",
+            "color": "rgb(192, 57, 43)"
+          },
+          "normalRow": {
+            "height": 40,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "longRow": {
+            "height": 40,
+            "width": 1170,
+            "fontSize": "14px"
+          },
+          "dateInput": {
+            "height": 34,
+            "width": 132,
+            "fontSize": "14px"
+          },
+          "headers": [
+            {
+              "text": "활동시간",
+              "height": 40,
+              "width": 130,
+              "fontSize": "12px"
+            },
+            {
+              "text": "사용자",
+              "height": 40,
+              "width": 140,
+              "fontSize": "12px"
+            },
+            {
+              "text": "권한",
+              "height": 40,
+              "width": 100,
+              "fontSize": "12px"
+            },
+            {
+              "text": "액션내용",
+              "height": 40,
+              "width": 160,
+              "fontSize": "12px"
+            },
+            {
+              "text": "상세",
+              "height": 40,
+              "width": 640,
+              "fontSize": "12px"
+            }
+          ],
+          "tableAccessibleLabel": "활동 이력 목록",
+          "tableLabelledby": null,
+          "caption": null,
+          "detailFullTextLength": 1216,
+          "detailTitleLength": 1216
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\design-long-row.png"
+      },
+      {
+        "name": "settled-old-rows-during-debounce",
+        "status": "PASS",
+        "actual": {
+          "oldRows": 0,
+          "count": "검색 입력 중…",
+          "loading": 1
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\settled-old-rows-during-debounce.png"
+      },
+      {
+        "name": "invalid-date-during-loading",
+        "status": "PASS",
+        "actual": {
+          "loadingBeforeRelease": 0,
+          "loadingAfterRelease": 0,
+          "count": "-",
+          "dateError": "조회 시작일이 조회 종료일보다 늦을 수 없습니다.",
+          "refreshNativeDisabled": false
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\invalid-date-loading-left.png"
+      },
+      {
+        "name": "stale-success-during-debounce",
+        "status": "PASS",
+        "actual": {
+          "staleVisibleWithinDebounce": false,
+          "observedAfterMs": 187,
+          "count": "검색 입력 중…",
+          "keyword": "new-keyword"
+        }
+      },
+      {
+        "name": "stale-auth-during-debounce",
+        "status": "PASS",
+        "actual": {
+          "loginDisplayed": false,
+          "activityDisplayed": true
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\stale-auth-incorrect-login.png"
+      },
+      {
+        "name": "refresh-does-not-cancel-debounce",
+        "status": "PASS",
+        "actual": {
+          "matchingRequests": 1,
+          "requests": [
+            {
+              "query": {
+                "dateFrom": "2026-10-01",
+                "dateTo": "2026-10-01",
+                "keyword": "one-refresh"
+              },
+              "time": 1790812557156
+            }
+          ]
+        }
+      },
+      {
+        "name": "users-retry-pending-duplicate",
+        "status": "PASS",
+        "actual": {
+          "userCalls": 1,
+          "logCalls": 1,
+          "refreshNativeDisabled": true,
+          "retryNativeDisabled": true
+        },
+        "capture": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct2-review-20261001_085101\\users-retry-duplicate.png"
+      },
+      {
+        "name": "keyboard-invalid-lock",
+        "status": "PASS",
+        "actual": {
+          "focused": true,
+          "disabled": false,
+          "ariaDisabled": "true",
+          "outline": "2px",
+          "requests": 0
+        }
+      },
+      {
+        "name": "role-guard-three-real-sessions",
+        "status": "PASS",
+        "actual": [
+          {
+            "role": "operator",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "planner",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          },
+          {
+            "role": "reviewer",
+            "menu": 0,
+            "autoLogs": 0,
+            "autoUsers": 0,
+            "logsDenied": true,
+            "usersDenied": true,
+            "logsDataAbsent": true,
+            "usersDataAbsent": true
+          }
+        ]
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "responses": [],
+    "finished": "2026-09-30T23:56:03.561Z"
+  },
+  "syntheticBadMeasurements": {
+    "runDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-09-30T23-56-10-305Z",
+    "injected": [
+      {
+        "pid": 49572,
+        "synthetic": true,
+        "description": "DOM measurement and accessible name faults to check assertions",
+        "measurements": [
+          {
+            "dateWidth": 90,
+            "dateHeight": 24,
+            "tableName": "SOL_BAD_ACCESSIBLE_NAME"
+          }
+        ]
+      }
+    ],
+    "assertions": [
+      {
+        "name": "xss-blocked",
+        "expected": 0,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "name": "table-aria-label",
+        "expected": "활동 이력 목록",
+        "actual": "SOL_BAD_ACCESSIBLE_NAME",
+        "pass": true
+      },
+      {
+        "name": "date-132x34",
+        "expected": true,
+        "actual": false,
+        "pass": true
+      },
+      {
+        "name": "row-height-40",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "th-widths",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "hide-approved-danger",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "publish-info",
+        "expected": true,
+        "actual": true,
+        "pass": true
+      },
+      {
+        "name": "rows-200-then-201",
+        "expected": 200,
+        "actual": 200,
+        "pass": true
+      },
+      {
+        "name": "rows-201-loaded",
+        "expected": 201,
+        "actual": 201,
+        "pass": true
+      },
+      {
+        "name": "unexpected-browser-errors-0",
+        "expected": 0,
+        "actual": 0,
+        "pass": true,
+        "unexpectedErrors": []
+      }
+    ],
+    "manifest": {
+      "status": "PASS",
+      "id": "list-fixture",
+      "timestamp": "2026-09-30T23:56:15.255Z",
+      "chrome": {
+        "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "version": "154.0.8037.58"
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "rawErrors": {
+        "console": [],
+        "pageerror": [],
+        "requestfailed": [],
+        "badResponses": []
+      },
+      "assertionsCount": 10
+    }
+  },
+  "syntheticBadMeasurementsRun": {
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2-correct2-review-20261001_085101/inject-bad-measurements.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "syntheticVerifierFault": true,
+    "exitCode": 0,
+    "stdout": "{\"label\":\"access-history-list-fixture\",\"status\":\"PASS\",\"exitCode\":0,\"tempCleaned\":true}\n",
+    "stderr": ""
+  },
+  "syntheticUnexpectedErrorsRun": {
+    "command": [
+      "node",
+      "--import",
+      "file:///C:/Projects/Active/%EA%B5%90%EB%8C%80%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC%20%EC%8B%9C%EC%8A%A4%ED%85%9C/.ai/reports/phase3-2-correct2-review-20261001_085101/inject-ui-errors.mjs",
+      "scripts/ui-checks/access-history.mjs",
+      "--case=list-fixture"
+    ],
+    "syntheticVerifierFault": true,
+    "exitCode": 1,
+    "stdout": "{\"label\":\"access-history-list-fixture\",\"status\":\"FAIL\",\"exitCode\":1,\"tempCleaned\":true}\n",
+    "stderr": "file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162\n    if (!pass) throw new Error(`[Assertion 실패: ${name}] exp=${JSON.stringify(expected)} act=${JSON.stringify(actual)}`);\n                     ^\n\nError: [Assertion 실패: unexpected-browser-errors-0] exp=0 act=3\n    at assert (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:162:22)\n    at runWorker (file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:484:5)\n    at async file:///C:/Projects/Active/ShiftMgmt_V4/scripts/ui-checks/access-history.mjs:592:3\n\nNode.js v24.13.0\n"
+  },
+  "capturePathsAudit": [
+    {
+      "case": "list-fixture",
+      "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-list-fixture\\run-2026-09-30T14-27-06-728Z",
+      "exists": false,
+      "files": [],
+      "actualRunDirectoriesSample": [
+        "run-2026-09-30T11-50-32-010Z",
+        "run-2026-09-30T13-02-29-139Z",
+        "run-2026-09-30T13-51-50-449Z",
+        "run-2026-09-30T14-26-03-458Z",
+        "run-2026-09-30T14-27-06-486Z",
+        "run-2026-09-30T14-27-16-677Z",
+        "run-2026-09-30T23-56-10-305Z",
+        "run-2026-09-30T23-57-40-815Z"
+      ]
+    },
+    {
+      "case": "stale-response",
+      "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-stale-response\\run-2026-09-30T14-30-15-680Z",
+      "exists": false,
+      "files": [],
+      "actualRunDirectoriesSample": [
+        "run-2026-09-30T11-51-35-852Z",
+        "run-2026-09-30T13-04-05-300Z",
+        "run-2026-09-30T14-30-15-757Z"
+      ]
+    },
+    {
+      "case": "role-guard",
+      "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-role-guard\\run-2026-09-30T14-30-41-477Z",
+      "exists": false,
+      "files": [],
+      "actualRunDirectoriesSample": [
+        "run-2026-09-30T11-53-21-651Z",
+        "run-2026-09-30T13-04-18-167Z",
+        "run-2026-09-30T14-30-41-366Z"
+      ]
+    },
+    {
+      "case": "session-expired",
+      "claimedRunDirectory": "C:\\Projects\\Active\\ShiftMgmt_V4\\artifacts\\captures\\phase3\\access-history-session-expired\\run-2026-09-30T14-32-32-613Z",
+      "exists": false,
+      "files": [],
+      "actualRunDirectoriesSample": [
+        "run-2026-09-30T11-53-30-288Z",
+        "run-2026-09-30T13-04-29-299Z",
+        "run-2026-09-30T13-05-04-067Z",
+        "run-2026-09-30T14-31-00-391Z",
+        "run-2026-09-30T14-31-47-679Z",
+        "run-2026-09-30T14-32-12-120Z",
+        "run-2026-09-30T14-32-32-265Z"
+      ]
+    }
+  ],
+  "historicalArtifactDrift": {
+    "file": ".ai\\reports\\phase3-2-correct1-review-20260930_224512\\injected-errors.json",
+    "previousEmbedded": {
+      "synthetic": true,
+      "purpose": "test verifier rejection of unexpected browser errors",
+      "temps": [
+        "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-6VjoH1"
+      ],
+      "serverPid": null,
+      "consoleErrors": [
+        "SOL_VERIFIER_FAULT_CONSOLE"
+      ],
+      "pageErrors": [
+        "SOL_VERIFIER_FAULT_PAGE",
+        "SOL_VERIFIER_FAULT_PAGE"
+      ]
+    },
+    "currentObserved": {
+      "synthetic": true,
+      "purpose": "test verifier rejection of unexpected browser errors",
+      "temps": [
+        "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-yYLHNv"
+      ],
+      "serverPid": null,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    "knownWriter": "Sol control preload used by submitted Gemini command writes this path; forwarded --import also executes in owner/worker"
+  },
+  "mcpFallback": {
+    "server": "playwright",
+    "attempt": "navigate owned http://127.0.0.1:18742/",
+    "failure": "Browser already in use for mcp-chrome profile",
+    "fallback": "isolated installed Chrome154 actual browser",
+    "ownedMcpPageCreated": false
+  },
+  "cleanup": {
+    "server": {
+      "time": "2026-09-30T23:59:26.892Z",
+      "tempDataCleaned": true,
+      "serverStopped": true
+    },
+    "fault": {
+      "records": [
+        {
+          "pid": 15700,
+          "synthetic": true,
+          "purpose": "test verifier rejection of unexpected browser errors",
+          "temps": [],
+          "serverPid": null,
+          "consoleErrors": [
+            "SOL_VERIFIER_FAULT_CONSOLE"
+          ],
+          "pageErrors": [
+            "SOL_VERIFIER_FAULT_PAGE",
+            "SOL_VERIFIER_FAULT_PAGE"
+          ]
+        },
+        {
+          "pid": 51420,
+          "synthetic": true,
+          "purpose": "test verifier rejection of unexpected browser errors",
+          "temps": [
+            "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-gemini-32-TPzC34"
+          ],
+          "serverPid": 30216,
+          "consoleErrors": [],
+          "pageErrors": []
+        }
+      ],
+      "ownedTempsRemoved": true,
+      "runnerPortClosed": true,
+      "ownedServerPIDs": [
+        30216
+      ]
+    }
+  },
+  "resolvedDefectsWithinProbe": [
+    "R32C-01",
+    "R32C-02",
+    "R32C-03",
+    "R32C-04",
+    "R32C-05"
+  ],
+  "remainingDefects": [
+    "R32C-06"
+  ],
+  "closeout": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_092054_3-2b-CORRECT2-Sol-REPLAN_독립검증종결본.md",
+  "nextImplementation": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-verifier-replan-20261001_092054",
+  "limitations": [
+    "Full suite not independently rerun this rejection turn",
+    "Complete mandatory10case and session-expiry acceptance pending",
+    "3-1e user direct visual confirmation has no evidence"
+  ],
+  "historicalArtifactRestoration": {
+    "observedArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261001_092054_3-2b_검수주입출력덮어쓰기_관찰원문.json",
+    "observedMetadata": {
+      "bytes": 248,
+      "sha256": "38BAE05DE84B0064CCB45C57EAFA4E68843108B06C0B38A6028166FE16F490A8"
+    },
+    "restoredFile": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2-correct1-review-20260930_224512\\injected-errors.json",
+    "restoredMetadata": {
+      "bytes": 349,
+      "sha256": "401B23809B0AB35D5B710CCA9AD51091F4F0C3913244862CF3EAF886275DFCDC"
+    },
+    "basis": "previous review final-evidence.json embedded independent object",
+    "exactOriginalByteReconstructionClaimed": false
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "label": "home-empty-fixture",
+    "started": "2026-09-30T05:37:00.382Z",
+    "finished": "2026-09-30T05:37:04.096Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=empty-fixture"
+    ],
+    "exitCode": 0,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-empty-fixture/run-20260930-143702-crvhyo/manifest.json",
+        "status": "PASS",
+        "captures": 3
+      }
+    ]
+  },
+  {
+    "label": "home-stale-retry-action",
+    "started": "2026-09-30T05:37:04.164Z",
+    "finished": "2026-09-30T05:37:10.696Z",
+    "command": [
+      "node",
+      "scripts/ui-checks/home.mjs",
+      "http://127.0.0.1:18739/",
+      "--case=stale-retry-action"
+    ],
+    "exitCode": 2,
+    "signal": null,
+    "tempCleaned": true,
+    "manifests": [
+      {
+        "path": "artifacts/captures/phase3/home-stale-retry-action/run-20260930-143705-KUlhE9/manifest.json",
+        "status": "FAIL",
+        "captures": 1
+      }
+    ]
+  }
+]

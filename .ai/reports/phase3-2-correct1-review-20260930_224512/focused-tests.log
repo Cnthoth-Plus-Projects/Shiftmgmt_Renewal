@@ -1,0 +1,16 @@
+
+ RUN  v3.2.7 C:/Projects/Active/ShiftMgmt_V4
+
+ ✓ src/main/services/access-log-service.test.ts (1 test) 26ms
+ ✓ src/web/screens/access-history-model.test.ts (7 tests) 21ms
+ ✓ src/main/http/route-registry.test.ts (3 tests) 4ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  22:47:32
+   Duration  2.61s (transform 578ms, setup 20ms, collect 1.51s, tests 51ms, environment 0ms, prepare 324ms)
+
+(node:48596) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12164) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

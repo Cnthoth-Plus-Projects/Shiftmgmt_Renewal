@@ -1,0 +1,4 @@
+
+FAIL: [UI 검증 실패: access-history-list-fixture]
+- 실행 오류: [Assertion 실패: list-fixture-date-width-132] expected=132, actual=90 (허용오차: 2, 실제차이: 42)
+- manifest: artifacts/captures/phase3/access-history-list-fixture/run-20261001-161657-rswuMu/manifest.json

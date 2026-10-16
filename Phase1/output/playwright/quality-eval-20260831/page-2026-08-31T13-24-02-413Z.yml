@@ -1,0 +1,650 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]: ── P6. 실적 관리 — ② 승인 작업 · 기본 (승인 담당) ──
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - complementary [ref=e6]:
+          - generic [ref=e7]:
+            - generic [ref=e8]: domain
+            - generic [ref=e9]: 근무 관리 시스템
+          - list [ref=e10]:
+            - listitem [ref=e11]:
+              - link "홈" [ref=e12] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e13]: home
+            - listitem [ref=e15]: ─ 준비 ─
+            - listitem [ref=e16]:
+              - link "근무지 관리" [ref=e17] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e18]: domain
+            - listitem [ref=e20]:
+              - link "인력 관리" [ref=e21] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e22]: group
+            - listitem [ref=e24]: ─ 운영 ─
+            - listitem [ref=e25]:
+              - link "근무표 배포" [ref=e26] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e27]: calendar_month
+            - listitem [ref=e29]:
+              - link "실적 관리 128" [ref=e30] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e31]: fact_check
+                - generic [ref=e32]: 실적 관리
+                - generic [ref=e33]: "128"
+            - listitem [ref=e34]: ─ 정산 ─
+            - listitem [ref=e35]:
+              - link "수당 관리" [ref=e36] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e37]: payments
+            - listitem [ref=e39]:
+              - link "대시보드" [ref=e40] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e41]: monitoring
+        - generic [ref=e43]:
+          - banner [ref=e44]:
+            - heading "실적 관리" [level=1] [ref=e45]
+            - generic [ref=e46]:
+              - generic [ref=e47]: 승인 담당
+              - button "김지현" [ref=e48] [cursor=pointer]:
+                - generic [ref=e49]: person
+          - main [ref=e51]:
+            - generic [ref=e52]:
+              - generic [ref=e53]:
+                - button "① 접수·복구" [ref=e54] [cursor=pointer]
+                - button "② 승인 작업" [ref=e55] [cursor=pointer]
+                - button "③ 재승인·비교" [ref=e56] [cursor=pointer]
+              - generic [ref=e57]:
+                - generic [ref=e58]: 대기 실적 128건
+                - generic [ref=e59]: 재승인 필요 3건
+                - generic [ref=e60]: 확인 필요 2건
+                - group "밀도 선택" [ref=e61]:
+                  - button "넓게" [ref=e62] [cursor=pointer]
+                  - button "좁게" [ref=e63] [cursor=pointer]
+            - generic [ref=e64]:
+              - generic [ref=e65]: check_circle
+              - generic [ref=e66]: "✓ 접수·복구 정상 — 최근 인테이크: 마지막 처리 완료 14:32"
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - textbox [ref=e69]: 2025-05-01 ~ 2025-05-31
+                - combobox [ref=e70]:
+                  - option "전체 근무지" [selected]
+                  - option "본사"
+                  - option "지사 A"
+                  - option "지사 B"
+                - combobox [ref=e71]:
+                  - option "전체 상태" [selected]
+                  - option "대기"
+                  - option "승인"
+                  - option "반려"
+                - textbox "사번, 이름, 근무일, 경고 내용" [ref=e72]
+              - generic [ref=e73]:
+                - button "승인" [ref=e74] [cursor=pointer]
+                - button "반려" [ref=e75] [cursor=pointer]
+                - button "파일 전체 승인" [ref=e76] [cursor=pointer]
+                - button "승인대기로 되돌리기" [disabled] [ref=e77]
+                - button "목록에서 숨기기" [disabled] [ref=e78]
+                - button "원본 엑셀 열기 ↗" [ref=e79] [cursor=pointer]
+            - generic [ref=e80]:
+              - generic [ref=e81]: "※ 승인대기로 되돌리기: 승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다."
+              - generic [ref=e82]: "※ 목록에서 숨기기: 승인완료 보관본만 목록에서 숨길 수 있습니다."
+            - generic [ref=e83]:
+              - grid [ref=e85]:
+                - rowgroup [ref=e86]:
+                  - row [ref=e87]:
+                    - columnheader "근무지" [ref=e88]
+                    - columnheader "사번" [ref=e89]
+                    - columnheader "이름" [ref=e90]
+                    - columnheader "직급" [ref=e91]
+                    - columnheader "근무일" [ref=e92]
+                    - columnheader "구분" [ref=e93]
+                    - columnheader "근무코드" [ref=e94]
+                    - columnheader "시작-종료" [ref=e95]
+                    - columnheader "시간(총=기본+연장+야간)" [ref=e96]
+                    - columnheader "시급" [ref=e97]
+                    - columnheader "상태" [ref=e98]
+                    - columnheader "경고" [ref=e99]
+                - rowgroup [ref=e100]:
+                  - row [ref=e101]:
+                    - gridcell "본사 (7)" [ref=e102]
+                    - gridcell "10012" [ref=e103]
+                    - gridcell "김도현" [ref=e104]
+                    - gridcell "사원" [ref=e105]
+                    - gridcell "2025-05-28 (수)" [ref=e106]
+                    - gridcell "대체" [ref=e107]
+                    - gridcell "주간" [ref=e108]
+                    - gridcell "09:00-18:00" [ref=e109]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e110]
+                    - gridcell "12,500" [ref=e111]
+                    - gridcell "승인" [ref=e112]
+                    - gridcell "-" [ref=e114]
+                  - row [selected] [ref=e115]:
+                    - gridcell "10034" [ref=e116]
+                    - gridcell "이수빈" [ref=e117]
+                    - gridcell "사원" [ref=e118]
+                    - gridcell "2025-05-28 (수)" [ref=e119]
+                    - gridcell "연장" [ref=e120]
+                    - gridcell "-" [ref=e121]
+                    - gridcell "18:00-21:00" [ref=e122]
+                    - gridcell "3.00 = 0.00+3.00+0.00" [ref=e123]
+                    - gridcell "12,000" [ref=e124]
+                    - gridcell "대기" [ref=e125]
+                    - gridcell "-" [ref=e127]
+                  - row [ref=e128]:
+                    - gridcell "10034" [ref=e129]
+                    - gridcell "이수빈" [ref=e130]
+                    - gridcell "사원" [ref=e131]
+                    - gridcell "2025-05-27 (화)" [ref=e132]
+                    - gridcell "연장" [ref=e133]
+                    - gridcell "-" [ref=e134]
+                    - gridcell "18:00-23:30" [ref=e135]
+                    - gridcell "5.50 = 0.00+4.00+1.50" [ref=e136]
+                    - gridcell "12,000" [ref=e137]
+                    - gridcell "재승인 대기" [ref=e138]
+                    - gridcell "야간 시간 초과" [ref=e140]
+                  - row [ref=e141]:
+                    - gridcell "10018" [ref=e142]
+                    - gridcell "최유나" [ref=e143]
+                    - gridcell "차장" [ref=e144]
+                    - gridcell "2025-05-26 (월)" [ref=e145]
+                    - gridcell "대체" [ref=e146]
+                    - gridcell "주간" [ref=e147]
+                    - gridcell "09:00-18:00" [ref=e148]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e149]
+                    - gridcell "16,000" [ref=e150]
+                    - gridcell "승인" [ref=e151]
+                    - gridcell "-" [ref=e153]
+                  - row [ref=e154]:
+                    - gridcell "10009" [ref=e155]
+                    - gridcell "정민수" [ref=e156]
+                    - gridcell "과장" [ref=e157]
+                    - gridcell "2025-05-05 (월)" [ref=e158]
+                    - gridcell "법정휴일" [ref=e159]
+                    - gridcell "주간" [ref=e161]
+                    - gridcell "09:00-18:00" [ref=e162]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e163]
+                    - gridcell "15,000" [ref=e164]
+                    - gridcell "대기" [ref=e165]
+                    - gridcell "-" [ref=e167]
+                  - row [ref=e168]:
+                    - gridcell "10031" [ref=e169]
+                    - gridcell "오세훈" [ref=e170]
+                    - gridcell "사원" [ref=e171]
+                    - gridcell "2025-05-26 (월)" [ref=e172]
+                    - gridcell "연장" [ref=e173]
+                    - gridcell "야간" [ref=e174]
+                    - gridcell "22:00-06:00" [ref=e175]
+                    - gridcell "7.00 = 0.00+0.00+7.00" [ref=e176]
+                    - gridcell "12,000" [ref=e177]
+                    - gridcell "반려" [ref=e178]
+                    - gridcell "-" [ref=e180]
+                  - row [ref=e181]:
+                    - gridcell "10027" [ref=e182]
+                    - gridcell "박재민" [ref=e183]
+                    - gridcell "대리" [ref=e184]
+                    - gridcell "2025-05-24 (토)" [ref=e185]
+                    - gridcell "연장" [ref=e186]
+                    - gridcell "-" [ref=e187]
+                    - gridcell "09:00-13:00" [ref=e188]
+                    - gridcell "4.00 = 0.00+4.00+0.00" [ref=e189]
+                    - gridcell "13,500" [ref=e190]
+                    - gridcell "대기" [ref=e191]
+                    - gridcell "-" [ref=e193]
+                  - row [ref=e194]:
+                    - gridcell "지사 A (7)" [ref=e195]
+                    - gridcell "20015" [ref=e196]
+                    - gridcell "한지윤" [ref=e197]
+                    - gridcell "사원" [ref=e198]
+                    - gridcell "2025-05-28 (수)" [ref=e199]
+                    - gridcell "대체" [ref=e200]
+                    - gridcell "주간" [ref=e201]
+                    - gridcell "09:00-18:00" [ref=e202]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e203]
+                    - gridcell "12,000" [ref=e204]
+                    - gridcell "대기" [ref=e205]
+                    - gridcell "-" [ref=e207]
+                  - row [ref=e208]:
+                    - gridcell "20022" [ref=e209]
+                    - gridcell "김태현" [ref=e210]
+                    - gridcell "대리" [ref=e211]
+                    - gridcell "2025-05-27 (화)" [ref=e212]
+                    - gridcell "연장" [ref=e213]
+                    - gridcell "-" [ref=e214]
+                    - gridcell "18:00-22:00" [ref=e215]
+                    - gridcell "4.00 = 0.00+4.00+0.00" [ref=e216]
+                    - gridcell "13,500" [ref=e217]
+                    - gridcell "승인" [ref=e218]
+                    - gridcell "-" [ref=e220]
+                  - row [ref=e221]:
+                    - gridcell "20011" [ref=e222]
+                    - gridcell "이서연" [ref=e223]
+                    - gridcell "부장" [ref=e224]
+                    - gridcell "2025-05-26 (월)" [ref=e225]
+                    - gridcell "대체" [ref=e226]
+                    - gridcell "야간" [ref=e227]
+                    - gridcell "21:00-06:00" [ref=e228]
+                    - gridcell "8.00 = 1.00+0.00+7.00" [ref=e229]
+                    - gridcell "17,500" [ref=e230]
+                    - gridcell "재승인 대기" [ref=e231]
+                    - gridcell "-" [ref=e233]
+                  - row [ref=e234]:
+                    - gridcell "20007" [ref=e235]
+                    - gridcell "박민재" [ref=e236]
+                    - gridcell "사원" [ref=e237]
+                    - gridcell "2025-05-25 (일)" [ref=e238]
+                    - gridcell "대체" [ref=e239]
+                    - gridcell "주간" [ref=e240]
+                    - gridcell "09:00-18:00" [ref=e241]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e242]
+                    - gridcell "12,500" [ref=e243]
+                    - gridcell "대기" [ref=e244]
+                    - gridcell "-" [ref=e246]
+                  - row [ref=e247]:
+                    - gridcell "20019" [ref=e248]
+                    - gridcell "유민지" [ref=e249]
+                    - gridcell "사원" [ref=e250]
+                    - gridcell "2025-05-24 (토)" [ref=e251]
+                    - gridcell "대체" [ref=e252]
+                    - gridcell "석간" [ref=e253]
+                    - gridcell "13:00-22:00" [ref=e254]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e255]
+                    - gridcell "12,000" [ref=e256]
+                    - gridcell "수당 미지급" [ref=e257]
+                    - gridcell "-" [ref=e259]
+                  - row [ref=e260]:
+                    - gridcell "20015" [ref=e261]
+                    - gridcell "한지윤" [ref=e262]
+                    - gridcell "사원" [ref=e263]
+                    - gridcell "2025-05-27 (화)" [ref=e264]
+                    - gridcell "연장" [ref=e265]
+                    - gridcell "-" [ref=e266]
+                    - gridcell "18:30-22:30" [ref=e267]
+                    - gridcell "4.00 = 0.00+3.50+0.50" [ref=e268]
+                    - gridcell "12,000" [ref=e269]
+                    - gridcell "재승인 완료" [ref=e270]
+                    - gridcell "-" [ref=e272]
+                  - row [ref=e273]:
+                    - gridcell "20022" [ref=e274]
+                    - gridcell "김태현" [ref=e275]
+                    - gridcell "대리" [ref=e276]
+                    - gridcell "2025-05-24 (토)" [ref=e277]
+                    - gridcell "연장" [ref=e278]
+                    - gridcell "-" [ref=e279]
+                    - gridcell "18:00-20:00" [ref=e280]
+                    - gridcell "2.00 = 0.00+2.00+0.00" [ref=e281]
+                    - gridcell "13,500" [ref=e282]
+                    - gridcell "대기" [ref=e283]
+                    - gridcell "-" [ref=e285]
+                  - row [ref=e286]:
+                    - gridcell "지사 B (7)" [ref=e287]
+                    - gridcell "30003" [ref=e288]
+                    - gridcell "강동혁" [ref=e289]
+                    - gridcell "사원" [ref=e290]
+                    - gridcell "2025-05-28 (수)" [ref=e291]
+                    - gridcell "연장" [ref=e292]
+                    - gridcell "-" [ref=e293]
+                    - gridcell "18:00-20:00" [ref=e294]
+                    - gridcell "2.00 = 0.00+2.00+0.00" [ref=e295]
+                    - gridcell "12,000" [ref=e296]
+                    - gridcell "승인" [ref=e297]
+                    - gridcell "-" [ref=e299]
+                  - row [ref=e300]:
+                    - gridcell "30014" [ref=e301]
+                    - gridcell "최예린" [ref=e302]
+                    - gridcell "대리" [ref=e303]
+                    - gridcell "2025-05-27 (화)" [ref=e304]
+                    - gridcell "연장" [ref=e305]
+                    - gridcell "-" [ref=e306]
+                    - gridcell "18:00-23:00" [ref=e307]
+                    - gridcell "5.00 = 0.00+4.00+1.00" [ref=e308]
+                    - gridcell "13,500" [ref=e309]
+                    - gridcell "재승인 대기" [ref=e310]
+                    - gridcell "야간 수당 확인" [ref=e312]
+                  - row [ref=e313]:
+                    - gridcell "30008" [ref=e314]
+                    - gridcell "허민우" [ref=e315]
+                    - gridcell "사원" [ref=e316]
+                    - gridcell "2025-05-26 (월)" [ref=e317]
+                    - gridcell "연장" [ref=e318]
+                    - gridcell "야간" [ref=e319]
+                    - gridcell "22:00-06:00" [ref=e320]
+                    - gridcell "7.00 = 0.00+0.00+7.00" [ref=e321]
+                    - gridcell "12,500" [ref=e322]
+                    - gridcell "대기" [ref=e323]
+                    - gridcell "-" [ref=e325]
+                  - row [ref=e326]:
+                    - gridcell "30021" [ref=e327]
+                    - gridcell "김나영" [ref=e328]
+                    - gridcell "과장" [ref=e329]
+                    - gridcell "2025-05-06 (화)" [ref=e330]
+                    - gridcell "법정휴일" [ref=e331]
+                    - gridcell "주간" [ref=e333]
+                    - gridcell "09:00-18:00" [ref=e334]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e335]
+                    - gridcell "15,000" [ref=e336]
+                    - gridcell "승인" [ref=e337]
+                    - gridcell "-" [ref=e339]
+                  - row [ref=e340]:
+                    - gridcell "30029" [ref=e341]
+                    - gridcell "조현우" [ref=e342]
+                    - gridcell "사원" [ref=e343]
+                    - gridcell "2025-05-24 (토)" [ref=e344]
+                    - gridcell "대체" [ref=e345]
+                    - gridcell "야간" [ref=e346]
+                    - gridcell "21:00-06:00" [ref=e347]
+                    - gridcell "8.00 = 1.00+0.00+7.00" [ref=e348]
+                    - gridcell "12,000" [ref=e349]
+                    - gridcell "수당 미지급" [ref=e350]
+                    - gridcell "-" [ref=e352]
+                  - row [ref=e353]:
+                    - gridcell "30003" [ref=e354]
+                    - gridcell "강동혁" [ref=e355]
+                    - gridcell "사원" [ref=e356]
+                    - gridcell "2025-05-25 (일)" [ref=e357]
+                    - gridcell "대체" [ref=e358]
+                    - gridcell "주간" [ref=e359]
+                    - gridcell "09:00-18:00" [ref=e360]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e361]
+                    - gridcell "12,000" [ref=e362]
+                    - gridcell "lock 변경불가" [ref=e363]:
+                      - generic [ref=e364]:
+                        - generic [ref=e365]: lock
+                        - text: 변경불가
+                    - gridcell "-" [ref=e366]
+                  - row [ref=e367]:
+                    - gridcell "30014" [ref=e368]
+                    - gridcell "최예린" [ref=e369]
+                    - gridcell "대리" [ref=e370]
+                    - gridcell "2025-05-26 (월)" [ref=e371]
+                    - gridcell "연장" [ref=e372]
+                    - gridcell "-" [ref=e373]
+                    - gridcell "18:00-21:00" [ref=e374]
+                    - gridcell "3.00 = 0.00+3.00+0.00" [ref=e375]
+                    - gridcell "13,500" [ref=e376]
+                    - gridcell "대기" [ref=e377]
+                    - gridcell "-" [ref=e379]
+              - region "실적 상세 패널" [ref=e634]:
+                - generic [ref=e635]:
+                  - generic [ref=e636]: 실적 상세 정보
+                  - button "닫기" [active] [ref=e637] [cursor=pointer]:
+                    - generic [ref=e638]: close
+                - generic [ref=e639]:
+                  - generic [ref=e640]: 기본 정보
+                  - generic [ref=e641]:
+                    - text: "근무지:"
+                    - strong [ref=e642]: 본사
+                    - text: "· 사번:"
+                    - strong [ref=e643]: "10034"
+                    - text: "· 이름:"
+                    - strong [ref=e644]: 이수빈
+                    - text: "· 직급:"
+                    - strong [ref=e645]: 사원
+                - generic [ref=e646]:
+                  - generic [ref=e647]: 근무 정보
+                  - generic [ref=e648]:
+                    - text: "근무일자:"
+                    - strong [ref=e649]: 2025-05-28 (수)
+                    - text: · 연장 18:00-21:00 (3.00)
+                - generic [ref=e650]:
+                  - generic [ref=e651]: 시간 분해
+                  - generic [ref=e652]:
+                    - text: "기본:"
+                    - strong [ref=e653]: "0.00"
+                    - text: "· 연장:"
+                    - strong [ref=e654]: "3.00"
+                    - text: "· 야간:"
+                    - strong [ref=e655]: "0.00"
+                - generic [ref=e656]:
+                  - generic [ref=e657]: 시급 및 수당
+                  - generic [ref=e658]:
+                    - text: "시급:"
+                    - strong [ref=e659]: 12,000원
+                    - text: "· 수당: 승인 후 계산됩니다"
+                - generic [ref=e660]:
+                  - button "승인" [ref=e661] [cursor=pointer]
+                  - button "반려" [ref=e662] [cursor=pointer]
+      - contentinfo [ref=e380]:
+        - generic [ref=e381]: DB 연결됨
+        - generic [ref=e384]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=e386]: 대기 파일 3개
+        - generic [ref=e388]: 최신
+        - generic [ref=e390]: v2.3.1
+  - generic [ref=e392]:
+    - generic [ref=e393]: ── P7. 실적 관리 — ② 승인 작업 · 행 상세 열림 (승인 담당) ──
+    - generic [ref=e394]:
+      - generic [ref=e395]:
+        - complementary [ref=e396]:
+          - generic [ref=e397]:
+            - generic [ref=e398]: domain
+            - generic [ref=e399]: 근무 관리 시스템
+          - list [ref=e400]:
+            - listitem [ref=e401]:
+              - link "홈" [ref=e402] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e403]: home
+            - listitem [ref=e405]: ─ 준비 ─
+            - listitem [ref=e406]:
+              - link "근무지 관리" [ref=e407] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e408]: domain
+            - listitem [ref=e410]:
+              - link "인력 관리" [ref=e411] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e412]: group
+            - listitem [ref=e414]: ─ 운영 ─
+            - listitem [ref=e415]:
+              - link "근무표 배포" [ref=e416] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e417]: calendar_month
+            - listitem [ref=e419]:
+              - link "실적 관리 128" [ref=e420] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e421]: fact_check
+                - generic [ref=e422]: 실적 관리
+                - generic [ref=e423]: "128"
+            - listitem [ref=e424]: ─ 정산 ─
+            - listitem [ref=e425]:
+              - link "수당 관리" [ref=e426] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e427]: payments
+            - listitem [ref=e429]:
+              - link "대시보드" [ref=e430] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=e431]: monitoring
+        - generic [ref=e433]:
+          - banner [ref=e434]:
+            - heading "실적 관리" [level=1] [ref=e435]
+            - generic [ref=e436]:
+              - generic [ref=e437]: 승인 담당
+              - button "김지현" [ref=e438] [cursor=pointer]:
+                - generic [ref=e439]: person
+          - main [ref=e441]:
+            - generic [ref=e442]:
+              - generic [ref=e443]:
+                - button "① 접수·복구" [ref=e444] [cursor=pointer]
+                - button "② 승인 작업" [ref=e445] [cursor=pointer]
+                - button "③ 재승인·비교" [ref=e446] [cursor=pointer]
+              - generic [ref=e447]:
+                - generic [ref=e448]: 대기 실적 128건
+                - generic [ref=e449]: 재승인 필요 3건
+                - generic [ref=e450]: 확인 필요 2건
+            - generic [ref=e451]:
+              - generic [ref=e452]: check_circle
+              - generic [ref=e453]: "✓ 접수·복구 정상 — 최근 인테이크: 마지막 처리 완료 14:32"
+            - generic [ref=e454]:
+              - grid [ref=e456]:
+                - rowgroup [ref=e457]:
+                  - row [ref=e458]:
+                    - columnheader "근무지" [ref=e459]
+                    - columnheader "사번" [ref=e460]
+                    - columnheader "이름" [ref=e461]
+                    - columnheader "직급" [ref=e462]
+                    - columnheader "근무일" [ref=e463]
+                    - columnheader "구분" [ref=e464]
+                    - columnheader "근무코드" [ref=e465]
+                    - columnheader "시작-종료" [ref=e466]
+                    - columnheader "시간(총=기본+연장+야간)" [ref=e467]
+                    - columnheader "시급" [ref=e468]
+                    - columnheader "상태" [ref=e469]
+                    - columnheader "경고" [ref=e470]
+                - rowgroup [ref=e471]:
+                  - row [ref=e472]:
+                    - gridcell "지사 A (1)" [ref=e473]
+                    - gridcell "20022" [ref=e474]
+                    - gridcell "김태현" [ref=e475]
+                    - gridcell "대리" [ref=e476]
+                    - gridcell "2025-05-24 (토)" [ref=e477]
+                    - gridcell "연장" [ref=e478]
+                    - gridcell "-" [ref=e479]
+                    - gridcell "18:00-20:00" [ref=e480]
+                    - gridcell "2.00 = 0.00+2.00+0.00" [ref=e481]
+                    - gridcell "13,500" [ref=e482]
+                    - gridcell "대기" [ref=e483]
+                    - gridcell "-" [ref=e485]
+                  - row [ref=e486]:
+                    - gridcell "지사 B (7)" [ref=e487]
+                    - gridcell "30003" [ref=e488]
+                    - gridcell "강동혁" [ref=e489]
+                    - gridcell "사원" [ref=e490]
+                    - gridcell "2025-05-28 (수)" [ref=e491]
+                    - gridcell "연장" [ref=e492]
+                    - gridcell "-" [ref=e493]
+                    - gridcell "18:00-20:00" [ref=e494]
+                    - gridcell "2.00 = 0.00+2.00+0.00" [ref=e495]
+                    - gridcell "12,000" [ref=e496]
+                    - gridcell "승인" [ref=e497]
+                    - gridcell "-" [ref=e499]
+                  - row [ref=e500]:
+                    - gridcell "30014" [ref=e501]
+                    - gridcell "최예린" [ref=e502]
+                    - gridcell "대리" [ref=e503]
+                    - gridcell "2025-05-27 (화)" [ref=e504]
+                    - gridcell "연장" [ref=e505]
+                    - gridcell "-" [ref=e506]
+                    - gridcell "18:00-23:00" [ref=e507]
+                    - gridcell "5.00 = 0.00+4.00+1.00" [ref=e508]
+                    - gridcell "13,500" [ref=e509]
+                    - gridcell "재승인 대기" [ref=e510]
+                    - gridcell "야간 수당 확인" [ref=e512]
+                  - row [selected] [ref=e513]:
+                    - gridcell "30008" [ref=e514]
+                    - gridcell "허민우" [ref=e515]
+                    - gridcell "사원" [ref=e516]
+                    - gridcell "2025-05-26 (월)" [ref=e517]
+                    - gridcell "연장" [ref=e518]
+                    - gridcell "야간" [ref=e519]
+                    - gridcell "22:00-06:00" [ref=e520]
+                    - gridcell "7.00 = 0.00+0.00+7.00" [ref=e521]
+                    - gridcell "12,500" [ref=e522]
+                    - gridcell "대기" [ref=e523]
+                    - gridcell "-" [ref=e525]
+                  - row [ref=e526]:
+                    - gridcell "30021" [ref=e527]
+                    - gridcell "김나영" [ref=e528]
+                    - gridcell "과장" [ref=e529]
+                    - gridcell "2025-05-06 (화)" [ref=e530]
+                    - gridcell "법정휴일" [ref=e531]
+                    - gridcell "주간" [ref=e533]
+                    - gridcell "09:00-18:00" [ref=e534]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e535]
+                    - gridcell "15,000" [ref=e536]
+                    - gridcell "승인" [ref=e537]
+                    - gridcell "-" [ref=e539]
+                  - row [ref=e540]:
+                    - gridcell "30029" [ref=e541]
+                    - gridcell "조현우" [ref=e542]
+                    - gridcell "사원" [ref=e543]
+                    - gridcell "2025-05-24 (토)" [ref=e544]
+                    - gridcell "대체" [ref=e545]
+                    - gridcell "야간" [ref=e546]
+                    - gridcell "21:00-06:00" [ref=e547]
+                    - gridcell "8.00 = 1.00+0.00+7.00" [ref=e548]
+                    - gridcell "12,000" [ref=e549]
+                    - gridcell "수당 미지급" [ref=e550]
+                    - gridcell "-" [ref=e552]
+                  - row [ref=e553]:
+                    - gridcell "30003" [ref=e554]
+                    - gridcell "강동혁" [ref=e555]
+                    - gridcell "사원" [ref=e556]
+                    - gridcell "2025-05-25 (일)" [ref=e557]
+                    - gridcell "대체" [ref=e558]
+                    - gridcell "주간" [ref=e559]
+                    - gridcell "09:00-18:00" [ref=e560]
+                    - gridcell "8.00 = 8.00+0.00+0.00" [ref=e561]
+                    - gridcell "12,000" [ref=e562]
+                    - gridcell "lock 변경불가" [ref=e563]:
+                      - generic [ref=e564]:
+                        - generic [ref=e565]: lock
+                        - text: 변경불가
+                    - gridcell "-" [ref=e566]
+                  - row [ref=e567]:
+                    - gridcell "30014" [ref=e568]
+                    - gridcell "최예린" [ref=e569]
+                    - gridcell "대리" [ref=e570]
+                    - gridcell "2025-05-26 (월)" [ref=e571]
+                    - gridcell "연장" [ref=e572]
+                    - gridcell "-" [ref=e573]
+                    - gridcell "18:00-21:00" [ref=e574]
+                    - gridcell "3.00 = 0.00+3.00+0.00" [ref=e575]
+                    - gridcell "13,500" [ref=e576]
+                    - gridcell "대기" [ref=e577]
+                    - gridcell "-" [ref=e579]
+              - generic [ref=e580]:
+                - generic [ref=e581]:
+                  - generic [ref=e582]: 실적 상세 정보
+                  - button "닫기" [ref=e583] [cursor=pointer]:
+                    - generic [ref=e584]: close
+                - generic [ref=e585]:
+                  - generic [ref=e586]: 기본 정보
+                  - generic [ref=e587]:
+                    - text: "근무지:"
+                    - strong [ref=e588]: 지사 B
+                    - text: "· 사번:"
+                    - strong [ref=e589]: "30008"
+                    - text: "· 이름:"
+                    - strong [ref=e590]: 허민우
+                    - text: "· 직급:"
+                    - strong [ref=e591]: 사원
+                - generic [ref=e592]:
+                  - generic [ref=e593]: 근무 정보
+                  - generic [ref=e594]:
+                    - text: "근무일자:"
+                    - strong [ref=e595]: 2025-05-26 (월)
+                  - generic [ref=e596]:
+                    - text: "근로유형:"
+                    - strong [ref=e597]: 연장근무
+                    - text: "· 근무코드:"
+                    - strong [ref=e598]: 야간
+                  - generic [ref=e599]: 시작 22:00 · 종료 06:00 (+1일) · 휴게 01:00 · 총 시간 7:00
+                - generic [ref=e600]:
+                  - generic [ref=e601]: 시간 분해
+                  - generic [ref=e602]:
+                    - text: "기본(분):"
+                    - strong [ref=e603]: "0"
+                    - text: "· 연장(분):"
+                    - strong [ref=e604]: "0"
+                    - text: "· 야간(분):"
+                    - strong [ref=e605]: "420"
+                - generic [ref=e606]:
+                  - generic [ref=e607]: 시급
+                  - generic [ref=e608]: 12,500원
+                - generic [ref=e609]:
+                  - generic [ref=e610]: 사유
+                  - generic [ref=e611]: 야간 근무로 승인 요청드립니다.
+                - generic [ref=e612]:
+                  - generic [ref=e613]: 증적자료
+                  - generic [ref=e614]: 야간근무_증적.jpg
+                - generic [ref=e616]:
+                  - text: "대체수당 지급 여부:"
+                  - strong [ref=e617]: 해당 없음
+                  - text: "· 사유 코드:"
+                  - strong [ref=e618]: "-"
+                - generic [ref=e619]:
+                  - button "승인" [ref=e620] [cursor=pointer]
+                  - button "반려" [ref=e621] [cursor=pointer]
+      - contentinfo [ref=e622]:
+        - generic [ref=e623]: DB 연결됨
+        - generic [ref=e626]: "최근 인테이크: 마지막 처리 완료 14:32"
+        - generic [ref=e628]: 대기 파일 3개
+        - generic [ref=e630]: 최신
+        - generic [ref=e632]: v2.3.1
