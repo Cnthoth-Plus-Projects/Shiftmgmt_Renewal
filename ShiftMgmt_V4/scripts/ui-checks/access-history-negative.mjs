@@ -284,10 +284,7 @@ export function installNormalObserver({ context, caseName, contract, execution, 
       if (data.ok !== undefined) ok = !!data.ok;
      }
     } catch {}
-    if (caseName === "role-guard" && errorCode === "AUTH_FORBIDDEN") {
-     status = 403;
-     ok = false;
-    }
+
     if (status >= 400) {
      state.rawErrors.badResponses.push({ requestId: id, status, url, method, errorCode, timeMs: Date.now() });
     }
@@ -350,12 +347,6 @@ export function computeExpectedErrors(raw) {
 
 export function publishNormalEvidence(state) {
   state.steps.completedAtMs = Date.now();
-  for (const r of state.requests) {
-    if (r.status === 0) {
-      r.status = 200;
-      r.endedAtMs = Date.now();
-    }
-  }
   state.expectedErrors = computeExpectedErrors(state);
 
   const runDir = path.resolve(state.environment.origin ? path.join(process.cwd(), "artifacts/captures/phase3", `access-history-${state.case}`, state.runId) : ".");
