@@ -49,12 +49,13 @@ if ($LASTEXITCODE -ne 0 -or $RemoteHead -ne $Expected) { throw "BLOCKED: remote 
 git -C $Root pull --ff-only origin $Branch
 if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: fast-forward failed' }
 if ((git -C $Root rev-parse HEAD) -ne $Expected) { throw 'BLOCKED: current HEAD' }
-if (@(git -C $Root status --porcelain=v1).Count -ne 0) { throw 'BLOCKED: post-pull dirty' }
+# Post-pull may temporarily show only five CRLF files changed due to new eol=lf policy.
+# Section 3 verifies the exact allowed paths before forced checkout.
 ~~~
 
-## 3. CRLF 차단 해제 (오직 다섯 파일만)
+## 3. CRLF 차단 해제 — 다섯 파일에만 허가
 
-기준: repo에 \`.gitattributes\` 없음(원격 조회 기준); 로컬 글로벌 core.autocrlf=true가 Git **working-tree**만 CRLF로 만들었다. Git HEAD blob들은 LF이고 정상 Git diff는 Clean이다. 이 단계는 코드 변경이 아니라 **원래 HEAD 내용의 5개 파일을 LF로 재물질화**한다. 파일 bytes는 변하므로 이를 반드시 회신에 명시한다.
+기존 `git restore`는 이미 Clean으로 판단한 CRLF 검증기 파일을 다시 쓰지 못했다. 이번 구현 브랜치에는 정확히 다섯 경로만 `text eol=lf`로 지정한 루트 `.gitattributes`가 추가됐다. Pull 직후 다섯 검증 파일만 CRLF 상태의 ` M`으로 보일 수 있다. 이 다섯 파일에만 `git checkout-index --force`로 LF 원본을 강제 다시 쓰도록 허가한다. Git local/global core.autocrlf 설정은 변경하지 않고, 다른 계약/과거 원본에는 적용하지 않는다.
 
 허용하는 **닫힌 목록**:
 1. ShiftMgmt_V4/scripts/ui-checks/access-history.mjs
@@ -75,16 +76,26 @@ $Paths = @(
 )
 foreach($p in $Paths) {
   $attr = git -C $Root check-attr eol -- $p
-  if ($attr -match 'eol: crlf') { throw "BLOCKED: EOL attribute forces CRLF: $p" }
+  if ($attr -notmatch 'eol: lf\s*$') { throw "BLOCKED: missing exact eol=lf rule: $p ; $attr" }
   if (-not (Test-Path -LiteralPath (Join-Path $Root $p) -PathType Leaf)) { throw "BLOCKED: missing $p" }
 }
-if (@(git -C $Root status --porcelain=v1).Count -ne 0) { throw 'BLOCKED: dirty before LF restore' }
+# Only unstaged changes to the five exact files can be repaired.
+$Changes = @(git -C $Root status --porcelain=v1)
+foreach ($line in $Changes) {
+  if ($line.Length -lt 4) { throw "BLOCKED: invalid status: $line" }
+  $code = $line.Substring(0,2)
+  $changedFile = $line.Substring(3)
+  if ($code -ne ' M' -or $changedFile -notin $Paths) {
+    throw "BLOCKED: non-allowlisted Git change before LF restoration: $line"
+  }
+}
+"PRE_RESTORE_CHANGED=$($Changes.Count)"
 $LocalAutocrlfBefore = git -C $Root config --local --get core.autocrlf
 $GlobalAutocrlfBefore = git -C $Root config --global --get core.autocrlf
 "core.autocrlf BEFORE local=$LocalAutocrlfBefore global=$GlobalAutocrlfBefore"
 # Do NOT change persistent local/global settings: only this checkout command overrides autocrlf.
-git -C $Root -c core.autocrlf=false restore --source=HEAD --worktree -- $Paths
-if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: 5-file LF restore failed' }
+git -C $Root -c core.autocrlf=false checkout-index --force -- $Paths
+if ($LASTEXITCODE -ne 0) { throw 'BLOCKED: five-file forced checkout failed' }
 if (@(git -C $Root status --porcelain=v1).Count -ne 0) { throw 'BLOCKED: tracked diff after LF restore' }
 git -C $Root ls-files --eol -- $Paths
 ~~~
