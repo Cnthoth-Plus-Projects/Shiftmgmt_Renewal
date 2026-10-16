@@ -21,7 +21,16 @@ import {
 
 const sha = (d) => crypto.createHash("sha256").update(d).digest("hex").toUpperCase();
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+const isDirectCli = Boolean(process.argv[1]) && (() => {
+  try {
+    return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
+  } catch (err) {
+    process.stderr.write(`[오류] CLI 진입 경로 해석 실패: ${err.message}\n`);
+    process.exit(1);
+  }
+})();
+
+if (isDirectCli) {
   const rawArgs = process.argv.slice(2);
   if (rawArgs.length !== 1 || !rawArgs[0].startsWith("--case=")) {
     process.stderr.write("[오류] 정확히 단일 --case=<케이스> 인수가 필요합니다.\n");
@@ -304,39 +313,46 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
         const heldController = new HeldRouteController(state);
         let listInvocation = 0;
 
-        await page.route("**/api/access-logs:list*", async (r) => {
-          listInvocation++;
-          if (listInvocation === 1) {
-            await heldController.handle(r, {
-              status: 200,
-              contentType: "application/json",
-              body: JSON.stringify({ ok: true, data: createMockAccessLogs(5) }),
-            });
-          } else {
-            await r.fulfill({
-              status: 200,
-              contentType: "application/json",
-              body: JSON.stringify({ ok: true, data: createMockAccessLogs(10) }),
-            });
+        try {
+          await page.route("**/api/access-logs:list*", async (r) => {
+            listInvocation++;
+            if (listInvocation === 1) {
+              await heldController.handle(r, {
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({ ok: true, data: createMockAccessLogs(5) }),
+              });
+            } else {
+              await r.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({ ok: true, data: createMockAccessLogs(10) }),
+              });
+            }
+          });
+
+          await page.getByRole("button", { name: "활동 이력", exact: true }).click();
+          await heldController.waitForStart();
+
+          await page.locator("#filter-keyword-input, #filter-keyword").first().fill("빠른조회");
+          await page.locator("#btn-refresh-logs").click();
+          await page.waitForTimeout(500);
+
+          heldController.release();
+          await heldController.waitForComplete();
+
+          const finalRows = await page.locator("#table-access-logs-body tr").count();
+          collector.expectEqual("stale-response-second-wins", 10, finalRows);
+
+          await waitForFontsReady(15000);
+          state.environment.fontsReadyAtMs = Date.now();
+          await capture("stale-response-prevented");
+        } finally {
+          if (heldController.isStarted() && !heldController.isCompleted()) {
+            heldController.abort();
           }
-        });
-
-        await page.getByRole("button", { name: "활동 이력", exact: true }).click();
-        await heldController.waitForStart();
-
-        await page.locator("#filter-keyword-input, #filter-keyword").first().fill("빠른조회");
-        await page.locator("#btn-refresh-logs").click();
-        await page.waitForTimeout(500);
-
-        heldController.release();
-        await heldController.waitForComplete();
-
-        const finalRows = await page.locator("#table-access-logs-body tr").count();
-        collector.expectEqual("stale-response-second-wins", 10, finalRows);
-
-        await waitForFontsReady(15000);
-        state.environment.fontsReadyAtMs = Date.now();
-        await capture("stale-response-prevented");
+          await page.unroute("**/api/access-logs:list*").catch(() => {});
+        }
       } else if (caseArg === "role-guard") {
         const testRole = async (roleName, roleCreds) => {
           let autoCall = 0;

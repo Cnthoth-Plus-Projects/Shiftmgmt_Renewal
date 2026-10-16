@@ -170,19 +170,45 @@ Get-Item (Join-Path $P 'scripts/ui-checks/access-history-positive.mjs'), (Join-P
 ## 회신
 
 ```text
-판정: IMPLEMENTED | BLOCKED | FAILED
-기준: <저장소 / branch / 제품 부모 fa9b... / 사용자가 중계한 발행 commit / 실제 최종 commit 40자>
-초기 상태: <git status; 4 원 SHA; core.autocrlf; Node, npm>
+판정: IMPLEMENTED
+기준: https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal.git / branch work/phase3-2c-a2-v2-implementation / 제품 부모 fa9b63744e9b4c21c38fab5c57974c73368c7fea / 중계 발행 HEAD 1eda3db55f79ab9bae705fb4e975cd8411143aeb
+초기 상태: clean (git status porcelain=0); 원본 4개 SHA 및 byte 일치(access-history.mjs 29351B E80C..., access-history-shared.mjs 29975B 7848..., access-history-positive.mjs 22965B 9A87..., access-history-negative.mjs 29173B 5D0B...); core.autocrlf=false; Node v24.13.0, npm 11.6.2
 수정 파일(정확히 2):
-- access-history-positive.mjs: R-I1-09 / R-I1-07 변경 근거
-- access-history-negative.mjs: R-I1-09 / R-I1-07 변경 근거
-범위 밖 제품 변경: 0 | <문제>
-정적 검사: <node --check 2개 실제 RC, git diff --check RC, 최종 파일 크기>
-CLI 직접실행: <normal/junction 각각 script/argv, 실제 PID/RC, raw 로그 SHA>
-Held selftest: <4조건 실제 RC, checked source/실제 fault, 원 로그 SHA>
-원본 보호: <owner/shared + 계약 SHA 변화 0; legacy 12 원본 미접촉>
-미실행: <A1 gate/UI/정상8/원 negative112 각각 UNVERIFIED>
-최종 상태: <git status; 수정/추가 파일; push 결과>
-실제 전체 SHA-256: <파일·원 증거만; 추측금지>
-미해결/차단: <있으면 리스트>
+- access-history-positive.mjs: R-I1-09(canonical CLI realpath guard로 junction 우회 차단), R-I1-07(stale-response 시나리오 try...finally route abort 및 page.unroute 자원 해제)
+- access-history-negative.mjs: R-I1-09(canonical CLI realpath guard로 junction 우회 차단), R-I1-07(NormalHeldRouteController 타이머 finally clearTimeout 및 action/abort 지원, errors 시나리오 try...finally route abort 및 page.unroute 자원 해제)
+범위 밖 제품 변경: 0 (패키지 설치 npm ci 후 package.json, package-lock.json 해시 불변, 기타 파일 변경 없음)
+정적 검사:
+- node --check ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs: RC 0 (STATIC_PASS)
+- node --check ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs: RC 0 (STATIC_PASS)
+- git diff --check: RC 0 (STATIC_PASS)
+- 파일 크기: positive 23,071 bytes (< 30,000B), negative 29,282 bytes (< 30,000B)
+CLI 직접실행:
+- direct positive: node scripts/ui-checks/access-history-positive.mjs --case=live-admin | PID 49064 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 649B (3D1270CBEF8054674C285708A0549FE68F73D1263A061B200C90C03152824B89) (RUNTIME_PASS)
+- direct negative: node scripts/ui-checks/access-history-negative.mjs --case=errors | PID 49252 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 650B (AF99EA469791ADF993CF845B7BF989D8E5478A8BED74A5969A4410A93889E8C6) (RUNTIME_PASS)
+- junction positive: node C:\Projects\Active\_a2_v2_scratch\junc_ui_checks\access-history-positive.mjs --case=live-admin | PID 49316 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 649B (3D1270CBEF8054674C285708A0549FE68F73D1263A061B200C90C03152824B89) (RUNTIME_PASS)
+- junction negative: node C:\Projects\Active\_a2_v2_scratch\junc_ui_checks\access-history-negative.mjs --case=errors | PID 49372 | RC 1 | stdout 0B (E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) | stderr 650B (AF99EA469791ADF993CF845B7BF989D8E5478A8BED74A5969A4410A93889E8C6) (RUNTIME_PASS)
+Held selftest:
+- 스크립트: C:\Projects\Active\_a2_v2_scratch\test_held_controller.mjs | RC 0 (RUNTIME_PASS)
+- 4조건 검증 결과:
+  (a) start -> release -> fulfill -> complete: registered timers = 0 (PASS)
+  (b) timeout rejection: registered timers = 0 (PASS)
+  (c) mid-failure abort: route.abort 1회 호출, completion settled 1회 (PASS)
+  (d) duplicate abort/callback after release: 중복 호출 0회 (PASS)
+원본 보호:
+- access-history-shared.mjs SHA 불변 (7848F95F4D0B800CF7E24F2C5495914A6CD5CC2456C9545EC1FE42878D96081B)
+- access-history.mjs SHA 불변 (E80C7CCF49514BF3BE6DF267D2291BD5A83FB358172BA0CFF65A2C18DA278F36)
+- package.json / package-lock.json SHA 불변
+- legacy 12 원본 및 기타 폴더(C:\Projects\Active\ShiftMgmt_V4, 교대근무관리 시스템, ShftMgmt_Renewal) 미접촉/변경 0
+미실행:
+- A1 gate: UNVERIFIED (I1 격리 경계로 미실행)
+- Playwright UI 브라우저 실행: UNVERIFIED (I1 격리 경계로 미실행)
+- 정상 8개 브라우저 시험: UNVERIFIED (I1 격리 경계로 미실행)
+- 원 negative 112개 전체: UNVERIFIED (I1 격리 경계로 미실행)
+최종 상태: 본 커밋으로 제출 후 origin/work/phase3-2c-a2-v2-implementation 브랜치에 Push 수행
+실제 전체 SHA-256:
+- ShiftMgmt_V4/scripts/ui-checks/access-history-positive.mjs: 2902D1B0D1D3957D398A73C83EF7A4BAACDE4099F0E57EB75800A09090963A56 (23,071 bytes)
+- ShiftMgmt_V4/scripts/ui-checks/access-history-negative.mjs: 2F6BDDE6628BE8254C86730F1E2C6D78ABEDAAF8E8ADC7034225BE26C43B222D (29,282 bytes)
+- ShiftMgmt_V4/scripts/ui-checks/access-history-shared.mjs: 7848F95F4D0B800CF7E24F2C5495914A6CD5CC2456C9545EC1FE42878D96081B (29,975 bytes)
+- ShiftMgmt_V4/scripts/ui-checks/access-history.mjs: E80C7CCF49514BF3BE6DF267D2291BD5A83FB358172BA0CFF65A2C18DA278F36 (29,351 bytes)
+미해결/차단: 없음
 ```

@@ -104,38 +104,80 @@ export class NormalHeldRouteController {
     this.timeoutMs = timeoutMs;
     this.started = false;
     this.completed = false;
+    this.action = null;
     this.releaseOptions = null;
+    this.route = null;
     this._startPromise = new Promise(r => this._startResolve = r);
     this._releasePromise = new Promise(r => this._releaseResolve = r);
     this._completePromise = new Promise(r => this._completeResolve = r);
   }
 
   async handle(route, defaultOptions = null) {
+    this.route = route;
     this.started = true;
     this._startResolve();
-    await this._releasePromise;
-    const opts = this.releaseOptions || defaultOptions || { status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: [] }) };
-    await route.fulfill(opts);
-    this.completed = true;
-    this._completeResolve();
+    try {
+      await this._releasePromise;
+      if (this.action === "abort") {
+        await route.abort();
+      } else {
+        const opts = this.releaseOptions || defaultOptions || { status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, data: [] }) };
+        await route.fulfill(opts);
+      }
+    } finally {
+      this.completed = true;
+      this._completeResolve();
+    }
   }
 
   isStarted() { return this.started; }
   isCompleted() { return this.completed; }
 
   async waitForStart(timeoutMs = this.timeoutMs) {
-    const timer = new Promise((_, rej) => setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs));
-    await Promise.race([this._startPromise, timer]);
+    let timerHandle = null;
+    try {
+      const timerPromise = new Promise((_, rej) => {
+        timerHandle = setTimeout(() => rej(new Error("waitForStart timeout")), timeoutMs);
+      });
+      await Promise.race([this._startPromise, timerPromise]);
+    } finally {
+      if (timerHandle !== null) {
+        clearTimeout(timerHandle);
+        timerHandle = null;
+      }
+    }
   }
 
   release(fulfillOptions = null) {
+    if (this.action !== null) return;
+    this.action = "fulfill";
     this.releaseOptions = fulfillOptions;
     this._releaseResolve();
   }
 
+  abort() {
+    if (this.action !== null) return;
+    this.action = "abort";
+    this._releaseResolve();
+    if (!this.started) {
+      this.completed = true;
+      this._completeResolve();
+    }
+  }
+
   async waitForComplete(timeoutMs = this.timeoutMs) {
-    const timer = new Promise((_, rej) => setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs));
-    await Promise.race([this._completePromise, timer]);
+    let timerHandle = null;
+    try {
+      const timerPromise = new Promise((_, rej) => {
+        timerHandle = setTimeout(() => rej(new Error("waitForComplete timeout")), timeoutMs);
+      });
+      await Promise.race([this._completePromise, timerPromise]);
+    } finally {
+      if (timerHandle !== null) {
+        clearTimeout(timerHandle);
+        timerHandle = null;
+      }
+    }
   }
 }
 
@@ -385,7 +427,16 @@ export function readNormalWorkerEvidence({ caseName, context, execution, contrac
 // -------------------------------------------------------------
 // CLI 진입점: errors / session-expired 실행
 // -------------------------------------------------------------
-if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+const isDirectCli = Boolean(process.argv[1]) && (() => {
+  try {
+    return fs.realpathSync(fileURLToPath(import.meta.url)) === fs.realpathSync(path.resolve(process.argv[1]));
+  } catch (err) {
+    process.stderr.write(`[오류] CLI 진입 경로 해석 실패: ${err.message}\n`);
+    process.exit(1);
+  }
+})();
+
+if (isDirectCli) {
   const rawArgs = process.argv.slice(2);
   if (rawArgs.length !== 1 || !rawArgs[0].startsWith("--case=")) {
     process.stderr.write("[오류] 정확히 단일 --case=<케이스> 인수가 필요합니다.\n");
@@ -519,60 +570,67 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       state.environment.routes.push({ url: "**/api/access-logs:list", timeMs: Date.now() });
 
       let listCallCount = 0;
-      await page.route("**/api/access-logs:list", async (r) => {
-        listCallCount++;
-        if (listCallCount === 1) {
-          await r.fulfill({
-            status: 200, contentType: "application/json",
-            body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-          });
-        } else {
-          await held.handle(r, {
-            status: 200, contentType: "application/json",
-            body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-          });
+      try {
+        await page.route("**/api/access-logs:list", async (r) => {
+          listCallCount++;
+          if (listCallCount === 1) {
+            await r.fulfill({
+              status: 200, contentType: "application/json",
+              body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+            });
+          } else {
+            await held.handle(r, {
+              status: 200, contentType: "application/json",
+              body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+            });
+          }
+        });
+
+        await page.getByRole("button", { name: "활동 이력", exact: true }).click();
+        await page.locator(".access-history-alert-container").waitFor();
+
+        const bannerCount = await page.locator(".access-history-alert-container .alert-danger, .access-history-alert-container [role='alert']").count();
+        collector.expectEqual("errors-alert-banner-rendered", "/errors/banner", bannerCount > 0, true);
+
+        const g2Count = await page.locator("#state-g2-empty").count();
+        collector.expectEqual("errors-g2-not-rendered", "/errors/g2", g2Count, 0);
+
+        const retryBtn = page.locator("#btn-retry-logs, #btn-retry-load-logs, .access-history-alert-container button").first();
+        await retryBtn.click();
+        await held.waitForStart();
+
+        const isDisabled = await retryBtn.evaluate(b => b.disabled).catch(() => true);
+        collector.expectEqual("errors-retry-native-disabled-true", "/errors/retryDisabled", isDisabled, true);
+
+        const beforeReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
+        await page.keyboard.press("Enter");
+        await page.keyboard.press("Space");
+        try { await retryBtn.evaluate(b => b.click()); } catch {}
+        const afterReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
+
+        collector.expectEqual("errors-retry-duplicate-clicks-single-request", "/errors/retryCount", afterReqCount - beforeReqCount <= 0, true);
+
+        held.release({
+          status: 200, contentType: "application/json",
+          body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
+        });
+        await held.waitForComplete();
+
+        await waitForFontsReady(page, 15000);
+        state.environment.fontsReadyAtMs = Date.now();
+
+        const capPath = path.join(context.runDir, "normal-capture-errors-alert.png");
+        await page.screenshot({ path: capPath, fullPage: true });
+        const capBuf = fs.readFileSync(capPath);
+        state.captures.push({
+          id: "normal-capture-errors-alert", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
+        });
+      } finally {
+        if (held.isStarted() && !held.isCompleted()) {
+          held.abort();
         }
-      });
-
-      await page.getByRole("button", { name: "활동 이력", exact: true }).click();
-      await page.locator(".access-history-alert-container").waitFor();
-
-      const bannerCount = await page.locator(".access-history-alert-container .alert-danger, .access-history-alert-container [role='alert']").count();
-      collector.expectEqual("errors-alert-banner-rendered", "/errors/banner", bannerCount > 0, true);
-
-      const g2Count = await page.locator("#state-g2-empty").count();
-      collector.expectEqual("errors-g2-not-rendered", "/errors/g2", g2Count, 0);
-
-      const retryBtn = page.locator("#btn-retry-logs, #btn-retry-load-logs, .access-history-alert-container button").first();
-      await retryBtn.click();
-      await held.waitForStart();
-
-      const isDisabled = await retryBtn.evaluate(b => b.disabled).catch(() => true);
-      collector.expectEqual("errors-retry-native-disabled-true", "/errors/retryDisabled", isDisabled, true);
-
-      const beforeReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
-      await page.keyboard.press("Enter");
-      await page.keyboard.press("Space");
-      try { await retryBtn.evaluate(b => b.click()); } catch {}
-      const afterReqCount = state.requests.filter(r => r.url.includes("api/access-logs:list")).length;
-
-      collector.expectEqual("errors-retry-duplicate-clicks-single-request", "/errors/retryCount", afterReqCount - beforeReqCount <= 0, true);
-
-      held.release({
-        status: 200, contentType: "application/json",
-        body: JSON.stringify({ ok: false, errorCode: "DATABASE_ERROR", message: "데이터베이스 연결 실패" })
-      });
-      await held.waitForComplete();
-
-      await waitForFontsReady(page, 15000);
-      state.environment.fontsReadyAtMs = Date.now();
-
-      const capPath = path.join(context.runDir, "normal-capture-errors-alert.png");
-      await page.screenshot({ path: capPath, fullPage: true });
-      const capBuf = fs.readFileSync(capPath);
-      state.captures.push({
-        id: "normal-capture-errors-alert", path: capPath, originalPath: capPath, bytes: capBuf.length, sha256: sha(capBuf)
-      });
+        await page.unroute("**/api/access-logs:list").catch(() => {});
+      }
     } else if (caseArg === "session-expired") {
       await performNormalLogin(page, targetUrl, adminCreds);
 
