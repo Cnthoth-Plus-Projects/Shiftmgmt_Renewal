@@ -376,15 +376,21 @@ try {
 } catch (err) {
   if (!primaryError) recordError("execution", err, primaryCode);
   for (const reg of [workerReg, serverReg, gateReg]) await cleanProc(reg);
-  let workerPartial = null, workerPartialPath = null;
-  for (const n of ["core-partial.json", "core-partial.fallback.json", "normal-partial.json", "normal-partial.fallback.json"]) { const p = path.join(runDir, n); if (fs.existsSync(p)) { try { workerPartial = JSON.parse(fs.readFileSync(p, "utf8")); workerPartialPath = p; break; } catch {} } }
+  let workerPartial = null, workerPartialPath = null, workerPartialSha256 = null;
+  for (const n of ["core-partial.json", "core-partial.fallback.json", "normal-partial.json", "normal-partial.fallback.json"]) {
+    const p = path.join(runDir, n);
+    if (!fs.existsSync(p)) continue;
+    workerPartialPath = p;
+    try { const bytes = fs.readFileSync(p); workerPartialSha256 = sha(bytes); workerPartial = JSON.parse(bytes); break; }
+    catch (e) { evidenceErrors.push({ code: "A2_PARTIAL_UNREADABLE", phase: "evidence", errorName: e?.name || "Error", timeMs: Date.now() }); }
+  }
   const gfr = (r) => r?.child ? r.toManifestRecord() : null;
   const failureManifest = {
     ...makeBaseManifest("FAIL", 1), server: gfr(serverReg), worker: wrapWorker(gfr(workerReg)), adjudicator: gfr(gateReg),
     acquisition: acquiredAcquisition || workerPartial?.acquisition || null,
     raw: acquiredRaw || (selectedCase === "contract-core" && workerPartial?.raw ? workerPartial.raw : null),
     checks: acquiredChecks || (selectedCase === "contract-core" && workerPartial?.checks ? workerPartial.checks : checks),
-    workerPartialPath: workerPartialPath || null, ...(isNormal ? { workerPartialSha256: workerPartialPath ? sha(fs.readFileSync(workerPartialPath)) : null } : {}), cleanup: { tempRemoved }, errors: errObj({ code: primaryCode, phase: primaryPhase, ...errInfo(primaryError) }),
+    workerPartialPath: workerPartialPath || null, ...(isNormal ? { workerPartialSha256 } : {}), cleanup: { tempRemoved }, errors: errObj({ code: primaryCode, phase: primaryPhase, ...errInfo(primaryError) }),
   };
   const pushEv = (fe) => evidenceErrors.push({ phase: "evidence", ...errInfo(fe), timeMs: Date.now() });
   try { writeAtomic(path.join(runDir, "owner-failure.json"), failureManifest); } catch (fe1) { pushEv(fe1); try { writeAtomic(path.join(runDir, "owner-failure.fallback.json"), failureManifest); } catch (fe2) { pushEv(fe2); } }
