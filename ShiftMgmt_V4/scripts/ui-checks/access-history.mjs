@@ -382,9 +382,9 @@ try {
   const failureManifest = {
     ...makeBaseManifest("FAIL", 1), server: gfr(serverReg), worker: wrapWorker(gfr(workerReg)), adjudicator: gfr(gateReg),
     acquisition: acquiredAcquisition || workerPartial?.acquisition || null,
-    raw: acquiredRaw || (isNormal ? workerPartial : selectedCase === "contract-core" && workerPartial?.raw ? workerPartial.raw : null),
+    raw: acquiredRaw || (selectedCase === "contract-core" && workerPartial?.raw ? workerPartial.raw : null),
     checks: acquiredChecks || (selectedCase === "contract-core" && workerPartial?.checks ? workerPartial.checks : checks),
-    workerPartialPath: workerPartialPath || null, cleanup: { tempRemoved }, errors: errObj({ code: primaryCode, phase: primaryPhase, ...errInfo(primaryError) }),
+    workerPartialPath: workerPartialPath || null, ...(isNormal ? { workerPartialSha256: workerPartialPath ? sha(fs.readFileSync(workerPartialPath)) : null } : {}), cleanup: { tempRemoved }, errors: errObj({ code: primaryCode, phase: primaryPhase, ...errInfo(primaryError) }),
   };
   const pushEv = (fe) => evidenceErrors.push({ phase: "evidence", ...errInfo(fe), timeMs: Date.now() });
   try { writeAtomic(path.join(runDir, "owner-failure.json"), failureManifest); } catch (fe1) { pushEv(fe1); try { writeAtomic(path.join(runDir, "owner-failure.fallback.json"), failureManifest); } catch (fe2) { pushEv(fe2); } }
