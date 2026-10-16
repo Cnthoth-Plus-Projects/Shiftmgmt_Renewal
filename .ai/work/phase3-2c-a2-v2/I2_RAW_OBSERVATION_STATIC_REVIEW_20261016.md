@@ -21,6 +21,7 @@
 
 - 실제 `res.status`를 읽은 후 `errorCode === 'AUTH_FORBIDDEN'`만을 근거로 `status=403`을 가공하던 별도 분기를 제거. 실제 HTTP 200 + 비즈니스 실패는 HTTP 200으로 보존한다.
 - `publishNormalEvidence`에서 `r.status===0`인 pending 요청을 200/현재 시간으로 바꾸던 루프 제거. 미완료 요청은 관측한 원 상태를 유지한다.
+- `computeExpectedErrors`의 `errors` 처리에서 pending status 0을 완료된 DATABASE_ERROR fixture로 잘못 분류할 수 있어, `status > 0 && status < 400`으로 조건을 강화. 아직 미응답인 요청은 정상 완료 fixture로 인정하지 않음.
 - 이 부분만으로 Node fetch 응답 파서의 무음 오류처리, 실패 종료 시간, 전체 출판 스키마 불변성이 해결됐다고 주장하지 않음.
 
 ### I2-R04B (positive.mjs) : Playwright Request identity
@@ -37,7 +38,7 @@
 | `access-history.mjs` | 29,351 | `2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7` | 649 |
 | `access-history-shared.mjs` | 29,973 | `C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4` | 27 |
 | `access-history-positive.mjs` | 23,830 | `E9D668F40D11EB5597B018A67BB9A07BE40251E63AE7CCFCF549A72AAFE39DB0` | 6,170 |
-| `access-history-negative.mjs` | 28,602 | `1A3D8F576A23E5AB1F23721E393954D626275D5073F8FFC043D87F80480BFEE1` | 1,398 |
+| `access-history-negative.mjs` | 28,618 | `8735993CF111922294EB9D4963194242EFA174FCFC77F1141C0A85E42859D21D` | 1,382 |
 
 위 원격 파일을 readback하고 UTF-8 bytes 기준 실제 SHA-256을 재계산했으며 SHA-256 시험 문자열 `abc`의 공개 정답값과 대조했다. `owner/shared` 원본 소스 SHA 완전 동일.
 
