@@ -377,12 +377,12 @@ try {
   if (!primaryError) recordError("execution", err, primaryCode);
   for (const reg of [workerReg, serverReg, gateReg]) await cleanProc(reg);
   let workerPartial = null, workerPartialPath = null;
-  for (const n of ["core-partial.json", "core-partial.fallback.json"]) { const p = path.join(runDir, n); if (fs.existsSync(p)) { try { workerPartial = JSON.parse(fs.readFileSync(p, "utf8")); workerPartialPath = p; break; } catch {} } }
+  for (const n of ["core-partial.json", "core-partial.fallback.json", "normal-partial.json", "normal-partial.fallback.json"]) { const p = path.join(runDir, n); if (fs.existsSync(p)) { try { workerPartial = JSON.parse(fs.readFileSync(p, "utf8")); workerPartialPath = p; break; } catch {} } }
   const gfr = (r) => r?.child ? r.toManifestRecord() : null;
   const failureManifest = {
     ...makeBaseManifest("FAIL", 1), server: gfr(serverReg), worker: wrapWorker(gfr(workerReg)), adjudicator: gfr(gateReg),
     acquisition: acquiredAcquisition || workerPartial?.acquisition || null,
-    raw: acquiredRaw || (selectedCase === "contract-core" && workerPartial?.raw ? workerPartial.raw : null),
+    raw: acquiredRaw || (isNormal ? workerPartial : selectedCase === "contract-core" && workerPartial?.raw ? workerPartial.raw : null),
     checks: acquiredChecks || (selectedCase === "contract-core" && workerPartial?.checks ? workerPartial.checks : checks),
     workerPartialPath: workerPartialPath || null, cleanup: { tempRemoved }, errors: errObj({ code: primaryCode, phase: primaryPhase, ...errInfo(primaryError) }),
   };
