@@ -2,6 +2,7 @@
 import type { AuthSession } from "../../shared/domain/model";
 import { StatusBar } from "./status-bar";
 import { HomeScreen } from "./home";
+import { AccessHistoryScreen } from "./access-history";
 
 export interface ShellScreenOptions {
   container: HTMLElement;
@@ -31,6 +32,7 @@ const MENU_ITEMS: NavMenuItem[] = [
   // 관리 (admin only)
   { id: "org-mgmt", label: "조직 관리", icon: "corporate_fare", group: "admin", adminOnly: true },
   { id: "user-mgmt", label: "사용자 관리", icon: "manage_accounts", group: "admin", adminOnly: true },
+  { id: "access-history", label: "활동 이력", icon: "history", group: "admin", adminOnly: true },
 ];
 
 export class ShellScreen {
@@ -43,6 +45,7 @@ export class ShellScreen {
   private noticeMessage = "";
   private statusBar: StatusBar | null = null;
   private homeScreen: HomeScreen | null = null;
+  private accessHistoryScreen: AccessHistoryScreen | null = null;
   private syncObserver: MutationObserver | null = null;
 
   constructor(options: ShellScreenOptions) {
@@ -119,6 +122,10 @@ export class ShellScreen {
     if (this.homeScreen) {
       this.homeScreen.destroy();
       this.homeScreen = null;
+    }
+    if (this.accessHistoryScreen) {
+      this.accessHistoryScreen.destroy();
+      this.accessHistoryScreen = null;
     }
     if (this.statusBar) {
       this.statusBar.destroy();
@@ -258,8 +265,12 @@ export class ShellScreen {
         `;
 
         btn.addEventListener("click", () => {
-          // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
-          this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
+          if (item.id === "access-history") {
+            this.noticeMessage = "";
+          } else {
+            // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
+            this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
+          }
           this.currentTitle = item.label;
           this.updateActiveNav(navList, btn);
           this.refreshMain();
@@ -330,6 +341,10 @@ export class ShellScreen {
         this.homeScreen.destroy();
         this.homeScreen = null;
       }
+      if (this.accessHistoryScreen) {
+        this.accessHistoryScreen.destroy();
+        this.accessHistoryScreen = null;
+      }
       if (this.statusBar) {
         this.statusBar.destroy();
         this.statusBar = null;
@@ -395,6 +410,23 @@ export class ShellScreen {
       return main;
     }
 
+    if (this.currentTitle === "활동 이력") {
+      this.accessHistoryScreen = new AccessHistoryScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      this.accessHistoryScreen.render();
+      return main;
+    }
+
     if (this.noticeMessage) {
       const banner = document.createElement("div");
       banner.className = "notice-banner";
@@ -430,6 +462,11 @@ export class ShellScreen {
     if (this.homeScreen) {
       this.homeScreen.destroy();
       this.homeScreen = null;
+    }
+
+    if (this.accessHistoryScreen) {
+      this.accessHistoryScreen.destroy();
+      this.accessHistoryScreen = null;
     }
 
     const oldMain = this.container.querySelector("#main-content");
