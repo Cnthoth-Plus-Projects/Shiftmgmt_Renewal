@@ -13,6 +13,7 @@ import {
   validateWageRateFormInput,
   filterEmployees,
   sortEmployeesByWorksite,
+  paginateEmployeesForHeight,
   arePendingFileSetsEqual,
   escapeHtmlAttribute
 } from "./workforce-model";
@@ -526,5 +527,24 @@ describe("worksite order before pagination", () => {
     expect(sorted.slice(0, 18).map(e => e.currentAssignmentOrder)).toEqual([...records.filter(e => e.currentSiteId === "a").map(e => e.currentAssignmentOrder)].sort((a,b) => a-b));
     expect(sorted.slice(0,10).every(e=>e.currentSiteId==="a")).toBe(true);
     expect(sorted.slice(10,18).every(e=>e.currentSiteId==="a")).toBe(true);
+  });
+});
+
+
+describe("viewport-based workforce pages", () => {
+  const records = Array.from({ length: 55 }, (_, i): EmployeeRecord => ({ id: String(i), employeeCode: `EMP-${i}`, name: "확인", status: "active", employmentType: "정규", createdAt: "2026-01-01", currentSiteId: i < 18 ? "a" : i < 36 ? "b" : undefined }));
+  it("fits employee rows and repeated group headers before dividing the entire ordered collection", () => {
+    const pages = paginateEmployeesForHeight(records, 490, 27, 28);
+    expect(pages).toEqual([{ start: 0, end: 17 }, { start: 17, end: 33 }, { start: 33, end: 49 }, { start: 49, end: 55 }]);
+    expect(pages.flatMap(p => records.slice(p.start, p.end).map(e => e.id))).toEqual(records.map(e=>e.id));
+  });
+  it("does not round fractional measured rows into overflow", () => {
+    const pages = paginateEmployeesForHeight(records.slice(0, 18), 486.8, 27, 27.823);
+    expect(pages[0]).toEqual({ start: 0, end: 16 });
+    expect(paginateEmployeesForHeight(records.slice(0, 18), 486.824, 27, 27.823)[0]).toEqual({ start: 0, end: 17 });
+  });
+  it("keeps empty and extremely short screens finite without dropping employees", () => {
+    expect(paginateEmployeesForHeight([], 0, 0, 0)).toEqual([{ start: 0, end: 0 }]);
+    expect(paginateEmployeesForHeight(records, 5, 27, 28)).toHaveLength(55);
   });
 });

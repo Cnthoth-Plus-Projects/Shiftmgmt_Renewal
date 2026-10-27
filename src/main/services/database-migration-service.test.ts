@@ -3,10 +3,12 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync,
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import * as databaseBackupService from "./database-backup-service";
 
 import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
 import { runDatabaseBackupNow } from "./database-backup-service";
+import { listStoredSiteNameOptions, saveStoredSiteNameOption } from "./operations-storage-service";
 import {
   checkDatabaseMigrationRequirements,
   computeDatabaseContentFingerprint,
@@ -577,6 +579,59 @@ describe("database-migration-service", () => {
       SELECT site_code, name FROM sites WHERE site_code = 'PREVIEW-001'
     `).all();
     expect(currentRows).toHaveLength(0);
+  });
+
+  it("should keep the live connection usable when another connection holds a write lock", async () => {
+    for (const phase of ["before", "during-backup"]) {
+    const { filePath } = await createBaselineBackupFile(`write-lock-${phase}.json`);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: filePath });
+    const live = getSqliteDatabase()!;
+    const before = computeDatabaseContentFingerprint(live);
+    const locker = new DatabaseSync(dbPath);
+    const originalBackup = databaseBackupService.runDatabaseBackupNow;
+    const backupSpy = phase === "during-backup" ? vi.spyOn(databaseBackupService, "runDatabaseBackupNow").mockImplementation(async input => {
+      const result = await originalBackup(input);
+      locker.exec("BEGIN IMMEDIATE");
+      return result;
+    }) : null;
+    try {
+      if (phase === "before") locker.exec("BEGIN IMMEDIATE");
+      await expect(runDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: filePath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체" })).rejects.toThrow(/locked|busy/i);
+    } finally {
+      locker.exec("ROLLBACK");
+      locker.close();
+      backupSpy?.mockRestore();
+    }
+    expect(getSqliteDatabase()).toBe(live);
+    expect(computeDatabaseContentFingerprint(live)).toBe(before);
+    }
+  });
+
+  it("should restore site name options from an actual application backup", async () => {
+    setupTestEnvironment();
+    saveStoredSiteNameOption({ name: '복원할 "근무지"' });
+    const expected = listStoredSiteNameOptions().map(({ id, name }) => ({ id, name }));
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    saveStoredSiteNameOption({ name: "백업 후 추가한 근무지" });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: backup.jsonBackupPath }).isReady).toBe(true);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: backup.jsonBackupPath });
+    await runDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: backup.jsonBackupPath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체" });
+    expect(listStoredSiteNameOptions().map(({ id, name }) => ({ id, name }))).toEqual(expected);
+  });
+
+  it("should reject malformed site name settings and unknown setting keys", async () => {
+    for (const value of ["invalid JSON", "{}", '[{"id":"site","name":3}]']) {
+      const { filePath } = await createBaselineBackupFile("bad-site-options.json", tables => {
+        tables.app_setting_entries.push({ setting_key: "site_name_options_json", value, updated_at: new Date().toISOString() });
+      });
+      const check = checkDatabaseMigrationRequirements({ backupFilePath: filePath });
+      expect(check.isReady).toBe(false);
+      expect(check.details.join(" ")).toContain("site_name_options_json");
+    }
+    const { filePath } = await createBaselineBackupFile("unknown-setting.json", tables => {
+      tables.app_setting_entries.push({ setting_key: "unregistered_setting_key", value: "[]", updated_at: new Date().toISOString() });
+    });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: filePath }).isReady).toBe(false);
   });
 
   it("should mark json migration requirements as ready without additional runtime checks", async () => {

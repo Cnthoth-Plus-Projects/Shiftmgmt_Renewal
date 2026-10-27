@@ -310,7 +310,17 @@ const excelSamplePath = path.join(outDir, "workforce-sample.xlsx");
 
     for (let i=0;i<21;i++) ok(await api("saveEmployee", { employeeCode:`SOL-PAGE-${i}`,name:`페이지 검증 ${String(i).padStart(2,"0")}`,employmentType:i%2?"계약":"정규",status:"active",rank:"사원",hireDate:"2026-01-01" }));
     await openEmployee("EMP-001"); await page.locator("#filter-keyword-input").fill("페이지 검증"); await page.waitForFunction(() => document.querySelector("#workforce-pagination")?.textContent.includes("21명"));
-    assert.equal(await page.locator("tr.workforce-row").count(),10); assert.equal(await page.locator("#btn-employees-prev").isDisabled(),true); await page.locator("#btn-employees-next").click(); assert.match(await page.locator("#workforce-pagination").innerText(), /11–20명/); await page.locator("#btn-employees-next").click(); assert.equal(await page.locator("tr.workforce-row").count(),1); assert.equal(await page.locator("#btn-employees-next").isDisabled(),true);
+    assert.equal(await page.locator("#btn-employees-prev").isDisabled(),true);
+    const pageCodes = [];
+    for (let pageIndex = 0; pageIndex < 21; pageIndex++) {
+      const rows = page.locator("tr.workforce-row");
+      assert.ok(await rows.count() > 0);
+      pageCodes.push(...await rows.evaluateAll(elements => elements.map(row => row.dataset.employeeCode)));
+      assert.ok(await page.locator("#workforce-row-slots").evaluate(viewport => viewport.scrollHeight <= viewport.clientHeight + 1));
+      if (await page.locator("#btn-employees-next").isDisabled()) break;
+      await page.locator("#btn-employees-next").click();
+    }
+    assert.equal(pageCodes.length,21); assert.equal(new Set(pageCodes).size,21);
     await page.locator("#filter-employment-type").selectOption("계약"); assert.match(await page.locator("#workforce-pagination").innerText(), /1\/1페이지/); assert.equal(await page.locator("tr.workforce-row").count(),10); await page.locator("#btn-workforce-reset-filters").click(); assert.equal(await page.locator("#filter-keyword-input").inputValue(),""); assert.equal(await page.locator("#workforce-kpis .workforce-kpi").count(),6);
 
     completedScenarios.push("S02");

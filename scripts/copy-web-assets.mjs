@@ -47,6 +47,8 @@ copyInto(path.join(root, "src", "web", "shell.css"), webOut, "셸 CSS");
 copyInto(path.join(root, "src", "web", "home.css"), webOut, "홈 CSS");
 copyInto(path.join(root, "src", "web", "access-history.css"), webOut, "활동 이력 CSS");
 copyInto(path.join(root, "src", "web", "workforce.css"), webOut, "인력 화면 CSS");
+copyInto(path.join(root, "src", "web", "data-table.css"), webOut, "공통 테이블 CSS");
+copyInto(path.join(root, "src", "web", "operations.css"), webOut, "운영 화면 CSS");
 copyInto(path.join(root, "src", "web", "common-controls.css"), webOut, "공통 입력 CSS");
 
 // 2) Pretendard — woff 항목을 뺀 생성본 + woff2 9개

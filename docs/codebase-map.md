@@ -129,6 +129,25 @@
 | `src/web/screens/workforce.ts` | 인력 관리 화면 본체(목록·상세·모달 조율) |
 | `src/web/screens/workforce-model.ts` | 인력 관리 모델(순수 함수: 날짜/시급/필터/R08 대기 실적 영향) |
 | `src/web/screens/workforce-model.test.ts` | 인력 관리 모델 단위 시험 |
+| `src/web/data-table.ts` | 공통 10개 페이지네이션, 전체 정렬/필터, 그룹화 데이터 테이블 컴포넌트 |
+| `src/web/data-table.css` | 공통 데이터 테이블 전용 스타일시트 (고정 컬럼, 조밀한 행, 페이지네이션) |
+| `src/web/operations.css` | 운영 관리 전용 스타일시트 (7개 탭, 매트릭스 표, 캔버스 뷰포트, 상세 패널) |
+| `src/web/screens/operations.ts` | 운영 관리 메인 화면 (7개 탭 조율 및 관리자 권한 가드) |
+| `src/web/screens/operations-model.ts` | 운영 관리 순수 비즈니스 검증 모델 (설정, 공휴일, 요율 매트릭스, 토큰 경로) |
+| `src/web/screens/operations-model.test.ts` | 운영 관리 순수 모델 단위 검증 시험 |
+| `src/web/screens/operations-ui.ts` | 운영 관리 UI 헬퍼 및 WorkforceDialog 기반 대화상자/메시지 모듈 |
+| `src/web/screens/operations-settings.ts` | 환경 및 운영 설정 탭 (업무폴더 6종, 규칙, 파일감시자 제어) |
+| `src/web/screens/operations-backup.ts` | DB 백업 및 JSON 마이그레이션 교체 흐름 모듈 |
+| `src/web/screens/operations-holidays.ts` | 공휴일 관리 탭 (연도별 달력, 공공데이터 API 교체, 추가/수정/삭제) |
+| `src/web/screens/operations-rates.ts` | 수당 요율 버전 관리 탭 (5x3 매트릭스, 영향도 읽기전용 분석, 활성화 확인) |
+| `src/web/screens/operations-users.ts` | 운영 사용자 관리 탭 (계정 등록/수정/삭제, 내 복구키 재발급) |
+| `src/web/screens/operations-site-names.ts` | 근무지 이름 관리 탭 (55개 목록, 등록/수정/삭제) |
+| `src/web/screens/operations-releases.ts` | 시스템 릴리즈 이력 탭 (55개 매니페스트, 필터/정렬/상세 뷰) |
+| `src/web/screens/operations-layout.ts` | 문서 양식 및 레이아웃 편집 탭 (7개 키 관리, 초안 저장, 기본값 복원) |
+| `src/web/screens/operations-layout-canvas.ts` | 양식 편집 캔버스 및 속성 제어 모듈 |
+| `src/web/screens/operations-layout-preview.ts` | 양식 실제 생성물(PDF/XLSX) 바이너리 Blob 미리보기 모듈 |
+| `scripts/ui-checks/operations-fixtures.mjs` | 운영 관리 UI 검증용 TEMP 격리 55개 픽스처 생성기 |
+| `scripts/ui-checks/operations.mjs` | 운영 관리 화면 UI 시나리오(S01~S20) 및 음성 검문(N01~N12) 자동화 러너 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 

@@ -144,6 +144,31 @@ export function sortEmployeesByWorksite(employees: EmployeeRecord[]): EmployeeRe
   });
 }
 
+export interface EmployeePageRange { start: number; end: number }
+
+/** Fit complete employee and worksite header rows into measured body space. */
+export function paginateEmployeesForHeight(
+  employees: EmployeeRecord[], bodyHeight: number, rowHeight: number, groupHeight: number
+): EmployeePageRange[] {
+  if (!employees.length) return [{ start: 0, end: 0 }];
+  const budget = Number.isFinite(bodyHeight) ? Math.max(0, bodyHeight) : 0;
+  const row = Number.isFinite(rowHeight) && rowHeight > 0 ? rowHeight : 27;
+  const group = Number.isFinite(groupHeight) ? Math.max(0, groupHeight) : 0;
+  const key = (e: EmployeeRecord) => e.currentSiteId && !e.currentSiteDeletedAt ? e.currentSiteId : "__unassigned";
+  const pages: EmployeePageRange[] = [];
+  let start = 0, used = 0, previousKey = "";
+  for (let index = 0; index < employees.length; index++) {
+    const currentKey = key(employees[index]);
+    let cost = row + (index === start || currentKey !== previousKey ? group : 0);
+    if (index > start && used + cost > budget) {
+      pages.push({ start, end: index }); start = index; used = 0; cost = row + group;
+    }
+    used += cost; previousKey = currentKey;
+  }
+  pages.push({ start, end: employees.length });
+  return pages;
+}
+
 export function filterEmployees(
   employees: EmployeeRecord[],
   options: EmployeeFilterOptions

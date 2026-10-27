@@ -9,6 +9,7 @@ export const CONTENT_SECURITY_POLICY = [
   "img-src 'self' data:",
   "font-src 'self'",
   "connect-src 'self'",
+  "frame-src blob:",
   "frame-ancestors 'none'",
   "base-uri 'none'",
   "form-action 'self'"

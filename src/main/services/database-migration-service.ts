@@ -751,7 +751,10 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
   ],
 };
 
+const SITE_NAME_OPTIONS_SETTING_KEY = "site_name_options_json";
+
 const KNOWN_SETTING_KEYS = new Set([
+  SITE_NAME_OPTIONS_SETTING_KEY,
   // 1. 설치 대상 기기의 경로 (7개)
   "pending_dir",
   "approved_dir",
@@ -1160,6 +1163,21 @@ const parseAndValidateBackupJson = (
       throw err;
     }
     seenSettingKeys.add(key);
+    if (key === SITE_NAME_OPTIONS_SETTING_KEY) {
+      try {
+        const entries: unknown = JSON.parse(String(row.value));
+        if (!Array.isArray(entries) || entries.some((entry: unknown) => {
+          if (!entry || typeof entry !== "object" || Array.isArray(entry)) return true;
+          const value = entry as Record<string, unknown>;
+          return typeof value.id !== "string" || !value.id.trim() || typeof value.name !== "string" || !value.name.trim();
+        })) throw new Error("Invalid site name list");
+      } catch {
+        const error = new Error("근무지 이름 목록(site_name_options_json)이 올바른 JSON 목록이 아닙니다.");
+        (error as Error & { code: string }).code = "CHECK_FAILED";
+        throw error;
+      }
+    }
+
 
     if (!KNOWN_SETTING_KEYS.has(key)) {
       const err = new Error(`알 수 없는 설정 키가 백업에 포함되어 있습니다: ${key}`);
@@ -1479,6 +1497,12 @@ const buildFinalAppSettingRows = (input: {
       value: sourceVal,
       updated_at: input.nowIso
     });
+  }
+
+  // 근무지 이름 사전은 설치 경로가 아닌 선택한 백업의 업무 자료다.
+  const siteNameOptions = sourceSettingMap.get(SITE_NAME_OPTIONS_SETTING_KEY);
+  if (siteNameOptions !== undefined) {
+    finalRows.push({ setting_key: SITE_NAME_OPTIONS_SETTING_KEY, value: siteNameOptions, updated_at: input.nowIso });
   }
 
   return finalRows;
@@ -1989,6 +2013,9 @@ export const runDatabaseMigrationUpdate = async (input: {
     `restore-${Date.now()}-${randomUUID()}.sqlite`
   );
 
+  // 비동기 사전 백업 중 생긴 잠금도 기존 연결을 닫기 직전에 확인한다.
+  liveDb.exec("BEGIN IMMEDIATE");
+  liveDb.exec("ROLLBACK");
   closeSqliteStorage();
 
   let warningMessages: string[] = [];

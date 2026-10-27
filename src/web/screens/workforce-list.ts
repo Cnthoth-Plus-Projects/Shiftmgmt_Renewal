@@ -1,6 +1,6 @@
 // 인력 관리 화면: 인력 목록 테이블, 필터, 정렬, 그룹 접기
 import type { EmployeeRecord, SiteRecord } from "../../shared/domain/model";
-import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite } from "./workforce-model";
+import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite, paginateEmployeesForHeight, type EmployeePageRange } from "./workforce-model";
 
 export interface WorkforceListOptions {
   container: HTMLElement;
@@ -26,7 +26,12 @@ export class WorkforceList {
   private employees: EmployeeRecord[] = [];
   private allEmployees: EmployeeRecord[] = [];
   private page = 1;
-  private readonly pageSize = 10;
+  private pages: EmployeePageRange[] = [{ start: 0, end: 0 }];
+  private bodyHeight = 0;
+  private rowHeight = 27;
+  private groupHeight = 28;
+  private resizeObserver: ResizeObserver | null = null;
+  private resizeFrame: number | null = null;
   private filterSignature = "";
   private sites: SiteRecord[] = [];
   private selectedEmployeeId: string | null = null;
@@ -58,7 +63,8 @@ export class WorkforceList {
     this.filterSignature = signature;
     this.employees = sortEmployeesByWorksite(employees);
     this.allEmployees = allEmployees ?? employees;
-    this.page = Math.min(this.page, Math.max(1, Math.ceil(employees.length / this.pageSize)));
+    this.rebuildPages();
+    this.page = Math.min(this.page, this.pages.length);
     this.sites = sites;
     if (selectedId !== undefined) {
       this.selectedEmployeeId = selectedId;
@@ -84,6 +90,8 @@ export class WorkforceList {
   }
 
   public render(): void {
+    this.resizeObserver?.disconnect();
+    if (this.resizeFrame !== null) { cancelAnimationFrame(this.resizeFrame); this.resizeFrame = null; }
     this.container.innerHTML = "";
 
     // 1. 상단 필터 바
@@ -281,6 +289,12 @@ export class WorkforceList {
     else this.tableContainer.replaceChildren(tableCard);
 
     this.renderTableRows(tbody);
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.resizeFrame !== null) cancelAnimationFrame(this.resizeFrame);
+      this.resizeFrame = requestAnimationFrame(() => { this.resizeFrame = null; this.fitToHeight(); });
+    });
+    this.resizeObserver.observe(rowSlots);
+    this.fitToHeight();
   }
 
   public renderTableRows(tbody?: HTMLElement): void {
@@ -304,7 +318,8 @@ export class WorkforceList {
     // 근무지별 그룹화
     const siteKey = (emp: EmployeeRecord) => emp.currentSiteId && !emp.currentSiteDeletedAt ? emp.currentSiteId : "__unassigned";
     const siteGroups = new Map<string, EmployeeRecord[]>();
-    for (const emp of this.employees.slice((this.page - 1) * this.pageSize, this.page * this.pageSize)) {
+    const range = this.pages[this.page - 1];
+    for (const emp of this.employees.slice(range.start, range.end)) {
       const sKey = siteKey(emp);
       if (!siteGroups.has(sKey)) {
         siteGroups.set(sKey, []);
@@ -316,7 +331,7 @@ export class WorkforceList {
     for (const [key, groupEmps] of siteGroups.entries()) {
       const siteName = key === "__unassigned" ? "미배정" : groupEmps[0].currentSiteName || "근무지명 없음";
       const totalInGroup = this.employees.filter(emp => siteKey(emp) === key).length;
-      const continued = this.employees.findIndex(emp => siteKey(emp) === key) < (this.page - 1) * this.pageSize;
+      const continued = this.employees.findIndex(emp => siteKey(emp) === key) < range.start;
       const isCollapsed = this.collapsedSites.has(key);
 
       // 그룹 헤더 행
@@ -335,8 +350,6 @@ export class WorkforceList {
       groupTr.appendChild(groupTd);
 
       const toggleCollapse = () => {
-        const slots = this.tableContainer.querySelector<HTMLElement>("#workforce-row-slots");
-        if (slots) slots.style.minHeight = `${slots.getBoundingClientRect().height}px`;
         if (this.collapsedSites.has(key)) {
           this.collapsedSites.delete(key);
         } else {
@@ -432,19 +445,22 @@ export class WorkforceList {
     const pager = this.tableContainer.querySelector<HTMLElement>("#workforce-pagination");
     if (!pager) return;
     pager.replaceChildren();
-    const total = this.employees.length, pages = Math.max(1, Math.ceil(total / this.pageSize));
+    const total = this.employees.length, pages = this.pages.length, range = this.pages[this.page - 1];
     const description = document.createElement("span"); description.setAttribute("role", "status"); description.setAttribute("aria-live", "polite");
-    description.textContent = total ? `검색 결과 ${total}명 · ${(this.page - 1) * this.pageSize + 1}–${Math.min(this.page * this.pageSize, total)}명 · ${this.page}/${pages}페이지` : "검색 결과 0명";
+    description.textContent = total ? `검색 결과 ${total}명 · ${range.start + 1}–${range.end}명 · ${this.page}/${pages}페이지` : "검색 결과 0명";
     pager.appendChild(description);
     for (const [label, delta, disabled] of [["이전 페이지", -1, this.page === 1], ["다음 페이지", 1, this.page === pages || total === 0]] as const) {
       const button = document.createElement("button"); button.type = "button"; button.className = "workforce-btn workforce-btn-secondary workforce-btn-sm";
       button.id = delta < 0 ? "btn-employees-prev" : "btn-employees-next"; button.textContent = label; button.disabled = disabled;
-      button.addEventListener("click", () => { this.page += delta; this.renderTableRows(); const first = this.employees[(this.page - 1) * this.pageSize]; if (first) this.onSelectEmployee(first.id); });
+      button.addEventListener("click", () => { this.page += delta; this.renderTableRows(); const first = this.employees[this.pages[this.page - 1].start]; if (first) this.onSelectEmployee(first.id); });
       pager.appendChild(button);
     }
   }
 
   public destroy(): void {
+    this.resizeObserver?.disconnect(); this.resizeObserver = null;
+    if (this.resizeFrame !== null) cancelAnimationFrame(this.resizeFrame);
+    this.resizeFrame = null;
     if (this.searchDebounceTimer) {
       window.clearTimeout(this.searchDebounceTimer);
       this.searchDebounceTimer = null;
@@ -457,5 +473,30 @@ export class WorkforceList {
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  private rebuildPages(): void {
+    this.pages = this.bodyHeight > 0
+      ? paginateEmployeesForHeight(this.employees, this.bodyHeight, this.rowHeight, this.groupHeight)
+      : Array.from({ length: Math.max(1, Math.ceil(this.employees.length / 10)) }, (_, i) => ({ start: i * 10, end: Math.min((i + 1) * 10, this.employees.length) }));
+  }
+
+  private fitToHeight(): void {
+    const viewport = this.tableContainer.querySelector<HTMLElement>("#workforce-row-slots");
+    const head = this.tableContainer.querySelector<HTMLElement>("thead");
+    if (!viewport?.isConnected || !head) return;
+    const row = this.tableContainer.querySelector<HTMLElement>(".workforce-row");
+    const group = this.tableContainer.querySelector<HTMLElement>(".workforce-group-row");
+    const height = window.innerWidth > 1100 ? Math.max(0, viewport.clientHeight - head.getBoundingClientRect().height - 1) : 0;
+    const rowHeight = row?.getBoundingClientRect().height || this.rowHeight;
+    const groupHeight = group?.getBoundingClientRect().height || this.groupHeight;
+    if (Math.abs(height - this.bodyHeight) < 0.25 && Math.abs(rowHeight - this.rowHeight) < 0.25 && Math.abs(groupHeight - this.groupHeight) < 0.25) return;
+    const anchor = this.selectedEmployeeId || this.employees[this.pages[this.page - 1]?.start]?.id;
+    this.bodyHeight = height; this.rowHeight = rowHeight; this.groupHeight = groupHeight;
+    this.rebuildPages();
+    const index = this.employees.findIndex(employee => employee.id === anchor);
+    const page = this.pages.findIndex(range => range.start <= index && index < range.end);
+    this.page = page >= 0 ? page + 1 : Math.min(this.page, this.pages.length);
+    this.renderTableRows();
   }
 }
