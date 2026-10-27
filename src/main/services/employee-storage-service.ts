@@ -115,6 +115,7 @@ const toEmployeeRecord = (row: Record<string, unknown>): EmployeeRecord => ({
   employeeCode: String(row.employee_code),
   name: String(row.name),
   contact: row.contact ? String(row.contact) : undefined,
+  email: row.email ? String(row.email) : undefined,
   rank: normalizeEmployeeRank(row.rank ? String(row.rank) : undefined),
   employmentType: normalizeEmploymentTypeLabel(
     row.employment_type ? String(row.employment_type) : undefined
@@ -456,6 +457,8 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
   const existingEmployeeCode = existing ? String(existing.employee_code) : "";
   let normalizedEmployeeCode = input.employeeCode.trim();
   const normalizedContact = input.contact?.trim() || null;
+  const normalizedEmail = input.email === undefined && existing ? existing.email ?? null : input.email?.trim() || null;
+  if (normalizedEmail !== null && (typeof normalizedEmail !== "string" || normalizedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail))) throw new Error("올바른 이메일 주소를 입력해 주세요.");
   const normalizedShiftGroup = normalizeTeamLabel(input.shiftGroup);
   const shouldCreateInitialAssignment = Boolean(input.siteId && normalizedShiftGroup);
   const assignmentSiteId = shouldCreateInitialAssignment ? input.siteId ?? null : null;
@@ -486,6 +489,7 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
       employee_code,
       name,
       contact,
+      email,
       rank,
       employment_type,
       status,
@@ -493,11 +497,12 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
       retire_date,
       created_at,
       updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       employee_code = excluded.employee_code,
       name = excluded.name,
       contact = excluded.contact,
+      email = excluded.email,
       rank = excluded.rank,
       employment_type = excluded.employment_type,
       status = excluded.status,
@@ -509,6 +514,7 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
     normalizedEmployeeCode,
     input.name,
     normalizedContact,
+    normalizedEmail as string | null,
     normalizedRank,
     normalizedEmploymentType,
     input.status,

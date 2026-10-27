@@ -125,6 +125,10 @@
 | `src/web/screens/access-history.ts` | 관리자 활동 이력 화면 렌더링, 필터링, G1 목록 및 G2 빈 상태 처리 |
 | `src/web/screens/access-history-model.ts` | 활동 이력 날짜 범위 검증, 배지 톤 매핑, 쿼리 구성 순수 모델 함수 |
 | `src/web/screens/access-history-model.test.ts` | 활동 이력 모델 날짜·윤년·정렬·배지 단위 시험 |
+| `src/web/workforce.css` | 인력 관리 화면 전용 스타일시트(테이블·패널·모달) |
+| `src/web/screens/workforce.ts` | 인력 관리 화면 본체(목록·상세·모달 조율) |
+| `src/web/screens/workforce-model.ts` | 인력 관리 모델(순수 함수: 날짜/시급/필터/R08 대기 실적 영향) |
+| `src/web/screens/workforce-model.test.ts` | 인력 관리 모델 단위 시험 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 
@@ -154,3 +158,5 @@
 - scripts/ui-checks/access-history-errors-observer.mjs — ERROR01..08 Playwright browser observation runner and lifecycle adapter.
 
 - U6 stale-response: access-history-stale-{semantic,observer,scenario,callback,evidence}.mjs; positive worker controller, original STALE-01..12, canonical-stale-v1.
+
+- `src/web/common-controls.ts` / `src/web/common-controls.css`: shared select popovers and bounded date calendar for all menus and dialogs; initialized by app.ts.

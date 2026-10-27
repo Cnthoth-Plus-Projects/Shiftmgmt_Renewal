@@ -1210,8 +1210,8 @@ describe("database-migration-service", () => {
   });
 
 
-  // --- C02: 40표 456열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
-  it("C02: should verify 40 tables / 456 columns contract against isolated DB PRAGMA table_info", async () => {
+  // --- C02: 40표 457열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
+  it("C02: should verify 40 tables / 457 columns contract against isolated DB PRAGMA table_info", async () => {
     const inspectDbDir = path.resolve(testRoot, "pragma-inspect");
     mkdirSync(inspectDbDir, { recursive: true });
     const inspectDbPath = path.resolve(inspectDbDir, "inspect.sqlite");
@@ -1247,9 +1247,9 @@ describe("database-migration-service", () => {
       }
     }
 
-    // 40표 456열, TEXT 378, INTEGER 72, REAL 6, 명시적 NOT NULL 277 실측 일치 단언
-    expect(totalCols).toBe(456);
-    expect(textCols).toBe(378);
+    // 40표 457열, TEXT 379, INTEGER 72, REAL 6, 명시적 NOT NULL 277 실측 일치 단언
+    expect(totalCols).toBe(457);
+    expect(textCols).toBe(379);
     expect(intCols).toBe(72);
     expect(realCols).toBe(6);
     expect(notNullCols).toBe(277);
@@ -1282,7 +1282,7 @@ describe("database-migration-service", () => {
       }));
     };
 
-    // 40개 표 456개 열 각각에 대해 타입 위반 및 NOT NULL 위반 검사
+    // 40개 표 457개 열 각각에 대해 타입 위반 및 NOT NULL 위반 검사
     for (const t of tables) {
       if (t === "app_setting_entries") continue; // 업무 설정은 전용 테스트로 검증
 
@@ -1897,4 +1897,16 @@ describe("database-migration-service", () => {
     const concurrentSite = checkDb.prepare("SELECT id FROM sites WHERE id = 'site-during-await'").get();
     expect(concurrentSite).toBeDefined();
   });
+  it.each([false, true])("restores employee email and legacy backups without that column (email=%s)", async (hasEmail) => {
+    const { filePath } = await createBaselineBackupFile(`employee-email-${hasEmail}.json`, tables => {
+      tables.employees = [{ id: "email-restore", employee_code: "EMAIL-RESTORE", name: "백업 인력", contact: "010-0000-1001", rank: "사원", employment_type: "정규", status: "active", hire_date: "2023-01-01", retire_date: null, deleted_at: null, created_at: "2023-01-01T00:00:00Z", updated_at: null, ...(hasEmail ? { email: "restore@example.invalid" } : {}) }];
+    });
+    const preview = previewDatabaseMigrationUpdate({ backupFilePath: filePath, userDataPath, env });
+    await runDatabaseMigrationUpdate({ backupFilePath: filePath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체", userDataPath, env });
+    expect(getSqliteDatabase()!.prepare("SELECT name, contact, email FROM employees WHERE id = ?").get("email-restore")).toEqual({ name: "백업 인력", contact: "010-0000-1001", email: hasEmail ? "restore@example.invalid" : null });
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    const exported = JSON.parse(readFileSync(backup.jsonBackupPath, "utf8"));
+    expect(exported.tables.employees.find((row: { id: string }) => row.id === "email-restore").email).toBe(hasEmail ? "restore@example.invalid" : null);
+  });
+
 });

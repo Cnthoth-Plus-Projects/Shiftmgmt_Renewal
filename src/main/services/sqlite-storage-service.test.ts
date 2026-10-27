@@ -314,4 +314,19 @@ describe("sqlite-storage-service", () => {
     closeSqliteStorage();
     resetSqliteStorageForTest();
   });
+  it("adds nullable employee email to an existing database without changing rows and is repeatable", () => {
+    const dbPath = path.resolve(process.cwd(), "artifacts", "tests", "email-upgrade.test.sqlite");
+    try {
+      initializeSqliteStorage({ dbPath });
+      const db = getSqliteDatabase()!;
+      db.exec("ALTER TABLE employees DROP COLUMN email");
+      db.prepare("INSERT INTO employees (id, employee_code, name, contact, employment_type, status, hire_date, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)").run("legacy-email", "LEGACY-EMAIL", "기존 인력", "010-0000-0001", "정규", "active", "2023-01-01", "2023-01-01T00:00:00Z");
+      closeSqliteStorage(); initializeSqliteStorage({ dbPath });
+      expect(getSqliteDatabase()!.prepare("SELECT name, contact, email FROM employees WHERE id = ?").get("legacy-email")).toEqual({ name: "기존 인력", contact: "010-0000-0001", email: null });
+      getSqliteDatabase()!.prepare("UPDATE employees SET email = ? WHERE id = ?").run("old@example.invalid", "legacy-email");
+      closeSqliteStorage(); initializeSqliteStorage({ dbPath });
+      expect(getSqliteDatabase()!.prepare("SELECT email FROM employees WHERE id = ?").get("legacy-email")).toEqual({ email: "old@example.invalid" });
+    } finally { resetSqliteStorageForTest(); }
+  });
+
 });

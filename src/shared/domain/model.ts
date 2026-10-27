@@ -67,6 +67,7 @@ export interface EmployeeRecord extends AuditFields {
   employeeCode: string;
   name: string;
   contact?: string;
+  email?: string;
   rank?: EmployeeRank;
   employmentType: string;
   status: EmploymentStatus;

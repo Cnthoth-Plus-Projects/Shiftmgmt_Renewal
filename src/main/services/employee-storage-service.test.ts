@@ -321,4 +321,16 @@ describe("employee-storage-service", () => {
       "퇴사 처리된 인력만 삭제할 수 있습니다."
     );
   });
+  it("persists employee email, preserves omitted values for old callers and explicitly clears empty email", () => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "employees.test.sqlite") });
+    const saved = saveStoredEmployee({ employeeCode: "EMAIL-01", name: "이메일 검증", employmentType: "정규", status: "active", hireDate: "2026-01-01", email: "  person@example.invalid  ", contact: "010-0000-1000" });
+    expect(saved.email).toBe("person@example.invalid");
+    const edited = saveStoredEmployee({ ...saved, contact: "010-0000-2000", email: undefined });
+    expect(edited.email).toBe("person@example.invalid");
+    expect(listStoredEmployees().find(e => e.id === saved.id)?.contact).toBe("010-0000-2000");
+    expect(() => saveStoredEmployee({ ...edited, email: "invalid address" })).toThrow("이메일");
+    expect(listStoredEmployees().find(e => e.id === saved.id)?.email).toBe("person@example.invalid");
+    expect(saveStoredEmployee({ ...edited, email: "" }).email).toBeUndefined();
+  });
+
 });

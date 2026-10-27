@@ -85,7 +85,7 @@ const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
     "id", "site_code", "name", "customer_name", "status", "timezone", "deleted_at", "created_at", "updated_at"
   ],
   employees: [
-    "id", "employee_code", "name", "contact", "rank", "employment_type", "status", "hire_date", "retire_date", "deleted_at", "created_at", "updated_at"
+    "id", "employee_code", "name", "contact", "email", "rank", "employment_type", "status", "hire_date", "retire_date", "deleted_at", "created_at", "updated_at"
   ],
   employee_employment_periods: [
     "id", "employee_id", "start_date", "end_date", "closure_provenance_complete", "created_at", "updated_at"
@@ -228,6 +228,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "employee_code", declaredType: "TEXT", notNull: true },
     { name: "name", declaredType: "TEXT", notNull: true },
     { name: "contact", declaredType: "TEXT", notNull: false },
+    { name: "email", declaredType: "TEXT", notNull: false },
     { name: "rank", declaredType: "TEXT", notNull: false },
     { name: "employment_type", declaredType: "TEXT", notNull: true },
     { name: "status", declaredType: "TEXT", notNull: true },
@@ -1120,6 +1121,12 @@ const parseAndValidateBackupJson = (
       throw err;
     }
 
+    // Legacy v1 backups predate employee email; normalize only that optional column.
+    if (tableName === "employees") {
+      for (const row of rows) {
+        if (row && typeof row === "object" && !Array.isArray(row) && !("email" in row)) row.email = null;
+      }
+    }
     validateTableRowsSchema(tableName, rows as Array<Record<string, unknown>>);
   }
 

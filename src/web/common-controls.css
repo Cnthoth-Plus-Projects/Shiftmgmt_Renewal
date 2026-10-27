@@ -1,0 +1,40 @@
+/* One control language for every menu and modal, including future native fields. */
+:root { --control-height: 36px; --control-radius: 8px; --control-border: #d4dbe6; --control-ring: 0 0 0 3px #3e56b619; }
+body select:not([multiple]):not([size]), body select[size="1"], body input[type="date"] {
+  appearance: none; -webkit-appearance: none; height: var(--control-height); min-height: var(--control-height);
+  padding: 0 34px 0 12px; border: 1px solid var(--control-border); border-radius: var(--control-radius);
+  background-color: var(--surface, #fff); color: var(--text); font: inherit; font-size: 13px;
+  box-shadow: 0 1px 2px #18304705; transition: border-color .15s, box-shadow .15s; cursor: pointer;
+  background-repeat: no-repeat; background-position: right 11px center; background-size: 16px;
+}
+body select:not([multiple]):not([size]), body select[size="1"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2364748b' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 8 4 4 4-4'/%3E%3C/svg%3E"); }
+body input[type="date"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2364748b' stroke-width='1.5' stroke-linecap='round'%3E%3Crect x='3' y='4.5' width='14' height='13' rx='2.5'/%3E%3Cpath d='M6.5 2.5v4m7-4v4M3 9h14m-10 3h2m2 0h2m-6 3h2'/%3E%3C/svg%3E"); }
+body input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
+body select:hover:not(:disabled), body input[type="date"]:hover:not(:disabled):not(:read-only) { border-color: #98a6c1; }
+body select:focus-visible, body input[type="date"]:focus-visible, body select[aria-expanded="true"], body input[type="date"][aria-expanded="true"] { outline: none; border-color: var(--accent); box-shadow: var(--control-ring); }
+body select:disabled, body input[type="date"]:disabled, body input[type="date"]:read-only { background-color: #f3f5f8; color: #939ba9; border-color: #e3e7ed; cursor: not-allowed; box-shadow: none; }
+.ui-control-popup { position: fixed; z-index: 12000; margin: 0; padding: 6px; border: 1px solid #e2e7ef; border-radius: 12px; background: #fff; color: var(--text); box-shadow: 0 12px 36px #172c4d24, 0 2px 8px #172c4d0a; font: 13px/1.5 Pretendard, "Malgun Gothic", sans-serif; }
+.ui-listbox { max-height: min(320px, 55vh); overflow-y: auto; overscroll-behavior: contain; }
+.ui-select-option { position: relative; padding: 9px 32px 9px 11px; margin: 1px 0; border-radius: 7px; min-height: 36px; cursor: pointer; overflow-wrap: anywhere; }
+.ui-select-option.is-active { background: #f1f4fa; }
+.ui-select-option[aria-selected="true"] { color: var(--accent); font-weight: 600; background: var(--accent-subtle); }
+.ui-select-option[aria-selected="true"]::after { content: "✓"; position: absolute; right: 11px; top: 9px; }
+.ui-select-option[aria-disabled="true"] { color: #a5adbb; background: transparent; cursor: not-allowed; }
+.ui-select-empty { padding: 10px; color: var(--text-sub); }
+.ui-dialog { padding: 14px; }
+.ui-calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.ui-calendar-header strong { font-size: 14px; }
+.ui-calendar-button { border: 0; background: transparent; border-radius: 7px; min-width: 32px; min-height: 32px; font: inherit; color: var(--text); cursor: pointer; }
+.ui-calendar-button:hover:not(:disabled) { background: var(--accent-subtle); color: var(--accent); }
+.ui-calendar-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.ui-calendar-header .ui-calendar-button { font-size: 25px; line-height: 1; }
+.ui-calendar-button:disabled { color: #c2c8d2; cursor: not-allowed; }
+.ui-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; text-align: center; }
+.ui-calendar-weekday { padding: 3px 0 6px; color: #8893a5; font-size: 11px; }
+.ui-calendar-day { font-size: 12px; font-variant-numeric: tabular-nums; }
+.ui-calendar-day.is-outside { color: #aab3c1; }
+.ui-calendar-day.is-today { box-shadow: inset 0 0 0 1px #bcc8ed; color: var(--accent); }
+.ui-calendar-day.is-selected { background: var(--accent); color: #fff; font-weight: 700; }
+.ui-calendar-footer { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 10px; }
+.ui-calendar-footer .ui-calendar-button { padding: 0 9px; font-size: 12px; color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { body select, body input[type="date"] { transition: none; } }
