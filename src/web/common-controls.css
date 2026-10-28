@@ -38,3 +38,35 @@ body select:disabled, body input[type="date"]:disabled, body input[type="date"]:
 .ui-calendar-footer { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 10px; }
 .ui-calendar-footer .ui-calendar-button { padding: 0 9px; font-size: 12px; color: var(--accent); }
 @media (prefers-reduced-motion: reduce) { body select, body input[type="date"] { transition: none; } }
+/* Shared table footer and bounded numbered pagination for every list screen. */
+.pagination-footer.sites-pagination,
+.pagination-footer.workforce-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line, #e2e5ea);
+  background: var(--surface, #fff);
+  font-size: 12px;
+}
+.pagination-footer [role="status"] { margin-right: auto; color: var(--text-sub, #4b5563); }
+.pagination-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; max-width: 100%; }
+.pagination-button {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 7px;
+  border: 1px solid var(--line, #e2e5ea);
+  border-radius: 5px;
+  background: var(--surface, #fff);
+  color: var(--text, #1f2430);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pagination-button[aria-current="page"] { background: var(--accent, #3e56b6); border-color: var(--accent, #3e56b6); color: #fff; font-weight: 600; }
+.pagination-button:disabled { opacity: .4; cursor: default; }
+.pagination-button:focus-visible { outline: 2px solid var(--accent, #3e56b6); outline-offset: 2px; }
+.pagination-ellipsis { min-width: 20px; text-align: center; color: var(--text-sub, #4b5563); }

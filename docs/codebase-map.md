@@ -148,6 +148,27 @@
 | `src/web/screens/operations-layout-preview.ts` | 양식 실제 생성물(PDF/XLSX) 바이너리 Blob 미리보기 모듈 |
 | `scripts/ui-checks/operations-fixtures.mjs` | 운영 관리 UI 검증용 TEMP 격리 55개 픽스처 생성기 |
 | `scripts/ui-checks/operations.mjs` | 운영 관리 화면 UI 시나리오(S01~S20) 및 음성 검문(N01~N12) 자동화 러너 |
+| `src/web/sites.css` | 근무지 관리 전용 scoped dense 스타일시트 (목록·상세·마법사·조직구성·시뮬레이션) |
+| `src/web/pagination.ts` | 모든 목록 메뉴의 공통 번호형 페이지 이동·주변 번호/생략·처음/이전/다음/마지막 제어 |
+| `src/web/pagination.test.ts` | 공통 페이지 번호 범위·경계·대량 번호·축소·빈 결과 회귀 시험 |
+| `src/web/screens/sites.ts` | 근무지 관리 메인 화면 (목록/마법사 화면 조율, 조회/세션/권한 수명주기) |
+| `src/web/screens/sites-model.ts` | 근무지 목록·정렬·그룹·페이징·KPI·신원매핑 및 조 정원 검증 순수 모델 |
+| `src/web/screens/sites-model.test.ts` | 근무지 모델 단위 시험 (페이징·KPI·정원검사·템플릿·비파괴토글·실행취소) |
+| `src/web/screens/sites-pattern-model.ts` | 패턴·팔레트·비파괴 전이·DTO 직렬화 및 Undo/Redo 순수 모델 |
+| `src/web/screens/sites-list.ts` | 근무지 목록 화면 (고정 열, 고객사 그룹핑, 검색·필터, 페이징, KPI) |
+| `src/web/screens/sites-detail.ts` | 근무지 우측 상세 패널 (버전 이력 페이징, 조별 명단 요약, 수정·삭제·비활성화) |
+| `src/web/screens/sites-wizard.ts` | 근무지 등록/수정 2단계 마법사 조율 컨테이너 (초안·스텝퍼·이탈경고) |
+| `src/web/screens/sites-wizard-basics.ts` | 마법사 1-A 기본 설정 및 빠른 시작 (템플릿·설정 복사) |
+| `src/web/screens/sites-wizard-palette.ts` | 마법사 1-B 근무/휴무 유형 및 근무·휴게시간 팔레트 |
+| `src/web/screens/sites-wizard-pattern.ts` | 마법사 1-B 교대 패턴 스트립 페인팅, 개별/공휴일 토글 및 3개월 달력 연결 |
+| `src/web/screens/sites-wizard-review.ts` | 마법사 1-C 입력 유효성 종합 검토, 오류 위치 바로가기 및 요약표 |
+| `src/web/screens/sites-organization.ts` | 마법사 2단계 조직 구성 (대기 인력 풀, 조별 보드, 정원 검사, 드래그앤드롭) |
+| `src/web/screens/sites-import.ts` | 엑셀 패턴 역추출 모달 (관리자 전용 대화상자, 패턴 분석 및 초안 반영) |
+| `src/web/screens/sites-simulation.ts` | 기존 도메인 생성기 기반 3개월 시뮬레이션 어댑터 및 조별 가상 대표 생성기 |
+| `src/web/screens/sites-simulation.test.ts` | 시뮬레이션 어댑터와 실제 도메인 월간 근무표 생성 결과 패리티 시험 |
+| `src/web/screens/sites-commit.ts` | 근무지·패턴·배정 순차 저장 실행기 (부분 실패 보존 및 재개) |
+| `scripts/ui-checks/sites-fixtures.mjs` | 근무지 관리 UI 검증용 TEMP 격리 55곳/55명/55버전 픽스처 생성기 |
+| `scripts/ui-checks/sites.mjs` | 근무지 관리 화면 UI 시나리오(S01~S20) 및 음성 검문(N01~N12) 자동화 러너 |
 
 ## 만들어지는 폴더(저장소에는 담지 않는다)
 

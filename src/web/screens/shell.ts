@@ -5,7 +5,8 @@ import { HomeScreen } from "./home";
 import { AccessHistoryScreen } from "./access-history";
 import { WorkforceScreen } from "./workforce";
 import { OperationsScreen } from "./operations";
-import { showConfirm } from "./operations-ui";
+import { SitesScreen } from "./sites";
+import { showConfirm, showNotice } from "./operations-ui";
 
 export interface ShellScreenOptions {
   container: HTMLElement;
@@ -24,6 +25,7 @@ interface NavMenuItem {
 
 const MENU_ITEMS: NavMenuItem[] = [
   // 준비
+  { id: "sites", label: "근무지 관리", icon: "domain", group: "ready" },
   { id: "schedule-create", label: "근무표 생성", icon: "calendar_add_on", group: "ready" },
   { id: "performance-intake", label: "실적 가져오기", icon: "upload_file", group: "ready" },
   // 운영
@@ -53,6 +55,7 @@ export class ShellScreen {
   private accessHistoryScreen: AccessHistoryScreen | null = null;
   private workforceScreen: WorkforceScreen | null = null;
   private operationsScreen: OperationsScreen | null = null;
+  private sitesScreen: SitesScreen | null = null;
   private syncObserver: MutationObserver | null = null;
 
   constructor(options: ShellScreenOptions) {
@@ -144,6 +147,10 @@ export class ShellScreen {
       this.operationsScreen.destroy();
       this.operationsScreen = null;
     }
+    if (this.sitesScreen) {
+      this.sitesScreen.destroy();
+      this.sitesScreen = null;
+    }
     if (this.statusBar) {
       this.statusBar.destroy();
       this.statusBar = null;
@@ -152,6 +159,33 @@ export class ShellScreen {
   }
 
   private navigateWithDirtyCheck(onNavigate: () => void): void {
+    if (this.sitesScreen && this.sitesScreen.isBusy()) {
+      showNotice(
+        "작업 진행 중",
+        "근무지 및 패턴 저장 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.",
+        "warning"
+      );
+      return;
+    }
+    if (this.sitesScreen && this.sitesScreen.isDirty()) {
+      showConfirm({
+        title: "저장되지 않은 변경사항",
+        message: "근무지 관리에 저장되지 않은 변경사항이 있습니다. 다른 화면으로 이동하시겠습니까?",
+        subMessage: "이동하면 작성 중인 마법사 초안 내용이 모두 사라집니다.",
+        confirmLabel: "이동하기 (변경사항 삭제)",
+        cancelLabel: "계속 편집",
+        variant: "danger",
+        onConfirm: () => {
+          if (this.sitesScreen) {
+            this.sitesScreen.destroy();
+            this.sitesScreen = null;
+          }
+          onNavigate();
+        }
+      });
+      return;
+    }
+
     if (this.operationsScreen && this.operationsScreen.isDirty()) {
       showConfirm({
         title: "저장되지 않은 변경사항",
@@ -309,6 +343,7 @@ export class ShellScreen {
         btn.addEventListener("click", () => {
           this.navigateWithDirtyCheck(() => {
             if (
+              item.id === "sites" ||
               item.id === "access-history" ||
               item.id === "workforce" ||
               item.id === "operations" ||
@@ -384,8 +419,9 @@ export class ShellScreen {
     logoutBtn.type = "button";
     logoutBtn.className = "btn-secondary btn-logout";
     logoutBtn.textContent = "로그아웃";
-    logoutBtn.addEventListener("click", async () => {
+    logoutBtn.addEventListener("click", () => this.navigateWithDirtyCheck(async () => {
       logoutBtn.disabled = true;
+      this.sitesScreen?.destroy();this.sitesScreen=null;
       if (this.homeScreen) {
         this.homeScreen.destroy();
         this.homeScreen = null;
@@ -435,7 +471,7 @@ export class ShellScreen {
           logoutBtn.textContent = "로그아웃";
         }, 2000);
       }
-    });
+    }));
 
     right.appendChild(roleBadge);
     right.appendChild(userText);
@@ -481,6 +517,34 @@ export class ShellScreen {
         },
       });
       this.accessHistoryScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "근무지 관리") {
+      this.sitesScreen = new SitesScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+        onNavigateWorkforce: () => {
+          this.currentTitle = "인력 관리";
+          this.noticeMessage = "";
+          const navList = this.container.querySelector<HTMLElement>(".nav-list");
+          const workforceBtn = navList?.querySelector<HTMLButtonElement>('button[data-id="workforce"]');
+          if (navList && workforceBtn) {
+            this.updateActiveNav(navList, workforceBtn);
+          }
+          this.refreshMain();
+        }
+      });
+      void this.sitesScreen.render();
+      void this.sitesScreen.loadData();
       return main;
     }
 
@@ -597,6 +661,10 @@ export class ShellScreen {
     if (this.operationsScreen) {
       this.operationsScreen.destroy();
       this.operationsScreen = null;
+    }
+    if (this.sitesScreen) {
+      this.sitesScreen.destroy();
+      this.sitesScreen = null;
     }
 
     const oldMain = this.container.querySelector("#main-content");

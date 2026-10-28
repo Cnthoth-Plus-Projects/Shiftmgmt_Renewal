@@ -1,6 +1,7 @@
 // 인력 관리 화면: 인력 목록 테이블, 필터, 정렬, 그룹 접기
 import type { EmployeeRecord, SiteRecord } from "../../shared/domain/model";
-import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite, paginateEmployeesForHeight, type EmployeePageRange } from "./workforce-model";
+import { renderPagination, paginateGroupsForHeight, measurePaginationBody } from "../pagination";
+import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite, type EmployeePageRange } from "./workforce-model";
 
 export interface WorkforceListOptions {
   container: HTMLElement;
@@ -282,7 +283,7 @@ export class WorkforceList {
     tableCard.appendChild(rowSlots);
     const pager = document.createElement("nav");
     pager.id = "workforce-pagination";
-    pager.className = "workforce-pagination";
+    pager.className = "workforce-pagination pagination-footer";
     pager.setAttribute("aria-label", "인력 목록 페이지");
     tableCard.appendChild(pager);
     if (this.tableContainer === this.container) this.container.appendChild(tableCard);
@@ -294,6 +295,7 @@ export class WorkforceList {
       this.resizeFrame = requestAnimationFrame(() => { this.resizeFrame = null; this.fitToHeight(); });
     });
     this.resizeObserver.observe(rowSlots);
+    this.resizeObserver.observe(table);
     this.fitToHeight();
   }
 
@@ -449,12 +451,9 @@ export class WorkforceList {
     const description = document.createElement("span"); description.setAttribute("role", "status"); description.setAttribute("aria-live", "polite");
     description.textContent = total ? `검색 결과 ${total}명 · ${range.start + 1}–${range.end}명 · ${this.page}/${pages}페이지` : "검색 결과 0명";
     pager.appendChild(description);
-    for (const [label, delta, disabled] of [["이전 페이지", -1, this.page === 1], ["다음 페이지", 1, this.page === pages || total === 0]] as const) {
-      const button = document.createElement("button"); button.type = "button"; button.className = "workforce-btn workforce-btn-secondary workforce-btn-sm";
-      button.id = delta < 0 ? "btn-employees-prev" : "btn-employees-next"; button.textContent = label; button.disabled = disabled;
-      button.addEventListener("click", () => { this.page += delta; this.renderTableRows(); const first = this.employees[this.pages[this.page - 1].start]; if (first) this.onSelectEmployee(first.id); });
-      pager.appendChild(button);
-    }
+    pager.appendChild(renderPagination({currentPage:this.page,totalPages:pages,totalCount:total,idPrefix:"employees",label:"인력 목록 페이지 이동",onPageChange:page=>{
+      this.page=page;this.renderTableRows();const first=this.employees[this.pages[this.page-1].start];if(first)this.onSelectEmployee(first.id);
+    }}));
   }
 
   public destroy(): void {
@@ -476,9 +475,7 @@ export class WorkforceList {
   }
 
   private rebuildPages(): void {
-    this.pages = this.bodyHeight > 0
-      ? paginateEmployeesForHeight(this.employees, this.bodyHeight, this.rowHeight, this.groupHeight)
-      : Array.from({ length: Math.max(1, Math.ceil(this.employees.length / 10)) }, (_, i) => ({ start: i * 10, end: Math.min((i + 1) * 10, this.employees.length) }));
+    this.pages = paginateGroupsForHeight(this.employees, this.bodyHeight, this.rowHeight, this.groupHeight, employee => employee.currentSiteId && !employee.currentSiteDeletedAt ? employee.currentSiteId : "__unassigned");
   }
 
   private fitToHeight(): void {
@@ -487,7 +484,7 @@ export class WorkforceList {
     if (!viewport?.isConnected || !head) return;
     const row = this.tableContainer.querySelector<HTMLElement>(".workforce-row");
     const group = this.tableContainer.querySelector<HTMLElement>(".workforce-group-row");
-    const height = window.innerWidth > 1100 ? Math.max(0, viewport.clientHeight - head.getBoundingClientRect().height - 1) : 0;
+    const height = measurePaginationBody(viewport, head);
     const rowHeight = row?.getBoundingClientRect().height || this.rowHeight;
     const groupHeight = group?.getBoundingClientRect().height || this.groupHeight;
     if (Math.abs(height - this.bodyHeight) < 0.25 && Math.abs(rowHeight - this.rowHeight) < 0.25 && Math.abs(groupHeight - this.groupHeight) < 0.25) return;
