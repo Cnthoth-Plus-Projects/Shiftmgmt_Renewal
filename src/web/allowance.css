@@ -1,0 +1,890 @@
+/* ==========================================================================
+   수당 관리 화면 스타일 (UI-06)
+   - CSP strict 준수: 인라인 스타일(style=) 배제
+   - 범위 격리: .allowance- 접두사 네임스페이스
+   - 4대 KPI 카드 (정규/조기/총지급액/인원·건수) 전체폭 레이아웃
+   - 좌측 테이블 + 우측 380px 상세 패널 2단 그리드 (padding 16px / gap 12px)
+   ========================================================================== */
+
+html:has(#allowance-screen-root),
+body:has(#allowance-screen-root) {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+body:has(#allowance-screen-root) .page-content,
+.page-content:has(#allowance-screen-root) {
+  padding: 0 !important;
+  overflow: hidden !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.allowance-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #f8fafc;
+  color: #1e293b;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+/* 1. 상단 4대 KPI 요약 바 (R02: 정규금액/조기금액/총액/인원·건수, 가로 잘림 0) */
+.allowance-kpi-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.allowance-kpi-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.allowance-kpi-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.allowance-kpi-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.allowance-kpi-sub {
+  font-size: 11px;
+  color: #475569;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.allowance-kpi-card.kpi-regular .allowance-kpi-value {
+  color: #2563eb;
+}
+
+.allowance-kpi-card.kpi-early .allowance-kpi-value {
+  color: #d97706;
+}
+
+.allowance-kpi-card.kpi-total .allowance-kpi-value {
+  color: #16a34a;
+}
+
+.allowance-kpi-card.kpi-count .allowance-kpi-value {
+  color: #0f172a;
+}
+
+/* 2. 상단 툴바 (필터, 검색, 탭, 액션 버튼) */
+.allowance-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.allowance-toolbar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.allowance-tabs-group {
+  display: inline-flex;
+  background-color: #f1f5f9;
+  padding: 3px;
+  border-radius: 6px;
+  gap: 2px;
+}
+
+.allowance-tab-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.allowance-tab-btn:hover {
+  color: #0f172a;
+}
+
+.allowance-tab-btn.active {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.allowance-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.allowance-role-hint {
+  font-size: 12px;
+  color: #b45309;
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.allowance-toolbar-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.allowance-control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.allowance-control-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.allowance-control-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.allowance-select,
+.allowance-input {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.allowance-select:focus,
+.allowance-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.allowance-search-input {
+  width: 170px;
+}
+
+/* 버튼 스타일 (R15: 일반 안전 버튼 흰색 유지) */
+.allowance-btn {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid #cbd5e1;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.allowance-btn:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.allowance-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.allowance-btn.primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.allowance-btn.primary:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.allowance-btn.success {
+  background-color: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+.allowance-btn.success:hover:not(:disabled) {
+  background-color: #15803d;
+  border-color: #15803d;
+}
+
+.allowance-btn.danger {
+  background-color: #ffffff;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.allowance-btn.danger:hover:not(:disabled) {
+  background-color: #fef2f2;
+  border-color: #dc2626;
+}
+
+.allowance-btn.secondary {
+  background-color: #ffffff;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.allowance-btn.icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
+.allowance-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* 3. 본문 컨테이너 및 2단 레이아웃 (좌측 테이블 + 우측 380px 상세 패널) */
+#allowance-body-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.allowance-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* 4. 좌측 테이블 카드 */
+.allowance-left-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.allowance-table-viewport {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  min-height: 0;
+  position: relative;
+}
+
+.allowance-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  text-align: left;
+}
+
+.allowance-table th {
+  position: sticky;
+  top: 0;
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.allowance-table td {
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.allowance-cell-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* 밀도별 패딩 */
+.density-compact .allowance-table td {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.density-compact .allowance-table th {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.density-spacious .allowance-table td {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.density-spacious .allowance-table th {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* 그룹 헤더 행 (접기·전체건수·이어서 표시) */
+.allowance-group-row {
+  background-color: #f1f5f9;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  color: #334155;
+}
+
+.allowance-group-row:hover {
+  background-color: #e2e8f0;
+}
+
+.allowance-group-cell {
+  padding: 6px 12px !important;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #cbd5e1 !important;
+}
+
+.allowance-group-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.allowance-group-title-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.allowance-group-chevron {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.allowance-group-continued {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+  background-color: #dbeafe;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.allowance-group-count-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 8px;
+  background-color: #e2e8f0;
+  color: #334155;
+  border-radius: 10px;
+}
+
+/* 데이터 행 */
+.allowance-data-row {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.allowance-data-row:hover {
+  background-color: #f8fafc;
+}
+
+.allowance-data-row.selected {
+  background-color: #eef1fb !important;
+}
+
+.allowance-data-row:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* 테이블 푸터 (공통 페이지네이션 상시 표시) */
+.allowance-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.allowance-footer-summary {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* 5. 우측 상세 패널 카드 (380px 고정 폭) */
+.allowance-right-col {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  min-width: 380px;
+  max-width: 380px;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.allowance-detail-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.allowance-detail-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.allowance-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.allowance-detail-card {
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.allowance-detail-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.allowance-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.allowance-detail-key {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.allowance-detail-val {
+  color: #0f172a;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+
+.allowance-detail-actions {
+  padding: 12px 16px;
+  border-top: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.allowance-locked-notice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #475569;
+  background-color: #f1f5f9;
+  padding: 8px 10px;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 6. 상태 배지 (한국어 표기) */
+.allowance-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.badge-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.badge-approved {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.badge-locked,
+.badge-proposal-approved {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.badge-early-payout {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+}
+
+/* 7. 이력 화면 스타일 */
+.allowance-history-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.allowance-history-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.allowance-history-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.allowance-history-section {
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.allowance-history-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.allowance-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.allowance-file-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.allowance-path-code {
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #1e293b;
+  user-select: all;
+  word-break: break-all;
+}
+
+.allowance-copy-feedback {
+  font-size: 11px;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.allowance-copy-feedback.error {
+  color: #dc2626;
+}
+
+.allowance-subtext {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* 8. 공용 WorkforceDialog 연동 스타일 (CSP 준수: inline width 없이 CSS 클래스로만 제어) */
+.allowance-modal-backdrop .workforce-modal-box.allowance-modal-box {
+  width: 540px;
+  max-width: 92vw;
+  max-height: 88vh;
+}
+
+.allowance-modal-backdrop .workforce-modal-box.allowance-modal-box-large {
+  width: 820px;
+  max-width: 94vw;
+  max-height: 90vh;
+}
+
+.allowance-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.allowance-modal-inline-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 4px;
+}
+
+.allowance-alert {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.allowance-alert.error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.allowance-alert.warning {
+  background-color: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.allowance-alert.info {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.alert-spaced {
+  margin: 14px;
+}
+
+/* 9. 반응형 최적화 (1366px 이상은 우측 380px 고정 유지, 소형 창에서 가로 넘침 방지) */
+@media (max-width: 1100px) {
+  .allowance-content-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+  .allowance-right-col {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+  }
+}
+
+/* 유틸리티 */
+[hidden] {
+  display: none !important;
+}
+
+.cell-chk {
+  width: 38px !important;
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.text-blue {
+  color: #2563eb !important;
+}
+
+.mt-4 {
+  margin-top: 4px !important;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+/* Final history review: compact rows and height-aware pages, isolated from result tables. */
+.allowance-history-dense .allowance-history-toolbar { padding: 6px 10px; gap: 6px; }
+.allowance-history-dense .allowance-history-viewport {
+  flex: 1; min-height: 0; overflow-x: auto; overflow-y: hidden;
+}
+.allowance-history-dense .allowance-table {
+  table-layout: fixed; min-width: 1080px; font-size: 12px;
+}
+.allowance-history-dense .allowance-table th,
+.allowance-history-dense .allowance-table td {
+  height: 32px; box-sizing: border-box; padding: 3px 8px; line-height: 18px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.allowance-history-dense .allowance-table th:last-child { width: 260px; }
+.allowance-history-dense .allowance-calculation-history-table th:first-child { width: 160px; }
+.allowance-history-dense .allowance-calculation-history-table th:nth-child(3) { width: 130px; }
+.allowance-history-dense .allowance-btn { height: 24px; min-height: 24px; padding: 2px 7px; font-size: 12px; line-height: 18px; }
+.allowance-history-dense .allowance-badge { padding: 1px 5px; line-height: 18px; font-size: 11px; }
+.allowance-history-rate { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.allowance-history-rate > span:first-child { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.allowance-history-rate > button, .allowance-history-readonly { flex-shrink: 0; }
+.allowance-history-readonly { color: #64748b; font-size: 11px; }
+.allowance-history-dense .allowance-table-footer { padding: 4px 8px; gap: 6px; }
+.allowance-history-columns { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); overflow: hidden; }
+.allowance-history-columns .allowance-history-section {
+  display: flex; flex-direction: column; min-height: 0; padding: 8px 10px;
+}
+.allowance-history-columns .allowance-history-section-title { flex-shrink: 0; margin-bottom: 5px; }
+.allowance-history-columns .allowance-table { min-width: 1120px; }
+.allowance-history-columns .allowance-table th:last-child { width: 300px; }
+.allowance-history-detail-overlay .workforce-modal-box { width: min(960px, 94vw); }
+.allowance-history-detail { font-size: 13px; line-height: 1.6; }
+.allowance-history-detail .allowance-file-list { margin-top: 12px; gap: 12px; }
+.allowance-history-detail .allowance-file-item { align-items: center; }
+.allowance-history-detail .allowance-path-code { white-space: normal; overflow-wrap: anywhere; }
+.allowance-history-detail .allowance-subtext { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.allowance-history-dense .allowance-review-history-table th:first-child { width: 175px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(2) { width: 85px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(3) { width: 130px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(4) { width: 100px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(5) { width: 90px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(6) { width: 70px; }
+.allowance-history-dense .allowance-review-history-table th:nth-child(7) { width: 100px; }
+.allowance-history-dense .allowance-review-history-table th:last-child { width: 90px; }
+.allowance-history-columns .allowance-table th:first-child { width: 175px; }
+@media (max-height: 640px) {
+  .allowance-screen:has(.allowance-history-dense) { gap: 8px; padding: 12px; }
+  .allowance-screen:has(.allowance-history-dense) .allowance-kpi-card { padding: 6px 10px; }
+}

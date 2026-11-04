@@ -69,7 +69,7 @@ export class SitesWizardBasics {
     this.container.innerHTML = "";
 
     const card = document.createElement("div");
-    card.className = "sites-wizard-card";
+    card.className = "sites-wizard-card sites-basics-layout";
 
     // 상단 템플릿/복사 빠른 시작 툴바
     const quickStartBar = document.createElement("div");
@@ -83,14 +83,14 @@ export class SitesWizardBasics {
     quickStartBar.style.marginBottom = "8px";
 
     quickStartBar.innerHTML = `
-      <div style="font-size:12px; font-weight:bold; color:var(--text, #1F2430); display:flex; align-items:center; gap:6px;">
-        <span class="material-symbols-outlined" style="font-size:18px; color:var(--accent, #3E56B6);">auto_fix</span>
-        <span>빠른 시작 (템플릿 적용 및 기존 근무지 복사)</span>
+      <div class="sites-basics-quick-title">
+        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+        <span><strong>처음부터 입력할 필요 없어요</strong><small>템플릿으로 시작하고 필요한 부분만 수정하세요.</small></span>
       </div>
-      <div style="display:flex; gap:8px;">
-        <button type="button" class="btn-secondary" id="btn-quick-template-4t3s" style="font-size:12px; height:28px;">4조 3교대</button>
-        <button type="button" class="btn-secondary" id="btn-tpl-2t2s" style="font-size:12px; height:28px;">2조 2교대</button>
-        <button type="button" class="btn-secondary" id="btn-open-site-copy" style="font-size:12px; height:28px;">기존 설정 복사</button>
+      <div class="sites-basics-template-list">
+        <button type="button" class="sites-basics-template" id="btn-quick-template-4t3s" aria-label="4조 3교대"><span class="material-symbols-outlined" aria-hidden="true">view_week</span><span><b>4조 3교대</b><small>주간 · 석간 · 야간 · 휴무</small></span><span aria-hidden="true">›</span></button>
+        <button type="button" class="sites-basics-template" id="btn-tpl-2t2s" aria-label="2조 2교대"><span class="material-symbols-outlined" aria-hidden="true">contrast</span><span><b>2조 2교대</b><small>주간 · 야간 · 휴무</small></span><span aria-hidden="true">›</span></button>
+        <button type="button" class="sites-basics-template" id="btn-open-site-copy" aria-label="기존 설정 복사"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span><span><b>기존 설정 복사</b><small>다른 근무지의 반복 설정 가져오기</small></span><span aria-hidden="true">›</span></button>
       </div>
     `;
 
@@ -107,7 +107,9 @@ export class SitesWizardBasics {
       this.openCopyModal();
     });
 
-    card.appendChild(quickStartBar);
+    quickStartBar.classList.add("sites-basics-quick");
+    const guide = document.createElement("p"); guide.className = "sites-form-help"; guide.textContent = "표준 패턴이나 기존 설정을 불러온 뒤 근무시간과 조별 시작 위치를 확인하세요. 불러오기는 초안만 변경합니다."; quickStartBar.append(guide);
+    const importCard = document.createElement("section"); importCard.className = "sites-basics-import"; importCard.innerHTML = `<strong>기존 엑셀에서 패턴 추출</strong><p class="sites-form-help">이미 사용하는 근무표가 있으면 반복 패턴을 찾아 초안에 반영할 수 있습니다.</p><div class="sites-basics-import-mount"></div>`; quickStartBar.append(importCard);
 
     // 2열 폼 그리드
     const grid = document.createElement("div");
@@ -115,10 +117,12 @@ export class SitesWizardBasics {
 
     // 좌측 열: 근무지 정보
     const leftCol = document.createElement("div");
+    leftCol.className = "sites-basics-section sites-basics-identity";
 
     leftCol.innerHTML = `
+      <div class="sites-basics-section-title"><span class="material-symbols-outlined" aria-hidden="true">domain</span><div><h3>근무지 정보</h3><p>어느 근무지의 설정인지 알려주세요.</p></div></div>
       <div class="sites-form-group">
-        <label class="sites-form-label" for="wizard-site-name">근무지 이름 <span style="color:#C0392B;">*</span></label>
+        <label class="sites-form-label" for="wizard-site-name">근무지 이름 <span class="sites-required" aria-hidden="true">*</span></label>
         <input type="text" id="wizard-site-name" class="sites-form-input" value="${this.escape(this.siteName)}" placeholder="예: 보라매 사업장" />
         <label class="sites-form-label" for="site-name-choice">등록·기존 근무지 이름 불러오기</label><select id="site-name-choice" class="sites-form-select"><option value="">이름 선택 (직접 입력 가능)</option>${this.siteNameOptions.map(opt=>`<option value="${this.escape(opt)}">${this.escape(opt)}</option>`).join("")}</select>
       </div>
@@ -152,10 +156,12 @@ export class SitesWizardBasics {
 
     // 우측 열: 패턴 기본 파라미터
     const rightCol = document.createElement("div");
+    rightCol.className = "sites-basics-section sites-basics-operation";
 
     rightCol.innerHTML = `
+      <div class="sites-basics-section-title"><span class="material-symbols-outlined" aria-hidden="true">event_repeat</span><div><h3>교대 운영 기준</h3><p>언제부터, 몇 개 조로 운영할지 정합니다.</p></div></div>
       <div class="sites-form-group">
-        <label class="sites-form-label" for="inp-effective-from">설정 적용 시작일 <span style="color:#C0392B;">*</span></label>
+        <label class="sites-form-label" for="inp-effective-from">설정 적용 시작일 <span class="sites-required" aria-hidden="true">*</span></label>
         <input type="date" id="inp-effective-from" class="sites-form-input" value="${this.draft.effectiveFrom || "2026-01-01"}" />
         <span class="sites-form-help">이 날짜부터 새로 작성된 교대 패턴 설정이 적용됩니다.</span>
       </div>
@@ -167,9 +173,9 @@ export class SitesWizardBasics {
       </div>
 
       <div class="sites-form-group">
-        <label class="sites-form-label" for="wizard-team-count">조 수 (2 ~ 8개 조) <span style="color:#C0392B;">*</span></label>
+        <label class="sites-form-label" for="wizard-team-count">조 수 (2 ~ 8개 조) <span class="sites-required" aria-hidden="true">*</span></label>
         <input type="number" id="wizard-team-count" class="sites-form-input" min="2" max="8" value="${this.draft.teamCount}" />
-        <span class="sites-form-help">운영할 교대 조의 개수입니다. 조 설정은 조직 구성 단계에서 상세 배정됩니다.</span>
+        <span class="sites-form-help">운영할 조의 수입니다. 이름·정원은 조직 구성에서 정합니다.</span>
         <div id="team-count-error" style="color:#C0392B; font-size:11px; margin-top:2px; display:${this.teamCountError ? "block" : "none"};">${this.escape(this.teamCountError)}</div>
       </div>
 
@@ -191,10 +197,11 @@ export class SitesWizardBasics {
     `;
     grid.appendChild(rightCol);
 
-    card.appendChild(grid);
+    const form = document.createElement("section"); form.className = "sites-basics-form"; const heading = document.createElement("header"); heading.className = "sites-basics-intro"; heading.innerHTML = '<span class="sites-basics-step">첫 단계</span><div><h2>근무지의 기본 틀을 잡아볼까요?</h2><p>기본 정보와 운영 기준을 정한 뒤, 다음 단계에서 근무시간·패턴·예외를 설정합니다.</p></div>'; form.append(heading, grid); card.append(form, quickStartBar);
     this.container.appendChild(card);
 
-    const cycleBox=document.createElement("div");cycleBox.className="sites-form-group";cycleBox.innerHTML=`<label class="sites-form-label" for="wizard-cycle-count">묶음 개수 (1~8개)</label><input id="wizard-cycle-count" class="sites-form-input" type="number" min="1" max="8" value="${this.draft.requestedCycleCount ?? this.draft.cycles.length}"/><span class="sites-form-help">사용 중인 묶음은 삭제되지 않습니다. 보존된 전용 묶음도 개수에 포함됩니다.</span>`;rightCol.append(cycleBox);
+    const cycleBox=document.createElement("div");cycleBox.className="sites-form-group";cycleBox.innerHTML=`<label class="sites-form-label" for="wizard-cycle-count">묶음 개수 (1~8개)</label><input id="wizard-cycle-count" class="sites-form-input" type="number" min="1" max="8" value="${this.draft.requestedCycleCount ?? this.draft.cycles.length}"/><span class="sites-form-help">연결된 묶음은 보존됩니다. 필요할 때만 개수를 바꾸세요.</span>`;
+    const counts=document.createElement("div");counts.className="sites-basics-counts";const teamGroup=rightCol.querySelector<HTMLInputElement>("#wizard-team-count")!.closest(".sites-form-group")!;teamGroup.replaceWith(counts);counts.append(teamGroup,cycleBox);
     cycleBox.querySelector<HTMLInputElement>("input")!.addEventListener("change",e=>{const n=Number((e.target as HTMLInputElement).value);this.draft.requestedCycleCount=n;if(Number.isInteger(n)&&n>=1&&n<=8){if(n>this.draft.cycles.length){while(this.draft.cycles.length<n){const c=structuredClone(this.draft.cycles[0]);if(!c)break;c.cycleKey=`cycle-${crypto.randomUUID()}`;c.name=`묶음 ${this.draft.cycles.length+1}`;c.order=this.draft.cycles.length;this.draft.cycles.push(c);}}
       else if(n<this.draft.cycles.length){const removed=this.draft.cycles.slice(n);if(removed.some(c=>this.draft.teamCycleAssignments.some(a=>a.cycleKey===c.cycleKey))){showNotice("묶음 보존","조에 연결된 묶음이 포함되어 있습니다. 조별 묶음 연결을 먼저 확인해 주세요.","warning");return;}showConfirm({title:"사용하지 않는 묶음 정리",message:`연결되지 않은 ${removed.length}개 묶음과 그 내용을 초안에서 제거할까요?`,confirmLabel:"제거",onConfirm:()=>{if(this.disposed)return;this.draft.cycles=this.draft.cycles.slice(0,n);this.render();},onCancel:()=>{this.draft.requestedCycleCount=this.draft.cycles.length;this.render();}});}}
       card.querySelector<HTMLInputElement>("#wizard-site-name")?.dispatchEvent(new Event("input"));});
@@ -290,8 +297,9 @@ export class SitesWizardBasics {
   private openCopyModal(): void {
     const records=this.existingPatterns;if(!records.length){showNotice("복사 안내","복사할 기존 설정이 없습니다.");return;}
     const content=document.createElement("div"),label=document.createElement("label"),select=document.createElement("select");select.id="sel-copy-pattern";select.className="sites-form-select";label.htmlFor=select.id;label.textContent="복사할 근무지·설정 버전";
+    const help=document.createElement("p");help.className="sites-form-help";help.textContent="반복 패턴과 조별 휴일 시간만 복사합니다. 날짜·개인 예외는 근무지 전용이므로 복사하지 않습니다.";content.append(help);
     for(const p of records){const o=document.createElement("option");o.value=p.id;o.textContent=`${this.existingSites.find(s=>s.id===p.siteId)?.name || "근무지"} · ${p.name} · ${p.effectiveFrom || "기준일 없음"}`;select.append(o);}content.append(label,select);
-    this.dialog.open({id:"sites-copy-modal",title:"기존 근무지 설정 복사",content,width:"600px",initialFocusSelector:"#btn-copy-cancel",buttons:[{id:"btn-copy-cancel",label:"취소",onClick:()=>this.dialog.close()},{id:"btn-copy-ok",label:"복사하여 적용",onClick:()=>{if(this.disposed)return;const p=records.find(p=>p.id===select.value);if(!p)return;const d=draftFromPattern(p);d.status="active";d.siteId=this.draft.siteId;d.patternId=this.draft.patternId;d.effectiveFrom=this.draft.effectiveFrom;d.baselineRevision=this.draft.baselineRevision;d.name=`${this.siteName || "근무지"} 설정 (복사본)`;this.dialog.close();this.onApplyTemplate(d);}}]});
+    this.dialog.open({id:"sites-copy-modal",title:"기존 근무지 설정 복사",content,width:"600px",initialFocusSelector:"#btn-copy-cancel",buttons:[{id:"btn-copy-cancel",label:"취소",onClick:()=>this.dialog.close()},{id:"btn-copy-ok",label:"복사하여 적용",onClick:()=>{if(this.disposed)return;const p=records.find(p=>p.id===select.value);if(!p)return;const d=draftFromPattern(p);if(d.holidayPolicy)delete d.holidayPolicy.dateExceptions;d.status="active";d.siteId=this.draft.siteId;d.patternId=this.draft.patternId;d.effectiveFrom=this.draft.effectiveFrom;d.baselineRevision=this.draft.baselineRevision;d.name=`${this.siteName || "근무지"} 설정 (복사본)`;this.dialog.close();this.onApplyTemplate(d);}}]});
   }
 
   private escape(str: string): string {

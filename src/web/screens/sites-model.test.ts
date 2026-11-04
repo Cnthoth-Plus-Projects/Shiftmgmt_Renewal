@@ -200,7 +200,7 @@ describe("sites-model", () => {
     expect(kpis.totalAssignedEmployees).toBe(2);
   });
 
-  it("filterAndPaginateSites는 고객사별 그룹화 및 10개씩 페이징을 정확히 수행한다", () => {
+  it("filterAndPaginateSites는 단일 목록을 10개씩 페이징한다", () => {
     // 15개 가상 사이트 생성
     const manySites: SiteListItem[] = [];
     for (let i = 1; i <= 15; i++) {
@@ -231,7 +231,6 @@ describe("sites-model", () => {
     expect(page1.items.length).toBe(10);
     expect(page1.startRange).toBe(1);
     expect(page1.endRange).toBe(10);
-    expect(page1.groups.length).toBe(2);
 
     // 2페이지 (5개)
     const page2 = filterAndPaginateSites(
@@ -243,6 +242,15 @@ describe("sites-model", () => {
     expect(page2.items.length).toBe(5);
     expect(page2.startRange).toBe(11);
     expect(page2.endRange).toBe(15);
+    const mixed = [
+      { ...manySites[0], name: "하늘", siteCode: "SITE-003", customerName: "가 고객사", assignedCount: 2 },
+      { ...manySites[1], name: "가람", siteCode: "SITE-001", customerName: "나 고객사", assignedCount: 12 },
+      { ...manySites[2], name: "나무", siteCode: "SITE-002", customerName: "가 고객사", assignedCount: 7 },
+    ];
+    for (const sortBy of ["name", "code", "employees"] as const) {
+      const sorted = filterAndPaginateSites(mixed, { keyword: "", status: "ALL", patternFilter: "ALL", sortBy }, 1, 10);
+      expect(sorted.items.map(s => s.id)).toEqual(["site-2", "site-3", "site-1"]);
+    }
   });
 
   it("validateTeamCapacities는 정원 초과를 정확히 감지한다", () => {

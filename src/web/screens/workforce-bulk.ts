@@ -1,4 +1,5 @@
 // 인력 관리 화면: 시급 엑셀 일괄 업데이트 모달 (E6) 및 확인 모달
+import { createWagePendingRefreshNotice } from "./workforce-wage";
 import type {
   WorkforceWageBulkUpdateApplyInput,
   WorkforceWageBulkUpdateApplySummary,
@@ -89,6 +90,12 @@ export class WorkforceBulk {
         </div>
       </div>
 
+      <div class="workforce-form-group">
+        <label class="workforce-form-label" for="modal-e6-col-code">사번 열 (선택)</label>
+        <input type="text" class="workforce-input wf-uppercase" id="modal-e6-col-code" placeholder="예: D — 사번 열이 없으면 비워 두세요" maxlength="3" />
+        <div class="workforce-form-hint">지정하면 사번으로 찾습니다. 사번이 비었거나 일치하지 않는 행은 제외합니다. 비워 두면 근무지와 이름으로 찾으며, 퇴사자는 먼저 제외합니다.</div>
+      </div>
+
       <div class="wf-flex-between wf-mt-4">
         <button type="button" class="workforce-btn workforce-btn-secondary" id="btn-e6-preview">
           <span class="material-symbols-outlined wf-icon-18" aria-hidden="true">visibility</span>
@@ -104,6 +111,7 @@ export class WorkforceBulk {
             <tr>
               <th scope="col">행</th>
               <th scope="col">근무지</th>
+              <th scope="col">사번</th>
               <th scope="col">이름</th>
               <th scope="col">현재 시급</th>
               <th scope="col">가져온 시급</th>
@@ -127,6 +135,7 @@ export class WorkforceBulk {
     const colSite = container.querySelector<HTMLInputElement>("#modal-e6-col-site")!;
     const colName = container.querySelector<HTMLInputElement>("#modal-e6-col-name")!;
     const colRate = container.querySelector<HTMLInputElement>("#modal-e6-col-rate")!;
+    const colCode = container.querySelector<HTMLInputElement>("#modal-e6-col-code")!;
     const previewBtn = container.querySelector<HTMLButtonElement>("#btn-e6-preview")!;
     const previewContainer = container.querySelector<HTMLElement>("#e6-preview-container")!;
     const previewTbody = container.querySelector<HTMLElement>("#e6-preview-tbody")!;
@@ -155,14 +164,20 @@ export class WorkforceBulk {
       filePath: pathInput.value.trim(),
       effectiveFrom: fromInput.value.trim(),
       mapping: {
+        employeeCodeColumn: colCode.value.trim().toUpperCase() || undefined,
         siteNameColumn: colSite.value.trim().toUpperCase(),
         employeeNameColumn: colName.value.trim().toUpperCase(),
         hourlyRateColumn: colRate.value.trim().toUpperCase()
       }
     });
 
-    // UI01-D05: 조건 변경 시 이전 preview 즉시 무효화 및 적용 잠금 (N07)
+    let conditionSnapshot = getCurrentInput();
+    // 값이 같은 input/change 중복 통지는 진행 중인 응답을 무효화하지 않는다.
+    // 실제 조건 변경만 이전 preview를 즉시 무효화하고 적용을 잠근다 (N07).
     const onConditionChange = () => {
+      const currentInput = getCurrentInput();
+      if (!isBulkPreviewStale(currentInput, conditionSnapshot)) return;
+      conditionSnapshot = currentInput;
       this.previewReqGen++;
       this.latestPreview = null;
       this.previewSnapshotInput = null;
@@ -175,7 +190,7 @@ export class WorkforceBulk {
       previewTbody.innerHTML = "";
     };
 
-    [pathInput, fromInput, colSite, colName, colRate].forEach((input) => {
+    [pathInput, fromInput, colSite, colName, colRate, colCode].forEach((input) => {
       input.addEventListener("input", onConditionChange);
       input.addEventListener("change", onConditionChange);
     });
@@ -237,6 +252,7 @@ export class WorkforceBulk {
             tr.innerHTML = `
               <td>${row.rowNumber}</td>
               <td>${this.escape(row.siteName || "-")}</td>
+              <td>${this.escape(row.employeeCode || "-")}</td>
               <td><strong>${this.escape(row.employeeName || "-")}</strong></td>
               <td>${currentRateText}</td>
               <td><strong>${importedRateText}</strong></td>
@@ -372,7 +388,7 @@ export class WorkforceBulk {
           variant: "primary",
           onClick: async () => {
             const dialogToken = this.dialog.captureToken();
-            this.dialog.setProcessing(true, "시급 일괄 적용 실행 중...", dialogToken);
+            this.dialog.setProcessing(true, "시급 저장·대기 실적 다시 읽는 중...", dialogToken);
             try {
               const res = await this.onApply(input);
             if (!this.dialog.isCurrent(dialogToken)) return;
@@ -411,9 +427,11 @@ export class WorkforceBulk {
         </div>
       </div>
       <div class="wf-text-sm">
-        * 변경된 시급에 따라 기존 대기 실적의 재계산이 필요한 경우, 실적 관리 화면에서 대기 실적 파일을 다시 읽어주세요.
+        * 적용 기간에 해당하는 미승인 대기 실적 파일을 다시 읽었습니다. 승인된 수당은 유지됩니다.
       </div>
     `;
+
+    box.appendChild(createWagePendingRefreshNotice(summary.pendingPerformanceRefresh));
 
     this.dialog.open({
       id: "modal-e6-summary",

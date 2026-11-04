@@ -17,6 +17,17 @@ describe("shift-pattern-storage-service", () => {
     resetSqliteStorageForTest();
   });
 
+  it("persists holiday rules through save/reload, rejects missing teams, and keeps legacy null",()=>{
+    initializeSqliteStorage({dbPath:path.resolve(process.cwd(),"artifacts","tests","shift-patterns-holiday.test.sqlite")});
+    const original=listStoredShiftPatterns().find(p=>p.name==="보라매 4조 2교대")!;expect(original.holidayPolicy).toBeUndefined();
+    const policy={version:1 as const,rules:{saturday:{mode:"separate" as const,excludedDutyCodes:[],startDate:"2026-11-01",teamPatterns:Object.fromEntries(original.teamSettings.map(t=>[t.teamLabel,["D","N"]])),teamTimes:{"A조":{D:{startTime:"09:00",endTime:"19:00",breakMinutes:60}}}}},dateExceptions:[{id:"one-day",from:"2026-11-05",to:"2026-11-05",scope:"site" as const,reason:"시설 점검",dutyCode:"O" as const}]};
+    const saved=saveStoredShiftPattern({...original,name:"holiday-persist",holidayPolicy:policy});expect(saved.holidayPolicy).toEqual(policy);expect(listStoredShiftPatterns().find(p=>p.id===saved.id)?.holidayPolicy).toEqual(policy);
+    expect(()=>saveStoredShiftPattern({...saved,holidayPolicy:{version:1,rules:{saturday:{...policy.rules.saturday,teamPatterns:{"missing":["D"]}}}}})).toThrow("모든 조");
+    expect(listStoredShiftPatterns().find(p=>p.id===saved.id)?.holidayPolicy).toEqual(policy);
+    expect(()=>saveStoredShiftPattern({...saved,holidayPolicy:{version:1,rules:{},dateExceptions:[{id:"missing",from:"2026-11-05",to:"2026-11-05",scope:"employee",employeeId:"nonexistent",reason:"잘못된 대상",dutyCode:"O"}]}})).toThrow("배정 기간");
+    expect(listStoredShiftPatterns().find(p=>p.id===saved.id)?.holidayPolicy).toEqual(policy);
+  });
+
   it("should seed and list default shift patterns", () => {
     initializeSqliteStorage({
       dbPath: path.resolve(process.cwd(), "artifacts", "tests", "shift-patterns.test.sqlite")

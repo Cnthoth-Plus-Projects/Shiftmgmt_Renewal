@@ -14,6 +14,7 @@ import {
   showPromptConfirm
 } from "./operations-ui";
 import { DataTable } from "../data-table";
+import { createImportedHireDateReview } from "./employee-hire-date-review";
 
 export function mountOperationsBackup(container: HTMLElement, onSessionExpired?: () => void): OperationsBackupRunner {
   const runner = new OperationsBackupRunner(container, onSessionExpired);
@@ -53,6 +54,10 @@ export class OperationsBackupRunner {
 
   constructor(container: HTMLElement, private onSessionExpired?: () => void) {
     this.container = container;
+  }
+
+  public isBusy(): boolean {
+    return (!this.isDestroyed && (this.isRunningBackup || this.isRestoring || this.state === "CHECKING" || this.state === "PREVIEWING"));
   }
 
   public destroy(): void {
@@ -378,6 +383,7 @@ export class OperationsBackupRunner {
 
     const wrap = el("div", "step-box preview-result-box");
     wrap.appendChild(el("h5", "step-title", "3단계: 테이블 영향도 및 교체 확인"));
+    wrap.appendChild(createImportedHireDateReview(this.previewResult.employeeHireDateReview,"preview"));
 
     if (this.previewResult.warningMessages && this.previewResult.warningMessages.length > 0) {
       const warnBox = el("div", "alert-warning");
@@ -531,6 +537,7 @@ export class OperationsBackupRunner {
     }
     wrap.appendChild(alert);
 
+    wrap.appendChild(createImportedHireDateReview(this.restoreResult.employeeHireDateReview,"result"));
     this.flowContainerEl.appendChild(wrap);
   }
 }

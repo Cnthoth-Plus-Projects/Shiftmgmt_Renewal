@@ -3,6 +3,7 @@ import type { EmployeeRecord, SiteRecord } from "../../shared/domain/model";
 import { renderPagination, paginateGroupsForHeight, measurePaginationBody } from "../pagination";
 import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite, type EmployeePageRange } from "./workforce-model";
 
+import { employeeStatusLabel } from "./workforce-model";
 export interface WorkforceListOptions {
   container: HTMLElement;
   tableContainer?: HTMLElement;
@@ -80,6 +81,8 @@ export class WorkforceList {
     this.updateSelectionHighlight();
   }
 
+  public revealEmployee(employee:EmployeeRecord):void {this.filterSiteId="all";this.filterShiftGroup="all";this.filterEmploymentType="all";this.searchKeyword=employee.employeeCode;this.filterStatus=employee.scheduledRehire?"scheduled":employee.employmentPhase==="employed"?employee.status==="leave"?"leave":"active":employee.employmentPhase==="retired"?"retired":employee.status;this.page=1;this.render();}
+
   public getFilterState() {
     return {
       siteId: this.filterSiteId,
@@ -139,7 +142,8 @@ export class WorkforceList {
       { value: "all", label: "전체 상태" },
       { value: "active", label: "재직" },
       { value: "leave", label: "휴직" },
-      { value: "retired", label: "퇴사" }
+      { value: "retired", label: "퇴사" },
+      { value: "scheduled", label: "재입사 예정" }
     ];
     for (const sOpt of statusOptions) {
       const opt = document.createElement("option");
@@ -252,7 +256,7 @@ export class WorkforceList {
     table.id = "table-emp-e1";
 
     const colgroup = document.createElement("colgroup");
-    for (const width of [96, 80, 48, 64, 52, 90, 98, 52, 110, 122, 190]) { const col = document.createElement("col"); col.style.width = `${width}px`; colgroup.appendChild(col); }
+    for (const width of [96, 80, 48, 64, 52, 90, 98, 52, 220, 122, 190]) { const col = document.createElement("col"); col.style.width = `${width}px`; colgroup.appendChild(col); }
     table.appendChild(colgroup);
     const thead = document.createElement("thead");
     thead.innerHTML = `
@@ -262,10 +266,10 @@ export class WorkforceList {
         <th scope="col">직급</th>
         <th scope="col">고용형태</th>
         <th scope="col">상태</th>
-        <th scope="col">입사일</th>
+        <th scope="col">등록 입사일</th>
         <th scope="col">현재 근무지</th>
         <th scope="col">현재 조</th>
-        <th scope="col" title="시급 이력에서 종료일이 비어 있는 가장 최근 줄입니다. 오늘 기준 시급은 상세 패널에서 확인하세요.">최근 등록 시급</th>
+        <th scope="col" title="서울 기준 오늘 유효한 시급과 적용 시작일입니다. 미래 시급은 상세의 적용 예정 안내에서 확인하세요.">현재 시급·적용일</th>
         <th scope="col">연락처</th>
         <th scope="col">이메일</th>
       </tr>
@@ -383,20 +387,22 @@ export class WorkforceList {
 
         // 상태 배지 클래스
         const statusClass =
-          emp.status === "active"
+          emp.employmentPhase === "scheduled" ? "workforce-status-scheduled" : emp.employmentPhase === "retired" ? "workforce-status-retired" : emp.status === "active"
             ? "workforce-status-active"
             : emp.status === "leave"
               ? "workforce-status-leave"
               : "workforce-status-retired";
         const statusLabel =
-          emp.status === "active" ? "재직" : emp.status === "leave" ? "휴직" : "퇴사";
+          employeeStatusLabel(emp);
 
         // 고용형태 표시
         const isBp = isBpEmploymentType(emp.employmentType);
         const empTypeLabel = isBp ? "BP" : emp.employmentType || "정규직";
 
         // 시급 표시
-        const rateLabel = formatCurrency(emp.currentHourlyRate);
+        const rateLabel = emp.currentHourlyRate === undefined ? "적용 중인 시급 없음" : formatCurrency(emp.currentHourlyRate);
+        const rateStart = emp.currentHourlyRate !== undefined && emp.currentHourlyRateEffectiveFrom
+          ? ` · ${emp.currentHourlyRateEffectiveFrom}부터` : "";
 
         tr.innerHTML = `
           <td>${this.escape(emp.employeeCode || "-")}</td>
@@ -407,11 +413,13 @@ export class WorkforceList {
           <td>${this.escape(emp.hireDate || "-")}</td>
           <td>${this.escape(emp.currentSiteName || "-")}</td>
           <td>${this.escape(emp.currentShiftGroup || "-")}</td>
-          <td>${this.escape(rateLabel)}</td>
+          <td class="employee-current-wage">${this.escape(rateLabel)}<span class="wf-text-muted employee-wage-effective-from">${this.escape(rateStart)}</span></td>
           <td>${this.escape(emp.contact || "-")}</td>
           <td>${this.escape(emp.email || "-")}</td>
         `;
         tr.querySelectorAll("td").forEach(cell => { cell.title = cell.textContent || ""; });
+        const wageCell = tr.querySelector<HTMLElement>(".employee-current-wage")!;
+        wageCell.title = `${emp.currentHourlyRateAsOfDate ?? "오늘"} 서울 기준 · ${rateLabel}${emp.currentHourlyRateEffectiveFrom ? ` · 적용 기간 ${emp.currentHourlyRateEffectiveFrom} ~ ${emp.currentHourlyRateEffectiveTo ?? "계속"}` : ""}`;
 
         const selectThis = () => {
           this.selectedEmployeeId = emp.id;

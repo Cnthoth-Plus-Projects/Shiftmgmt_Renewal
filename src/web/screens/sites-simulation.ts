@@ -15,6 +15,8 @@ import type { PatternDraft } from "./sites-pattern-model";
 
 export interface MonthSimulationResult {
   scheduleMonth: string; // YYYY-MM
+  appliedPattern: ShiftPatternRecord | null;
+  isDraftPattern: boolean;
   items: MonthlyScheduleDraftItem[];
   teamDailyDuty: Map<string, Map<string, string>>; // teamLabel -> (YYYY-MM-DD -> dutyCode)
   dates: string[]; // YYYY-MM-DD 목록
@@ -116,6 +118,7 @@ export function draftToPatternRecord(draft: PatternDraft): ShiftPatternRecord {
     teamCycleAssignments,
     teamCapacities,
     teamSettings,
+    holidayPolicy: structuredClone(draft.holidayPolicy),
     dutyTypes: draft.dutyTypes.map((d) => ({
       id: d.id,
       kind: d.kind,
@@ -232,10 +235,12 @@ export function runThreeMonthSimulation(
     }) : [];
 
     const teamDailyDuty = new Map<string, Map<string, string>>();
-    const dateSet = new Set<string>();
+    // The calendar contains the whole month, even before an effective date or without people.
+    const lastDay = new Date(Date.UTC(currentYear, currentMonth, 0)).getUTCDate();
+    const sortedDates = Array.from({ length: lastDay }, (_, day) => `${formattedMonth}-${String(day + 1).padStart(2, "0")}`);
 
     for (const item of items) {
-      dateSet.add(item.workDate);
+
       const teamLabel = item.teamLabel || "";
       let teamMap = teamDailyDuty.get(teamLabel);
       if (!teamMap) {
@@ -245,11 +250,12 @@ export function runThreeMonthSimulation(
       teamMap.set(item.workDate, item.dutyCode);
     }
 
-    const sortedDates = Array.from(dateSet).sort();
     sortedDates.forEach((d) => allDates.push(d));
 
     months.push({
       scheduleMonth: formattedMonth,
+      appliedPattern: activePatternForMonth,
+      isDraftPattern: activePatternForMonth?.id === draftToPatternRecord(draft).id,
       items,
       teamDailyDuty,
       dates: sortedDates

@@ -29,6 +29,11 @@ const resolvedOut = path.resolve(outArg || path.join(os.tmpdir(), "shiftmgmt-ope
 const tempRoot = fs.realpathSync(os.tmpdir());
 const underTemp = value => { const rel=path.relative(tempRoot,path.resolve(value));return !!rel&&!rel.startsWith("..")&&!path.isAbsolute(rel); };
 if (!underTemp(resolvedOut)) throw new Error("Output must be a dedicated TEMP child directory");
+// Reuse one independently built TEMP browser tree across focused, full and preview runs.
+const staticArg = rawArgs.find(a=>a.startsWith("--static-root="))?.slice(14)?.trim();
+const staticRoot = staticArg ? fs.realpathSync(path.resolve(staticArg)) : undefined;
+if (staticRoot && !underTemp(staticRoot)) throw new Error("Static assets must be an existing dedicated TEMP child directory");
+
 let existingParent=resolvedOut;while(!fs.existsSync(existingParent))existingParent=path.dirname(existingParent);
 if (fs.realpathSync(existingParent)!==tempRoot&&!underTemp(fs.realpathSync(existingParent))) throw new Error("Output follows a path outside TEMP");
 fs.mkdirSync(resolvedOut, { recursive: true });
@@ -48,6 +53,7 @@ const expectedRejections = Object.fromEntries(
   Array.from({ length: 12 }, (_, i) => [`N${String(i + 1).padStart(2, "0")}`, false])
 );
 
+let servedAssets = null;
 let serverProcess = null;
 let browser = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -167,7 +173,7 @@ async function main() {
   for(let i=1;i<=55;i++)artifactRegistry.register(`Password${String(i).padStart(2,'0')}!@#`);
   for(const folder of ['pending','approved','export'])fs.mkdirSync(path.join(userDataDir,folder),{recursive:true});
 
-  const entry = `const realNow=Date.now;let offset=0;Date.now=()=>realNow()+offset;process.on('message',message=>{offset=message.clockOffsetMs;process.send({clockOffsetMs:offset});});require(${JSON.stringify(serverScript)}).startServer();`;
+  const entry = `const realNow=Date.now;let offset=0;Date.now=()=>realNow()+offset;process.on('message',message=>{offset=message.clockOffsetMs;process.send({clockOffsetMs:offset});});require(${JSON.stringify(serverScript)} ).startServer(${JSON.stringify(staticRoot ? {staticRoot} : {})});`;
   serverProcess = spawn(process.execPath, ['-e',entry], { cwd: repoRoot, env, windowsHide:true, stdio: ["ignore", "pipe", "pipe", "ipc"] });
   for(const stream of ['stdout','stderr']) {
     const masker=artifactRegistry.stream(),file=path.join(resolvedOut,`server.${stream}.log`);
@@ -198,6 +204,17 @@ async function main() {
     process.stderr.write(`[Err] 서버 준비 실패\n`);
     await cleanup();
     process.exit(2);
+  }
+
+  servedAssets = [];
+  for (const name of ["app.js", "operations.css", "policy-history.css"]) {
+    const response = await fetch(new URL(`/web/${name}`, targetUrl));
+    assert(response.ok, `Browser asset unavailable: ${name}`);
+    const served = Buffer.from(await response.arrayBuffer());
+    const file = path.join(staticRoot || path.join(repoRoot, "dist", "browser"), "web", name);
+    const local = fs.readFileSync(file);
+    assert(local.equals(served), `Served browser asset differs from built bytes: ${name}`);
+    servedAssets.push({name, bytes: served.length, sha256: createHash("sha256").update(served).digest("hex")});
   }
 
   const bootstrapData = JSON.parse(fs.readFileSync(bootstrapFile, "utf8"));
@@ -335,6 +352,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S03")) {
   try {
     await switchToTab(page, "settings");
+    await selectSettingsArea(page, "policy");
     const nightLimitInput = page.locator("#input-scheduleConsecutiveNightLimit");
     
     // N03: 음수값 입력 시 거절 확인
@@ -345,7 +363,6 @@ async function main() {
     assert(hasWarningModal, "잘못된 음수 야간제한은 경고 모달로 거절되어야 함");
     await page.click("#btn-notice-close");
     await sleep(200);
-
 
     // 정상값 저장 (4)
     await nightLimitInput.fill("4");
@@ -366,6 +383,8 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S04")) {
   try {
     await closeAnyOpenModal(page);
+    await switchToTab(page, "settings");
+    await selectSettingsArea(page, "system");
     await page.click(".operations-settings-wrap #btn-stop-watch");
     await sleep(400);
     await page.click("#btn-notice-close");
@@ -630,6 +649,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S17")) {
   try {
     await switchToTab(page, "settings");
+    await selectSettingsArea(page, "backup");
     await page.click("#btn-run-db-backup");
     await sleep(800);
     const backupResult = await page.locator(".backup-result-info").textContent();
@@ -646,6 +666,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S18")) {
   try {
     await closeAnyOpenModal(page);
+    await selectSettingsArea(page, "backup");
     const pathInput = page.locator("#input-restore-backup-path");
     await pathInput.fill("C:/non-existent-backup.json");
     await page.click("#btn-check-db-requirements");
@@ -702,6 +723,7 @@ async function main() {
   const summary = {
     status: accepted ? "PASS" : focusIDs.size&&failedScenarios.length===0?"PARTIAL_PASS":"FAIL",
     fullRun: !focusIDs.size,
+    servedAssets,
     negativePlan, negativeEvidence, extraEvidence, exactScenarios,
     planned: plannedScenarios,
     completed: completedScenarios,
@@ -770,6 +792,11 @@ async function freshTab(page,id) {
   await switchToTab(page,id);
   await page.locator(`.operations-${id==='layout'?'layout':id}-wrap`).waitFor();
 }
+async function selectSettingsArea(page, areaId) {
+  const btn = page.locator(`#btn-settings-area-${areaId}`);
+  await btn.click();
+  await page.locator(`#settings-area-${areaId}`).waitFor({ state: 'visible' });
+}
 async function waitCalls(page,method,count) {
   await page.waitForFunction(({method,count})=>window.__opsCalls.filter(n=>n===method).length>=count,{method,count});
 }
@@ -801,7 +828,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     for(const tab of ['settings','holidays','rates','users','layout','site-names','releases']) {
       await freshTab(page,tab);
       assert.equal(await page.locator('.tab-btn.active').getAttribute('id'),`tab-btn-${tab}`);
-      assert.equal(await page.locator('[role=tabpanel]').getAttribute('aria-labelledby'),`tab-btn-${tab}`);
+      assert.equal(await page.locator('.operations-tab-content[role=tabpanel]').getAttribute('aria-labelledby'),`tab-btn-${tab}`);
     }
     await page.locator('button[data-id="user-mgmt"]').click();
     await page.locator('.operations-users-wrap').waitFor();
@@ -829,8 +856,32 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
   if(id==='S03') {
     await freshTab(page,'settings');
     const before=await data('getAppSettings');
-    const changes={pendingDir:path.join(userDataDir,'pending'),approvedDir:path.join(userDataDir,'approved'),scheduleExportDir:path.join(userDataDir,'export'),databaseBackupTime:'03:17',scheduleConsecutiveNightLimit:5,scheduleMinimumRestMinutes:720,scheduleWeeklyMaxMinutes:2880,substituteAllowancePolicyEffectiveFrom:'2026-01-01',changedSlotPriorityEffectiveFrom:'2026-02-01'};
-    for(const [key,value] of Object.entries(changes)) await page.locator(`#input-${key}`).fill(String(value));
+    const fieldAreaMap = {
+      pendingDir: 'folders', approvedDir: 'folders', scheduleExportDir: 'folders',
+      databaseBackupTime: 'backup',
+      scheduleConsecutiveNightLimit: 'policy', scheduleMinimumRestMinutes: 'policy',
+      scheduleWeeklyMaxMinutes: 'policy'
+    };
+    const changes={pendingDir:path.join(userDataDir,'pending'),approvedDir:path.join(userDataDir,'approved'),scheduleExportDir:path.join(userDataDir,'export'),databaseBackupTime:'03:17',scheduleConsecutiveNightLimit:5,scheduleMinimumRestMinutes:720,scheduleWeeklyMaxMinutes:2880};
+    for(const [key,value] of Object.entries(changes)) {
+      await selectSettingsArea(page, fieldAreaMap[key]);
+      await page.locator(`#input-${key}`).fill(String(value));
+    }
+
+    // 영역 전환 후에도 미저장 값 및 dirty 상태 보존 확인
+    await selectSettingsArea(page, 'system');
+    await selectSettingsArea(page, 'policy');
+    assert.equal(await page.locator('#input-scheduleConsecutiveNightLimit').inputValue(), '5');
+    const dirtyText = await page.locator('#ops-settings-dirty-status').innerText();
+    assert(dirtyText.includes('저장되지 않은 변경'), '미저장 변경 개수가 표시되어야 함');
+
+    // 되돌리기 취소 -> 값 보존 및 API 쓰기 0
+    const writesBeforeRevert = await count('saveAppSettings');
+    await page.locator('#btn-revert-settings').click();
+    await page.locator('#btn-confirm-cancel').click();
+    assert.equal(await count('saveAppSettings'), writesBeforeRevert, '되돌리기 취소는 API 쓰기 0');
+    assert.equal(await page.locator('#input-scheduleConsecutiveNightLimit').inputValue(), '5');
+
     const writes=await count('saveAppSettings');
     await page.locator('#tab-btn-holidays').click();await page.locator('#btn-confirm-cancel').click();
     const canceledWrites=await count('saveAppSettings');
@@ -839,22 +890,248 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await page.locator('#btn-save-settings').click();await notice(page);assert.equal(await count('saveAppSettings'),writes+1);
     const after=await data('getAppSettings');for(const [key,value] of Object.entries(changes)) assert.equal(after[key],value,key);
     for(const [key,value] of Object.entries(before)) if(!(key in changes)&&!['updatedAt','updatedBy'].includes(key)) assert.deepEqual(after[key],value,key);
-    await freshTab(page,'holidays');await freshTab(page,'settings');assert.equal(await page.locator('#input-databaseBackupTime').inputValue(),'03:17');
+    await freshTab(page,'holidays');await freshTab(page,'settings');
+    await selectSettingsArea(page, 'backup');
+    assert.equal(await page.locator('#input-databaseBackupTime').inputValue(),'03:17');
     const invalidWrites=[];
-    for(const [key,value] of [['scheduleConsecutiveNightLimit',''],['scheduleMinimumRestMinutes','-1'],['databaseBackupTime',''],['changedSlotPriorityEffectiveFrom','bad-date']]) {
+    for(const [key,value] of [['scheduleConsecutiveNightLimit',''],['scheduleMinimumRestMinutes','-1'],['databaseBackupTime','']]) {
+      const area = fieldAreaMap[key] || 'policy';
+      await selectSettingsArea(page, area);
       const field=page.locator(`#input-${key}`), original=await field.inputValue(), originalType=await field.getAttribute('type');
       await field.evaluate((input,value)=>{if(input.type==='date')input.type='text';input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));},value);
-      const old=await count('saveAppSettings');await page.locator('#btn-save-settings').click();await notice(page);invalidWrites.push((await count('saveAppSettings'))-old);
+      const old=await count('saveAppSettings');
+      // 다른 영역으로 이동 후 저장 실행 시 해당 오류 영역으로 자동 전환 및 포커스 복귀 확인
+      await selectSettingsArea(page, 'folders');
+      await page.locator('#btn-save-settings').click();
+      assert.equal(await page.locator(`#settings-area-${area}`).isVisible(), true, '오류 영역으로 자동 전환되어야 함');
+      await notice(page);
+      invalidWrites.push((await count('saveAppSettings'))-old);
+      assert.equal(await page.evaluate(id => document.activeElement?.id, `input-${key}`), `input-${key}`, '오류 필드로 포커스 복귀되어야 함');
       await field.evaluate((input,{type,value})=>{input.type=type||'text';input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));},{type:originalType,value:original});
     }
-    negative('N03','settings-missing-unit-time-date',()=>assert.deepEqual(invalidWrites,[0,0,0,0]));record('Full settings saved once and re-read, unrelated fields preserved, invalid writes zero');
+    negative('N03','settings-missing-unit-time-date',()=>assert.deepEqual(invalidWrites,[0,0,0]));
+
+    // POLICY-HISTORY-01: 새 정책 이력, 미리보기, 확정, 일반 날짜 writer 우회 거절 검증
+    await selectSettingsArea(page, 'policy');
+    assert.equal(await page.locator('.policy-summary-card').count(), 2, '2개의 정책 카드가 렌더링되어야 함');
+
+    // 일반 saveAppSettings로 날짜 키 변경 시도 시 우회 차단 검증
+    const bypassResult = await page.evaluate(async () => {
+      try {
+        const res = await window.appBridge.saveAppSettings({ substituteAllowancePolicyEffectiveFrom: '2026-11-01' });
+        return { ok: res.ok, code: res.ok ? null : res.errorCode };
+      } catch (e) {
+        return { ok: false, message: e.message };
+      }
+    });
+    assert.equal(bypassResult.ok, false, '날짜 키 우회 저장은 차단되어야 함');
+    assert.match(bypassResult.code || '', /POLICY_MANAGED_SETTINGS/, 'POLICY_MANAGED_SETTINGS 에러 코드 반환');
+
+    // 정책 이력 모달 및 새 정책 등록 흐름 검증
+    await page.locator('#btn-open-substitute-policy').click();
+    await sleep(1000);
+    await page.locator('.policy-history-dense-table').waitFor();
+    assert.equal(await page.locator('.policy-history-dense-table').isVisible(), true, '정책 Dense 테이블 표시');
+
+    // 새 정책 추가 다이얼로그 열기
+    await page.locator('#btn-add-new-policy').click();
+    await page.locator('#policy-dialog-form').waitFor();
+
+    // N03: 잘못된 입력(빈 사유) 검증
+    await page.locator('#btn-policy-preview').click();
+    assert.equal(await page.locator('#policy-dialog-error').isVisible(), true, '사유 누락 시 오류 표시');
+
+    // 정상 입력 후 미리보기
+    const activeSub = await data('listPolicyHistory',{kind:'substitute-eligibility',pageSize:100});
+    const initialRule = activeSub.currentRevision.revision.ruleKey === 'substitute-legacy' ? 'substitute-team-type-v1' : 'substitute-legacy';
+    await page.locator('#policy-rule-select').selectOption(initialRule);
+    await page.locator('#policy-reason-input').fill('2026년 12월 정책 개정 사전 등록');
+    await page.locator('#policy-date-input').fill('2026-12-01');
+    await overrideBridge(page, 'previewPolicyChange', 'async input => { const result = await window.__opsActual.previewPolicyChange(input); return new Promise(resolve => { window.__releasePolicyPreview = () => resolve(result); }); }');
+    await page.locator('#btn-policy-preview').click();
+    await page.waitForFunction(() => !!window.__releasePolicyPreview);
+    await page.locator('#policy-date-input').fill('2026-12-02');
+    await page.evaluate(() => window.__releasePolicyPreview());
+    await page.waitForFunction(() => !document.querySelector('#btn-policy-preview').disabled);
+    assert.equal(await page.locator('#btn-policy-confirm').isEnabled(), false, '입력 변경 전 미리보기는 확정할 수 없음');
+    await restoreBridge(page, 'previewPolicyChange');
+    await page.locator('#policy-date-input').fill('2026-12-01');
+    await page.locator('#btn-policy-preview').click();
+    await page.locator('.policy-impact-preview-box').waitFor().catch(async error => { throw new Error(`${error.message}; policy error: ${await page.locator('#policy-dialog-error').textContent()}`); });
+    assert.equal(await page.locator('.policy-impact-preview-box').isVisible(), true, '영향 미리보기 표시');
+    assert.equal(await page.locator('#btn-policy-confirm').isEnabled(), true, '확인 후 등록 활성화');
+
+    // 실제 확정 응답 지연 중 입력과 중복 실행을 막고 성공 안내 소유권을 유지한다.
+    const applyCountBefore = await count('applyPolicyChange');
+    await overrideBridge(page, 'applyPolicyChange', 'async input => { const result = await window.__opsActual.applyPolicyChange(input); return new Promise(resolve => { window.__releasePolicyApply = () => resolve(result); }); }');
+    await page.locator('#btn-policy-confirm').click();
+    await page.waitForFunction(() => !!window.__releasePolicyApply);
+    assert.equal(await page.locator('#policy-reason-input').isDisabled(),true);
+    await page.keyboard.press('Escape');assert.equal(await page.locator('#policy-dialog-form').count(),1);
+    assert.equal((await count('applyPolicyChange'))-applyCountBefore,1);
+    await page.evaluate(() => window.__releasePolicyApply());
+    await restoreBridge(page, 'applyPolicyChange');
+    await sleep(500);
+
+    await page.locator('#policy-history-table-container .policy-history-dense-table').waitFor();
+    const createdPolicies = await data('listPolicyHistory', {kind:'substitute-eligibility',pageSize:100});
+    const added = createdPolicies.revisions.find(row => row.effectiveFrom === '2026-12-01');
+    assert(added && added.origin === 'registered');
+    await page.locator(`.btn-correct-policy[data-id="${added.id}"]`).click();
+    await page.locator('#policy-date-input').fill('2026-12-02');
+    await page.locator('#policy-reason-input').fill('적용일 정정 <예시>');
+    await page.locator('#btn-policy-preview').click();await page.locator('.policy-impact-preview-box').waitFor().catch(async error => { throw new Error(`${error.message}; policy error: ${await page.locator('#policy-dialog-error').textContent()}`); });
+    await page.locator('#btn-policy-confirm').click();await page.locator('#policy-history-table-container .policy-history-dense-table').waitFor();
+    const correctedPolicies = await data('listPolicyHistory', {kind:'substitute-eligibility',pageSize:100});
+    assert.equal(correctedPolicies.revisions.find(row => row.id === added.id).effectiveFrom, '2026-12-01', '정정 전 원본 보존');
+    const corrected = correctedPolicies.revisions.find(row => row.effectiveFrom === '2026-12-02');
+    assert(corrected && corrected.origin === 'correction');
+    await page.locator(`.btn-cancel-policy[data-id="${corrected.id}"]`).click();
+    await page.locator('#policy-reason-input').fill('미사용 예약 취소');
+    await page.locator('#btn-policy-preview').click();await page.locator('.policy-impact-preview-box').waitFor().catch(async error => { throw new Error(`${error.message}; policy error: ${await page.locator('#policy-dialog-error').textContent()}`); });
+    await page.locator('#btn-policy-confirm').click();await page.locator('#policy-history-table-container .policy-history-dense-table').waitFor();
+    await page.locator('#btn-toggle-events').click();await page.locator('.policy-show-event').first().waitFor();
+    await page.locator('.policy-show-event').first().click();await page.locator('#operations-policy-details').waitFor();
+    assert.equal(await page.locator('.policy-detail-section').count(),2,'변경 전후 기준 상세');
+    await page.keyboard.press('Escape');await page.locator('#policy-history-table-container .policy-history-dense-table').waitFor();
+    await page.keyboard.press('Escape');
+    // Populate a second real page through the same preview/apply APIs, retaining every revision.
+    let lastRule = (await data('listPolicyHistory',{kind:'changed-worker-priority',pageSize:100})).currentRevision.revision.ruleKey;
+    for(let month=1;month<=12;month++) {
+      lastRule = lastRule === 'changed-worker-legacy' ? 'changed-worker-after-v1' : 'changed-worker-legacy';
+      const preview = await data('previewPolicyChange',{action:'add',kind:'changed-worker-priority',ruleKey:lastRule,effectiveFrom:`2090-${String(month).padStart(2,'0')}-01`,reason:`페이지 검문 ${month}`});
+      await data('applyPolicyChange',{previewToken:preview.previewToken});
+      const reused=await api('applyPolicyChange',{previewToken:preview.previewToken});assert(!reused.ok && reused.errorCode==='POLICY_PREVIEW_EXPIRED');
+    }
+    await page.locator('#btn-open-changed-slot-policy').click();await page.locator('#btn-policy-next-page').waitFor();
+    await page.locator('#btn-policy-next-page').click();await page.waitForFunction(()=>document.querySelector('.policy-page-info')?.textContent.includes('페이지 2'));
+    await page.keyboard.press('Escape');
+    record('Actual policy add/correct/cancel, immutable original, event before/after, page2, edited pending preview rejected and consumed tokens rejected');
+
+    // 모달 닫기
+    await page.keyboard.press('Escape');
+    await sleep(200);
+
+    // ADM01-D01 회귀 검문: 정상 지연 응답 중 추가 입력 보존, 되돌리기 확인 복원(API 쓰기 0), 실패 저장 초안 보존
+    await selectSettingsArea(page, 'policy');
+    const nightLimitInputD01 = page.locator('#input-scheduleConsecutiveNightLimit');
+    await nightLimitInputD01.fill('6');
+    await overrideBridge(page, 'saveAppSettings', 'async input => new Promise(resolve => { window.__releaseDelayedSave = () => resolve(window.__opsActual.saveAppSettings(input)); })');
+    await page.locator('#btn-save-settings').click();
+    await page.waitForFunction(() => !!window.__releaseDelayedSave);
+    // 지연 저장 진행 중 입력을 7로 변경
+    await nightLimitInputD01.fill('7');
+    await page.evaluate(() => window.__releaseDelayedSave());
+    await notice(page); // 저장 완료 모달 닫기
+    await restoreBridge(page, 'saveAppSettings');
+    assert.equal(await nightLimitInputD01.inputValue(), '7', '지연 응답 중 추가 입력 7이 보존되어야 함');
+    assert((await page.locator('#ops-settings-dirty-status').innerText()).includes('저장되지 않은 변경 1개'));
+    assert.equal(await page.locator('#btn-revert-settings').isEnabled(), true);
+
+    // 되돌리기 확인 시 마지막 저장값(6)으로 복원 및 API 쓰기 0
+    const writesBeforeRevertD01 = await count('saveAppSettings');
+    await page.locator('#btn-revert-settings').click();
+    await page.locator('#btn-confirm-ok').click();
+    assert.equal(await count('saveAppSettings'), writesBeforeRevertD01, '되돌리기 확인은 API 쓰기 0');
+    assert.equal(await nightLimitInputD01.inputValue(), '6', '마지막 저장값 6으로 복원되어야 함');
+    assert((await page.locator('#ops-settings-dirty-status').innerText()).includes('저장된 설정'));
+
+    // 실패 저장의 초안 및 dirty 보존 검문
+    await nightLimitInputD01.fill('7');
+    await overrideBridge(page, 'saveAppSettings', 'async () => ({ ok: false, errorCode: "CONTROLLED_FAIL", message: "통제된 저장 실패" })');
+    await page.locator('#btn-save-settings').click();
+    await notice(page);
+    await restoreBridge(page, 'saveAppSettings');
+    assert.equal(await nightLimitInputD01.inputValue(), '7', '실패 후에도 입력 초안 7 보존');
+    assert((await page.locator('#ops-settings-dirty-status').innerText()).includes('저장되지 않은 변경 1개'));
+    await page.locator('#btn-revert-settings').click();
+    await page.locator('#btn-confirm-ok').click();
+    assert.equal(await nightLimitInputD01.inputValue(), '6');
+    // 원래 5로 정리 저장
+    await nightLimitInputD01.fill('5');
+    await page.locator('#btn-save-settings').click();
+    await notice(page);
+
+    record('Full settings saved once and re-read, unrelated fields preserved, invalid writes zero, areas navigated and focus restored, delayed draft and revert verified');
   }
   if(id==='S04') {
     await freshTab(page,'settings');
+    await selectSettingsArea(page, 'system');
     const stop=await count('stopFileWatch');await page.locator('.operations-settings-wrap #btn-stop-watch').dblclick();await notice(page);
     const stopped=await data('getFileWatchStatus');assert.equal(await count('stopFileWatch'),stop+1);assert.equal(stopped.isRunning,false);
     await page.locator('.operations-settings-wrap #btn-ops-restart-watch').click();await notice(page);const started=await data('getFileWatchStatus');assert.equal(started.isRunning,true);
-    negative('N02','watch-double-click',()=>assert.equal(stopped.isRunning,false));record('Actual watcher stop/restart state and double-click count');
+    negative('N02','watch-double-click',()=>assert.equal(stopped.isRunning,false));
+
+    // ADM01-D02 회귀 검문: 야간제한 -1(오류 상태)에서 getFileWatchStatus 지연 중 저장 클릭 시 오류 모달 유지 확인
+    await selectSettingsArea(page, 'policy');
+    const nightLimitInputS04 = page.locator('#input-scheduleConsecutiveNightLimit');
+    const originalLimitS04 = await nightLimitInputS04.inputValue();
+    await nightLimitInputS04.fill('-1');
+    await selectSettingsArea(page, 'system');
+    await overrideBridge(page, 'getFileWatchStatus', 'async () => new Promise(resolve => { window.__releaseLateWatch = () => resolve(window.__opsActual.getFileWatchStatus()); })');
+    await page.locator('#btn-ops-refresh-watch-status').click();
+    await page.waitForFunction(() => !!window.__releaseLateWatch);
+    await page.locator('#btn-save-settings').click();
+    await page.locator('.workforce-modal-overlay').waitFor();
+    const modalTitleBefore = await page.locator('.workforce-modal-title').innerText();
+    assert.equal(modalTitleBefore, '설정 입력 오류', '입력 오류 모달이 표시되어야 함');
+    // 지연된 감시 상태 응답 방출 -> 기존 오류 모달을 덮어쓰지 않아야 함
+    await page.evaluate(() => window.__releaseLateWatch());
+    await sleep(300);
+    const modalTitleAfter = await page.locator('.workforce-modal-title').innerText();
+    assert.equal(modalTitleAfter, '설정 입력 오류', '지연된 감시 조회가 최신 오류 모달을 덮어쓰지 않아야 함');
+    await notice(page); // 오류 모달 닫기
+    await restoreBridge(page, 'getFileWatchStatus');
+    await selectSettingsArea(page, 'policy');
+    await nightLimitInputS04.fill(originalLimitS04);
+    await selectSettingsArea(page, 'system');
+
+    // 신규 UX 검문: 통제된 getFileWatchStatus 실패 주입 및 '상태 다시 조회' 복구 확인
+    const stopBeforeProbe = await count('stopFileWatch');
+    const restartBeforeProbe = await count('restartFileWatch');
+    const saveBeforeProbe = await count('saveAppSettings');
+    await overrideBridge(page,'getFileWatchStatus','async () => ({ ok: false, errorCode: "INTERNAL_ERROR", message: "통제된 감시 조회 실패" })');
+    await page.locator('#btn-ops-refresh-watch-status').click();
+    await notice(page);
+    const statusBadgeText = await page.locator('.file-watch-section .status-badge').innerText();
+    assert(statusBadgeText.includes('확인 실패'), '조회 실패 시 중지가 아닌 확인 실패로 표시되어야 함');
+    await restoreBridge(page,'getFileWatchStatus');
+    await page.locator('#btn-ops-refresh-watch-status').click();
+    await notice(page);
+    assert.equal(await count('stopFileWatch'), stopBeforeProbe, '재조회에서 stopFileWatch 호출 0');
+    assert.equal(await count('restartFileWatch'), restartBeforeProbe, '재조회에서 restartFileWatch 호출 0');
+    assert.equal(await count('saveAppSettings'), saveBeforeProbe, '재조회에서 saveAppSettings 호출 0');
+    const recovered = await data('getFileWatchStatus');
+    assert.equal(recovered.isRunning, true, '정상 재조회 후 감시 상태 복구');
+
+    // D02: stop/restart actions must preserve a newer validation dialog as well as reads.
+    await selectSettingsArea(page,'policy');
+    const limitBeforeLateStop = await page.locator('#input-scheduleConsecutiveNightLimit').inputValue();
+    await page.locator('#input-scheduleConsecutiveNightLimit').fill('-1');
+    await selectSettingsArea(page,'system');
+    await overrideBridge(page,'stopFileWatch','async()=>{const result=await window.__opsActual.stopFileWatch();return new Promise(resolve=>{window.__releaseLateStop=()=>resolve(result);});}');
+    await page.locator('#btn-stop-watch').click();await page.waitForFunction(()=>!!window.__releaseLateStop);
+    await page.locator('#btn-save-settings').click();await page.locator('#operations-notice-modal').waitFor();
+    assert.equal(await page.locator('.workforce-modal-title').innerText(),'설정 입력 오류');
+    await page.evaluate(()=>window.__releaseLateStop());await sleep(100);
+    assert.equal(await page.locator('.workforce-modal-title').innerText(),'설정 입력 오류','Late stop cannot replace newer error');
+    await notice(page);await restoreBridge(page,'stopFileWatch');
+    await selectSettingsArea(page,'policy');await page.locator('#input-scheduleConsecutiveNightLimit').fill(limitBeforeLateStop);
+    await selectSettingsArea(page,'system');await page.locator('#btn-ops-restart-watch').click();await notice(page);
+
+    // D06/D07: service messages remain literal text, including the last processing error.
+    const literal = '<b data-watch-literal>감시 오류 문자열</b>';
+    await overrideBridge(page,'getFileWatchStatus',`async()=>({ok:false,errorCode:"INTERNAL_ERROR",message:${JSON.stringify(literal)}})`);
+    await page.locator('#btn-ops-refresh-watch-status').click();await notice(page);
+    assert.equal(await page.locator('.watch-details [data-watch-literal]').count(),0);
+    assert((await page.locator('.watch-details').innerText()).includes(literal));
+    await overrideBridge(page,'getFileWatchStatus',`async()=>{const result=await window.__opsActual.getFileWatchStatus();return {...result,data:{...result.data,lastErrorMessage:${JSON.stringify(literal)}}};}`);
+    await page.locator('#btn-ops-refresh-watch-status').click();await notice(page);
+    assert.equal(await page.locator('.watch-details [data-watch-literal]').count(),0);
+    assert((await page.locator('.watch-details').innerText()).includes(literal));
+    await restoreBridge(page,'getFileWatchStatus');await page.locator('#btn-ops-refresh-watch-status').click();await notice(page);
+    extraEvidence[id].settingsAsyncOwnershipAndLiteralMessages = true;
+    record('Actual watcher stop/restart state and double-click count, controlled failure display and recovery without side effects');
   }
   if(id==='S05') {
     const added=await data('addHolidayItem',{year:2026,holidayDate:'2026-12-29',name:'변경 전',isSubstitute:false});
@@ -1095,32 +1372,60 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
   }
   if(id==='S17') {
     await freshTab(page,'settings');
+    await selectSettingsArea(page, 'backup');
     const employee=await data('saveEmployee',{employeeCode:'SOL-BACKUP-EMAIL',name:'백업 이메일 검수',employmentType:'정규',status:'active',email:'backup@example.invalid',contact:'010-1111-2222'});
-    const backup=await data('runDatabaseBackupNow');assert.equal(backup.tableCount,40);assert(fs.existsSync(backup.jsonBackupPath));
+    const backup=await data('runDatabaseBackupNow');assert.equal(backup.tableCount,42);assert(fs.existsSync(backup.jsonBackupPath));
     const bytes=fs.readFileSync(backup.jsonBackupPath);assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(),backup.backupSha256.toUpperCase());
-    const payload=JSON.parse(bytes);assert.equal(Object.keys(payload.tables).length,40);assert(JSON.stringify(payload.tables.employees).includes(employee.email));
+    const payload=JSON.parse(bytes);assert.equal(Object.keys(payload.tables).length,42);assert(JSON.stringify(payload.tables.employees).includes(employee.email));
     const extra=await data('saveSiteNameOption',{name:'복원 이후 제거되어야 하는 시험자료'});
     await prepareRestore(page,backup.jsonBackupPath);
-    const preview=(await page.evaluate(()=>window.__lastDbPreview)).data;assert.equal(preview.tableImpacts.length,40);
-    const shown=[];for(let n=0;n<4;n++) {
+    const preview=(await page.evaluate(()=>window.__lastDbPreview)).data;assert.equal(preview.tableImpacts.length,42);
+    const shown=[];for(let n=0;n<5;n++) {
       shown.push(...await page.locator('.restore-flow-container tr.table-row').evaluateAll(rows=>rows.map(row=>({name:row.children[0].textContent.trim(),before:Number(row.children[1].textContent.replaceAll(',','')),after:Number(row.children[2].textContent.replaceAll(',',''))}))));
-      if(n<3)await page.locator('.restore-flow-container .btn-next-page').click();
+      if(n<4)await page.locator('.restore-flow-container .btn-next-page').click();
     }
-    assert.equal(new Set(shown.map(r=>r.name)).size,40);for(const row of shown){const expected=preview.tableImpacts.find(t=>t.tableName===row.name);assert(expected);assert.equal(row.before,expected.currentRowCount);assert.equal(row.after,expected.nextRowCount);}
+    assert.equal(new Set(shown.map(r=>r.name)).size,42);for(const row of shown){const expected=preview.tableImpacts.find(t=>t.tableName===row.name);assert(expected);assert.equal(row.before,expected.currentRowCount);assert.equal(row.after,expected.nextRowCount);}
     const writes=await count('updateDatabaseFromMigration');await page.locator('#btn-execute-db-restore').click();await page.locator('#btn-prompt-cancel').click();assert.equal(await count('updateDatabaseFromMigration'),writes);
     await page.locator('#btn-execute-db-restore').click();await page.locator('.prompt-input').fill('확인');await page.locator('#btn-prompt-ok').click();assert.equal(await count('updateDatabaseFromMigration'),writes);assert(await page.locator('.form-error').isVisible());
     await overrideBridge(page,'updateDatabaseFromMigration','async input=>{const result=await window.__opsActual.updateDatabaseFromMigration(input);window.__lastRestore=result;return new Promise(resolve=>{window.__releaseRestore=()=>resolve(result);});}');
     await page.locator('.prompt-input').fill('교체');await page.locator('#btn-prompt-ok').evaluate(button=>{button.click();button.click();});
     await page.waitForFunction(()=>!!window.__releaseRestore);assert.equal(await count('updateDatabaseFromMigration'),writes+1);
     assert(await page.locator('.db-backup-section input,.db-backup-section button').evaluateAll(controls=>controls.every(c=>c.disabled)));
+
+    // 신규 UX 검문: busy 상태에서 영역 전환, 저장 차단 및 추가 쓰기 0 확인
+    const writesDuringRestore = await count('saveAppSettings');
+    await page.locator('#btn-settings-area-folders').click();
+    await notice(page);
+    assert.equal(await page.locator('#settings-area-backup').isVisible(), true, 'busy 중 영역 전환 차단되어 backup 영역 유지');
+    await page.locator('#btn-save-settings').click();
+    await notice(page);
+    assert.equal(await count('saveAppSettings'), writesDuringRestore, 'busy 중 저장 차단되어 추가 쓰기 0');
+
     await page.evaluate(()=>window.__releaseRestore());await page.waitForFunction(()=>document.querySelector('.restore-flow-container')?.textContent.includes('교체 직전 자동 백업'));
-    const result=await page.evaluate(()=>window.__lastRestore);assert(result.ok);assert(fs.existsSync(result.data.backupBeforeRestore.jsonBackupPath));assert.equal(result.data.tableResults.length,40);
+    const result=await page.evaluate(()=>window.__lastRestore);assert(result.ok);assert(fs.existsSync(result.data.backupBeforeRestore.jsonBackupPath));assert.equal(result.data.tableResults.length,42);
     assert(!(await data('listSiteNameOptions')).some(site=>site.id===extra.id));assert.equal((await data('listEmployees')).find(e=>e.id===employee.id).email,employee.email);
     await restoreBridge(page,'updateDatabaseFromMigration');scenarioState.backup=backup;scenarioState.backupPayload=payload;scenarioState.databasePath=result.data.databasePath;
-    negative('N02','restore-cancel-wrong-text-double-and-locks',()=>assert.equal(shown.length,40));record('Actual JSON40/SHA/email, all table counts, cancel/wrong phrase zero writes, actual restore once and automatic pre-backup');
+
+    // ADM01-D03 회귀 검문: 복원 완료 후 버튼 잠김 없이 정상 입력 및 저장 가능 확인
+    await page.locator('#input-databaseBackupTime').fill('04:00');
+    assert.equal(await page.locator('#btn-save-settings').isEnabled(), true, '복원 완료 후 저장 버튼 활성화');
+    assert.equal(await page.locator('#btn-revert-settings').isEnabled(), true, '복원 완료 후 되돌리기 버튼 활성화');
+    const writesAfterRestore = await count('saveAppSettings');
+    await page.locator('#btn-save-settings').click();
+    await notice(page);
+    assert.equal(await count('saveAppSettings'), writesAfterRestore + 1, '정상 저장 완료');
+    // 원복 (03:17)
+    await page.locator('#input-databaseBackupTime').fill('03:17');
+    await page.locator('#btn-save-settings').click();
+    await notice(page);
+
+
+    negative('N02','restore-cancel-wrong-text-double-and-locks',()=>assert.equal(shown.length,42));record('Actual JSON42/SHA/email, all table counts, cancel/wrong phrase zero writes, actual restore once and automatic pre-backup');
   }
   if(id==='S18') {
-    await freshTab(page,'settings');const snapshot=await data('listSiteNameOptions'),watchBefore=await data('getFileWatchStatus');
+    await freshTab(page,'settings');
+    await selectSettingsArea(page, 'backup');
+    const snapshot=await data('listSiteNameOptions'),watchBefore=await data('getFileWatchStatus');
     const original=clone(scenarioState.backupPayload);const invalids=[];
     const malformed=path.join(userDataDir,'malformed.json');fs.writeFileSync(malformed,'not-json');invalids.push(malformed);
     for(const [name,mutate] of [
@@ -1130,7 +1435,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     ]) {const p=clone(original);mutate(p);const file=path.join(userDataDir,name+'.json');fs.writeFileSync(file,JSON.stringify(p));invalids.push(file);}
     const rejected=[];for(const file of invalids){const result=await api('checkDatabaseMigrationRequirements',{backupFilePath:file});rejected.push(!result.ok||!result.data.isReady);}
     negative('N09','invalid-json-unknown-missing-type',()=>assert(rejected.length===4&&rejected.every(Boolean)));
-    const legacy=clone(original);for(const employee of legacy.tables.employees)delete employee.email;const legacyFile=path.join(userDataDir,'legacy-no-email.json');fs.writeFileSync(legacyFile,JSON.stringify(legacy));assert.equal((await data('checkDatabaseMigrationRequirements',{backupFilePath:legacyFile})).isReady,true);
+    const legacy=clone(original);legacy.schemaVersion=1;delete legacy.tables.policy_revisions;delete legacy.tables.policy_events;legacy.tableCount=40;for(const employee of legacy.tables.employees)delete employee.email;const legacyFile=path.join(userDataDir,'legacy-no-email.json');fs.writeFileSync(legacyFile,JSON.stringify(legacy));assert.equal((await data('checkDatabaseMigrationRequirements',{backupFilePath:legacyFile})).isReady,true);
     const file=scenarioState.backup.jsonBackupPath,preview=await data('previewDatabaseMigrationUpdate',{backupFilePath:file});
     const base={backupFilePath:file,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:'교체'};
     const copy=path.join(userDataDir,'different-path.json');fs.copyFileSync(file,copy);
@@ -1194,22 +1499,172 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
   }
   if(id==='S20') {
     await freshTab(page,'settings');const metrics=[];
-    for(const viewport of [{width:1024,height:768},{width:1440,height:900},{width:2048,height:1080}]) {
+    for(const viewport of [{width:1024,height:768},{width:1280,height:720},{width:1440,height:900},{width:1707,height:825},{width:2048,height:1080}]) {
       await page.setViewportSize(viewport);metrics.push(await page.evaluate(()=>({innerWidth,innerHeight,outerWidth,devicePixelRatio,documentWidth:document.documentElement.scrollWidth})));
       assert.equal(metrics.at(-1).innerWidth,viewport.width);assert(metrics.at(-1).documentWidth<=viewport.width+1);
     }
     await page.setViewportSize({width:1440,height:900});
+
+    // backup 영역에서 공통 select 팝업 Escape
+    await selectSettingsArea(page, 'backup');
     await page.locator('#select-databaseBackupSchedule').click();await page.locator('.ui-control-popup.ui-listbox').waitFor();await page.keyboard.press('Escape');assert.equal(await page.locator('.ui-control-popup').count(),0);
-    await page.locator('#input-substituteAllowancePolicyEffectiveFrom').click();await page.locator('.ui-calendar-grid').waitFor();await page.keyboard.press('Escape');
+
+    // policy 영역에서 모달 Escape
+    await selectSettingsArea(page, 'policy');
+    await page.locator('#btn-open-substitute-policy').click();
+    await page.locator('.policy-history-dialog').waitFor();
+    await page.keyboard.press('Escape');
+    await sleep(200);
+    assert.equal(await page.locator('.policy-history-dialog').count(), 0, 'Escape 키로 정책 이력 모달 닫힘');
+
+    // 다른 공통 대화상자가 열리면 이전 정책 창의 늦은 복귀가 새 창을 덮지 않는다.
+    await page.locator('#btn-open-substitute-policy').click();await page.locator('#btn-add-new-policy').click();
+    await page.locator('#policy-dialog-form').waitFor();
+    await page.evaluate(() => document.querySelector('#help-input-scheduleConsecutiveNightLimit').click());
+    await page.locator('#ops-policy-help-modal').waitFor();
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve,0)));
+    assert.equal(await page.locator('#ops-policy-help-modal').count(),1);
+    assert.equal(await page.locator('#operations-policy-history').count(),0);
+    await page.keyboard.press('Escape');
+
+    // policy 영역에서 음수값 저장 시 경고 모달 포커스 트랩 및 Escape 확인
     const original=await page.locator('#input-scheduleConsecutiveNightLimit').inputValue();await page.locator('#input-scheduleConsecutiveNightLimit').fill('-1');await page.locator('#btn-save-settings').click();await page.locator('.workforce-modal-overlay').waitFor();await page.waitForFunction(()=>!!document.activeElement?.closest('.workforce-modal-overlay'));
     for(const key of ['Tab','Shift+Tab','Tab']) {await page.keyboard.press(key);assert(await page.evaluate(()=>!!document.activeElement?.closest('.workforce-modal-overlay')));}
-    await page.keyboard.press('Escape');await page.waitForFunction(()=>document.activeElement?.id==='btn-save-settings');await page.locator('#input-scheduleConsecutiveNightLimit').fill(original);
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(()=>document.activeElement?.id==='input-scheduleConsecutiveNightLimit');
+    await page.locator('#input-scheduleConsecutiveNightLimit').fill(original);
+
+    // system 영역 읽기 전용 및 dirty 상태 문자 제공 확인
+    await selectSettingsArea(page, 'system');
+    assert.equal(await page.locator('#input-ro-appName').getAttribute('readonly'), '');
+    const dirtyStatusText = await page.locator('#ops-settings-dirty-status').innerText();
+    assert(dirtyStatusText.includes('저장된 설정') || dirtyStatusText.includes('변경'), 'dirty 상태가 문자로 제공되어야 함');
+
     await page.reload({waitUntil:'networkidle'});await page.locator('.home-container').waitFor();await installCalls(page);
     for(const [menu,selector] of [['workforce','#workforce-root'],['access-history','#access-history-screen']]) {
       await page.locator(`button[data-id="${menu}"]`).click();await page.locator(selector).waitFor();assert(await page.locator(selector).isVisible());
     }
     await page.locator('button[data-id="operations"]').click();await page.locator('.operations-settings-wrap').waitFor();
-    assert.deepEqual(unexpectedErrors,[]);extraEvidence[id].viewports=metrics;record('Actual widths and no page overflow; shared select/date popup, modal keyboard/focus, home/workforce/access-history navigation');
+
+    // Shared time picker uses the real input/change flow and keeps cancelled edits local.
+    await selectSettingsArea(page,'backup');
+    const backupTime = page.locator('#input-databaseBackupTime'), savedTime = await backupTime.inputValue();
+    await backupTime.click();await page.locator('.ui-time-picker').waitFor();
+    await page.locator('.ui-time-hour').fill('4');await page.locator('.ui-time-minute').fill('25');
+    await page.getByRole('button',{name:'시간 선택 취소',exact:true}).click();
+    assert.equal(await backupTime.inputValue(),savedTime);
+    await backupTime.click();await page.locator('.ui-time-picker').waitFor();
+    await page.locator('.ui-time-hour').fill('4');await page.locator('.ui-time-minute').fill('25');
+    await page.locator('.ui-time-apply').click();assert.equal(await backupTime.inputValue(),'04:25');
+    await page.locator('#btn-revert-settings').click();await page.locator('#btn-confirm-ok').click();
+    assert.equal(await backupTime.inputValue(),savedTime);
+    await backupTime.click();await page.locator('.ui-time-picker').waitFor();await page.keyboard.press('Escape');
+    assert.equal(await page.locator('.ui-time-picker').count(),0);assert.equal(await backupTime.inputValue(),savedTime);
+
+    const localTabs = page.locator('.ops-settings-tab-btn');
+    await localTabs.first().focus();
+    for (const [key,area] of [['End','system'],['Home','folders'],['ArrowRight','backup'],['ArrowLeft','folders'],['ArrowDown','backup'],['ArrowUp','folders']]) {
+      await page.keyboard.press(key);
+      assert.equal(await page.locator('#btn-settings-area-'+area).getAttribute('aria-selected'),'true');
+      assert.equal(await page.evaluate(()=>document.activeElement?.id),'btn-settings-area-'+area);
+    }
+    // S20: 18필드 (15개 수정 + 3개 읽기전용) 및 연동 힌트 검증
+    const expectedIds = ['pendingDir','approvedDir','scheduleExportDir','allowanceProposalExportDir','allowanceAttachment1ExportDir','allowanceAttachment2ExportDir','databaseBackupDir','databaseBackupTime','migrationFilePath','scheduleConsecutiveNightLimit','scheduleMinimumRestMinutes','scheduleWeeklyMaxMinutes','holidayApiBaseUrl','ro-appName','ro-dataDir','ro-databasePath'].map(key=>'input-'+key).concat(['select-databaseBackupSchedule','checkbox-scheduleRequireWeeklyHoliday']);
+    const names = await page.evaluate(ids=>ids.map(id=>{
+      const input=document.getElementById(id), hint=input?.closest('.form-group')?.querySelector('.form-help');
+      return {id,labels:input?.labels?.length||0,hint:!!hint,hintLinked:!hint||(!!hint.id&&(input.getAttribute('aria-describedby')||'').split(' ').includes(hint.id))};
+    }),expectedIds);
+    assert.equal(names.length,18);assert(names.every(field=>field.labels>0&&field.hintLinked),'All settings have associated names and hints');
+    extraEvidence[id].settingsControls = {timeApplyCancelEscape:true, keyboardAreas:true, fieldBindings:names};
+
+    // ADM01-D04 회귀 검문: 15개 편집 + 3개 읽기전용 필드의 label for/id 연결 및 checkbox label 클릭 토글 실측
+    for (const area of ['folders', 'backup', 'policy', 'system']) {
+      await selectSettingsArea(page, area);
+    }
+    // policy 영역에서 label for 연결 및 checkbox label 토글 검증
+    await selectSettingsArea(page, 'policy');
+    assert.equal(await page.locator('.policy-summary-card').count(), 2, '2개의 정책 안내 카드가 렌더링되어야 함');
+    assert.equal(await page.locator('#btn-open-substitute-policy').count(), 1, '대체수당 정책 모달 열기 버튼');
+    assert.equal(await page.locator('#btn-open-changed-slot-policy').count(), 1, '근무자 우선순위 정책 모달 열기 버튼');
+
+    const policyFieldIds = [
+      'input-scheduleConsecutiveNightLimit',
+      'input-scheduleMinimumRestMinutes',
+      'input-scheduleWeeklyMaxMinutes',
+      'checkbox-scheduleRequireWeeklyHoliday'
+    ];
+    for (const fid of policyFieldIds) {
+      const labelCount = await page.locator(`label[for="${fid}"]`).count();
+      assert(labelCount >= 1, `${fid}는 label[for]와 연결되어 있어야 함`);
+    }
+    // checkbox-scheduleRequireWeeklyHoliday 라벨 클릭 시 실제 체크값 토글 검증
+    const cb = page.locator('#checkbox-scheduleRequireWeeklyHoliday');
+    const checkedBefore = await cb.isChecked();
+    await page.locator('label[for="checkbox-scheduleRequireWeeklyHoliday"]').first().click();
+    assert.notEqual(await cb.isChecked(), checkedBefore, '라벨 클릭 시 체크박스가 토글되어야 함');
+    // 다시 클릭하여 원복
+    await page.locator('label[for="checkbox-scheduleRequireWeeklyHoliday"]').first().click();
+    assert.equal(await cb.isChecked(), checkedBefore, '라벨 다시 클릭 시 원래 값으로 복원');
+
+    // Dense 후속: 여섯 설명의 목적/적용/예시/영향, 키보드 트랩과 원래 버튼으로의 복귀.
+    const policyHelpChecks = [];
+    for (const fid of policyFieldIds) {
+      const trigger = page.locator('#help-'+fid);
+      await trigger.click();
+      await page.waitForFunction(() => document.activeElement?.id === 'btn-policy-help-close');
+      const dialog = page.locator('#ops-policy-help-modal');
+      assert.equal(await dialog.getAttribute('aria-modal'),'true');
+      assert.equal(await dialog.locator('.ops-policy-help section').count(),4);
+      const copy = await dialog.innerText();
+      for (const heading of ['어떤 기능인가요?','언제 적용되나요?','입력 예시','바꾸면 어떻게 되나요?']) assert(copy.includes(heading));
+      if (fid.includes('MinimumRest')) assert(copy.includes('660분은 11시간'));
+      if (fid.includes('WeeklyMax')) assert(copy.includes('휴게시간을 뺀 합계'));
+      if (fid.includes('RequireWeeklyHoliday')) assert(copy.includes('주휴수당 지급 여부'));
+      if (fid.includes('EffectiveFrom')) assert(copy.includes('승인된 보관 실적'));
+      await page.keyboard.press('Tab');
+      assert(await page.evaluate(() => !!document.activeElement?.closest('#ops-policy-help-modal')));
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Escape');
+      assert.equal(await dialog.count(),0);
+      assert.equal(await page.evaluate(() => document.activeElement?.id),'help-'+fid);
+      policyHelpChecks.push({field:fid,sections:4,escapeAndFocusRestore:true});
+    }
+    extraEvidence[id].policyHelpChecks = policyHelpChecks;
+
+    // ADM01-D05 회귀 검문: 5개 뷰포트 크기 x 4개 영역에서 footer 및 저장/되돌리기 버튼 실제 bounding rect 실측 (가시 영역 내 포함, clipping 0)
+    const settingsRects = [];
+    for (const vp of [{width:1024,height:768},{width:1280,height:720},{width:1440,height:900},{width:1707,height:825},{width:2048,height:1080}]) {
+      await page.setViewportSize(vp);
+      for (const area of ['folders', 'backup', 'policy', 'system']) {
+        await selectSettingsArea(page, area);
+        const rects = await page.evaluate(() => {
+          const footer = document.querySelector('.ops-settings-footer');
+          const saveBtn = document.querySelector('#btn-save-settings');
+          const revertBtn = document.querySelector('#btn-revert-settings');
+          const panels = document.querySelector('.ops-settings-panels');
+          return {
+            footer: footer ? footer.getBoundingClientRect() : null,
+            saveBtn: saveBtn ? saveBtn.getBoundingClientRect() : null,
+            revertBtn: revertBtn ? revertBtn.getBoundingClientRect() : null,
+            panelClientHeight: panels.clientHeight,
+            panelScrollHeight: panels.scrollHeight,
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight
+          };
+        });
+        settingsRects.push({viewport:vp,area,...rects});
+        assert(rects.footer && rects.footer.height>0 && rects.footer.top>=0, 'footer가 화면 안에 존재해야 함');
+        assert(rects.footer.bottom <= rects.windowHeight + 1, 'footer가 화면 아래로 잘리지 않아야 함');
+        assert(rects.footer.left >= 0 && rects.footer.right <= rects.windowWidth + 1, 'footer 가로 범위 유지');
+        assert(rects.saveBtn && rects.saveBtn.top>=0 && rects.saveBtn.left>=0 && rects.saveBtn.right<=rects.windowWidth+1 && rects.saveBtn.bottom <= rects.windowHeight + 1, '저장 버튼이 화면 내에 노출되어야 함');
+        assert(rects.revertBtn && rects.revertBtn.top>=0 && rects.revertBtn.left>=0 && rects.revertBtn.right<=rects.windowWidth+1 && rects.revertBtn.bottom <= rects.windowHeight + 1, '되돌리기 버튼이 화면 내에 노출되어야 함');
+        if (vp.width >= 1440 && vp.height >= 825) assert(rects.panelScrollHeight <= rects.panelClientHeight + 1, `${area}: 기본 설정은 내부 스크롤 없이 보여야 함`);
+      }
+    }
+    await page.setViewportSize({width:1440,height:900});
+
+    extraEvidence[id].settingsRects=settingsRects;
+    assert.deepEqual(unexpectedErrors,[]);extraEvidence[id].viewports=metrics;record('Actual widths and no page overflow; shared select/date popup, modal keyboard/focus, home/workforce/access-history navigation, label/clipping verified');
   }
   assert(extraEvidence[id].assertions.length>0,`${id} has no actual assertion evidence`);
 }

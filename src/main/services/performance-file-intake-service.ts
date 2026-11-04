@@ -32,6 +32,8 @@ import {
 } from "./performance-file-storage-service";
 import { buildApprovedPerformanceArchiveDirectory } from "./performance-file-archive-service";
 import { parseReturnedSchedulePerformanceFile } from "./schedule-return-performance-parser";
+import { computeMonthPolicyFingerprint } from "../../shared/domain/policy-history";
+import { getActivePolicyTimeline, isPolicyHistoryInitialized } from "./policy-history-service";
 import { isSqliteStorageReady } from "./sqlite-storage-service";
 import { getLatestAllowanceCalculationByApprovalId } from "./approved-allowance-calculation-service";
 
@@ -255,12 +257,38 @@ const hasSameFileVersion = (
   detail.fileSize === fileStats.size &&
   Math.abs(detail.modifiedTimeMs - fileStats.mtimeMs) < 1;
 
-const canReuseStoredDetail = (detail: PerformanceFileDetail, fileStats: Stats) =>
-  hasSameFileVersion(detail, fileStats) &&
-  !(
+const getMonthPolicyFingerprint = (scheduleMonth: string): string | null => {
+  if (!/^\d{4}-\d{2}$/.test(scheduleMonth)) return null;
+  if (!isPolicyHistoryInitialized()) return null;
+  const subTimeline = getActivePolicyTimeline("substitute-eligibility");
+  const chgTimeline = getActivePolicyTimeline("changed-worker-priority");
+  return computeMonthPolicyFingerprint(scheduleMonth, {
+    "substitute-eligibility": subTimeline,
+    "changed-worker-priority": chgTimeline,
+  });
+};
+
+const canReuseStoredDetail = (detail: PerformanceFileDetail, fileStats: Stats) => {
+  if (!hasSameFileVersion(detail, fileStats)) {
+    return false;
+  }
+  if (
     detail.directoryType === "pending" &&
     (detail.status === "approved" || detail.status === "rejected")
-  );
+  ) {
+    return false;
+  }
+  if (detail.directoryType === "pending") {
+    if (!detail.scheduleMonth || !detail.policyContextFingerprint) {
+      return false;
+    }
+    const currentFingerprint = getMonthPolicyFingerprint(detail.scheduleMonth);
+    if (!currentFingerprint || detail.policyContextFingerprint !== currentFingerprint) {
+      return false;
+    }
+  }
+  return true;
+};
 
 const createUnsupportedTemplateMessage = (input: {
   sheetName: string;
@@ -361,13 +389,19 @@ export const getPerformanceFileSyncStateSnapshot = (): PerformanceFileSyncStateS
   ...performanceFileSyncState
 });
 
+let performanceWageRevision = 0;
+export const invalidatePerformanceWageContext = (): void => { performanceWageRevision += 1; };
+
 export const buildPerformanceFileDetailFromPath = async (input: {
   filePath: string;
   settings: Pick<AppSettings, "pendingDir" | "approvedDir">;
   fileStats?: Stats;
   receivedAt?: string;
   forceReparse?: boolean;
+  wageRevisionRetried?: boolean;
+  policyRevisionRetried?: boolean;
 }): Promise<PerformanceFileDetail | null> => {
+  const wageRevision = performanceWageRevision;
   if (!isSupportedPerformanceFile(input.filePath)) {
     return null;
   }
@@ -398,7 +432,7 @@ export const buildPerformanceFileDetailFromPath = async (input: {
     : null;
 
   if (
-    !input.forceReparse &&
+    !input.forceReparse && wageRevision === performanceWageRevision &&
     existingPathDetail &&
     existingPathDetail.directoryType === watchEvent.directoryType &&
     canReuseStoredDetail(existingPathDetail, fileStats)
@@ -464,6 +498,31 @@ export const buildPerformanceFileDetailFromPath = async (input: {
         filePath: input.filePath,
         fileId
       });
+      if (wageRevision !== performanceWageRevision) {
+        return input.wageRevisionRetried ? null : buildPerformanceFileDetailFromPath({
+          ...input, fileStats: undefined, forceReparse: true, wageRevisionRetried: true
+        });
+      }
+      if (parsed.scheduleMonth) {
+        const postPolicyFingerprint = getMonthPolicyFingerprint(parsed.scheduleMonth);
+        if (
+          !postPolicyFingerprint ||
+          !parsed.policyContextFingerprint ||
+          parsed.policyContextFingerprint !== postPolicyFingerprint
+        ) {
+          if (!input.policyRevisionRetried) {
+            return buildPerformanceFileDetailFromPath({
+              ...input,
+              fileStats: undefined,
+              forceReparse: true,
+              policyRevisionRetried: true
+            });
+          }
+          const conflict = new Error("파싱 중 정책 기준이 다시 변경되었습니다. 실적을 다시 조회해 주세요.");
+          Object.assign(conflict, { code: "POLICY_CONTEXT_CHANGED" });
+          throw conflict;
+        }
+      }
       const effectiveEntries = parsed.entries.filter(
         (entry) => isPayablePerformanceEntry(entry)
       );
@@ -478,6 +537,7 @@ export const buildPerformanceFileDetailFromPath = async (input: {
           scheduleMonth: parsed.scheduleMonth,
           siteName: parsed.siteName,
           scheduleKey: parsed.scheduleKey,
+          policyContextFingerprint: parsed.policyContextFingerprint,
           entryCount: effectiveEntries.length,
           approvedEntryCount:
             isApprovedDirectory ? existingDetail?.approvedEntryCount ?? effectiveEntries.length : 0,

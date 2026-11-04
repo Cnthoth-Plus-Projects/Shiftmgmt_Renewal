@@ -7,6 +7,7 @@ import type {
 } from "../../shared/bridge/contracts";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
 import { resolveAppSettings } from "./app-settings-service";
+import { isPolicyHistoryInitialized } from "./policy-history-service";
 
 type PersistedAppSettingKey =
   | "holiday_api_base_url"
@@ -377,6 +378,50 @@ export const saveStoredAppSettingEntry = (
   const isPolicyEffectiveDateKey = POLICY_EFFECTIVE_DATE_SETTING_KEYS.has(settingKey);
   const previousValue = isPolicyEffectiveDateKey ? getStoredAppSettingEntry(settingKey) : null;
 
+  if (isPolicyEffectiveDateKey && isPolicyHistoryInitialized()) {
+    const prevNormalized = previousValue?.trim() ?? "";
+    const nextNormalized = value?.trim() ?? "";
+    if (prevNormalized !== "" && nextNormalized !== "" && prevNormalized !== nextNormalized) {
+      const error = new Error("정책 적용 시작일은 정책 관리 메뉴에서 변경해야 합니다.");
+      (error as unknown as { code: string }).code = "POLICY_MANAGED_SETTINGS";
+      throw error;
+    }
+  }
+
+  if (isPolicyEffectiveDateKey) {
+    if (value === null) {
+      deleteStoredSetting(settingKey);
+    } else {
+      upsertStoredSetting(settingKey, value);
+    }
+    if ((previousValue ?? "") !== (value ?? "")) {
+      markSubstitutePolicyChange();
+      const database = getSqliteDatabase();
+      if (database && isPolicyHistoryInitialized(database)) {
+        const kind = settingKey === "substitute_allowance_policy_effective_from"
+          ? "substitute-eligibility"
+          : "changed-worker-priority";
+        const v2Rule = kind === "substitute-eligibility" ? "substitute-team-type-v1" : "changed-worker-after-v1";
+        const existingV2 = database.prepare(
+          "SELECT id FROM policy_revisions WHERE policy_kind = ? AND version_number = 2"
+        ).get(kind) as { id: string } | undefined;
+        if (existingV2) {
+          database.prepare(
+            "UPDATE policy_revisions SET effective_from = ? WHERE id = ?"
+          ).run(value, existingV2.id);
+        } else if (value) {
+          database.prepare(`
+            INSERT INTO policy_revisions (
+              id, policy_kind, version_number, rule_key, criteria_json, implementation_version,
+              effective_from, origin, actor_user_id, actor_login_id, actor_display_name, actor_role, created_at, reason
+            ) VALUES (?, ?, 2, ?, ?, 'v1', ?, 'initial', 'system', 'system', '시스템', 'admin', ?, '설정 동기화')
+          `).run(`rev-${kind}-v2-setting`, kind, v2Rule, "{}", value, new Date().toISOString());
+        }
+      }
+    }
+    return;
+  }
+
   if (value === null) {
     deleteStoredSetting(settingKey);
   } else {
@@ -401,7 +446,27 @@ export const saveStoredAppSettings = (
     throw new Error("앱 설정 저장소가 초기화되지 않았습니다.");
   }
 
+
   const currentSettings = getStoredAppSettingsSnapshot(context);
+
+  if (isPolicyHistoryInitialized(database)) {
+    const isSubChanged =
+      input.substituteAllowancePolicyEffectiveFrom !== undefined &&
+      normalizeOptionalIsoDate(input.substituteAllowancePolicyEffectiveFrom, "대체근무수당") !==
+        normalizeOptionalIsoDate(currentSettings.substituteAllowancePolicyEffectiveFrom, "대체근무수당");
+
+    const isChgChanged =
+      input.changedSlotPriorityEffectiveFrom !== undefined &&
+      normalizeOptionalIsoDate(input.changedSlotPriorityEffectiveFrom, "변경후 우선") !==
+        normalizeOptionalIsoDate(currentSettings.changedSlotPriorityEffectiveFrom, "변경후 우선");
+
+    if (isSubChanged || isChgChanged) {
+      const error = new Error("정책 적용 시작일은 정책 관리 메뉴에서 변경해야 합니다.");
+      (error as unknown as { code: string }).code = "POLICY_MANAGED_SETTINGS";
+      throw error;
+    }
+  }
+
   const nextSettings: AppSettingsSnapshot = {
     ...currentSettings,
     holidayApiBaseUrl: normalizeRequiredText(input.holidayApiBaseUrl, "공휴일 API 주소"),
@@ -467,39 +532,42 @@ export const saveStoredAppSettings = (
 
   ensureWritableDirectories(nextSettings);
 
-  (
-    [
-      ["holidayApiBaseUrl", nextSettings.holidayApiBaseUrl],
-      ["pendingDir", nextSettings.pendingDir],
-      ["approvedDir", nextSettings.approvedDir],
-      ["scheduleExportDir", nextSettings.scheduleExportDir],
-      ["allowanceProposalExportDir", nextSettings.allowanceProposalExportDir],
-      ["allowanceAttachment1ExportDir", nextSettings.allowanceAttachment1ExportDir],
-      ["allowanceAttachment2ExportDir", nextSettings.allowanceAttachment2ExportDir],
-      ["databaseBackupDir", nextSettings.databaseBackupDir],
-      ["databaseBackupSchedule", nextSettings.databaseBackupSchedule],
-      ["databaseBackupTime", nextSettings.databaseBackupTime],
-      ["migrationFilePath", nextSettings.migrationFilePath],
-      ["scheduleConsecutiveNightLimit", String(nextSettings.scheduleConsecutiveNightLimit)],
-      ["scheduleMinimumRestMinutes", String(nextSettings.scheduleMinimumRestMinutes)],
-      ["scheduleRequireWeeklyHoliday", String(nextSettings.scheduleRequireWeeklyHoliday)],
-      ["scheduleWeeklyMaxMinutes", String(nextSettings.scheduleWeeklyMaxMinutes)],
-      [
-        "substituteAllowancePolicyEffectiveFrom",
-        nextSettings.substituteAllowancePolicyEffectiveFrom ?? ""
-      ],
-      ["changedSlotPriorityEffectiveFrom", nextSettings.changedSlotPriorityEffectiveFrom ?? ""]
-    ] as const
-  ).forEach(([key, value]) => {
+  const isPolicyInitialized = isPolicyHistoryInitialized();
+
+  const settingEntries: Array<readonly [keyof typeof persistedSettingKeyMap, string]> = [
+    ["holidayApiBaseUrl", nextSettings.holidayApiBaseUrl],
+    ["pendingDir", nextSettings.pendingDir],
+    ["approvedDir", nextSettings.approvedDir],
+    ["scheduleExportDir", nextSettings.scheduleExportDir],
+    ["allowanceProposalExportDir", nextSettings.allowanceProposalExportDir],
+    ["allowanceAttachment1ExportDir", nextSettings.allowanceAttachment1ExportDir],
+    ["allowanceAttachment2ExportDir", nextSettings.allowanceAttachment2ExportDir],
+    ["databaseBackupDir", nextSettings.databaseBackupDir],
+    ["databaseBackupSchedule", nextSettings.databaseBackupSchedule],
+    ["databaseBackupTime", nextSettings.databaseBackupTime],
+    ["migrationFilePath", nextSettings.migrationFilePath],
+    ["scheduleConsecutiveNightLimit", String(nextSettings.scheduleConsecutiveNightLimit)],
+    ["scheduleMinimumRestMinutes", String(nextSettings.scheduleMinimumRestMinutes)],
+    ["scheduleRequireWeeklyHoliday", String(nextSettings.scheduleRequireWeeklyHoliday)],
+    ["scheduleWeeklyMaxMinutes", String(nextSettings.scheduleWeeklyMaxMinutes)],
+  ];
+
+  settingEntries.push(
+    ["substituteAllowancePolicyEffectiveFrom", nextSettings.substituteAllowancePolicyEffectiveFrom ?? ""],
+    ["changedSlotPriorityEffectiveFrom", nextSettings.changedSlotPriorityEffectiveFrom ?? ""],
+  );
+
+  settingEntries.forEach(([key, value]) => {
     upsertStoredSetting(persistedSettingKeyMap[key], value);
   });
 
   // 두 정책 시작일 모두 파싱 시점에 굳으므로, 바뀌면 대기 파일을 한 번 다시 읽게 표시한다.
   if (
-    (currentSettings.substituteAllowancePolicyEffectiveFrom ?? "") !==
+    !isPolicyInitialized &&
+    ((currentSettings.substituteAllowancePolicyEffectiveFrom ?? "") !==
       (nextSettings.substituteAllowancePolicyEffectiveFrom ?? "") ||
-    (currentSettings.changedSlotPriorityEffectiveFrom ?? "") !==
-      (nextSettings.changedSlotPriorityEffectiveFrom ?? "")
+      (currentSettings.changedSlotPriorityEffectiveFrom ?? "") !==
+        (nextSettings.changedSlotPriorityEffectiveFrom ?? ""))
   ) {
     markSubstitutePolicyChange();
   }

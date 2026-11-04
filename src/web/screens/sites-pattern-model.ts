@@ -9,6 +9,7 @@ import type {
   ShiftPatternTeamCycleAssignmentInput,
   ShiftPatternUpsertInput
 } from "../../shared/bridge/contracts";
+import { validateHolidayPolicy, getPatternDutyCodes } from "../../shared/domain/holiday-pattern";
 import type { PatternStatus, ShiftPatternRecord } from "../../shared/domain/model";
 import { validateDutyCatalog, isOffDutyCode } from "../../shared/domain/duty-type-catalog";
 import { getShiftPatternEffectiveFromError } from "../../shared/domain/shift-pattern-version";
@@ -17,6 +18,7 @@ import type { SitePatternImportAnalysis } from "../../shared/bridge/contracts";
 import { isValidDateString } from "./sites-model";
 
 export interface PatternDraft {
+  holidayPolicy?: import("../../shared/domain/holiday-pattern").HolidayPatternPolicy;
   siteId: string;
   patternId?: string;
   name: string;
@@ -27,22 +29,15 @@ export interface PatternDraft {
   patternStartDate?: string;
   effectiveFrom?: string;
   status: PatternStatus;
-  // 팔레트 정의 (근무형 최대 3개, 휴무형 여러 개)
   dutyTypes: ShiftPatternDutyTypeInput[];
-  // 묶음 사이클 목록
   cycles: ShiftPatternCycleInput[];
-  // 조별 묶음 배정
   teamCycleAssignments: ShiftPatternTeamCycleAssignmentInput[];
-  // 조별 정원
   teamCapacities: ShiftPatternTeamCapacityInput[];
-  // 조별 설정
   teamSettings: ShiftPatternTeamSettingInput[];
-  // 개별 패턴 토글 활성화 여부
   isPerTeamPattern: boolean;
   sharedAssignments?: ShiftPatternTeamCycleAssignmentInput[];
   dutyCodes?: Record<string, string>;
   baselineRevision?: string;
-  // Pool 설정
   poolEnabled: boolean;
   poolStartTime?: string;
   poolEndTime?: string;
@@ -133,7 +128,6 @@ export function create4Team3ShiftTemplate(siteId: string, name = "4조 3교대 �
     }
   ];
 
-  // 4일 주기: 주 / 석 / 야 / 휴
   const steps: ShiftPatternStepInput[] = [
     { stepIndex: 0, dutyCode: "D", startTime: "07:00", endTime: "15:00", breakMinutes: 60 },
     { stepIndex: 1, dutyCode: "E", startTime: "15:00", endTime: "23:00", breakMinutes: 60 },
@@ -229,7 +223,6 @@ export function create2Team2ShiftTemplate(siteId: string, name = "2조 2교대 �
     }
   ];
 
-  // 4일 주기: 주 / 야 / 휴 / 휴
   const steps: ShiftPatternStepInput[] = [
     { stepIndex: 0, dutyCode: "D", startTime: "09:00", endTime: "21:00", breakMinutes: 90 },
     { stepIndex: 1, dutyCode: "N", startTime: "21:00", endTime: "09:00", breakMinutes: 90 },
@@ -365,7 +358,6 @@ function isValidTimeString(timeStr?: string): boolean {
 export function validatePatternDraft(draft: PatternDraft, siteName: string, existingPatterns: ShiftPatternRecord[] = []): PatternValidationResult {
   const issues: Array<{ field: string; message: string; step: "basics" | "pattern" | "organization" }> = [];
 
-  // 1-A 기본 설정 검증
   if (!siteName || !siteName.trim()) {
     issues.push({ field: "siteName", message: "근무지 이름을 입력해 주세요.", step: "basics" });
   }
@@ -386,7 +378,6 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     issues.push({ field: "teamCount", message: "조 수는 2개 이상 8개 이하여야 합니다.", step: "basics" });
   }
 
-  // 1-B 근무시간 및 패턴 검증
   const workDutyTypes = draft.dutyTypes.filter((d) => d.kind === "work");
   if (workDutyTypes.length === 0) {
     issues.push({ field: "dutyTypes", message: "최소 1개 이상의 근무형이 등록되어야 합니다.", step: "pattern" });
@@ -395,7 +386,6 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     issues.push({ field: "dutyTypes", message: "근무형은 최대 3개까지만 등록할 수 있습니다.", step: "pattern" });
   }
 
-  // 팔레트 시간 검증
   for (const duty of workDutyTypes) {
     if (!duty.startTime || !duty.endTime) {
       issues.push({
@@ -412,7 +402,6 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     }
   }
 
-  // 사이클 검증
   if (draft.cycles.length === 0) {
     issues.push({ field: "cycles", message: "최소 1개 이상의 근무 묶음이 필요합니다.", step: "pattern" });
   }
@@ -447,7 +436,9 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     }
   }
 
-  // 조별 묶음 배정 검증
+  const activeLengths = draft.teamSettings.filter(t=>t.isActive!==false).map(t=>draft.cycles.find(c=>c.cycleKey===draft.teamCycleAssignments.find(a=>a.teamLabel===t.teamLabel)?.cycleKey)?.steps.length).filter((n): n is number => n!==undefined);
+  if(new Set(activeLengths).size>1)issues.push({field:"team-pattern-length",message:"모든 조의 반복 패턴 칸 수를 동일하게 맞춰 주세요.",step:"pattern"});
+  if(draft.cycles.some(c=>c.steps.some(s=>!s.dutyCode)))issues.push({field:"unassigned-slots",message:"미지정 패턴 칸에 근무 또는 휴무 유형을 모두 배치해 주세요.",step:"pattern"});
   for (const team of draft.teamSettings) {
     if (team.isActive !== false) {
       const assignment = draft.teamCycleAssignments.find((a) => a.teamLabel === team.teamLabel);
@@ -461,7 +452,6 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     }
   }
 
-  // 정원(Capacity) 검증
   for (const cap of draft.teamCapacities || []) {
     if (typeof cap.maxHeadcount === "number" && cap.maxHeadcount < 0) {
       issues.push({
@@ -472,7 +462,6 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
     }
   }
 
-  // Pool 시간 검증
   if (draft.poolEnabled) {
     if (draft.poolStartTime && !isValidTimeString(draft.poolStartTime)) {
       issues.push({
@@ -523,6 +512,8 @@ export function validatePatternDraft(draft: PatternDraft, siteName: string, exis
   }
   for (const cap of draft.teamCapacities) if (cap.maxHeadcount !== undefined && (!Number.isInteger(cap.maxHeadcount) || cap.maxHeadcount < 0)) add(`capacity-${cap.teamLabel}`, "정원은 빈칸(무제한) 또는 0 이상의 정수입니다.", "organization");
   if (draft.poolEnabled && (!isValidTimeString(draft.poolStartTime) || !isValidTimeString(draft.poolEndTime))) add("poolStartTime", "Pool 시작·종료 시간을 입력해 주세요.", "basics");
+  const holidayError=validateHolidayPolicy(draft.holidayPolicy,draft.teamSettings.filter(t=>t.isActive!==false).map(t=>t.teamLabel),Object.values(getDutyCodes(draft.dutyTypes,draft.dutyCodes)),draft.effectiveFrom);
+  if(holidayError)issues.push({field:"holidayPolicy",message:holidayError,step:"pattern"});
   return {
     isValid: issues.length === 0,
     issues
@@ -553,6 +544,7 @@ export function serializePatternDraft(draft: PatternDraft): ShiftPatternUpsertIn
     teamCycleAssignments: draft.teamCycleAssignments,
     teamCapacities: draft.teamCapacities,
     teamSettings: draft.teamSettings,
+    holidayPolicy: draft.holidayPolicy,
     dutyTypes: draft.dutyTypes.map((d,i) => {const slot=["D","E","N"].indexOf(getDutyCodes(draft.dutyTypes,draft.dutyCodes)[d.id]);return {...d,sortOrder:d.kind==="off" ? 10+i : slot>=0?slot:d.sortOrder??i};}),
     poolEnabled: draft.poolEnabled,
     poolStartTime: draft.poolStartTime,
@@ -562,20 +554,13 @@ export function serializePatternDraft(draft: PatternDraft): ShiftPatternUpsertIn
 }
 
 
-/** Identity comes from immutable IDs/order, never from an editable label. */
 export function getDutyCodes(types: ShiftPatternDutyTypeInput[], previous: Record<string,string> = {}): Record<string,string> {
-  const result: Record<string,string> = {}; const used = new Set<string>();
-  const work = types.filter(d => d.kind === "work").slice().sort((a,b)=>(a.sortOrder ?? 0)-(b.sortOrder ?? 0));
-  const known: Record<string,string> = { D:"D", E:"E", N:"N", "duty-D":"D", "duty-E":"E", "duty-N":"N", "duty-day":"D", "duty-evening":"E", "duty-night":"N" };
-  for (const d of types.filter(d => d.kind === "off")) result[d.id] = "O";
-  for (const d of work) { const code = previous[d.id] || known[d.id]; if (code && !used.has(code)) { result[d.id]=code; used.add(code); } }
-  const preferred = work.length === 2 ? ["D","N","E"] : ["D","E","N"];
-  for (const d of work) if (!result[d.id]) { const code = preferred.find(c=>!used.has(c)); if (code) { result[d.id]=code; used.add(code); } }
-  return result;
+  return getPatternDutyCodes(types,previous);
 }
 
 export function draftFromPattern(p: ShiftPatternRecord): PatternDraft {
-  const d: PatternDraft = { siteId:p.siteId,patternId:p.id,name:p.name,teamCount:p.teamCount,patternCode:p.patternCode,startIndexRule:p.startIndexRule,patternStartDate:p.patternStartDate,effectiveFrom:p.effectiveFrom,status:p.status,dutyTypes:structuredClone(p.dutyTypes || []),cycles:structuredClone(p.cycles),teamCycleAssignments:structuredClone(p.teamCycleAssignments),teamCapacities:structuredClone(p.teamCapacities),teamSettings:structuredClone(p.teamSettings),isPerTeamPattern:p.teamCycleAssignments.some(a=>a.cycleKey.startsWith("team:")),poolEnabled:p.poolEnabled,poolStartTime:p.poolStartTime,poolEndTime:p.poolEndTime,poolBreakMinutes:p.poolBreakMinutes,baselineRevision:p.updatedAt };
+  const d: PatternDraft = { holidayPolicy:structuredClone(p.holidayPolicy),siteId:p.siteId,patternId:p.id,name:p.name,teamCount:p.teamCount,patternCode:p.patternCode,startIndexRule:p.startIndexRule,patternStartDate:p.patternStartDate,effectiveFrom:p.effectiveFrom,status:p.status,dutyTypes:structuredClone(p.dutyTypes || []),cycles:structuredClone(p.cycles),teamCycleAssignments:structuredClone(p.teamCycleAssignments),teamCapacities:structuredClone(p.teamCapacities),teamSettings:structuredClone(p.teamSettings),isPerTeamPattern:p.teamCycleAssignments.some(a=>(a.cycleKey.startsWith("team:")||a.cycleKey.startsWith("gui:"))),poolEnabled:p.poolEnabled,poolStartTime:p.poolStartTime,poolEndTime:p.poolEndTime,poolBreakMinutes:p.poolBreakMinutes,baselineRevision:p.updatedAt };
+  if(!d.cycles.length&&p.steps?.length){d.cycles=[{cycleKey:"legacy-main",name:p.name,order:0,shiftCount:Math.min(3,Math.max(1,new Set(p.steps.filter(s=>!isOffDutyCode(s.dutyCode)).map(s=>s.dutyCode)).size)),patternCode:p.patternCode,patternStartDate:p.patternStartDate,steps:structuredClone(p.steps),teamIndexes:structuredClone(p.teamIndexes)}];d.teamCycleAssignments=p.teamIndexes.map(t=>({teamLabel:t.teamLabel,cycleKey:"legacy-main"}));}
   if(!d.dutyTypes.length){const rows=d.cycles.flatMap(c=>c.steps),codes=[...new Set(rows.filter(s=>!isOffDutyCode(s.dutyCode)).map(s=>s.dutyCode))];d.dutyTypes=codes.map((code,sortOrder)=>{const row=rows.find(s=>s.dutyCode===code)!;return {id:code,kind:"work" as const,label:code,sortOrder,startTime:row.startTime,endTime:row.endTime,breakMinutes:row.breakMinutes,holidayStartTime:row.holidayStartTime,holidayEndTime:row.holidayEndTime,holidayBreakMinutes:row.holidayBreakMinutes};});d.dutyTypes.push({id:"off",kind:"off",label:"휴무",sortOrder:10});}
   d.dutyCodes=getDutyCodes(d.dutyTypes);
   for (const type of d.dutyTypes.filter(t=>t.kind==="work")) if (d.cycles.some(c=>c.steps.some(s=>s.dutyCode===type.id))) d.dutyCodes[type.id]=type.id;

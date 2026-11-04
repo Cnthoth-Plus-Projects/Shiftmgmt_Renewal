@@ -116,6 +116,7 @@ export class SitesScreen {
     if (this.viewMode === "wizard") {
       // 마법사 모드
       const wizardMount = document.createElement("div");
+      wizardMount.className = "sites-wizard-mount";
       wizardMount.style.width = "100%";
 
       const targetSite = this.selectedSiteId

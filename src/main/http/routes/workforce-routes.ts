@@ -1,11 +1,16 @@
+import { listStoredPatternPresets, saveStoredPatternPreset, deleteStoredPatternPreset } from "../../services/pattern-preset-storage-service";
 import type {
   EmployeeDeleteInput,
   EmployeeListQuery,
   EmployeeUpsertInput,
   MonthlyScheduleUpsertInput,
+  SchedulePreparationContext,
   ShiftPatternUpsertInput,
   SiteUpsertInput,
 } from "../../../shared/bridge/contracts";
+import { defaultScheduleRuleWarningSettings } from "../../../shared/domain/schedule-rule-warning";
+import { getStoredAppSettingsSnapshot } from "../../services/app-settings-storage-service";
+import { listStoredHolidayCalendars } from "../../services/operations-storage-service";
 import {
   closeStoredEmployeeAssignment,
   closeStoredEmployeeWageRate,
@@ -51,6 +56,22 @@ import {
 import type { RequestContext } from "../api-types";
 import type { RouteRegistry } from "../route-registry";
 import type { SessionManager } from "../session";
+import { refreshPendingPerformanceForWageChanges } from "../../services/workforce-wage-performance-service";
+
+function isValidIsoDateForYear(dateStr: string, expectedYear: number): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return false;
+  const parts = dateStr.split("-").map(Number);
+  const y = parts[0];
+  const m = parts[1];
+  const d = parts[2];
+  if (y !== expectedYear || m < 1 || m > 12 || d < 1 || d > 31) return false;
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  return (
+    dt.getUTCFullYear() === y &&
+    dt.getUTCMonth() + 1 === m &&
+    dt.getUTCDate() === d
+  );
+}
 
 const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : "처리 중 오류가 발생했습니다.";
@@ -92,14 +113,18 @@ export const registerWorkforceRoutes = (
   registry.register("employees:save-wage-rate", async (args, context) => {
     const input = args[0] as Parameters<typeof saveStoredEmployeeWageRate>[0];
     return runIpcAction({
-      action: () => saveStoredEmployeeWageRate(input),
+      action: async () => {
+        const record = saveStoredEmployeeWageRate(input, context.session ?? undefined);
+        const pendingPerformanceRefresh = await refreshPendingPerformanceForWageChanges([record]);
+        return { ...record, pendingPerformanceRefresh };
+      },
       errorCode: "EMPLOYEE_WAGE_SAVE_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
         actionType: "employee-wage-save",
         routeKey: "workforce",
         routeLabel: "인력 관리",
-        details: "직원 시급 기준 저장",
+        details: input.revision?.operation === "invalidate" ? "직원 시급 이력 무효 처리" : input.revision ? "직원 시급 금액 정정" : "직원 시급 기준 저장",
       }),
     });
   });
@@ -172,7 +197,13 @@ export const registerWorkforceRoutes = (
   registry.register("employees:save", async (args, context) => {
     const input = args[0] as EmployeeUpsertInput;
     return runIpcAction({
-      action: () => saveStoredEmployee(input),
+      action: async () => {
+        const record = saveStoredEmployee(input, context.session ?? undefined);
+        if (!record.retirementChange && !record.rehireChange) return record;
+        const dates = (record.rehireChange ? [record.rehireChange.startDate,record.rehireChange.previousStartDate,record.rehireChange.previousRetireDate] : [record.retirementChange!.retireDate,record.retirementChange!.previousRetireDate]).filter((d): d is string => Boolean(d)).sort();
+        const pendingPerformanceRefresh = await refreshPendingPerformanceForWageChanges([{ employeeId:record.id,effectiveFrom:dates[0],employmentFrom:dates[0] }]);
+        return record.rehireChange ? { ...record,rehireChange:{ ...record.rehireChange,pendingPerformanceRefresh } } : { ...record,retirementChange:{ ...record.retirementChange!,pendingPerformanceRefresh } };
+      },
       errorCode: "EMPLOYEE_SAVE_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
@@ -188,7 +219,7 @@ export const registerWorkforceRoutes = (
   registry.register("employees:delete", async (args, context) => {
     const input = args[0] as EmployeeDeleteInput;
     return runIpcAction({
-      action: () => deleteStoredEmployee(input.employeeId),
+      action: () => deleteStoredEmployee(input.employeeId, context.session ?? undefined),
       errorCode: "EMPLOYEE_DELETE_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
@@ -214,7 +245,12 @@ export const registerWorkforceRoutes = (
   registry.register("employees:apply-wage-bulk-update", async (args, context) => {
     const input = args[0] as Parameters<typeof applyWorkforceWageBulkUpdate>[0];
     return runIpcAction({
-      action: () => applyWorkforceWageBulkUpdate(input),
+      action: async () => {
+        const summary = await applyWorkforceWageBulkUpdate(input, context.session ?? undefined);
+        const changes = summary.rows.filter(row => row.status === "applied" && row.employeeId).map(row => ({ employeeId: row.employeeId!, effectiveFrom: summary.effectiveFrom }));
+        const pendingPerformanceRefresh = await refreshPendingPerformanceForWageChanges(changes);
+        return { ...summary, pendingPerformanceRefresh };
+      },
       errorCode: "WORKFORCE_WAGE_BULK_APPLY_FAILED",
       getErrorMessage,
       activity: trackSuccess(context, sessionManager, {
@@ -262,6 +298,10 @@ export const registerWorkforceRoutes = (
       }),
     });
   });
+
+  registry.register("shift-pattern-presets:list", () => createIpcSuccess(listStoredPatternPresets()));
+  registry.register("shift-pattern-presets:save", (args, context) => runIpcAction({action:()=>saveStoredPatternPreset(args[0] as Parameters<typeof saveStoredPatternPreset>[0]),errorCode:"PATTERN_PRESET_SAVE_FAILED",getErrorMessage,activity:trackSuccess(context,sessionManager,{actionType:"app-settings-save",routeKey:"sites",routeLabel:"근무지 관리",details:"반복 패턴 보관함 저장"})}));
+  registry.register("shift-pattern-presets:delete", (args, context) => runIpcAction({action:()=>deleteStoredPatternPreset(args[0] as Parameters<typeof deleteStoredPatternPreset>[0]),errorCode:"PATTERN_PRESET_DELETE_FAILED",getErrorMessage,activity:trackSuccess(context,sessionManager,{actionType:"app-settings-save",routeKey:"sites",routeLabel:"근무지 관리",details:"반복 패턴 보관함 삭제"})}));
 
   // 16. shift-patterns:list
   registry.register("shift-patterns:list", (args) =>
@@ -395,6 +435,70 @@ export const registerWorkforceRoutes = (
         routeLabel: "근무표 배포",
         details: "근무표 배포",
       }),
+    });
+  });
+
+  // 26. monthly-schedules:preparation-context
+  registry.register("monthly-schedules:preparation-context", async (args, context) => {
+    const year = args[0] as number;
+    return runIpcAction({
+      action: async () => {
+        if (
+          typeof year !== "number" ||
+          !Number.isFinite(year) ||
+          !Number.isInteger(year) ||
+          year < 1900 ||
+          year > 9999
+        ) {
+          throw new Error("유효한 연도(1900~9999)를 입력해 주세요.");
+        }
+
+        const appSettings = getStoredAppSettingsSnapshot({ userDataPath: context.dataDir });
+        const calendars = listStoredHolidayCalendars(year);
+        const holidayDatesSet = new Set<string>();
+
+        for (const cal of calendars) {
+          if (Array.isArray(cal.items)) {
+            for (const item of cal.items) {
+              if (
+                typeof item.holidayDate === "string" &&
+                isValidIsoDateForYear(item.holidayDate, year)
+              ) {
+                holidayDatesSet.add(item.holidayDate);
+              }
+            }
+          }
+        }
+
+        const publicHolidayDates = Array.from(holidayDatesSet).sort();
+
+        const warningSettings = {
+          consecutiveNightLimit:
+            appSettings.scheduleConsecutiveNightLimit ??
+            defaultScheduleRuleWarningSettings.consecutiveNightLimit,
+          minimumRestMinutes:
+            appSettings.scheduleMinimumRestMinutes ??
+            defaultScheduleRuleWarningSettings.minimumRestMinutes,
+          requireWeeklyHoliday:
+            appSettings.scheduleRequireWeeklyHoliday ??
+            defaultScheduleRuleWarningSettings.requireWeeklyHoliday,
+          weeklyMaxMinutes:
+            appSettings.scheduleWeeklyMaxMinutes ??
+            defaultScheduleRuleWarningSettings.weeklyMaxMinutes,
+        };
+
+        const result: SchedulePreparationContext = {
+          year,
+          publicHolidayDates,
+          warningSettings,
+          exportDirectory: appSettings.scheduleExportDir,
+          publishDirectory: appSettings.approvedDir,
+        };
+
+        return result;
+      },
+      errorCode: "MONTHLY_SCHEDULE_CONTEXT_FAILED",
+      getErrorMessage,
     });
   });
 };

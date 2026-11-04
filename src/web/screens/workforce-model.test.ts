@@ -16,9 +16,29 @@ import {
   paginateEmployeesForHeight,
   arePendingFileSetsEqual,
   escapeHtmlAttribute
+  ,employeeStatusLabel
 } from "./workforce-model";
 import type { EmployeeRecord, WageRateRecord } from "../../shared/domain/model";
 import type { PerformanceEntryRecord } from "../../shared/domain/performance-file";
+
+it("W10 a cancelled booking before a future retirement stays discoverable in today's active filter",()=>{
+  const employee={id:"future-retirement",employeeCode:"FUTURE",name:"복귀 예약 취소",status:"retired",employmentPhase:"employed",employmentPeriods:[{id:"old",startDate:"2024-01-01",endDate:"2026-11-05"}],hireDate:"2024-01-01",retireDate:"2026-11-05"} as EmployeeRecord;
+  expect(filterEmployees([employee],{status:"active"})).toEqual([employee]);expect(filterEmployees([employee],{status:"retired"})).toEqual([]);expect(employeeStatusLabel(employee)).toBe("재직");
+});
+
+describe("W-04: changed hire dates on existing employee forms", () => {
+  const base = { employeeCode: "W04-TEST", name: "입사일 정정", employmentType: "정규", rank: "사원", status: "active" as const };
+  it.each(["", "1989-12-31", "2026-02-30", "2027-11-01"])("rejects invalid changed hire date %s", hireDate => {
+    expect(validateEmployeeFormInput({ ...base, hireDate }, "2026-10-31", true).errors.hireDate).toBeTruthy();
+  });
+  it("allows omitted legacy date and accepts a valid changed date", () => {
+    expect(validateEmployeeFormInput(base, "2026-10-31", true).valid).toBe(true);
+    expect(validateEmployeeFormInput({ ...base, hireDate: "2020-01-01" }, "2026-10-31", true).valid).toBe(true);
+  });
+  it("rejects a changed hire date after retirement", () => {
+    expect(validateEmployeeFormInput({ ...base, status: "retired", hireDate: "2026-04-01", retireDate: "2026-03-31" }, "2026-10-31", true).errors.hireDate).toBeTruthy();
+  });
+});
 
 describe("사용자 요청 필터와 건수 조회의 불완전 자료", () => {
   it("고용형태를 정규화하고 조 조건을 함께 적용한다", () => {
@@ -110,6 +130,18 @@ describe("workforce-model", () => {
       const summary = calculateEffectiveWageRates(pastOnly, "2026-10-27");
       expect(summary.currentRate).toBeNull();
       expect(summary.scheduledRate).toBeNull();
+    });
+
+    it.each(["2025-01-01", "2026-12-31", "2027-01-01"])("W-03: 시작일과 종료일을 포함해 현재 시급을 고른다 (%s)", today => {
+      const result = calculateEffectiveWageRates(mockRates, today);
+      expect(result.currentRate?.hourlyRate).toBe(today === "2027-01-01" ? 12000 : 11000);
+    });
+
+    it.each([
+      ["2026-10-31T14:59:59.999Z", "2026-10-31"],
+      ["2026-10-31T15:00:00.000Z", "2026-11-01"]
+    ])("W-03: 서울 날짜 경계를 공유한다 (%s)", (instant, expected) => {
+      expect(getSeoulTodayDateString(new Date(instant))).toBe(expected);
     });
 
     it("금액 포맷팅이 정확하다", () => {
@@ -371,6 +403,14 @@ describe("workforce-model", () => {
       expect(isBulkPreviewStale(baseInput, { ...baseInput })).toBe(false);
     });
 
+    it("사번 열 추가·변경·해제는 이전 미리보기를 무효화한다", () => {
+      const withCode = { ...baseInput, mapping: { ...baseInput.mapping, employeeCodeColumn: "D" } };
+      expect(isBulkPreviewStale(withCode, baseInput)).toBe(true);
+      expect(isBulkPreviewStale(baseInput, withCode)).toBe(true);
+      expect(isBulkPreviewStale({ ...withCode, mapping: { ...withCode.mapping, employeeCodeColumn: "E" } }, withCode)).toBe(true);
+      expect(isBulkPreviewStale(withCode, structuredClone(withCode))).toBe(false);
+    });
+
     it("경로, 날짜, 열 매핑 중 하나라도 바뀌면 stale로 판정한다 (N07)", () => {
       expect(isBulkPreviewStale({ ...baseInput, filePath: "C:/other.xlsx" }, baseInput)).toBe(true);
       expect(isBulkPreviewStale({ ...baseInput, effectiveFrom: "2026-11-01" }, baseInput)).toBe(true);
@@ -547,4 +587,21 @@ describe("viewport-based workforce pages", () => {
     expect(paginateEmployeesForHeight([], 0, 0, 0)).toEqual([{ start: 0, end: 0 }]);
     expect(paginateEmployeesForHeight(records, 5, 27, 28)).toHaveLength(55);
   });
+});
+
+
+it("W-08 current summary treats a later void as a gap and excludes voided future rates", () => {
+  const base={id:"old",employeeId:"employee",hourlyRate:12000,effectiveFrom:"2026-01-01",createdAt:"2026-01-01"};
+  const invalidation={id:"event",actionType:"invalidated",hourlyRate:14000,effectiveFrom:"2026-04-01",changeReason:"증빙 확인",actorDisplayName:"담당자",actorLoginId:"admin",actorRole:"admin",occurredAt:"2026-04-01"};
+  const rates=[base,{...base,id:"void",hourlyRate:14000,effectiveFrom:"2026-04-01",effectiveTo:"2026-06-30",invalidation},{...base,id:"future-void",effectiveFrom:"2027-01-01",invalidation}];
+  expect(calculateEffectiveWageRates(rates,"2026-04-01").currentRate).toBeNull();
+  expect(calculateEffectiveWageRates(rates,"2026-04-01").scheduledRate).toBeNull();
+  expect(calculateEffectiveWageRates(rates,"2026-03-31").currentRate?.id).toBe("old");
+});
+
+
+it("W-09 retirement date comparison uses retained hire metadata without revalidating an unchanged legacy hire date",()=>{
+  const base={employeeCode:"W09",name:"퇴사검증",employmentType:"정규직",status:"retired" as const,retirementHireDate:"2026-03-01",retireDate:"2026-02-28"};
+  expect(validateEmployeeFormInput(base,"2026-11-01",true).errors.retireDate).toContain("입사일");
+  expect(validateEmployeeFormInput({...base,retirementHireDate:"1980-01-01",retireDate:"2026-03-01"},"2026-11-01",true).errors.hireDate).toBeUndefined();
 });

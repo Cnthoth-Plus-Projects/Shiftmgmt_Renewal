@@ -40,6 +40,7 @@ export class SitesWizard {
   private generation = 0;
   private orgComponent:SitesOrganization|null=null;
   private basicsComponent:SitesWizardBasics|null=null;
+  private reviewComponent: SitesWizardReview | null = null;
   private patternComponent: SitesWizardPattern | null = null;
   private importModal: SitesImportModal | null = null;
   private commitComponent: SitesCommit | null = null;
@@ -92,7 +93,7 @@ export class SitesWizard {
     this.historyManager.record(this.draft);
   }
 
-  public destroy(): void {this.destroyed=true;this.generation++;this.orgComponent?.destroy();this.basicsComponent?.destroy();this.patternComponent?.destroy();this.importModal?.destroy();this.commitComponent?.destroy();}
+  public destroy(): void {this.destroyed=true;this.generation++;this.orgComponent?.destroy();this.basicsComponent?.destroy();this.patternComponent?.destroy();this.reviewComponent?.destroy();this.importModal?.destroy();this.commitComponent?.destroy();}
   private alive(): boolean {return !this.destroyed && (this.options.isAlive?.() ?? true);}
   public async loadNameOptions(): Promise<void> {if(this.session.role!=="admin")return;const gen=this.generation;const r=await window.appBridge!.listSiteNameOptions();if(!this.alive()||gen!==this.generation)return;if(r.ok){this.siteNameOptions=[...new Set([...this.siteNameOptions,...r.data.map(n=>n.name)])];const select=this.container.querySelector<HTMLSelectElement>("#site-name-choice");if(select){const selected=select.value;select.replaceChildren();for(const name of ["",...this.siteNameOptions]){const o=document.createElement("option");o.value=name;o.textContent=name||"이름 선택 (직접 입력 가능)";select.append(o);}select.value=selected;}}else if(/SESSION|AUTH_SESSION/.test(r.errorCode))this.options.onSessionExpired?.();}
   public isDirty(): boolean {
@@ -107,14 +108,14 @@ export class SitesWizard {
     if(!this.alive())return;
     this.orgComponent?.destroy();this.orgComponent=null;
     this.basicsComponent?.destroy();this.basicsComponent=null;
-    this.patternComponent?.destroy();this.patternComponent=null;
+    this.patternComponent?.destroy();this.patternComponent=null;this.reviewComponent?.destroy();this.reviewComponent=null;
     this.container.innerHTML = "";
 
     const wrapper = document.createElement("div");
     wrapper.id = "sites-wizard-container";
     wrapper.style.display = "flex";
     wrapper.style.flexDirection = "column";
-    wrapper.style.gap = "14px";
+    wrapper.style.gap = "12px";
     wrapper.style.width = "100%";
 
     // 1. 상단 스텝퍼 바
@@ -169,9 +170,14 @@ export class SitesWizard {
     topBar.appendChild(stepper);
     wrapper.appendChild(topBar);
 
+    const summary = document.createElement("div"); summary.className = "sites-wizard-summary";
+    summary.textContent = `${this.siteName || "새 근무지"} · 설정 적용일 ${this.draft.effectiveFrom || "입력 필요"}${isEditMode ? " · 저장 전까지 기존 설정을 유지합니다." : " · 단계별 입력 후 최종 저장합니다."}`;
+    wrapper.append(summary);
+
     // 2. 단계별 컨텐츠 영역
     const stepContentContainer = document.createElement("div");
     stepContentContainer.id = `sites-wizard-step-${this.currentStep}`;
+    stepContentContainer.className = "sites-wizard-step-content";
 
     if (this.currentStep === "basics") {
       const basics = new SitesWizardBasics({
@@ -210,7 +216,7 @@ export class SitesWizard {
       const pattern = new SitesWizardPattern({
         container: stepContentContainer,
         draft: this.draft,
-        historyManager: this.historyManager,sessionRole:this.session.role,existingPatterns:this.existingPatterns.filter(p=>p.siteId===this.draft.siteId),onSessionExpired:this.options.onSessionExpired,
+        historyManager: this.historyManager,sessionRole:this.session.role,existingPatterns:this.existingPatterns.filter(p=>p.siteId===this.draft.siteId),onSessionExpired:this.options.onSessionExpired,employees:this.allEmployees,
         onChange: () => {
           this.isDirtyState = true;
         }
@@ -221,13 +227,13 @@ export class SitesWizard {
         container: stepContentContainer,
         draft: this.draft,
         siteName: this.siteName,
-        siteCustomer: this.siteCustomer,existingPatterns:this.existingPatterns,
+        siteCustomer: this.siteCustomer,existingPatterns:this.existingPatterns,onSessionExpired:this.options.onSessionExpired,
         onNavigateStep: (stepId) => {
           this.currentStep = stepId;
           this.render();
         }
       });
-      review.render();
+      this.reviewComponent=review;review.render();void review.loadHolidayData();
     } else if (this.currentStep === "org") {
       const org = new SitesOrganization({
         container: stepContentContainer,
@@ -300,7 +306,7 @@ export class SitesWizard {
       excelImportBtn.id = "btn-open-import-modal";
       excelImportBtn.innerHTML = `
         <span class="material-symbols-outlined" style="font-size:16px;">upload_file</span>
-        <span>엑셀 패턴 역추출</span>
+        <span>엑셀에서 패턴 가져오기</span>
       `;
       excelImportBtn.addEventListener("click", () => {
         if(!this.alive()||this.isBusyState)return;
@@ -310,7 +316,8 @@ export class SitesWizard {
           const next=applyImportSuggestion(this.draft,analysis);this.draft=next;this.historyManager.clear();this.historyManager.record(next);this.isDirtyState=true;this.currentStep="pattern";this.render();return true;
         }});this.importModal.open();
       });
-      leftBtns.appendChild(excelImportBtn);
+      const importMount = this.currentStep === "basics" ? stepContentContainer.querySelector(".sites-basics-import-mount") : null;
+      if (importMount) importMount.append(excelImportBtn); else leftBtns.appendChild(excelImportBtn);
 
       footer.appendChild(leftBtns);
 

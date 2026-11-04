@@ -1,7 +1,8 @@
+import { renderRetirementGuidance, showRetirementResult } from "./workforce-retirement";
 import { resolveShiftPatternForDate } from "../../shared/domain/shift-pattern-version";
 // 인력 관리 화면: 인력 신규 등록, 기본정보 수정, 삭제 확인 모달
 import type { EmployeeRecord, ShiftPatternRecord, SiteRecord } from "../../shared/domain/model";
-import type { EmployeeUpsertInput } from "../../shared/bridge/contracts";
+import type { EmployeeUpsertInput, EmployeeSaveResult } from "../../shared/bridge/contracts";
 import { employeeRankOptions, isEmployeeRank } from "../../shared/domain/employee-rank";
 import { isBpEmploymentType } from "../../shared/domain/employment-type";
 import {
@@ -16,7 +17,7 @@ import { WorkforceDialog } from "./workforce-dialog";
 export interface WorkforceEmployeeFormOptions {
   dialog: WorkforceDialog;
   sites: SiteRecord[];
-  onSave: (input: EmployeeUpsertInput) => Promise<{ ok: boolean; message?: string }>;
+  onSave: (input: EmployeeUpsertInput) => Promise<{ ok: boolean; employee?: EmployeeSaveResult; message?: string }>;
   onDelete: (employeeId: string) => Promise<{ ok: boolean; message?: string }>;
   onSuccess: () => void;
   onFetchShiftPatterns?: (siteId: string) => Promise<{ ok: boolean; patterns?: ShiftPatternRecord[] }>;
@@ -25,7 +26,7 @@ export interface WorkforceEmployeeFormOptions {
 export class WorkforceEmployeeForm {
   private dialog: WorkforceDialog;
   private sites: SiteRecord[];
-  private onSave: (input: EmployeeUpsertInput) => Promise<{ ok: boolean; message?: string }>;
+  private onSave: (input: EmployeeUpsertInput) => Promise<{ ok: boolean; employee?: EmployeeSaveResult; message?: string }>;
   private onDelete: (employeeId: string) => Promise<{ ok: boolean; message?: string }>;
   private onSuccess: () => void;
   private onFetchShiftPatterns?: (siteId: string) => Promise<{ ok: boolean; patterns?: ShiftPatternRecord[] }>;
@@ -56,7 +57,7 @@ export class WorkforceEmployeeForm {
       <div class="workforce-info-banner">
         <span class="material-symbols-outlined wf-icon-18" aria-hidden="true">info</span>
         <div>
-          <strong>안내:</strong> 입사일은 첫 시급 시작일과 배정 시작일을 동시에 정합니다. 등록 후에는 수정할 수 없으므로 정확히 입력해 주세요.
+          <strong>안내:</strong> 입사일은 첫 시급 시작일과 배정 시작일을 동시에 정합니다. 등록 후에는 기본정보 수정에서 입사일을 정정할 수 있습니다.
         </div>
       </div>
 
@@ -319,6 +320,7 @@ export class WorkforceEmployeeForm {
 
   /** 기본정보 수정 모달 열기 (R05) */
   public openEditModal(emp: EmployeeRecord, triggerBtn?: HTMLElement | null): void {
+    this.todayStr = getSeoulTodayDateString();
     const formContainer = document.createElement("div");
     formContainer.className = "workforce-form-container wf-flex-col wf-gap-12";
 
@@ -363,9 +365,10 @@ export class WorkforceEmployeeForm {
 
       <div class="wf-grid-2">
         <div class="workforce-form-group">
-          <label class="workforce-form-label" for="edit-hire-date">입사일 (읽기 전용)</label>
-          <input type="text" class="workforce-input wf-disabled-input" id="edit-hire-date" disabled />
-          <div class="workforce-form-hint">입사일은 등록 후 수정할 수 없습니다.</div>
+          <label class="workforce-form-label" for="edit-hire-date">등록 입사일</label>
+          <input type="date" class="workforce-input" id="edit-hire-date" min="${MIN_HIRE_DATE}" max="${getSeoulMaxHireDateString(this.todayStr)}" aria-describedby="hint-edit-hire-date err-edit-hire-date" />
+          <div class="workforce-form-error wf-hidden" id="err-edit-hire-date"></div>
+          <div class="workforce-form-hint" id="hint-edit-hire-date">정정한 입사일은 이후 근무표 생성·실적 다시 읽기의 대상 기간에 반영됩니다. 기존 시급·배정 기간과 승인 수당은 유지됩니다.</div>
         </div>
 
         <div class="workforce-form-group">
@@ -405,10 +408,20 @@ export class WorkforceEmployeeForm {
     const rankSelect = formContainer.querySelector<HTMLSelectElement>("#edit-rank")!;
     const statusSelect = formContainer.querySelector<HTMLSelectElement>("#edit-status")!;
     const retireInput = formContainer.querySelector<HTMLInputElement>("#edit-retire-date")!;
+    const retirementNotice = document.createElement("div");retirementNotice.id="employee-retirement-guidance";retirementNotice.className="wf-retirement-guide";
+    retireInput.setAttribute("aria-describedby",[retireInput.getAttribute("aria-describedby"),retirementNotice.id].filter(Boolean).join(" "));
+    const updateRetirementNotice = () => { retirementNotice.classList.toggle("wf-hidden",statusSelect.value!=="retired");renderRetirementGuidance(retirementNotice,retireInput.value,emp.status==="retired"); };
+    statusSelect.addEventListener("change",updateRetirementNotice);retireInput.addEventListener("input",updateRetirementNotice);formContainer.appendChild(retirementNotice);
+
 
     codeInput.value = emp.employeeCode || "";
     nameInput.value = emp.name;
-    hireInput.value = emp.hireDate || "-";
+    hireInput.value = emp.hireDate || "";
+    const initialHireInputValue = hireInput.value;
+    formContainer.appendChild(createEmployeeHireDateGuidance(emp.hireDate,Boolean(emp.employmentPeriods)));
+    if (emp.hireDate && !initialHireInputValue) {
+      formContainer.querySelector<HTMLElement>("#hint-edit-hire-date")!.textContent = `기존 입사일(${emp.hireDate})은 달력 형식으로 표시할 수 없습니다. 새 날짜를 선택하면 정정되며, 다른 항목만 저장하면 기존 값은 유지됩니다. 기존 시급·배정 기간과 승인 수당은 유지됩니다.`;
+    }
     contactInput.value = emp.contact || "";
     const emailInput = formContainer.querySelector<HTMLInputElement>("#edit-email")!;
     emailInput.value = emp.email || "";
@@ -426,6 +439,8 @@ export class WorkforceEmployeeForm {
     }
 
     statusSelect.value = emp.status;
+    if(emp.employmentPeriods){hireInput.readOnly=true;formContainer.querySelector<HTMLElement>("#hint-edit-hire-date")!.textContent="재입사 이력이 있어 최초 입사일을 유지합니다. 새 재입사일·시급·배정은 직원 상세의 재입사 또는 예약 변경에서 확인해 주세요.";}
+    if(emp.scheduledRehire){statusSelect.disabled=true;empTypeSelect.disabled=true;}
     if (emp.status === "retired") {
       retireInput.disabled = false;
       retireInput.classList.remove("wf-disabled-input");
@@ -446,8 +461,10 @@ export class WorkforceEmployeeForm {
         retireInput.classList.add("wf-disabled-input");
         retireInput.value = "";
       }
+      updateRetirementNotice();
     });
 
+    updateRetirementNotice();
     this.dialog.open({
       id: "modal-edit-employee",
       title: `기본정보 수정 (${emp.name})`,
@@ -473,6 +490,10 @@ export class WorkforceEmployeeForm {
             if (!emailInput.checkValidity()) { emailInput.reportValidity(); return; }
             const statusVal = statusSelect.value as "active" | "leave" | "retired";
             const retireVal = retireInput.value.trim();
+            const hireVal = hireInput.value.trim();
+            const hireDateChanged = hireVal !== initialHireInputValue;
+            const hireError = formContainer.querySelector<HTMLElement>("#err-edit-hire-date")!;
+            hireError.classList.add("wf-hidden");
             const globalErr = formContainer.querySelector<HTMLElement>("#edit-global-error")!;
 
             const val = validateEmployeeFormInput(
@@ -482,13 +503,19 @@ export class WorkforceEmployeeForm {
                 employmentType: empType,
                 rank: rankVal,
                 status: statusVal,
-                retireDate: retireVal
+                hireDate: hireDateChanged ? hireVal : undefined,
+                retireDate: retireVal,
+                retirementHireDate: hireVal
               },
               this.todayStr,
               true
             );
 
             if (!val.valid) {
+              if (val.errors.hireDate) {
+                hireError.textContent = val.errors.hireDate;
+                hireError.classList.remove("wf-hidden");
+              }
               if (val.errors.name) {
                 const el = formContainer.querySelector<HTMLElement>("#err-edit-name")!;
                 el.textContent = val.errors.name;
@@ -512,7 +539,7 @@ export class WorkforceEmployeeForm {
               retireDate: statusVal === "retired" ? retireVal : undefined,
               contact: contactVal || undefined,
               email: emailInput.value.trim(),
-              hireDate: emp.hireDate // 기존 입사일 보존
+              hireDate: hireDateChanged ? hireVal : undefined
             };
 
             const dialogToken = this.dialog.captureToken();
@@ -523,6 +550,7 @@ export class WorkforceEmployeeForm {
               if (res.ok) {
                 this.dialog.close();
                 this.onSuccess();
+                if(res.employee?.retirementChange)showRetirementResult(this.dialog,res.employee.retirementChange);
               } else {
                 globalErr.textContent = res.message || "저장에 실패했습니다.";
                 globalErr.classList.remove("wf-hidden");
@@ -619,3 +647,4 @@ export class WorkforceEmployeeForm {
     return div.innerHTML;
   }
 }
+import { createEmployeeHireDateGuidance } from "./employee-hire-date-review";

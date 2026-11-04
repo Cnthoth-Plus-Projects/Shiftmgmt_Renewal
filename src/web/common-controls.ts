@@ -8,6 +8,7 @@ export function installCommonControls(): void {
   let month = new Date();
   let dayCursor = "";
   let serial = 0;
+  let hour=9,minute=0;
   const dateKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const parseDate = (value: string) => {
     const [y, m, d] = value.split("-").map(Number);
@@ -24,7 +25,7 @@ export function installCommonControls(): void {
   const position = () => {
     if (!anchor || !popup) return;
     const r = anchor.getBoundingClientRect();
-    const width = anchor instanceof HTMLSelectElement ? Math.max(180, r.width) : 312;
+    const width = anchor instanceof HTMLSelectElement ? Math.max(180, r.width) : anchor.type === "time" ? 340 : 312;
     popup.style.width = `${Math.min(width, window.innerWidth - 24)}px`;
     popup.style.left = `${Math.max(12, Math.min(r.left, window.innerWidth - popup.offsetWidth - 12))}px`;
     const height = popup.offsetHeight;
@@ -131,14 +132,40 @@ export function installCommonControls(): void {
     if (control.max && dayCursor > control.max) dayCursor = control.max;
     month = parseDate(dayCursor); drawCalendar(true);
   };
+  const drawTime = () => {
+    if(!popup || !(anchor instanceof HTMLInputElement))return;
+    popup.classList.add("ui-time-picker");popup.replaceChildren();
+    const heading=document.createElement("div");heading.className="ui-time-header";
+    const title=document.createElement("strong");title.textContent="시간 선택";const badge=document.createElement("span");badge.textContent="24시간";heading.append(title,badge);popup.append(heading);
+    const fields=document.createElement("div");fields.className="ui-time-fields";
+    const controls:HTMLInputElement[]=[];
+    for(const [name,value,max] of [["시",hour,23],["분",minute,59]] as const){const label=document.createElement("label");label.textContent=name;const input=document.createElement("input");input.type="number";input.min="0";input.max=String(max);input.step="1";input.value=String(value).padStart(2,"0");input.className=name==="시"?"ui-time-hour":"ui-time-minute";input.setAttribute("aria-label",`선택할 ${name}`);input.addEventListener("input",()=>{if(!input.validity.valid||!input.value)return;if(name==="시")hour=Number(input.value);else minute=Number(input.value);popup?.querySelectorAll<HTMLButtonElement>(`.ui-time-grid[aria-label="${name}"] button`).forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.value)===(name==="시"?hour:minute))));});label.append(input);controls.push(input);fields.append(label);}
+    popup.append(fields);
+    const grid=(label:string,values:number[],selected:number,choose:(n:number)=>void)=>{
+      const section=document.createElement("section"),caption=document.createElement("div");caption.className="ui-time-caption";caption.textContent=label;section.append(caption);const list=document.createElement("div");list.className="ui-time-grid";list.setAttribute("role","group");list.setAttribute("aria-label",label);
+      for(const value of values){const b=button(String(value).padStart(2,"0"),`${value}${label==="시"?"시":"분"}`,()=>{choose(value);drawTime();},"ui-time-option");b.setAttribute("aria-pressed",String(selected===value));b.dataset.value=String(value);list.append(b);}section.append(list);return section;
+    };
+    popup.append(grid("시",Array.from({length:24},(_,i)=>i),hour,n=>hour=n),grid("분",Array.from({length:12},(_,i)=>i*5),minute,n=>minute=n));
+    const help=document.createElement("p");help.className="ui-time-help";help.textContent="1분 단위는 위 숫자를 직접 입력하세요.";popup.append(help);
+    const footer=document.createElement("div");footer.className="ui-time-footer";
+    footer.append(button("취소","시간 선택 취소",()=>close(true)),button("적용","선택한 시간 적용",()=>{
+      if(controls.some(c=>!c.reportValidity()||!c.value))return;
+      const value=`${String(hour).padStart(2,"0")}:${String(minute).padStart(2,"0")}`;
+      const probe=anchor!.cloneNode(false) as HTMLInputElement;probe.disabled=false;probe.readOnly=false;probe.value=value;
+      if(!probe.validity.valid){help.textContent="허용된 시간 범위와 간격을 확인해 주세요.";help.setAttribute("role","alert");return;}
+      commit(value);
+    },"ui-time-apply"));popup.append(footer);position();
+  };
+  const openTime=(control:HTMLInputElement)=>{open(control,"dialog");const parts=(control.value||"09:00").split(":").map(Number);hour=parts[0];minute=parts[1];drawTime();popup?.querySelector<HTMLInputElement>(".ui-time-hour")?.focus();};
+  const openInput=(control:HTMLInputElement)=>{if(control.type==="time")openTime(control);else openCalendar(control);};
   const eligible = (target: EventTarget | null): target is HTMLSelectElement | HTMLInputElement =>
-    target instanceof HTMLSelectElement ? !target.multiple && target.size <= 1 && !target.matches(":disabled") : target instanceof HTMLInputElement && target.type === "date" && !target.matches(":disabled") && !target.readOnly;
+    target instanceof HTMLSelectElement ? !target.multiple && target.size <= 1 && !target.matches(":disabled") : target instanceof HTMLInputElement && ["date","time"].includes(target.type) && !target.matches(":disabled") && !target.readOnly;
   document.addEventListener("pointerdown", e => {
     if (e.button !== 0) return;
     if (eligible(e.target)) {
       e.preventDefault();
       if (anchor === e.target) { close(true); return; }
-      if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openCalendar(e.target);
+      if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openInput(e.target);
     } else if (popup && e.target instanceof Node && !popup.contains(e.target)) close();
   }, true);
   document.addEventListener("click", e => {
@@ -146,7 +173,7 @@ export function installCommonControls(): void {
       e.preventDefault();
       // Keyboard/assistive activation may produce click without pointerdown.
       if (e.detail === 0 && !popup) {
-        if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openCalendar(e.target);
+        if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openInput(e.target);
       }
     }
   }, true);
@@ -154,7 +181,7 @@ export function installCommonControls(): void {
     if (!popup) {
       if (eligible(e.target) && ["ArrowDown", "ArrowUp", " ", "Enter"].includes(e.key)) {
         e.preventDefault(); e.stopImmediatePropagation();
-        if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openCalendar(e.target);
+        if (e.target instanceof HTMLSelectElement) openSelect(e.target); else openInput(e.target);
       }
       return;
     }

@@ -1,3 +1,4 @@
+import { WorkforceDialog } from "./workforce-dialog";
 import { planAssignmentMoves, isValidDateString } from "./sites-model";
 import { showConfirm } from "./operations-ui";
 // sites-organization.ts — 마법사 2단계: 조직 구성 (좌측 인력 풀 + 우측 조별 보드)
@@ -36,13 +37,15 @@ export class SitesOrganization {
   private poolScope = "all";
   private poolKeyword = "";
   private poolPage = 1;
-  private readonly poolPageSize = 10;
+  private poolPageSize = 8;
+  private resizeObserver: ResizeObserver | null = null;
+  private settingsDialog = new WorkforceDialog();
   private draggedEmployeeId: string | null = null;
   private selectedEmployeeId: string | null = null;
   private assignmentStartDate = "2026-01-01";
   private warningMessage = "";
   private disposed=false;
-  public destroy():void {this.disposed=true;}
+  public destroy():void {this.disposed=true;this.settingsDialog.close();this.resizeObserver?.disconnect();}
 
   constructor(options: SitesOrganizationOptions) {
     this.container = options.container;
@@ -55,416 +58,94 @@ export class SitesOrganization {
     this.assignmentStartDate = options.stagedMoves.find(m=>m.startDate)?.startDate || options.draft.effectiveFrom || "";
   }
 
-  public render(): void {
+  private placements(): Map<string,string> {
+    const result=new Map(this.allEmployees.filter(e=>e.currentSiteId===this.draft.siteId&&e.currentShiftGroup).map(e=>[e.id,e.currentShiftGroup!]));
+    for(const m of this.stagedMoves)if(m.toTeam)result.set(m.employeeId,m.toTeam);else result.delete(m.employeeId);
+    return result;
+  }
+  private memberIds(team:string):string[] {
+    return [...this.placements()].filter(([,t])=>t===team).map(([id])=>id).sort((a,b)=>{
+      const ea=this.allEmployees.find(e=>e.id===a)!,eb=this.allEmployees.find(e=>e.id===b)!;
+      return (this.stagedMoves.find(m=>m.employeeId===a)?.sortOrder??ea.currentAssignmentOrder??0)-(this.stagedMoves.find(m=>m.employeeId===b)?.sortOrder??eb.currentAssignmentOrder??0)||ea.employeeCode.localeCompare(eb.employeeCode,"ko",{numeric:true});
+    });
+  }
+  private commitOrder(ids:string[],team:string):void {
+    const old=new Map(this.stagedMoves.map(m=>[m.employeeId,m]));this.stagedMoves=this.stagedMoves.filter(m=>!ids.includes(m.employeeId));
+    ids.forEach((id,sortOrder)=>{const emp=this.allEmployees.find(e=>e.id===id)!,prior=old.get(id);this.stagedMoves.push({...prior,employeeId:id,fromTeam:emp.currentShiftGroup,toTeam:team,sortOrder,orderOnly:prior?prior.orderOnly:emp.currentSiteId===this.draft.siteId&&emp.currentShiftGroup===team});});
+    this.onUpdateMoves([...this.stagedMoves]);this.render();
+  }
+  private dropMember(team:string,targetId?:string,after=false):void {
+    const id=this.draggedEmployeeId;this.draggedEmployeeId=null;if(!id)return;
+    const oldTeam=this.placements().get(id);if(oldTeam!==team&&!this.assignEmployeeToTeam(id,team))return;
+    const ids=this.memberIds(team).filter(i=>i!==id),index=targetId?ids.indexOf(targetId):-1;
+    ids.splice(index<0?ids.length:index+(after?1:0),0,id);this.commitOrder(ids,team);
+  }
+  private worker(emp:EmployeeRecord,team?:string):HTMLElement {
+    const item=document.createElement("div"),ident=this.identityMap.get(emp.id);item.className=`sites-member-card ${team?"":"sites-org-worker-card"} ${this.selectedEmployeeId===emp.id?"selected":""}`;item.dataset.empid=emp.id;item.draggable=true;item.tabIndex=0;item.setAttribute("role","button");item.setAttribute("aria-label",`${emp.name} (${emp.employeeCode}) 선택`);
+    item.innerHTML=`<span class="material-symbols-outlined sites-drag-handle" aria-hidden="true">drag_indicator</span><span class="sites-person-info"><strong>${this.escape(ident?.name||emp.name)}</strong><small>${this.escape(emp.employeeCode)}${ident?.rank?` · ${this.escape(ident.rank)}`:""}</small></span>${team?'<button type="button" class="btn-unassign" aria-label="인력 풀로 되돌리기"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>':""}`;
+    item.addEventListener("dragstart",e=>{this.draggedEmployeeId=emp.id;e.dataTransfer?.setData("text/plain",emp.id);if(e.dataTransfer)e.dataTransfer.effectAllowed="move";item.classList.add("is-dragging");});
+    item.addEventListener("dragend",()=>{this.draggedEmployeeId=null;this.container.querySelectorAll(".is-drop-target,.drop-before,.drop-after,.is-dragging").forEach(e=>e.classList.remove("is-drop-target","drop-before","drop-after","is-dragging"));});
+    const select=()=>{this.selectedEmployeeId=this.selectedEmployeeId===emp.id?null:emp.id;this.render();};
+    item.addEventListener("click",e=>{e.stopPropagation();if(!(e.target as HTMLElement).closest("button"))select();});
+    item.addEventListener("keydown",e=>{if(e.target!==item)return;if(e.altKey&&team&&(e.key==="ArrowUp"||e.key==="ArrowDown")){e.preventDefault();e.stopPropagation();this.stageOrder(this.memberIds(team),emp.id,e.key==="ArrowUp"?-1:1,team);}else if(e.key==="Enter"||e.key===" "){e.preventDefault();e.stopPropagation();select();}});
+    item.querySelector(".btn-unassign")?.addEventListener("click",e=>{e.stopPropagation();this.unassignEmployee(emp.id);});
+    if(team){item.addEventListener("dragover",e=>{if(!this.draggedEmployeeId||this.draggedEmployeeId===emp.id)return;e.preventDefault();e.stopPropagation();const after=e.clientY>item.getBoundingClientRect().top+item.offsetHeight/2;item.classList.toggle("drop-after",after);item.classList.toggle("drop-before",!after);});item.addEventListener("dragleave",()=>item.classList.remove("drop-before","drop-after"));item.addEventListener("drop",e=>{e.preventDefault();e.stopPropagation();this.dropMember(team,emp.id,e.clientY>item.getBoundingClientRect().top+item.offsetHeight/2);});}
+    return item;
+  }
+  public render():void {
     if(this.disposed)return;
-    const focused=document.activeElement as HTMLInputElement|null,restore=!!focused&&this.container.contains(focused),placeholder=focused?.placeholder,position=focused?.selectionStart;
-    this.container.innerHTML = "";
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "sites-org-layout";
-
-    // 1. 현재 조별 배정 상태 계산
-    // 초기 근무지 배정 상태 + stagedMoves 반영
-    const teamEmployees = new Map<string, Array<{ emp: EmployeeRecord; identity?: SiteEmployeeIdentity }>>();
-    this.draft.teamSettings
-      .slice().sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0))
-      .forEach((t) => {
-        teamEmployees.set(t.teamLabel, []);
-      });
-
-    // 현재 이 사이트에 배정되어 있는 활성 직원들
-    const initialSiteEmps = this.allEmployees.filter(
-      (e) => e.currentSiteId === this.draft.siteId
-    );
-
-    // 각 직원의 최종 배치 조 결정
-    const finalPlacement = new Map<string, string>(); // empId -> teamLabel
-    for (const emp of initialSiteEmps) {
-      if (emp.currentShiftGroup) {
-        finalPlacement.set(emp.id, emp.currentShiftGroup);
-      }
+    this.resizeObserver?.disconnect();
+    const focused=document.activeElement as HTMLInputElement|null,restore=focused?.placeholder==="사번/이름 검색",position=focused?.selectionStart;
+    this.container.replaceChildren();const wrapper=document.createElement("div");wrapper.className="sites-org-layout sites-org-dense";
+    const pool=document.createElement("section");pool.className="sites-wizard-card sites-org-pool";pool.tabIndex=0;pool.setAttribute("aria-label","인력 풀. 선택한 인력을 Enter로 되돌리기");
+    pool.innerHTML=`<div class="sites-org-pool-heading"><b>인력 풀 <small>배정 대기</small></b><button type="button" class="btn-secondary" id="btn-goto-workforce">인력 관리</button></div><label class="sites-org-date">배정 시작일<input type="date" id="inp-org-assign-date" class="sites-form-input" value="${this.assignmentStartDate}" /></label><select class="sites-form-select" aria-label="배정 가능 인력 범위"><option value="all">전체 재직 인력</option><option value="unassigned">미배정 인력</option><option value="other">다른 근무지 인력</option></select><input class="sites-form-input" placeholder="사번/이름 검색" /><p class="sites-org-drag-help">조로 드래그하여 배정 · 이곳으로 되돌려 해제</p>`;
+    pool.querySelector("#btn-goto-workforce")!.addEventListener("click",()=>this.onNavigateWorkforce());
+    pool.querySelector<HTMLInputElement>("#inp-org-assign-date")!.addEventListener("change",e=>{this.assignmentStartDate=(e.target as HTMLInputElement).value;this.stagedMoves=this.stagedMoves.map(m=>m.orderOnly?m:{...m,startDate:this.assignmentStartDate});this.onUpdateMoves([...this.stagedMoves]);});
+    const scope=pool.querySelector("select")!;scope.value=this.poolScope;scope.addEventListener("change",()=>{this.poolScope=scope.value;this.poolPage=1;this.render();});
+    const search=pool.querySelector<HTMLInputElement>('input[placeholder]')!;search.value=this.poolKeyword;search.addEventListener("input",()=>{this.poolKeyword=search.value;this.poolPage=1;this.render();});
+    if(this.warningMessage){const warning=document.createElement("div");warning.className="sites-editor-alert";warning.setAttribute("role","alert");warning.textContent=this.warningMessage;pool.append(warning);this.warningMessage="";}
+    const placement=this.placements(),keyword=this.poolKeyword.trim().toLowerCase(),available=this.allEmployees.filter(e=>e.status==="active"&&!placement.has(e.id)&&(this.poolScope!=="unassigned"||!e.currentSiteId)&&(this.poolScope!=="other"||(e.currentSiteId&&e.currentSiteId!==this.draft.siteId))&&(!keyword||`${e.name} ${e.employeeCode} ${e.rank||""}`.toLowerCase().includes(keyword)));
+    const total=Math.max(1,Math.ceil(available.length/this.poolPageSize));this.poolPage=Math.min(total,this.poolPage);const start=(this.poolPage-1)*this.poolPageSize;
+    const list=document.createElement("div");list.className="sites-org-pool-list";for(const emp of available.slice(start,start+this.poolPageSize))list.append(this.worker(emp));if(!list.children.length)list.textContent="배정 가능한 인력이 없습니다.";pool.append(list);
+    const nav=document.createElement("div");nav.className="sites-org-pool-pages";nav.innerHTML=`<span>총 ${available.length}명 · ${this.poolPage}/${total}</span><button type="button" class="sites-page-btn" aria-label="인력 풀 이전 페이지" ${this.poolPage<=1?"disabled":""}>‹</button><button type="button" class="sites-page-btn" aria-label="인력 풀 다음 페이지" ${this.poolPage>=total?"disabled":""}>›</button>`;nav.querySelectorAll("button").forEach((b,i)=>b.addEventListener("click",()=>{this.poolPage+=i?1:-1;this.render();}));pool.append(nav);
+    pool.addEventListener("dragover",e=>{if(this.draggedEmployeeId){e.preventDefault();pool.classList.add("is-drop-target");}});pool.addEventListener("dragleave",e=>{if(!pool.contains(e.relatedTarget as Node))pool.classList.remove("is-drop-target");});pool.addEventListener("drop",e=>{e.preventDefault();const id=this.draggedEmployeeId;this.draggedEmployeeId=null;pool.classList.remove("is-drop-target");if(id&&placement.has(id))this.unassignEmployee(id);});pool.addEventListener("keydown",e=>{if(e.target===pool&&(e.key==="Enter"||e.key===" ")&&this.selectedEmployeeId){e.preventDefault();this.unassignEmployee(this.selectedEmployeeId);}});
+    const board=document.createElement("section");board.className="sites-org-board";const toolbar=document.createElement("div");toolbar.className="sites-org-board-toolbar";toolbar.innerHTML='<span>인력 배치 <small>드래그로 조 이동·순서 변경 · 키보드: 선택 후 조에서 Enter, 순서는 Alt+↑/↓</small></span><button type="button" class="btn-secondary btn-team-settings">조 설정</button>';toolbar.querySelector("button")!.addEventListener("click",()=>this.openSettings());board.append(toolbar);
+    const grid=document.createElement("div");grid.className="sites-team-board-grid";
+    for(const [index,team] of this.draft.teamSettings.slice().sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0)).entries()){
+      const ids=this.memberIds(team.teamLabel),cap=this.draft.teamCapacities.find(c=>c.teamLabel===team.teamLabel)?.maxHeadcount,card=document.createElement("section");card.className=`sites-team-card sites-org-team-column team-color-${index%4}${team.isActive===false?" is-disabled":""}`;card.dataset.team=team.teamLabel;card.tabIndex=0;card.setAttribute("aria-label",team.displayName||team.teamLabel);
+      card.innerHTML=`<header class="sites-team-header"><div><b>${this.escape(team.displayName||team.teamLabel)}</b><small>${this.escape(team.teamLabel)} · ${team.isActive===false?"사용 안 함":team.workType==="FIXED_DAY"?"주간 고정":team.workType==="POOL"?"지원":"교대"}</small></div><button type="button" class="btn-team-settings" aria-label="${this.escape(team.teamLabel)} 조 설정"><span class="material-symbols-outlined" aria-hidden="true">tune</span></button></header><div class="sites-team-capacity"><span>${ids.length}명 / ${cap?`${cap}명`:"무제한"}</span><meter min="0" max="${cap||Math.max(ids.length,1)}" value="${ids.length}"></meter></div>`;
+      card.querySelector(".btn-team-settings")!.addEventListener("click",e=>{e.stopPropagation();this.openSettings(team.teamLabel);});
+      const members=document.createElement("div");members.className="sites-team-member-list";for(const id of ids){const emp=this.allEmployees.find(e=>e.id===id);if(emp)members.append(this.worker(emp,team.teamLabel));}const zone=document.createElement("div");zone.className="sites-team-drop-slot";zone.textContent=team.isActive===false?"사용하지 않는 조":"드래그하여 추가";members.append(zone);card.append(members);
+      const assign=()=>{if(this.selectedEmployeeId)this.assignEmployeeToTeam(this.selectedEmployeeId,team.teamLabel);};
+      card.addEventListener("click",e=>{if(e.target===card||e.target===zone)assign();});card.addEventListener("keydown",e=>{if(e.target===card&&(e.key==="Enter"||e.key===" ")){e.preventDefault();assign();}});
+      card.addEventListener("dragover",e=>{if(this.draggedEmployeeId&&team.isActive!==false){e.preventDefault();card.classList.add("is-drop-target");}});card.addEventListener("dragleave",e=>{if(!card.contains(e.relatedTarget as Node))card.classList.remove("is-drop-target");});card.addEventListener("drop",e=>{e.preventDefault();if(team.isActive!==false)this.dropMember(team.teamLabel);});grid.append(card);
     }
-
-    // stagedMoves 반영
-    for (const move of this.stagedMoves) {
-      if (move.toTeam) {
-        finalPlacement.set(move.employeeId, move.toTeam);
-      } else {
-        finalPlacement.delete(move.employeeId);
+    board.append(grid);wrapper.append(pool,board);this.container.append(wrapper);if(restore){search.focus({preventScroll:true});if(position!=null)search.setSelectionRange(position,position);}
+    this.resizeObserver=new ResizeObserver(()=>{if(this.disposed)return;const first=list.querySelector<HTMLElement>(".sites-member-card");if(!first||!list.clientHeight)return;const count=Math.max(1,Math.min(24,Math.floor((list.clientHeight+6)/(first.getBoundingClientRect().height+6))));if(count!==this.poolPageSize){this.poolPageSize=count;this.poolPage=1;this.render();}});this.resizeObserver.observe(list);
+  }
+  private openSettings(focusTeam?:string):void {
+    const teams=structuredClone(this.draft.teamSettings).sort((a,b)=>(a.sortOrder??0)-(b.sortOrder??0)),caps=structuredClone(this.draft.teamCapacities),content=document.createElement("div");content.className="sites-team-settings-editor";let dragged:string|null=null;
+    const render=()=>{content.innerHTML='<p class="sites-form-help">행의 손잡이를 드래그하여 조 순서를 바꾸세요. 이름·유형·정원·사용 여부는 최종 저장 전에 초안에 반영됩니다.</p><div class="sites-editor-alert" role="alert" hidden></div><div class="sites-team-settings-head"><span>순서</span><span>사용</span><span>조 이름</span><span>근무 유형</span><span>정원 (명)</span></div>';
+      for(const team of teams){const row=document.createElement("div");row.className="sites-team-settings-row";row.dataset.team=team.teamLabel;row.draggable=true;row.innerHTML=`<button type="button" class="sites-team-order-handle" aria-label="${this.escape(team.teamLabel)} 순서: Alt+위아래 화살표"><span class="material-symbols-outlined" aria-hidden="true">drag_indicator</span></button><label><input type="checkbox" ${team.isActive!==false?"checked":""} aria-label="${this.escape(team.teamLabel)} 사용" /></label><label><span>${this.escape(team.teamLabel)}</span><input class="sites-form-input" aria-label="${this.escape(team.teamLabel)} 표시 이름" value="${this.escape(team.displayName||team.teamLabel)}" maxlength="100" required /></label><select class="sites-form-select" aria-label="${this.escape(team.teamLabel)} 근무 유형"><option value="ROTATING">교대 근무</option><option value="FIXED_DAY">주간 고정</option><option value="POOL">Pool 지원</option></select><input type="number" min="1" step="1" class="sites-form-input" placeholder="무제한" aria-label="${this.escape(team.teamLabel)} 정원" value="${caps.find(c=>c.teamLabel===team.teamLabel)?.maxHeadcount||""}" />`;
+        row.querySelector<HTMLInputElement>('input[type="checkbox"]')!.addEventListener("change",e=>team.isActive=(e.target as HTMLInputElement).checked);row.querySelector<HTMLInputElement>('input[maxlength]')!.addEventListener("input",e=>team.displayName=(e.target as HTMLInputElement).value);const select=row.querySelector("select")!;select.value=team.workType||"ROTATING";select.addEventListener("change",()=>team.workType=select.value as typeof team.workType);row.querySelector<HTMLInputElement>('input[type="number"]')!.addEventListener("input",e=>{let cap=caps.find(c=>c.teamLabel===team.teamLabel);if(!cap){cap={teamLabel:team.teamLabel};caps.push(cap);}cap.maxHeadcount=(e.target as HTMLInputElement).value?Number((e.target as HTMLInputElement).value):undefined;});
+        row.addEventListener("dragstart",e=>{if((e.target as HTMLElement).matches("input,select")){e.preventDefault();return;}dragged=team.teamLabel;e.dataTransfer?.setData("text/plain",dragged);row.classList.add("is-dragging");});row.addEventListener("dragover",e=>{if(dragged){e.preventDefault();row.classList.add("drop-before");}});row.addEventListener("dragleave",()=>row.classList.remove("drop-before"));row.addEventListener("drop",e=>{e.preventDefault();const from=teams.findIndex(t=>t.teamLabel===dragged),to=teams.indexOf(team);if(from>=0&&from!==to){teams.splice(to,0,teams.splice(from,1)[0]);render();}dragged=null;});row.addEventListener("dragend",()=>{dragged=null;content.querySelectorAll(".is-dragging,.drop-before").forEach(e=>e.classList.remove("is-dragging","drop-before"));});
+        row.querySelector("button")!.addEventListener("keydown",e=>{const event=e as KeyboardEvent;if(!event.altKey||!["ArrowUp","ArrowDown"].includes(event.key))return;event.preventDefault();const from=teams.indexOf(team),to=from+(event.key==="ArrowUp"?-1:1);if(to<0||to>=teams.length)return;teams.splice(to,0,teams.splice(from,1)[0]);render();content.querySelector<HTMLElement>(`[data-team="${CSS.escape(team.teamLabel)}"] button`)?.focus();});content.append(row);
       }
-    }
-
-    // 조별 명단 채우기
-    finalPlacement.forEach((teamLabel, empId) => {
-      const emp = this.allEmployees.find((e) => e.id === empId);
-      if (emp && teamEmployees.has(teamLabel)) {
-        teamEmployees.get(teamLabel)!.push({
-          emp,
-          identity: this.identityMap.get(emp.id)
-        });
-      }
-    });
-
-    for(const members of teamEmployees.values())members.sort((a,b)=>(this.stagedMoves.find(m=>m.employeeId===a.emp.id)?.sortOrder ?? a.emp.currentAssignmentOrder ?? 0)-(this.stagedMoves.find(m=>m.employeeId===b.emp.id)?.sortOrder ?? b.emp.currentAssignmentOrder ?? 0)||a.emp.employeeCode.localeCompare(b.emp.employeeCode,"ko",{numeric:true}));
-    // 2. 좌측: 인력 풀 (검색 및 10명 페이징)
-    const poolCard = document.createElement("div");
-    poolCard.className = "sites-wizard-card";
-    poolCard.style.padding = "14px";
-    poolCard.style.display = "flex";
-    poolCard.style.flexDirection = "column";
-    poolCard.style.gap = "10px";
-
-    if (this.warningMessage) {
-      const warnBanner = document.createElement("div");
-      warnBanner.style.padding = "8px 12px";
-      warnBanner.style.background = "#FEE2E2";
-      warnBanner.style.color = "#991B1B";
-      warnBanner.style.borderRadius = "4px";
-      warnBanner.style.fontSize = "11px";
-      warnBanner.textContent = this.warningMessage;
-      poolCard.appendChild(warnBanner);
-      this.warningMessage = "";
-    }
-
-    const poolHeader = document.createElement("div");
-    poolHeader.style.display = "flex";
-    poolHeader.style.justifyContent = "space-between";
-    poolHeader.style.alignItems = "center";
-    poolHeader.innerHTML = `
-      <div style="font-weight:bold; font-size:13px; color:var(--text, #1F2430);">
-        인력 풀 (배정 대기)
-      </div>
-      <button type="button" class="btn-secondary" id="btn-goto-workforce" style="font-size:11px; height:24px;">
-        인력 관리 이동
-      </button>
-    `;
-    poolHeader.querySelector("#btn-goto-workforce")?.addEventListener("click", () => {
-      this.onNavigateWorkforce();
-    });
-    poolCard.appendChild(poolHeader);
-
-    // 배정 시작일 설정
-    const dateRow = document.createElement("div");
-    dateRow.style.display = "flex";
-    dateRow.style.alignItems = "center";
-    dateRow.style.gap = "8px";
-    dateRow.style.fontSize = "11px";
-    dateRow.innerHTML = `
-      <span>배정 시작일:</span>
-      <input type="date" id="inp-org-assign-date" class="sites-form-input" style="font-size:11px; height:24px; padding:2px 6px;" value="${this.assignmentStartDate}" />
-    `;
-    dateRow.querySelector("#inp-org-assign-date")?.addEventListener("change", (e) => {
-      this.assignmentStartDate = (e.target as HTMLInputElement).value;
-      this.stagedMoves=this.stagedMoves.map(m=>m.orderOnly?m:{...m,startDate:this.assignmentStartDate});this.onUpdateMoves([...this.stagedMoves]);
-    });
-    poolCard.appendChild(dateRow);
-
-    const scope=document.createElement("select");scope.className="sites-form-select";scope.setAttribute("aria-label","배정 가능 인력 범위");
-    for(const [value,label] of [["all","전체 재직 인력"],["unassigned","미배정 인력"],["other","다른 근무지 인력"]]){const o=document.createElement("option");o.value=value;o.textContent=label;scope.append(o);}scope.value=this.poolScope;scope.addEventListener("change",()=>{this.poolScope=scope.value;this.poolPage=1;this.render();});poolCard.append(scope);
-    // 검색창
-    const searchInp = document.createElement("input");
-    searchInp.type = "text";
-    searchInp.className = "sites-form-input";
-    searchInp.placeholder = "사번/이름 검색";
-    searchInp.value = this.poolKeyword;
-    searchInp.style.fontSize = "12px";
-    searchInp.addEventListener("input", (e) => {
-      this.poolKeyword = (e.target as HTMLInputElement).value.trim().toLowerCase();
-      this.poolPage = 1;
-      this.render();
-    });
-    poolCard.appendChild(searchInp);
-
-    // 아직 어느 조에도 배정되지 않은 직원 필터링
-    const unassignedEmps = this.allEmployees.filter((emp) => {
-      if (emp.status !== "active") return false;
-      if(this.poolScope==="unassigned"&&emp.currentSiteId)return false;
-      if(this.poolScope==="other"&&(!emp.currentSiteId||emp.currentSiteId===this.draft.siteId))return false;
-      if (finalPlacement.has(emp.id)) return false; // 이미 어느 조에 배정됨
-      if (this.poolKeyword) {
-        const matchName = emp.name.toLowerCase().includes(this.poolKeyword);
-        const matchCode = emp.employeeCode.toLowerCase().includes(this.poolKeyword);
-        if (!matchName && !matchCode && !(emp.rank || "").toLowerCase().includes(this.poolKeyword)) return false;
-      }
-      return true;
-    });
-
-    // 페이징
-    const totalPoolPages = Math.max(1, Math.ceil(unassignedEmps.length / this.poolPageSize));
-    const curPoolPage = Math.min(this.poolPage, totalPoolPages);
-    const startIdx = (curPoolPage - 1) * this.poolPageSize;
-    const pagedUnassigned = unassignedEmps.slice(startIdx, startIdx + this.poolPageSize);
-
-    const poolList = document.createElement("div");
-    poolList.style.display = "flex";
-    poolList.style.flexDirection = "column";
-    poolList.style.gap = "6px";
-    poolList.style.minHeight = "280px";
-
-    if (pagedUnassigned.length === 0) {
-      poolList.innerHTML = `
-        <div style="text-align:center; padding:32px 0; color:var(--text-sub, #4B5563); font-size:12px;">
-          배정 가능한 대기 인력이 없습니다.
-        </div>
-      `;
-    } else {
-      pagedUnassigned.forEach((emp) => {
-        const item = document.createElement("div");
-        const isSelected = this.selectedEmployeeId === emp.id;
-        item.className = `sites-member-card sites-org-worker-card ${isSelected ? "selected" : ""}`;
-        item.draggable = true;
-        item.dataset.empid = emp.id;
-        item.tabIndex = 0;
-        item.setAttribute("role", "button");
-        item.setAttribute("aria-label", `${emp.name} (${emp.employeeCode})`);
-
-        if (isSelected) {
-          item.style.borderColor = "var(--accent, #3E56B6)";
-          item.style.background = "#EEF1FB";
-        }
-
-        const ident = this.identityMap.get(emp.id);
-        item.innerHTML = `
-          <div>
-            <strong>${this.escape(ident?.name || emp.name)}</strong>
-            <span style="font-size:11px; color:var(--text-sub, #4B5563); margin-left:4px;">${this.escape(emp.employeeCode)}</span>
-          </div>
-          <div style="font-size:11px; color:var(--text-sub, #4B5563);">
-            ${ident?.rank ? `[${this.escape(ident.rank)}]` : ""}
-          </div>
-        `;
-
-        item.addEventListener("dragstart", () => {
-          this.draggedEmployeeId = emp.id;
-        });
-
-        // 클릭 및 키보드 선택 지원 (UI03-D05)
-        const toggleSelect = () => {
-          this.selectedEmployeeId = this.selectedEmployeeId === emp.id ? null : emp.id;
-          this.render();
-        };
-
-        item.addEventListener("click", toggleSelect);
-        item.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            toggleSelect();
-          }
-        });
-
-        poolList.appendChild(item);
-      });
-    }
-    poolCard.appendChild(poolList);
-
-    // 인력 풀 페이징
-    const poolPageNav = document.createElement("div");
-    poolPageNav.style.display = "flex";
-    poolPageNav.style.justifyContent = "space-between";
-    poolPageNav.style.alignItems = "center";
-    poolPageNav.style.fontSize = "11px";
-    poolPageNav.style.color = "var(--text-sub, #4B5563)";
-    poolPageNav.innerHTML = `<span>총 ${unassignedEmps.length}명 · ${unassignedEmps.length?startIdx+1:0}~${Math.min(startIdx+this.poolPageSize,unassignedEmps.length)}명 표시</span>`;
-
-    const navBtns = document.createElement("div");
-    navBtns.style.display = "flex";
-    navBtns.style.gap = "4px";
-
-    const prevBtn = document.createElement("button");
-    prevBtn.type = "button";
-    prevBtn.className = "sites-page-btn";
-    prevBtn.textContent = "‹";
-    prevBtn.style.height = "22px";
-    prevBtn.style.minWidth = "22px";
-    prevBtn.disabled = curPoolPage <= 1;
-    prevBtn.addEventListener("click", () => {
-      if (this.poolPage > 1) {
-        this.poolPage--;
-        this.render();
-      }
-    });
-    navBtns.appendChild(prevBtn);
-
-    const nextBtn = document.createElement("button");
-    nextBtn.type = "button";
-    nextBtn.className = "sites-page-btn";
-    nextBtn.textContent = "›";
-    nextBtn.style.height = "22px";
-    nextBtn.style.minWidth = "22px";
-    nextBtn.disabled = curPoolPage >= totalPoolPages;
-    nextBtn.addEventListener("click", () => {
-      if (this.poolPage < totalPoolPages) {
-        this.poolPage++;
-        this.render();
-      }
-    });
-    navBtns.appendChild(nextBtn);
-
-    poolPageNav.appendChild(navBtns);
-    poolCard.appendChild(poolPageNav);
-    wrapper.appendChild(poolCard);
-
-    // 3. 우측: 조별 보드 (Grid)
-    const boardContainer = document.createElement("div");
-    boardContainer.style.display = "flex";
-    boardContainer.style.flexDirection = "column";
-    boardContainer.style.gap = "12px";
-
-    const boardGrid = document.createElement("div");
-    boardGrid.className = "sites-team-board-grid";
-
-    // 각 조별 카드 생성
-    Array.from(teamEmployees.entries()).forEach(([teamLabel, members]) => {
-      const teamSetting = this.draft.teamSettings.find((t) => t.teamLabel === teamLabel);
-      const teamCapacity = this.draft.teamCapacities.find((c) => c.teamLabel === teamLabel);
-      const maxHead = teamCapacity?.maxHeadcount;
-
-      const teamCard = document.createElement("div");
-      teamCard.className = "sites-team-card sites-org-team-column";
-      teamCard.dataset.team = teamLabel;
-
-      const isOverCapacity = typeof maxHead === "number" && maxHead > 0 && members.length > maxHead;
-
-      teamCard.tabIndex = 0;
-      teamCard.setAttribute("role", "region");
-      teamCard.setAttribute("aria-label", `${teamSetting?.displayName || teamLabel}`);
-
-      teamCard.innerHTML = `
-        <div class="sites-team-header" style="${isOverCapacity ? "background:#FCEBE9; color:#C0392B;" : ""}">
-          <div>
-            <span>${this.escape(teamSetting?.displayName || teamLabel)}</span>
-            <span style="font-size:11px; font-weight:normal; margin-left:4px;">(${teamLabel})</span>
-          </div>
-          <div style="font-size:11px; display:flex; align-items:center; gap:6px;">
-            <span><strong>${members.length}</strong> / ${maxHead ? `${maxHead}명` : "무제한"}</span>
-            <button type="button" class="btn-secondary btn-assign-here" style="font-size:10px; height:20px; padding:0 4px; display:${this.selectedEmployeeId ? "inline-block" : "none"};">
-              여기로 배정
-            </button>
-          </div>
-        </div>
-      `;
-
-      // 선택된 인력이 있을 때 조 카드 클릭/Enter 또는 버튼 클릭으로 배정 (UI03-D05)
-      const handleAssignToThisTeam = () => {
-        if (this.selectedEmployeeId) {
-          this.assignEmployeeToTeam(this.selectedEmployeeId, teamLabel);
-          this.selectedEmployeeId = null;
-        }
-      };
-
-      teamCard.querySelector(".btn-assign-here")?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        handleAssignToThisTeam();
-      });
-
-      teamCard.addEventListener("click", () => {
-        if (this.selectedEmployeeId) {
-          handleAssignToThisTeam();
-        }
-      });
-
-      teamCard.addEventListener("keydown", (e) => {
-        if ((e.key === "Enter" || e.key === " ") && this.selectedEmployeeId) {
-          e.preventDefault();
-          handleAssignToThisTeam();
-        }
-      });
-
-      const memberList = document.createElement("div");
-      memberList.className = "sites-team-member-list";
-
-      // 드래그 앤 드롭 영역 설정
-      teamCard.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        teamCard.style.borderColor = "var(--accent, #3E56B6)";
-      });
-
-      teamCard.addEventListener("dragleave", () => {
-        teamCard.style.borderColor = "var(--line, #E2E5EA)";
-      });
-
-      teamCard.addEventListener("drop", (e) => {
-        e.preventDefault();
-        teamCard.style.borderColor = "var(--line, #E2E5EA)";
-        if (this.draggedEmployeeId) {
-          this.assignEmployeeToTeam(this.draggedEmployeeId, teamLabel);
-          this.draggedEmployeeId = null;
-        }
-      });
-
-      if (members.length === 0) {
-        memberList.innerHTML = `
-          <div style="text-align:center; padding:24px 0; color:var(--text-sub, #4B5563); font-size:11px;">
-            여기로 인력을 드래그하여 배정하세요.
-          </div>
-        `;
-      } else {
-        members.forEach((item, _mIdx) => {
-          const mCard = document.createElement("div");
-          mCard.className = "sites-member-card";
-          mCard.draggable = true;
-          mCard.dataset.empid = item.emp.id;
-
-          mCard.innerHTML = `
-            <div>
-              <strong>${this.escape(item.identity?.name || item.emp.name)}</strong>
-              <span style="font-size:11px; color:var(--text-sub, #4B5563); margin-left:4px;">${this.escape(item.emp.employeeCode)}</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:4px;">
-              <button type="button" class="btn-secondary btn-order-up" aria-label="앞으로 이동">↑</button><button type="button" class="btn-secondary btn-order-down" aria-label="뒤로 이동">↓</button>
-              <button type="button" class="btn-secondary btn-unassign" data-empid="${item.emp.id}" style="font-size:10px; height:20px; padding:0 4px; color:#C0392B;">해제</button>
-            </div>
-          `;
-
-          mCard.addEventListener("dragstart", () => {
-            this.draggedEmployeeId = item.emp.id;
-          });
-
-          mCard.querySelector(".btn-unassign")?.addEventListener("click", () => {
-            this.unassignEmployee(item.emp.id);
-          });
-
-          mCard.tabIndex=0;mCard.setAttribute("role","button");mCard.setAttribute("aria-label",`${item.emp.name} 선택`);
-          const select=()=>{this.selectedEmployeeId=item.emp.id;this.render();};mCard.addEventListener("click",e=>{if(!(e.target as HTMLElement).closest("button"))select();});mCard.addEventListener("keydown",e=>{if(e.target===mCard&&(e.key==="Enter"||e.key===" ")){e.preventDefault();e.stopPropagation();select();}});
-          mCard.querySelector(".btn-order-up")?.addEventListener("click",e=>{e.stopPropagation();this.stageOrder(members.map(m=>m.emp.id),item.emp.id,-1,teamLabel);});
-          mCard.querySelector(".btn-order-down")?.addEventListener("click",e=>{e.stopPropagation();this.stageOrder(members.map(m=>m.emp.id),item.emp.id,1,teamLabel);});
-          memberList.appendChild(mCard);
-        });
-      }
-
-      teamCard.appendChild(memberList);
-      boardGrid.appendChild(teamCard);
-    });
-
-    boardContainer.appendChild(boardGrid);
-    const settings=document.createElement("details");const summary=document.createElement("summary");summary.textContent="조 이름·근무 유형·정원·사용 여부·순서 설정";settings.append(summary);
-    for(const team of this.draft.teamSettings){const row=document.createElement("div");row.className="sites-team-settings-row";const name=document.createElement("input");name.className="sites-form-input";name.value=team.displayName||team.teamLabel;name.setAttribute("aria-label",`${team.teamLabel} 표시 이름`);name.addEventListener("input",()=>{team.displayName=name.value;this.onUpdateMoves([...this.stagedMoves]);});
-      const enabled=document.createElement("input");enabled.type="checkbox";enabled.checked=team.isActive!==false;enabled.setAttribute("aria-label",`${team.teamLabel} 사용`);enabled.addEventListener("change",()=>{team.isActive=enabled.checked;this.onUpdateMoves([...this.stagedMoves]);this.render();});
-      const limit=document.createElement("input");limit.type="number";limit.min="1";limit.placeholder="무제한";limit.className="sites-form-input";const cap=this.draft.teamCapacities.find(c=>c.teamLabel===team.teamLabel);limit.value=cap?.maxHeadcount?String(cap.maxHeadcount):"";limit.setAttribute("aria-label",`${team.teamLabel} 정원`);limit.addEventListener("change",()=>{const value=limit.value===""?undefined:Number(limit.value);const item=this.draft.teamCapacities.find(c=>c.teamLabel===team.teamLabel);if(item)item.maxHeadcount=value;else this.draft.teamCapacities.push({teamLabel:team.teamLabel,maxHeadcount:value});this.onUpdateMoves([...this.stagedMoves]);this.render();});
-      const work=document.createElement("select");work.className="sites-form-select";work.setAttribute("aria-label",`${team.teamLabel} 근무 유형`);for(const [value,label] of [["ROTATING","교대 근무"],["FIXED_DAY","주간 고정"],["POOL","Pool 지원"]]){const o=document.createElement("option");o.value=value;o.textContent=label;work.append(o);}work.value=team.workType||"ROTATING";work.addEventListener("change",()=>{team.workType=work.value as typeof team.workType;this.onUpdateMoves([...this.stagedMoves]);});
-      const order=document.createElement("input");order.type="number";order.min="0";order.className="sites-form-input";order.value=String(team.sortOrder??0);order.setAttribute("aria-label",`${team.teamLabel} 표시 순서`);order.addEventListener("change",()=>{team.sortOrder=Number(order.value);this.onUpdateMoves([...this.stagedMoves]);this.render();});
-      row.append(enabled,name,work,limit,order);settings.append(row);}
-    boardContainer.append(settings);
-    wrapper.appendChild(boardContainer);
-    this.container.appendChild(wrapper);
-    if(restore&&placeholder){const input=Array.from(this.container.querySelectorAll<HTMLInputElement>('input')).find(i=>i.placeholder===placeholder);input?.focus({preventScroll:true});if(position!=null&&input?.type==="text")input.setSelectionRange(position,position);}
+    };render();this.settingsDialog.open({id:"sites-team-settings-modal",title:"조 설정 · 드래그로 순서 변경",width:"820px",content,initialFocusSelector:focusTeam?`[data-team="${CSS.escape(focusTeam)}"] input[maxlength]`:"input[maxlength]",buttons:[{id:"btn-team-settings-cancel",label:"취소",onClick:()=>this.settingsDialog.close()},{id:"btn-team-settings-apply",label:"초안에 적용",variant:"primary",onClick:()=>{for(const input of Array.from(content.querySelectorAll<HTMLInputElement>("input")))if(!input.reportValidity())return;const invalid=teams.find(t=>{const n=this.memberIds(t.teamLabel).length,cap=caps.find(c=>c.teamLabel===t.teamLabel)?.maxHeadcount;return n>0&&(t.isActive===false||(cap!==undefined&&cap<n));});if(invalid){const alert=content.querySelector<HTMLElement>(".sites-editor-alert")!;alert.hidden=false;alert.textContent=`${invalid.displayName||invalid.teamLabel}: 배정 인원보다 정원을 줄이거나 사용을 해제할 수 없습니다. 인력을 먼저 이동해 주세요.`;return;}if(!teams.some(t=>t.isActive!==false)){const alert=content.querySelector<HTMLElement>(".sites-editor-alert")!;alert.hidden=false;alert.textContent="최소 한 개 조를 사용해 주세요.";return;}this.draft.teamSettings=teams.map((t,sortOrder)=>({...t,sortOrder}));this.draft.teamCapacities=caps;this.onUpdateMoves([...this.stagedMoves]);this.settingsDialog.close();this.render();}}]});
   }
 
-  private assignEmployeeToTeam(employeeId: string, toTeam: string): void {
-    if(this.disposed)return;
-    const emp=this.allEmployees.find(e=>e.id===employeeId);if(!emp||emp.status!=="active"||!this.draft.teamSettings.some(t=>t.teamLabel===toTeam&&t.isActive!==false))return;
-    if(!isValidDateString(this.assignmentStartDate)){this.warningMessage="올바른 배정 시작일을 선택해 주세요.";this.render();return;}
+  private assignEmployeeToTeam(employeeId: string, toTeam: string): boolean {
+    if(this.disposed)return false;
+    const emp=this.allEmployees.find(e=>e.id===employeeId);if(!emp||emp.status!=="active"||!this.draft.teamSettings.some(t=>t.teamLabel===toTeam&&t.isActive!==false))return false;
+    if(!isValidDateString(this.assignmentStartDate)){this.warningMessage="올바른 배정 시작일을 선택해 주세요.";this.render();return false;}
     const move:StagedAssignmentMove={employeeId,fromTeam:emp.currentSiteId===this.draft.siteId?emp.currentShiftGroup:undefined,toTeam,startDate:this.assignmentStartDate};
     const next=[...this.stagedMoves.filter(m=>m.employeeId!==employeeId),move];
-    try{planAssignmentMoves(this.allEmployees,this.draft.siteId,Object.fromEntries(this.draft.teamCapacities.map(c=>[c.teamLabel,c.maxHeadcount])),next);}catch(error){this.warningMessage=error instanceof Error?error.message:String(error);this.render();return;}
-    this.stagedMoves=next;this.selectedEmployeeId=null;this.onUpdateMoves([...next]);this.render();
+    try{planAssignmentMoves(this.allEmployees,this.draft.siteId,Object.fromEntries(this.draft.teamCapacities.map(c=>[c.teamLabel,c.maxHeadcount])),next);}catch(error){this.warningMessage=error instanceof Error?error.message:String(error);this.render();return false;}
+    this.stagedMoves=next;this.selectedEmployeeId=null;this.onUpdateMoves([...next]);this.render();return true;
   }
   private stageOrder(ids:string[],employeeId:string,delta:number,team:string):void {
     const index=ids.indexOf(employeeId),goal=index+delta;if(index<0||goal<0||goal>=ids.length)return;
-    const previous=new Map(this.stagedMoves.map(m=>[m.employeeId,m]));
-    [ids[index],ids[goal]]=[ids[goal],ids[index]];
-    this.stagedMoves=this.stagedMoves.filter(m=>!ids.includes(m.employeeId));
-    ids.forEach((id,sortOrder)=>{const old=previous.get(id);const emp=this.allEmployees.find(e=>e.id===id)!;this.stagedMoves.push({...old,employeeId:id,fromTeam:emp.currentShiftGroup,toTeam:team,sortOrder,orderOnly:old ? old.orderOnly : emp.currentSiteId===this.draft.siteId&&emp.currentShiftGroup===team});});this.onUpdateMoves([...this.stagedMoves]);this.render();
+    [ids[index],ids[goal]]=[ids[goal],ids[index]];this.commitOrder(ids,team);
   }
   private unassignEmployee(employeeId:string):void {
     if(this.disposed)return;
@@ -477,6 +158,6 @@ export class SitesOrganization {
   private escape(str: string): string {
     const div = document.createElement("div");
     div.textContent = str;
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g,"&quot;");
   }
 }

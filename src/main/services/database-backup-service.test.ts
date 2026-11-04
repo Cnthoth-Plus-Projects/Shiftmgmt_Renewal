@@ -51,7 +51,7 @@ describe("database-backup-service", () => {
     rmSync(testRoot, { recursive: true, force: true });
   });
 
-  it("should write a single JSON backup file with 40 tables, row count, and verified SHA-256 (J1, N8)", async () => {
+  it("should write a single JSON backup file with 42 tables, row count, and verified SHA-256 (J1, N8)", async () => {
     initializeSqliteStorage({ dbPath, env });
 
     saveStoredAppSettings(
@@ -82,8 +82,8 @@ describe("database-backup-service", () => {
     expect(result.backupSha256).toBe(computedSha);
 
     // 3. Schema version and table count
-    expect(result.schemaVersion).toBe("1");
-    expect(result.tableCount).toBe(40);
+    expect(result.schemaVersion).toBe("2");
+    expect(result.tableCount).toBe(42);
     expect(result.rowCount).toBeGreaterThan(0);
     expect(result.warningMessages).toHaveLength(0);
 
@@ -93,8 +93,8 @@ describe("database-backup-service", () => {
       createdAt: string;
       tables: Record<string, unknown[]>;
     };
-    expect(parsed.schemaVersion).toBe(1);
-    expect(Object.keys(parsed.tables)).toHaveLength(40);
+    expect(parsed.schemaVersion).toBe(2);
+    expect(Object.keys(parsed.tables)).toHaveLength(42);
     expect(Array.isArray(parsed.tables.app_setting_entries)).toBe(true);
 
     // 5. Excel and Access directories/files are NOT created (N8)
@@ -185,10 +185,10 @@ describe("database-backup-service", () => {
     const firstParsed = JSON.parse(firstBytes.toString("utf8"));
     const secondParsed = JSON.parse(secondBytes.toString("utf8"));
 
-    expect(firstParsed.schemaVersion).toBe(1);
-    expect(secondParsed.schemaVersion).toBe(1);
-    expect(Object.keys(firstParsed.tables)).toHaveLength(40);
-    expect(Object.keys(secondParsed.tables)).toHaveLength(40);
+    expect(firstParsed.schemaVersion).toBe(2);
+    expect(secondParsed.schemaVersion).toBe(2);
+    expect(Object.keys(firstParsed.tables)).toHaveLength(42);
+    expect(Object.keys(secondParsed.tables)).toHaveLength(42);
     expect(first.rowCount).toBe(second.rowCount);
 
     const jsonDir = path.resolve(testRoot, "backups", "json");

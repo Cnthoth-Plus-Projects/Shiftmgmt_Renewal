@@ -1,3 +1,11 @@
+import type { PatternPresetRecord, PatternPresetSaveInput, PatternPresetDeleteInput } from "./pattern-presets";
+import type {
+  PolicyKind,
+  PolicyRuleKey,
+  PolicyRevisionRecord,
+  PolicyEventRecord,
+  ActivePolicyProjection
+} from "../domain/policy-history";
 import type {
   AllowanceRateHistoryRecord,
   AllowanceRateVersion,
@@ -34,7 +42,7 @@ import type {
   DocumentLayoutSummary
 } from "../domain/document-layout";
 import type { TeamWorkType } from "../domain/team-work-type";
-import type { AllowanceCalculationSnapshot, TimeRange } from "../domain/calculation";
+import type { AllowanceCalculationSnapshot } from "../domain/calculation";
 import type { AuthSessionPolicy } from "../config/auth-session-policy";
 import type {
   AllowanceDocumentExportFormat,
@@ -43,7 +51,6 @@ import type {
 import type { AllowanceCalculationResultRecord } from "../domain/allowance-service";
 import type {
   AllowanceApprovalRecord,
-  AllowanceHistoryStatusFilter,
   AllowanceProposalApprovalInput,
   AllowanceProposalApprovalRecord,
   AllowanceProposalPreview,
@@ -232,6 +239,25 @@ export interface JsonDatabaseTableImpact {
   nextRowCount: number;
 }
 
+export interface ImportedEmployeeHireDateRow {
+  employeeId: string;
+  employeeCode: string;
+  employeeName: string;
+  archived: boolean;
+  sourceHireDate?: string | null;
+  classification: "source-date" | "missing" | "invalid";
+}
+
+export interface ImportedEmployeeHireDateReview {
+  policy: "preserve-source-no-fallback";
+  sourceBackupSha256: string;
+  totalEmployeeCount: number;
+  sourceDateCount: number;
+  missingDateCount: number;
+  invalidDateCount: number;
+  rows: ImportedEmployeeHireDateRow[];
+}
+
 export interface JsonDatabaseRestorePreview {
   sourceType: "json";
   backupFilePath: string;
@@ -242,6 +268,7 @@ export interface JsonDatabaseRestorePreview {
   tableImpacts: JsonDatabaseTableImpact[];
   warningMessages: string[];
   previewedAt: string;
+  employeeHireDateReview?: ImportedEmployeeHireDateReview;
 }
 
 export interface JsonDatabaseRestoreExecuteInput extends JsonDatabaseRestoreInput {
@@ -269,6 +296,7 @@ export interface JsonDatabaseRestoreSummary {
   backupBeforeRestore: JsonDatabaseBackupSummary;
   warningMessages: string[];
   completedAt: string;
+  employeeHireDateReview?: ImportedEmployeeHireDateReview;
 }
 
 export type DatabaseBackupSummary = JsonDatabaseBackupSummary;
@@ -377,6 +405,31 @@ export interface SiteNameOptionDeleteInput {
   optionId: string;
 }
 
+export type EmployeeRehireInput = {
+  operation: "start";
+  startDate: string;
+  siteId: string;
+  shiftGroup: string;
+  hourlyRate?: number;
+  reason?: string;
+  expectedUpdatedAt?: string;
+  expectedRetireDate: string;
+} | {
+  operation: "reschedule";
+  periodId: string;
+  expectedRevision: string;
+  startDate: string;
+  siteId: string;
+  shiftGroup: string;
+  hourlyRate?: number;
+  reason?: string;
+} | {
+  operation: "cancel";
+  periodId: string;
+  expectedRevision: string;
+  reason?: string;
+};
+
 export interface EmployeeUpsertInput {
   id?: string;
   employeeCode: string;
@@ -391,10 +444,40 @@ export interface EmployeeUpsertInput {
   siteId?: string;
   shiftGroup?: string;
   hourlyRate?: number;
+  rehire?: EmployeeRehireInput;
 }
 
 export interface EmployeeDeleteInput {
   employeeId: string;
+}
+
+export interface EmployeeRetirementChange {
+  kind: "retirement" | "date-correction";
+  retireDate: string;
+  previousRetireDate?: string;
+  closedWageCount: number;
+  closedAssignmentCount: number;
+  excludedFutureWageCount: number;
+  excludedFutureAssignmentCount: number;
+  adjustedHistoryCount: number;
+  legacyProvenanceIncomplete: boolean;
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface EmployeeRehireChange {
+  kind: "rehire" | "reservation-updated" | "reservation-cancelled";
+  startDate: string;
+  previousStartDate?: string;
+  previousRetireDate: string;
+  employmentPeriodId: string;
+  newWageCount: number;
+  newAssignmentCount: number;
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface EmployeeSaveResult extends EmployeeRecord {
+  retirementChange?: EmployeeRetirementChange;
+  rehireChange?: EmployeeRehireChange;
 }
 
 export interface EmployeeWageRateInput {
@@ -402,9 +485,37 @@ export interface EmployeeWageRateInput {
   hourlyRate: number;
   effectiveFrom: string;
   reason?: string;
+  revision?: {
+    operation: "correct" | "invalidate";
+    wageRateId: string;
+    expectedRevision: string;
+    changeReason: string;
+  };
+}
+
+export interface WagePendingPerformanceRefresh {
+  status: "completed" | "partial";
+  affectedEntryCount: number;
+  targetFileCount: number;
+  refreshedFileCount: number;
+  issues: { fileName: string; message: string }[];
+}
+
+export interface EmployeeWageRateSaveResult extends WageRateRecord {
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface PerformanceReturnToPendingResult extends PerformanceFileDetail {
+  wageReapplication?: {
+    status: "completed" | "needs-review";
+    appliedEntryCount: number;
+    unresolvedEntryCount: number;
+    sourceFileMissing: boolean;
+  };
 }
 
 export interface WorkforceWageBulkUpdateColumnMappingInput {
+  employeeCodeColumn?: string;
   siteNameColumn: string;
   employeeNameColumn: string;
   hourlyRateColumn: string;
@@ -465,6 +576,7 @@ export interface WorkforceWageBulkUpdateApplySummary {
   appliedCount: number;
   skippedCount: number;
   rows: WorkforceWageBulkUpdatePreviewRow[];
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
 }
 
 export interface EmployeeAssignmentInput {
@@ -560,6 +672,7 @@ export interface ShiftPatternTeamSettingInput {
 }
 
 export interface ShiftPatternUpsertInput {
+  holidayPolicy?: import("../domain/holiday-pattern").HolidayPatternPolicy;
   id?: string;
   siteId: string;
   name: string;
@@ -718,6 +831,19 @@ export interface MonthlyScheduleUpsertInput {
   templateVersionId?: string;
   items: MonthlyScheduleItemInput[];
 }
+export interface SchedulePreparationContext {
+  year: number;
+  publicHolidayDates: string[];
+  warningSettings: {
+    consecutiveNightLimit: number;
+    minimumRestMinutes: number;
+    requireWeeklyHoliday: boolean;
+    weeklyMaxMinutes: number;
+  };
+  exportDirectory: string;
+  publishDirectory: string;
+}
+
 
 export interface AllowancePreviewInput {
   workDate: string;
@@ -956,11 +1082,11 @@ export interface WorkforceBridge {
   listEmployeeAssignments: (
     employeeId: string
   ) => Promise<BridgeResult<EmployeeSiteAssignment[]>>;
-  saveEmployee: (input: EmployeeUpsertInput) => Promise<BridgeResult<EmployeeRecord>>;
+  saveEmployee: (input: EmployeeUpsertInput) => Promise<BridgeResult<EmployeeSaveResult>>;
   deleteEmployee: (input: EmployeeDeleteInput) => Promise<BridgeResult<EmployeeRecord>>;
   saveEmployeeWageRate: (
     input: EmployeeWageRateInput
-  ) => Promise<BridgeResult<WageRateRecord>>;
+  ) => Promise<BridgeResult<EmployeeWageRateSaveResult>>;
   closeEmployeeWageRate: (
     input: EmployeeWageRateCloseInput
   ) => Promise<BridgeResult<WageRateRecord>>;
@@ -982,6 +1108,69 @@ export interface WorkforceBridge {
   listSites: () => Promise<BridgeResult<SiteRecord[]>>;
   saveSite: (input: SiteUpsertInput) => Promise<BridgeResult<SiteRecord>>;
   deleteSite: (input: SiteDeleteInput) => Promise<BridgeResult<SiteRecord>>;
+}
+
+
+export interface PolicyHistoryListInput {
+  kind: PolicyKind;
+  view?: "revisions" | "events";
+  revisionId?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface PolicyHistoryListResult {
+  kind: PolicyKind;
+  currentRevision: ActivePolicyProjection | null;
+  nextScheduledRevision: ActivePolicyProjection | null;
+  timeline: ActivePolicyProjection[];
+  revisions: PolicyRevisionRecord[];
+  events: PolicyEventRecord[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  registryConfigFingerprint: string;
+}
+
+export interface PolicyChangePreviewInput {
+  action: "add" | "correct" | "cancel";
+  kind: PolicyKind;
+  ruleKey?: PolicyRuleKey;
+  effectiveFrom?: string;
+  reason: string;
+  targetRevisionId?: string;
+  expectedRegistryConfigFingerprint?: string;
+}
+
+export interface PolicyChangePreviewResult {
+  previewToken: string;
+  expiresAt: string;
+  action: "add" | "correct" | "cancel";
+  kind: PolicyKind;
+  ruleKey?: PolicyRuleKey;
+  effectiveFrom?: string | null;
+  effectiveTo?: string | null;
+  affectedPeriods?: Array<{ from: string | null; to: string | null }>;
+  preservedRelevantApprovedRowCount?: number;
+  affectedPendingFileCount: number;
+  affectedPendingRowCount: number;
+  preservedApprovedRowCount: number;
+  impactSummary: string;
+  registryConfigFingerprint: string;
+}
+
+export interface PolicyChangeApplyInput {
+  previewToken: string;
+}
+
+export interface PolicyChangeApplyResult {
+  success: boolean;
+  kind: PolicyKind;
+  action: "add" | "correct" | "cancel";
+  revisionId: string;
+  versionNumber: number;
+  affectedPendingFileCount: number;
+  message: string;
 }
 
 export interface OperationsBridge {
@@ -1073,6 +1262,9 @@ export interface OperationsBridge {
   listDocumentLayoutHistory: (
     key: DocumentLayoutKey
   ) => Promise<BridgeResult<DocumentLayoutHistoryRecord[]>>;
+  listPatternPresets: () => Promise<BridgeResult<PatternPresetRecord[]>>;
+  savePatternPreset: (input: PatternPresetSaveInput) => Promise<BridgeResult<PatternPresetRecord>>;
+  deletePatternPreset: (input: PatternPresetDeleteInput) => Promise<BridgeResult<void>>;
   listShiftPatterns: (
     siteId?: string
   ) => Promise<BridgeResult<ShiftPatternRecord[]>>;
@@ -1102,8 +1294,20 @@ export interface OperationsBridge {
   ) => Promise<BridgeResult<SchedulePlanExportRecord[]>>;
   publishSchedulePlanExport: (
     exportId: string
-  ) => Promise<BridgeResult<SchedulePlanExportRecord | null>>;
+  ) => Promise<BridgeResult<SchedulePlanExportRecord | null>>;  getSchedulePreparationContext: (
+    year: number
+  ) => Promise<BridgeResult<SchedulePreparationContext>>;
+  listPolicyHistory: (
+    input: PolicyHistoryListInput
+  ) => Promise<BridgeResult<PolicyHistoryListResult>>;
+  previewPolicyChange: (
+    input: PolicyChangePreviewInput
+  ) => Promise<BridgeResult<PolicyChangePreviewResult>>;
+  applyPolicyChange: (
+    input: PolicyChangeApplyInput
+  ) => Promise<BridgeResult<PolicyChangeApplyResult>>;
 }
+
 
 export interface AllowanceBridge {
   previewCalculation: (
@@ -1167,7 +1371,7 @@ export interface PerformanceBridge {
   ) => Promise<BridgeResult<PerformanceFileDetail>>;
   returnApprovedFileToPending: (
     input: PerformanceReapprovalFinalizeInput
-  ) => Promise<BridgeResult<PerformanceFileDetail>>;
+  ) => Promise<BridgeResult<PerformanceReturnToPendingResult>>;
   rejectPendingFile: (
     input: PerformanceRejectionInput
   ) => Promise<BridgeResult<PerformanceApprovalRecord>>;

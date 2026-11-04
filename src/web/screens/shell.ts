@@ -6,6 +6,10 @@ import { AccessHistoryScreen } from "./access-history";
 import { WorkforceScreen } from "./workforce";
 import { OperationsScreen } from "./operations";
 import { SitesScreen } from "./sites";
+import { ScheduleScreen } from "./schedule";
+import { PerformanceScreen } from "./performance";
+import { AllowanceScreen } from "./allowance";
+import { DashboardScreen } from "./dashboard";
 import { showConfirm, showNotice } from "./operations-ui";
 
 export interface ShellScreenOptions {
@@ -33,8 +37,9 @@ const MENU_ITEMS: NavMenuItem[] = [
   { id: "schedule-status", label: "근무 현황", icon: "dashboard", group: "ops" },
   { id: "schedule-adjust", label: "근무표 조정", icon: "edit_calendar", group: "ops" },
   // 정산
-  { id: "allowance-calc", label: "수당 계산", icon: "calculate", group: "settle" },
+  { id: "allowance-calc", label: "수당 관리", icon: "calculate", group: "settle" },
   { id: "proposal-export", label: "품의서 출력", icon: "description", group: "settle" },
+  { id: "dashboard", label: "대시보드", icon: "monitoring", group: "settle" },
   // 관리 (admin only)
   { id: "operations", label: "운영 관리", icon: "settings", group: "admin", adminOnly: true },
   { id: "org-mgmt", label: "조직 관리", icon: "corporate_fare", group: "admin", adminOnly: true },
@@ -56,6 +61,10 @@ export class ShellScreen {
   private workforceScreen: WorkforceScreen | null = null;
   private operationsScreen: OperationsScreen | null = null;
   private sitesScreen: SitesScreen | null = null;
+  private scheduleScreen: ScheduleScreen | null = null;
+  private performanceScreen: PerformanceScreen | null = null;
+  private allowanceScreen: AllowanceScreen | null = null;
+  private dashboardScreen: DashboardScreen | null = null;
   private syncObserver: MutationObserver | null = null;
 
   constructor(options: ShellScreenOptions) {
@@ -125,6 +134,7 @@ export class ShellScreen {
   }
 
   public destroy(): void {
+    this.dashboardScreen?.destroy(); this.dashboardScreen = null;
     if (this.syncObserver) {
       this.syncObserver.disconnect();
       this.syncObserver = null;
@@ -151,6 +161,18 @@ export class ShellScreen {
       this.sitesScreen.destroy();
       this.sitesScreen = null;
     }
+    if (this.scheduleScreen) {
+      this.scheduleScreen.destroy();
+      this.scheduleScreen = null;
+    }
+    if (this.performanceScreen) {
+      this.performanceScreen.destroy();
+      this.performanceScreen = null;
+    }
+    if (this.allowanceScreen) {
+      this.allowanceScreen.destroy();
+      this.allowanceScreen = null;
+    }
     if (this.statusBar) {
       this.statusBar.destroy();
       this.statusBar = null;
@@ -159,6 +181,14 @@ export class ShellScreen {
   }
 
   private navigateWithDirtyCheck(onNavigate: () => void): void {
+    if (this.dashboardScreen?.isBusy()) { showNotice("작업 진행 중", "대시보드 파일을 저장하고 있습니다. 완료 후 이동해 주세요.", "warning"); return; }
+    if (this.scheduleScreen && this.scheduleScreen.isBusy()) {
+      showNotice(
+        "작업 진행 중",
+        "근무표 처리 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.",
+      );
+      return;
+    }
     if (this.sitesScreen && this.sitesScreen.isBusy()) {
       showNotice(
         "작업 진행 중",
@@ -167,6 +197,7 @@ export class ShellScreen {
       );
       return;
     }
+    if (this.allowanceScreen && this.allowanceScreen.isBusy()) { showNotice("작업 진행 중", "수당 처리 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.", "warning"); return; }
     if (this.sitesScreen && this.sitesScreen.isDirty()) {
       showConfirm({
         title: "저장되지 않은 변경사항",
@@ -344,10 +375,15 @@ export class ShellScreen {
           this.navigateWithDirtyCheck(() => {
             if (
               item.id === "sites" ||
+              item.id === "schedule-create" ||
+              item.id === "schedule-status" ||
               item.id === "access-history" ||
               item.id === "workforce" ||
               item.id === "operations" ||
-              item.id === "user-mgmt"
+              item.id === "user-mgmt" ||
+              item.id === "allowance-calc" ||
+              item.id === "proposal-export"
+              || item.id === "dashboard"
             ) {
               this.noticeMessage = "";
             } else {
@@ -421,7 +457,8 @@ export class ShellScreen {
     logoutBtn.textContent = "로그아웃";
     logoutBtn.addEventListener("click", () => this.navigateWithDirtyCheck(async () => {
       logoutBtn.disabled = true;
-      this.sitesScreen?.destroy();this.sitesScreen=null;
+      this.dashboardScreen?.destroy(); this.dashboardScreen = null;
+      this.sitesScreen?.destroy();this.sitesScreen=null;this.scheduleScreen?.destroy();this.scheduleScreen=null;this.performanceScreen?.destroy();this.performanceScreen=null;this.allowanceScreen?.destroy();this.allowanceScreen=null;
       if (this.homeScreen) {
         this.homeScreen.destroy();
         this.homeScreen = null;
@@ -520,6 +557,42 @@ export class ShellScreen {
       return main;
     }
 
+        if (this.currentTitle === "실적 가져오기") {
+      this.performanceScreen = new PerformanceScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      void this.performanceScreen.render();
+      void this.performanceScreen.loadData();
+      return main;
+    }
+
+    if (this.currentTitle === "근무표 생성" || this.currentTitle === "근무 현황") {
+      this.scheduleScreen = new ScheduleScreen({
+        container: main,
+        session: this.session,
+        initialTab: this.currentTitle === "근무 현황" ? "history" : "calendar",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      void this.scheduleScreen.render();
+      void this.scheduleScreen.loadData();
+      return main;
+    }
     if (this.currentTitle === "근무지 관리") {
       this.sitesScreen = new SitesScreen({
         container: main,
@@ -562,7 +635,7 @@ export class ShellScreen {
         },
         onNavigatePerformance: () => {
           this.currentTitle = "실적 가져오기";
-          this.noticeMessage = "화면 준비 중 — '실적 가져오기' 화면은 다음 구현 단계에서 연결됩니다. (UI-05 이전 준비 상태)";
+          this.noticeMessage = "";
           const navList = this.container.querySelector<HTMLElement>(".nav-list");
           const perfBtn = navList?.querySelector<HTMLButtonElement>('button[data-id="performance-intake"]');
           if (navList && perfBtn) {
@@ -611,6 +684,30 @@ export class ShellScreen {
       return main;
     }
 
+    if (this.currentTitle === "대시보드") {
+      this.dashboardScreen = new DashboardScreen({ container: main, session: this.session, onSessionExpired: () => { this.destroy(); if (this.onSessionExpired) this.onSessionExpired(); else this.onSignOut(); } });
+      void this.dashboardScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "수당 관리" || this.currentTitle === "품의서 출력") {
+      this.allowanceScreen = new AllowanceScreen({
+        container: main,
+        session: this.session,
+        initialTab: this.currentTitle === "품의서 출력" ? "exports" : "results",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        }
+      });
+      void this.allowanceScreen.render();
+      return main;
+    }
+
     if (this.noticeMessage) {
       const banner = document.createElement("div");
       banner.className = "notice-banner";
@@ -638,6 +735,7 @@ export class ShellScreen {
   }
 
   private refreshMain(): void {
+    this.dashboardScreen?.destroy(); this.dashboardScreen = null;
     const titleEl = this.container.querySelector("#header-current-title");
     if (titleEl) {
       titleEl.textContent = this.currentTitle;
@@ -665,6 +763,18 @@ export class ShellScreen {
     if (this.sitesScreen) {
       this.sitesScreen.destroy();
       this.sitesScreen = null;
+    }
+    if (this.scheduleScreen) {
+      this.scheduleScreen.destroy();
+      this.scheduleScreen = null;
+    }
+    if (this.performanceScreen) {
+      this.performanceScreen.destroy();
+      this.performanceScreen = null;
+    }
+    if (this.allowanceScreen) {
+      this.allowanceScreen.destroy();
+      this.allowanceScreen = null;
     }
 
     const oldMain = this.container.querySelector("#main-content");

@@ -29,12 +29,6 @@ export interface SiteListFilter {
   sortOrder?: "asc" | "desc";
 }
 
-export interface SiteGroup {
-  customerName: string;
-  sites: SiteListItem[];
-  totalCount: number;
-}
-
 export interface SitePageResult {
   items: SiteListItem[];
   totalCount: number;
@@ -42,7 +36,6 @@ export interface SitePageResult {
   currentPage: number;
   startRange: number;
   endRange: number;
-  groups: SiteGroup[];
 }
 
 export interface SiteKpiSummary {
@@ -197,10 +190,9 @@ export function filterAndPaginateSites(
     return true;
   });
 
-  // 2. 고객사 및 사용자 지정 정렬 (안정 정렬)
+  // 2. 전체 결과에 사용자 지정 정렬 적용 (안정 정렬)
   const sortBy = filter.sortBy || "customer";
   filtered.sort((a, b) => {
-    const groupOrder=a.customerName.localeCompare(b.customerName,"ko-KR"); if(groupOrder) return groupOrder;
     let primary = 0;
     if (sortBy === "name") {
       primary = a.name.localeCompare(b.name, "ko-KR");
@@ -229,30 +221,13 @@ export function filterAndPaginateSites(
   const endIdx = Math.min(startIdx + pageSize, totalCount);
   const pagedItems = filtered.slice(startIdx, endIdx);
 
-  // 3. 전체 필터 결과에 대한 고객사 그룹 빌드
-  const groupMap = new Map<string, SiteListItem[]>();
-  for (const item of filtered) {
-    const list = groupMap.get(item.customerName) ?? [];
-    list.push(item);
-    groupMap.set(item.customerName, list);
-  }
-
-  const groups: SiteGroup[] = Array.from(groupMap.entries()).map(
-    ([customerName, sites]) => ({
-      customerName,
-      sites,
-      totalCount: sites.length
-    })
-  );
-
   return {
     items: pagedItems,
     totalCount,
     totalPages,
     currentPage,
     startRange: totalCount === 0 ? 0 : startIdx + 1,
-    endRange: endIdx,
-    groups
+    endRange: endIdx
   };
 }
 

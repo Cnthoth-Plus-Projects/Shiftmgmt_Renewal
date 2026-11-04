@@ -13,7 +13,7 @@ describe("app-bridge", () => {
     expect(original).toEqual([1, undefined, "a", undefined, undefined]);
   });
 
-  it("exposes exactly 107 methods mapped to their contract channels (R8)", async () => {
+  it("exposes exactly 114 methods mapped to their contract channels (R8)", async () => {
     const calledUrls: string[] = [];
     const fakeFetch = vi.fn(async (url: string | URL | Request) => {
       const urlStr = String(url);
@@ -26,14 +26,18 @@ describe("app-bridge", () => {
 
     const bridge = createBrowserAppBridge(fakeFetch);
 
-    expect(Object.keys(bridge)).toHaveLength(107);
+    expect(Object.keys(bridge)).toHaveLength(114);
 
+    expect(typeof bridge.getSchedulePreparationContext).toBe("function");
     expect(typeof bridge.listDocumentLayouts).toBe("function");
     expect(typeof bridge.getDocumentLayout).toBe("function");
     expect(typeof bridge.saveDocumentLayout).toBe("function");
     expect(typeof bridge.resetDocumentLayout).toBe("function");
     expect(typeof bridge.previewDocumentLayout).toBe("function");
     expect(typeof bridge.listDocumentLayoutHistory).toBe("function");
+    expect(typeof bridge.listPolicyHistory).toBe("function");
+    expect(typeof bridge.previewPolicyChange).toBe("function");
+    expect(typeof bridge.applyPolicyChange).toBe("function");
 
     const rawBridge = bridge as Record<string, unknown>;
     expect(rawBridge.listDocumentTemplateVersions).toBeUndefined();
@@ -50,7 +54,7 @@ describe("app-bridge", () => {
       expect(calledUrls).toContain(`/api/${contract.channel}`);
     }
 
-    expect(calledUrls).toHaveLength(107);
+    expect(calledUrls).toHaveLength(114);
   });
 
   it("handles network failure and returns standard NETWORK_ERROR (N10)", async () => {

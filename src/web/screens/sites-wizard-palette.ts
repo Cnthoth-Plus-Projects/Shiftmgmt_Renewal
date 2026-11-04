@@ -1,7 +1,9 @@
 // sites-wizard-palette.ts — 마법사 1-B 하위 컴포넌트: 근무/휴무 유형 팔레트 편집
+import { getDutyCodes } from "./sites-pattern-model";
 import { showNotice } from "./operations-ui";
 import type { ShiftPatternDutyTypeInput } from "../../shared/bridge/contracts";
-import { calculateAutomaticBreakMinutes } from "../../shared/domain/calculation";
+import { calculateAutomaticBreakMinutes, calculateDurationMinutes } from "../../shared/domain/calculation";
+import { WorkforceDialog } from "./workforce-dialog";
 
 export interface SitesWizardPaletteOptions {
   container: HTMLElement;
@@ -15,6 +17,9 @@ export class SitesWizardPalette {
   private dutyTypes: ShiftPatternDutyTypeInput[];
   private isHolidaySplit: boolean;
   private onChange: (updatedDutyTypes: ShiftPatternDutyTypeInput[]) => void;
+  private dialog = new WorkforceDialog();
+  private editingIdx: number | null = null;
+  private editMount: HTMLElement | null = null;
 
   constructor(options: SitesWizardPaletteOptions) {
     this.container = options.container;
@@ -29,145 +34,38 @@ export class SitesWizardPalette {
   }
 
   public render(): void {
-    this.container.innerHTML = "";
+    if (this.editingIdx === null) { this.renderSummary(); return; }
+    const target = this.editMount!;
+    const active = document.activeElement as HTMLInputElement | null;
+    const focusClass = active && target.contains(active) ? active.classList[1] : null;
+    target.replaceChildren();
 
-    const wrapper = document.createElement("div");
-    wrapper.className = "sites-palette-container";
-    wrapper.style.display = "flex";
-    wrapper.style.flexDirection = "column";
-    wrapper.style.gap = "12px";
+    const duty = this.dutyTypes[this.editingIdx!], idx = this.editingIdx!;
+    const wrapper = document.createElement("div"); wrapper.className = "sites-duty-time-form";
+    const times = (holiday: boolean) => {
+      const prefix = holiday ? "duty-h-" : "duty-";
+      const start = holiday ? duty.holidayStartTime ?? duty.startTime : duty.startTime;
+      const end = holiday ? duty.holidayEndTime ?? duty.endTime : duty.endTime;
+      const rest = holiday ? duty.holidayBreakMinutes ?? duty.breakMinutes : duty.breakMinutes;
+      const net=start&&end ? calculateDurationMinutes({startTime:start,endTime:end,breakMinutes:rest??0}) : 0;
+      return `<section class="sites-time-card ${holiday ? "holiday" : ""}"><h3>${holiday ? "휴일 기본 시간" : "기본 근무 시간"}</h3><div class="sites-time-fields">
+        <label>시작 시간<input type="time" class="sites-form-input ${prefix}start ${holiday ? "sites-holiday-time-input" : ""}" data-idx="${idx}" value="${start || "09:00"}" required /></label>
+        <label>종료 시간<input type="time" class="sites-form-input ${prefix}end ${holiday ? "sites-holiday-time-input" : ""}" data-idx="${idx}" value="${end || "18:00"}" required /></label>
+        <label>휴게 (분)<input type="number" class="sites-form-input ${prefix}break ${holiday ? "sites-holiday-time-input" : ""}" data-idx="${idx}" min="0" max="1440" step="1" value="${rest??60}" /></label></div>
+        <div class="sites-time-summary"><span>실근무 <b>${Math.floor(net/60)}시간 ${net%60}분</b> · 익일 종료 자동 인식</span>${holiday ? "" : `<button type="button" class="btn-secondary btn-auto-break" data-idx="${idx}">휴게 자동 계산</button>`}</div></section>`;
+    };
+    wrapper.innerHTML = `<label class="sites-duty-name-label">근무 유형 이름 <span class="sites-required">*</span><input type="text" class="sites-form-input duty-label" data-idx="${idx}" maxlength="100" value="${this.escape(duty.label)}" placeholder="예: 1근, 2근, 주간, 석간" required /></label>
+      <p class="sites-form-help">이름을 자유롭게 지정하세요. 이름을 바꿔도 기존 패턴의 연결은 유지됩니다.</p>
+      ${duty.kind === "work" ? times(false) + (this.isHolidaySplit ? times(true) : "") : '<p class="sites-form-help">휴무 유형에는 근무·휴게 시간을 적용하지 않습니다.</p>'}
+      <p class="sites-form-help">공휴일·토요일·일요일별 적용 여부와 다른 시간은 ‘휴일 규칙 설정’에서 지정할 수 있습니다.</p>`;
+    target.appendChild(wrapper);
 
-    const header = document.createElement("div");
-    header.style.display = "flex";
-    header.style.justifyContent = "space-between";
-    header.style.alignItems = "center";
-    header.innerHTML = `
-      <div style="font-size:13px; font-weight:bold; color:var(--text, #1F2430);">
-        근무 및 휴무 유형 설정 (근무형 최대 3개, 휴무형 다수 등록 가능)
-      </div>
-      <div style="display:flex; gap:6px;">
-        <button type="button" class="btn-secondary" id="btn-add-work-duty" ${this.dutyTypes.filter(t=>t.kind==="work").length>=3?"disabled":""} style="font-size:11px; height:26px;">+ 근무형 추가</button>
-        <button type="button" class="btn-secondary" id="btn-add-off-duty" style="font-size:11px; height:26px;">+ 휴무형 추가</button>
-      </div>
-    `;
-    wrapper.appendChild(header);
-
-    // 테이블 렌더링
-    const table = document.createElement("table");
-    table.className = "sites-table";
-    table.style.fontSize = "12px";
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th style="width:60px;">구분</th>
-          <th style="width:100px;">유형 이름</th>
-          <th>평일 근무/휴게 시간</th>
-          ${this.isHolidaySplit ? "<th>휴일 근무/휴게 시간</th>" : ""}
-          <th style="width:60px; text-align:center;">관리</th>
-        </tr>
-      </thead>
-    `;
-
-    const tbody = document.createElement("tbody");
-
-    this.dutyTypes.forEach((duty, idx) => {
-      const tr = document.createElement("tr");
-
-      const kindBadge =
-        duty.kind === "work"
-          ? `<span class="sites-palette-chip kind-work" style="background:#EEF1FB; color:#3E56B6; padding:2px 6px; border-radius:4px; font-weight:bold; font-size:11px;">근무</span>`
-          : `<span class="sites-palette-chip kind-off" style="background:#F1F2F4; color:#4B5563; padding:2px 6px; border-radius:4px; font-weight:bold; font-size:11px;">휴무</span>`;
-
-      let timeInputsHtml = "";
-      if (duty.kind === "work") {
-        timeInputsHtml = `
-          <div style="display:flex; align-items:center; gap:6px;">
-            <input type="time" class="sites-form-input duty-start" data-idx="${idx}" style="width:85px; height:26px; padding:2px 4px;" value="${duty.startTime || "09:00"}" />
-            <span>~</span>
-            <input type="time" class="sites-form-input duty-end" data-idx="${idx}" style="width:85px; height:26px; padding:2px 4px;" value="${duty.endTime || "18:00"}" />
-            <span style="margin-left:6px;">휴게:</span>
-            <input type="number" class="sites-form-input duty-break" data-idx="${idx}" min="0" step="30" style="width:55px; height:26px; padding:2px 4px;" value="${duty.breakMinutes ?? 60}" />
-            <span>분</span>
-            <button type="button" class="btn-secondary btn-auto-break" data-idx="${idx}" style="font-size:10px; height:24px; padding:0 6px;">자동</button>
-          </div>
-        `;
-      } else {
-        timeInputsHtml = `<span style="color:var(--text-sub, #4B5563); font-size:11px;">(휴무일 — 시간/휴게 없음)</span>`;
-      }
-
-      let holidayInputsHtml = "";
-      if (this.isHolidaySplit) {
-        if (duty.kind === "work") {
-          holidayInputsHtml = `
-            <td>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <input type="time" class="sites-form-input duty-h-start sites-holiday-time-input" data-idx="${idx}" style="width:85px; height:26px; padding:2px 4px;" value="${duty.holidayStartTime || duty.startTime || "09:00"}" />
-                <span>~</span>
-                <input type="time" class="sites-form-input duty-h-end sites-holiday-time-input" data-idx="${idx}" style="width:85px; height:26px; padding:2px 4px;" value="${duty.holidayEndTime || duty.endTime || "18:00"}" />
-                <span style="margin-left:6px;">휴게:</span>
-                <input type="number" class="sites-form-input duty-h-break sites-holiday-time-input" data-idx="${idx}" min="0" step="30" style="width:55px; height:26px; padding:2px 4px;" value="${duty.holidayBreakMinutes ?? duty.breakMinutes ?? 60}" />
-                <span>분</span>
-              </div>
-            </td>
-          `;
-        } else {
-          holidayInputsHtml = `<td><span style="color:var(--text-sub, #4B5563); font-size:11px;">-</span></td>`;
-        }
-      }
-
-      tr.innerHTML = `
-        <td>${kindBadge}</td>
-        <td>
-          <input type="text" class="sites-form-input duty-label" data-idx="${idx}" style="width:90px; height:26px; padding:2px 6px;" value="${this.escape(duty.label)}" />
-        </td>
-        <td>${timeInputsHtml}</td>
-        ${holidayInputsHtml}
-        <td style="text-align:center;">
-          <button type="button" class="btn-secondary btn-del-duty" data-idx="${idx}" style="font-size:11px; height:24px; color:#C0392B; padding:0 6px;">삭제</button>
-        </td>
-      `;
-
-      tbody.appendChild(tr);
+    wrapper.querySelectorAll<HTMLInputElement>("input[data-idx]").forEach(input => {
+      const duty = this.dutyTypes[Number(input.dataset.idx)];
+      const field = input.classList.contains("duty-label") ? "이름" : input.classList.contains("duty-h-start") ? "휴일 시작시간" : input.classList.contains("duty-h-end") ? "휴일 종료시간" : input.classList.contains("duty-h-break") ? "휴일 휴게분" : input.classList.contains("duty-start") ? "평일 시작시간" : input.classList.contains("duty-end") ? "평일 종료시간" : "평일 휴게분";
+      input.setAttribute("aria-label", `${duty?.label || "근무 유형"} ${field}`);
     });
-
-    table.appendChild(tbody);
-    wrapper.appendChild(table);
-    this.container.appendChild(wrapper);
-
     // 이벤트 리스너
-    wrapper.querySelector("#btn-add-work-duty")?.addEventListener("click", () => {
-      const workCount = this.dutyTypes.filter((d) => d.kind === "work").length;
-      if (workCount >= 3) {
-        showNotice("근무 유형 확인","근무형은 최대 3개까지만 등록할 수 있습니다.","warning");
-        return;
-      }
-      this.dutyTypes.push({
-        id: `duty-work-${crypto.randomUUID()}`,
-        kind: "work",
-        label: `근무 ${workCount + 1}`,
-        sortOrder: this.dutyTypes.length,
-        startTime: "09:00",
-        endTime: "18:00",
-        breakMinutes: 60,
-        isBreakDirty: false
-      });
-      this.notifyChange();
-      this.render();
-    });
-
-    wrapper.querySelector("#btn-add-off-duty")?.addEventListener("click", () => {
-      this.dutyTypes.push({
-        id: `duty-off-${crypto.randomUUID()}`,
-        kind: "off",
-        label: `휴무 ${this.dutyTypes.filter((d) => d.kind === "off").length + 1}`,
-        sortOrder: this.dutyTypes.length,
-        breakMinutes: 0
-      });
-      this.notifyChange();
-      this.render();
-    });
-
-    // 라벨 변경
     wrapper.querySelectorAll<HTMLInputElement>(".duty-label").forEach((el) => {
       el.addEventListener("input", (e) => {
         const idx = parseInt((e.target as HTMLInputElement).dataset.idx || "0", 10);
@@ -230,7 +128,7 @@ export class SitesWizardPalette {
       el.addEventListener("change", (e) => {
         const idx = parseInt((e.target as HTMLInputElement).dataset.idx || "0", 10);
         this.dutyTypes[idx].holidayStartTime = (e.target as HTMLInputElement).value;
-        this.notifyChange();
+        this.notifyChange(); this.render();
       });
     });
 
@@ -238,7 +136,7 @@ export class SitesWizardPalette {
       el.addEventListener("change", (e) => {
         const idx = parseInt((e.target as HTMLInputElement).dataset.idx || "0", 10);
         this.dutyTypes[idx].holidayEndTime = (e.target as HTMLInputElement).value;
-        this.notifyChange();
+        this.notifyChange(); this.render();
       });
     });
 
@@ -265,6 +163,51 @@ export class SitesWizardPalette {
         this.render();
       });
     });
+    if (focusClass) wrapper.querySelector<HTMLInputElement>(`.${CSS.escape(focusClass)}`)?.focus();
+  }
+
+  public destroy(): void { this.dialog.close(); }
+
+  private renderSummary(): void {
+    this.container.replaceChildren();
+    const box = document.createElement("div"); box.className = "sites-palette-container sites-palette-summary";
+    const workCount = this.dutyTypes.filter(d => d.kind === "work").length;
+    const count = document.createElement("div"); count.className = "sites-palette-count"; count.textContent = `근무 ${workCount}/3 · 휴무 ${this.dutyTypes.length - workCount}`; box.append(count);
+    const table = document.createElement("table"); table.innerHTML = "<thead><tr><th>유형</th><th>시간</th><th>휴게</th><th>관리</th></tr></thead>";
+    const rows = document.createElement("tbody"); const codes = getDutyCodes(this.dutyTypes);
+    for (const [idx, duty] of this.dutyTypes.entries()) {
+      const row = document.createElement("tr"); row.dataset.duty = codes[duty.id] || "O";
+      const name = document.createElement("td"); const badge = document.createElement("span"); badge.className = `sites-summary-duty duty-${row.dataset.duty}`; badge.textContent = duty.label; name.append(badge);
+      const times = document.createElement("td"), breaks = document.createElement("td");
+      if (duty.kind === "work") {
+        times.textContent = `${duty.startTime || "—"} – ${duty.endTime || "—"}`; breaks.textContent = `${duty.breakMinutes ?? 0}분`;
+        if (this.isHolidaySplit) {
+          times.prepend(document.createTextNode("평일 "));
+          const holiday = document.createElement("span"); holiday.className = "sites-summary-holiday"; holiday.textContent = `휴일 ${duty.holidayStartTime || duty.startTime || "—"} – ${duty.holidayEndTime || duty.endTime || "—"}`; times.append(holiday);
+          const holidayBreak = document.createElement("span"); holidayBreak.className = "sites-summary-holiday"; holidayBreak.textContent = `${duty.holidayBreakMinutes ?? duty.breakMinutes ?? 0}분`; breaks.append(holidayBreak);
+        }
+      } else { times.textContent = "근무 없음"; breaks.textContent = "—"; }
+      const actions = document.createElement("td");
+      const edit = document.createElement("button"); edit.type = "button"; edit.className = "btn-secondary btn-edit-duty"; edit.dataset.idx = String(idx); edit.textContent = "수정"; edit.setAttribute("aria-label", `${duty.label} 수정`); edit.addEventListener("click", () => this.openEditor(idx));
+      const remove = document.createElement("button"); remove.type = "button"; remove.className = "btn-secondary btn-del-duty"; remove.dataset.idx = String(idx); remove.textContent = "삭제"; remove.setAttribute("aria-label", `${duty.label} 삭제`); remove.addEventListener("click", () => { if (this.dutyTypes.length <= 1) { showNotice("유형 확인", "최소 1개 이상의 유형이 필요합니다.", "warning"); return; } this.dutyTypes.splice(idx, 1); this.notifyChange(); this.render(); });
+      actions.append(edit, remove); row.append(name, times, breaks, actions); rows.append(row);
+    }
+    table.append(rows); box.append(table);
+    const add = (kind: "work" | "off", text: string, id: string) => {
+      const button = document.createElement("button"); button.type = "button"; button.id = id; button.className = "btn-secondary"; button.textContent = text; button.disabled = kind === "work" && workCount >= 3;
+      button.addEventListener("click", () => { this.dutyTypes.push({ id: `duty-${kind}-${crypto.randomUUID()}`, kind, label: kind === "work" ? `근무 ${workCount + 1}` : `휴무 ${this.dutyTypes.filter(d => d.kind === "off").length + 1}`, sortOrder: this.dutyTypes.length, ...(kind === "work" ? { startTime: "09:00", endTime: "18:00", breakMinutes: 60, isBreakDirty: false } : { breakMinutes: 0 }) }); this.notifyChange(); this.render(); }); return button;
+    };
+    const footer = document.createElement("div"); footer.className = "sites-summary-add"; footer.append(add("work", "+ 근무 유형", "btn-add-work-duty"), add("off", "+ 휴무 유형", "btn-add-off-duty")); box.append(footer);
+    const help = document.createElement("p"); help.className = "sites-summary-help"; help.textContent = "수정에서 이름·시간·휴게를 편집합니다. 최종 저장 전까지는 초안에만 반영됩니다."; box.append(help); this.container.append(box);
+  }
+
+  private openEditor(idx: number): void {
+    const before = structuredClone(this.dutyTypes); let applied = false;
+    this.editingIdx = idx; this.editMount = document.createElement("div"); this.editMount.className = "sites-palette-column sites-duty-editor";
+    this.dialog.open({ id: "sites-duty-editor-modal", title: `${this.dutyTypes[idx].label} 유형 수정`, width: "600px", content: this.editMount, initialFocusSelector: ".duty-label", onClose: () => { if (!applied) this.dutyTypes = before; this.editingIdx = null; this.editMount = null; this.render(); }, buttons: [
+      { id: "btn-duty-cancel", label: "취소", onClick: () => this.dialog.close() },
+      { id: "btn-duty-apply", label: "초안에 적용", variant: "primary", onClick: () => { if(!this.editMount?.querySelector<HTMLInputElement>(".duty-label")?.reportValidity())return;for(const input of Array.from(this.editMount.querySelectorAll<HTMLInputElement>("input")))if(!input.reportValidity())return;applied = true; this.dialog.close(); this.notifyChange(); } }
+    ] }); this.render();
   }
 
   private recalcAutoBreakIfClean(idx: number): void {
@@ -278,12 +221,13 @@ export class SitesWizardPalette {
   }
 
   private notifyChange(): void {
+    if (this.editingIdx !== null) return;
     this.onChange(JSON.parse(JSON.stringify(this.dutyTypes)));
   }
 
   private escape(str: string): string {
     const div = document.createElement("div");
     div.textContent = str;
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g, "&quot;");
   }
 }

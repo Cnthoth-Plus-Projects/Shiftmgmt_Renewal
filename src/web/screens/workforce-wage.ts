@@ -1,6 +1,7 @@
+import { openWageRevisionModal } from "./workforce-wage-revision";
 // 인력 관리 화면: 시급 등록 모달 (E3), 소급/동일일 사전 확인 모달, 시급 종료 모달 및 R08 대기 실적 영향 안내
 import type { EmployeeRecord, WageRateRecord } from "../../shared/domain/model";
-import type { EmployeeWageRateInput } from "../../shared/bridge/contracts";
+import type { EmployeeWageRateInput, EmployeeWageRateSaveResult, WagePendingPerformanceRefresh } from "../../shared/bridge/contracts";
 import {
   getSeoulTodayDateString,
   isValidDateString,
@@ -8,9 +9,31 @@ import {
 } from "./workforce-model";
 import { WorkforceDialog } from "./workforce-dialog";
 
+export const createWagePendingRefreshNotice = (summary?: WagePendingPerformanceRefresh): HTMLElement => {
+  const box = document.createElement("div");
+  box.id = "wage-pending-refresh-result";
+  box.className = "workforce-rate-box wf-flex-col wf-gap-8";
+  const heading = document.createElement("strong");
+  heading.textContent = summary
+    ? `대기 실적 다시 읽기 ${summary.status === "completed" ? "완료" : "일부 미완료"}: ${summary.refreshedFileCount}/${summary.targetFileCount}개 파일 · 대상 ${summary.affectedEntryCount}건`
+    : "대기 실적 자동 반영 결과를 확인하지 못했습니다. 실적 관리에서 다시 읽어 주세요.";
+  box.appendChild(heading);
+  for (const issue of summary?.issues ?? []) {
+    const message = document.createElement("div");
+    message.className = "wf-text-sm wf-text-danger";
+    message.textContent = `${issue.fileName}: ${issue.message}`;
+    box.appendChild(message);
+  }
+  const hint = document.createElement("div");
+  hint.className = "wf-text-xs wf-text-muted";
+  hint.textContent = "시급 저장은 완료되었습니다. 승인된 수당은 유지됩니다. 미완료 파일은 실적 관리에서 원본을 확인하고 다시 읽어 주세요.";
+  box.appendChild(hint);
+  return box;
+};
+
 export interface WorkforceWageOptions {
   dialog: WorkforceDialog;
-  onSaveWageRate: (input: EmployeeWageRateInput) => Promise<{ ok: boolean; record?: WageRateRecord; message?: string }>;
+  onSaveWageRate: (input: EmployeeWageRateInput) => Promise<{ ok: boolean; record?: EmployeeWageRateSaveResult; message?: string }>;
   onCloseWageRate?: (input: { employeeId: string; wageRateId: string; effectiveTo: string }) => Promise<{ ok: boolean; message?: string }>;
   onFetchPendingImpact: (employeeCode: string, effectiveFrom: string, effectiveTo?: string) => Promise<{ ok: boolean; count?: number; message?: string }>;
   onNavigatePerformance: () => void;
@@ -19,7 +42,7 @@ export interface WorkforceWageOptions {
 
 export class WorkforceWage {
   private dialog: WorkforceDialog;
-  private onSaveWageRate: (input: EmployeeWageRateInput) => Promise<{ ok: boolean; record?: WageRateRecord; message?: string }>;
+  private onSaveWageRate: (input: EmployeeWageRateInput) => Promise<{ ok: boolean; record?: EmployeeWageRateSaveResult; message?: string }>;
   private onCloseWageRate?: (input: { employeeId: string; wageRateId: string; effectiveTo: string }) => Promise<{ ok: boolean; message?: string }>;
   private onFetchPendingImpact: (employeeCode: string, effectiveFrom: string, effectiveTo?: string) => Promise<{ ok: boolean; count?: number; message?: string }>;
   private onNavigatePerformance: () => void;
@@ -36,12 +59,17 @@ export class WorkforceWage {
     this.todayStr = getSeoulTodayDateString();
   }
 
+  public openRevisionModal(employee: EmployeeRecord, rate: WageRateRecord): void {
+    openWageRevisionModal({ dialog: this.dialog, save: this.onSaveWageRate, refreshNotice: createWagePendingRefreshNotice, onSuccess: this.onSuccess }, employee, rate);
+  }
+
   /** E3 시급 등록 모달 열기 */
   public openWageModal(
     emp: EmployeeRecord,
     existingRates: WageRateRecord[],
     triggerBtn?: HTMLElement | null
   ): void {
+    existingRates = existingRates.filter(r => !r.invalidation);
     const container = document.createElement("div");
     container.className = "workforce-form-container wf-flex-col wf-gap-14";
 
@@ -55,7 +83,7 @@ export class WorkforceWage {
       <!-- 동일일 덮어쓰기 경고 배너 -->
       <div class="workforce-warning-banner wf-hidden" id="banner-overwrite-warn">
         <span class="material-symbols-outlined wf-icon-18" aria-hidden="true">warning</span>
-        <div><strong>덮어쓰기 안내:</strong> 같은 시작일의 기존 시급이 존재합니다. 저장 시 이전 금액과 사유는 미보관 상태로 덮어쓰기됩니다.</div>
+        <div><strong>같은 적용일 정정 안내:</strong> 같은 시작일의 기존 시급이 존재합니다. 이전 금액과 사유는 정정 이력에 보관하고 새 값으로 갱신합니다.</div>
       </div>
 
       <div class="workforce-form-error wf-hidden" id="e3-global-error"></div>
@@ -218,12 +246,12 @@ export class WorkforceWage {
 
     const textDiv = document.createElement("div");
     const strong = document.createElement("strong");
-    strong.textContent = isOverwrite ? "동일일 시급 덮어쓰기 주의: " : "소급 시급 등록 주의: ";
+    strong.textContent = isOverwrite ? "같은 적용일 시급 정정: " : "소급 시급 등록 주의: ";
     textDiv.appendChild(strong);
 
     let desc = "";
     if (isOverwrite) {
-      desc = `적용 시작일(${payload.effectiveFrom})이 같은 기존 시급이 존재합니다. 등록 시 이전 금액 및 사유는 별도 보관되지 않고 즉시 덮어쓰기됩니다.`;
+      desc = `적용 시작일(${payload.effectiveFrom})이 같은 기존 시급이 존재합니다. 이전 금액·사유와 변경자·변경 시각을 정정 이력에 보관하고 새 값으로 갱신합니다. 기존 승인 결과는 변경되지 않습니다.`;
     } else {
       desc = `오늘 이전 날짜(${payload.effectiveFrom})로 시급을 등록합니다. 과거 대기 실적 재계산 여부를 확인해 주세요.`;
     }
@@ -277,7 +305,7 @@ export class WorkforceWage {
     errBanner?: HTMLElement
   ): Promise<void> {
     const dialogToken = this.dialog.captureToken();
-    this.dialog.setProcessing(true, "시급 등록 중...", dialogToken);
+    this.dialog.setProcessing(true, "시급 저장·대기 실적 다시 읽는 중...", dialogToken);
     try {
       const res = await this.onSaveWageRate(payload);
             if (!this.dialog.isCurrent(dialogToken)) return;
@@ -323,7 +351,7 @@ export class WorkforceWage {
         <strong>어떤 경우에 사용하나요?</strong>
         <p>퇴사하거나 해당 업무가 끝나 이 시급을 더 이상 적용하지 않을 때 사용합니다. 선택한 날짜까지는 이 시급이 적용됩니다.</p>
         <strong>금액 변경·갱신이 목적이라면</strong>
-        <p>이 창을 닫고 <b>시급 등록</b>에서 새 금액과 적용 시작일을 입력하세요. 기존 시급을 먼저 종료할 필요 없이 적용 기간이 자동으로 정리됩니다. 시작일을 기존과 같게 입력하면 이전 금액과 사유가 덮어써지므로 확인 안내를 꼭 읽어주세요.</p>
+        <p>이 창을 닫고 <b>시급 등록</b>에서 새 금액과 적용 시작일을 입력하세요. 기존 시급을 먼저 종료할 필요 없이 적용 기간이 자동으로 정리됩니다. 시작일이 기존과 같으면 이전 금액과 사유를 정정 이력에 보관한 뒤 새 값으로 갱신합니다.</p>
         <strong>퇴사·업무 배정도 함께 정리하려면</strong>
         <p>이 버튼은 선택한 시급의 적용 기간만 끝냅니다. 퇴사는 <b>기본정보 수정 → 재직 상태 ‘퇴사’ → 퇴사일</b>에서, 업무·근무지 배정 해제는 <b>근무지 및 조 배정 → 배정 해제</b>에서 각각 처리해 주세요.</p>
         <p>기존에 승인된 수당은 변경되지 않습니다. 이미 가져온 대기 실적에 시급 변경을 반영하려면 실적 관리에서 해당 파일을 다시 읽어야 합니다.</p>
@@ -411,7 +439,7 @@ export class WorkforceWage {
   }
 
   /** R08 시급 저장 후 영향 대기 실적 안내 모달 오픈 (UI01-D02 DOM 안전 렌더링) */
-  public openImpactModal(emp: EmployeeRecord, record: WageRateRecord): void {
+  public openImpactModal(emp: EmployeeRecord, record: EmployeeWageRateSaveResult): void {
     const box = document.createElement("div");
     box.className = "wf-flex-col wf-gap-14";
 
@@ -436,6 +464,7 @@ export class WorkforceWage {
     banner.appendChild(icon);
     banner.appendChild(textDiv);
     box.appendChild(banner);
+    box.appendChild(createWagePendingRefreshNotice(record.pendingPerformanceRefresh));
 
     // 대기 실적 건수 표시 영역
     const impactResultArea = document.createElement("div");
@@ -446,8 +475,8 @@ export class WorkforceWage {
     const descDiv = document.createElement("div");
     descDiv.className = "wf-text-sm";
     descDiv.innerHTML = `
-      * 변경된 시급은 기존 대기 실적에 자동 계산되지 않으며, 실적 관리에서 파일을 다시 읽어야 반영됩니다.<br>
-      * [실적 관리로 이동] 버튼은 실적 관리 화면으로 전환합니다 (현재 버전에서는 준비 상태입니다).
+      * 적용 기간에 해당하는 미승인 대기 실적 파일을 다시 읽었습니다. 위 결과에서 미완료 파일을 확인해 주세요.<br>
+      * [실적 관리로 이동]에서 반영된 시급을 확인한 뒤 승인할 수 있습니다. 승인된 수당은 자동으로 변경하지 않습니다.
     `;
     box.appendChild(descDiv);
 

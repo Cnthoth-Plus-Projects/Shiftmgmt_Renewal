@@ -323,17 +323,19 @@ describe("excel-import gap campaign — 시급 일괄 등록 가드", () => {
 
     expect(site).toBeDefined();
 
-    saveStoredEmployee({
+    const legacyRetired = saveStoredEmployee({
       employeeCode: "GAP-RETIRED",
       name: "은퇴검사",
       rank: "사원",
       employmentType: "정규",
-      status: "retired",
+      status: "active",
       hireDate: "2020-01-01",
       siteId: site!.id,
       shiftGroup: "A조",
       hourlyRate: 12000
     });
+    // Reproduce the original legacy row without a retirement date in this isolated fixture.
+    getSqliteDatabase()!.prepare("UPDATE employees SET status='retired',retire_date=NULL WHERE id=?").run(legacyRetired.id);
     ["GAP-DUP-1", "GAP-DUP-2"].forEach((employeeCode) => {
       saveStoredEmployee({
         employeeCode,

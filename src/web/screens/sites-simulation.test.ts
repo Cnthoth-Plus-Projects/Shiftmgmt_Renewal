@@ -111,3 +111,26 @@ describe("sites-simulation", () => {
     expect(sim.months[0].teamDailyDuty.size).toBe(2);
   });
 });
+
+describe("UI03-D09 full-month calendar", () => {
+  it("retains every June date before a new midmonth setting is effective", () => {
+    const draft = create4Team3ShiftTemplate("site"); draft.effectiveFrom = "2026-06-15";
+    const june = runThreeMonthSimulation(draft, "2026-06").months[0];
+    expect(june.dates).toHaveLength(30); expect(june.dates[0]).toBe("2026-06-01"); expect(june.dates[29]).toBe("2026-06-30");
+    expect(june.items.length).toBeGreaterThan(0); expect(june.items.every(i => i.workDate >= "2026-06-15")).toBe(true);
+    expect(june.appliedPattern?.effectiveFrom).toBe("2026-06-15");
+  });
+  it("keeps leap-month dates even when the actual workforce is empty", () => {
+    const draft = create4Team3ShiftTemplate("site"); draft.effectiveFrom = "2028-02-01";
+    const february = runThreeMonthSimulation(draft, "2028-02", []).months[0];
+    expect(february.dates).toHaveLength(29); expect(february.items).toEqual([]); expect(february.teamDailyDuty.size).toBe(0);
+  });
+  it("reports the actual first-of-month version without changing generated items", () => {
+    const draft = create4Team3ShiftTemplate("site"); draft.patternId = "editing"; draft.effectiveFrom = "2026-06-15";
+    const previous = draftToPatternRecord(create2Team2ShiftTemplate("site")); previous.id = "previous"; previous.effectiveFrom = "2025-01-01";
+    const simulation = runThreeMonthSimulation({ draft, startMonth: "2026-06", existingPatterns: [previous] });
+    expect(simulation.months[0].appliedPattern?.id).toBe("previous"); expect(simulation.months[0].isDraftPattern).toBe(false);
+    expect(simulation.months[1].appliedPattern?.id).toBe("editing"); expect(simulation.months[1].isDraftPattern).toBe(true);
+    expect(simulation.months[0].items).toEqual(buildMonthlyScheduleDraft({ scheduleMonth: "2026-06", pattern: previous, employees: buildVirtualTeamEmployees(previous) }));
+  });
+});

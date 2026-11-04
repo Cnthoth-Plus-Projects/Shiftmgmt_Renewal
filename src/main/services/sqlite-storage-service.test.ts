@@ -59,6 +59,8 @@ describe("sqlite-storage-service", () => {
     expect(tables.map((item) => item.name)).toContain("employee_retirement_history_closures");
     expect(tables.map((item) => item.name)).toContain("employee_employment_period_events");
     expect(tables.map((item) => item.name)).toContain("wage_rate_history");
+    expect(tables.map((item) => item.name)).toContain("policy_revisions");
+    expect(tables.map((item) => item.name)).toContain("policy_events");
 
     const shiftPatternColumns = database!.prepare(`
       PRAGMA table_info(shift_patterns)
@@ -90,6 +92,8 @@ describe("sqlite-storage-service", () => {
 
     expect(employeeColumns.map((item) => item.name)).toContain("rank");
     expect(performanceEntryColumns.map((item) => item.name)).toContain("employee_rank");
+    expect(performanceEntryColumns.map((item) => item.name)).toContain("policy_snapshot_json");
+    expect(performanceFileColumns.map((item) => item.name)).toContain("policy_context_fingerprint");
     expect(allowanceCalculationColumns.map((item) => item.name)).toContain("employee_rank");
     expect(shiftPatternColumns.map((item) => item.name)).toContain("team_count");
     expect(shiftPatternColumns.map((item) => item.name)).toContain("pattern_start_date");

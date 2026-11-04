@@ -1131,3 +1131,42 @@ describe("monthly-schedule-draft", () => {
     expect(day1A?.breakMinutes).toBe(90);
   });
 });
+
+describe("holiday generation integration",()=>{
+  const employees=[createEmployee({id:"holiday-emp",employeeCode:"H01",name:"휴일 시험",currentShiftGroup:"A조"})];
+  const steps=["D","E","N"].map((dutyCode,i)=>({id:dutyCode,dutyCode,stepIndex:i,startTime:["07:00","15:00","23:00"][i],endTime:["15:00","23:00","07:00"][i],breakMinutes:30}));
+  it("generates weekday3 and holiday2 shifts with longer times; Monday base phase never pauses",()=>{
+    const pattern=createPattern(steps);pattern.holidayPolicy={version:1,rules:{saturday:{mode:"separate",excludedDutyCodes:[],startDate:"2026-04-01",teamPatterns:{"A조":["D","N"]},times:{N:{startTime:"19:00",endTime:"08:00",breakMinutes:60}}},sunday:{mode:"off",excludedDutyCodes:[]}}};
+    const items=buildMonthlyScheduleDraft({pattern,employees,scheduleMonth:"2026-04"});
+    expect(items.find(i=>i.workDate==="2026-04-04")).toMatchObject({dutyCode:"N",startTime:"19:00",endTime:"08:00",breakMinutes:60});
+    expect(items.find(i=>i.workDate==="2026-04-05")).toMatchObject({dutyCode:"O",startTime:undefined,breakMinutes:0});
+    expect(items.find(i=>i.workDate==="2026-04-06")).toMatchObject({dutyCode:"N",startTime:"23:00"});
+  });
+  it("keeps empty-policy generation equal to legacy split including public holidays",()=>{
+    const pattern=createPattern(steps);pattern.cycles[0].holidayTimeMode="split";pattern.cycles[0].steps.forEach(s=>s.holidayEndTime="09:00");
+    const input={pattern,employees,scheduleMonth:"2026-04",publicHolidayDates:new Set(["2026-04-01"])};
+    const legacy=buildMonthlyScheduleDraft(input);pattern.holidayPolicy={version:1,rules:{}};expect(buildMonthlyScheduleDraft(input)).toEqual(legacy);
+  });
+  it("resolves holiday-only third duty timings from the catalog and custom legacy labels once",()=>{
+    const pattern=createPattern([steps[0],steps[2]]);pattern.dutyTypes=steps.map((s,i)=>({id:["duty-day","duty-evening","duty-night"][i],kind:"work",label:`${i+1}근`,sortOrder:i,startTime:s.startTime,endTime:s.endTime,breakMinutes:30}));
+    pattern.holidayPolicy={version:1,rules:{public:{mode:"separate",excludedDutyCodes:[],startDate:"2026-04-01",teamPatterns:{"A조":["E"]}}}};
+    expect(buildMonthlyScheduleDraft({pattern,employees,scheduleMonth:"2026-04",publicHolidayDates:new Set(["2026-04-01"])}).find(i=>i.workDate==="2026-04-01")).toMatchObject({dutyCode:"E",startTime:"15:00"});
+    const canonicalTwo=createPattern(steps.slice(0,2)),legacyTwo=buildMonthlyScheduleDraft({pattern:canonicalTwo,employees,scheduleMonth:"2026-04"});canonicalTwo.holidayPolicy={version:1,rules:{}};expect(buildMonthlyScheduleDraft({pattern:canonicalTwo,employees,scheduleMonth:"2026-04"})).toEqual(legacyTwo);
+    const old=createPattern(steps.slice(0,2).map((s,i)=>({...s,dutyCode:["custom-first","custom-second"][i]})));old.holidayPolicy={version:1,rules:{}};expect(buildMonthlyScheduleDraft({pattern:old,employees,scheduleMonth:"2026-04"})[0].dutyCode).toBe("D");
+  });
+  it("applies selected overlap priority to the actual monthly timing and retains the following base day",()=>{
+    const pattern=createPattern([steps[0]]);pattern.holidayPolicy={version:1,rules:{public:{mode:"off",excludedDutyCodes:[]},saturday:{mode:"normal",excludedDutyCodes:[],times:{D:{startTime:"09:00",endTime:"19:00",breakMinutes:60}}}}};
+    const input={pattern,employees,scheduleMonth:"2026-04",publicHolidayDates:new Set(["2026-04-04"])};
+    expect(buildMonthlyScheduleDraft(input).find(i=>i.workDate==="2026-04-04")).toMatchObject({dutyCode:"O",breakMinutes:0});
+    pattern.holidayPolicy.overlapPriority="weekend";
+    const items=buildMonthlyScheduleDraft(input);expect(items.find(i=>i.workDate==="2026-04-04")).toMatchObject({dutyCode:"D",startTime:"09:00",endTime:"19:00",breakMinutes:60});
+    expect(items.find(i=>i.workDate==="2026-04-05")).toMatchObject({dutyCode:"D",startTime:"07:00",endTime:"15:00"});
+  });
+  it("materializes site/team/person exceptions after holiday rules and keeps base phase and other people",()=>{
+    const pattern=createPattern(steps),person=employees[0];pattern.holidayPolicy={version:1,rules:{public:{mode:"off",excludedDutyCodes:[]}},dateExceptions:[{id:"site",from:"2026-04-04",to:"2026-04-04",scope:"site",reason:"점검",dutyCode:"O"},{id:"team",from:"2026-04-04",to:"2026-04-04",scope:"team",teamLabel:"A조",reason:"행사 지원",dutyCode:"N",timing:{startTime:"20:00",endTime:"07:00",breakMinutes:60}},{id:"person",from:"2026-04-04",to:"2026-04-04",scope:"employee",employeeId:person.id,reason:"개인 휴무",dutyCode:"O"}]};
+    const second={...person,id:"second",employeeCode:"H02",name:"대체 인원"},input={pattern,employees:[person,second],scheduleMonth:"2026-04",publicHolidayDates:new Set(["2026-04-04"])};
+    const rows=buildMonthlyScheduleDraft(input);expect(rows.find(i=>i.workDate==="2026-04-04"&&i.employeeCode===person.employeeCode)).toMatchObject({dutyCode:"O",startTime:undefined,breakMinutes:0});expect(rows.find(i=>i.workDate==="2026-04-04"&&i.employeeCode==="H02")).toMatchObject({dutyCode:"N",startTime:"20:00",endTime:"07:00"});
+    const baseline=buildMonthlyScheduleDraft({...input,pattern:{...pattern,holidayPolicy:undefined}});expect(rows.filter(i=>i.workDate==="2026-04-05")).toEqual(baseline.filter(i=>i.workDate==="2026-04-05"));
+    expect(buildMonthlyScheduleDraft({...input,employees:[{...person,currentAssignmentStartDate:"2026-04-05"}]}).some(i=>i.workDate==="2026-04-04")).toBe(false);
+  });
+});

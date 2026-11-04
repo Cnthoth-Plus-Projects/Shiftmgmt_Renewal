@@ -3,11 +3,14 @@ import { copyFile } from "node:fs/promises";
 import path from "node:path";
 
 import ExcelJS from "exceljs";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import * as returnedParser from "./schedule-return-performance-parser";
+import { saveStoredEmployeeWageRate } from "./employee-history-service";
 
 import {
   applyPerformanceFileWatchEventToStorage,
   buildPerformanceFileDetailFromPath,
+  invalidatePerformanceWageContext,
   syncApprovedPerformanceFilesToStorage,
   syncPendingPerformanceFilesToStorage
 } from "./performance-file-intake-service";
@@ -67,10 +70,31 @@ const writeUnsupportedWorkbook = async (filePath: string) => {
 
 describe("performance-file-intake-service", () => {
   afterEach(() => {
+    vi.restoreAllMocks();
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();
     resetSqliteStorageForTest();
     resetPreparedReturnedScheduleRoot(testRoot);
+  });
+
+  it("W-06: an older in-flight parse rebuilds with the latest wage instead of returning stale data", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: testRoot });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const target = detail.entries.find(e => e.section === "overtime")!;
+    const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+    let release!: () => void, started!: () => void;
+    const paused = new Promise<void>(resolve => { release = resolve; });
+    const reached = new Promise<void>(resolve => { started = resolve; });
+    const original = returnedParser.parseReturnedSchedulePerformanceFile;
+    const parser = vi.spyOn(returnedParser, "parseReturnedSchedulePerformanceFile").mockImplementationOnce(async input => {
+      const parsed = await original(input); started(); await paused; return parsed;
+    });
+    const reading = buildPerformanceFileDetailFromPath({ filePath: fixture.filePath, settings: { pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir }, forceReparse: true });
+    await reached;
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 15500, effectiveFrom: "2026-03-01" });
+    invalidatePerformanceWageContext(); release();
+    expect((await reading)?.entries.find(e => e.logicalKey === target.logicalKey)?.hourlyRate).toBe(15500);
+    expect(parser).toHaveBeenCalledTimes(2);
   });
 
   it("should sync a returned schedule workbook into sqlite and parse per-entry rows", async () => {

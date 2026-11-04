@@ -36,7 +36,7 @@ const ensureColumn = (
   database.exec(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition};`);
 };
 
-const migrateDatabase = (database: DatabaseSync) => {
+export const migrateDatabase = (database: DatabaseSync) => {
   database.exec(`
     PRAGMA journal_mode = WAL;
 
@@ -549,7 +549,8 @@ const migrateDatabase = (database: DatabaseSync) => {
       status TEXT NOT NULL,
       error_message TEXT,
       preview_json TEXT NOT NULL,
-      reparse_marker_snapshot_json TEXT
+      reparse_marker_snapshot_json TEXT,
+      policy_context_fingerprint TEXT
     );
 
     CREATE INDEX IF NOT EXISTS idx_performance_files_status
@@ -593,7 +594,8 @@ const migrateDatabase = (database: DatabaseSync) => {
       target_work_type TEXT,
       substitute_allowance_eligible INTEGER,
       substitute_allowance_reason_code TEXT,
-      substitute_allowance_policy_version TEXT
+      substitute_allowance_policy_version TEXT,
+      policy_snapshot_json TEXT
     );
 
     CREATE INDEX IF NOT EXISTS idx_performance_entries_file_id
@@ -750,6 +752,52 @@ const migrateDatabase = (database: DatabaseSync) => {
 
     CREATE INDEX IF NOT EXISTS idx_allowance_proposal_approvals_month
       ON allowance_proposal_approvals (work_month DESC, approved_at DESC);
+
+    CREATE TABLE IF NOT EXISTS policy_revisions (
+      id TEXT PRIMARY KEY,
+      policy_kind TEXT NOT NULL,
+      version_number INTEGER NOT NULL,
+      rule_key TEXT NOT NULL,
+      criteria_json TEXT NOT NULL,
+      implementation_version TEXT NOT NULL,
+      effective_from TEXT,
+      origin TEXT NOT NULL,
+      actor_user_id TEXT,
+      actor_login_id TEXT,
+      actor_display_name TEXT,
+      actor_role TEXT,
+      created_at TEXT NOT NULL,
+      reason TEXT NOT NULL
+    );
+
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_policy_revisions_kind_version
+      ON policy_revisions (policy_kind, version_number);
+
+    CREATE INDEX IF NOT EXISTS idx_policy_revisions_kind_effective
+      ON policy_revisions (policy_kind, effective_from ASC);
+
+    CREATE TABLE IF NOT EXISTS policy_events (
+      id TEXT PRIMARY KEY,
+      policy_kind TEXT NOT NULL,
+      revision_id TEXT NOT NULL REFERENCES policy_revisions(id) ON DELETE RESTRICT,
+      event_type TEXT NOT NULL,
+      replacement_revision_id TEXT REFERENCES policy_revisions(id) ON DELETE RESTRICT,
+      before_json TEXT,
+      after_json TEXT,
+      actor_user_id TEXT,
+      actor_login_id TEXT,
+      actor_display_name TEXT,
+      actor_role TEXT,
+      occurred_at TEXT NOT NULL,
+      related_approval_id TEXT
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_policy_events_kind_revision
+      ON policy_events (policy_kind, revision_id, occurred_at ASC);
+
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_policy_events_used_unique
+      ON policy_events (revision_id, related_approval_id)
+      WHERE event_type = 'used' AND related_approval_id IS NOT NULL;
   `);
 
   database.exec(`
@@ -783,6 +831,7 @@ const migrateDatabase = (database: DatabaseSync) => {
   ensureColumn(database, "shift_patterns", "team_count", "INTEGER NOT NULL DEFAULT 2");
   ensureColumn(database, "shift_patterns", "pattern_start_date", "TEXT");
   // 이 설정이 적용되기 시작하는 날짜. 예전 행은 패턴 시작일을 그대로 쓴다.
+  ensureColumn(database, "shift_patterns", "holiday_policy_json", "TEXT");
   ensureColumn(database, "shift_patterns", "effective_from", "TEXT");
   ensureColumn(database, "shift_patterns", "pool_enabled", "INTEGER NOT NULL DEFAULT 0");
   ensureColumn(database, "shift_patterns", "pool_start_time", "TEXT");
@@ -832,6 +881,7 @@ const migrateDatabase = (database: DatabaseSync) => {
   ensureColumn(database, "allowance_rate_versions", "change_reason", "TEXT");
   ensureColumn(database, "performance_files", "template_variant", "TEXT");
   ensureColumn(database, "performance_files", "reparse_marker_snapshot_json", "TEXT");
+  ensureColumn(database, "performance_files", "policy_context_fingerprint", "TEXT");
   ensureColumn(database, "performance_files", "schedule_month", "TEXT");
   ensureColumn(database, "performance_files", "site_name", "TEXT");
   ensureColumn(database, "performance_files", "schedule_key", "TEXT");
@@ -888,6 +938,7 @@ const migrateDatabase = (database: DatabaseSync) => {
   ensureColumn(database, "performance_entries", "substitute_allowance_eligible", "INTEGER");
   ensureColumn(database, "performance_entries", "substitute_allowance_reason_code", "TEXT");
   ensureColumn(database, "performance_entries", "substitute_allowance_policy_version", "TEXT");
+  ensureColumn(database, "performance_entries", "policy_snapshot_json", "TEXT");
   ensureColumn(database, "performance_approvals", "entry_id", "TEXT");
   ensureColumn(database, "performance_approvals", "logical_key", "TEXT");
   ensureColumn(database, "performance_approvals", "schedule_key", "TEXT");

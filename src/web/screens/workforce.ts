@@ -1,11 +1,11 @@
+import type { EmployeeSaveResult } from "../../shared/bridge/contracts";
 // 인력 관리 화면 메인 스크린 (WorkforceScreen)
 import type { AuthSession } from "../../shared/domain/model";
 import type {
   EmployeeRecord,
   EmployeeSiteAssignment,
   ShiftPatternRecord,
-  SiteRecord,
-  WageRateRecord
+  SiteRecord
 } from "../../shared/domain/model";
 import type { PerformanceEntryRecord } from "../../shared/domain/performance-file";
 import type {
@@ -14,6 +14,7 @@ import type {
   EmployeeAssignmentReorderInput,
   EmployeeUpsertInput,
   EmployeeWageRateInput,
+  EmployeeWageRateSaveResult,
   WorkforceWageBulkUpdateApplyInput,
   WorkforceWageBulkUpdatePreviewInput
 } from "../../shared/bridge/contracts";
@@ -32,6 +33,8 @@ import { WorkforceEmployeeForm } from "./workforce-employee-form";
 import { WorkforceWage } from "./workforce-wage";
 import { TeamMemberWithAssignment, WorkforceAssignment } from "./workforce-assignment";
 import { WorkforceBulk } from "./workforce-bulk";
+import { WorkforceRehire } from "./workforce-rehire";
+import { matchesEmployeeEmploymentStatus } from "../../shared/domain/employee-employment";
 
 export interface WorkforceScreenOptions {
   container: HTMLElement;
@@ -53,6 +56,7 @@ export class WorkforceScreen {
   private wageManager: WorkforceWage | null = null;
   private assignmentManager: WorkforceAssignment | null = null;
   private bulkManager: WorkforceBulk | null = null;
+  private rehireManager: WorkforceRehire | null = null;
 
   private allEmployees: EmployeeRecord[] = [];
   private sites: SiteRecord[] = [];
@@ -100,6 +104,8 @@ export class WorkforceScreen {
       onFetchShiftPatterns: (siteId) => this.handleFetchShiftPatterns(siteId)
     });
 
+    this.rehireManager = new WorkforceRehire({dialog:this.dialog,getSites:()=>this.sites,onFetchShiftPatterns:siteId=>this.handleFetchShiftPatterns(siteId),onSave:input=>this.handleSaveEmployee(input),onSaved:employee=>this.reloadAllData(employee),onNavigatePerformance:this.onNavigatePerformance});
+
     this.wageManager = new WorkforceWage({
       dialog: this.dialog,
       onSaveWageRate: (input) => this.handleSaveWageRate(input),
@@ -110,7 +116,7 @@ export class WorkforceScreen {
           this.onNavigatePerformance();
         }
       },
-      onSuccess: () => void this.reloadSelectedDetail()
+      onSuccess: () => void this.reloadAllData()
     });
 
     this.assignmentManager = new WorkforceAssignment({
@@ -240,7 +246,9 @@ export class WorkforceScreen {
       canWrite,
       isAdmin,
       onOpenEditModal: (emp) => this.employeeForm?.openEditModal(emp),
+      onOpenRehire: (emp,mode) => this.rehireManager?.open(emp,mode),
       onOpenWageModal: (emp, rates) => this.wageManager?.openWageModal(emp, rates),
+      onOpenWageRevision: (emp, rate) => this.wageManager?.openRevisionModal(emp, rate),
       onOpenCloseWageModal: (emp, rate) => this.wageManager?.openCloseWageModal(emp, rate),
       onOpenAssignmentModal: (emp) => this.assignmentManager?.openAssignmentModal(emp),
       onOpenReorderModal: (emp, assigns) => this.assignmentManager?.openReorderModal(emp, assigns),
@@ -333,11 +341,12 @@ export class WorkforceScreen {
     }
   }
 
-  private async reloadAllData(): Promise<void> {
-    if (this.isDestroyed || this.isSessionExpiredTriggered) return;
+  private async reloadAllData(reveal?:EmployeeRecord): Promise<boolean> {
+    if (this.isDestroyed || this.isSessionExpiredTriggered) return false;
     const bridge = window.appBridge;
-    if (!bridge) return;
+    if (!bridge) return false;
     const gen = ++this.generation;
+    if(reveal){this.allEmployees=this.allEmployees.map(e=>e.id===reveal.id?reveal:e);this.selectedEmployeeId=reveal.id;this.workforceList?.revealEmployee(reveal);this.applyListFilter();}
 
     try {
       const [empRes, siteRes] = await Promise.all([
@@ -345,31 +354,28 @@ export class WorkforceScreen {
         bridge.listSites()
       ]);
 
-      if (this.isDestroyed || this.generation !== gen) return;
+      if (this.isDestroyed || this.generation !== gen) return false;
 
       this.checkSession(empRes);
       this.checkSession(siteRes);
-      if (this.isSessionExpiredTriggered) return;
+      if (this.isSessionExpiredTriggered) return false;
 
       if (empRes.ok) this.allEmployees = sortEmployeesByWorksite(empRes.data || []);
       if (siteRes.ok) this.sites = siteRes.data || [];
 
       this.employeeForm?.updateSites(this.sites);
       this.assignmentManager?.updateSites(this.sites);
+      if(reveal){this.selectedEmployeeId=reveal.id;this.workforceList?.revealEmployee(reveal);}
 
       this.applyListFilter();
 
       if (this.selectedEmployeeId) {
         await this.selectEmployee(this.selectedEmployeeId);
       }
+      return empRes.ok&&siteRes.ok;
     } catch {
       // 재조회 실패 시 현재 상태 유지
-    }
-  }
-
-  private async reloadSelectedDetail(): Promise<void> {
-    if (this.selectedEmployeeId) {
-      await this.selectEmployee(this.selectedEmployeeId);
+      return false;
     }
   }
 
@@ -379,24 +385,24 @@ export class WorkforceScreen {
     const area = this.container.querySelector<HTMLElement>("#workforce-kpis");
     if (!area) return;
     area.replaceChildren();
-    const active = this.allEmployees.filter(e => e.status === "active");
+    const active = this.allEmployees.filter(e => matchesEmployeeEmploymentStatus(e,"active"));
     const cards: Array<[string, number, string]> = [
       ["전체 인력", this.allEmployees.length, "검색 조건과 관계없는 전체 등록 인력"],
       ["재직", active.length, "재직 상태인 인력"],
-      ["휴직", this.allEmployees.filter(e => e.status === "leave").length, "휴직 상태인 인력"],
-      ["퇴사", this.allEmployees.filter(e => e.status === "retired").length, "퇴사 상태인 인력"],
+      ["휴직", this.allEmployees.filter(e => matchesEmployeeEmploymentStatus(e,"leave")).length, "휴직 상태인 인력"],
+      ["퇴사 / 재입사 예정", this.allEmployees.filter(e => matchesEmployeeEmploymentStatus(e,"retired")||matchesEmployeeEmploymentStatus(e,"scheduled")).length, "퇴사 인력과 아직 새 재직기간이 시작되지 않은 재입사 예약 인력"],
       ["미배정 재직", active.filter(e => !e.currentSiteId).length, "현재 근무지 배정이 없는 재직 인력"],
-      ["시급 확인 필요", active.filter(e => !isBpEmploymentType(e.employmentType) && e.currentHourlyRate === undefined).length, "최근 등록 시급 정보가 없는 재직 인력입니다. 상세 이력을 확인해 주세요."]
+      ["시급 확인 필요", active.filter(e => !isBpEmploymentType(e.employmentType) && e.currentHourlyRate === undefined).length, "서울 기준 오늘 유효한 시급이 없는 재직 인력입니다. 상세에서 적용 기간과 예정 시급을 확인해 주세요."]
     ];
     for (const [label, count, help] of cards) { const card = document.createElement("div"); card.className = "workforce-kpi"; card.title = help; const title = document.createElement("span"); title.textContent = label; const value = document.createElement("strong"); value.textContent = `${count}명`; card.append(title, value); area.appendChild(card); }
   }
 
-  private async handleSaveEmployee(input: EmployeeUpsertInput): Promise<{ ok: boolean; message?: string }> {
+  private async handleSaveEmployee(input: EmployeeUpsertInput): Promise<{ ok: boolean; employee?: EmployeeSaveResult; message?: string }> {
     const bridge = window.appBridge;
     if (!bridge) return { ok: false, message: "브리지 연결이 없습니다." };
     const res = await this.request(() => bridge.saveEmployee(input));
     this.checkSession(res);
-    return res.ok ? { ok: true } : { ok: false, message: res.message };
+    return res.ok ? { ok: true, employee:res.data } : { ok: false, message: res.message };
   }
 
   private async handleDeleteEmployee(id: string): Promise<{ ok: boolean; message?: string }> {
@@ -407,7 +413,7 @@ export class WorkforceScreen {
     return res.ok ? { ok: true } : { ok: false, message: res.message };
   }
 
-  private async handleSaveWageRate(input: EmployeeWageRateInput): Promise<{ ok: boolean; record?: WageRateRecord; message?: string }> {
+  private async handleSaveWageRate(input: EmployeeWageRateInput): Promise<{ ok: boolean; record?: EmployeeWageRateSaveResult; message?: string }> {
     const bridge = window.appBridge;
     if (!bridge) return { ok: false, message: "브리지 연결이 없습니다." };
     const res = await this.request(() => bridge.saveEmployeeWageRate(input));
@@ -662,6 +668,7 @@ export class WorkforceScreen {
     this.isDestroyed = true;
     this.generation++;
     this.dialog.close();
+    this.rehireManager?.destroy();
     this.workforceList?.destroy();
     this.workforceDetail?.destroy();
     this.workforceList = null;

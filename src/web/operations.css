@@ -488,3 +488,179 @@
   border: 1px solid #e2e8f0;
   padding: 4px 6px;
 }
+.hire-review{display:grid;gap:15px;margin:18px 0;padding:20px;border:1px solid #d7e3ef;border-radius:14px;background:#fff;color:#24354b;line-height:1.65}
+.hire-review-heading{display:flex;gap:9px;align-items:center}.hire-review-heading>.material-symbols-outlined{color:#416e9d;background:#eef5fd;border-radius:9px;padding:7px}.hire-review-heading h3{margin:0;font-size:17px;letter-spacing:-.03em}.hire-review-copy{margin:0;color:#52657a;font-size:13px}
+.hire-review-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.hire-review-metric{display:grid;gap:5px;min-width:0;padding:14px;border:1px solid #e0e6ef;border-radius:11px;background:#f8fafc}.hire-review-metric>span{font-size:12px;font-weight:650;color:#4d6074}.hire-review-metric strong{font-size:25px;line-height:1.25;font-variant-numeric:tabular-nums}.hire-review-metric small{font-size:11px;color:#64758a}.hire-review-metric--source{background:#eff6ff;border-color:#d4e3f5}.hire-review-metric--source strong{color:#2f6397}.hire-review-metric--invalid{background:#fffaed;border-color:#eddfba}.hire-review-metric--invalid strong{color:#805d1f}
+.hire-review-preserve,.hire-review-next{padding:14px 16px;border-radius:11px;border:1px solid #d4e8df;background:#f3f9f6}.hire-review-next{background:#f4f7fc;border-color:#d9e2ef}.hire-review-preserve strong,.hire-review-next strong{font-size:13px}.hire-review-preserve p,.hire-review-next p{font-size:13px;margin:5px 0 0;color:#465e59}.hire-review-next p{color:#4c5e74}.hire-review-warning{font-size:13px;color:#805d1f;background:#fff8e7;border:1px solid #eddfba;border-radius:10px;padding:14px}
+.hire-review-details{border-top:1px solid #e1e7ef;padding-top:12px;min-width:0}.hire-review-details>summary{cursor:pointer;font-size:13px;font-weight:700;color:#345c8a}.hire-review-filter{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:12px;font-weight:650}.hire-review-filter select{width:auto;max-width:100%;min-width:160px}.hire-review-table{min-width:0;max-width:100%;overflow:auto}.hire-review-person{display:grid;gap:3px}.hire-review-person small{font-size:11px;color:#7a8798}.hire-review-value{font-size:12px;font-family:inherit;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;white-space:normal}.hire-review-status{display:inline-block;padding:3px 7px;border-radius:6px;white-space:nowrap;font-size:11px;font-weight:650;background:#edf4fc;color:#2d5d92}.hire-review-status--missing{background:#f0f2f5;color:#596b7d}.hire-review-status--invalid{background:#fff3d6;color:#815d1a}
+.hire-date-guide{margin:12px 0;padding:11px 13px;border:1px solid #dce5ef;border-radius:10px;background:#f8fafc;line-height:1.65}.hire-date-guide summary{cursor:pointer;font-size:12px;font-weight:650;color:#4f6683}.hire-date-guide p{font-size:12px;color:#536579;margin:8px 0 0}.hire-review summary:focus-visible,.hire-date-guide summary:focus-visible{outline:2px solid #3b75b6;outline-offset:3px}
+@media(max-width:900px){.hire-review-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.hire-review{padding:14px}.hire-review-heading h3{font-size:15px}}
+.hire-review-search{display:grid;gap:6px;margin:12px 0;font-size:12px;font-weight:650}.hire-review-search input{width:100%;box-sizing:border-box}.hire-review-data{width:100%;border-collapse:collapse;font-size:12px;text-align:left}.hire-review-data th{font-size:11px;color:#53667e;background:#f4f7fb;white-space:nowrap}.hire-review-data th,.hire-review-data td{padding:10px;border-bottom:1px solid #e3e9f1;vertical-align:top}.hire-review-data td.hire-review-person{display:table-cell}.hire-review-person>span,.hire-review-person>small{display:block}.hire-review-empty{color:#6d7c8f;text-align:center}.hire-review-pager{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}.hire-review-count{margin-right:auto;font-size:12px;color:#5c6e83}
+
+/* Settings workspace: shared app palette, readable forms, fixed actions. */
+.operations-screen-root:has(.ops-settings-workspace) { padding:12px; gap:8px; min-height:0; background:#f4f7fb; }
+.operations-screen-root:has(.ops-settings-workspace) > .operations-screen-header { display:none; }
+.operations-screen-root:has(.ops-settings-workspace) > .operations-tab-list { flex-shrink:0; gap:4px; margin:0; padding:4px; border:1px solid #dfe6f0; border-radius:12px; background:#fff; overflow-x:auto; }
+.operations-screen-root:has(.ops-settings-workspace) > .operations-tab-list .tab-btn { padding:6px 12px; border:0; border-radius:8px; font-size:13px; white-space:nowrap; }
+.operations-screen-root:has(.ops-settings-workspace) > .operations-tab-list .tab-btn.active { color:#334cac; background:#eef2ff; box-shadow:inset 0 0 0 1px #dfe5fc; }
+.operations-screen-root:has(.ops-settings-workspace) > .operations-tab-content { min-height:0; padding:0; background:transparent; box-shadow:none; overflow:hidden; }
+.operations-settings-wrap.ops-settings-workspace { --ops-accent:#4056b6; --ops-line:#e0e7f0; display:flex; flex-direction:column; width:100%; height:100%; min-height:0; box-sizing:border-box; color:#23354d; }
+.ops-settings-workspace .ops-settings-header { flex-shrink:0; display:flex; align-items:center; justify-content:flex-start; gap:13px; padding:2px 2px 12px; margin:0; border:0; }
+.ops-settings-workspace .ops-settings-hero-icon { display:grid; place-items:center; flex-shrink:0; width:36px; height:36px; border-radius:10px; color:#4056b6; background:#e9eefc; font-size:22px; }
+.ops-settings-workspace .ops-settings-headline .tab-title { margin:0; font-size:18px; font-weight:750; letter-spacing:-.035em; color:#23354d; }
+.ops-settings-workspace .ops-settings-caption { margin:2px 0 0; font-size:13px; line-height:1.5; color:#65758a; }
+.ops-settings-workspace .ops-settings-body { display:grid; grid-template-columns:200px minmax(0,1fr); flex:1; gap:10px; min-height:0; overflow:hidden; }
+.ops-settings-workspace .ops-settings-nav { display:flex; flex-direction:column; gap:3px; padding:6px; align-self:start; background:#fff; border:1px solid var(--ops-line); border-radius:14px; box-shadow:0 3px 12px #23354d04; }
+.ops-settings-workspace .ops-settings-tab-btn { display:flex; align-items:center; gap:11px; width:100%; min-width:0; padding:10px 9px; border:1px solid transparent; border-radius:10px; background:transparent; color:#586b83; text-align:left; cursor:pointer; transition:background .15s,border-color .15s,color .15s; }
+.ops-settings-workspace .ops-settings-tab-btn:hover { background:#f5f7fb; color:#293e5b; }
+.ops-settings-workspace .ops-settings-tab-btn[aria-selected="true"] { border-color:#dbe3fc; color:#354ca8; background:linear-gradient(110deg,#edf2ff,#f7f9ff); }
+.ops-settings-workspace .ops-settings-tab-copy { display:flex; flex-direction:column; gap:3px; min-width:0; flex:1; }
+.ops-settings-workspace .ops-settings-tab-label { font-size:14px; font-weight:700; white-space:nowrap; }
+.ops-settings-workspace .ops-settings-tab-hint { font-size:11px; color:#7b8ba0; white-space:nowrap; }
+.ops-settings-workspace .ops-settings-nav-icon { font-size:23px; flex-shrink:0; }
+.ops-settings-workspace .ops-settings-nav-arrow { font-size:18px; opacity:.5; }
+.ops-settings-workspace .ops-settings-panels { min-width:0; min-height:0; padding:12px 16px; overflow:auto; scrollbar-width:thin; border:1px solid var(--ops-line); border-radius:14px; background:#fff; box-shadow:0 3px 14px #23354d04; }
+.ops-settings-workspace .ops-settings-area-panel { display:flex; flex-direction:column; gap:10px; }
+.ops-settings-workspace .ops-settings-area-panel[hidden] { display:none!important; }
+.ops-settings-workspace .ops-settings-panel-header { padding-bottom:8px; border-bottom:1px solid #edf1f6; }
+.ops-settings-workspace .ops-settings-panel-title { margin:0; font-size:16px; font-weight:750; letter-spacing:-.025em; color:#263c58; }
+.ops-settings-workspace .ops-settings-panel-desc { margin:4px 0 0; font-size:13px; line-height:1.5; color:#6b7b90; }
+.ops-settings-workspace .ops-settings-section { margin:0; padding:0; }
+.ops-settings-workspace .section-title { margin:0 0 8px; font-size:13px; color:#3c526f; }
+.ops-settings-workspace .ops-settings-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.ops-settings-workspace .ops-settings-grid > .form-group { min-width:0; margin:0; padding:9px 11px; border:1px solid #e5ebf3; border-radius:10px; background:#f9fbfd; }
+.ops-settings-workspace .form-label { display:block; margin-bottom:5px; font-size:13px; font-weight:650; color:#3c506b; }
+.ops-settings-workspace .form-control { min-width:0; height:34px; padding:6px 9px; border:1px solid #d7dfeb; border-radius:7px; background:#fff; color:#263c58; font:inherit; font-size:13px; transition:border-color .15s,box-shadow .15s; }
+.ops-settings-workspace .form-control:focus { outline:none; border-color:#7c8ed5; box-shadow:0 0 0 3px #4056b617; }
+.ops-settings-workspace .form-control[readonly] { background:#f1f5f9; color:#66768a; }
+.ops-settings-workspace .form-control[aria-invalid="true"] { border-color:#d76767; background:#fffafa; }
+.ops-settings-workspace .form-help { margin-top:4px; font-size:12px; line-height:1.45; color:#7a899d; }
+.ops-settings-workspace .dir-input-group { display:flex; gap:8px; min-width:0; }
+.ops-settings-workspace .dir-input-group > .form-control { flex:1; width:0; }
+.ops-settings-workspace .dir-input-group > .btn { flex-shrink:0; min-height:34px; padding:5px 10px; border:1px solid #dbe3ee; border-radius:7px; background:#f7f9fc; font-size:12px; color:#4c6382; }
+.ops-settings-workspace .dir-input-group > .btn:hover { border-color:#aebfe0; color:#354ca8; background:#eef2fc; }
+.ops-settings-workspace #settings-area-folders .ops-settings-grid { grid-template-columns:minmax(0,1fr); gap:0; }
+.ops-settings-workspace #settings-area-folders .form-group { display:grid; grid-template-columns:185px minmax(0,1fr); column-gap:16px; align-items:center; padding:9px 0; border:0; border-bottom:1px solid #edf1f6; border-radius:0; background:#fff; }
+.ops-settings-workspace #settings-area-folders .form-group:first-child { padding-top:0; }
+.ops-settings-workspace #settings-area-folders .form-group:last-child { border-bottom:0; padding-bottom:0; }
+.ops-settings-workspace #settings-area-folders .form-label { grid-column:1; grid-row:1; margin:0; }
+.ops-settings-workspace #settings-area-folders .form-help { grid-column:1; grid-row:2; margin-top:5px; font-size:11px; }
+.ops-settings-workspace #settings-area-folders .dir-input-group { grid-column:2; grid-row:1/span 2; }
+.ops-settings-workspace #settings-area-backup .form-group:has(#input-databaseBackupDir),
+.ops-settings-workspace #settings-area-backup .form-group:has(#input-migrationFilePath),
+.ops-settings-workspace .ops-settings-system-info .form-group:has(#input-ro-databasePath) { grid-column:1/-1; }
+.ops-settings-workspace #settings-area-policy .form-group:has(input[type="date"]) { background:#f4f7ff; border-color:#dfe6f9; }
+.ops-settings-workspace .checkbox-wrap { display:flex; gap:8px; align-items:center; min-height:34px; }
+.ops-settings-workspace .checkbox-label { cursor:pointer; font-size:13px; color:#3c506b; }
+.ops-settings-workspace .file-watch-section { padding:11px 13px; border:1px solid #dfe7f4; border-radius:12px; background:linear-gradient(120deg,#f6f9ff,#fcfdff); }
+.ops-settings-workspace .watch-status-bar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.ops-settings-workspace .status-badge { display:inline-flex; align-items:center; padding:5px 9px; border-radius:7px; font-size:12px; font-weight:650; }
+.ops-settings-workspace .status-badge-success { color:#247061; background:#e9f6ef; }
+.ops-settings-workspace .status-badge-warning { color:#896425; background:#fff4df; }
+.ops-settings-workspace .status-badge-danger { color:#a94747; background:#fff0ef; }
+.ops-settings-workspace .status-badge-muted { color:#63758a; background:#eef2f6; }
+.ops-settings-workspace .watch-details { margin-top:7px; color:#667a93; font-size:12px; line-height:1.65; overflow-wrap:anywhere; }
+.ops-settings-workspace .watch-details .alert-warning { margin-top:10px; }
+.ops-settings-workspace .backup-card,.ops-settings-workspace .restore-card { padding:11px 13px; border-radius:10px; box-shadow:none; }
+.ops-settings-workspace .backup-card { background:#f4faf7; border:1px solid #dcece3; }
+.ops-settings-workspace .restore-card { background:#fcfaf5; border:1px solid #ece5d8; }
+.ops-settings-workspace .card-subtitle { margin:0 0 8px; font-size:14px; color:#314964; }
+.ops-settings-workspace .card-desc { margin:4px 0 8px; font-size:12px; line-height:1.5; color:#6a7c91; }
+.ops-settings-workspace .ops-settings-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; padding:8px 12px; margin-top:8px; border:1px solid var(--ops-line); border-radius:12px; background:#fff; box-shadow:0 3px 12px #23354d04; }
+.ops-settings-workspace .ops-settings-dirty-status { display:inline-flex; padding:6px 10px; border-radius:7px; font-size:12px; font-weight:650; }
+.ops-settings-workspace .status-clean { color:#287263; background:#edf7f2; }
+.ops-settings-workspace .status-dirty { color:#886329; background:#fff5df; }
+.ops-settings-workspace .status-saving { color:#4056b6; background:#edf1ff; }
+.ops-settings-workspace .ops-settings-action-col { display:flex; gap:8px; }
+.ops-settings-workspace .ops-btn-save,.ops-settings-workspace .ops-btn-revert { display:inline-flex; gap:6px; align-items:center; justify-content:center; min-height:34px; padding:6px 12px; border-radius:8px; font-size:13px; font-weight:650; }
+.ops-settings-workspace .ops-settings-action-col .material-symbols-outlined { font-size:18px; }
+.ops-settings-workspace .ops-btn-save { border-color:#4056b6; background:#4056b6; color:#fff; box-shadow:0 3px 7px #4056b61c; }
+.ops-settings-workspace .ops-btn-save:hover:not(:disabled) { background:#34499f; border-color:#34499f; }
+.ops-settings-workspace .ops-btn-revert { border-color:#dce3ef; background:#fff; color:#61748e; }
+.ops-settings-workspace button:focus-visible { outline:2px solid #647bc8; outline-offset:3px; }
+@media (max-width:1200px) {
+  .ops-settings-workspace .ops-settings-body { grid-template-columns:180px minmax(0,1fr); gap:10px; }
+  .ops-settings-workspace .ops-settings-panels { padding:12px; }
+  .ops-settings-workspace #settings-area-folders .form-group { grid-template-columns:155px minmax(0,1fr); gap:7px 16px; }
+}
+@media (max-width:1024px) {
+  .ops-settings-workspace .ops-settings-body { display:flex; flex-direction:column; gap:10px; }
+  .ops-settings-workspace .ops-settings-nav { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); width:100%; padding:5px; }
+  .ops-settings-workspace .ops-settings-tab-btn { justify-content:center; gap:7px; padding:9px 6px; }
+  .ops-settings-workspace .ops-settings-tab-hint,.ops-settings-workspace .ops-settings-nav-arrow { display:none; }
+  .ops-settings-workspace .ops-settings-tab-label { font-size:12px; }
+  .ops-settings-workspace .ops-settings-nav-icon { font-size:20px; }
+  .ops-settings-workspace .ops-settings-panels { flex:1; }
+}
+@media (max-width:760px) {
+  .ops-settings-workspace .ops-settings-grid { grid-template-columns:1fr; }
+  .ops-settings-workspace #settings-area-folders .form-group { display:flex; align-items:stretch; flex-direction:column; gap:7px; }
+  .ops-settings-workspace #settings-area-folders .dir-input-group { order:2; }
+  .ops-settings-workspace #settings-area-folders .form-help { order:3; }
+  .ops-settings-workspace .ops-settings-caption { font-size:12px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ops-settings-workspace .ops-settings-tab-btn,.ops-settings-workspace .form-control { transition:none; }
+}
+
+/* Dense settings: keep information in view; detailed policy help opens separately. */
+.ops-settings-workspace #settings-area-backup .ops-settings-panel-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; align-items:start; }
+.ops-settings-workspace .ops-backup-flow-section > .section-title { margin-bottom:8px; }
+.ops-settings-workspace .backup-card,.ops-settings-workspace .restore-card { margin-bottom:8px; }
+.ops-settings-workspace .restore-path-group { margin:8px 0; gap:6px; }
+.ops-settings-workspace .ops-backup-flow-section .btn,.ops-settings-workspace .file-watch-section .btn { min-height:32px; padding:5px 10px; font-size:12px; }
+.ops-settings-workspace .backup-result-info:empty { display:none; }
+.ops-settings-workspace .ops-settings-system-info .ops-settings-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.ops-settings-workspace .ops-settings-system-info .form-group:has(#input-ro-databasePath) { grid-column:auto; }
+.ops-settings-workspace #settings-area-system .settings-section:not(.ops-settings-system-info) .form-group { margin:0; }
+.ops-settings-workspace .ops-settings-field-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:5px; }
+.ops-settings-workspace .ops-settings-field-heading .form-label { margin:0; }
+.ops-settings-workspace .ops-settings-help-btn { flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; min-width:40px; min-height:28px; padding:3px 8px; border:1px solid #d8e2f0; border-radius:6px; background:#fff; color:#4056a0; font:inherit; font-size:12px; cursor:pointer; }
+.ops-settings-workspace .ops-settings-help-btn:hover { border-color:#a6b8df; background:#edf2ff; }
+.ops-settings-workspace #settings-area-policy .form-help { color:#65758b; }
+.ops-settings-workspace [data-policy-kind="policy"] { border-top:2px solid #a9b9e3; }
+.ops-policy-help { display:grid; gap:14px; color:#354b65; font-size:14px; line-height:1.7; }
+.ops-policy-help .ops-policy-help-kind { justify-self:start; margin:0; padding:4px 10px; border-radius:7px; background:#edf6f2; color:#2a6f5c; font-size:12px; font-weight:700; }
+.ops-policy-help .ops-policy-help-kind.is-policy { background:#eef2fe; color:#4056a0; }
+.ops-policy-help section { padding:0 0 12px; border-bottom:1px solid #e8edf4; }
+.ops-policy-help section:last-child { padding:10px 12px; border:1px solid #dae4f3; border-radius:8px; background:#f7f9fd; }
+.ops-policy-help h3 { margin:0 0 4px; font-size:13px; font-weight:750; color:#2e455f; }
+.ops-policy-help p { margin:0; overflow-wrap:anywhere; }
+#ops-policy-help-modal .workforce-modal-box { max-width:calc(100vw - 32px); }
+@media (max-width:1200px) {
+  .ops-settings-workspace #settings-area-backup .ops-settings-panel-content { grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:760px) {
+  .ops-settings-workspace .ops-settings-system-info .ops-settings-grid { grid-template-columns:1fr; }
+}
+
+/* System settings. */
+.ops-settings-workspace #settings-area-system .ops-settings-panel-content { display:grid; gap:12px; }
+.ops-settings-workspace #settings-area-system .ops-settings-system-info { padding:12px 14px; border:1px solid #e2e8f1; border-radius:10px; background:#f8fafc; }
+.ops-settings-workspace .ops-system-card-heading { display:flex; align-items:center; gap:8px; min-width:0; margin-bottom:12px; }
+.ops-settings-workspace .ops-system-card-heading>.material-symbols-outlined { display:grid; place-items:center; width:28px; height:28px; border-radius:7px; color:#4c6794; background:#eaf0f8; font-size:18px; flex-shrink:0; }
+.ops-settings-workspace .ops-system-card-heading .section-title { margin:0; padding:0; border:0; font-size:14px; color:#304963; }
+.ops-settings-workspace .ops-system-tag { margin-left:auto; padding:3px 8px; border:1px solid #dde5ee; border-radius:6px; background:#fff; color:#6c7e91; font-size:11px; white-space:nowrap; }
+.ops-settings-workspace .ops-settings-system-info .ops-settings-grid { grid-template-columns:.7fr 1.2fr 1.2fr; gap:14px; }
+.ops-settings-workspace .ops-settings-system-info .ops-settings-grid>.form-group { padding:0; border:0; background:none; }
+.ops-settings-workspace .ops-settings-system-info .form-label { font-size:12px; font-weight:500; color:#75849a; }
+.ops-settings-workspace .ops-settings-system-info .form-control { background:#fff; border-color:#e1e7f0; color:#516782; }
+.ops-settings-workspace .ops-system-service-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:12px; align-items:stretch; }
+.ops-settings-workspace .ops-system-service-grid>.ops-settings-section { padding:13px 14px; border:1px solid #e0e7f0; border-radius:10px; background:#fff; min-width:0; }
+.ops-settings-workspace .ops-system-holiday-card .ops-settings-grid { grid-template-columns:1fr; }
+.ops-settings-workspace .ops-system-holiday-card .ops-settings-grid>.form-group { padding:0; border:0; background:none; }
+.ops-settings-workspace .ops-system-service-grid>.file-watch-section { border-color:#d8e9e3; background:#f6fbf9; }
+.ops-settings-workspace .file-watch-section .ops-system-card-heading>.material-symbols-outlined { color:#238573; background:#e4f3ed; }
+.ops-settings-workspace .ops-system-card-heading>.status-badge { margin-left:auto; white-space:nowrap; }
+.ops-settings-workspace .file-watch-section .status-badge::before { content:""; width:6px; height:6px; margin-right:6px; border-radius:50%; background:currentColor; }
+.ops-settings-workspace .ops-system-service-grid .watch-details { margin:0 0 12px; color:#526c69; min-height:40px; line-height:1.6; }
+.ops-settings-workspace .ops-system-service-grid .watch-status-bar { gap:6px; }
+.ops-settings-workspace .ops-system-service-grid .watch-status-bar .btn { display:inline-flex; align-items:center; justify-content:center; gap:4px; min-height:32px; border:1px solid #d9e3e4; border-radius:7px; background:#fff; color:#405d67; font:inherit; font-size:12px; cursor:pointer; transition:background .15s,border-color .15s; }
+.ops-settings-workspace .watch-status-bar .btn>.material-symbols-outlined { font-size:17px; }
+.ops-settings-workspace .watch-status-bar #btn-ops-restart-watch:not(:disabled) { color:#fff; background:#268b79; border-color:#268b79; }
+.ops-settings-workspace .watch-status-bar #btn-stop-watch:not(:disabled) { color:#a65454; border-color:#e4cccc; }
+.ops-settings-workspace .ops-system-service-grid .watch-status-bar .btn:hover:not(:disabled) { border-color:#8fb5ac; background:#eaf5f0; color:#216c5d; }
+.ops-settings-workspace .ops-system-service-grid .watch-status-bar .btn:disabled { opacity:.5; cursor:default; }
+.ops-settings-workspace .ops-system-action-hint { margin:10px 0 0; font-size:11px; line-height:1.5; color:#748a87; }
+@media(max-width:1200px) { .ops-settings-workspace .ops-system-service-grid { grid-template-columns:1fr; } }
+@media(max-width:760px) { .ops-settings-workspace .ops-settings-system-info .ops-settings-grid { grid-template-columns:1fr; } }

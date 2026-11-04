@@ -1,3 +1,4 @@
+import { resolveWageRateForDate } from "../../shared/domain/wage-rate";
 // 인력 관리 화면 순수 모델 및 유효성 검증 함수
 import type {
   EmployeeRecord,
@@ -8,33 +9,14 @@ import { isPayablePerformanceEntry } from "../../shared/domain/performance-file"
 import { employeeRankOptions, isEmployeeRank, formatEmployeeRank, type EmployeeRank } from "../../shared/domain/employee-rank";
 import { isBpEmploymentType, normalizeEmploymentTypeLabel } from "../../shared/domain/employment-type";
 import type { WorkforceWageBulkUpdatePreviewInput } from "../../shared/bridge/contracts";
+import { validateHireDate } from "../../shared/lib/local-date";
 
 export { employeeRankOptions, isEmployeeRank, formatEmployeeRank, type EmployeeRank };
 export { isBpEmploymentType, normalizeEmploymentTypeLabel };
 
-export const MIN_HIRE_DATE = "1990-01-01";
-
-/** 서울(Asia/Seoul) 기준 오늘 날짜 문자열(YYYY-MM-DD)을 반환한다. */
-export function getSeoulTodayDateString(baseDate = new Date()): string {
-  const formatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Seoul",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  });
-  return formatter.format(baseDate);
-}
-
-/** 서울 기준 오늘+1년 날짜 문자열(YYYY-MM-DD)을 반환한다. */
-export function getSeoulMaxHireDateString(todayStr: string): string {
-  const [yearStr, monthStr, dayStr] = todayStr.split("-");
-  const nextYear = parseInt(yearStr, 10) + 1;
-  // 윤년 2월 29일인 경우 다음 해는 2월 28일로 처리
-  if (monthStr === "02" && dayStr === "29") {
-    return `${nextYear}-02-28`;
-  }
-  return `${nextYear}-${monthStr}-${dayStr}`;
-}
+export { getSeoulTodayDateString, getSeoulMaxHireDateString, MIN_HIRE_DATE, validateHireDate } from "../../shared/lib/local-date";
+import { matchesEmployeeEmploymentStatus } from "../../shared/domain/employee-employment";
+export const employeeStatusLabel = (employee:EmployeeRecord):string => employee.employmentPhase==="scheduled"?"재입사 예정":employee.employmentPhase==="retired"?"퇴사":employee.employmentPhase==="employed"?employee.status==="leave"?"휴직":"재직":employee.status==="active"?"재직":employee.status==="leave"?"휴직":"퇴사";
 
 /** YYYY-MM-DD 형식 및 실제 달력 유효 날짜인지 검증한다. */
 export function isValidDateString(val: unknown): val is string {
@@ -51,21 +33,6 @@ export function isValidDateString(val: unknown): val is string {
     date.getUTCMonth() === m - 1 &&
     date.getUTCDate() === d
   );
-}
-
-/** 입사일 유효성 검증 (1990-01-01 ~ 오늘+1년) */
-export function validateHireDate(hireDate: string, todayStr: string): { valid: boolean; message?: string } {
-  if (!hireDate || !isValidDateString(hireDate)) {
-    return { valid: false, message: "올바른 입사일(YYYY-MM-DD)을 입력해 주세요." };
-  }
-  if (hireDate < MIN_HIRE_DATE) {
-    return { valid: false, message: `입사일은 ${MIN_HIRE_DATE} 이후여야 합니다.` };
-  }
-  const maxHireDate = getSeoulMaxHireDateString(todayStr);
-  if (hireDate > maxHireDate) {
-    return { valid: false, message: `입사일은 오늘 기준 1년 이내(${maxHireDate}까지)여야 합니다.` };
-  }
-  return { valid: true };
 }
 
 /** 금액 포맷: 12000 -> "12,000원", 없으면 "-" */
@@ -96,15 +63,10 @@ export function calculateEffectiveWageRates(
 
   // 오늘 유효한 시급: effectiveFrom <= todayStr && (!effectiveTo || todayStr <= effectiveTo)
   // 가장 최근 적용된 줄 1개
-  const currentRate =
-    sorted.find(
-      (r) =>
-        r.effectiveFrom <= todayStr &&
-        (!r.effectiveTo || todayStr <= r.effectiveTo)
-    ) || null;
+  const currentRate = resolveWageRateForDate(sorted, todayStr) ?? null;
 
   // 적용 예정 시급: effectiveFrom > todayStr인 줄 중 가장 이른 줄
-  const scheduledRates = sorted.filter((r) => r.effectiveFrom > todayStr);
+  const scheduledRates = sorted.filter((r) => !r.employmentPeriodCancelled && !r.invalidation && (!r.retirementDate || r.effectiveFrom < r.retirementDate) && r.effectiveFrom > todayStr);
   // 가장 이른 시작일
   const scheduledRate =
     scheduledRates.length > 0
@@ -196,7 +158,7 @@ export function filterEmployees(
 
     // 재직 상태 필터
     if (options.status && options.status !== "all") {
-      if (emp.status !== options.status) {
+      if (!matchesEmployeeEmploymentStatus(emp,options.status)) {
         return false;
       }
     }
@@ -289,6 +251,7 @@ export function isBulkPreviewStale(
   return (
     current.filePath !== previewed.filePath ||
     current.effectiveFrom !== previewed.effectiveFrom ||
+    (current.mapping.employeeCodeColumn ?? "") !== (previewed.mapping.employeeCodeColumn ?? "") ||
     current.mapping.siteNameColumn !== previewed.mapping.siteNameColumn ||
     current.mapping.employeeNameColumn !== previewed.mapping.employeeNameColumn ||
     current.mapping.hourlyRateColumn !== previewed.mapping.hourlyRateColumn
@@ -322,6 +285,7 @@ export interface EmployeeFormInputData {
   status: "active" | "leave" | "retired";
   hireDate?: string;
   retireDate?: string;
+  retirementHireDate?: string;
   siteId?: string;
   shiftGroup?: string;
   hourlyRate?: number;
@@ -353,11 +317,14 @@ export function validateEmployeeFormInput(
     errors.rank = `직급은 ${employeeRankOptions.join(", ")} 중 하나여야 합니다.`;
   }
 
-  // 입사일 검증: 등록 시에는 필수
-  if (!isEdit) {
+  // 기존값은 보존하고, 신규 입력 또는 명시한 정정 날짜만 검증한다.
+  if (!isEdit || data.hireDate !== undefined) {
     const hireRes = validateHireDate(data.hireDate || "", todayStr);
     if (!hireRes.valid) {
       errors.hireDate = hireRes.message || "입사일을 확인해 주세요.";
+    }
+    if (isEdit && hireRes.valid && data.retireDate && data.hireDate! > data.retireDate) {
+      errors.hireDate = "입사일은 퇴사일보다 늦을 수 없습니다.";
     }
   }
 
@@ -374,6 +341,8 @@ export function validateEmployeeFormInput(
   if (data.status === "retired") {
     if (!data.retireDate || !isValidDateString(data.retireDate)) {
       errors.retireDate = "퇴사일을 올바르게 입력해 주세요.";
+    } else if ((data.retirementHireDate ?? data.hireDate) && data.retireDate < (data.retirementHireDate ?? data.hireDate)!) {
+      errors.retireDate = "퇴사일은 입사일보다 빠를 수 없습니다.";
     }
   }
 

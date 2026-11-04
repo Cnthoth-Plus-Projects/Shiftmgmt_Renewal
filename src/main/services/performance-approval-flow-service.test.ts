@@ -1,8 +1,10 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, rmdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import ExcelJS from "exceljs";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import * as archiveService from "./performance-file-archive-service";
+import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
 
 import {
   listApprovedAllowanceCalculationResults,
@@ -32,7 +34,13 @@ import {
   testAdminSession
 } from "./performance-test-helpers";
 import { listPendingPerformanceFiles } from "./performance-queue-service";
-import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { closeSqliteStorage, initializeSqliteStorage, getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { listStoredEmployees, saveStoredEmployee } from "./employee-storage-service";
+import { closeStoredEmployeeWageRate, listStoredEmployeeWageRates, saveStoredEmployeeWageRate } from "./employee-history-service";
+
+import * as intake from "./performance-file-intake-service";
+import { refreshPendingPerformanceForWageChanges } from "./workforce-wage-performance-service";
+import { initializePolicyHistory } from "./policy-history-service";
 
 const testRootBase = path.resolve(process.cwd(), "artifacts", "tests", "performance-approval-flow");
 const allocatedTestRoots: string[] = [];
@@ -47,8 +55,240 @@ const createTestRoot = () => {
   return root;
 };
 
+const prepareApprovedReturn = async () => {
+  const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+  const detail = await syncPreparedReturnedSchedule(fixture);
+  for (const entry of detail.entries) expect((await approvePerformanceFile({ fileId: detail.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+  const archived = getStoredPerformanceFileDetail(detail.id)!;
+  const target = archived.entries.find(e => e.section === "overtime")!;
+  const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+  return { fixture, detail: archived, target, employee };
+};
+const returnFinancial = () => ["performance_approvals", "allowance_calculations", "allowance_calculation_items"].map(t => getSqliteDatabase()!.prepare(`SELECT * FROM ${t} ORDER BY id`).all());
+const previousDay = (date: string) => new Date(Date.parse(`${date}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
+
 describe("performance-approval-flow-service", () => {
+  it("W-08: an explicit invalidation marker blocks the wage of a real newly parsed workbook", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const target = detail.entries.find(e => e.section === "overtime")!;
+    const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+    const rate = listStoredEmployeeWageRates(employee.id)[0];
+    getSqliteDatabase()!.prepare(`INSERT INTO wage_rate_history
+      (id,wage_rate_id,employee_id,action_type,hourly_rate,effective_from,effective_to,change_reason,actor_user_id,actor_login_id,actor_display_name,actor_role,occurred_at)
+      VALUES ('w08-red',?,?, 'invalidated',?,?,?, '잘못 등록한 시급', 'w08','w08','담당자','admin',?)`)
+      .run(rate.id,employee.id,rate.hourlyRate,rate.effectiveFrom,rate.effectiveTo ?? null,new Date().toISOString());
+    const parsed = await intake.buildPerformanceFileDetailFromPath({ filePath: fixture.filePath, settings: getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), forceReparse: true });
+    expect(parsed?.entries.find(e => e.id === target.id)?.hourlyRate).toBeUndefined();
+  });
+
+  it("W-09 retirement preserves the archive until explicit return, then work-date wages remain blocked",async()=>{
+    const {fixture,detail,target,employee}=await prepareApprovedReturn();const before=returnFinancial();
+    saveStoredEmployee({...employee,status:"retired",retireDate:target.workDate,hourlyRate:undefined},testAdminSession);
+    expect(returnFinancial()).toEqual(before);
+    const returned=await returnApprovedPerformanceFileToPending({fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
+    expect(returned.data.entries.find(e=>e.id===target.id)?.hourlyRate).toBeUndefined();expect(returned.data.wageReapplication?.unresolvedEntryCount).toBe(1);
+    expect((await approvePerformanceFile({fileId:detail.id,entryId:target.id,manualHourlyRate:20000,comment:"퇴사 후 우회 차단"},testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(false);
+  });
+
+  it("W-08 real invalidation stays off approved snapshots until explicit return then blocks stale reapproval", async () => {
+    const {fixture,detail,target,employee}=await prepareApprovedReturn();const before=returnFinancial(), rate=listStoredEmployeeWageRates(employee.id)[0];
+    saveStoredEmployeeWageRate({employeeId:employee.id,effectiveFrom:rate.effectiveFrom,hourlyRate:rate.hourlyRate,revision:{operation:"invalidate",wageRateId:rate.id,expectedRevision:rate.revisionToken!,changeReason:"W08 원본 시급 무효"}},testAdminSession);
+    expect(returnFinancial()).toEqual(before);expect(getStoredPerformanceFileDetail(detail.id)?.entries.find(e=>e.id===target.id)?.hourlyRate).toBe(target.hourlyRate);
+    const returned=await returnApprovedPerformanceFileToPending({fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
+    expect(returned.data.entries.find(e=>e.id===target.id)?.hourlyRate).toBeUndefined();expect(returned.data.wageReapplication?.unresolvedEntryCount).toBe(1);
+    expect((await approvePerformanceFile({fileId:detail.id,entryId:target.id},testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(false);
+  });
+
+  it("W-07: returning approved source reapplies its work-date wage before immediate reapproval", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    for (const entry of detail.entries) expect((await approvePerformanceFile({ fileId: detail.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const target = detail.entries.find(e => e.section === "overtime")!;
+    const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 15500, effectiveFrom: target.workDate });
+    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(returned.ok).toBe(true);
+    if (!returned.ok) throw new Error(returned.message);
+    expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBe(15500);
+    expect(returned.data.entries.find(e => e.id === target.id)?.sourceSignature).toBe(target.sourceSignature);
+    expect({ ...returned.data.entries.find(e => e.id === target.id)!, hourlyRate: target.hourlyRate }).toEqual(target);
+    expect(returned.data.wageReapplication).toMatchObject({ status: "completed", appliedEntryCount: 3, unresolvedEntryCount: 0, sourceFileMissing: false });
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    expect(listApprovedAllowanceCalculationResults().find(c => c.entryId === target.id)?.hourlyRate).toBe(15500);
+  });
+
+  it.each(["closed", "future-only", "missing-history"])("W-07: %s clears the old positive wage and blocks stale reapproval", async mode => {
+    const { fixture, detail, target, employee } = await prepareApprovedReturn();
+    const rate = listStoredEmployeeWageRates(employee.id)[0];
+    if (mode === "missing-history") getSqliteDatabase()!.prepare("DELETE FROM wage_rates WHERE employee_id = ?").run(employee.id);
+    else {
+      closeStoredEmployeeWageRate({ employeeId: employee.id, wageRateId: rate.id, effectiveTo: previousDay(target.workDate) });
+      if (mode === "future-only") saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: "2026-04-01" });
+    }
+    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
+    expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBeUndefined();
+    expect(returned.data.wageReapplication).toMatchObject({ status: "needs-review", unresolvedEntryCount: 1 });
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(false);
+    expect(listApprovedAllowanceCalculationResults().filter(c => c.fileId === detail.id)).toHaveLength(0);
+  });
+
+  it.each(["missing-employee", "invalid-date"])("W-07: %s cannot retain a historical payable wage", async mode => {
+    const { fixture, detail, target } = await prepareApprovedReturn();
+    if (mode === "missing-employee") getSqliteDatabase()!.prepare("UPDATE performance_entries SET employee_code = 'W07-UNKNOWN' WHERE id = ?").run(target.id);
+    else getSqliteDatabase()!.prepare("UPDATE performance_entries SET work_date = '2026-02-30' WHERE id = ?").run(target.id);
+    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
+    expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBeUndefined();
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(false);
+  });
+
+  it.each(["missing-source", "corrupt-source"])("W-07: %s retains cached source fields and applies the current wage", async mode => {
+    const { fixture, detail, target, employee } = await prepareApprovedReturn();
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: target.workDate });
+    if (mode === "missing-source") { const fs = await import("node:fs"); fs.unlinkSync(detail.filePath); }
+    else writeFileSync(detail.filePath, "corrupt workbook, cached Excel source retained");
+    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
+    const entry = returned.data.entries.find(e => e.id === target.id)!;
+    expect(entry.hourlyRate).toBe(16600); expect(entry.sourceSignature).toBe(target.sourceSignature);
+    expect(entry.startTime).toBe(target.startTime); expect(entry.totalWorkMinutes).toBe(target.totalWorkMinutes);
+    expect(returned.data.wageReapplication?.sourceFileMissing).toBe(mode === "missing-source");
+  });
+
+  it("W-07: resets an old manual wage and removes only known wage errors", async () => {
+    const { fixture, detail, target, employee } = await prepareApprovedReturn();
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id, manualHourlyRate: 19000, comment: "이전 수동 정정" }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    getSqliteDatabase()!.prepare("UPDATE performance_entries SET hourly_rate = 19000, alert_json = ? WHERE id = ?").run(JSON.stringify([{ severity: "error", message: `${target.employeeName}의 시급 정보가 없습니다.` }, { severity: "warning", message: "증빙 확인 메모" }]), target.id);
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: target.workDate });
+    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(result.ok).toBe(true); if (!result.ok) throw new Error(result.message);
+    const entry = result.data.entries.find(e => e.id === target.id)!;
+    expect(entry.hourlyRate).toBe(16600); expect(entry.alerts).toEqual([{ severity: "warning", message: "증빙 확인 메모" }]);
+  });
+
+  it("W-07: unrelated blocking source errors survive wage application", async () => {
+    const { fixture, detail, target } = await prepareApprovedReturn();
+    getSqliteDatabase()!.prepare("UPDATE performance_entries SET alert_json = ? WHERE id = ?").run(JSON.stringify([{ severity: "error", message: "시급 증빙 적용 내용이 원본과 다릅니다." }]), target.id);
+    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
+    expect(returned.data.entries.find(e => e.id === target.id)?.alerts).toEqual([{ severity: "error", message: "시급 증빙 적용 내용이 원본과 다릅니다." }]);
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(false);
+  });
+
+  it.each(["proposal-lock", "db-reopen", "settings"])("W-07: %s during the physical move preserves approvals and restores the source", async mode => {
+    const { fixture, detail } = await prepareApprovedReturn();
+    const before = returnFinancial(), original = archiveService.restoreApprovedPerformanceFileToPending;
+    let expected = before;
+    vi.spyOn(archiveService, "restoreApprovedPerformanceFileToPending").mockImplementationOnce(async input => {
+      const moved = await original(input);
+      if (mode === "proposal-lock") { getSqliteDatabase()!.prepare("UPDATE allowance_calculations SET status = 'proposal-approved' WHERE file_id = ?").run(detail.id); expected = returnFinancial(); }
+      else if (mode === "db-reopen") { closeSqliteStorage(); initializeSqliteStorage({ dbPath: fixture.dbPath }); }
+      else saveStoredAppSettings({ ...getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), pendingDir: path.join(fixture.rootDir, "changed-pending") }, { userDataPath: fixture.userDataPath });
+      return moved;
+    });
+    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(expected);
+    expect(getStoredPerformanceFileDetail(detail.id)?.directoryType).toBe("approved"); expect(existsSync(detail.filePath)).toBe(true);
+  });
+
+  it.each(["ABORT", "ROLLBACK"])("W-07: failed wage replacement (%s) restores financial records and physical source", async failure => {
+    const { fixture, detail } = await prepareApprovedReturn(); const before = returnFinancial();
+    const db = getSqliteDatabase()!;
+    db.exec(`CREATE TRIGGER w07_failed_insert BEFORE INSERT ON performance_entries BEGIN SELECT RAISE(${failure}, 'W07 insert failure'); END`);
+    try {
+      const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+      expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(before);
+      expect(getStoredPerformanceFileDetail(detail.id)?.directoryType).toBe("approved"); expect(existsSync(detail.filePath)).toBe(true);
+    } finally { db.exec("DROP TRIGGER w07_failed_insert"); }
+  });
+
+  it("W-07: physical move failure leaves all approval records and source untouched", async () => {
+    const { fixture, detail } = await prepareApprovedReturn(); const before = returnFinancial();
+    const blocked = path.join(fixture.rootDir, "pending-is-a-file");
+    saveStoredAppSettings({ ...getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), pendingDir: blocked }, { userDataPath: fixture.userDataPath });
+    rmdirSync(blocked); writeFileSync(blocked, "not a directory");
+    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(before); expect(existsSync(detail.filePath)).toBe(true);
+  });
+
+  it("W-07 affected W06: actual folder change after parsing preserves cached entries", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const target = detail.entries.find(e => e.section === "overtime")!;
+    const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+    const rate = saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: target.workDate });
+    const before = getStoredPerformanceFileDetail(detail.id), original = intake.buildPerformanceFileDetailFromPath;
+    const changedPending = path.join(fixture.rootDir, "actual-changed-pending");
+    vi.spyOn(intake, "buildPerformanceFileDetailFromPath").mockImplementationOnce(async input => {
+      const parsed = await original(input);
+      saveStoredAppSettings({ ...getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), pendingDir: changedPending }, { userDataPath: fixture.userDataPath });
+      return parsed;
+    });
+    const result = await refreshPendingPerformanceForWageChanges([rate]);
+    expect(getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }).pendingDir).toBe(changedPending);
+    expect(result).toMatchObject({ status: "partial", refreshedFileCount: 0 });
+    expect(result.issues[0].message).toContain("변경되었습니다");
+    expect(getStoredPerformanceFileDetail(detail.id)).toEqual(before);
+  });
+
+  it("W-07: rollback never overwrites a new file at the original archive path", async () => {
+    const { fixture, detail } = await prepareApprovedReturn(); const before = returnFinancial(), bytes = readFileSync(detail.filePath);
+    const original = archiveService.restoreApprovedPerformanceFileToPending; let pendingPath = "";
+    vi.spyOn(archiveService, "restoreApprovedPerformanceFileToPending").mockImplementationOnce(async input => {
+      const moved = await original(input); pendingPath = moved.pendingFilePath; writeFileSync(detail.filePath, "new unrelated file"); return moved;
+    });
+    const db = getSqliteDatabase()!; db.exec("CREATE TRIGGER w07_failed_insert BEFORE INSERT ON performance_entries BEGIN SELECT RAISE(ABORT, 'W07 insert failure'); END");
+    try {
+      const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+      expect(result.ok).toBe(false); if (result.ok) throw new Error("Rollback collision must be reported");
+      expect(result.message).toContain("복원"); expect(returnFinancial()).toEqual(before);
+      expect(readFileSync(detail.filePath, "utf8")).toBe("new unrelated file"); expect(readFileSync(pendingPath)).toEqual(bytes);
+    } finally { db.exec("DROP TRIGGER w07_failed_insert"); }
+  });
+
+  it("W-07: destination collision and another file's financial history are preserved", async () => {
+    const { fixture, detail, target } = await prepareApprovedReturn();
+    await restageReturnedScheduleFixture(fixture);
+    const workbook = new ExcelJS.Workbook(); await workbook.xlsx.readFile(fixture.filePath);
+    workbook.worksheets[0].getCell("BE34").value = 2; await workbook.xlsx.writeFile(fixture.filePath);
+    const other = await syncPreparedReturnedSchedule(fixture), otherEntry = other.entries.find(e => e.section === "overtime")!;
+    expect((await approvePerformanceFile({ fileId: other.id, entryId: otherEntry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const history = listPerformanceApprovalHistory().filter(a => a.fileId === other.id);
+    const calculations = listApprovedAllowanceCalculationResults().filter(c => c.fileId === other.id);
+    const bytes = readFileSync(fixture.filePath);
+    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(result.ok).toBe(true); if (!result.ok) throw new Error(result.message);
+    expect(result.data.filePath).not.toBe(fixture.filePath); expect(readFileSync(fixture.filePath)).toEqual(bytes);
+    expect(result.data.entries.find(e => e.id === target.id)?.sourceSignature).toBe(target.sourceSignature);
+    expect(listPerformanceApprovalHistory().filter(a => a.fileId === other.id)).toEqual(history);
+    expect(listApprovedAllowanceCalculationResults().filter(c => c.fileId === other.id)).toEqual(calculations);
+  });
+
+  it("W-05: explicit different manual rate creates history once; repeating that rate is a no-op", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(e => e.section === "overtime")!;
+    const input = { fileId: detail.id, entryId: entry.id };
+    expect((await approvePerformanceFile(input, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const original = getPerformanceApprovalHistoryByEntryId(entry.id)[0];
+    expect((await approvePerformanceFile({ ...input, manualHourlyRate: 15500, comment: "명시 시급 정정" }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const history = getPerformanceApprovalHistoryByEntryId(entry.id);
+    const calculations = listApprovedAllowanceCalculationResults();
+    expect(history).toHaveLength(2);
+    expect(history).toContainEqual(original);
+    expect(JSON.parse(history.find(r => r.id !== original.id)!.snapshotJson).entry.hourlyRate).toBe(15500);
+    expect(calculations.some(c => c.entryId === entry.id && c.hourlyRate === 15500)).toBe(true);
+    const duplicate = await approvePerformanceFile({ ...input, manualHourlyRate: 15500, comment: "같은 시급 반복" }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(duplicate.ok).toBe(false);
+    expect(duplicate.errorCode).toBe("PERFORMANCE_ALREADY_APPROVED");
+    expect(getPerformanceApprovalHistoryByEntryId(entry.id)).toEqual(history);
+    expect(listApprovedAllowanceCalculationResults()).toEqual(calculations);
+  });
+
   afterEach(() => {
+    vi.restoreAllMocks();
     resetPerformanceApprovalStateForTest();
     resetApprovedAllowanceCalculationStateForTest();
     resetPerformanceFileStorageForTest();
@@ -899,5 +1139,56 @@ describe("performance-approval-flow-service", () => {
     expect(noCodeResult.ok).toBe(false);
     expect(noCodeResult.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
     expect(noCodeResult.message).toContain("사번");
+  });
+
+  it("PH-R09: should reject approval with POLICY_CONFLICT when expectedPolicyFingerprint does not match and record used event on success", async () => {
+    const fixture = await prepareReturnedScheduleFixture({
+      rootDir: createTestRoot(),
+      templateVariant: "sample1"
+    });
+    const database = getSqliteDatabase()!;
+    initializePolicyHistory(database, {
+      legacySubstituteDate: "2026-07-01",
+      legacyChangedDate: "2026-07-01",
+    });
+
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find((e) => e.section === "substitute" && e.appliedPolicies?.bindings?.length);
+    expect(entry).toBeDefined();
+
+    // 1. fingerprint 불일치 시 거절
+    const conflictResult = await approvePerformanceFile(
+      {
+        fileId: detail.id,
+        entryId: entry!.id,
+        expectedPolicyFingerprint: "wrong-fingerprint"
+      },
+      testAdminSession,
+      {
+        userDataPath: fixture.userDataPath,
+        requireExpectedPolicyFingerprint: true
+      }
+    );
+
+    expect(conflictResult.ok).toBe(false);
+    expect(conflictResult.errorCode).toBe("POLICY_CONFLICT");
+
+    // 2. fingerprint 일치 시 승인 성공 및 used 이벤트 기록 확인
+    const successResult = await approvePerformanceFile(
+      {
+        fileId: detail.id,
+        entryId: entry!.id,
+        expectedPolicyFingerprint: entry!.appliedPolicies!.fingerprint
+      },
+      testAdminSession,
+      {
+        userDataPath: fixture.userDataPath,
+        requireExpectedPolicyFingerprint: true
+      }
+    );
+
+    expect(successResult.ok).toBe(true);
+    const usedEvents = database.prepare("SELECT * FROM policy_events WHERE event_type = 'used' AND related_approval_id = ?").all(successResult.data!.id);
+    expect(usedEvents.length).toBeGreaterThanOrEqual(1);
   });
 });

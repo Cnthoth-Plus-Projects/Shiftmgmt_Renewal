@@ -1,198 +1,34 @@
-// sites-wizard-review.ts — 마법사 1-C 단계: 입력 검토 및 오류 목록, 요약 표시
 import type { PatternDraft } from "./sites-pattern-model";
-import { validatePatternDraft, type PatternValidationResult } from "./sites-pattern-model";
-
-export interface SitesWizardReviewOptions {
-  container: HTMLElement;
-  draft: PatternDraft;
-  siteName: string;
-  siteCustomer: string;
-  existingPatterns?: import("../../shared/domain/model").ShiftPatternRecord[];
-  onNavigateStep: (stepId: "basics" | "pattern") => void;
-}
-
+import { validatePatternDraft, getDutyCodes } from "./sites-pattern-model";
+import { projectTeamPatterns, guiBaseDate, patternText } from "./sites-team-pattern";
+import { runThreeMonthSimulation } from "./sites-simulation";
+import { calculateDurationMinutes, calculateWorkBreakdown } from "../../shared/domain/calculation";
+import type { ShiftPatternRecord } from "../../shared/domain/model";
+const el=<K extends keyof HTMLElementTagNameMap>(tag:K,cls="",text=""):HTMLElementTagNameMap[K]=>{const e=document.createElement(tag);e.className=cls;e.textContent=text;return e;};
+const duration=(minutes:number):string=>`${Math.floor(minutes/60)}시간${minutes%60?` ${minutes%60}분`:""}`;
+export interface SitesWizardReviewOptions {container:HTMLElement;draft:PatternDraft;siteName:string;siteCustomer:string;existingPatterns?:ShiftPatternRecord[];onNavigateStep:(id:"basics"|"pattern")=>void;onSessionExpired?:()=>void;}
 export class SitesWizardReview {
-  private options:SitesWizardReviewOptions;
-  private container: HTMLElement;
-  private draft: PatternDraft;
-  private siteName: string;
-  private siteCustomer: string;
-  private onNavigateStep: (stepId: "basics" | "pattern") => void;
-
-  constructor(options: SitesWizardReviewOptions) {
-    this.options=options;
-    this.container = options.container;
-    this.draft = options.draft;
-    this.siteName = options.siteName;
-    this.siteCustomer = options.siteCustomer;
-    this.onNavigateStep = options.onNavigateStep;
-  }
-
-  public render(): void {
-    this.container.innerHTML = "";
-
-    const card = document.createElement("div");
-    card.className = "sites-wizard-card";
-
-    // 유효성 검사 실행
-    const validation: PatternValidationResult = validatePatternDraft(this.draft, this.siteName,this.options.existingPatterns);
-
-    // 1. 검토 상태 배너
-    const banner = document.createElement("div");
-    banner.style.padding = "14px 18px";
-    banner.style.borderRadius = "6px";
-    banner.style.display = "flex";
-    banner.style.alignItems = "flex-start";
-    banner.style.gap = "12px";
-
-    if (!validation.isValid) {
-      banner.style.background = "#FCEBE9";
-      banner.style.border = "1px solid #C0392B";
-      banner.style.color = "#C0392B";
-      banner.innerHTML = `
-        <span class="material-symbols-outlined" style="font-size:22px; margin-top:2px;">error</span>
-        <div>
-          <div style="font-weight:bold; font-size:14px; margin-bottom:4px;">
-            입력 항목 검토 결과 — 총 ${validation.issues.length}건의 오류가 발견되었습니다.
-          </div>
-          <div style="font-size:12px;">
-            아래 오류 항목을 확인하고 해당 입력 단계로 이동하여 내용을 수정한 후 다시 검토해 주세요.
-          </div>
-        </div>
-      `;
-    } else {
-      banner.style.background = "#E8F5EE";
-      banner.style.border = "1px solid #1E7A46";
-      banner.style.color = "#1E7A46";
-      banner.innerHTML = `
-        <span class="material-symbols-outlined" style="font-size:22px; margin-top:2px;">check_circle</span>
-        <div>
-          <div style="font-weight:bold; font-size:14px; margin-bottom:4px;">
-            입력 항목 검토 완료 — 모든 설정이 유효합니다.
-          </div>
-          <div style="font-size:12px;">
-            기본 설정과 교대 패턴이 정상적으로 검증되었습니다. 다음 단계로 이동하여 조별 인력 조직을 구성할 수 있습니다.
-          </div>
-        </div>
-      `;
-    }
-    card.appendChild(banner);
-
-    // 2. 오류 목록 (오류가 있는 경우)
-    if (!validation.isValid) {
-      const issueBox = document.createElement("div");
-      issueBox.style.border = "1px solid var(--line, #E2E5EA)";
-      issueBox.style.borderRadius = "6px";
-      issueBox.style.padding = "14px";
-      issueBox.style.background = "#FFFFFF";
-
-      const issueTitle = document.createElement("div");
-      issueTitle.style.fontWeight = "bold";
-      issueTitle.style.fontSize = "13px";
-      issueTitle.style.marginBottom = "10px";
-      issueTitle.textContent = "오류 목록 및 수정 바로가기:";
-      issueBox.appendChild(issueTitle);
-
-      const ul = document.createElement("ul");
-      ul.style.listStyle = "none";
-      ul.style.padding = "0";
-      ul.style.margin = "0";
-      ul.style.display = "flex";
-      ul.style.flexDirection = "column";
-      ul.style.gap = "8px";
-
-      validation.issues.forEach((issue) => {
-        const li = document.createElement("li");
-        li.style.display = "flex";
-        li.style.justifyContent = "space-between";
-        li.style.alignItems = "center";
-        li.style.padding = "6px 10px";
-        li.style.background = "#F8FAFC";
-        li.style.borderRadius = "4px";
-        li.style.fontSize = "12px";
-
-        const textSpan = document.createElement("span");
-        textSpan.style.color = "#C0392B";
-        textSpan.style.fontWeight = "500";
-        textSpan.textContent = `• ${issue.message}`;
-        li.appendChild(textSpan);
-
-        const linkBtn = document.createElement("button");
-        linkBtn.type = "button";
-        linkBtn.className = "btn-secondary";
-        linkBtn.style.fontSize = "11px";
-        linkBtn.style.height = "24px";
-        linkBtn.textContent = issue.step === "basics" ? "기본 설정으로 이동" : "근무시간 설정으로 이동";
-        linkBtn.addEventListener("click", () => {
-          this.onNavigateStep(issue.step === "basics" ? "basics" : "pattern");
-        });
-        li.appendChild(linkBtn);
-
-        ul.appendChild(li);
-      });
-
-      issueBox.appendChild(ul);
-      card.appendChild(issueBox);
-    }
-
-    // 3. 설정 요약 테이블
-    const summaryCard = document.createElement("div");
-    summaryCard.style.border = "1px solid var(--line, #E2E5EA)";
-    summaryCard.style.borderRadius = "6px";
-    summaryCard.style.padding = "16px";
-    summaryCard.style.background = "#FFFFFF";
-
-    summaryCard.innerHTML = `
-      <div style="font-weight:bold; font-size:14px; margin-bottom:12px; border-bottom:1px solid var(--line, #E2E5EA); padding-bottom:8px;">
-        설정 요약 정보
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:12px;">
-        <div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">근무지 이름</span>
-            <span class="sites-info-val"><strong>${this.escape(this.siteName || "미입력")}</strong></span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">고객사</span>
-            <span class="sites-info-val">${this.escape(this.siteCustomer || "기타")}</span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">설정 적용 시작일</span>
-            <span class="sites-info-val"><strong>${this.draft.effectiveFrom || "미지정"}</strong></span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">조 수</span>
-            <span class="sites-info-val">${this.draft.teamCount}개 조</span>
-          </div>
-        </div>
-        <div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">패턴 코드</span>
-            <span class="sites-info-val"><strong>${this.draft.patternCode || "D-E-N-O"}</strong></span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">근무 묶음 수</span>
-            <span class="sites-info-val">${this.draft.cycles.length}개 (${this.draft.isPerTeamPattern ? "조별 개별 패턴" : "공유 패턴"})</span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">Pool 사용 여부</span>
-            <span class="sites-info-val">${this.draft.poolEnabled ? "사용" : "미사용"}</span>
-          </div>
-          <div class="sites-info-row" style="padding:4px 0;">
-            <span class="sites-info-label">등록된 근무/휴무 유형</span>
-            <span class="sites-info-val">${this.draft.dutyTypes.map((d) => d.label).join(", ")}</span>
-          </div>
-        </div>
-      </div>
-    `;
-    card.appendChild(summaryCard);
-
-    this.container.appendChild(card);
-  }
-
-  private escape(str: string): string {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
+  private disposed=false;private request=0;private dates=new Set<string>();private holidayState="공휴일 확인 중";private selectedMonth=0;
+  constructor(private options:SitesWizardReviewOptions){}
+  destroy():void{this.disposed=true;this.request++;}
+  async loadHolidayData():Promise<void>{const token=++this.request;try{const [y,m]=(this.options.draft.effectiveFrom||guiBaseDate(this.options.draft)).slice(0,7).split("-").map(Number);const years=[...new Set([0,1,2].map(i=>new Date(y,m-1+i,1,12).getFullYear()))];const results=await Promise.all(years.map(year=>window.appBridge!.getSchedulePreparationContext(year)));if(this.disposed||token!==this.request)return;for(const r of results){if(!r.ok){if(/SESSION/.test(r.errorCode))this.options.onSessionExpired?.();throw Error(r.message);}}this.dates=new Set(results.flatMap(r=>r.ok?r.data.publicHolidayDates:[]));this.holidayState="공휴일 반영";}catch{if(this.disposed||token!==this.request)return;this.holidayState="공휴일 조회 실패 · 월별 시간은 주말만 반영한 잠정 값입니다";}if(!this.disposed)this.render();}
+  render():void{
+    if(this.disposed)return;const {draft:d,container}=this.options;container.replaceChildren();const root=el("div","sites-review-workspace"),validation=validatePatternDraft(d,this.options.siteName,this.options.existingPatterns);
+    const banner=el("div",`sites-review-banner ${validation.isValid?"valid":"invalid"}`,validation.isValid?"입력 항목 검토 완료 · 근무시간과 조별 예상 결과를 확인해 주세요.":`입력 항목 검토 결과 · ${validation.issues.length}건을 수정해 주세요.`);banner.setAttribute("role",validation.isValid?"status":"alert");root.append(banner);
+    if(!validation.isValid){const list=el("div","sites-review-issues");for(const issue of validation.issues){const row=el("div","",issue.message),b=el("button","btn-secondary",issue.step==="basics"?"기본 설정 수정":"패턴 수정");b.type="button";b.addEventListener("click",()=>this.options.onNavigateStep(issue.step==="basics"?"basics":"pattern"));row.append(b);list.append(row);}root.append(list);}
+    const grid=el("div","sites-review-grid"),left=el("section","sites-review-panel"),right=el("section","sites-review-panel");
+    left.append(el("h2","sites-editor-heading","설정 요약 정보"));const info=el("dl","sites-review-facts");for(const [label,value] of [["근무지",this.options.siteName],["고객사",this.options.siteCustomer||"기타"],["설정 적용 시작일",d.effectiveFrom||"미지정"],["패턴 시작일",guiBaseDate(d)],["등록 조",`${d.teamSettings.filter(t=>t.isActive!==false).length}개`],["Pool",d.poolEnabled?`${d.poolStartTime||"—"}~${d.poolEndTime||"—"} · 휴게${d.poolBreakMinutes??0}분`:"미사용"]])info.append(el("dt","",label),el("dd","",value));left.append(info);
+    left.append(el("h3","sites-review-heading","근무 유형별 시간 산출"));const table=el("table","sites-review-time-table");table.id="sites-review-duty-times";const head=el("thead"),hr=el("tr");for(const text of ["유형","구분","시작","종료","휴게","실근로"])hr.append(el("th","",text));head.append(hr);table.append(head);const body=el("tbody"),codes=getDutyCodes(d.dutyTypes,d.dutyCodes);const split=d.cycles.some(c=>c.holidayTimeMode==="split");
+    for(const duty of d.dutyTypes){for(const holiday of duty.kind==="work"&&split?[false,true]:[false]){const start=holiday?duty.holidayStartTime||duty.startTime:duty.startTime,end=holiday?duty.holidayEndTime||duty.endTime:duty.endTime,breakMinutes=(holiday?duty.holidayBreakMinutes??duty.breakMinutes:duty.breakMinutes)??0;let net="—";if(duty.kind==="work"&&start&&end)try{net=duration(calculateDurationMinutes({startTime:start,endTime:end,breakMinutes}));}catch{/* Validation reports invalid times. */}const row=el("tr");row.dataset.duty=codes[duty.id]||"O";for(const [i,text] of [duty.label,duty.kind==="off"?"휴무":holiday?"휴일":split?"평일":"공통",duty.kind==="off"?"—":start||"미입력",duty.kind==="off"?"—":end||"미입력",duty.kind==="off"?"—":`${breakMinutes}분`,net].entries())row.append(el("td",i===0?`duty-${codes[duty.id]||"O"}`:"",text));body.append(row);}}
+    table.append(body);left.append(table,el("p","sites-review-note","실근로시간은 익일 종료를 반영한 근무 구간에서 휴게시간을 뺀 값입니다."));
+    if(split&&d.dutyTypes.some(t=>t.kind==="work"&&(!t.holidayStartTime||!t.holidayEndTime)))left.append(el("p","sites-review-warning","휴일 시간이 비어 있는 유형은 평일 시간을 사용합니다. 저장 전 휴일 설정을 확인해 주세요."));
+    if(d.holidayPolicy){const labels={public:"법정 공휴일",saturday:"토요일",sunday:"일요일"};const note=el("div","sites-review-note");note.append(el("b","","휴일 규칙 · 기본 패턴은 날짜대로 계속 진행"),el("p","",`공휴일·주말이 겹치면 ${d.holidayPolicy.overlapPriority==="weekend"?"토·일요일":"공휴일"} 규칙 우선 · 야간근무는 시작 날짜 기준`));for(const [category,rule] of Object.entries(d.holidayPolicy.rules)){note.append(el("p","",`${labels[category as keyof typeof labels]}: ${rule.mode==="off"?"휴무로 대체":rule.mode==="separate"?`별도 ${Object.values(rule.teamPatterns??{})[0]?.length??0}일 사이클 · 시작 ${rule.startDate}`:"기본 차례 유지 · 휴일 시간 적용"}`));for(const [code,t] of Object.entries(rule.times??{})){const duty=d.dutyTypes.find(type=>codes[type.id]===code);note.append(el("p","",`${duty?.label||code} ${t.startTime}~${t.endTime} · 휴게 ${t.breakMinutes}분 · 실근로 ${duration(calculateDurationMinutes(t))}`));}}left.append(note);}
+    if(d.holidayPolicy){const info=el("div","sites-review-note");for(const [category,rule]of Object.entries(d.holidayPolicy.rules))for(const [team,times]of Object.entries(rule.teamTimes??{}))for(const [code,t]of Object.entries(times)){const duty=d.dutyTypes.find(type=>codes[type.id]===code);info.append(el("p","",`${category==="public"?"공휴일":category==="saturday"?"토요일":"일요일"} · ${d.teamSettings.find(s=>s.teamLabel===team)?.displayName||team} · ${duty?.label||code}: ${t.startTime}~${t.endTime}, 휴게${t.breakMinutes}분`));}const rows=d.holidayPolicy.dateExceptions??[];if(rows.length)info.append(el("b","",`날짜 예외 ${rows.length}건 · 전체 ${rows.filter(r=>r.scope==="site").length} / 조 ${rows.filter(r=>r.scope==="team").length} / 개인 ${rows.filter(r=>r.scope==="employee").length}`),el("p","","조별 대표 달력·산출에는 전체/조 예외를 반영합니다. 개인 예외의 실제 변경 전·후는 ‘날짜·개인 예외 → 결과 미리보기’에서 확인하세요. 저장된 근무표는 자동으로 바뀌지 않습니다."));if(info.childElementCount)left.append(info);}
+    right.append(el("h2","sites-editor-heading","조별 반복 패턴과 예상 시간"));const patterns=el("div","sites-review-patterns");patterns.id="sites-review-team-patterns";for(const row of projectTeamPatterns(d)){const line=el("div");line.append(el("b","",row.displayName),el("code","",patternText(row.steps)),el("span","",`${row.steps.length}일 반복`));patterns.append(line);}right.append(patterns);
+    if(validation.isValid){const sim=runThreeMonthSimulation({draft:d,startMonth:(d.effectiveFrom||guiBaseDate(d)).slice(0,7),existingPatterns:this.options.existingPatterns,publicHolidayDates:this.holidayState==="공휴일 반영"?this.dates:undefined});const tabs=el("div","sites-review-month-tabs");sim.months.forEach((month,i)=>{const b=el("button","btn-secondary",month.scheduleMonth);b.type="button";b.setAttribute("aria-pressed",String(i===this.selectedMonth));b.addEventListener("click",()=>{this.selectedMonth=i;this.render();});tabs.append(b);});right.append(tabs);
+      const month=sim.months[this.selectedMonth],applied=month.appliedPattern;right.append(el("p","sites-review-note",`${this.holidayState} · 조별 1인 기준 예상치`),el("p","sites-review-note",applied?`${month.isDraftPattern?"편집 중":"저장된"} 설정 · ${applied.name} · 적용일 ${applied.effectiveFrom||"미지정"}`:"해당 월에 적용할 설정이 없습니다."));const totals=el("table","sites-review-month-table");totals.id="sites-review-monthly-hours";const th=el("thead"),tr=el("tr");for(const text of ["조","주간","석간","야간","휴무","실근로","야간시간"])tr.append(el("th","",text));th.append(tr);totals.append(th);const tb=el("tbody");
+      for(const team of d.teamSettings.filter(t=>t.isActive!==false)){const map=month.teamDailyDuty.get(team.teamLabel),values=[...(map?.values()||[])],items=month.items.filter(i=>i.teamLabel===team.teamLabel);let work=0,night=0;for(const item of items)if(item.startTime&&item.endTime&&item.dutyCode!=="O"){const calculated=calculateWorkBreakdown({timeRange:{startTime:item.startTime,endTime:item.endTime,breakMinutes:item.breakMinutes??0}});work+=calculated.totalWorkMinutes;night+=calculated.nightMinutes;}const r=el("tr");r.dataset.team=team.teamLabel;const present=values.length>0;for(const text of [team.displayName||team.teamLabel,...["D","E","N","O"].map(code=>present?`${values.filter(v=>v===code).length}일`:"—"),present?duration(work):"—",present?duration(night):"—"])r.append(el("td","",text));tb.append(r);}totals.append(tb);right.append(totals,el("p","sites-review-note","야간시간은 22~06시 구간에 기존 휴게 차감 규칙을 적용합니다. 월별 적용 설정에 따라 결과가 달라질 수 있습니다."));
+    }else right.append(el("p","sites-review-warning","미지정 칸과 오류를 수정하면 월별 근무일·산출 시간이 표시됩니다."));
+    grid.append(left,right);root.append(grid);container.append(root);
   }
 }

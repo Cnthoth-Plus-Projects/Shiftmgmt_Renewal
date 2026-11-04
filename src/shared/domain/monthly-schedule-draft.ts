@@ -1,3 +1,6 @@
+import { isManagedEmployeeEmployedOnDate } from "./employee-employment";
+import { resolveHolidayStep, getPatternDutyCodes } from "./holiday-pattern";
+import { resolveDateScheduleExceptions } from "./schedule-exceptions";
 import { buildShiftPatternDutySlotMap } from "./shift-pattern-compression";
 import { formatEmployeeDisplayName } from "./employment-type";
 import { calculateRotationIndex } from "./rotation-index";
@@ -239,6 +242,7 @@ const getEmployeeScheduleStartDate = (employee: EmployeeRecord) =>
   employee.hireDate ?? employee.currentAssignmentStartDate;
 
 const isEmployeeAssignedOnWorkDate = (employee: EmployeeRecord, workDate: string) => {
+  if(!isManagedEmployeeEmployedOnDate(employee,workDate)) return false;
   const scheduleStartDate = getEmployeeScheduleStartDate(employee);
 
   if (scheduleStartDate && workDate < scheduleStartDate) {
@@ -490,14 +494,22 @@ export const buildMonthlyScheduleDraft = (
         teamCycleContext.teamIndex,
         cycleLength
       );
-      const step = orderedSteps[cycleIndex]!;
-      const dutyCode = normalizeStepDutyCode(step.dutyCode, dutyCodeMap);
-      const useHolidayTimes = shouldUseHolidayTimes(
+      let step = orderedSteps[cycleIndex]!;
+      let policyHoliday: boolean | undefined;
+      let catalog: ShiftPatternStep[] = [];
+      if(input.pattern.holidayPolicy) {
+        const typeCodes=getPatternDutyCodes(input.pattern.dutyTypes ?? []);
+        catalog = [...(input.pattern.dutyTypes ?? []).map(d=>({id:d.id,stepIndex:0,dutyCode:typeCodes[d.id],startTime:d.startTime,endTime:d.endTime,breakMinutes:d.breakMinutes ?? 0,holidayStartTime:d.holidayStartTime,holidayEndTime:d.holidayEndTime,holidayBreakMinutes:d.holidayBreakMinutes})),...getPatternCycles(input.pattern).flatMap(c=>c.steps).map(s=>({...s,dutyCode:normalizeStepDutyCode(s.dutyCode,dutyCodeMap)}))];
+        const result=resolveHolidayStep(input.pattern.holidayPolicy,workDate,publicHolidayDates,shiftGroup,{...step,dutyCode:normalizeStepDutyCode(step.dutyCode,dutyCodeMap)},catalog);step=result.step;policyHoliday=result.holiday;
+      }
+      const dutyCode = input.pattern.holidayPolicy ? step.dutyCode : normalizeStepDutyCode(step.dutyCode, dutyCodeMap);
+      const useHolidayTimes = policyHoliday ?? shouldUseHolidayTimes(
         teamCycleContext.cycle,
         workDate,
         publicHolidayDates
       );
       const timing = resolveStepTimesForDate(step, useHolidayTimes);
+      const resolved = resolveDateScheduleExceptions(input.pattern.holidayPolicy?.dateExceptions, workDate, shiftGroup, employee.id, { dutyCode, ...timing }, catalog);
 
       return [
         {
@@ -506,10 +518,10 @@ export const buildMonthlyScheduleDraft = (
           employeeName: formatEmployeeDisplayName(employee),
           sortOrder: employee.currentAssignmentOrder,
           workDate,
-          dutyCode,
-          startTime: dutyCode === "O" ? undefined : timing.startTime,
-          endTime: dutyCode === "O" ? undefined : timing.endTime,
-          breakMinutes: dutyCode === "O" ? 0 : timing.breakMinutes
+          dutyCode: resolved.dutyCode,
+          startTime: resolved.dutyCode === "O" ? undefined : resolved.startTime,
+          endTime: resolved.dutyCode === "O" ? undefined : resolved.endTime,
+          breakMinutes: resolved.dutyCode === "O" ? 0 : resolved.breakMinutes
         }
       ];
     })

@@ -1,3 +1,4 @@
+import { parsePolicyApplicationSnapshot } from "../../shared/domain/policy-history";
 import path from "node:path";
 
 import type {
@@ -243,6 +244,9 @@ const toEntryRecord = (
       : undefined,
     substituteAllowancePolicyVersion: entryRow.substitute_allowance_policy_version
       ? String(entryRow.substitute_allowance_policy_version)
+      : undefined,
+    appliedPolicies: entryRow.policy_snapshot_json
+      ? (parsePolicyApplicationSnapshot(JSON.parse(String(entryRow.policy_snapshot_json))) ?? undefined)
       : undefined
   };
 };
@@ -318,7 +322,8 @@ const toDetail = (
     warningCount: 0,
     isEffective: Number(row.is_effective ?? 0) === 1,
     status: fileStatus,
-    errorMessage: row.error_message ? String(row.error_message) : undefined
+    errorMessage: row.error_message ? String(row.error_message) : undefined,
+    policyContextFingerprint: row.policy_context_fingerprint ? String(row.policy_context_fingerprint) : undefined
   };
   const alerts = [
     ...(metadata.errorMessage
@@ -429,8 +434,9 @@ export const upsertPerformanceFileDetail = (
       completed_at,
       status,
       error_message,
-      preview_json
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      preview_json,
+      policy_context_fingerprint
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       file_name = excluded.file_name,
       file_path = excluded.file_path,
@@ -454,7 +460,8 @@ export const upsertPerformanceFileDetail = (
       completed_at = excluded.completed_at,
       status = excluded.status,
       error_message = excluded.error_message,
-      preview_json = excluded.preview_json
+      preview_json = excluded.preview_json,
+      policy_context_fingerprint = excluded.policy_context_fingerprint
   `).run(
     detail.id,
     detail.fileName,
@@ -479,7 +486,8 @@ export const upsertPerformanceFileDetail = (
     null,
     detail.status,
     detail.errorMessage ?? null,
-    JSON.stringify(detail.previewRows)
+    JSON.stringify(detail.previewRows),
+    detail.policyContextFingerprint ?? null
   );
 
   database.prepare(`
@@ -526,8 +534,9 @@ export const upsertPerformanceFileDetail = (
       target_work_type,
       substitute_allowance_eligible,
       substitute_allowance_reason_code,
-      substitute_allowance_policy_version
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      substitute_allowance_policy_version,
+      policy_snapshot_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   detail.entries.forEach((entry) => {
@@ -573,7 +582,8 @@ export const upsertPerformanceFileDetail = (
           ? 1
           : 0,
       entry.substituteAllowanceReasonCode ?? null,
-      entry.substituteAllowancePolicyVersion ?? null
+      entry.substituteAllowancePolicyVersion ?? null,
+      entry.appliedPolicies ? JSON.stringify(entry.appliedPolicies) : null
     );
   });
 };

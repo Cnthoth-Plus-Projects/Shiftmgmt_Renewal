@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import path from "node:path";
 import type {
   AllowanceRateVersionDeleteInput,
@@ -52,6 +53,14 @@ import {
 } from "../../services/document-layout-storage-service";
 import { documentLayoutPreviewArtifactService } from "../../services/document-layout-preview-artifact-service";
 import { fetchHolidayApiItems } from "../../services/holiday-api-service";
+import type {
+  PolicyHistoryListInput,
+  PolicyChangePreviewInput,
+  PolicyChangeApplyInput,
+} from "../../../shared/bridge/contracts";
+import type { PolicyActorSnapshot } from "../../../shared/domain/policy-history";
+import { listPolicyHistory } from "../../services/policy-history-service";
+import { previewPolicyChange, applyPolicyChange } from "../../services/policy-history-impact-service";
 import {
   deleteStoredAllowanceRateVersion,
   deleteStoredSiteNameOption,
@@ -74,12 +83,21 @@ import {
   createIpcFailure,
   createIpcSuccess,
   runIpcAction,
+  runIpcResultAction,
   runIpcActionWithCleanup,
   type IpcActivityInput,
 } from "../../ipc/ipc-handler-helpers";
 import type { RouteRegistry } from "../route-registry";
 import type { SessionManager } from "../session";
 import type { RequestContext } from "../api-types";
+
+const runPolicyAction = <T>(action: () => T, fallback: string) => {
+  try { return createIpcSuccess(action()); }
+  catch (error) {
+    const code = (error as {code?: string})?.code;
+    return createIpcFailure(code?.startsWith("POLICY_") ? code : fallback, getErrorMessage(error));
+  }
+};
 
 const resolveRestorePath = (input: unknown): string => {
   if (typeof input === "object" && input !== null) {
@@ -129,28 +147,33 @@ export const registerOperationsRoutes = (
   // 2. operations:save-app-settings
   registry.register("operations:save-app-settings", async (args, context) => {
     const input = args[0] as AppSettingsUpdateInput;
-    return runIpcAction({
-      action: async () => {
-        const savedSettings = saveStoredAppSettings(input, {
-          userDataPath: context.dataDir,
-        });
-        await restartFileWatchRuntime({
-          userDataPath: context.dataDir,
-        });
-        restartDatabaseBackupRuntime({
-          userDataPath: context.dataDir,
-        });
-        return savedSettings;
-      },
-      errorCode: "APP_SETTINGS_SAVE_FAILED",
-      getErrorMessage,
-      activity: trackSuccess(context, sessionManager, {
+    const current = getStoredAppSettingsSnapshot({ userDataPath: context.dataDir });
+    const isSubChanged = input.substituteAllowancePolicyEffectiveFrom !== undefined && (input.substituteAllowancePolicyEffectiveFrom ?? "") !== (current.substituteAllowancePolicyEffectiveFrom ?? "");
+    const isChgChanged = input.changedSlotPriorityEffectiveFrom !== undefined && (input.changedSlotPriorityEffectiveFrom ?? "") !== (current.changedSlotPriorityEffectiveFrom ?? "");
+    if (isSubChanged || isChgChanged) {
+      return createIpcFailure("POLICY_MANAGED_SETTINGS", "정책 적용 시작일은 정책 관리 메뉴에서 변경해야 합니다.");
+    }
+    try {
+      const savedSettings = saveStoredAppSettings(input, {
+        userDataPath: context.dataDir,
+      });
+      await restartFileWatchRuntime({
+        userDataPath: context.dataDir,
+      });
+      restartDatabaseBackupRuntime({
+        userDataPath: context.dataDir,
+      });
+      const activity = trackSuccess(context, sessionManager, {
         actionType: "app-settings-save",
         routeKey: "operations",
         routeLabel: "운영 관리",
         details: "앱 운영 설정 저장",
-      }),
-    });
+      });
+      return activity.recordSuccessfulActivity(createIpcSuccess(savedSettings), activity.input);
+    } catch (error: unknown) {
+      const code = (error as { code?: string })?.code || "APP_SETTINGS_SAVE_FAILED";
+      return createIpcFailure(code, getErrorMessage(error));
+    }
   });
 
   // 3. operations:select-directory
@@ -691,6 +714,48 @@ export const registerOperationsRoutes = (
       action: () => listDocumentLayoutHistory(key),
       errorCode: "DOCUMENT_LAYOUT_HISTORY_LIST_FAILED",
       getErrorMessage,
+    });
+  });
+
+  // 37. operations:list-policy-history
+  registry.register("operations:list-policy-history", (args) => {
+    const input = args[0] as PolicyHistoryListInput;
+    return runIpcResultAction({
+      action: () => runPolicyAction(() => listPolicyHistory(input), "POLICY_HISTORY_LIST_FAILED"),
+    });
+  });
+
+  // 38. operations:preview-policy-change
+  registry.register("operations:preview-policy-change", (args, context) => {
+    const input = args[0] as PolicyChangePreviewInput;
+    const actor: PolicyActorSnapshot = {
+      userId: context.session?.userId ?? "unknown",
+      loginId: context.session?.loginId ?? "unknown",
+      displayName: context.session?.displayName ?? "관리자",
+      role: context.session?.role ?? "operator",
+    };
+    return runIpcResultAction({
+      action: () => runPolicyAction(() => previewPolicyChange(input, actor, undefined, { sessionFingerprint: createHash("sha256").update(context.session!.sessionToken).digest("hex") }), "POLICY_CHANGE_PREVIEW_FAILED"),
+    });
+  });
+
+  // 39. operations:apply-policy-change
+  registry.register("operations:apply-policy-change", async (args, context) => {
+    const input = args[0] as PolicyChangeApplyInput;
+    const actor: PolicyActorSnapshot = {
+      userId: context.session?.userId ?? "unknown",
+      loginId: context.session?.loginId ?? "unknown",
+      displayName: context.session?.displayName ?? "관리자",
+      role: context.session?.role ?? "operator",
+    };
+    return runIpcResultAction({
+      action: () => runPolicyAction(() => applyPolicyChange(input, actor, undefined, { sessionFingerprint: createHash("sha256").update(context.session!.sessionToken).digest("hex") }), "POLICY_CHANGE_APPLY_FAILED"),
+      activity: trackSuccess(context, sessionManager, {
+        actionType: "policy-change-apply" as unknown as Parameters<typeof trackSuccess>[2]["actionType"],
+        routeKey: "operations",
+        routeLabel: "운영 관리",
+        details: "정책 변경 확정",
+      }),
     });
   });
 };

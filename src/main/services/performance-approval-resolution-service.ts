@@ -15,8 +15,10 @@ interface ResolvedEntryApprovalState {
 
 const normalizeText = (value?: string | null) => value?.trim() ?? "";
 
-const normalizeAlerts = (alerts: PerformanceEntryRecord["alerts"]) =>
-  alerts
+const normalizeAlerts = (entry: PerformanceEntryRecord) =>
+  entry.alerts
+    // These two parser errors describe a later wage lookup, independent of approved source work.
+    .filter((alert) => alert.severity !== "error" || !/^.+의 (?:시급 이력이 없습니다\.|\d{4}-\d{2}-\d{2} 기준 적용 시급을 찾지 못했습니다\. 현재 등록 시작일: \d{4}-\d{2}-\d{2})$/.test(alert.message.trim()))
     .map((alert) => `${alert.severity}:${alert.message.trim()}`)
     .sort((left, right) => left.localeCompare(right, "ko"));
 
@@ -52,9 +54,8 @@ const toComparableEntry = (entry: PerformanceEntryRecord) => {
     nightMinutes: omitDerivedBreakdown ? null : entry.nightMinutes,
     reason: normalizeText(entry.reason),
     evidence: normalizeText(entry.evidence),
-    hourlyRate: entry.hourlyRate ?? null,
     isPoolWorker: Boolean(entry.isPoolWorker),
-    alerts: normalizeAlerts(entry.alerts)
+    alerts: normalizeAlerts(entry)
   };
 };
 
@@ -69,7 +70,6 @@ const toSourceSignatureComparableEntry = (entry: PerformanceEntryRecord) => ({
   dutyCode: normalizeText(entry.dutyCode),
   reason: normalizeText(entry.reason),
   evidence: normalizeText(entry.evidence),
-  hourlyRate: entry.hourlyRate ?? null,
   isPoolWorker: Boolean(entry.isPoolWorker)
 });
 
@@ -77,6 +77,8 @@ export const arePerformanceEntriesEquivalent = (
   left: PerformanceEntryRecord,
   right: PerformanceEntryRecord
 ) => {
+  // Wage changes leave approved calculation snapshots intact. Explicit manual-rate approval
+  // is handled separately by the approval flow; this comparison identifies source changes.
   // Any entry that carries a RAW source signature (legal-holiday / substitute / overtime) is
   // compared by that signature rather than by derived minutes. A parser/formula change that
   // re-derives different minutes from the SAME source keeps the signature equal (no reapproval),

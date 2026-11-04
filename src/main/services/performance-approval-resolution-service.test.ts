@@ -77,6 +77,43 @@ const createApproval = (entry: PerformanceEntryRecord): PerformanceApprovalRecor
 });
 
 describe("performance-approval-resolution-service", () => {
+  it.each([
+    ["signed", "same"], ["signed", "new"],
+    ["legacy", "same"], ["legacy", "new"],
+    ["mixed", "same"], ["mixed", "new"]
+  ])("W-05: preserves approved source after wage-only change (%s/%s entry)", (mode, identity) => {
+    const approved = createEntry({ id: "approved", sourceSignature: mode === "legacy" ? undefined : "source:same" });
+    const current = createEntry({ id: identity === "same" ? "approved" : "reread", sourceSignature: mode === "signed" ? "source:same" : undefined, hourlyRate: 15500 });
+    const result = resolvePerformanceEntryApprovalState({ entry: current, latestApproval: createApproval(approved) });
+    expect(result.satisfied).toBe(true);
+    expect(result.needsReapproval).toBe(false);
+    expect(result.approvedEntry?.hourlyRate).toBe(13200);
+  });
+
+  it.each([
+    "가람의 시급 이력이 없습니다.",
+    "가람의 2026-03-01 기준 적용 시급을 찾지 못했습니다. 현재 등록 시작일: 2026-04-01"
+  ])("W-05: preserves legacy approval if later wage lookup fails: %s", message => {
+    const approved = createEntry({ sourceSignature: undefined });
+    const current = createEntry({ sourceSignature: undefined, hourlyRate: undefined, alerts: [{ severity: "error", message }] });
+    const result = resolvePerformanceEntryApprovalState({ entry: current, latestApproval: createApproval(approved) });
+    expect(result.satisfied).toBe(true);
+    expect(result.needsReapproval).toBe(false);
+    expect(result.approvedEntry?.hourlyRate).toBe(13200);
+  });
+
+  it.each(["시급 증빙 내용이 원본과 다릅니다.", "근무시간 기준을 찾지 못했습니다."])("W-05: still reviews other legacy alerts after a wage change: %s", message => {
+    const approved = createEntry({ sourceSignature: undefined });
+    const current = createEntry({ sourceSignature: undefined, hourlyRate: 15500, alerts: [{ severity: "error", message }] });
+    expect(resolvePerformanceEntryApprovalState({ entry: current, latestApproval: createApproval(approved) }).needsReapproval).toBe(true);
+  });
+
+  it.each([true, false])("W-05: a real source change still requires reapproval alongside a wage change (signature=%s)", signed => {
+    const approved = createEntry({ sourceSignature: signed ? "source:before" : undefined });
+    const current = createEntry({ sourceSignature: signed ? "source:after" : undefined, hourlyRate: 15500, reason: "원본 변경" });
+    expect(resolvePerformanceEntryApprovalState({ entry: current, latestApproval: createApproval(approved) }).needsReapproval).toBe(true);
+  });
+
   it("should not require reapproval when only parser notes changed", () => {
     const approvedEntry = createEntry({
       id: "entry-approved",

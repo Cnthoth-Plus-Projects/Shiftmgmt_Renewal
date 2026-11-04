@@ -1,4 +1,4 @@
-// 로그인 및 인증 화면 (L1 ~ L5) 관리
+import { appendDevelopmentLoginBanner } from "./development-login";
 import type { AuthSession } from "../../shared/domain/model";
 import { getPasswordPolicyChecks, isStrongPasswordSatisfied } from "../../shared/config/auth-password-policy";
 
@@ -20,17 +20,13 @@ export class LoginScreen {
   private appVersion: string | null = null;
   private isSubmitting = false;
 
-  // L2/L3 에러 메시지
   private lastErrorMessage = "";
   private recoveryConfigured = false;
 
-  // L5 복구 임시 비밀번호 (스토리지 미기록)
   private tempPasswordNotice: string | null = null;
 
-  // L1 완료 안내 배너 문구 (C31-03)
   private passwordChangedNotice: string | null = null;
 
-  // L4 세션 재확인 상태 머신 (R31-RACE-01~03)
   private postChangeState: PostChangeState = "idle";
   private postChangeErrorMessage = "";
   private postChangeGeneration = 0;
@@ -63,7 +59,7 @@ export class LoginScreen {
           this.recoveryConfigured = rec.data.configured;
         }
       } catch {
-        // 기본값 유지
+        // Recovery remains unavailable when the optional lookup fails.
       }
     }
 
@@ -122,7 +118,6 @@ export class LoginScreen {
 
   /** L1 (초기 폼) 및 L2 (인증 실패) 렌더링 */
   private renderL1OrL2(card: HTMLElement): void {
-    // 헤더
     const header = document.createElement("div");
     header.className = "login-header";
     header.innerHTML = `
@@ -134,7 +129,6 @@ export class LoginScreen {
     `;
     card.appendChild(header);
 
-    // L2 에러 배너
     if (this.mode === "L2") {
       const banner = document.createElement("div");
       banner.className = "error-banner";
@@ -146,7 +140,6 @@ export class LoginScreen {
       card.appendChild(banner);
     }
 
-    // 복구 성공 임시 비밀번호 안내 (L5 복구 후 진입 시)
     if (this.tempPasswordNotice) {
       const notice = document.createElement("div");
       notice.className = "temp-password-box";
@@ -159,7 +152,6 @@ export class LoginScreen {
       this.tempPasswordNotice = null; // 1회 노출 후 정리
     }
 
-    // 비밀번호 변경 완료 안내 배너 (L1 - C31-03)
     if (this.passwordChangedNotice) {
       const banner = document.createElement("div");
       banner.className = "password-changed-banner";
@@ -172,11 +164,9 @@ export class LoginScreen {
       this.passwordChangedNotice = null; // 1회 노출 후 정리
     }
 
-    // 로그인 폼
     const form = document.createElement("form");
     form.className = "login-form";
 
-    // ID 입력
     const idGroup = document.createElement("div");
     idGroup.className = "form-group";
     idGroup.innerHTML = `
@@ -185,7 +175,6 @@ export class LoginScreen {
     `;
     form.appendChild(idGroup);
 
-    // 비밀번호 입력
     const pwGroup = document.createElement("div");
     pwGroup.className = "form-group";
     pwGroup.innerHTML = `
@@ -197,14 +186,14 @@ export class LoginScreen {
     `;
     form.appendChild(pwGroup);
 
-    // 제출 버튼
     const submitBtn = document.createElement("button");
     submitBtn.type = "submit";
     submitBtn.className = "btn-primary login-submit-btn";
     submitBtn.textContent = "로그인";
     form.appendChild(submitBtn);
 
-    // 눈 토글 바인딩
+    appendDevelopmentLoginBanner(form,submitBtn);
+
     const eyeBtn = pwGroup.querySelector(".btn-eye-toggle") as HTMLButtonElement;
     const pwInput = pwGroup.querySelector("#login-password") as HTMLInputElement;
     eyeBtn.addEventListener("click", () => {
@@ -217,7 +206,6 @@ export class LoginScreen {
       }
     });
 
-    // 도움말 및 복구 링크
     const footerHelp = document.createElement("div");
     footerHelp.className = "login-footer-help";
     footerHelp.innerHTML = "비밀번호를 잊은 경우 관리자에게 문의하세요.";
@@ -235,7 +223,6 @@ export class LoginScreen {
     }
     form.appendChild(footerHelp);
 
-    // 폼 제출 이벤트
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (this.isSubmitting) return;
@@ -269,7 +256,6 @@ export class LoginScreen {
           if (result.errorCode === "AUTH_ACCOUNT_LOCKED") {
             this.setMode("L3", null, result.message);
           } else {
-            // AUTH_INVALID_CREDENTIALS 또는 기타 오류 -> L2
             this.setMode("L2", null, result.message || "로그인 ID 또는 비밀번호가 올바르지 않습니다.");
           }
         }
@@ -367,7 +353,6 @@ export class LoginScreen {
     const form = document.createElement("form");
     form.className = "login-form";
 
-    // 현재 비밀번호
     const curGroup = document.createElement("div");
     curGroup.className = "form-group";
     curGroup.innerHTML = `
@@ -379,7 +364,6 @@ export class LoginScreen {
     `;
     form.appendChild(curGroup);
 
-    // 새 비밀번호
     const newGroup = document.createElement("div");
     newGroup.className = "form-group";
     newGroup.innerHTML = `
@@ -392,7 +376,6 @@ export class LoginScreen {
     `;
     form.appendChild(newGroup);
 
-    // 새 비밀번호 확인
     const confGroup = document.createElement("div");
     confGroup.className = "form-group";
     confGroup.innerHTML = `
@@ -420,7 +403,6 @@ export class LoginScreen {
     submitBtn.textContent = "비밀번호 변경";
     form.appendChild(submitBtn);
 
-    // 눈 토글 바인딩
     form.querySelectorAll(".input-with-eye").forEach((wrapper) => {
       const input = wrapper.querySelector("input") as HTMLInputElement;
       const btn = wrapper.querySelector(".btn-eye-toggle") as HTMLButtonElement;
@@ -435,7 +417,6 @@ export class LoginScreen {
       });
     });
 
-    // 실시간 규칙 검증
     const newPwInput = newGroup.querySelector("#l4-new-pw") as HTMLInputElement;
     const confPwInput = confGroup.querySelector("#l4-confirm-pw") as HTMLInputElement;
     const curPwInput = curGroup.querySelector("#l4-current-pw") as HTMLInputElement;
@@ -518,7 +499,6 @@ export class LoginScreen {
       submitBtn.disabled = true;
       submitBtn.setAttribute("aria-disabled", "true");
 
-      // 비밀번호 입력값 즉시 정리 (메모리 및 DOM 보호)
       curPwInput.value = "";
       newPwInput.value = "";
       confPwInput.value = "";
@@ -528,7 +508,6 @@ export class LoginScreen {
         this.isSubmitting = false;
 
         if (result.ok && result.data) {
-          // R31-RACE-01: 변경 성공 직후 세션 재확인 - checking 상태 전이 및 새 세대 발급
           this.postChangeGeneration++;
           const currentGen = this.postChangeGeneration;
           this.postChangeState = "checking";
@@ -541,7 +520,6 @@ export class LoginScreen {
         }
       } catch (_err) {
         this.isSubmitting = false;
-        // 결과 불명인 changePassword 요청 오류는 "변경 완료"로 단정하지 않고 실패 안내
         this.lastErrorMessage = "비밀번호 변경 요청 중 통신 오류가 발생했습니다.";
         this.render();
       }
@@ -659,19 +637,16 @@ export class LoginScreen {
       }
 
       if (sessionRes.ok && sessionRes.data && !sessionRes.data.passwordChangeRequired) {
-        // 확인 성공 -> 셸 정상 진입
         this.postChangeState = "accepted";
         this.isCheckingPostChangeSession = false;
         this.onLoginSuccess(sessionRes.data);
       } else if (sessionRes.ok && !sessionRes.data) {
-        // null -> 안내 있는 L1으로 전환
         this.postChangeGeneration++;
         this.postChangeState = "loginChosen";
         this.isCheckingPostChangeSession = false;
         this.passwordChangedNotice = "비밀번호가 정상적으로 변경되었습니다. 새 비밀번호로 다시 로그인해 주세요.";
         this.setMode("L1");
       } else {
-        // ok: false 또는 여전히 passwordChangeRequired -> 제한 화면 유지
         this.postChangeState = "limited";
         this.isCheckingPostChangeSession = false;
         const msg = !sessionRes.ok ? sessionRes.message : "세션 확인 결과 비밀번호 변경이 아직 완료되지 않았습니다.";
@@ -784,7 +759,6 @@ export class LoginScreen {
       try {
         const result = await bridge.recoverAdminAccount({ recoveryKey });
         if (result.ok && result.data) {
-          // 복구 성공: 임시 비밀번호를 한 번 안내하고 L1으로 복귀
           this.tempPasswordNotice = result.data.temporaryPassword;
           this.lastErrorMessage = "";
           this.setMode("L1");
