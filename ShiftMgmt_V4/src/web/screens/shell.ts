@@ -2,6 +2,15 @@
 import type { AuthSession } from "../../shared/domain/model";
 import { StatusBar } from "./status-bar";
 import { HomeScreen } from "./home";
+import { AccessHistoryScreen } from "./access-history";
+import { WorkforceScreen } from "./workforce";
+import { OperationsScreen } from "./operations";
+import { SitesScreen } from "./sites";
+import { ScheduleScreen } from "./schedule";
+import { PerformanceScreen } from "./performance";
+import { AllowanceScreen } from "./allowance";
+import { DashboardScreen } from "./dashboard";
+import { showConfirm, showNotice } from "./operations-ui";
 
 export interface ShellScreenOptions {
   container: HTMLElement;
@@ -20,17 +29,22 @@ interface NavMenuItem {
 
 const MENU_ITEMS: NavMenuItem[] = [
   // 준비
+  { id: "sites", label: "근무지 관리", icon: "domain", group: "ready" },
   { id: "schedule-create", label: "근무표 생성", icon: "calendar_add_on", group: "ready" },
   { id: "performance-intake", label: "실적 가져오기", icon: "upload_file", group: "ready" },
   // 운영
+  { id: "workforce", label: "인력 관리", icon: "badge", group: "ops" },
   { id: "schedule-status", label: "근무 현황", icon: "dashboard", group: "ops" },
   { id: "schedule-adjust", label: "근무표 조정", icon: "edit_calendar", group: "ops" },
   // 정산
-  { id: "allowance-calc", label: "수당 계산", icon: "calculate", group: "settle" },
+  { id: "allowance-calc", label: "수당 관리", icon: "calculate", group: "settle" },
   { id: "proposal-export", label: "품의서 출력", icon: "description", group: "settle" },
+  { id: "dashboard", label: "대시보드", icon: "monitoring", group: "settle" },
   // 관리 (admin only)
+  { id: "operations", label: "운영 관리", icon: "settings", group: "admin", adminOnly: true },
   { id: "org-mgmt", label: "조직 관리", icon: "corporate_fare", group: "admin", adminOnly: true },
   { id: "user-mgmt", label: "사용자 관리", icon: "manage_accounts", group: "admin", adminOnly: true },
+  { id: "access-history", label: "활동 이력", icon: "history", group: "admin", adminOnly: true },
 ];
 
 export class ShellScreen {
@@ -43,6 +57,14 @@ export class ShellScreen {
   private noticeMessage = "";
   private statusBar: StatusBar | null = null;
   private homeScreen: HomeScreen | null = null;
+  private accessHistoryScreen: AccessHistoryScreen | null = null;
+  private workforceScreen: WorkforceScreen | null = null;
+  private operationsScreen: OperationsScreen | null = null;
+  private sitesScreen: SitesScreen | null = null;
+  private scheduleScreen: ScheduleScreen | null = null;
+  private performanceScreen: PerformanceScreen | null = null;
+  private allowanceScreen: AllowanceScreen | null = null;
+  private dashboardScreen: DashboardScreen | null = null;
   private syncObserver: MutationObserver | null = null;
 
   constructor(options: ShellScreenOptions) {
@@ -112,6 +134,7 @@ export class ShellScreen {
   }
 
   public destroy(): void {
+    this.dashboardScreen?.destroy(); this.dashboardScreen = null;
     if (this.syncObserver) {
       this.syncObserver.disconnect();
       this.syncObserver = null;
@@ -120,11 +143,99 @@ export class ShellScreen {
       this.homeScreen.destroy();
       this.homeScreen = null;
     }
+    if (this.accessHistoryScreen) {
+      this.accessHistoryScreen.destroy();
+      this.accessHistoryScreen = null;
+    }
+
+    if (this.workforceScreen) {
+      this.workforceScreen.destroy();
+      this.workforceScreen = null;
+    }
+
+    if (this.operationsScreen) {
+      this.operationsScreen.destroy();
+      this.operationsScreen = null;
+    }
+    if (this.sitesScreen) {
+      this.sitesScreen.destroy();
+      this.sitesScreen = null;
+    }
+    if (this.scheduleScreen) {
+      this.scheduleScreen.destroy();
+      this.scheduleScreen = null;
+    }
+    if (this.performanceScreen) {
+      this.performanceScreen.destroy();
+      this.performanceScreen = null;
+    }
+    if (this.allowanceScreen) {
+      this.allowanceScreen.destroy();
+      this.allowanceScreen = null;
+    }
     if (this.statusBar) {
       this.statusBar.destroy();
       this.statusBar = null;
     }
     this.container.innerHTML = "";
+  }
+
+  private navigateWithDirtyCheck(onNavigate: () => void): void {
+    if (this.dashboardScreen?.isBusy()) { showNotice("작업 진행 중", "대시보드 파일을 저장하고 있습니다. 완료 후 이동해 주세요.", "warning"); return; }
+    if (this.scheduleScreen && this.scheduleScreen.isBusy()) {
+      showNotice(
+        "작업 진행 중",
+        "근무표 처리 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.",
+      );
+      return;
+    }
+    if (this.sitesScreen && this.sitesScreen.isBusy()) {
+      showNotice(
+        "작업 진행 중",
+        "근무지 및 패턴 저장 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.",
+        "warning"
+      );
+      return;
+    }
+    if (this.allowanceScreen && this.allowanceScreen.isBusy()) { showNotice("작업 진행 중", "수당 처리 작업이 진행 중입니다. 완료될 때까지 잠시만 기다려 주세요.", "warning"); return; }
+    if (this.sitesScreen && this.sitesScreen.isDirty()) {
+      showConfirm({
+        title: "저장되지 않은 변경사항",
+        message: "근무지 관리에 저장되지 않은 변경사항이 있습니다. 다른 화면으로 이동하시겠습니까?",
+        subMessage: "이동하면 작성 중인 마법사 초안 내용이 모두 사라집니다.",
+        confirmLabel: "이동하기 (변경사항 삭제)",
+        cancelLabel: "계속 편집",
+        variant: "danger",
+        onConfirm: () => {
+          if (this.sitesScreen) {
+            this.sitesScreen.destroy();
+            this.sitesScreen = null;
+          }
+          onNavigate();
+        }
+      });
+      return;
+    }
+
+    if (this.operationsScreen && this.operationsScreen.isDirty()) {
+      showConfirm({
+        title: "저장되지 않은 변경사항",
+        message: "운영 관리에 저장되지 않은 변경사항이 있습니다. 다른 화면으로 이동하시겠습니까?",
+        subMessage: "이동하면 작성 중인 초안 내용이 모두 사라집니다.",
+        confirmLabel: "이동하기 (변경사항 삭제)",
+        cancelLabel: "계속 편집",
+        variant: "danger",
+        onConfirm: () => {
+          if (this.operationsScreen) {
+            this.operationsScreen.destroy();
+            this.operationsScreen = null;
+          }
+          onNavigate();
+        }
+      });
+      return;
+    }
+    onNavigate();
   }
 
   private observeSyncStatus(statusContainer: HTMLElement): void {
@@ -214,10 +325,12 @@ export class ShellScreen {
       <span class="nav-label">홈</span>
     `;
     homeBtn.addEventListener("click", () => {
-      this.currentTitle = "홈";
-      this.noticeMessage = "";
-      this.updateActiveNav(navList, homeBtn);
-      this.refreshMain();
+      this.navigateWithDirtyCheck(() => {
+        this.currentTitle = "홈";
+        this.noticeMessage = "";
+        this.updateActiveNav(navList, homeBtn);
+        this.refreshMain();
+      });
     });
     homeLi.appendChild(homeBtn);
     navList.appendChild(homeLi);
@@ -257,12 +370,30 @@ export class ShellScreen {
           <span class="nav-label">${item.label}</span>
         `;
 
+        btn.dataset.id = item.id;
         btn.addEventListener("click", () => {
-          // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
-          this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
-          this.currentTitle = item.label;
-          this.updateActiveNav(navList, btn);
-          this.refreshMain();
+          this.navigateWithDirtyCheck(() => {
+            if (
+              item.id === "sites" ||
+              item.id === "schedule-create" ||
+              item.id === "schedule-status" ||
+              item.id === "access-history" ||
+              item.id === "workforce" ||
+              item.id === "operations" ||
+              item.id === "user-mgmt" ||
+              item.id === "allowance-calc" ||
+              item.id === "proposal-export"
+              || item.id === "dashboard"
+            ) {
+              this.noticeMessage = "";
+            } else {
+              // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
+              this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
+            }
+            this.currentTitle = item.label;
+            this.updateActiveNav(navList, btn);
+            this.refreshMain();
+          });
         });
 
         li.appendChild(btn);
@@ -324,11 +455,25 @@ export class ShellScreen {
     logoutBtn.type = "button";
     logoutBtn.className = "btn-secondary btn-logout";
     logoutBtn.textContent = "로그아웃";
-    logoutBtn.addEventListener("click", async () => {
+    logoutBtn.addEventListener("click", () => this.navigateWithDirtyCheck(async () => {
       logoutBtn.disabled = true;
+      this.dashboardScreen?.destroy(); this.dashboardScreen = null;
+      this.sitesScreen?.destroy();this.sitesScreen=null;this.scheduleScreen?.destroy();this.scheduleScreen=null;this.performanceScreen?.destroy();this.performanceScreen=null;this.allowanceScreen?.destroy();this.allowanceScreen=null;
       if (this.homeScreen) {
         this.homeScreen.destroy();
         this.homeScreen = null;
+      }
+      if (this.accessHistoryScreen) {
+        this.accessHistoryScreen.destroy();
+        this.accessHistoryScreen = null;
+      }
+      if (this.workforceScreen) {
+        this.workforceScreen.destroy();
+        this.workforceScreen = null;
+      }
+      if (this.operationsScreen) {
+        this.operationsScreen.destroy();
+        this.operationsScreen = null;
       }
       if (this.statusBar) {
         this.statusBar.destroy();
@@ -363,7 +508,7 @@ export class ShellScreen {
           logoutBtn.textContent = "로그아웃";
         }, 2000);
       }
-    });
+    }));
 
     right.appendChild(roleBadge);
     right.appendChild(userText);
@@ -395,6 +540,174 @@ export class ShellScreen {
       return main;
     }
 
+    if (this.currentTitle === "활동 이력") {
+      this.accessHistoryScreen = new AccessHistoryScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      this.accessHistoryScreen.render();
+      return main;
+    }
+
+        if (this.currentTitle === "실적 가져오기") {
+      this.performanceScreen = new PerformanceScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      void this.performanceScreen.render();
+      void this.performanceScreen.loadData();
+      return main;
+    }
+
+    if (this.currentTitle === "근무표 생성" || this.currentTitle === "근무 현황") {
+      this.scheduleScreen = new ScheduleScreen({
+        container: main,
+        session: this.session,
+        initialTab: this.currentTitle === "근무 현황" ? "history" : "calendar",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+      });
+      void this.scheduleScreen.render();
+      void this.scheduleScreen.loadData();
+      return main;
+    }
+    if (this.currentTitle === "근무지 관리") {
+      this.sitesScreen = new SitesScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+        onNavigateWorkforce: () => {
+          this.currentTitle = "인력 관리";
+          this.noticeMessage = "";
+          const navList = this.container.querySelector<HTMLElement>(".nav-list");
+          const workforceBtn = navList?.querySelector<HTMLButtonElement>('button[data-id="workforce"]');
+          if (navList && workforceBtn) {
+            this.updateActiveNav(navList, workforceBtn);
+          }
+          this.refreshMain();
+        }
+      });
+      void this.sitesScreen.render();
+      void this.sitesScreen.loadData();
+      return main;
+    }
+
+    if (this.currentTitle === "인력 관리") {
+      this.workforceScreen = new WorkforceScreen({
+        container: main,
+        session: this.session,
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        },
+        onNavigatePerformance: () => {
+          this.currentTitle = "실적 가져오기";
+          this.noticeMessage = "";
+          const navList = this.container.querySelector<HTMLElement>(".nav-list");
+          const perfBtn = navList?.querySelector<HTMLButtonElement>('button[data-id="performance-intake"]');
+          if (navList && perfBtn) {
+            this.updateActiveNav(navList, perfBtn);
+          }
+          this.refreshMain();
+        },
+      });
+      void this.workforceScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "운영 관리") {
+      this.operationsScreen = new OperationsScreen({
+        container: main,
+        session: this.session,
+        initialTab: "settings",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        }
+      });
+      void this.operationsScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "사용자 관리") {
+      this.operationsScreen = new OperationsScreen({
+        container: main,
+        session: this.session,
+        initialTab: "users",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        }
+      });
+      void this.operationsScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "대시보드") {
+      this.dashboardScreen = new DashboardScreen({ container: main, session: this.session, onSessionExpired: () => { this.destroy(); if (this.onSessionExpired) this.onSessionExpired(); else this.onSignOut(); } });
+      void this.dashboardScreen.render();
+      return main;
+    }
+
+    if (this.currentTitle === "수당 관리" || this.currentTitle === "품의서 출력") {
+      this.allowanceScreen = new AllowanceScreen({
+        container: main,
+        session: this.session,
+        initialTab: this.currentTitle === "품의서 출력" ? "exports" : "results",
+        onSessionExpired: () => {
+          this.destroy();
+          if (this.onSessionExpired) {
+            this.onSessionExpired();
+          } else {
+            this.onSignOut();
+          }
+        }
+      });
+      void this.allowanceScreen.render();
+      return main;
+    }
+
     if (this.noticeMessage) {
       const banner = document.createElement("div");
       banner.className = "notice-banner";
@@ -422,6 +735,7 @@ export class ShellScreen {
   }
 
   private refreshMain(): void {
+    this.dashboardScreen?.destroy(); this.dashboardScreen = null;
     const titleEl = this.container.querySelector("#header-current-title");
     if (titleEl) {
       titleEl.textContent = this.currentTitle;
@@ -430,6 +744,37 @@ export class ShellScreen {
     if (this.homeScreen) {
       this.homeScreen.destroy();
       this.homeScreen = null;
+    }
+
+    if (this.accessHistoryScreen) {
+      this.accessHistoryScreen.destroy();
+      this.accessHistoryScreen = null;
+    }
+
+    if (this.workforceScreen) {
+      this.workforceScreen.destroy();
+      this.workforceScreen = null;
+    }
+
+    if (this.operationsScreen) {
+      this.operationsScreen.destroy();
+      this.operationsScreen = null;
+    }
+    if (this.sitesScreen) {
+      this.sitesScreen.destroy();
+      this.sitesScreen = null;
+    }
+    if (this.scheduleScreen) {
+      this.scheduleScreen.destroy();
+      this.scheduleScreen = null;
+    }
+    if (this.performanceScreen) {
+      this.performanceScreen.destroy();
+      this.performanceScreen = null;
+    }
+    if (this.allowanceScreen) {
+      this.allowanceScreen.destroy();
+      this.allowanceScreen = null;
     }
 
     const oldMain = this.container.querySelector("#main-content");

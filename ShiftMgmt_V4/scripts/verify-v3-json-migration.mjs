@@ -4,6 +4,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 
@@ -65,8 +66,28 @@ function canonicalizeRow(row) {
   return JSON.stringify(sorted);
 }
 
-function canonicalTableHash(rows) {
-  const sortedRows = rows.map(canonicalizeRow).sort();
+export function canonicalTableHash(rows, legacySourceTableName) {
+  const missingNullCols =
+    legacySourceTableName === "employees"
+      ? ["email"]
+      : legacySourceTableName === "shift_patterns"
+        ? ["holiday_policy_json"]
+        : legacySourceTableName === "performance_files"
+          ? ["policy_context_fingerprint"]
+          : legacySourceTableName === "performance_entries"
+            ? ["policy_snapshot_json"]
+            : [];
+  const sortedRows = rows
+    .map((row) => {
+      let normalized = row;
+      for (const col of missingNullCols) {
+        if (!Object.hasOwn(normalized, col)) {
+          normalized = { ...normalized, [col]: null };
+        }
+      }
+      return canonicalizeRow(normalized);
+    })
+    .sort();
   const hash = crypto.createHash("sha256");
   for (const r of sortedRows) {
     hash.update(r + "\n");
@@ -223,9 +244,9 @@ async function main() {
       fail(`오류: preview에서 스키마 제외 경고 감지: ${previewExclusions.join("; ")}`);
     }
 
-    if (!Array.isArray(previewResult.tableImpacts) || previewResult.tableImpacts.length !== 40) {
+    if (!Array.isArray(previewResult.tableImpacts) || previewResult.tableImpacts.length !== 42) {
       fail(
-        `오류: preview tableImpacts 불일치 (기대: 40개 표, 실제: ${previewResult.tableImpacts?.length})`
+        `오류: preview tableImpacts 불일치 (기대: 42개 표, 실제: ${previewResult.tableImpacts?.length})`
       );
     }
 
@@ -261,9 +282,9 @@ async function main() {
       fail(`오류: 복원 실행에서 스키마 제외 경고 감지: ${restoreExclusions.join("; ")}`);
     }
 
-    if (!Array.isArray(restoreResult.tableResults) || restoreResult.tableResults.length !== 40) {
+    if (!Array.isArray(restoreResult.tableResults) || restoreResult.tableResults.length !== 42) {
       fail(
-        `오류: 복원 tableResults 불일치 (기대: 40개 표, 실제: ${restoreResult.tableResults?.length})`
+        `오류: 복원 tableResults 불일치 (기대: 42개 표, 실제: ${restoreResult.tableResults?.length})`
       );
     }
 
@@ -288,8 +309,8 @@ async function main() {
       .all()
       .map((r) => r.name);
 
-    if (targetTables.length !== 40) {
-      fail(`오류: target DB 표 수 불일치 (기대: 40, 실제: ${targetTables.length})`);
+    if (targetTables.length !== 42) {
+      fail(`오류: target DB 표 수 불일치 (기대: 42, 실제: ${targetTables.length})`);
     }
 
     const targetTableSet = new Set(targetTables);
@@ -408,7 +429,10 @@ async function main() {
       fail(`오류: target app_setting_entries 행 수 불일치 (기대: ${expectedTargetSettingsCount}, 실제: ${targetSettingsRows.length})`);
     }
 
-    // 7. Target total rows check (승인된 변환 결과로 산출: 3599 - 1[DEC-001] - sourceSettings + targetSettings)
+    // 7. Target total rows check (승인된 변환 결과로 산출: 3599 - 1[DEC-001] - sourceSettings + targetSettings + policyRevs + policyEvents)
+    const policyRevsCount = db.prepare("SELECT COUNT(*) AS cnt FROM policy_revisions").get().cnt;
+    const policyEventsCount = db.prepare("SELECT COUNT(*) AS cnt FROM policy_events").get().cnt;
+
     let targetTotalRows = 0;
     for (const t of targetTables) {
       const count = db.prepare(`SELECT COUNT(*) AS cnt FROM ${t}`).get().cnt;
@@ -416,7 +440,7 @@ async function main() {
     }
 
     const expectedTargetTotalRows =
-      sourceTotalRows - 1 - sourceSettingsRows.length + targetSettingsRows.length;
+      sourceTotalRows - 1 - sourceSettingsRows.length + targetSettingsRows.length + policyRevsCount + policyEventsCount;
     if (targetTotalRows !== expectedTargetTotalRows) {
       fail(`오류: target DB 총 행 수 불일치 (기대: ${expectedTargetTotalRows}, 실제: ${targetTotalRows})`);
     }
@@ -427,7 +451,7 @@ async function main() {
     const TARGET_FILE_ID = "access-performance-file-202408|sk증권|approved";
 
     for (const t of targetTables) {
-      if (t === "app_setting_entries") continue;
+      if (t === "app_setting_entries" || t === "policy_revisions" || t === "policy_events") continue;
       let sRows = parsedJson.tables[t] || [];
       const tRows = db.prepare(`SELECT * FROM ${t}`).all();
 
@@ -467,11 +491,25 @@ async function main() {
         fail(`오류: 표 '${t}' 행 수 불일치 (source: ${sRows.length}, target: ${tRows.length})`);
       }
 
-      const sHash = canonicalTableHash(sRows);
+      const sHash = canonicalTableHash(sRows, t);
       const tHash = canonicalTableHash(tRows);
 
       if (sHash !== tHash) {
         fail(`오류: 표 '${t}' canonical hash 불일치 (source: ${sHash}, target: ${tHash})`);
+      }
+    }
+
+    // 8-1. 신규 policy_revisions / policy_events 초기 provenance 및 정합성 검사
+    const targetPolicyRevs = db.prepare("SELECT * FROM policy_revisions").all();
+    if (targetPolicyRevs.length < 2) {
+      fail(`오류: target policy_revisions 초기 행 수 부족 (최소 2개 기대, 실제: ${targetPolicyRevs.length})`);
+    }
+    for (const rev of targetPolicyRevs) {
+      if (rev.origin !== "initial") {
+        fail(`오류: target policy_revisions origin 불일치 (기대: initial, 실제: ${rev.origin})`);
+      }
+      if (!rev.criteria_json) {
+        fail("오류: target policy_revisions criteria_json 누락");
       }
     }
 
@@ -629,7 +667,11 @@ async function main() {
   console.log(`- target 스키마 표 집합: 40/40 (V4 고유 shift_pattern_duty_types 및 신규 4표 포함)`);
   console.log(`- restoredTableCount: ${successSummary.restoreResult.tableResults.length}`);
   console.log(`- target 총 행 수: ${successSummary.targetTotalRows} (app_setting_entries 4대 분류 변환 및 DEC-001 사번 없는 실적 1건 안전 제거 반영)`);
-  console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치 (performance_entries 349건 대조, performance_files 정규화 대조)`);
+  const sourceEmployees = parsedJson.tables.employees || [];
+  const missingEmailNullCount = sourceEmployees.filter((r) => !Object.hasOwn(r, "email")).length;
+  const sourcePatterns = parsedJson.tables.shift_patterns || [];
+  const missingPolicyNullCount = sourcePatterns.filter((r) => !Object.hasOwn(r, "holiday_policy_json")).length;
+  console.log(`- 39개 표 canonical hash 및 행 수 대조: 전건 100% 일치 (performance_entries 349건 대조, performance_files 정규화 대조, employees ${sourceEmployees.length}건 중 email 누락→NULL 비교 보완 ${missingEmailNullCount}건, shift_patterns ${sourcePatterns.length}건 중 holiday_policy_json 누락→NULL 비교 보완 ${missingPolicyNullCount}건)`);
   console.log(`- 도메인/수당 단언: Pool 전인환 44/0/0, BP 정다운 0/0/0, 계산 전체 263건(56,076,024원), 승인 64건(13,611,839원) 전건 일치`);
   console.log(`- 신규 4표 행 수: periods=${successSummary.periodsCount}, closures=${successSummary.closuresCount}, events=${successSummary.eventsCount}, wage_rate_history=${successSummary.wageHistCount}`);
   console.log(`- 신규 3컬럼 비NULL 수: assignments=${successSummary.asgnNonNull}/89, wages=${successSummary.wageNonNull}/87, performance_snapshot=${successSummary.perfNonNull}/37`);
@@ -638,11 +680,18 @@ async function main() {
   console.log("================================================================");
 }
 
-main().catch((err) => {
-  if (err instanceof VerificationError) {
-    console.error(err.message);
-  } else {
-    console.error("검증 스크립트 예외 발생:", err?.message || err);
-  }
-  process.exitCode = 1;
-});
+const normalizeCliPath = (p) =>
+  process.platform === "win32" ? path.resolve(p).toLowerCase() : path.resolve(p);
+if (
+  process.argv[1] &&
+  normalizeCliPath(process.argv[1]) === normalizeCliPath(fileURLToPath(import.meta.url))
+) {
+  main().catch((err) => {
+    if (err instanceof VerificationError) {
+      console.error(err.message);
+    } else {
+      console.error("검증 스크립트 예외 발생:", err?.message || err);
+    }
+    process.exitCode = 1;
+  });
+}

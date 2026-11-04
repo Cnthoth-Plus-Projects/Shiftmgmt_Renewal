@@ -3,12 +3,32 @@ import { CHANNEL_CONTRACTS } from "../../../shared/bridge/channel-contracts";
 import { accessLogActionLabels } from "../../../shared/domain/access-log";
 import type { AuthSession } from "../../../shared/domain/model";
 import type { DialogBridge } from "../api-types";
+import type { WagePendingPerformanceRefresh } from "../../../shared/bridge/contracts";
 import { RouteRegistry } from "../route-registry";
 import { SessionManager } from "../session";
 import { WORKFORCE_CHANNELS } from "./index";
 import { registerWorkforceRoutes } from "./workforce-routes";
 
 const mocks = vi.hoisted(() => ({
+  refreshPendingPerformanceForWageChanges: vi.fn(async (_changes: unknown[]): Promise<WagePendingPerformanceRefresh> => ({ status: "completed", affectedEntryCount: 0, targetFileCount: 0, refreshedFileCount: 0, issues: [] })),
+  listStoredPatternPresets: vi.fn(()=>[]),saveStoredPatternPreset: vi.fn((input:unknown)=>input),deleteStoredPatternPreset: vi.fn((input:unknown)=>input),
+  getStoredAppSettingsSnapshot: vi.fn(() => ({
+    scheduleExportDir: "C:/export",
+    approvedDir: "C:/approved",
+    consecutiveNightLimit: 3,
+    minimumRestMinutes: 660,
+    requireWeeklyHoliday: true,
+    weeklyMaxMinutes: 3120,
+  })),
+  listStoredHolidayCalendars: vi.fn(() => [
+    {
+      year: 2026,
+      items: [
+        { holidayDate: "2026-01-01", name: "신정", isSubstitute: false },
+        { holidayDate: "2026-03-01", name: "삼일절", isSubstitute: false },
+      ],
+    },
+  ]),
   closeStoredEmployeeAssignment: vi.fn((input: unknown) => input),
   closeStoredEmployeeWageRate: vi.fn((input: unknown) => input),
   listStoredEmployeeAssignments: vi.fn(() => []),
@@ -36,6 +56,9 @@ const mocks = vi.hoisted(() => ({
   previewWorkforceWageBulkUpdate: vi.fn(async (input: unknown) => input),
 }));
 
+vi.mock("../../services/workforce-wage-performance-service", () => ({ refreshPendingPerformanceForWageChanges: mocks.refreshPendingPerformanceForWageChanges }));
+
+vi.mock("../../services/pattern-preset-storage-service",()=>({listStoredPatternPresets:mocks.listStoredPatternPresets,saveStoredPatternPreset:mocks.saveStoredPatternPreset,deleteStoredPatternPreset:mocks.deleteStoredPatternPreset}));
 vi.mock("../../services/employee-history-service", () => ({
   closeStoredEmployeeAssignment: mocks.closeStoredEmployeeAssignment,
   closeStoredEmployeeWageRate: mocks.closeStoredEmployeeWageRate,
@@ -44,6 +67,12 @@ vi.mock("../../services/employee-history-service", () => ({
   reorderStoredEmployeeAssignment: mocks.reorderStoredEmployeeAssignment,
   saveStoredEmployeeAssignment: mocks.saveStoredEmployeeAssignment,
   saveStoredEmployeeWageRate: mocks.saveStoredEmployeeWageRate,
+}));
+vi.mock("../../services/app-settings-storage-service", () => ({
+  getStoredAppSettingsSnapshot: mocks.getStoredAppSettingsSnapshot,
+}));
+vi.mock("../../services/operations-storage-service", () => ({
+  listStoredHolidayCalendars: mocks.listStoredHolidayCalendars,
 }));
 vi.mock("../../services/employee-storage-service", () => ({
   deleteStoredEmployee: mocks.deleteStoredEmployee,
@@ -153,18 +182,21 @@ const descriptors: Record<string, Descriptor> = {
   "employees:list": { args: [{ status: "active" }], spy: mocks.listStoredEmployees, expectedArgs: (_e, a) => [a[0]] },
   "employees:list-wage-rates": { args: ["emp-1"], spy: mocks.listStoredEmployeeWageRates, expectedArgs: (_e, a) => [a[0]] },
   "employees:list-assignments": { args: ["emp-1"], spy: mocks.listStoredEmployeeAssignments, expectedArgs: (_e, a) => [a[0]] },
-  "employees:save-wage-rate": { args: [{ employeeId: "emp-1", hourlyWage: 12000 }], spy: mocks.saveStoredEmployeeWageRate, expectedArgs: (_e, a) => [a[0]] },
+  "employees:save-wage-rate": { args: [{ employeeId: "emp-1", hourlyWage: 12000 }], spy: mocks.saveStoredEmployeeWageRate, expectedArgs: (_e, a) => [a[0], adminSession] },
   "employees:close-wage-rate": { args: [{ employeeId: "emp-1", effectiveTo: "2026-09-30" }], spy: mocks.closeStoredEmployeeWageRate, expectedArgs: (_e, a) => [a[0]] },
   "employees:save-assignment": { args: [{ employeeId: "emp-1", siteId: "site-1" }], spy: mocks.saveStoredEmployeeAssignment, expectedArgs: (_e, a) => [a[0]] },
   "employees:close-assignment": { args: [{ assignmentId: "assignment-1" }], spy: mocks.closeStoredEmployeeAssignment, expectedArgs: (_e, a) => [a[0]] },
   "employees:reorder-assignment": { args: [{ assignmentId: "assignment-1", direction: "up" }], spy: mocks.reorderStoredEmployeeAssignment, expectedArgs: (_e, a) => [a[0]] },
-  "employees:save": { args: [{ employeeId: "emp-1", name: "홍길동" }], spy: mocks.saveStoredEmployee, expectedArgs: (_e, a) => [a[0]] },
-  "employees:delete": { args: [{ employeeId: "emp-1" }], spy: mocks.deleteStoredEmployee, expectedArgs: (_e, a) => [(a[0] as { employeeId: string }).employeeId] },
+  "employees:save": { args: [{ employeeId: "emp-1", name: "홍길동" }], spy: mocks.saveStoredEmployee, expectedArgs: (_e, a) => [a[0], adminSession] },
+  "employees:delete": { args: [{ employeeId: "emp-1" }], spy: mocks.deleteStoredEmployee, expectedArgs: (_e, a) => [(a[0] as { employeeId: string }).employeeId, adminSession] },
   "employees:preview-wage-bulk-update": { args: [{ rows: [] }], spy: mocks.previewWorkforceWageBulkUpdate, expectedArgs: (_e, a) => [a[0]] },
-  "employees:apply-wage-bulk-update": { args: [{ rows: [] }], spy: mocks.applyWorkforceWageBulkUpdate, expectedArgs: (_e, a) => [a[0]] },
+  "employees:apply-wage-bulk-update": { args: [{ rows: [] }], spy: mocks.applyWorkforceWageBulkUpdate, expectedArgs: (_e, a) => [a[0], adminSession] },
   "sites:save": { args: [{ siteId: "site-1", name: "본사" }], spy: mocks.saveStoredSite, expectedArgs: (_e, a) => [a[0]] },
   "sites:list": { args: [], spy: mocks.listStoredSites, expectedArgs: () => [] },
   "sites:delete": { args: [{ siteId: "site-1" }], spy: mocks.deleteStoredSite, expectedArgs: (_e, a) => [(a[0] as { siteId: string }).siteId] },
+  "shift-pattern-presets:list": {args:[],spy:mocks.listStoredPatternPresets,expectedArgs:()=>[]},
+  "shift-pattern-presets:save": {args:[{name:"반복 패턴",definition:{version:1}}],spy:mocks.saveStoredPatternPreset,expectedArgs:(_e,a)=>[a[0]]},
+  "shift-pattern-presets:delete": {args:[{id:"preset-1",expectedRevision:1}],spy:mocks.deleteStoredPatternPreset,expectedArgs:(_e,a)=>[a[0]]},
   "shift-patterns:list": { args: ["site-1"], spy: mocks.listStoredShiftPatterns, expectedArgs: (_e, a) => [a[0]] },
   "shift-patterns:analyze-import": { args: [{ filePath: "C:/pattern.xlsx" }], spy: mocks.analyzeSitePatternImport, expectedArgs: (_e, a) => [a[0]] },
   "shift-patterns:save": { args: [{ patternId: "pattern-1" }], spy: mocks.saveStoredShiftPattern, expectedArgs: (_e, a) => [a[0]] },
@@ -175,9 +207,12 @@ const descriptors: Record<string, Descriptor> = {
   "monthly-schedules:export-plan": { args: ["schedule-1"], spy: mocks.exportMonthlySchedulePlan, expectedArgs: (e, a) => [{ scheduleId: a[0], userDataPath: e.dataDir }] },
   "monthly-schedules:list-exports": { args: ["schedule-1"], spy: mocks.listStoredSchedulePlanExports, expectedArgs: (_e, a) => [a[0]] },
   "monthly-schedules:publish-export": { args: ["export-1"], spy: mocks.publishSchedulePlanExport, expectedArgs: (e, a) => [{ exportId: a[0], userDataPath: e.dataDir }] },
+  "monthly-schedules:preparation-context": { args: [2026], spy: mocks.getStoredAppSettingsSnapshot, expectedArgs: (e) => [{ userDataPath: e.dataDir }] },
 };
 
 const activities = {
+  "shift-pattern-presets:save": ["app-settings-save","sites","근무지 관리","반복 패턴 보관함 저장"],
+  "shift-pattern-presets:delete": ["app-settings-save","sites","근무지 관리","반복 패턴 보관함 삭제"],
   "employees:save-wage-rate": ["employee-wage-save", "workforce", "인력 관리", "직원 시급 기준 저장"],
   "employees:close-wage-rate": ["employee-wage-close", "workforce", "인력 관리", "직원 시급 이력 종료"],
   "employees:save-assignment": ["employee-assignment-save", "workforce", "인력 관리", "직원 근무지 배정 저장"],
@@ -200,33 +235,73 @@ const activities = {
 describe("workforce-routes", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("registers exactly the 25 workforce contracts", () => {
+  it.each(["employees:save-wage-rate", "employees:apply-wage-bulk-update"])("W-06: %s returns the actual pending-file refresh outcome after saving", async channel => {
+    const env = setup();
+    const result = await dispatch(env, channel, descriptors[channel].args);
+    expect(result?.body).toMatchObject({ ok: true, data: { pendingPerformanceRefresh: { status: "completed" } } });
+    expect(mocks.refreshPendingPerformanceForWageChanges).toHaveBeenCalledTimes(1);
+  });
+
+  it("W-06: failed wage save never starts a pending-file refresh", async () => {
+    mocks.saveStoredEmployeeWageRate.mockImplementationOnce(() => { throw new Error("저장 실패"); });
+    const result = await dispatch(setup(), "employees:save-wage-rate", [{ employeeId: "emp-1" }]);
+    expect(result?.body).toMatchObject({ ok: false, errorCode: "EMPLOYEE_WAGE_SAVE_FAILED" });
+    expect(mocks.refreshPendingPerformanceForWageChanges).not.toHaveBeenCalled();
+  });
+
+  it("W-06: partial refresh is reported as a saved wage with separate file issues", async () => {
+    mocks.refreshPendingPerformanceForWageChanges.mockResolvedValueOnce({ status: "partial", affectedEntryCount: 1, targetFileCount: 1, refreshedFileCount: 0, issues: [{ fileName: "실적.xlsx", message: "파일을 읽지 못했습니다." }] });
+    const result = await dispatch(setup(), "employees:save-wage-rate", [{ employeeId: "emp-1" }]);
+    expect(result?.body).toMatchObject({ ok: true, data: { pendingPerformanceRefresh: { status: "partial", refreshedFileCount: 0 } } });
+  });
+
+  it("W-09 employee save forwards trusted actor and reports corrected employment refresh interval separately", async () => {
+    mocks.saveStoredEmployee.mockReturnValueOnce({id:"emp-1",retirementChange:{kind:"date-correction",retireDate:"2026-04-16",previousRetireDate:"2026-03-16"}});
+    const input={id:"emp-1",status:"retired",retireDate:"2026-04-16",actor:{loginId:"forged"}};
+    const result=await dispatch(setup(),"employees:save",[input]);
+    expect(mocks.saveStoredEmployee).toHaveBeenCalledWith(input,adminSession);
+    expect(mocks.refreshPendingPerformanceForWageChanges).toHaveBeenCalledWith([{employeeId:"emp-1",effectiveFrom:"2026-03-16",employmentFrom:"2026-03-16"}]);
+    expect(result?.body).toMatchObject({ok:true,data:{retirementChange:{retireDate:"2026-04-16",pendingPerformanceRefresh:{status:"completed"}}}});
+  });
+
+  it.each(["rehire","reservation-updated","reservation-cancelled"])("W10 %s returns actual re-read summary covering old and new dates",async kind=>{
+    mocks.saveStoredEmployee.mockReturnValueOnce({id:"emp-1",rehireChange:{kind,startDate:"2026-05-01",previousStartDate:"2026-04-01",previousRetireDate:"2026-03-16",employmentPeriodId:"p-new",newWageCount:1,newAssignmentCount:1}});
+    const input={id:"emp-1",rehire:{operation:"reschedule"},actor:{loginId:"forged"}},result=await dispatch(setup(),"employees:save",[input]);
+    expect(mocks.saveStoredEmployee).toHaveBeenCalledWith(input,adminSession);expect(mocks.refreshPendingPerformanceForWageChanges).toHaveBeenCalledWith([{employeeId:"emp-1",effectiveFrom:"2026-03-16",employmentFrom:"2026-03-16"}]);expect(result?.body).toMatchObject({ok:true,data:{rehireChange:{kind,pendingPerformanceRefresh:{status:"completed"}}}});
+  });
+  it("W-09 failed employee save cannot start retirement source refresh", async () => {
+    mocks.saveStoredEmployee.mockImplementationOnce(()=>{throw new Error("퇴사 저장 실패");});
+    const result=await dispatch(setup(),"employees:save",[{id:"emp-1",status:"retired"}]);expect(result?.body).toMatchObject({ok:false,errorCode:"EMPLOYEE_SAVE_FAILED"});expect(mocks.refreshPendingPerformanceForWageChanges).not.toHaveBeenCalled();
+  });
+
+  it("registers exactly the 29 workforce contracts", () => {
     const env = setup();
     expect(env.registry.getRegisteredChannels().sort()).toEqual([...WORKFORCE_CHANNELS].sort());
-    expect(WORKFORCE_CHANNELS).toHaveLength(25);
+    expect(WORKFORCE_CHANNELS).toHaveLength(29);
     expect(Object.keys(descriptors).sort()).toEqual([...WORKFORCE_CHANNELS].sort());
     const manifestActivities = CHANNEL_CONTRACTS.filter(
       (contract) => contract.group === "workforce" && contract.recordsActivity,
     ).map((contract) => contract.channel).sort();
     expect(Object.keys(activities).sort()).toEqual(manifestActivities);
-    expect(manifestActivities).toHaveLength(17);
+    expect(manifestActivities).toHaveLength(19);
     const dataDirChannels = CHANNEL_CONTRACTS.filter(
       (contract) => contract.group === "workforce" && contract.usesDataDir,
     ).map((contract) => contract.channel).sort();
     expect(dataDirChannels).toEqual([
       "monthly-schedules:export-plan",
+      "monthly-schedules:preparation-context",
       "monthly-schedules:publish-export",
     ]);
   });
 
-  it("dispatches all 25 channels with exact service arguments and 17 exact activities", async () => {
+  it("dispatches all 29 channels with exact service arguments and 19 exact activities", async () => {
     for (const channel of WORKFORCE_CHANNELS) {
       vi.clearAllMocks();
       const env = setup();
       const descriptor = descriptors[channel];
       const result = await dispatch(env, channel, descriptor.args);
       expect(result?.status, channel).toBe(200);
-      expect((result?.body as { ok: boolean }).ok, channel).toBe(true);
+            expect((result?.body as { ok: boolean }).ok, channel).toBe(true);
       expect(descriptor.spy, channel).toHaveBeenCalledTimes(1);
       expect(descriptor.spy, channel).toHaveBeenCalledWith(
         ...descriptor.expectedArgs(env, descriptor.args),
@@ -268,6 +343,15 @@ describe("workforce-routes", () => {
     expect(operator.accessLogSpy).not.toHaveBeenCalled();
   });
 
+  it.each(["employees:save-wage-rate", "employees:apply-wage-bulk-update"])("W-02: %s uses the session actor rather than forged payload metadata", async channel => {
+    const env = setup();
+    const payload = { employeeId: "emp-1", hourlyRate: 13600, effectiveFrom: "2026-04-01", actor: { userId: "forged", loginId: "forged", displayName: "위조", role: "admin" } };
+    const result = await dispatch(env, channel, [payload]);
+    expect(result?.status).toBe(200);
+    const spy = channel === "employees:save-wage-rate" ? mocks.saveStoredEmployeeWageRate : mocks.applyWorkforceWageBulkUpdate;
+    expect(spy).toHaveBeenCalledWith(payload, adminSession);
+  });
+
   it("returns the original failure code and records no activity when a service throws", async () => {
     mocks.saveStoredEmployee.mockImplementationOnce(() => {
       throw new Error("저장 실패");
@@ -280,5 +364,52 @@ describe("workforce-routes", () => {
       message: "저장 실패",
     });
     expect(env.accessLogSpy).not.toHaveBeenCalled();
+  });
+
+  it("validates preparation-context year and filters out invalid or out-of-year holiday dates", async () => {
+    const env = setup(adminSession);
+
+    const invalidYearResult = await dispatch(env, "monthly-schedules:preparation-context", [1899]);
+    expect(invalidYearResult?.body).toMatchObject({
+      ok: false,
+      errorCode: "MONTHLY_SCHEDULE_CONTEXT_FAILED",
+      message: "유효한 연도(1900~9999)를 입력해 주세요.",
+    });
+
+    mocks.listStoredHolidayCalendars.mockReturnValueOnce([
+      {
+        year: 2026,
+        items: [
+          { holidayDate: "2026-01-01" },
+          { holidayDate: "2026-02-29" },
+          { holidayDate: "2026-02-30" },
+          { holidayDate: "2026-13-01" },
+          { holidayDate: "2025-12-25" },
+          { holidayDate: "invalid-format" },
+          { holidayDate: "2026-05-05" },
+          { holidayDate: "2026-01-01" },
+        ],
+      },
+    ]);
+
+    const res2026 = await dispatch(env, "monthly-schedules:preparation-context", [2026]);
+    expect(res2026?.body).toMatchObject({
+      ok: true,
+      data: {
+        year: 2026,
+        publicHolidayDates: ["2026-01-01", "2026-05-05"],
+      },
+    });
+
+    mocks.listStoredHolidayCalendars.mockReturnValueOnce([
+      {
+        year: 2024,
+        items: [
+          { holidayDate: "2024-02-29" },
+        ],
+      },
+    ]);
+    const res2024 = await dispatch(env, "monthly-schedules:preparation-context", [2024]);
+    expect((res2024?.body as { data: { publicHolidayDates: string[] } })?.data?.publicHolidayDates).toEqual(["2024-02-29"]);
   });
 });

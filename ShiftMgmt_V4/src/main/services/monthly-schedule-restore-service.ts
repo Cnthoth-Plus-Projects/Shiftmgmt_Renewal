@@ -405,6 +405,7 @@ const parseMonthlyScheduleItemsFromExportedPlan = async (input: {
   filePath: string;
   scheduleMonth: string;
   employeesByName: Map<string, EmployeeRecord>;
+  assignmentsByEmployeeId: Map<string, EmployeeSiteAssignment[]>;
   dutyTimeSources: Map<string, DutyTimeSource>;
 }) => {
   const [layout, workbook] = await Promise.all([
@@ -438,9 +439,11 @@ const parseMonthlyScheduleItemsFromExportedPlan = async (input: {
           (workerName) => {
             const employee = input.employeesByName.get(normalizeLookupKey(workerName));
 
-            if (!employee) {
+            if (!employee || !isManagedEmployeeEmployedOnDate(employee,workDate)) {
               return [];
             }
+            const assignment=employee.employmentPeriods?input.assignmentsByEmployeeId.get(employee.id)?.find(row=>{const bounds=assignmentEmploymentBounds(row);return !bounds.excluded&&bounds.startDate<=workDate&&(!bounds.endDate||workDate<bounds.endDate);}):undefined;
+            if(employee.employmentPeriods&&!assignment)return [];
 
             if (!dutyTime || !dutyTimeIsUsable) {
               // Worker is scheduled but the pattern gives no usable time for this grid position.
@@ -452,9 +455,9 @@ const parseMonthlyScheduleItemsFromExportedPlan = async (input: {
               {
                 employeeCode: employee.employeeCode,
                 teamLabel:
-                  employee.currentShiftGroup?.toUpperCase() === "POOL"
+                  (assignment?.shiftGroup??employee.currentShiftGroup)?.toUpperCase() === "POOL"
                     ? undefined
-                    : employee.currentShiftGroup,
+                    : assignment?.shiftGroup??employee.currentShiftGroup,
                 sortOrder: slotIndex,
                 workDate,
                 dutyCode,
@@ -598,6 +601,7 @@ export const restoreMissingMonthlySchedulesFromExportedPlans = async (
       filePath: exportedPlanPath,
       scheduleMonth: target.scheduleMonth,
       employeesByName,
+      assignmentsByEmployeeId:new Map(employees.filter(employee=>employee.employmentPeriods).map(employee=>[employee.id,listStoredEmployeeAssignments(employee.id).filter(assignment=>assignment.siteId===target.site.id)])),
       dutyTimeSources: buildDutyTimeSourceMap(pattern)
     });
 
@@ -654,3 +658,6 @@ export const restoreMissingMonthlySchedulesFromExportedPlans = async (
     issueMessages
   };
 };
+import { assignmentEmploymentBounds, isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
+import type { EmployeeSiteAssignment } from "../../shared/domain/model";
+import { listStoredEmployeeAssignments } from "./employee-history-service";

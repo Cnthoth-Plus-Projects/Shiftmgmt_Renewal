@@ -1,0 +1,778 @@
+/* ==========================================================================
+   Performance Intake, Review and Approval Screen Styles
+   Scoped under .performance-screen
+   Follows UI_ACCEPTANCE_STANDARD.md
+   ========================================================================== */
+
+.performance-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: #f8fafc;
+  color: #1e293b;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   KPI Bar (Full width, cards with label/value side-by-side)
+   -------------------------------------------------------------------------- */
+.perf-kpi-bar {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.perf-kpi-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.perf-kpi-card-label {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.perf-kpi-card-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.perf-kpi-card.kpi-pending .perf-kpi-card-value {
+  color: #2563eb;
+}
+
+.perf-kpi-card.kpi-approved .perf-kpi-card-value {
+  color: #16a34a;
+}
+
+.perf-kpi-card.kpi-rejected .perf-kpi-card-value {
+  color: #dc2626;
+}
+
+.perf-kpi-card.kpi-reapproval .perf-kpi-card-value {
+  color: #d97706;
+}
+
+.perf-kpi-card.kpi-locked .perf-kpi-card-value {
+  color: #475569;
+}
+
+/* --------------------------------------------------------------------------
+   Toolbar (Full width, filters, search, tabs, density, sync indicator)
+   -------------------------------------------------------------------------- */
+.perf-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.perf-toolbar-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.perf-tabs-group {
+  display: inline-flex;
+  background-color: #f1f5f9;
+  padding: 3px;
+  border-radius: 6px;
+  gap: 2px;
+}
+
+.perf-tab-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.perf-tab-btn:hover {
+  color: #0f172a;
+}
+
+.perf-tab-btn.active {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.perf-sync-status-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.perf-sync-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+}
+
+.perf-sync-indicator.scanning {
+  background-color: #3b82f6;
+  animation: perf-pulse 1.2s infinite;
+}
+
+.perf-sync-indicator.error {
+  background-color: #ef4444;
+}
+
+@keyframes perf-pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.perf-toolbar-row-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.perf-control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.perf-control-label {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.perf-select,
+.perf-input {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.perf-select:focus,
+.perf-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.perf-search-input {
+  width: 200px;
+}
+
+.perf-btn-secondary {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.perf-btn-secondary:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.perf-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   Content Grid (Left: Table card, Right: 380px Detail card)
+   -------------------------------------------------------------------------- */
+.perf-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Table Card
+   -------------------------------------------------------------------------- */
+.perf-table-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  min-height: 0;
+  height: 100%;
+}
+
+.perf-table-viewport {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  min-height: 0;
+}
+
+.perf-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  text-align: left;
+}
+
+.perf-table th {
+  position: sticky;
+  top: 0;
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.perf-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+/* Density Variants */
+.density-compact .perf-table td {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.density-compact .perf-table th {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.density-spacious .perf-table td {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.density-spacious .perf-table th {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+/* Group Header Row */
+.perf-group-row {
+  background-color: #f1f5f9;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  color: #334155;
+}
+
+.perf-group-row:hover {
+  background-color: #e2e8f0;
+}
+
+.perf-group-cell {
+  padding: 6px 12px !important;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #cbd5e1 !important;
+}
+
+.perf-group-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.perf-group-toggle-icon {
+  font-size: 16px;
+  color: #64748b;
+  transition: transform 0.15s ease;
+}
+
+.perf-group-toggle-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.perf-group-count-badge {
+  font-size: 11px;
+  font-weight: normal;
+  padding: 1px 6px;
+  background-color: #e2e8f0;
+  color: #475569;
+  border-radius: 10px;
+}
+
+/* Data Rows */
+.perf-data-row {
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+}
+
+.perf-data-row:hover {
+  background-color: #f8fafc;
+}
+
+.perf-data-row.selected {
+  background-color: #eef1fb !important;
+}
+
+.perf-data-row:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+/* Badges Container in table */
+.perf-cell-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   8 Status Badges (Shared)
+   -------------------------------------------------------------------------- */
+.perf-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.badge-approved {
+  background-color: #e8f5ee;
+  color: #1e7a46;
+  border: 1px solid #c2e8d3;
+}
+
+.badge-pending {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-rejected {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badge-reapproval-pending {
+  background-color: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-reapproval-completed {
+  background-color: #ecfeff;
+  color: #0f766e;
+  border: 1px solid #a5f3fc;
+}
+
+.badge-locked {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.badge-non-payable {
+  background-color: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.badge-legal-holiday {
+  background-color: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+/* --------------------------------------------------------------------------
+   Table Footer (Pagination)
+   -------------------------------------------------------------------------- */
+.perf-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.perf-footer-info {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* --------------------------------------------------------------------------
+   Detail Card (Right: 380px fixed width, matching top/bottom)
+   -------------------------------------------------------------------------- */
+.perf-detail-card {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.perf-detail-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.perf-detail-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.perf-detail-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.perf-detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.perf-detail-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 4px;
+}
+
+.perf-detail-grid {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  row-gap: 6px;
+  column-gap: 8px;
+  font-size: 13px;
+}
+
+.perf-detail-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.perf-detail-value {
+  color: #0f172a;
+  word-break: break-all;
+}
+
+.perf-detail-value.highlight {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.perf-detail-actions {
+  padding: 12px 16px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.perf-action-btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.perf-btn-primary {
+  flex: 1;
+  height: 36px;
+  padding: 0 14px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.perf-btn-primary:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.perf-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.perf-btn-reject {
+  height: 36px;
+  padding: 0 14px;
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.perf-btn-reject:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.perf-btn-reject:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   State Overlays (Loading, Empty, Error, Unauthorized)
+   -------------------------------------------------------------------------- */
+.perf-state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 12px;
+  color: #64748b;
+  height: 100%;
+}
+
+.perf-state-box .material-symbols-outlined {
+  font-size: 36px;
+  color: #94a3b8;
+}
+
+.perf-state-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.perf-state-desc {
+  font-size: 13px;
+  color: #64748b;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Modals and Comparison View
+   -------------------------------------------------------------------------- */
+.perf-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.perf-modal-dialog {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 580px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.perf-modal-dialog.wide {
+  max-width: 820px;
+}
+
+.perf-modal-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8fafc;
+}
+
+.perf-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.perf-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perf-modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.perf-modal-footer {
+  padding: 12px 18px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.perf-diff-changed {
+  background-color: #fef08a;
+  color: #854d0e;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Scoped Classes replacing inline styles for CSP Compliance
+   -------------------------------------------------------------------------- */
+.perf-col-no { width: 48px; text-align: center; }
+.perf-col-date { width: 90px; }
+.perf-col-code { width: 80px; }
+.perf-col-name { width: 85px; }
+.perf-col-team { width: 65px; }
+.perf-col-type { width: 90px; }
+.perf-col-section { width: 80px; }
+.perf-duty-badge { display: inline-block; max-width: 100%; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+.perf-duty-D { background: #e8f5ee; color: #17633c; }
+.perf-duty-E { background: #fff3df; color: #8a4b00; }
+.perf-duty-N { background: #eef1fb; color: #354ca2; }
+.perf-duty-O, .perf-duty-unknown { background: #f1f2f4; color: #4b5563; }
+.perf-duty-OT { background: #f3e8ff; color: #6b21a8; }
+.perf-col-time { width: 90px; }
+.perf-col-total { width: 75px; text-align: right; }
+.perf-col-status { width: 140px; }
+.perf-col-note { color: #64748b; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.perf-cell-center { text-align: center; }
+.perf-cell-right { text-align: right; }
+.perf-cell-muted { color: #64748b; }
+.perf-cell-bold { font-weight: 600; }
+.perf-cell-empty { text-align: center; padding: 32px; color: #94a3b8; }
+.perf-continuation-tag { color: #64748b; font-size: 11px; }
+
+.perf-modal-desc { font-size: 13px; color: #475569; line-height: 1.6; }
+.perf-modal-field-group { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.perf-modal-label { font-size: 12px; font-weight: 600; color: #334155; }
+.perf-modal-error { color: #dc2626; font-size: 12px; }
+.perf-modal-textarea { height: 80px; padding: 8px; }
+.perf-modal-danger-box { padding: 12px; background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #b91c1c; font-weight: 600; }
+.perf-modal-info-box { padding: 10px; background-color: #f1f5f9; border-radius: 6px; color: #475569; }
+.perf-modal-danger-title { color: #dc2626; }
+.perf-btn-flex { flex: 1; }
+.perf-bordered-table { border: 1px solid #e2e8f0; font-size: 13px; }
+.perf-th-sub { background-color: #f8fafc; }
+.perf-col-140 { width: 140px; }
+.perf-col-100 { width: 100px; }
+.perf-col-110 { width: 110px; }
+.perf-col-80 { width: 80px; }
+.perf-sub-target-info { font-size: 13px; color: #64748b; margin-bottom: 8px; }
+.perf-value-large { font-size: 14px; }
+.perf-text-danger { color: #dc2626; }
+.perf-word-break { word-break: break-all; }
+.perf-cell-nowrap { white-space: nowrap; }
+.perf-action-file-row { margin-top: 8px; border-top: 1px dashed #e2e8f0; padding-top: 8px; }
+.perf-checkbox { cursor: pointer; width: 16px; height: 16px; }
+.perf-modal-checkbox-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: #334155; cursor: pointer; }
+
+[hidden] { display: none !important; }
+
+.perf-modal-backdrop .workforce-modal-body:has(> .perf-dialog-content) { padding:0; }
+.perf-dialog-content > .perf-modal-footer { position:sticky; bottom:0; }

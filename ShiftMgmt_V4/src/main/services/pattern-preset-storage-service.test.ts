@@ -1,0 +1,16 @@
+import { describe,it,expect,afterEach } from "vitest";
+import { mkdtempSync,rmSync } from "node:fs";import { tmpdir } from "node:os";import path from "node:path";
+import { initializeSqliteStorage,resetSqliteStorageForTest,closeSqliteStorage,getSqliteDatabase } from "./sqlite-storage-service";
+import { listStoredPatternPresets,saveStoredPatternPreset,deleteStoredPatternPreset } from "./pattern-preset-storage-service";
+import { PATTERN_PRESETS_SETTING_KEY } from "../../shared/bridge/pattern-presets";
+import { create4Team3ShiftTemplate } from "../../web/screens/sites-pattern-model";
+import { makePatternPreset } from "../../web/screens/sites-team-pattern";
+let dir="";const setup=()=>{dir=mkdtempSync(path.join(tmpdir(),"shift-pattern-preset-test-"));initializeSqliteStorage({dbPath:path.join(dir,"app.sqlite"),userDataPath:dir,env:{DATA_DIR:dir}});};
+afterEach(()=>{resetSqliteStorageForTest();if(dir){const rel=path.relative(tmpdir(),dir);if(rel&&!rel.startsWith("..")&&!path.isAbsolute(rel))rmSync(dir,{recursive:true,force:true});dir="";}});
+const definition=()=>makePatternPreset(create4Team3ShiftTemplate("excluded-worksite"));
+describe("PC pattern preset storage",()=>{
+  it("keeps definitions after closing and reopening the app database",()=>{setup();expect(listStoredPatternPresets()).toEqual([]);const saved=saveStoredPatternPreset({name:'8일 "교대"',definition:definition()});closeSqliteStorage();initializeSqliteStorage({dbPath:path.join(dir,"app.sqlite"),userDataPath:dir,env:{DATA_DIR:dir}});expect(listStoredPatternPresets()).toEqual([saved]);});
+  it("updates and deletes only the expected revision",()=>{setup();const a=saveStoredPatternPreset({name:"패턴",definition:definition()}),b=saveStoredPatternPreset({id:a.id,expectedRevision:a.revision,name:"갱신",definition:definition()});expect(b.revision).toBe(2);expect(()=>saveStoredPatternPreset({id:a.id,expectedRevision:a.revision,name:"오래된 창",definition:definition()})).toThrow("다른 창");expect(()=>deleteStoredPatternPreset({id:a.id,expectedRevision:a.revision})).toThrow("다른 창");expect(listStoredPatternPresets()).toEqual([b]);deleteStoredPatternPreset({id:b.id,expectedRevision:b.revision});expect(listStoredPatternPresets()).toEqual([]);});
+  it("rejects duplicate names and invalid definitions without changing saved data",()=>{setup();const a=saveStoredPatternPreset({name:"패턴",definition:definition()}),bad=definition();bad.rows[1].steps.pop();expect(()=>saveStoredPatternPreset({name:"다른 패턴",definition:bad})).toThrow("같은 수");expect(()=>saveStoredPatternPreset({name:"패턴",definition:definition()})).toThrow("같은 이름");expect(listStoredPatternPresets()).toEqual([a]);});
+  it("does not silently overwrite a damaged persisted library",()=>{setup();getSqliteDatabase()!.prepare("INSERT INTO app_setting_entries(setting_key,value,updated_at) VALUES(?,?,?)").run(PATTERN_PRESETS_SETTING_KEY,"broken",new Date().toISOString());expect(()=>listStoredPatternPresets()).toThrow();expect(()=>saveStoredPatternPreset({name:"덮어쓰기",definition:definition()})).toThrow();expect((getSqliteDatabase()!.prepare("SELECT value FROM app_setting_entries WHERE setting_key=?").get(PATTERN_PRESETS_SETTING_KEY) as {value:string}).value).toBe("broken");});
+});

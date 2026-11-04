@@ -1,12 +1,25 @@
+import { initializePolicyHistory } from "./policy-history-service";
+import { listStoredShiftPatterns } from "./shift-pattern-storage-service";
+import { prepareReturnedScheduleFixture, syncPreparedReturnedSchedule, testAdminSession } from "./performance-test-helpers";
+import { approvePerformanceFile } from "./performance-approval-flow-service";
+import { resetPerformanceApprovalStateForTest } from "./performance-approval-service";
+import { resetPerformanceFileStorageForTest } from "./performance-file-storage-service";
+import { listStoredPatternPresets, saveStoredPatternPreset, deleteStoredPatternPreset } from "./pattern-preset-storage-service";
+import { create4Team3ShiftTemplate } from "../../web/screens/sites-pattern-model";
+import { makePatternPreset } from "../../web/screens/sites-team-pattern";
 import crypto from "node:crypto";
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import * as databaseBackupService from "./database-backup-service";
 
 import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
 import { runDatabaseBackupNow } from "./database-backup-service";
+import { listStoredEmployees, resetEmployeeStorageForTest, saveStoredEmployee } from "./employee-storage-service";
+import { listStoredEmployeeWageRates, saveStoredEmployeeWageRate } from "./employee-history-service";
+import { listStoredSiteNameOptions, saveStoredSiteNameOption } from "./operations-storage-service";
 import {
   checkDatabaseMigrationRequirements,
   computeDatabaseContentFingerprint,
@@ -59,7 +72,7 @@ const setupTestEnvironment = () => {
 
 const createBaselineBackupFile = async (
   filename: string,
-  modifier?: (tables: Record<string, unknown[]>) => void
+  modifier?: (tables: Record<string, unknown[]>, parsed?: Record<string, unknown>) => void
 ): Promise<{ filePath: string; sha256: string }> => {
   setupTestEnvironment();
   const backupSummary = await runDatabaseBackupNow({ userDataPath, env });
@@ -74,7 +87,7 @@ const createBaselineBackupFile = async (
   };
 
   if (modifier) {
-    modifier(parsed.tables);
+    modifier(parsed.tables, parsed);
     let totalRows = 0;
     for (const rows of Object.values(parsed.tables)) {
       if (Array.isArray(rows)) totalRows += rows.length;
@@ -115,6 +128,7 @@ const createValidPerformanceFile = (overrides: Record<string, unknown> = {}): Re
   error_message: null,
   preview_json: JSON.stringify([{ 근무지: "SK증권", 직원명: "홍길동1", 근무날짜: "2024-08-15" }]),
   reparse_marker_snapshot_json: null,
+  policy_context_fingerprint: null,
   ...overrides
 });
 
@@ -157,6 +171,7 @@ const createValidPerformanceEntry = (overrides: Record<string, unknown> = {}): R
   substitute_allowance_eligible: 1,
   substitute_allowance_reason_code: null,
   substitute_allowance_policy_version: null,
+  policy_snapshot_json: null,
   ...overrides
 });
 
@@ -185,8 +200,123 @@ const createValidPerformanceApproval = (overrides: Record<string, unknown> = {})
 
 describe("database-migration-service", () => {
   afterEach(() => {
+    resetPerformanceApprovalStateForTest();
+    resetPerformanceFileStorageForTest();
+    resetEmployeeStorageForTest();
     resetSqliteStorageForTest();
     rmSync(testRoot, { recursive: true, force: true });
+  });
+
+  it("W11 preview reports source dates, blanks and invalid dates without inventing an actual hire date",async()=>{
+    const {filePath,sha256}=await createBaselineBackupFile("w11-hire-dates.json",tables=>{
+      tables.employees=["2020-01-01",null,"","2026-02-30"].map((hireDate,index)=>({id:`w11-${index}`,employee_code:`W11-${index}`,name:`입사일 확인 ${index}`,contact:null,email:null,rank:"사원",employment_type:"정규",status:"active",hire_date:hireDate,retire_date:null,deleted_at:index===3?"2026-03-01":null,created_at:"2026-03-01T00:00:00Z",updated_at:null}));
+    });
+    const preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env});
+    expect(preview).toMatchObject({employeeHireDateReview:{sourceBackupSha256:sha256,totalEmployeeCount:4,sourceDateCount:1,missingDateCount:2,invalidDateCount:1}});
+  });
+  it.each(["garbage","2026-04-01"])("W11 preview rejects date ordering %s that cannot reopen safely before replacing the live database",async hireDate=>{
+    const {filePath}=await createBaselineBackupFile("w11-cannot-open.json",tables=>{tables.employees=[{id:"w11-order",employee_code:"W11-ORDER",name:"기간 확인",contact:null,email:null,rank:"사원",employment_type:"정규",status:"retired",hire_date:hireDate,retire_date:"2026-03-16",deleted_at:null,created_at:"2026-03-01T00:00:00Z",updated_at:null}];tables.employee_employment_periods=[];});
+    const before=computeDatabaseContentFingerprint(getSqliteDatabase()!);
+    expect(()=>previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env})).toThrow(/기존 데이터는 교체하지 않았습니다/);
+    expect(computeDatabaseContentFingerprint(getSqliteDatabase()!)).toBe(before);
+  });
+  it("W11 actual restore retains January1, absent, whitespace and invalid calendar source values and the exact review hash",async()=>{
+    const dates=["2020-01-01",null,""," ","2026-02-30"];
+    const {filePath,sha256}=await createBaselineBackupFile("w11-roundtrip.json",tables=>{tables.employees=dates.map((hireDate,index)=>({id:`w11-${index}`,employee_code:`W11-${index}`,name:`원본 입사일 ${index}`,contact:null,email:null,rank:"사원",employment_type:"정규",status:"active",hire_date:hireDate,retire_date:null,deleted_at:null,created_at:"2026-03-01T00:00:00Z",updated_at:null}));tables.employee_employment_periods=[];});
+    const bytes=readFileSync(filePath),preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env});
+    const summary=await runDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체",env});
+    expect(summary.employeeHireDateReview).toEqual(preview.employeeHireDateReview);expect(summary.employeeHireDateReview?.sourceBackupSha256).toBe(sha256);
+    expect(getSqliteDatabase()!.prepare("SELECT hire_date FROM employees ORDER BY id").all().map(row=>row.hire_date)).toEqual(dates);expect(readFileSync(filePath)).toEqual(bytes);
+    expect(getSqliteDatabase()!.prepare("SELECT start_date FROM employee_employment_periods ORDER BY employee_id").all().map(row=>row.start_date)).toEqual(["2020-01-01","2026-02-30"]);
+  });
+  it("W11 changing an employee date after preview rejects the old report and leaves live dates unchanged",async()=>{
+    const {filePath}=await createBaselineBackupFile("w11-stale-date.json");const preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env}),before=computeDatabaseContentFingerprint(getSqliteDatabase()!);
+    const source=JSON.parse(readFileSync(filePath,"utf8"));source.createdAt="2040-01-01T00:00:00Z";source.tables.employees=[{id:"new-date",employee_code:"W11-NEW",name:"변경된 날짜",hire_date:"2025-01-01"}];writeFileSync(filePath,JSON.stringify(source),"utf8");
+    await expect(runDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체",env})).rejects.toThrow("미리보기 이후 백업 파일이 변경되었습니다");expect(computeDatabaseContentFingerprint(getSqliteDatabase()!)).toBe(before);
+  });
+  it("W11 actual Excel approval, calculations, wages and assignment histories survive reviewed backup/restore unchanged",async()=>{
+    const fixture=await prepareReturnedScheduleFixture({rootDir:path.join(testRoot,"w11-actual-financial")}),detail=await syncPreparedReturnedSchedule(fixture),entry=detail.entries.find(row=>row.section==="overtime")!;
+    expect((await approvePerformanceFile({fileId:detail.id,entryId:entry.id},testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(true);
+    closeSqliteStorage();mkdirSync(dataDir,{recursive:true});copyFileSync(fixture.dbPath,dbPath);setupTestEnvironment();
+    const tables=["employees","wage_rates","employee_site_assignments","employee_employment_periods","employee_employment_period_events","performance_approvals","allowance_calculations","allowance_calculation_items"],snapshot=()=>tables.map(table=>getSqliteDatabase()!.prepare(`SELECT * FROM ${table} ORDER BY id`).all()),before=snapshot();expect(before[5].length).toBe(1);expect(before[6].length).toBeGreaterThan(0);
+    const backup=await runDatabaseBackupNow({userDataPath,env}),preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:backup.jsonBackupPath,env});
+    const result=await runDatabaseMigrationUpdate({userDataPath,backupFilePath:backup.jsonBackupPath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체",env});
+    expect(result.employeeHireDateReview).toEqual(preview.employeeHireDateReview);expect(result.employeeHireDateReview!.totalEmployeeCount).toBe(before[0].length);const after=snapshot();tables.forEach((table,index)=>expect(after[index],table).toEqual(before[index]));
+  },30_000);
+  it("W10 JSON backup/restore preserves actual rehire and cancelled reservation periods with their raw histories",async()=>{
+    vi.useFakeTimers({toFake:["Date"]});vi.setSystemTime(new Date("2026-11-01T00:00:00Z"));
+    try{setupTestEnvironment();listStoredEmployees();listStoredShiftPatterns();closeSqliteStorage();initializeSqliteStorage({dbPath,userDataPath,env});const employee=listStoredEmployees().find(e=>e.employeeCode==="EMP-001")!,retired=saveStoredEmployee({...employee,status:"retired",retireDate:"2026-03-16",hourlyRate:undefined},testAdminSession);
+      const booked=saveStoredEmployee({...retired,rehire:{operation:"start",startDate:"2026-11-10",siteId:employee.currentSiteId!,shiftGroup:"A조",hourlyRate:15000,expectedUpdatedAt:retired.updatedAt,expectedRetireDate:retired.retireDate!}},testAdminSession);
+      saveStoredEmployee({...booked,rehire:{operation:"reschedule",periodId:booked.scheduledRehire!.periodId,expectedRevision:booked.scheduledRehire!.revisionToken,startDate:"2026-11-20",siteId:employee.currentSiteId!,shiftGroup:"A조",hourlyRate:16000}},testAdminSession);
+      const tables=["employees","employee_employment_periods","employee_employment_period_events","employee_retirement_history_closures","wage_rates","employee_site_assignments"],snapshot=()=>tables.map(table=>getSqliteDatabase()!.prepare(`SELECT * FROM ${table} ORDER BY id`).all()),before=snapshot();
+      const backup=await runDatabaseBackupNow({userDataPath,env}),preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:backup.jsonBackupPath,env});
+      await runDatabaseMigrationUpdate({userDataPath,backupFilePath:backup.jsonBackupPath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체",env});const after=snapshot();tables.forEach((table,index)=>expect(after[index],table).toEqual(before[index]));const restored=listStoredEmployees().find(e=>e.id===employee.id)!;expect(restored.scheduledRehire?.startDate).toBe("2026-11-20");expect(restored.employmentPeriods?.filter(p=>p.cancelled)).toHaveLength(1);
+    }finally{vi.useRealTimers();}
+  },30_000);
+  it("W-04: actual JSON round-trip preserves corrected hire metadata and existing dependent date rows", async () => {
+    setupTestEnvironment();
+    const employee = listStoredEmployees().find(e => e.employeeCode === "EMP-001")!;
+    closeSqliteStorage(); initializeSqliteStorage({ dbPath, userDataPath, env });
+    const tables = ["wage_rates", "wage_rate_history", "employee_site_assignments", "employee_employment_periods", "employee_employment_period_events"];
+    const snapshot = () => tables.map(table => getSqliteDatabase()!.prepare(`SELECT * FROM ${table} ORDER BY id`).all());
+    const before = snapshot();
+    const payload = { id: employee.id, employeeCode: employee.employeeCode, name: employee.name, employmentType: employee.employmentType, rank: employee.rank, status: employee.status, retireDate: employee.retireDate };
+    expect(saveStoredEmployee({ ...payload, hireDate: "2023-04-01" }).hireDate).toBe("2023-04-01");
+    expect(snapshot()).toEqual(before);
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    const json = JSON.parse(readFileSync(backup.jsonBackupPath, "utf8"));
+    expect(json.tables.employees.find((row: { id: string }) => row.id === employee.id).hire_date).toBe("2023-04-01");
+    saveStoredEmployee({ ...payload, hireDate: "2023-05-01" });
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: backup.jsonBackupPath, env });
+    await runDatabaseMigrationUpdate({ userDataPath, backupFilePath: backup.jsonBackupPath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체", env });
+    expect(listStoredEmployees().find(e => e.id === employee.id)?.hireDate).toBe("2023-04-01");
+    expect(snapshot()).toEqual(before);
+  }, 30_000);
+
+  it("W-02: round-trips actually produced same-date corrections through JSON backup and restore", async () => {
+    setupTestEnvironment();
+    const employee = listStoredEmployees().find(e => e.employeeCode === "EMP-001")!;
+    const initial = listStoredEmployeeWageRates(employee.id)[0]!;
+    const actor = { userId: "w02-restore", loginId: "w02-restore", displayName: "복원검증", role: "admin" as const };
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 13600, effectiveFrom: initial.effectiveFrom, reason: "첫 정정 사유" }, actor);
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 14000, effectiveFrom: initial.effectiveFrom }, actor);
+    const before = getSqliteDatabase()!.prepare("SELECT * FROM wage_rate_history ORDER BY id").all();
+    expect(before).toHaveLength(2);
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    const raw = JSON.parse(readFileSync(backup.jsonBackupPath, "utf8"));
+    expect(raw.tables.wage_rate_history).toHaveLength(2);
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 15000, effectiveFrom: initial.effectiveFrom, reason: "복원 전 다른 값" }, actor);
+    expect(getSqliteDatabase()!.prepare("SELECT * FROM wage_rate_history").all()).toHaveLength(3);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: backup.jsonBackupPath, env });
+    await runDatabaseMigrationUpdate({ userDataPath, backupFilePath: backup.jsonBackupPath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체", env });
+    expect(getSqliteDatabase()!.prepare("SELECT * FROM wage_rate_history ORDER BY id").all()).toEqual(before);
+    const restored = listStoredEmployeeWageRates(employee.id)[0]!;
+    expect(restored).toMatchObject({ id: initial.id, hourlyRate: 14000 });
+    expect(restored.history?.map(h => h.hourlyRate).sort((a,b)=>a-b)).toEqual([initial.hourlyRate,13600].sort((a,b)=>a-b));
+  }, 30_000);
+
+  it("restores holiday policy JSON and accepts older backups without the optional column",async()=>{
+    setupTestEnvironment();listStoredShiftPatterns();
+    const policy={version:1,rules:{saturday:{mode:"off",excludedDutyCodes:[],teamTimes:{"A조":{D:{startTime:"08:00",endTime:"18:00",breakMinutes:60}}}}},dateExceptions:[{id:"restore-special",from:"2027-01-01",to:"2027-01-02",scope:"site",reason:"백업 예외",dutyCode:"O"}]};
+    const {filePath}=await createBaselineBackupFile("holiday-policy.json",(tables, parsed)=>{
+      if (parsed) {
+        parsed.schemaVersion = 1;
+        delete tables.policy_revisions;
+        delete tables.policy_events;
+        parsed.tableCount = Object.keys(tables).length;
+      }
+      (tables.shift_patterns as Array<Record<string,unknown>>).forEach((r,i)=>{if(i===0)r.holiday_policy_json=JSON.stringify(policy);else delete r.holiday_policy_json;});
+    });
+    const preview=previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env});
+    await runDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체",env});
+    const rows=getSqliteDatabase()!.prepare("SELECT holiday_policy_json FROM shift_patterns").all() as Array<{holiday_policy_json:string|null}>;
+    expect(rows.some(r=>r.holiday_policy_json&&JSON.parse(r.holiday_policy_json).rules.saturday.mode==="off")).toBe(true);expect(rows.some(r=>r.holiday_policy_json===null)).toBe(true);
+    expect(rows.map(r=>r.holiday_policy_json&&JSON.parse(r.holiday_policy_json)).find(p=>p?.dateExceptions)).toEqual(policy);
+  });
+  it("rejects malformed holiday policy in backup before replacing the live DB",async()=>{
+    setupTestEnvironment();listStoredShiftPatterns();
+    const {filePath}=await createBaselineBackupFile("holiday-invalid.json",tables=>{(tables.shift_patterns[0] as Record<string,unknown>).holiday_policy_json=JSON.stringify({version:2,rules:{}});});
+    const before=computeDatabaseContentFingerprint(getSqliteDatabase()!);expect(()=>previewDatabaseMigrationUpdate({userDataPath,backupFilePath:filePath,env})).toThrow();expect(computeDatabaseContentFingerprint(getSqliteDatabase()!)).toBe(before);
   });
 
   it("should replace the current sqlite database with a json backup while preserving current settings", async () => {
@@ -213,7 +343,7 @@ describe("database-migration-service", () => {
     });
 
     expect(preview.sourceType).toBe("json");
-    expect(preview.tableImpacts).toHaveLength(40);
+    expect(preview.tableImpacts).toHaveLength(42);
     expect(preview.previewToken).toBeDefined();
 
     const summary = await runDatabaseMigrationUpdate({
@@ -226,7 +356,7 @@ describe("database-migration-service", () => {
     });
 
     expect(summary.sourceType).toBe("json");
-    expect(summary.tableResults).toHaveLength(40);
+    expect(summary.tableResults).toHaveLength(42);
     expect(summary.databasePath).toBe(dbPath);
     expect(existsSync(summary.backupBeforeRestore.jsonBackupPath)).toBe(true);
 
@@ -507,7 +637,7 @@ describe("database-migration-service", () => {
       env
     });
 
-    expect(summary.tableResults).toHaveLength(40);
+    expect(summary.tableResults).toHaveLength(42);
 
     const restoredDatabase = getSqliteDatabase()!;
     const hasId = (tableName: string, id: string) =>
@@ -567,7 +697,7 @@ describe("database-migration-service", () => {
     });
 
     expect(preview.sourceType).toBe("json");
-    expect(preview.tableImpacts).toHaveLength(40);
+    expect(preview.tableImpacts).toHaveLength(42);
     expect(preview.previewToken).toBeDefined();
 
     const siteImpact = preview.tableImpacts.find((t) => t.tableName === "sites");
@@ -577,6 +707,70 @@ describe("database-migration-service", () => {
       SELECT site_code, name FROM sites WHERE site_code = 'PREVIEW-001'
     `).all();
     expect(currentRows).toHaveLength(0);
+  });
+
+  it("should keep the live connection usable when another connection holds a write lock", async () => {
+    for (const phase of ["before", "during-backup"]) {
+    const { filePath } = await createBaselineBackupFile(`write-lock-${phase}.json`);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: filePath });
+    const live = getSqliteDatabase()!;
+    const before = computeDatabaseContentFingerprint(live);
+    const locker = new DatabaseSync(dbPath);
+    const originalBackup = databaseBackupService.runDatabaseBackupNow;
+    const backupSpy = phase === "during-backup" ? vi.spyOn(databaseBackupService, "runDatabaseBackupNow").mockImplementation(async input => {
+      const result = await originalBackup(input);
+      locker.exec("BEGIN IMMEDIATE");
+      return result;
+    }) : null;
+    try {
+      if (phase === "before") locker.exec("BEGIN IMMEDIATE");
+      await expect(runDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: filePath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체" })).rejects.toThrow(/locked|busy/i);
+    } finally {
+      locker.exec("ROLLBACK");
+      locker.close();
+      backupSpy?.mockRestore();
+    }
+    expect(getSqliteDatabase()).toBe(live);
+    expect(computeDatabaseContentFingerprint(live)).toBe(before);
+    }
+  });
+
+  it("should restore site name options from an actual application backup", async () => {
+    setupTestEnvironment();
+    saveStoredSiteNameOption({ name: '복원할 "근무지"' });
+    const expected = listStoredSiteNameOptions().map(({ id, name }) => ({ id, name }));
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    saveStoredSiteNameOption({ name: "백업 후 추가한 근무지" });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: backup.jsonBackupPath }).isReady).toBe(true);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: backup.jsonBackupPath });
+    await runDatabaseMigrationUpdate({ userDataPath, env, backupFilePath: backup.jsonBackupPath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체" });
+    expect(listStoredSiteNameOptions().map(({ id, name }) => ({ id, name }))).toEqual(expected);
+  });
+
+  it("keeps the PC pattern library through an actual JSON backup and restore", async () => {
+    setupTestEnvironment();
+    const preset=saveStoredPatternPreset({name:"복원할 반복 패턴",definition:makePatternPreset(create4Team3ShiftTemplate("not-a-stored-site"))});
+    const backup=await runDatabaseBackupNow({userDataPath,env});deleteStoredPatternPreset({id:preset.id,expectedRevision:preset.revision});expect(listStoredPatternPresets()).toEqual([]);
+    const preview=previewDatabaseMigrationUpdate({userDataPath,env,backupFilePath:backup.jsonBackupPath});
+    await runDatabaseMigrationUpdate({userDataPath,env,backupFilePath:backup.jsonBackupPath,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:"교체"});expect(listStoredPatternPresets()).toEqual([preset]);
+  });
+  it("rejects a malformed PC pattern library before restore", async () => {
+    for(const value of ["broken","{}",'[{"id":"bad"}]']){const {filePath}=await createBaselineBackupFile("bad-pattern-presets.json",tables=>{tables.app_setting_entries.push({setting_key:"shift_pattern_presets_json",value,updated_at:new Date().toISOString()});});expect(checkDatabaseMigrationRequirements({backupFilePath:filePath}).isReady).toBe(false);}
+  });
+
+  it("should reject malformed site name settings and unknown setting keys", async () => {
+    for (const value of ["invalid JSON", "{}", '[{"id":"site","name":3}]']) {
+      const { filePath } = await createBaselineBackupFile("bad-site-options.json", tables => {
+        tables.app_setting_entries.push({ setting_key: "site_name_options_json", value, updated_at: new Date().toISOString() });
+      });
+      const check = checkDatabaseMigrationRequirements({ backupFilePath: filePath });
+      expect(check.isReady).toBe(false);
+      expect(check.details.join(" ")).toContain("site_name_options_json");
+    }
+    const { filePath } = await createBaselineBackupFile("unknown-setting.json", tables => {
+      tables.app_setting_entries.push({ setting_key: "unregistered_setting_key", value: "[]", updated_at: new Date().toISOString() });
+    });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: filePath }).isReady).toBe(false);
   });
 
   it("should mark json migration requirements as ready without additional runtime checks", async () => {
@@ -641,9 +835,9 @@ describe("database-migration-service", () => {
     );
 
     const wrongVersionPath = path.resolve(testRoot, "wrong-version.json");
-    writeFileSync(wrongVersionPath, JSON.stringify({ schemaVersion: 2, tables: {} }));
+    writeFileSync(wrongVersionPath, JSON.stringify({ schemaVersion: 99, tables: {} }));
     expect(() => previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: wrongVersionPath, env })).toThrow(
-      "지원하지 않는 백업 버전입니다. (지원 버전: 1, 백업 파일 버전: 2)"
+      "지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 백업 파일 버전: 99)"
     );
 
     const missingTablesPath = path.resolve(testRoot, "missing-tables.json");
@@ -756,7 +950,7 @@ describe("database-migration-service", () => {
       env
     });
 
-    expect(result.tableResults).toHaveLength(40);
+    expect(result.tableResults).toHaveLength(42);
   });
 
   // N7 (DEC-001): 사번 없는 실적에 승인/숨김/수당 계산 이력이 있으면 롤백 및 거절
@@ -1210,8 +1404,8 @@ describe("database-migration-service", () => {
   });
 
 
-  // --- C02: 40표 456열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
-  it("C02: should verify 40 tables / 456 columns contract against isolated DB PRAGMA table_info", async () => {
+  // --- C02: 40표 457열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
+  it("C02: should verify 40 tables / 458 columns contract against isolated DB PRAGMA table_info", async () => {
     const inspectDbDir = path.resolve(testRoot, "pragma-inspect");
     mkdirSync(inspectDbDir, { recursive: true });
     const inspectDbPath = path.resolve(inspectDbDir, "inspect.sqlite");
@@ -1225,7 +1419,7 @@ describe("database-migration-service", () => {
     const inspectDb = inspectStorage.database;
 
     const tables = (inspectDb.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all() as Array<{ name: string }>).map((r) => r.name);
-    expect(tables.length).toBe(40);
+    expect(tables.length).toBe(42);
 
     const schemaInfo: Record<string, Array<{ name: string; type: string; notnull: number }>> = {};
     let totalCols = 0;
@@ -1247,12 +1441,15 @@ describe("database-migration-service", () => {
       }
     }
 
-    // 40표 456열, TEXT 378, INTEGER 72, REAL 6, 명시적 NOT NULL 277 실측 일치 단언
-    expect(totalCols).toBe(456);
-    expect(textCols).toBe(378);
-    expect(intCols).toBe(72);
+    // 42표 487열, TEXT 408, INTEGER 73, REAL 6, 명시적 NOT NULL 289 실측 일치 단언
+    expect(totalCols).toBe(487);
+    expect(textCols).toBe(408);
+    expect(intCols).toBe(73);
     expect(realCols).toBe(6);
-    expect(notNullCols).toBe(277);
+    expect(notNullCols).toBe(289);
+
+    initializePolicyHistory(inspectDb);
+    const policyTables = Object.fromEntries(["policy_revisions", "policy_events"].map(table => [table, inspectDb.prepare(`SELECT * FROM ${table}`).all()]));
 
     closeSqliteStorage();
     rmSync(inspectDbDir, { recursive: true, force: true });
@@ -1269,20 +1466,26 @@ describe("database-migration-service", () => {
 
     const baseTables: Record<string, unknown[]> = {};
     for (const t of tables) {
-      baseTables[t] = t === "app_setting_entries" ? [...validBusinessSettings] : [];
+      if (t === "app_setting_entries") {
+        baseTables[t] = [...validBusinessSettings];
+      } else if (t === "policy_revisions" || t === "policy_events") {
+        baseTables[t] = policyTables[t];
+      } else {
+        baseTables[t] = [];
+      }
     }
 
     const tmpFixturePath = path.resolve(testRoot, "contract-check-fixture.json");
     const writeFixture = (obj: Record<string, unknown[]>) => {
       writeFileSync(tmpFixturePath, JSON.stringify({
-        schemaVersion: 1,
+        schemaVersion: 2,
         sourceType: "sqlite-json",
         createdAt: new Date().toISOString(),
         tables: obj
       }));
     };
 
-    // 40개 표 456개 열 각각에 대해 타입 위반 및 NOT NULL 위반 검사
+    // 42개 표 487개 열 각각에 대해 타입 위반 및 NOT NULL 위반 검사
     for (const t of tables) {
       if (t === "app_setting_entries") continue; // 업무 설정은 전용 테스트로 검증
 
@@ -1296,9 +1499,11 @@ describe("database-migration-service", () => {
           validRow[c.name] = c.notnull === 1 ? "valid_str" : null;
         }
       }
+      if (t === "policy_revisions" || t === "policy_events") Object.assign(validRow, baseTables[t][0]);
+      const withRow = (row: Record<string, unknown>) => ({ ...baseTables, [t]: [row, ...baseTables[t].slice(1)] });
 
       // 1. 해당 표에 완전한 합성 1행을 넣었을 때 check 통과
-      writeFixture({ ...baseTables, [t]: [validRow] });
+      writeFixture(withRow(validRow));
       const validCheck = checkDatabaseMigrationRequirements({ backupFilePath: tmpFixturePath });
       expect(validCheck.isReady).toBe(true);
 
@@ -1308,7 +1513,7 @@ describe("database-migration-service", () => {
 
         // 잘못된 타입 거절 단언
         const badTypeRow = { ...validRow, [c.name]: isNum ? "bad_str" : 99999 };
-        writeFixture({ ...baseTables, [t]: [badTypeRow] });
+        writeFixture(withRow(badTypeRow));
         const badTypeCheck = checkDatabaseMigrationRequirements({ backupFilePath: tmpFixturePath });
         expect(badTypeCheck.isReady).toBe(false);
         expect(badTypeCheck.status).toBe("check-failed");
@@ -1317,7 +1522,7 @@ describe("database-migration-service", () => {
         // NOT NULL 제약 위반 거절 단언
         if (c.notnull === 1) {
           const nullRow = { ...validRow, [c.name]: null };
-          writeFixture({ ...baseTables, [t]: [nullRow] });
+          writeFixture(withRow(nullRow));
           const nullCheck = checkDatabaseMigrationRequirements({ backupFilePath: tmpFixturePath });
           expect(nullCheck.isReady).toBe(false);
           expect(nullCheck.status).toBe("check-failed");
@@ -1328,14 +1533,14 @@ describe("database-migration-service", () => {
       // 3. 표별 열 누락 시험
       const missingColRow = { ...validRow };
       delete missingColRow[cols[0].name];
-      writeFixture({ ...baseTables, [t]: [missingColRow] });
+      writeFixture(withRow(missingColRow));
       const missingCheck = checkDatabaseMigrationRequirements({ backupFilePath: tmpFixturePath });
       expect(missingCheck.isReady).toBe(false);
       expect(missingCheck.details.some((d) => d.includes("누락 컬럼"))).toBe(true);
 
       // 4. 표별 열 추가 시험
       const unknownColRow = { ...validRow, mystery_extra_column: "extra" };
-      writeFixture({ ...baseTables, [t]: [unknownColRow] });
+      writeFixture(withRow(unknownColRow));
       const unknownCheck = checkDatabaseMigrationRequirements({ backupFilePath: tmpFixturePath });
       expect(unknownCheck.isReady).toBe(false);
       expect(unknownCheck.details.some((d) => d.includes("알 수 없는 컬럼"))).toBe(true);
@@ -1897,4 +2102,22 @@ describe("database-migration-service", () => {
     const concurrentSite = checkDb.prepare("SELECT id FROM sites WHERE id = 'site-during-await'").get();
     expect(concurrentSite).toBeDefined();
   });
+  it.each([false, true])("restores employee email and legacy backups without that column (email=%s)", async (hasEmail) => {
+    const { filePath } = await createBaselineBackupFile(`employee-email-${hasEmail}.json`, (tables, parsed) => {
+      if (!hasEmail && parsed) {
+        parsed.schemaVersion = 1;
+        delete tables.policy_revisions;
+        delete tables.policy_events;
+        parsed.tableCount = Object.keys(tables).length;
+      }
+      tables.employees = [{ id: "email-restore", employee_code: "EMAIL-RESTORE", name: "백업 인력", contact: "010-0000-1001", rank: "사원", employment_type: "정규", status: "active", hire_date: "2023-01-01", retire_date: null, deleted_at: null, created_at: "2023-01-01T00:00:00Z", updated_at: null, ...(hasEmail ? { email: "restore@example.invalid" } : {}) }];
+    });
+    const preview = previewDatabaseMigrationUpdate({ backupFilePath: filePath, userDataPath, env });
+    await runDatabaseMigrationUpdate({ backupFilePath: filePath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체", userDataPath, env });
+    expect(getSqliteDatabase()!.prepare("SELECT name, contact, email FROM employees WHERE id = ?").get("email-restore")).toEqual({ name: "백업 인력", contact: "010-0000-1001", email: hasEmail ? "restore@example.invalid" : null });
+    const backup = await runDatabaseBackupNow({ userDataPath, env });
+    const exported = JSON.parse(readFileSync(backup.jsonBackupPath, "utf8"));
+    expect(exported.tables.employees.find((row: { id: string }) => row.id === "email-restore").email).toBe(hasEmail ? "restore@example.invalid" : null);
+  });
+
 });

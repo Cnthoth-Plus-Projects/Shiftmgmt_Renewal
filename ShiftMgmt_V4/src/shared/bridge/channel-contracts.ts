@@ -432,6 +432,15 @@ export const CHANNEL_CONTRACTS = [
     usesDataDir: false,
   },
   {
+    method: "getSchedulePreparationContext",
+    channel: "monthly-schedules:preparation-context",
+    group: "workforce",
+    guard: "session",
+    recordsActivity: false,
+    usesDataDir: true,
+  },
+
+  {
     method: "addHolidayItem",
     channel: "operations:add-holiday-item",
     group: "operations",
@@ -723,6 +732,30 @@ export const CHANNEL_CONTRACTS = [
     usesDataDir: true,
   },
   {
+    method: "listPolicyHistory",
+    channel: "operations:list-policy-history",
+    group: "operations",
+    guard: "admin",
+    recordsActivity: false,
+    usesDataDir: false,
+  },
+  {
+    method: "previewPolicyChange",
+    channel: "operations:preview-policy-change",
+    group: "operations",
+    guard: "admin",
+    recordsActivity: false,
+    usesDataDir: false,
+  },
+  {
+    method: "applyPolicyChange",
+    channel: "operations:apply-policy-change",
+    group: "operations",
+    guard: "admin",
+    recordsActivity: true,
+    usesDataDir: false,
+  },
+  {
     method: "approvePendingFile",
     channel: "performance:approve",
     group: "performance",
@@ -873,6 +906,9 @@ export const CHANNEL_CONTRACTS = [
     recordsActivity: true,
     usesDataDir: false,
   },
+  { method: "listPatternPresets", channel: "shift-pattern-presets:list", group: "workforce", guard: "session", recordsActivity: false, usesDataDir: false },
+  { method: "savePatternPreset", channel: "shift-pattern-presets:save", group: "workforce", guard: "action", actionPermission: "shift-pattern-write", recordsActivity: true, usesDataDir: false },
+  { method: "deletePatternPreset", channel: "shift-pattern-presets:delete", group: "workforce", guard: "action", actionPermission: "shift-pattern-write", recordsActivity: true, usesDataDir: false },
   {
     method: "listShiftPatterns",
     channel: "shift-patterns:list",

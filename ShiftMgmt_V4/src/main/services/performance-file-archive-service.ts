@@ -203,3 +203,14 @@ export const restoreApprovedPerformanceFileToPending = async (input: {
     sourceFileMissing: !sourceExists
   };
 };
+
+/** Compensate only this return's physical move; never replace a newly created original-path file. */
+export const rollbackPerformanceReturnSource = async (input: {
+  originalPath: string;
+  pendingPath: string;
+  sourceFileMissing: boolean;
+}): Promise<void> => {
+  if (input.sourceFileMissing || path.resolve(input.originalPath).toLowerCase() === path.resolve(input.pendingPath).toLowerCase()) return;
+  await copyFile(input.pendingPath, input.originalPath, constants.COPYFILE_EXCL);
+  await unlink(input.pendingPath);
+};

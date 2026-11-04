@@ -1,3 +1,4 @@
+import {createHash} from "node:crypto";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   CHANNEL_CONTRACTS,
@@ -99,6 +100,47 @@ const mocks = vi.hoisted(() => ({
 
   // release-history-service
   listReleaseHistory: vi.fn(() => []),
+
+  // policy-history-service
+  listPolicyHistory: vi.fn(() => ({
+    summary: { current: null, next: null },
+    items: [],
+    total: 0,
+    page: 1,
+    pageSize: 20,
+    totalPages: 1,
+    registryConfigFingerprint: "fingerprint-test",
+  })),
+
+  // policy-history-impact-service
+  previewPolicyChange: vi.fn(() => ({
+    previewToken: "pol_tok_test",
+    expiresAt: "2026-11-03T12:00:00Z",
+    action: "add",
+    kind: "substitute-eligibility",
+    summary: "미리보기",
+    projectedTimeline: [],
+    impact: { pendingFileCount: 0, pendingRowCount: 0, preservedApprovalCount: 0, affectedMonths: [], description: "설명" },
+    registryConfigFingerprint: "fingerprint-test",
+  })),
+  applyPolicyChange: vi.fn(() => ({
+    success: true,
+    action: "add",
+    kind: "substitute-eligibility",
+    appliedRevisionId: "rev-1",
+    appliedVersionNumber: 3,
+    registryConfigFingerprint: "fingerprint-new",
+    message: "정상 확정",
+  })),
+}));
+
+vi.mock("../../services/policy-history-service", () => ({
+  listPolicyHistory: mocks.listPolicyHistory,
+}));
+
+vi.mock("../../services/policy-history-impact-service", () => ({
+  previewPolicyChange: mocks.previewPolicyChange,
+  applyPolicyChange: mocks.applyPolicyChange,
 }));
 
 vi.mock("../../services/app-settings-storage-service", () => ({
@@ -169,6 +211,7 @@ vi.mock("../../services/release-history-service", () => ({
 }));
 
 const mockAdminSession: AuthSession = {
+  sessionToken: "operations-test-session",
   userId: "admin-1",
   loginId: "admin",
   displayName: "관리자",
@@ -312,6 +355,9 @@ const validArgsMap: Record<string, unknown[]> = {
   "operations:reset-document-layout": [{ documentKind: "schedule-xlsx", variant: "template1", expectedRevisionId: "rev-1" }],
   "operations:preview-document-layout": [{ definition: { documentKind: "schedule-xlsx", variant: "template1" }, basedOnRevisionId: "rev-1" }],
   "operations:list-document-layout-history": [{ documentKind: "schedule-xlsx", variant: "template1" }],
+  "operations:list-policy-history": [{ kind: "substitute-eligibility", view: "revisions" }],
+  "operations:preview-policy-change": [{ action: "add", kind: "substitute-eligibility", ruleKey: "substitute-legacy", effectiveFrom: "2026-12-01", reason: "연말 복귀" }],
+  "operations:apply-policy-change": [{ previewToken: "pol_tok_test" }],
 };
 
 const expectedActivities = {
@@ -336,6 +382,7 @@ const expectedActivities = {
   "operations:save-document-layout": ["layout-save", "문서 레이아웃 저장"],
   "operations:reset-document-layout": ["layout-reset", "문서 레이아웃 초기화"],
   "operations:preview-document-layout": ["layout-preview", "문서 레이아웃 미리보기"],
+  "operations:apply-policy-change": ["policy-change-apply", "정책 변경 확정"],
 } as const;
 
 type ChannelEffectDescriptor = {
@@ -670,6 +717,37 @@ const channelEffectDescriptors: Record<string, ChannelEffectDescriptor> = {
       expect(mocks.listDocumentLayoutHistory).toHaveBeenCalledWith(args[0]);
     },
   },
+  "operations:list-policy-history": {
+    args: validArgsMap["operations:list-policy-history"],
+    assertEffects: (_env, args) => {
+      expect(mocks.listPolicyHistory).toHaveBeenCalledTimes(1);
+      expect(mocks.listPolicyHistory).toHaveBeenCalledWith(args[0]);
+    },
+  },
+  "operations:preview-policy-change": {
+    args: validArgsMap["operations:preview-policy-change"],
+    assertEffects: (env, args) => {
+      expect(mocks.previewPolicyChange).toHaveBeenCalledTimes(1);
+      expect(mocks.previewPolicyChange).toHaveBeenCalledWith(
+        args[0],
+        expect.objectContaining({ userId: mockAdminSession.userId }),
+        undefined,
+        {sessionFingerprint: createHash("sha256").update(mockAdminSession.sessionToken!).digest("hex")},
+      );
+    },
+  },
+  "operations:apply-policy-change": {
+    args: validArgsMap["operations:apply-policy-change"],
+    assertEffects: (env, args) => {
+      expect(mocks.applyPolicyChange).toHaveBeenCalledTimes(1);
+      expect(mocks.applyPolicyChange).toHaveBeenCalledWith(
+        args[0],
+        expect.objectContaining({ userId: mockAdminSession.userId }),
+        undefined,
+        {sessionFingerprint: createHash("sha256").update(mockAdminSession.sessionToken!).digest("hex")},
+      );
+    },
+  },
 };
 
 const expectedDataDirChannels = [
@@ -690,17 +768,17 @@ describe("operations-routes", () => {
   });
 
   describe("C2 & RN1/RN2 contract counts (CN1, CN2)", () => {
-    it("verifies the final 107-contract aggregate registration accurately", () => {
+    it("verifies the final 111-contract aggregate registration accurately", () => {
       const { sessionManager } = setupTestEnv();
       const registry = assembleRoutes(sessionManager);
 
-      expect(CHANNEL_CONTRACTS).toHaveLength(107);
+      expect(CHANNEL_CONTRACTS).toHaveLength(114);
       expect(CORE_CHANNELS).toHaveLength(17);
-      expect(OPERATIONS_CHANNELS).toHaveLength(36);
+      expect(OPERATIONS_CHANNELS).toHaveLength(39);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(107);
-      expect(new Set(registered).size).toBe(107);
+      expect(registered).toHaveLength(114);
+      expect(new Set(registered).size).toBe(114);
 
       for (const channel of CORE_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
@@ -714,21 +792,21 @@ describe("operations-routes", () => {
       }
     });
 
-    it("verifies registerOperationsRoutes registers exactly 36 channels independently", () => {
+    it("verifies registerOperationsRoutes registers exactly 39 channels independently", () => {
       const { sessionManager } = setupTestEnv();
       const registry = new RouteRegistry(sessionManager);
       registerOperationsRoutes(registry, sessionManager);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(36);
-      expect(new Set(registered).size).toBe(36);
+      expect(registered).toHaveLength(39);
+      expect(new Set(registered).size).toBe(39);
       for (const channel of OPERATIONS_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
       }
     });
   });
 
-  describe("R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
+  describe("R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
     it("matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly", () => {
       const expectedKeys = [...OPERATIONS_CHANNELS].sort();
       expect(Object.keys(validArgsMap).sort()).toEqual(expectedKeys);
@@ -740,17 +818,25 @@ describe("operations-routes", () => {
       }
     });
 
+    it("W11 existing preview and restore channels serialize the exact source-bound employee date review",async()=>{
+      const review={policy:"preserve-source-no-fallback",sourceBackupSha256:"source-sha",totalEmployeeCount:1,sourceDateCount:0,missingDateCount:1,invalidDateCount:0,rows:[{employeeId:"e",employeeCode:"EMP",employeeName:"입사일 확인",archived:false,sourceHireDate:null,classification:"missing"}]};
+      const previewPayload={changes:[],employeeHireDateReview:review};mocks.previewDatabaseMigrationUpdate.mockReturnValueOnce(previewPayload);
+      const env=setupTestEnv(),registry=assembleRoutes(env.sessionManager),preview=await dispatchAsAdmin(registry,"operations:preview-database-migration-update",validArgsMap["operations:preview-database-migration-update"],env);
+      expect(preview.result.body).toMatchObject({ok:true,data:{employeeHireDateReview:review}});
+      const restorePayload={applied:true,employeeHireDateReview:review};mocks.runDatabaseMigrationUpdate.mockResolvedValueOnce(restorePayload);
+      const restored=await dispatchAsAdmin(registry,"operations:update-database-from-migration",validArgsMap["operations:update-database-from-migration"],env);expect(restored.result.body).toMatchObject({ok:true,data:{employeeHireDateReview:review}});
+    });
     it("matches expectedActivities keys with recordsActivity manifest channels exactly", () => {
       const activityContracts = CHANNEL_CONTRACTS.filter(
         (c) => c.group === "operations" && c.recordsActivity,
       );
-      expect(activityContracts).toHaveLength(21);
+      expect(activityContracts).toHaveLength(22);
       const manifestActivityKeys = activityContracts.map((c) => c.channel).sort();
       const literalActivityKeys = Object.keys(expectedActivities).sort();
       expect(literalActivityKeys).toEqual(manifestActivityKeys);
     });
 
-    it("dispatches all 36 operations channels independently, verifying exact service effects and activity logs (21 tracked, 15 untracked)", async () => {
+    it("dispatches all 39 operations channels independently, verifying exact service effects and activity logs (22 tracked, 17 untracked)", async () => {
       for (const channel of OPERATIONS_CHANNELS) {
         vi.clearAllMocks();
         const env = setupTestEnv();

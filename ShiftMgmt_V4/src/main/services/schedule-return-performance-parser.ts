@@ -1,3 +1,5 @@
+import { resolveWageRateForDate } from "../../shared/domain/wage-rate";
+import { assignmentEmploymentBounds, isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
 import path from "node:path";
 import ExcelJS from "exceljs";
 
@@ -10,6 +12,21 @@ import {
 import {
   isBpDisplayName,
 } from "../../shared/domain/employment-type";
+import {
+  type ActivePolicyProjection,
+  type ChangedWorkerPriorityRuleKey,
+  type PolicyApplicationBinding,
+  type PolicyApplicationSnapshot,
+  type PolicyKind,
+  type SubstituteEligibilityRuleKey,
+  RULE_KEY_METADATA,
+  computeMonthPolicyFingerprint,
+  computePolicyApplicationFingerprint,
+  selectPolicyForWorkDate,
+} from "../../shared/domain/policy-history";
+import {
+  getActivePolicyTimeline,
+} from "./policy-history-service";
 import { isChangedSlotPriorityApplicable } from "../../shared/domain/changed-slot-priority-policy";
 import type { EmployeeRank } from "../../shared/domain/employee-rank";
 import type {
@@ -21,7 +38,7 @@ import { resolveSubstituteAllowanceDecision } from "../../shared/domain/substitu
 import { getTeamWorkTypeFromPattern } from "../../shared/domain/team-membership";
 import { getDefaultTeamWorkType, type TeamWorkType } from "../../shared/domain/team-work-type";
 import { resolveShiftPatternForMonth } from "../../shared/domain/shift-pattern-version";
-import type { MonthlyScheduleItem, MonthlyScheduleRecord, WorkType } from "../../shared/domain/model";
+import type { EmployeeEmploymentPeriod, MonthlyScheduleItem, MonthlyScheduleRecord, WorkType } from "../../shared/domain/model";
 import type {
   SchedulePlanTemplateLayout,
   SchedulePlanTemplateVariant,
@@ -63,6 +80,7 @@ interface SchedulePerformanceParseResult {
   alerts: PerformanceAlert[];
   previewRows: Array<Record<string, string | number>>;
   entries: PerformanceEntryRecord[];
+  policyContextFingerprint?: string;
 }
 
 interface ResolvedEmployeeContext {
@@ -84,6 +102,7 @@ interface EmployeeRateResolver {
   currentShiftGroup?: string;
   hireDate?: string;
   retireDate?: string;
+  employmentPeriods?: EmployeeEmploymentPeriod[];
   currentAssignmentStartDate?: string;
   currentAssignmentEndDate?: string;
   assignments: Array<{
@@ -136,6 +155,8 @@ interface RowParseContext {
   substituteAllowancePolicyEffectiveFrom?: string;
   // 변경후 우선 규칙 적용 시작일. 비어 있으면 옛 규칙(변경전 우선)을 그대로 쓴다.
   changedSlotPriorityEffectiveFrom?: string;
+  resolvePolicyForDate?: (kind: PolicyKind, workDate: string) => ActivePolicyProjection | null;
+  monthPolicyFingerprint?: string;
 }
 
 interface SectionTableLayout {
@@ -414,11 +435,11 @@ const resolveEmployeeContexts = () => {
 
   employees.forEach((employee) => {
     const wageRates = listStoredEmployeeWageRates(employee.id);
-    const assignments = listStoredEmployeeAssignments(employee.id).map((assignment) => ({
+    const assignments = listStoredEmployeeAssignments(employee.id).filter(assignment => !assignmentEmploymentBounds(assignment).excluded).map((assignment) => ({
       siteName: assignment.siteName,
       shiftGroup: assignment.shiftGroup,
-      startDate: assignment.startDate,
-      endDate: assignment.endDate
+      startDate: assignmentEmploymentBounds(assignment).startDate,
+      endDate: assignmentEmploymentBounds(assignment).endDate
     }));
     const resolver: EmployeeRateResolver = {
       employeeCode: employee.employeeCode,
@@ -428,6 +449,7 @@ const resolveEmployeeContexts = () => {
       currentShiftGroup: employee.currentShiftGroup,
       hireDate: employee.hireDate,
       retireDate: employee.retireDate,
+      employmentPeriods: employee.employmentPeriods,
       currentAssignmentStartDate: employee.currentAssignmentStartDate,
       currentAssignmentEndDate: employee.currentAssignmentEndDate,
       assignments,
@@ -435,21 +457,7 @@ const resolveEmployeeContexts = () => {
       isPoolWorker:
         isPoolShiftGroup(employee.currentShiftGroup) ||
         assignments.some((assignment) => isPoolShiftGroup(assignment.shiftGroup)),
-      resolveHourlyRate: (workDate: string) => {
-        const matchedRate = wageRates.find((rate) => {
-          if (workDate < rate.effectiveFrom) {
-            return false;
-          }
-
-          if (rate.effectiveTo && workDate > rate.effectiveTo) {
-            return false;
-          }
-
-          return true;
-        });
-
-        return matchedRate?.hourlyRate;
-      }
+      resolveHourlyRate: (workDate: string) => isManagedEmployeeEmployedOnDate(employee, workDate) ? resolveWageRateForDate(wageRates, workDate)?.hourlyRate : undefined
     };
     const normalizedName = normalizeLookupKey(employee.name);
     const nameBucket = byName.get(normalizedName) ?? [];
@@ -516,6 +524,7 @@ const hasOwnRegularDutyOnDate = (
 };
 
 const isEmployeeAvailableOnDate = (employee: EmployeeRateResolver, workDate: string) => {
+  if (!isManagedEmployeeEmployedOnDate(employee, workDate)) return false;
   const scheduleStartDate = employee.hireDate ?? employee.currentAssignmentStartDate;
 
   if (scheduleStartDate && workDate < scheduleStartDate) {
@@ -817,7 +826,8 @@ const resolveHourlyRate = (
     [...candidates].find((employee) => employee.resolveHourlyRate(workDate) !== undefined) ??
     candidates[0];
 
-    const teamLabel = resolveEmployeeTeamLabel(matchedEmployee, siteName, workDate);
+  const teamLabel = resolveEmployeeTeamLabel(matchedEmployee, siteName, workDate);
+  const outsideEmployment = !isManagedEmployeeEmployedOnDate(matchedEmployee, workDate);
 
   return {
     employeeCode: matchedEmployee.employeeCode,
@@ -826,7 +836,8 @@ const resolveHourlyRate = (
     latestEffectiveFrom: matchedEmployee.latestEffectiveFrom,
     duplicateNameCount: nameCandidates.length || candidates.length,
     isPoolWorker: isPoolShiftGroup(teamLabel),
-    teamLabel
+    teamLabel,
+    ...(outsideEmployment ? { resolutionError: `${matchedEmployee.employeeName}의 ${workDate}은 재직기간 밖입니다. 퇴사 공백이나 취소한 재입사 예약에는 수당을 승인할 수 없습니다. 인력 관리에서 재입사일을 확인해 주세요.` } : {})
   };
 };
 
@@ -1097,6 +1108,7 @@ const buildEntry = (input: {
   teamLabel?: string;
   employeeCodeHint?: string;
   sourceSignature?: string;
+  hasChangedSlotPriority?: boolean;
 }): PerformanceEntryRecord => {
   const parsedEmployeeName = parsePoolWorkerDisplayName(input.employeeName);
   const employeeName = parsedEmployeeName.employeeName;
@@ -1113,6 +1125,15 @@ const buildEntry = (input: {
   );
   // 대체근무 행만 판정한다. 투입자의 그날 소속 조로 근무유형을 정하고, 대체 대상은 슬롯(원 근무자)의 조를 본다.
   // 조를 모르면 기존처럼 지급되도록 ROTATING으로 둔다(새 규칙이 과거 동작을 건드리지 않게).
+  const activeSubPolicy = input.context.resolvePolicyForDate?.(
+    "substitute-eligibility",
+    input.workDate
+  );
+  const activeChgPolicy = input.context.resolvePolicyForDate?.(
+    "changed-worker-priority",
+    input.workDate
+  );
+
   const substituteDecision =
     input.section === "substitute"
       ? resolveSubstituteAllowanceDecision({
@@ -1122,7 +1143,10 @@ const buildEntry = (input: {
             input.workDate,
             input.workTime.dutyCode
           ),
-          policyEffectiveFrom: input.context.substituteAllowancePolicyEffectiveFrom,
+          policyEffectiveFrom: activeSubPolicy
+            ? (activeSubPolicy.effectiveFrom ?? undefined)
+            : input.context.substituteAllowancePolicyEffectiveFrom,
+          ruleKey: activeSubPolicy?.revision.ruleKey as SubstituteEligibilityRuleKey | undefined,
           substituteWorkType: isPoolWorker
             ? "POOL"
             : input.context.resolveTeamWorkType(employeeContext?.teamLabel),
@@ -1132,6 +1156,40 @@ const buildEntry = (input: {
           workDate: input.workDate
         })
       : undefined;
+
+  const policyBindings: PolicyApplicationBinding[] = [];
+
+  if (input.section === "substitute" && activeSubPolicy) {
+    policyBindings.push({
+      kind: "substitute-eligibility",
+      policyId: activeSubPolicy.revision.id,
+      versionNumber: activeSubPolicy.revision.versionNumber,
+      ruleKey: activeSubPolicy.revision.ruleKey,
+      effectiveFrom: activeSubPolicy.effectiveFrom,
+      criteriaSummary: RULE_KEY_METADATA[activeSubPolicy.revision.ruleKey].summary,
+      criteriaJson: activeSubPolicy.revision.criteriaJson,
+      implementationVersion: activeSubPolicy.revision.implementationVersion
+    });
+  }
+
+  if (input.hasChangedSlotPriority && activeChgPolicy) {
+    policyBindings.push({
+      kind: "changed-worker-priority",
+      policyId: activeChgPolicy.revision.id,
+      versionNumber: activeChgPolicy.revision.versionNumber,
+      ruleKey: activeChgPolicy.revision.ruleKey,
+      effectiveFrom: activeChgPolicy.effectiveFrom,
+      criteriaSummary: RULE_KEY_METADATA[activeChgPolicy.revision.ruleKey].summary,
+      criteriaJson: activeChgPolicy.revision.criteriaJson,
+      implementationVersion: activeChgPolicy.revision.implementationVersion
+    });
+  }
+
+  const appliedPolicies: PolicyApplicationSnapshot = {
+    workDate: input.workDate,
+    fingerprint: computePolicyApplicationFingerprint(input.workDate, policyBindings),
+    bindings: policyBindings
+  };
   const isNonPayableSubstitute = Boolean(substituteDecision && !substituteDecision.eligible);
 
   if (!employeeContext) {
@@ -1219,7 +1277,8 @@ const buildEntry = (input: {
           ? "POOL_SUBSTITUTE_EXCLUDED"
           : substituteDecision?.reasonCode
         : undefined,
-    substituteAllowancePolicyVersion: substituteDecision?.policyVersion
+    substituteAllowancePolicyVersion: substituteDecision?.policyVersion,
+    appliedPolicies
   };
 };
 
@@ -1264,13 +1323,19 @@ const buildHolidayEntries = (
           hasChangedActualWorker;
         // 적용 시작일 이후 근무일이면, 변경전 칸에 무엇이 적혀 있든 변경후 사람이 실제 근무자다.
         // 이 판정이 아래의 BP 제외/변경전 실명 경로보다 먼저 걸리므로, 변경전이 BP(...)라 조용히
-        // 사라지던 자리와 "None_A3" 같은 표기가 유령 근무자로 잡히던 자리도 함께 해소된다.
+        const activeChgPolicyForDate = context.resolvePolicyForDate?.(
+          "changed-worker-priority",
+          workDate
+        );
         const hasChangedSlotPriorityWorker =
           hasChangedActualWorker &&
           normalizeLookupKey(changedName) !== normalizeLookupKey(regularName) &&
           isChangedSlotPriorityApplicable({
             workDate,
-            effectiveFrom: context.changedSlotPriorityEffectiveFrom
+            ruleKey: activeChgPolicyForDate?.revision.ruleKey as ChangedWorkerPriorityRuleKey | undefined,
+            effectiveFrom: activeChgPolicyForDate
+              ? (activeChgPolicyForDate.effectiveFrom ?? undefined)
+              : context.changedSlotPriorityEffectiveFrom
           });
         const cancellation = noneActualWorkerCancellations.get(workDate);
         const isCancelledByNoneActualWorker =
@@ -1344,6 +1409,7 @@ const buildHolidayEntries = (
               workDate,
               workType: "holiday",
               section: "legal-holiday",
+              hasChangedSlotPriority: hasChangedActualWorker && normalizeLookupKey(changedName) !== normalizeLookupKey(regularName),
               sourceToken: `holiday:${rowNumber}:${dutyCode}:${slotIndex}`,
               sourceRowNumber: rowNumber,
               sortOrder: SECTION_ORDER["legal-holiday"] * 10000 + rowIndex * 100 + slotIndex,
@@ -1425,6 +1491,7 @@ const buildHolidayEntries = (
             workDate,
             workType: "holiday",
             section: "legal-holiday",
+            hasChangedSlotPriority: hasChangedActualWorker && normalizeLookupKey(changedName) !== normalizeLookupKey(regularName),
             sourceToken: `holiday:${rowNumber}:${dutyCode}:${slotIndex}`,
             sourceRowNumber: rowNumber,
             sortOrder: SECTION_ORDER["legal-holiday"] * 10000 + rowIndex * 100 + slotIndex,
@@ -1892,7 +1959,10 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
   filePath: string;
   fileId: string;
 }): Promise<SchedulePerformanceParseResult> => {
-  // 워크북을 한 번만 읽고, 같은 워크북에서 레이아웃을 도출한다(파일 중복 읽기 제거).
+  // 비동기 파일 읽기 전에 정책을 고정한다. 읽는 중 바뀐 기준은 intake에서 다시 확인한다.
+  const subTimeline = getActivePolicyTimeline("substitute-eligibility");
+  const chgTimeline = getActivePolicyTimeline("changed-worker-priority");
+  // 워크북을 한 번만 읽고, 같은 워크북에서 레이아웃을 도출한다.
   const workbook = await readWorkbook(input.filePath);
   const metadata = readScheduleLayoutRevisionMetadataFromWorkbook(workbook);
 
@@ -1963,7 +2033,15 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
     substituteAllowancePolicyEffectiveFrom:
       getStoredAppSettingEntry("substitute_allowance_policy_effective_from") ?? undefined,
     changedSlotPriorityEffectiveFrom:
-      getStoredAppSettingEntry("changed_slot_priority_effective_from") ?? undefined
+      getStoredAppSettingEntry("changed_slot_priority_effective_from") ?? undefined,
+    resolvePolicyForDate: (kind, workDate) => {
+      const timeline = kind === "substitute-eligibility" ? subTimeline : chgTimeline;
+      const proj = selectPolicyForWorkDate(timeline, workDate);
+      if (!proj) {
+        throw new Error(`[PerformanceParser] 근무일 ${workDate}에 해당하는 ${kind} 정책 기준을 찾지 못했습니다.`);
+      }
+      return proj;
+    }
   };
   const parsedEntries = [
     ...buildHolidayEntries(worksheet, layout, context),
@@ -2014,6 +2092,10 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
     scheduleKey,
     alerts: scheduleAlerts,
     previewRows: buildPreviewRows(entries),
-    entries
+    entries,
+    policyContextFingerprint: computeMonthPolicyFingerprint(identity.scheduleMonth, {
+      "substitute-eligibility": subTimeline,
+      "changed-worker-priority": chgTimeline,
+    })
   };
 };

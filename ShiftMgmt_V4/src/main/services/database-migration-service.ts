@@ -1,3 +1,6 @@
+import { parseHolidayPatternPolicy } from "../../shared/domain/holiday-pattern";
+import { buildImportedEmployeeHireDateReview } from "./employee-hire-date-review";
+import { PATTERN_PRESETS_SETTING_KEY, parsePatternPresetRecords } from "../../shared/bridge/pattern-presets";
 import crypto, { randomUUID } from "node:crypto";
 import {
   existsSync,
@@ -35,10 +38,12 @@ import {
   getSqliteDatabase,
   initializeSqliteStorage
 } from "./sqlite-storage-service";
+import { initializePolicyHistory, isPolicyHistoryInitialized, matchesPolicyCriteria, IMPLEMENTATION_VERSION, mapRowToRevision } from "./policy-history-service";
+import { isValidPolicyKind, isValidRuleKey, isValidDateString, parsePolicyApplicationSnapshot, type PolicyRuleKey } from "../../shared/domain/policy-history";
 
 const APP_SETTINGS_TABLE_NAME = "app_setting_entries";
 
-const JSON_IMPORT_TABLE_ORDER = [
+const JSON_IMPORT_TABLE_ORDER_V1 = [
   "sites",
   "employees",
   "employee_employment_periods",
@@ -80,12 +85,56 @@ const JSON_IMPORT_TABLE_ORDER = [
   "allowance_proposal_approvals"
 ] as const;
 
+const JSON_IMPORT_TABLE_ORDER = [
+  "sites",
+  "employees",
+  "employee_employment_periods",
+  "employee_site_assignments",
+  "wage_rates",
+  "wage_rate_history",
+  "employee_retirement_history_closures",
+  "employee_employment_period_events",
+  "shift_patterns",
+  "shift_pattern_steps",
+  "shift_pattern_team_indexes",
+  "shift_pattern_cycles",
+  "shift_pattern_cycle_steps",
+  "shift_pattern_cycle_team_indexes",
+  "shift_pattern_team_cycles",
+  "shift_pattern_team_capacities",
+  "shift_pattern_team_settings",
+  "shift_pattern_duty_types",
+  "monthly_schedules",
+  "monthly_schedule_items",
+  "schedule_plan_exports",
+  "holiday_calendars",
+  "holiday_items",
+  "allowance_rate_versions",
+  "allowance_rate_items",
+  "allowance_rate_history",
+  "app_users",
+  "access_logs",
+  "document_template_versions",
+  "document_template_history",
+  "policy_revisions",
+  "policy_events",
+  "performance_files",
+  "performance_entries",
+  "performance_approvals",
+  "hidden_approved_performance_rows",
+  "allowance_calculations",
+  "allowance_calculation_items",
+  "allowance_document_exports",
+  "allowance_approvals",
+  "allowance_proposal_approvals"
+] as const;
+
 const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
   sites: [
     "id", "site_code", "name", "customer_name", "status", "timezone", "deleted_at", "created_at", "updated_at"
   ],
   employees: [
-    "id", "employee_code", "name", "contact", "rank", "employment_type", "status", "hire_date", "retire_date", "deleted_at", "created_at", "updated_at"
+    "id", "employee_code", "name", "contact", "email", "rank", "employment_type", "status", "hire_date", "retire_date", "deleted_at", "created_at", "updated_at"
   ],
   employee_employment_periods: [
     "id", "employee_id", "start_date", "end_date", "closure_provenance_complete", "created_at", "updated_at"
@@ -106,7 +155,7 @@ const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
     "id", "employee_id", "employment_period_id", "event_type", "event_date", "previous_event_date", "reason", "created_at"
   ],
   shift_patterns: [
-    "id", "site_id", "name", "team_count", "cycle_length", "pattern_code", "start_index_rule", "pattern_start_date", "pool_enabled", "pool_start_time", "pool_end_time", "pool_break_minutes", "status", "created_at", "updated_at", "effective_from"
+    "id", "site_id", "name", "team_count", "cycle_length", "pattern_code", "start_index_rule", "pattern_start_date", "pool_enabled", "pool_start_time", "pool_end_time", "pool_break_minutes", "status", "created_at", "updated_at", "effective_from", "holiday_policy_json"
   ],
   shift_pattern_steps: [
     "id", "pattern_id", "step_index", "duty_code", "start_time", "end_time", "break_minutes", "created_at"
@@ -171,11 +220,17 @@ const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
   document_template_history: [
     "id", "template_id", "template_type", "version_label", "action_type", "detail", "occurred_at"
   ],
+  policy_revisions: [
+    "id", "policy_kind", "version_number", "rule_key", "criteria_json", "implementation_version", "effective_from", "origin", "actor_user_id", "actor_login_id", "actor_display_name", "actor_role", "created_at", "reason"
+  ],
+  policy_events: [
+    "id", "policy_kind", "revision_id", "event_type", "replacement_revision_id", "before_json", "after_json", "actor_user_id", "actor_login_id", "actor_display_name", "actor_role", "occurred_at", "related_approval_id"
+  ],
   performance_files: [
-    "id", "file_name", "file_path", "directory_type", "template_kind", "template_variant", "sheet_name", "row_count", "column_count", "file_size", "modified_time_ms", "duplicate_key", "received_at", "schedule_month", "site_name", "schedule_key", "entry_count", "approved_entry_count", "warning_count", "is_effective", "completed_at", "status", "error_message", "preview_json", "reparse_marker_snapshot_json"
+    "id", "file_name", "file_path", "directory_type", "template_kind", "template_variant", "sheet_name", "row_count", "column_count", "file_size", "modified_time_ms", "duplicate_key", "received_at", "schedule_month", "site_name", "schedule_key", "entry_count", "approved_entry_count", "warning_count", "is_effective", "completed_at", "status", "error_message", "preview_json", "reparse_marker_snapshot_json", "policy_context_fingerprint"
   ],
   performance_entries: [
-    "id", "performance_file_id", "logical_key", "employee_code", "employee_name", "employee_rank", "work_date", "work_hours", "schedule_month", "schedule_key", "site_name", "work_type", "section", "duty_code", "start_time", "end_time", "break_minutes", "total_work_minutes", "base_work_minutes", "overtime_minutes", "night_minutes", "department", "category", "reason_text", "evidence_text", "source_signature", "source_row_number", "sort_order", "team_label", "alert_json", "hourly_rate", "note", "is_pool_worker", "substitute_work_type", "target_work_type", "substitute_allowance_eligible", "substitute_allowance_reason_code", "substitute_allowance_policy_version"
+    "id", "performance_file_id", "logical_key", "employee_code", "employee_name", "employee_rank", "work_date", "work_hours", "schedule_month", "schedule_key", "site_name", "work_type", "section", "duty_code", "start_time", "end_time", "break_minutes", "total_work_minutes", "base_work_minutes", "overtime_minutes", "night_minutes", "department", "category", "reason_text", "evidence_text", "source_signature", "source_row_number", "sort_order", "team_label", "alert_json", "hourly_rate", "note", "is_pool_worker", "substitute_work_type", "target_work_type", "substitute_allowance_eligible", "substitute_allowance_reason_code", "substitute_allowance_policy_version", "policy_snapshot_json"
   ],
   performance_approvals: [
     "id", "file_id", "entry_id", "logical_key", "file_name", "schedule_key", "employee_code", "employee_name", "work_date", "work_type", "decision", "processed_at", "processed_by", "processed_by_name", "comment", "rejection_reason", "snapshot_json", "archived_file_name", "archived_file_path"
@@ -228,6 +283,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "employee_code", declaredType: "TEXT", notNull: true },
     { name: "name", declaredType: "TEXT", notNull: true },
     { name: "contact", declaredType: "TEXT", notNull: false },
+    { name: "email", declaredType: "TEXT", notNull: false },
     { name: "rank", declaredType: "TEXT", notNull: false },
     { name: "employment_type", declaredType: "TEXT", notNull: true },
     { name: "status", declaredType: "TEXT", notNull: true },
@@ -324,6 +380,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "created_at", declaredType: "TEXT", notNull: true },
     { name: "updated_at", declaredType: "TEXT", notNull: false },
     { name: "effective_from", declaredType: "TEXT", notNull: false },
+    { name: "holiday_policy_json", declaredType: "TEXT", notNull: false },
   ],
   shift_pattern_steps: [
     { name: "id", declaredType: "TEXT", notNull: false },
@@ -555,6 +612,37 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "detail", declaredType: "TEXT", notNull: false },
     { name: "occurred_at", declaredType: "TEXT", notNull: true },
   ],
+  policy_revisions: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "policy_kind", declaredType: "TEXT", notNull: true },
+    { name: "version_number", declaredType: "INTEGER", notNull: true },
+    { name: "rule_key", declaredType: "TEXT", notNull: true },
+    { name: "criteria_json", declaredType: "TEXT", notNull: true },
+    { name: "implementation_version", declaredType: "TEXT", notNull: true },
+    { name: "effective_from", declaredType: "TEXT", notNull: false },
+    { name: "origin", declaredType: "TEXT", notNull: true },
+    { name: "actor_user_id", declaredType: "TEXT", notNull: false },
+    { name: "actor_login_id", declaredType: "TEXT", notNull: false },
+    { name: "actor_display_name", declaredType: "TEXT", notNull: false },
+    { name: "actor_role", declaredType: "TEXT", notNull: false },
+    { name: "created_at", declaredType: "TEXT", notNull: true },
+    { name: "reason", declaredType: "TEXT", notNull: true },
+  ],
+  policy_events: [
+    { name: "id", declaredType: "TEXT", notNull: false },
+    { name: "policy_kind", declaredType: "TEXT", notNull: true },
+    { name: "revision_id", declaredType: "TEXT", notNull: true },
+    { name: "event_type", declaredType: "TEXT", notNull: true },
+    { name: "replacement_revision_id", declaredType: "TEXT", notNull: false },
+    { name: "before_json", declaredType: "TEXT", notNull: false },
+    { name: "after_json", declaredType: "TEXT", notNull: false },
+    { name: "actor_user_id", declaredType: "TEXT", notNull: false },
+    { name: "actor_login_id", declaredType: "TEXT", notNull: false },
+    { name: "actor_display_name", declaredType: "TEXT", notNull: false },
+    { name: "actor_role", declaredType: "TEXT", notNull: false },
+    { name: "occurred_at", declaredType: "TEXT", notNull: true },
+    { name: "related_approval_id", declaredType: "TEXT", notNull: false },
+  ],
   performance_files: [
     { name: "id", declaredType: "TEXT", notNull: false },
     { name: "file_name", declaredType: "TEXT", notNull: true },
@@ -581,6 +669,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "error_message", declaredType: "TEXT", notNull: false },
     { name: "preview_json", declaredType: "TEXT", notNull: true },
     { name: "reparse_marker_snapshot_json", declaredType: "TEXT", notNull: false },
+    { name: "policy_context_fingerprint", declaredType: "TEXT", notNull: false },
   ],
   performance_entries: [
     { name: "id", declaredType: "TEXT", notNull: false },
@@ -621,6 +710,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
     { name: "substitute_allowance_eligible", declaredType: "INTEGER", notNull: false },
     { name: "substitute_allowance_reason_code", declaredType: "TEXT", notNull: false },
     { name: "substitute_allowance_policy_version", declaredType: "TEXT", notNull: false },
+    { name: "policy_snapshot_json", declaredType: "TEXT", notNull: false },
   ],
   performance_approvals: [
     { name: "id", declaredType: "TEXT", notNull: false },
@@ -750,7 +840,11 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
   ],
 };
 
+const SITE_NAME_OPTIONS_SETTING_KEY = "site_name_options_json";
+
 const KNOWN_SETTING_KEYS = new Set([
+  SITE_NAME_OPTIONS_SETTING_KEY,
+  PATTERN_PRESETS_SETTING_KEY,
   // 1. 설치 대상 기기의 경로 (7개)
   "pending_dir",
   "approved_dir",
@@ -1070,10 +1164,11 @@ const parseAndValidateBackupJson = (
   }
 
   const rawObj = parsed as Record<string, unknown>;
+  const schemaVersion = Number(rawObj.schemaVersion);
 
-  if (rawObj.schemaVersion !== 1) {
+  if (schemaVersion !== 1 && schemaVersion !== 2) {
     const err = new Error(
-      `지원하지 않는 백업 버전입니다. (지원 버전: 1, 백업 파일 버전: ${String(rawObj.schemaVersion)})`
+      `지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 백업 파일 버전: ${String(rawObj.schemaVersion)})`
     );
     (err as unknown as { code: string }).code = "UNSUPPORTED_SCHEMA";
     throw err;
@@ -1087,8 +1182,10 @@ const parseAndValidateBackupJson = (
 
   const tablesObj = rawObj.tables as Record<string, unknown>;
 
-  // 40개 표가 정확히 1:1로 일치하는지 검사 (누락 표 및 알 수 없는 표 원천 차단)
-  const allRequiredTableNames = [...JSON_IMPORT_TABLE_ORDER, APP_SETTINGS_TABLE_NAME];
+  const allRequiredTableNames =
+    schemaVersion === 1
+      ? [...JSON_IMPORT_TABLE_ORDER_V1, APP_SETTINGS_TABLE_NAME]
+      : [...JSON_IMPORT_TABLE_ORDER, APP_SETTINGS_TABLE_NAME];
   const requiredTableSet = new Set<string>(allRequiredTableNames);
   const rawTableNames = Object.keys(tablesObj);
 
@@ -1102,10 +1199,11 @@ const parseAndValidateBackupJson = (
     ]
       .filter(Boolean)
       .join("; ");
+    const expectedCount = schemaVersion === 1 ? 40 : 42;
     const err = new Error(
       missingTables.length > 0
         ? `백업 JSON에 필수 표가 누락되었습니다: ${missingTables.join(", ")}`
-        : `백업 JSON 표 목록이 40개 정규 스키마와 일치하지 않습니다 (${details}).`
+        : `백업 JSON 표 목록이 ${expectedCount}개 정규 스키마와 일치하지 않습니다 (${details}).`
     );
     (err as unknown as { code: string }).code = missingTables.length > 0 ? "MISSING_TABLE" : "INVALID_TABLES";
     throw err;
@@ -1120,9 +1218,164 @@ const parseAndValidateBackupJson = (
       throw err;
     }
 
+    // 기존 email / holiday_policy_json 호환 예외 유지
+    if (schemaVersion === 1 && tableName === "employees") {
+      for (const row of rows) {
+        if (row && typeof row === "object" && !Array.isArray(row) && !("email" in row)) row.email = null;
+      }
+    }
+    if (schemaVersion === 1 && tableName === "shift_patterns") {
+      for (const row of rows) {
+        if (row && typeof row === "object" && !Array.isArray(row) && !("holiday_policy_json" in row)) row.holiday_policy_json = null;
+      }
+    }
+
+    // v1 전용: 새 policy metadata 두 nullable 열을 NULL로 정규화 (v2에서는 엄격하게 검증)
+    if (schemaVersion === 1) {
+      if (tableName === "performance_files") {
+        for (const row of rows) {
+          if (row && typeof row === "object" && !Array.isArray(row) && !("policy_context_fingerprint" in row)) {
+            row.policy_context_fingerprint = null;
+          }
+        }
+      }
+      if (tableName === "performance_entries") {
+        for (const row of rows) {
+          if (row && typeof row === "object" && !Array.isArray(row) && !("policy_snapshot_json" in row)) {
+            row.policy_snapshot_json = null;
+          }
+        }
+      }
+    }
     validateTableRowsSchema(tableName, rows as Array<Record<string, unknown>>);
+    if (tableName === "shift_patterns") for (const row of rows) {
+      if (row.holiday_policy_json != null) {
+        try { parseHolidayPatternPolicy(JSON.parse(String(row.holiday_policy_json))); }
+        catch (e) { throw Error(`shift_patterns holiday_policy_json: ${(e as Error).message}`); }
+      }
+    }
   }
 
+  if (schemaVersion === 2) {
+    const bad = (message: string): never => { throw Object.assign(new Error(`정책 백업 검증 실패: ${message}`), { code: "INVALID_POLICY_HISTORY" }); };
+    const revisions = tablesObj.policy_revisions as Array<Record<string, unknown>>;
+    const events = tablesObj.policy_events as Array<Record<string, unknown>>;
+    const revisionMap = new Map<string, Record<string, unknown>>();
+    const versions = new Set<string>();
+    for (const revision of revisions) {
+      const kind = String(revision.policy_kind);
+      const rule = String(revision.rule_key);
+      if (!isValidPolicyKind(kind) || !isValidRuleKey(kind, rule)) bad("정책 종류와 기준이 일치하지 않습니다.");
+      const id = String(revision.id ?? "");
+      if (!id || revisionMap.has(id)) bad("정책 ID가 없거나 중복되었습니다.");
+      if (!Number.isInteger(revision.version_number) || Number(revision.version_number) < 1) bad("정책 버전이 올바르지 않습니다.");
+      const versionKey = `${kind}:${revision.version_number}`;
+      if (versions.has(versionKey)) bad("종류별 정책 버전이 중복되었습니다.");
+      versions.add(versionKey);
+      if (!["initial", "registered", "correction"].includes(String(revision.origin))) bad("정책 출처가 올바르지 않습니다.");
+      if (revision.effective_from !== null && (typeof revision.effective_from !== "string" || !isValidDateString(revision.effective_from))) bad("정책 적용일이 올바르지 않습니다.");
+      if (revision.effective_from === null && revision.origin !== "initial") bad("최초 기준 이외에는 적용일이 필요합니다.");
+      if (revision.implementation_version !== IMPLEMENTATION_VERSION || !matchesPolicyCriteria(rule as PolicyRuleKey, revision.criteria_json)) bad("지원 기준의 내용 또는 구현 버전이 일치하지 않습니다.");
+      if (!String(revision.reason ?? "").trim() || String(revision.reason).length > 500 || !Number.isFinite(Date.parse(String(revision.created_at)))) bad("정책 사유나 등록 시각이 올바르지 않습니다.");
+      if (revision.actor_role !== "admin") bad("정책 등록자의 권한 기록이 올바르지 않습니다.");
+      revisionMap.set(id, revision);
+    }
+    for (const kind of ["substitute-eligibility", "changed-worker-priority"]) {
+      const baseline = revisions.filter(row => row.policy_kind === kind && row.effective_from === null && row.origin === "initial");
+      if (baseline.length !== 1) bad("각 정책 종류에 최초 기준이 하나씩 있어야 합니다.");
+    }
+    const stable = (value: unknown): string => {
+      if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
+      if (value && typeof value === "object") return `{${Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${stable(item)}`).join(",")}}`;
+      return JSON.stringify(value);
+    };
+    const sameRevisionSnapshot = (raw: unknown, revision: Record<string, unknown>) => {
+      try { return typeof raw === "string" && stable(JSON.parse(raw)) === stable(mapRowToRevision(revision)); } catch { return false; }
+    };
+    const invalidated = new Set<string>();
+    const creations = new Map<string, number>();
+    const replacements = new Set<string>();
+    const used = new Set<string>();
+    const eventIds = new Set<string>();
+    for (const event of events) {
+      const id = String(event.id ?? "");
+      if (!id || eventIds.has(id)) bad("정책 사건 ID가 없거나 중복되었습니다.");
+      eventIds.add(id);
+      const revisionId = String(event.revision_id ?? "");
+      const revision = revisionMap.get(revisionId);
+      if (!revision || event.policy_kind !== revision.policy_kind) bad("정책 사건이 다른 종류 또는 없는 정책을 참조합니다.");
+      const row = revision!;
+      const type = String(event.event_type);
+      if (!["initialized", "created", "corrected", "cancelled", "used"].includes(type) || !Number.isFinite(Date.parse(String(event.occurred_at)))) bad("정책 사건 유형이나 시각이 올바르지 않습니다.");
+      if (type !== "used" && event.actor_role !== "admin") bad("정책 변경 권한 기록이 올바르지 않습니다.");
+      if (type === "initialized" || type === "created") {
+        if ((type === "initialized") !== (row.origin === "initial") || event.before_json !== null || event.replacement_revision_id !== null || event.related_approval_id !== null || !sameRevisionSnapshot(event.after_json, row)) bad("정책 생성 사건의 원본 내용이 일치하지 않습니다.");
+        creations.set(revisionId, (creations.get(revisionId) ?? 0) + 1);
+      } else if (type === "corrected" || type === "cancelled") {
+        if (row.origin === "initial" || invalidated.has(revisionId) || event.related_approval_id !== null || !sameRevisionSnapshot(event.before_json, row)) bad("정정·취소 대상 또는 변경 전 내용이 올바르지 않습니다.");
+        invalidated.add(revisionId);
+        if (type === "corrected") {
+          const replacementId = String(event.replacement_revision_id ?? "");
+          const replacement = revisionMap.get(replacementId);
+          if (!replacement || replacement.policy_kind !== row.policy_kind || replacement.origin !== "correction" || Number(replacement.version_number) <= Number(row.version_number) || replacements.has(replacementId) || !sameRevisionSnapshot(event.after_json, replacement)) bad("정정 후 정책과 변경 전후 기록이 일치하지 않습니다.");
+          replacements.add(replacementId);
+        } else {
+          let cancellation: Record<string, unknown>;
+          try { cancellation = JSON.parse(String(event.after_json)) as Record<string, unknown>; } catch { bad("취소 사유 기록을 읽을 수 없습니다."); }
+          if (event.replacement_revision_id !== null || !cancellation! || Object.keys(cancellation!).length !== 1 || typeof cancellation!.cancelReason !== "string" || !cancellation!.cancelReason.trim() || cancellation!.cancelReason.length > 500) bad("취소 사유 기록이 올바르지 않습니다.");
+        }
+      } else {
+        if (event.replacement_revision_id !== null || event.before_json !== null || event.after_json !== null || typeof event.related_approval_id !== "string" || !event.related_approval_id) bad("정책 사용 기록이 올바르지 않습니다.");
+        const key = `${revisionId}:${event.related_approval_id}`;
+        if (used.has(key)) bad("정책 사용 기록이 중복되었습니다.");
+        used.add(key);
+      }
+    }
+    for (const revision of revisions) {
+      const id = String(revision.id);
+      if (creations.get(id) !== 1) bad("정책 생성 기록이 없거나 중복되었습니다.");
+      if ((revision.origin === "correction") !== replacements.has(id)) bad("정정 정책의 연결이 올바르지 않습니다.");
+      if (invalidated.has(id) && [...used].some(key => key.startsWith(`${id}:`))) bad("사용한 정책이 정정·취소되었습니다.");
+    }
+    for (const kind of ["substitute-eligibility", "changed-worker-priority"]) {
+      const dates = new Set<string>();
+      for (const revision of revisions.filter(row => row.policy_kind === kind && !invalidated.has(String(row.id)))) {
+        const date = String(revision.effective_from);
+        if (dates.has(date)) bad("유효한 정책의 시작일이 중복되었습니다.");
+        dates.add(date);
+      }
+    }
+    const validateApplication = (raw: unknown, workDate: unknown) => {
+      const application = parsePolicyApplicationSnapshot(raw);
+      if (!application || application.workDate !== workDate) return bad("실적에 저장된 정책 기준 또는 지문이 올바르지 않습니다.");
+      for (const binding of application.bindings) {
+        const revision = revisionMap.get(binding.policyId);
+        if (!revision || binding.kind !== revision.policy_kind || binding.ruleKey !== revision.rule_key || binding.versionNumber !== Number(revision.version_number) || binding.effectiveFrom !== revision.effective_from || binding.implementationVersion !== revision.implementation_version || binding.criteriaJson !== revision.criteria_json || !matchesPolicyCriteria(binding.ruleKey, binding.criteriaJson)) bad("실적의 정책 기준과 정책 이력이 일치하지 않습니다.");
+      }
+      return application;
+    };
+    for (const entry of tablesObj.performance_entries as Array<Record<string, unknown>>) {
+      if (entry.policy_snapshot_json !== null) {
+        let value: unknown;
+        try { value = JSON.parse(String(entry.policy_snapshot_json)); } catch { bad("실적 정책 스냅샷 JSON이 올바르지 않습니다."); }
+        const application = validateApplication(value, entry.work_date);
+        if (entry.section === "substitute" && !application.bindings.some(binding => binding.kind === "substitute-eligibility")) bad("대체 실적의 적용 기준이 누락되었습니다.");
+      }
+    }
+    for (const approval of tablesObj.performance_approvals as Array<Record<string, unknown>>) {
+      let snapshot: {entry?: {workDate?: unknown; appliedPolicies?: unknown}} | undefined;
+      // Opaque old snapshots are preserved verbatim. A present policy payload must be complete.
+      try { snapshot = approval.snapshot_json ? JSON.parse(String(approval.snapshot_json)) : undefined; } catch { snapshot = undefined; }
+      const application = snapshot?.entry?.appliedPolicies === undefined ? undefined : validateApplication(snapshot.entry.appliedPolicies, snapshot.entry.workDate);
+      if (application && approval.decision === "approved") {
+        for (const binding of application.bindings) if (!used.has(`${binding.policyId}:${approval.id}`)) bad("승인에 사용한 정책의 사용 기록이 누락되었습니다.");
+      }
+      const usage = events.filter(event => event.event_type === "used" && event.related_approval_id === approval.id);
+      for (const event of usage) if (!application?.bindings.some(binding => binding.policyId === event.revision_id)) bad("현재 승인과 정책 사용 기록이 일치하지 않습니다.");
+    }
+    // A used event may refer to an approval deliberately removed by the supported return-to-pending flow.
+    // Keep that historical lock instead of requiring a live approval row.
+  }
   // app_setting_entries의 타입 및 키 검사 (문자열 타입 강제, 중복 키, 미인지 키, 6대 업무 규칙 존재 여부)
   const settingRows = tablesObj[APP_SETTINGS_TABLE_NAME] as Array<Record<string, unknown>>;
   const seenSettingKeys = new Set<string>();
@@ -1153,6 +1406,24 @@ const parseAndValidateBackupJson = (
       throw err;
     }
     seenSettingKeys.add(key);
+    if (key === PATTERN_PRESETS_SETTING_KEY) {
+      try { parsePatternPresetRecords(JSON.parse(String(row.value))); } catch { const error=Object.assign(new Error("반복 패턴 보관함 JSON이 올바르지 않습니다."),{code:"CHECK_FAILED"}); throw error; }
+    }
+    if (key === SITE_NAME_OPTIONS_SETTING_KEY) {
+      try {
+        const entries: unknown = JSON.parse(String(row.value));
+        if (!Array.isArray(entries) || entries.some((entry: unknown) => {
+          if (!entry || typeof entry !== "object" || Array.isArray(entry)) return true;
+          const value = entry as Record<string, unknown>;
+          return typeof value.id !== "string" || !value.id.trim() || typeof value.name !== "string" || !value.name.trim();
+        })) throw new Error("Invalid site name list");
+      } catch {
+        const error = new Error("근무지 이름 목록(site_name_options_json)이 올바른 JSON 목록이 아닙니다.");
+        (error as Error & { code: string }).code = "CHECK_FAILED";
+        throw error;
+      }
+    }
+
 
     if (!KNOWN_SETTING_KEYS.has(key)) {
       const err = new Error(`알 수 없는 설정 키가 백업에 포함되어 있습니다: ${key}`);
@@ -1276,7 +1547,7 @@ export const checkDatabaseMigrationRequirements = (input: {
       tableCount,
       headline: "JSON 데이터베이스 복원 준비 완료",
       details: [
-        "40개 필수 데이터 테이블이 모두 확인되었습니다.",
+        `${tableCount}개 필수 데이터 테이블이 모두 확인되었습니다.`,
         "6개 업무 정책 규칙이 확인되었습니다.",
         "백업 원본 파일의 SHA-256이 확인되었습니다."
       ],
@@ -1472,6 +1743,15 @@ const buildFinalAppSettingRows = (input: {
       value: sourceVal,
       updated_at: input.nowIso
     });
+  }
+
+  const patternPresets = sourceSettingMap.get(PATTERN_PRESETS_SETTING_KEY);
+  if (patternPresets !== undefined) finalRows.push({setting_key:PATTERN_PRESETS_SETTING_KEY,value:patternPresets,updated_at:input.nowIso});
+
+  // 근무지 이름 사전은 설치 경로가 아닌 선택한 백업의 업무 자료다.
+  const siteNameOptions = sourceSettingMap.get(SITE_NAME_OPTIONS_SETTING_KEY);
+  if (siteNameOptions !== undefined) {
+    finalRows.push({ setting_key: SITE_NAME_OPTIONS_SETTING_KEY, value: siteNameOptions, updated_at: input.nowIso });
   }
 
   return finalRows;
@@ -1715,6 +1995,11 @@ const importJsonBackupIntoDatabase = (input: {
 
     insertTableRows(database, APP_SETTINGS_TABLE_NAME, finalSettingsRows);
 
+    // v1 복원일 경우: 최종 target raw 적용일로 초기 정책 생성 (caller-owned restore transaction)
+    if (snapshot.schemaVersion === 1) {
+      initializePolicyHistory(database);
+    }
+
     // 경고 메시지 3: 경로 설정 유지 경고
     warningMessages.push("백업 JSON의 경로 설정은 무시하고 현재 환경 경로를 유지했습니다.");
 
@@ -1749,6 +2034,22 @@ const importJsonBackupIntoDatabase = (input: {
   };
 };
 
+/** Probe the existing startup backfill inside a rolled-back savepoint on the isolated candidate. */
+const assertLegacyEmploymentInitializationCanRun = (database: DatabaseSync): void => {
+  database.exec("SAVEPOINT w11_candidate_employment");
+  try {
+    database.exec(`INSERT INTO employee_employment_periods(id,employee_id,start_date,end_date,closure_provenance_complete,created_at,updated_at)
+      SELECT 'legacy:'||employees.id,employees.id,employees.hire_date,employees.retire_date,
+        CASE WHEN employees.status='retired' THEN 0 ELSE 1 END,employees.created_at,employees.updated_at
+      FROM employees WHERE employees.hire_date IS NOT NULL AND TRIM(employees.hire_date)<>''
+        AND NOT EXISTS(SELECT 1 FROM employee_employment_periods WHERE employee_employment_periods.employee_id=employees.id)`);
+    database.exec("ROLLBACK TO SAVEPOINT w11_candidate_employment; RELEASE SAVEPOINT w11_candidate_employment");
+  } catch (error) {
+    try { database.exec("ROLLBACK TO SAVEPOINT w11_candidate_employment; RELEASE SAVEPOINT w11_candidate_employment"); } catch { /* Keep the original candidate validation failure. */ }
+    throw new Error("복원할 자료의 입사일·퇴사일과 재직기간을 확인하지 못했습니다. 기존 데이터는 교체하지 않았습니다. 원본 백업의 날짜 순서와 재직기간 연결을 확인한 뒤 다시 미리보기해 주세요.", { cause: error });
+  }
+};
+
 /**
  * 2. 복원 미리보기
  */
@@ -1762,6 +2063,7 @@ export const previewDatabaseMigrationUpdate = (input: {
 
   const { backupFilePath: resolvedBackupFilePath } = resolveDatabaseMigrationInput(input);
   const { snapshot, fileSha256 } = parseAndValidateBackupJson(resolvedBackupFilePath);
+  const employeeHireDateReview = buildImportedEmployeeHireDateReview(snapshot.tables.employees ?? [], fileSha256);
 
   // 저장소 초기화
   initializeSqliteStorage({
@@ -1775,6 +2077,9 @@ export const previewDatabaseMigrationUpdate = (input: {
   });
 
   const liveDbBeforeClose = getRequiredDatabase();
+  if (!isPolicyHistoryInitialized(liveDbBeforeClose)) {
+    initializePolicyHistory(liveDbBeforeClose);
+  }
   const operatingSettings = captureOperatingSettings(liveDbBeforeClose, currentSettings);
 
   const tempDatabasePath = path.join(
@@ -1804,6 +2109,7 @@ export const previewDatabaseMigrationUpdate = (input: {
     });
 
     warningMessages = importResult.warningMessages;
+    assertLegacyEmploymentInitializationCanRun(tempDb);
 
     const allTables = listUserTableNames(tempDb);
     for (const tableName of allTables) {
@@ -1826,6 +2132,9 @@ export const previewDatabaseMigrationUpdate = (input: {
   }
 
   const liveDb = getRequiredDatabase();
+  if (!isPolicyHistoryInitialized(liveDb)) {
+    initializePolicyHistory(liveDb);
+  }
 
   // Sol 코드 전략 4: HTTP 미리보기 성공 시 access_logs 1행을 토큰 발급 전에 동기 콜백으로 기록
   if (input.onPreviewSuccess) {
@@ -1871,12 +2180,13 @@ export const previewDatabaseMigrationUpdate = (input: {
     sourceType: "json",
     backupFilePath: resolvedBackupFilePath,
     backupSha256: fileSha256,
-    schemaVersion: "1",
+    schemaVersion: String(snapshot.schemaVersion),
     previewToken,
     expiresAt: new Date(expiresAt).toISOString(),
     tableImpacts,
     warningMessages,
     previewedAt: new Date().toISOString()
+    ,employeeHireDateReview
   };
 };
 
@@ -1933,6 +2243,9 @@ export const runDatabaseMigrationUpdate = async (input: {
   });
 
   const liveDb = getRequiredDatabase();
+  if (!isPolicyHistoryInitialized(liveDb)) {
+    initializePolicyHistory(liveDb);
+  }
   const currentFingerprint = computeDatabaseContentFingerprint(liveDb);
 
   if (currentFingerprint !== tokenEntry.databaseFingerprint) {
@@ -1970,6 +2283,7 @@ export const runDatabaseMigrationUpdate = async (input: {
 
   // C03: 실제 파싱된 버퍼의 SHA와 미리보기 토큰 SHA 대조
   const { snapshot, fileSha256: parsedSha } = parseAndValidateBackupJson(resolvedBackupFilePath);
+  const employeeHireDateReview = buildImportedEmployeeHireDateReview(snapshot.tables.employees ?? [], parsedSha);
   if (parsedSha.toLowerCase() !== tokenEntry.backupSha256.toLowerCase()) {
     throw new Error("파싱된 백업 파일 해시가 미리보기 토큰 해시와 일치하지 않습니다.");
   }
@@ -1982,6 +2296,9 @@ export const runDatabaseMigrationUpdate = async (input: {
     `restore-${Date.now()}-${randomUUID()}.sqlite`
   );
 
+  // 비동기 사전 백업 중 생긴 잠금도 기존 연결을 닫기 직전에 확인한다.
+  liveDb.exec("BEGIN IMMEDIATE");
+  liveDb.exec("ROLLBACK");
   closeSqliteStorage();
 
   let warningMessages: string[] = [];
@@ -2004,6 +2321,7 @@ export const runDatabaseMigrationUpdate = async (input: {
     });
 
     warningMessages = importResult.warningMessages;
+    assertLegacyEmploymentInitializationCanRun(tempDb);
 
     const tempTables = listUserTableNames(tempDb);
     for (const tableName of tempTables) {
@@ -2038,6 +2356,7 @@ export const runDatabaseMigrationUpdate = async (input: {
       backupBeforeRestore,
       warningMessages,
       completedAt: new Date().toISOString()
+      ,employeeHireDateReview
     };
   } catch (error) {
     closeSqliteStorage();

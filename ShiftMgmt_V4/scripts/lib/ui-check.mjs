@@ -3,6 +3,7 @@
 // URL 검문 -> 서버 건강 상태 확인(/api/health) -> 뷰포트 1440x900 크롬 실행 ->
 // 콘솔/페이지/요청/HTTP 오류 계측 -> steps 실행 -> 캡처 및 manifest.json 기록 -> 브라우저 종료.
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { evidenceJSON as aj, redactText, seedBootstrapSecrets } from "./artifact-privacy.mjs";
 import path from "node:path";
 import { chromium } from "playwright";
 
@@ -164,14 +165,28 @@ export function createUniqueRunDir(baseCapturesDir, id) {
  * @param {string} options.id - 검증 시나리오 식별자 (영숫자 및 하이픈)
  * @param {string} options.url - 대상 주소 문자열
  * @param {function} options.steps - 실행할 시나리오 함수 ({ page, capture, waitForFontsReady, url })
+ * @param {function} [options.observe] - Synchronous failure/chrome evidence sink; async durability is not guaranteed.
  */
-export async function runScreenCheck({ id, url: rawUrl, steps }) {
+export async function runScreenCheck({ id, url: rawUrl, steps, observe = null }) {
+  try { if (process.env.SHIFTMGMT_UI_BOOTSTRAP_FILE) seedBootstrapSecrets(process.env.SHIFTMGMT_UI_BOOTSTRAP_FILE); } catch {}
+  const writeOut = text => process.stdout.write(redactText(text));
+  const writeErr = text => process.stderr.write(redactText(text));
+  // Optional synchronous evidence sink. Existing SDK control flow owns outcomes.
+  const report = event => {
+    if (typeof observe !== "function") return;
+    try {
+      const returned = observe(event);
+      if (returned && typeof returned.then === "function") Promise.resolve(returned).catch(() => {});
+    } catch {}
+  };
+  const failed = (reason, phase) => report({ type: "failure", reason, phase });
   // 1. URL 검증 (브라우저·네트워크 접근 전 실행. 실패 시 RC 1)
   let parsedUrl;
   try {
     parsedUrl = validateTargetUrl(rawUrl);
   } catch (error) {
-    process.stderr.write(`[URL 검증 실패] ${error.message}\n`);
+    failed(error, "sdk-url");
+    writeErr(`[URL 검증 실패] ${error.message}\n`);
     process.exit(1);
   }
 
@@ -180,7 +195,8 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
   try {
     healthInfo = await checkServerHealth(parsedUrl, 10_000);
   } catch (error) {
-    process.stderr.write(`[서버 확인 실패] ${error.message}\n`);
+    failed(error, "sdk-health");
+    writeErr(`[서버 확인 실패] ${error.message}\n`);
     process.exit(2);
   }
 
@@ -188,8 +204,10 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
   let chrome;
   try {
     chrome = findChrome();
+    report({ type: "chrome", chrome: { path: chrome.path, version: chrome.version } });
   } catch (error) {
-    process.stderr.write(`[크롬 탐색 실패] ${error.message}\n`);
+    failed(error, "sdk-chrome");
+    writeErr(`[크롬 탐색 실패] ${error.message}\n`);
     process.exit(2);
   }
 
@@ -203,7 +221,8 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
     runDir = createUniqueRunDir(baseCapturesDir, id);
     runRelDir = path.relative(repoRoot, runDir).replace(/\\/g, "/");
   } catch (err) {
-    process.stderr.write(`[디렉터리 준비 실패] ${err.message}\n`);
+    failed(err, "sdk-directory");
+    writeErr(`[디렉터리 준비 실패] ${err.message}\n`);
     process.exit(2);
   }
 
@@ -218,6 +237,7 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
   let context;
   let page;
   let executionError = null;
+  let phase = "sdk-execution";
 
   try {
     browser = await chromium.launch({ executablePath: chrome.path });
@@ -227,21 +247,26 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
     // 브라우저 이벤트 계측 (C30-04: pageerror 분리 수집)
     page.on("console", (message) => {
       if (message.type() === "error") {
-        consoleErrors.push(message.text());
+        const text = message.text();
+        consoleErrors.push(text);
+        failed(text, "sdk-console");
       }
     });
 
     page.on("pageerror", (error) => {
       pageErrors.push(error.message);
+      failed(error, "sdk-pageerror");
     });
 
     page.on("requestfailed", (request) => {
       requestFailed.push(`${request.url()} (${request.failure()?.errorText ?? "이유 불명"})`);
+      failed(requestFailed.at(-1), "sdk-requestfailed");
     });
 
     page.on("response", (response) => {
       if (response.status() >= 400) {
         badResponses.push(`${response.status()} ${response.url()}`);
+        failed(badResponses.at(-1), "sdk-response");
       }
     });
 
@@ -264,7 +289,9 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
 
     // 초기 화면 로드 및 글꼴 대기
     await page.goto(parsedUrl.toString(), { waitUntil: "load", timeout: 15_000 });
+    phase = "sdk-fonts";
     await waitForFontsReady(page, 15_000);
+    phase = "sdk-execution";
 
     // 시나리오 실행
     await steps({
@@ -275,6 +302,7 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
     });
   } catch (error) {
     executionError = error;
+    failed(error, phase);
   } finally {
     // C30-02: context 및 browser 종료 실패를 독립적으로 수집하고 건너뛰지 않음
     if (context) {
@@ -334,49 +362,50 @@ export async function runScreenCheck({ id, url: rawUrl, steps }) {
 
   // C30-01: manifest 작성 실패를 명시적 오류로 전파
   try {
-    writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
+    writeFileSync(manifestPath, aj(manifest, null, 2), "utf8");
   } catch (err) {
     manifestWriteError = err;
-    process.stderr.write(`[manifest 작성 오류] ${err.message}\n`);
+    failed(err, "sdk-manifest");
+    writeErr(`[manifest 작성 오류] ${err.message}\n`);
   }
 
   const finalHasErrors = hasErrors || manifestWriteError !== null;
 
   if (finalHasErrors) {
-    process.stderr.write(`\nFAIL: [UI 검증 실패: ${id}]\n`);
+    writeErr(`\nFAIL: [UI 검증 실패: ${id}]\n`);
     if (executionError) {
-      process.stderr.write(`- 실행 오류: ${executionError.message}\n`);
+      writeErr(`- 실행 오류: ${executionError.message}\n`);
     }
     if (manifestWriteError) {
-      process.stderr.write(`- manifest 작성 오류: ${manifestWriteError.message}\n`);
+      writeErr(`- manifest 작성 오류: ${manifestWriteError.message}\n`);
     }
     for (const msg of cleanupErrors) {
-      process.stderr.write(`- 정리 오류: ${msg}\n`);
+      writeErr(`- 정리 오류: ${msg}\n`);
     }
     for (const msg of consoleErrors) {
-      process.stderr.write(`- 콘솔 오류: ${msg}\n`);
+      writeErr(`- 콘솔 오류: ${msg}\n`);
     }
     for (const msg of pageErrors) {
-      process.stderr.write(`- 페이지 오류: ${msg}\n`);
+      writeErr(`- 페이지 오류: ${msg}\n`);
     }
     for (const msg of requestFailed) {
-      process.stderr.write(`- 요청 실패: ${msg}\n`);
+      writeErr(`- 요청 실패: ${msg}\n`);
     }
     for (const msg of badResponses) {
-      process.stderr.write(`- 400 이상 응답: ${msg}\n`);
+      writeErr(`- 400 이상 응답: ${msg}\n`);
     }
-    process.stderr.write(`- manifest: ${manifestRelPath}\n`);
+    writeErr(`- manifest: ${manifestRelPath}\n`);
     process.exit(2);
   }
 
-  process.stdout.write(`\nPASS: [UI 검증 성공: ${id}]\n`);
-  process.stdout.write(`- 대상 주소: ${parsedUrl.toString()}\n`);
-  process.stdout.write(`- 크롬: ${chrome.path} (판 ${chrome.version})\n`);
-  process.stdout.write(`- 뷰포트: 1440x900 (fullPage)\n`);
-  process.stdout.write(`- 캡처 산출물 (${capturedFiles.length}개):\n`);
+  writeOut(`\nPASS: [UI 검증 성공: ${id}]\n`);
+  writeOut(`- 대상 주소: ${parsedUrl.toString()}\n`);
+  writeOut(`- 크롬: ${chrome.path} (판 ${chrome.version})\n`);
+  writeOut(`- 뷰포트: 1440x900 (fullPage)\n`);
+  writeOut(`- 캡처 산출물 (${capturedFiles.length}개):\n`);
   for (const c of capturedFiles) {
-    process.stdout.write(`  * ${c.name}: ${c.path}\n`);
+    writeOut(`  * ${c.name}: ${c.path}\n`);
   }
-  process.stdout.write(`- manifest: ${manifestRelPath}\n`);
-  process.stdout.write(`- 콘솔/페이지/요청/HTTP/정리 오류: 0건\n`);
+  writeOut(`- manifest: ${manifestRelPath}\n`);
+  writeOut(`- 콘솔/페이지/요청/HTTP/정리 오류: 0건\n`);
 }

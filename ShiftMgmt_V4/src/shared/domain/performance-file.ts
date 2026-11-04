@@ -6,6 +6,7 @@ import type { SubstituteAllowanceReasonCode } from "./substitute-allowance-polic
 import { substituteAllowanceReasonLabels } from "./substitute-allowance-policy";
 import type { TeamWorkType } from "./team-work-type";
 import { isBpDisplayName } from "./employment-type";
+import type { PolicyApplicationSnapshot } from "./policy-history";
 
 export type ExcelTemplateKind =
   | "schedule-plan"
@@ -102,6 +103,7 @@ export interface PerformanceFileMetadataRecord {
   isEffective?: boolean;
   status: PerformanceFileStatus;
   errorMessage?: string;
+  policyContextFingerprint?: string;
 }
 
 export interface PerformanceQueueItem {
@@ -124,6 +126,7 @@ export interface PerformanceApprovalActionInput {
   entryId?: string;
   comment?: string;
   manualHourlyRate?: number;
+  expectedPolicyFingerprint?: string;
 }
 
 export interface PerformanceReapprovalFinalizeInput {
@@ -209,6 +212,7 @@ export interface PerformanceEntryRecord {
   substituteAllowanceEligible?: boolean;
   substituteAllowanceReasonCode?: SubstituteAllowanceReasonCode;
   substituteAllowancePolicyVersion?: string;
+  appliedPolicies?: PolicyApplicationSnapshot;
 }
 
 export const parsePoolWorkerDisplayName = (value: string | null | undefined) => {

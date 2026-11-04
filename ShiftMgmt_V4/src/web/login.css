@@ -129,6 +129,16 @@
   margin-top: 6px;
 }
 
+.login-development-banner { display:flex; align-items:center; gap:10px; width:100%; padding:12px 14px; border:1px solid #c9d7fa; border-radius:9px; background:#eef3ff; color:#334da5; text-align:left; cursor:pointer; font:inherit; }
+.login-development-banner:hover { background:#e3ebff; border-color:#7d97e5; }
+.login-development-banner:focus-visible { outline:2px solid #435bc2; outline-offset:3px; }
+.login-development-banner > span:nth-child(2) { flex:1; }
+.login-development-banner strong { display:block; font-size:13px; }
+.login-development-banner small { display:block; margin-top:4px; color:#5d6e95; font-size:11px; line-height:1.4; }
+.login-development-banner .material-symbols-outlined { font-size:21px; }
+.login-development-status { font-size:11px; color:#47618f; }
+.login-development-status:empty { display:none; }
+
 .login-footer-help {
   text-align: center;
   font-size: 12px;

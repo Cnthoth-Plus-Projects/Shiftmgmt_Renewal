@@ -1,9 +1,14 @@
+import { attachEmploymentState, historyEmploymentSql, historyEmploymentOverlapSql, hasManagedEmployment } from "./employee-employment-service";
+import { matchesEmployeeEmploymentStatus } from "../../shared/domain/employee-employment";
+import { saveEmployeeRehire } from "./employee-rehire-service";
+import { synchronizeEmployeeRetirement } from "./employee-retirement-service";
 import { randomUUID } from "node:crypto";
+import { getSeoulTodayDateString, validateHireDate } from "../../shared/lib/local-date";
 import type { DatabaseSync } from "node:sqlite";
 
 import type {
   EmployeeListQuery,
-  EmployeeUpsertInput
+  EmployeeUpsertInput, EmployeeSaveResult
 } from "../../shared/bridge/contracts";
 import {
   formatEmployeeDisplayName,
@@ -11,7 +16,7 @@ import {
   normalizeEmploymentTypeLabel
 } from "../../shared/domain/employment-type";
 import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
-import type { EmployeeRecord, SiteRecord } from "../../shared/domain/model";
+import type { AuthSession, EmployeeRecord, SiteRecord } from "../../shared/domain/model";
 import { normalizeTeamLabel } from "../../shared/domain/team-label";
 import { listStoredSites } from "./site-storage-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
@@ -115,6 +120,7 @@ const toEmployeeRecord = (row: Record<string, unknown>): EmployeeRecord => ({
   employeeCode: String(row.employee_code),
   name: String(row.name),
   contact: row.contact ? String(row.contact) : undefined,
+  email: row.email ? String(row.email) : undefined,
   rank: normalizeEmployeeRank(row.rank ? String(row.rank) : undefined),
   employmentType: normalizeEmploymentTypeLabel(
     row.employment_type ? String(row.employment_type) : undefined
@@ -145,6 +151,12 @@ const toEmployeeRecord = (row: Record<string, unknown>): EmployeeRecord => ({
     row.current_hourly_rate !== null && row.current_hourly_rate !== undefined
       ? Number(row.current_hourly_rate)
       : undefined,
+  currentHourlyRateEffectiveFrom: row.current_hourly_rate_effective_from
+    ? String(row.current_hourly_rate_effective_from) : undefined,
+  currentHourlyRateEffectiveTo: row.current_hourly_rate_effective_to
+    ? String(row.current_hourly_rate_effective_to) : undefined,
+  currentHourlyRateAsOfDate: row.current_hourly_rate_as_of_date
+    ? String(row.current_hourly_rate_as_of_date) : undefined,
   createdAt: String(row.created_at),
   updatedAt: row.updated_at ? String(row.updated_at) : undefined
 });
@@ -265,9 +277,13 @@ export const listStoredEmployees = (query?: StoredEmployeeListQuery): EmployeeRe
   ensureEmployeeSeed();
 
   const includeHistoricalAssignments = Boolean(query?.includeHistoricalAssignments);
-  const assignmentStatusFilter = includeHistoricalAssignments
-    ? ""
-    : "AND latest_assignments.status = 'active'";
+  const wageAsOfDate = getSeoulTodayDateString();
+  const assignmentStatusFilter = includeHistoricalAssignments ? "" : `AND (
+    employees.status <> 'retired' AND latest_assignments.status = 'active'
+    OR employees.status = 'retired' AND (employees.retire_date IS NULL OR employees.retire_date > '${wageAsOfDate}')
+      AND latest_assignments.status = 'active'
+      AND latest_assignments.start_date <= '${wageAsOfDate}' AND (latest_assignments.end_date IS NULL OR latest_assignments.end_date > '${wageAsOfDate}')
+  )`;
 
   const rows = database.prepare(`
     SELECT
@@ -279,7 +295,10 @@ export const listStoredEmployees = (query?: StoredEmployeeListQuery): EmployeeRe
       assignments.sort_order as current_assignment_order,
       assignments.start_date as current_assignment_start_date,
       assignments.end_date as current_assignment_end_date,
-      wage_rates.hourly_rate as current_hourly_rate
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.hourly_rate END as current_hourly_rate,
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.effective_from END as current_hourly_rate_effective_from,
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.effective_to END as current_hourly_rate_effective_to,
+      ? as current_hourly_rate_as_of_date
     FROM employees
     LEFT JOIN employee_site_assignments as assignments
       ON assignments.id = (
@@ -287,6 +306,10 @@ export const listStoredEmployees = (query?: StoredEmployeeListQuery): EmployeeRe
         FROM employee_site_assignments as latest_assignments
         WHERE latest_assignments.employee_id = employees.id
           ${assignmentStatusFilter}
+          AND (NOT EXISTS(SELECT 1 FROM employee_employment_period_events me WHERE me.employee_id=employees.id AND me.event_type='rehired') OR (
+            latest_assignments.start_date <= '${wageAsOfDate}' AND (latest_assignments.end_date IS NULL OR latest_assignments.end_date > '${wageAsOfDate}')
+            AND ${historyEmploymentSql("latest_assignments", "'"+wageAsOfDate+"'")}
+          ))
         ORDER BY
           CASE latest_assignments.status WHEN 'active' THEN 0 ELSE 1 END ASC,
           latest_assignments.start_date DESC,
@@ -301,19 +324,20 @@ export const listStoredEmployees = (query?: StoredEmployeeListQuery): EmployeeRe
         SELECT latest_wage_rates.id
         FROM wage_rates as latest_wage_rates
         WHERE latest_wage_rates.employee_id = employees.id
-          AND latest_wage_rates.effective_to IS NULL
-        ORDER BY latest_wage_rates.effective_from DESC, latest_wage_rates.created_at DESC
+          AND latest_wage_rates.effective_from <= ?
+          AND (latest_wage_rates.effective_to IS NULL OR latest_wage_rates.effective_to >= ?)
+          AND ${historyEmploymentSql("latest_wage_rates", "'"+wageAsOfDate+"'")}
+        ORDER BY latest_wage_rates.effective_from DESC, latest_wage_rates.created_at DESC, latest_wage_rates.rowid DESC
         LIMIT 1
-      )
+      ) AND (employees.status <> 'retired' OR employees.retire_date IS NULL OR employees.retire_date > '${wageAsOfDate}')
     ORDER BY employees.name ASC
-  `).all() as Array<Record<string, unknown>>;
+  `).all(wageAsOfDate, wageAsOfDate, wageAsOfDate) as Array<Record<string, unknown>>;
 
   const normalizedKeyword = query?.keyword?.trim().toLowerCase() ?? "";
 
-  return rows
-    .map(toEmployeeRecord)
+  return attachEmploymentState(rows.map(toEmployeeRecord))
     .filter((employee) => query?.includeDeleted || !employee.deletedAt)
-    .filter((employee) => !query?.status || employee.status === query.status)
+    .filter((employee) => matchesEmployeeEmploymentStatus(employee, query?.status, wageAsOfDate))
     .filter((employee) => !query?.siteId || employee.currentSiteId === query.siteId)
     .filter((employee) => {
       if (normalizedKeyword.length === 0) {
@@ -381,7 +405,7 @@ export const listStoredEmployeesForSiteMonth = (
       assignments.sort_order as current_assignment_order,
       assignments.start_date as current_assignment_start_date,
       assignments.end_date as current_assignment_end_date,
-      wage_rates.hourly_rate as current_hourly_rate
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.hourly_rate END as current_hourly_rate
     FROM employees
     INNER JOIN employee_site_assignments as assignments
       ON assignments.id = (
@@ -389,6 +413,7 @@ export const listStoredEmployeesForSiteMonth = (
         FROM employee_site_assignments as matched_assignments
         WHERE matched_assignments.employee_id = employees.id
           AND matched_assignments.site_id = ?
+          AND ${historyEmploymentOverlapSql("matched_assignments","start_date","end_date","'"+monthBoundary.startDate+"'","'"+monthBoundary.endDate+"'")}
           AND matched_assignments.start_date <= ?
           AND (
             matched_assignments.end_date IS NULL
@@ -407,12 +432,13 @@ export const listStoredEmployeesForSiteMonth = (
         SELECT matched_wage_rates.id
         FROM wage_rates as matched_wage_rates
         WHERE matched_wage_rates.employee_id = employees.id
+          AND ${historyEmploymentOverlapSql("matched_wage_rates","effective_from","effective_to","'"+monthBoundary.startDate+"'","'"+monthBoundary.endDate+"'",true)}
           AND matched_wage_rates.effective_from <= ?
           AND (
             matched_wage_rates.effective_to IS NULL
             OR matched_wage_rates.effective_to >= ?
           )
-        ORDER BY matched_wage_rates.effective_from DESC, matched_wage_rates.created_at DESC
+        ORDER BY matched_wage_rates.effective_from DESC, matched_wage_rates.created_at DESC, matched_wage_rates.rowid DESC
         LIMIT 1
       )
     WHERE (? = 1 OR employees.deleted_at IS NULL)
@@ -426,10 +452,10 @@ export const listStoredEmployeesForSiteMonth = (
     options?.includeDeleted ? 1 : 0
   ) as Array<Record<string, unknown>>;
 
-  return rows.map(toEmployeeRecord);
+  return attachEmploymentState(rows.map(toEmployeeRecord));
 };
 
-export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord => {
+export const saveStoredEmployee = (input: EmployeeUpsertInput, actor?: AuthSession): EmployeeSaveResult => {
   const database = getSqliteDatabase();
 
   if (!database || !isSqliteStorageReady()) {
@@ -437,6 +463,7 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
   }
 
   ensureEmployeeSeed();
+  if (input.rehire) return saveEmployeeRehire(input, actor, id => listStoredEmployees({includeDeleted:true}).find(e=>e.id===id));
 
   const existing = input.id
     ? (database.prepare(`
@@ -451,11 +478,31 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
   const createdAt = existing ? String(existing.created_at) : new Date().toISOString();
   const updatedAt = new Date().toISOString();
   const normalizedEmploymentType = normalizeEmploymentTypeLabel(input.employmentType);
+  if (existing?.status === "retired" && input.status !== "retired" && database.prepare(
+    "SELECT 1 FROM employee_employment_period_events WHERE employee_id=? AND event_type IN ('retired','retirement-date-corrected','retirement-synchronized') LIMIT 1"
+  ).get(id)) throw new Error("자동 종료한 퇴사 이력이 있습니다. 퇴사일 정정은 가능하지만 재직 전환은 별도 재입사 처리에서 진행해야 합니다.");
+  if(existing && hasManagedEmployment(id)) {
+    if(input.hireDate!==undefined && input.hireDate!==(existing.hire_date ?? ""))throw new Error("재입사 이력이 있는 직원의 최초 입사일은 이 화면에서 변경하지 않습니다. 재직기간 이력을 확인해 주세요.");
+    if(input.siteId || input.hourlyRate!==undefined)throw new Error("재입사 직원의 시급·배정은 각 이력 등록에서 처리해 주세요.");
+    const state=attachEmploymentState([toEmployeeRecord(existing)])[0];
+    if(state.scheduledRehire && (input.status!==existing.status || input.employmentType!==existing.employment_type || (input.retireDate ?? null)!==(existing.retire_date ?? null)))throw new Error("재입사 예약이 있습니다. 상태·고용형태를 바꾸려면 예약을 먼저 확인해 주세요. 날짜·시급·배정은 예약 변경 또는 예약 취소에서 처리해 주세요.");
+  }
+  const previousHireDate = existing?.hire_date == null ? null : String(existing.hire_date);
+  const nextHireDate = existing
+    ? input.hireDate === undefined ? previousHireDate : typeof input.hireDate === "string" ? input.hireDate.trim() || null : null
+    : input.hireDate ?? null;
+  if (existing && input.hireDate !== undefined && nextHireDate !== previousHireDate) {
+    const validation = validateHireDate(nextHireDate ?? "", getSeoulTodayDateString());
+    if (!validation.valid) throw new Error(validation.message);
+    if (input.retireDate && nextHireDate! > input.retireDate) throw new Error("입사일은 퇴사일보다 늦을 수 없습니다.");
+  }
   const normalizedRank = normalizeEmployeeRank(input.rank) ?? null;
   const isBpEmployee = isBpEmploymentType(normalizedEmploymentType);
   const existingEmployeeCode = existing ? String(existing.employee_code) : "";
   let normalizedEmployeeCode = input.employeeCode.trim();
   const normalizedContact = input.contact?.trim() || null;
+  const normalizedEmail = input.email === undefined && existing ? existing.email ?? null : input.email?.trim() || null;
+  if (normalizedEmail !== null && (typeof normalizedEmail !== "string" || normalizedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail))) throw new Error("올바른 이메일 주소를 입력해 주세요.");
   const normalizedShiftGroup = normalizeTeamLabel(input.shiftGroup);
   const shouldCreateInitialAssignment = Boolean(input.siteId && normalizedShiftGroup);
   const assignmentSiteId = shouldCreateInitialAssignment ? input.siteId ?? null : null;
@@ -480,12 +527,15 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
     throw new Error("이미 사용 중인 사원번호입니다.");
   }
 
-  database.prepare(`
+  database.exec("SAVEPOINT w09_employee_save");
+  try {
+  const storedEmployee = database.prepare(`
     INSERT INTO employees (
       id,
       employee_code,
       name,
       contact,
+      email,
       rank,
       employment_type,
       status,
@@ -493,11 +543,12 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
       retire_date,
       created_at,
       updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       employee_code = excluded.employee_code,
       name = excluded.name,
       contact = excluded.contact,
+      email = excluded.email,
       rank = excluded.rank,
       employment_type = excluded.employment_type,
       status = excluded.status,
@@ -509,14 +560,16 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
     normalizedEmployeeCode,
     input.name,
     normalizedContact,
+    normalizedEmail as string | null,
     normalizedRank,
     normalizedEmploymentType,
     input.status,
-    input.hireDate ?? null,
+    nextHireDate,
     input.retireDate ?? null,
     createdAt,
     updatedAt
   );
+  if (Number(storedEmployee.changes) !== 1) throw new Error("인력 기본 정보를 저장하지 못했습니다.");
 
   if (assignmentSiteId) {
     database.prepare(`
@@ -559,7 +612,7 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
       UPDATE wage_rates
       SET effective_to = COALESCE(effective_to, ?)
       WHERE employee_id = ?
-        AND effective_to IS NULL
+        AND effective_to IS NULL AND NOT EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated')
     `).run(updatedAt.slice(0, 10), id);
 
     database.prepare(`
@@ -583,10 +636,21 @@ export const saveStoredEmployee = (input: EmployeeUpsertInput): EmployeeRecord =
     );
   }
 
-  return listStoredEmployees().find((employee) => employee.id === id) as EmployeeRecord;
+  const previous = existing ? { id,employeeCode:existingEmployeeCode,name:String(existing.name),status:String(existing.status) as EmployeeRecord["status"],hireDate:previousHireDate ?? undefined,retireDate:existing.retire_date == null ? undefined : String(existing.retire_date) } : undefined;
+  const retirementChange = synchronizeEmployeeRetirement(previous,{id,employeeCode:normalizedEmployeeCode,name:input.name,status:input.status,hireDate:nextHireDate ?? undefined,retireDate:input.retireDate},actor);
+  const savedEmployee = listStoredEmployees().find(employee => employee.id === id);
+  if (!savedEmployee) throw new Error("저장한 인력을 다시 확인하지 못했습니다.");
+  database.exec("RELEASE w09_employee_save");
+  return { ...savedEmployee, ...(retirementChange ? { retirementChange } : {}) };
+  } catch(error) {
+    let message = error instanceof Error ? error.message : "인력 저장에 실패했습니다.";
+    try { database.exec("ROLLBACK TO w09_employee_save"); database.exec("RELEASE w09_employee_save"); }
+    catch(rollbackError) { message += ` 복원 확인: ${rollbackError instanceof Error ? rollbackError.message : "롤백 실패"}`; }
+    throw new Error(message);
+  }
 };
 
-export const deleteStoredEmployee = (employeeId: string): EmployeeRecord => {
+export const deleteStoredEmployee = (employeeId: string, actor?: AuthSession): EmployeeRecord => {
   const database = getSqliteDatabase();
 
   if (!database || !isSqliteStorageReady()) {
@@ -615,27 +679,7 @@ export const deleteStoredEmployee = (employeeId: string): EmployeeRecord => {
   database.exec("BEGIN;");
 
   try {
-    database
-      .prepare(
-        `
-          UPDATE employee_site_assignments
-          SET status = 'ended',
-              end_date = COALESCE(end_date, ?)
-          WHERE employee_id = ?
-            AND status = 'active'
-        `
-      )
-      .run(employee.retireDate, employeeId);
-    database
-      .prepare(
-        `
-          UPDATE wage_rates
-          SET effective_to = COALESCE(effective_to, ?)
-          WHERE employee_id = ?
-            AND effective_to IS NULL
-        `
-      )
-      .run(employee.retireDate, employeeId);
+    synchronizeEmployeeRetirement(employee,employee,actor,true);
     const deletedAt = new Date().toISOString();
 
     database
@@ -650,8 +694,9 @@ export const deleteStoredEmployee = (employeeId: string): EmployeeRecord => {
       .run(deletedAt, deletedAt, employeeId);
     database.exec("COMMIT;");
   } catch (error) {
-    database.exec("ROLLBACK;");
-    throw error;
+    let message=error instanceof Error ? error.message : "인력 삭제에 실패했습니다.";
+    try { database.exec("ROLLBACK;"); } catch(rollbackError) { message += ` 복원 확인: ${rollbackError instanceof Error ? rollbackError.message : "롤백 실패"}`; }
+    throw new Error(message);
   }
 
   return (

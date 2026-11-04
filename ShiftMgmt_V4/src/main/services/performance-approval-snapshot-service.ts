@@ -1,3 +1,4 @@
+import { parsePolicyApplicationSnapshot } from "../../shared/domain/policy-history";
 import type {
   PerformanceEntryRecord,
   PerformanceFileDetail
@@ -122,7 +123,8 @@ const normalizeEntry = (value: unknown): PerformanceEntryRecord | null => {
     substituteAllowancePolicyVersion:
       typeof value.substituteAllowancePolicyVersion === "string"
         ? value.substituteAllowancePolicyVersion
-        : undefined
+        : undefined,
+    appliedPolicies: parsePolicyApplicationSnapshot(value.appliedPolicies) ?? undefined
   };
 };
 

@@ -1,0 +1,389 @@
+/* 활동 이력 (Access History) 전용 스타일 */
+.access-history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.access-history-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  margin-bottom: -2px;
+}
+
+/* 필터 바 카드 */
+.access-history-filter-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.access-history-filter-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.access-history-filter-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.access-history-field-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.access-history-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
+.access-history-date-input {
+  height: 34px;
+  width: 132px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.access-history-date-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.access-history-select {
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.access-history-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.access-history-keyword-input {
+  height: 34px;
+  width: 160px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.access-history-keyword-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.access-history-count-text {
+  font-size: 12px;
+  color: var(--text-sub);
+  white-space: nowrap;
+}
+
+/* 필터 오류 사유 */
+.access-history-field-error {
+  font-size: 12px;
+  color: var(--danger);
+  display: block;
+}
+
+/* 오류 / 안내 배너 */
+.access-history-alert-banner {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--danger);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.access-history-alert-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.access-history-users-warning {
+  background: #FDF3E4;
+  border: 1px solid #F5D298;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #A05200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.access-history-loading-banner {
+  background: var(--accent-subtle);
+  border: 1px solid #C9D4F4;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 테이블 카드 */
+.access-history-table-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.access-history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.access-history-table-wrapper:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.access-history-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.access-history-table th {
+  background: #F8F9FA;
+  font-weight: 600;
+  color: var(--text-sub);
+  font-size: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  height: 40px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.access-history-table th:nth-child(1),
+.access-history-table td:nth-child(1) {
+  width: 130px;
+  max-width: 130px;
+}
+
+.access-history-table th:nth-child(2),
+.access-history-table td:nth-child(2) {
+  width: 140px;
+  max-width: 140px;
+}
+
+.access-history-table th:nth-child(3),
+.access-history-table td:nth-child(3) {
+  width: 100px;
+  max-width: 100px;
+}
+
+.access-history-table th:nth-child(4),
+.access-history-table td:nth-child(4) {
+  width: 160px;
+  max-width: 160px;
+}
+
+.access-history-table th:nth-child(5),
+.access-history-table td:nth-child(5) {
+  min-width: 200px;
+}
+
+.access-history-table tbody tr {
+  height: 40px;
+  max-height: 40px;
+  box-sizing: border-box;
+}
+
+.access-history-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  height: 40px;
+  max-height: 40px;
+  box-sizing: border-box;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.access-history-table tbody tr:hover {
+  background: #F8F9FA;
+}
+
+.access-history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.access-history-user-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.access-history-user-sub {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-left: 2px;
+}
+
+.access-history-detail-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 활동 배지 */
+.access-history-badge {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.access-history-badge.badge-neutral {
+  background: #F1F2F4;
+  color: #4B5563;
+}
+
+.access-history-badge.badge-approved {
+  background: #E8F5EE;
+  color: #1E7A46;
+}
+
+.access-history-badge.badge-danger {
+  background: #FCEBE9;
+  color: #C0392B;
+}
+
+.access-history-badge.badge-info {
+  background: #EEF1FB;
+  color: #3E56B6;
+  padding: 2px 6px;
+}
+
+/* 더 보기 영역 */
+.access-history-load-more-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  background: #F8F9FA;
+  border-top: 1px solid var(--line);
+  gap: 8px;
+}
+
+/* G2 빈 상태 카드 */
+.access-history-empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 600px;
+  max-width: 100%;
+  gap: 16px;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+.access-history-empty-illustration {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--accent-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.access-history-empty-illustration .material-symbols-outlined {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+}
+
+.access-history-empty-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.access-history-empty-desc {
+  font-size: 13px;
+  color: var(--text-sub);
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+.access-history-empty-reset-btn {
+  margin-top: 8px;
+}
+
+/* 접근성 및 비활성화 잠금 */
+.access-history-container [aria-disabled="true"],
+.access-history-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+/* 활동 이력 화면의 본문 여백과 간격 */
+#main-content:has(> .access-history-container) {
+  padding: 16px 20px;
+  gap: 14px;
+}

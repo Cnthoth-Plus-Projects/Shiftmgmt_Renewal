@@ -1,4 +1,5 @@
 import { existsSync } from "node:fs";
+import { isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
 import path from "node:path";
 
 import type {
@@ -24,6 +25,7 @@ import type {
   PerformanceOverviewQuery
 } from "../../shared/bridge/contracts";
 import { consumeSubstituteAllowancePolicyReparseMarker } from "./app-settings-storage-service";
+import { isPolicyHistoryInitialized } from "./policy-history-service";
 import { getLatestAllowanceCalculationByApprovalId } from "./approved-allowance-calculation-service";
 import { listStoredEmployeeAssignments } from "./employee-history-service";
 import { listStoredEmployees } from "./employee-storage-service";
@@ -443,6 +445,7 @@ const buildOverviewRow = (
     isReapprovalFile?: boolean;
     latestApproval?: ReturnType<typeof getLatestPerformanceApprovalByLogicalKey> | null;
     sourceFileExists?: boolean;
+    employee?: EmployeeRecord;
   }
 ) => {
   const latestApproval =
@@ -458,6 +461,7 @@ const buildOverviewRow = (
     entry,
     latestApproval
   });
+  const outsideEmployment = Boolean(options?.employee && !isManagedEmployeeEmployedOnDate(options.employee, entry.workDate));
   const approvalStatus =
     isNonPayable
       ? "non-payable"
@@ -476,6 +480,9 @@ const buildOverviewRow = (
         }
       : {
           ...entry,
+          hourlyRate: resolvedApproval.satisfied && resolvedApproval.approvedEntry
+            ? resolvedApproval.approvedEntry.hourlyRate
+            : entry.hourlyRate,
           status: resolvedApproval.approvalStatus,
           latestApprovalAt: resolvedApproval.latestApprovalAt,
           latestApprovalByName: resolvedApproval.latestApprovalByName
@@ -490,10 +497,11 @@ const buildOverviewRow = (
     sourceFileExists: options?.sourceFileExists ?? existsSync(detail.filePath),
     sourceDirectoryType: detail.directoryType,
     sourceReceivedAt: detail.receivedAt,
-    entry: displayEntry,
+    entry: outsideEmployment && detail.directoryType === "pending" && approvalStatus !== "approved" ? {...displayEntry, alerts:[...displayEntry.alerts,{severity:"error" as const,message:"근무일이 재직기간 밖입니다. 퇴사 공백·취소한 예약에는 승인할 수 없습니다. 인력 관리에서 재입사일을 확인해 주세요."}]} : displayEntry,
     approvalStatus,
     canApprove:
       !isNonPayable &&
+      !outsideEmployment &&
       !isChangeLocked &&
       detail.directoryType === "pending" &&
       resolvedApproval.approvalStatus === "pending" &&
@@ -663,7 +671,9 @@ export const listPerformanceOverview = async (
   if (settings && (approvalScope === "pending" || Boolean(query.scheduleMonth))) {
     // 대체수당 제외 정책 시작일이 바뀐 뒤 첫 조회라면, 대기 파일을 다시 읽어 판정을 새 기준으로 맞춘다.
     // 승인 완료 보관본은 다시 읽지 않는다(과거 지급분 보존).
-    const substitutePolicyChanged = consumeSubstituteAllowancePolicyReparseMarker();
+    const substitutePolicyChanged = isPolicyHistoryInitialized()
+      ? false
+      : consumeSubstituteAllowancePolicyReparseMarker();
 
     syncIssues.push(
       ...(await syncPendingPerformanceFilesToStorage({
@@ -720,6 +730,7 @@ export const listPerformanceOverview = async (
       : visibleDetails.filter((detail) => isExistingPendingFile(detail, settings?.pendingDir));
   const sourceFileExistsByPath = new Map<string, boolean>();
   const resolveTeamLabel = createOverviewTeamLabelResolver();
+  const employeesByCode = new Map(listStoredEmployees({includeDeleted:true}).map(employee => [employee.employeeCode, employee]));
 
   visibleDetails.forEach((detail) => {
     if (approvalScope === "pending" && !isExistingPendingFile(detail, settings?.pendingDir)) {
@@ -750,6 +761,7 @@ export const listPerformanceOverview = async (
           isReapprovalFile,
           latestApproval,
           sourceFileExists
+          ,employee: employeesByCode.get(entry.employeeCode ?? "")
         }
       );
 

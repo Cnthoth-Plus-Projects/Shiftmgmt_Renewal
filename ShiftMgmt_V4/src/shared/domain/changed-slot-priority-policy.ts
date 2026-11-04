@@ -9,16 +9,30 @@
 // 새 규칙은 적용 시작일 이후 "근무일"에만 걸린다. 그 전 근무일은 옛 규칙 그대로여서
 // 이미 승인·지급된 과거분의 근무자가 바뀌지 않는다(forward-only).
 
+import type { ChangedWorkerPriorityRuleKey } from "./policy-history";
+
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 // 판정 당시 어떤 규칙이 적용됐는지 기록하기 위한 값. 규칙이 바뀌면 올린다.
 export const CHANGED_SLOT_PRIORITY_POLICY_VERSION = "2026-07-changed-slot-priority";
 
 // 시작일이 비어 있거나 형식이 어긋나면 새 규칙을 적용하지 않는다(안전한 기본값).
+// ruleKey가 제공된 경우 ruleKey(changed-worker-legacy vs changed-worker-after-v1)에 따라 엄격 분기.
 export const isChangedSlotPriorityApplicable = (input: {
   workDate: string;
   effectiveFrom?: string;
-}) => {
+  ruleKey?: ChangedWorkerPriorityRuleKey;
+}): boolean => {
+  if (input.ruleKey !== undefined) {
+    if (input.ruleKey === "changed-worker-legacy") {
+      return false;
+    }
+    if (input.ruleKey === "changed-worker-after-v1") {
+      return true;
+    }
+    throw new Error(`지원하지 않는 변경근무자 판정 정책 키입니다: ${String(input.ruleKey)}`);
+  }
+
   const effectiveFrom = input.effectiveFrom?.trim() ?? "";
 
   if (!DATE_PATTERN.test(effectiveFrom) || !DATE_PATTERN.test(input.workDate)) {

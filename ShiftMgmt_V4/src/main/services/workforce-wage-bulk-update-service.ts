@@ -12,8 +12,11 @@ import type {
   WorkforceWageBulkUpdateRowStatus
 } from "../../shared/bridge/contracts";
 import { excelColumnLabelToIndex } from "../../shared/lib/excel-column";
+import type { AuthSession } from "../../shared/domain/model";
 import { saveStoredEmployeeWageRate } from "./employee-history-service";
 import { listStoredEmployees } from "./employee-storage-service";
+import { historyEmploymentSql } from "./employee-employment-service";
+import { isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
 
 interface EmployeeLookupRow {
@@ -25,13 +28,20 @@ interface EmployeeLookupRow {
   currentSiteName?: string;
   currentHourlyRate?: number;
   currentEffectiveFrom?: string;
+  employmentEligible?: boolean;
 }
 
 interface ImportedSpreadsheetRow {
   rowNumber: number;
+  employeeCode: string;
   siteName: string;
   employeeName: string;
   hourlyRateText: string;
+}
+
+interface EmployeeLookup {
+  byCode: Map<string, EmployeeLookupRow[]>;
+  bySiteAndName: Map<string, EmployeeLookupRow[]>;
 }
 
 const SUPPORTED_EXTENSIONS = new Set([".xlsx", ".xlsm"]);
@@ -123,8 +133,8 @@ const listEmployeeLookupRows = (effectiveFrom: string) => {
       employees.status,
       employees.retire_date,
       sites.name as current_site_name,
-      wage_rates.hourly_rate as current_hourly_rate,
-      wage_rates.effective_from as current_effective_from
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.hourly_rate END as current_hourly_rate,
+      CASE WHEN EXISTS (SELECT 1 FROM wage_rate_history h WHERE h.wage_rate_id=wage_rates.id AND h.action_type='invalidated') THEN NULL ELSE wage_rates.effective_from END as current_effective_from
     FROM employees
     LEFT JOIN employee_site_assignments as assignments
       ON assignments.id = (
@@ -132,6 +142,9 @@ const listEmployeeLookupRows = (effectiveFrom: string) => {
         FROM employee_site_assignments as latest_assignments
         WHERE latest_assignments.employee_id = employees.id
           AND latest_assignments.status = 'active'
+          AND ${historyEmploymentSql("latest_assignments", "@day")}
+          AND (NOT EXISTS(SELECT 1 FROM employee_employment_period_events em WHERE em.employee_id=employees.id AND em.event_type='rehired')
+            OR (latest_assignments.start_date<=@day AND (latest_assignments.end_date IS NULL OR latest_assignments.end_date>@day)))
         ORDER BY latest_assignments.start_date DESC, latest_assignments.created_at DESC
         LIMIT 1
       )
@@ -142,22 +155,23 @@ const listEmployeeLookupRows = (effectiveFrom: string) => {
         SELECT latest_wage_rates.id
         FROM wage_rates as latest_wage_rates
         WHERE latest_wage_rates.employee_id = employees.id
-          AND latest_wage_rates.effective_from <= ?
+          AND latest_wage_rates.effective_from <= @day
           AND (
             latest_wage_rates.effective_to IS NULL
-            OR latest_wage_rates.effective_to >= ?
+            OR latest_wage_rates.effective_to >= @day
           )
-        ORDER BY latest_wage_rates.effective_from DESC, latest_wage_rates.created_at DESC
+          AND ${historyEmploymentSql("latest_wage_rates", "@day")}
+        ORDER BY latest_wage_rates.effective_from DESC, latest_wage_rates.created_at DESC, latest_wage_rates.rowid DESC
         LIMIT 1
       )
     ORDER BY employees.name ASC
-  `).all(effectiveFrom, effectiveFrom) as Array<Record<string, unknown>>;
+  `).all({day:effectiveFrom}) as Array<Record<string, unknown>>;
 };
 
 const buildEmployeeLookup = (effectiveFrom: string) => {
-  listStoredEmployees();
+  const employees = new Map(listStoredEmployees().map(employee => [employee.id, employee]));
 
-  const lookup = new Map<string, EmployeeLookupRow[]>();
+  const lookup: EmployeeLookup = { byCode: new Map(), bySiteAndName: new Map() };
 
   listEmployeeLookupRows(effectiveFrom).forEach((row) => {
     const currentSiteName = normalizeText(
@@ -165,18 +179,12 @@ const buildEmployeeLookup = (effectiveFrom: string) => {
     );
     const employeeName = normalizeText(String(row.name));
 
-    if (!currentSiteName || !employeeName) {
-      return;
-    }
-
-    const key = `${currentSiteName}::${employeeName}`.toLowerCase();
-    const currentRows = lookup.get(key) ?? [];
-
-    currentRows.push({
+    const employee: EmployeeLookupRow = {
       id: String(row.id),
       employeeCode: String(row.employee_code),
       name: employeeName,
       status: String(row.status),
+      employmentEligible: employees.get(String(row.id))?.employmentPeriods ? isManagedEmployeeEmployedOnDate(employees.get(String(row.id))!, effectiveFrom) && !(employees.get(String(row.id))!.scheduledRehire && effectiveFrom>=employees.get(String(row.id))!.scheduledRehire!.startDate) : undefined,
       retireDate: row.retire_date ? String(row.retire_date) : undefined,
       currentSiteName,
       currentHourlyRate:
@@ -186,9 +194,17 @@ const buildEmployeeLookup = (effectiveFrom: string) => {
       currentEffectiveFrom: row.current_effective_from
         ? String(row.current_effective_from)
         : undefined
-    });
+    };
+    const codeRows = lookup.byCode.get(employee.employeeCode) ?? [];
+    codeRows.push(employee);
+    lookup.byCode.set(employee.employeeCode, codeRows);
 
-    lookup.set(key, currentRows);
+    if (currentSiteName && employeeName) {
+      const key = `${currentSiteName}::${employeeName}`.toLowerCase();
+      const nameRows = lookup.bySiteAndName.get(key) ?? [];
+      nameRows.push(employee);
+      lookup.bySiteAndName.set(key, nameRows);
+    }
   });
 
   return lookup;
@@ -206,19 +222,25 @@ const extractImportedRows = async (
   const siteNameColumnIndex = excelColumnLabelToIndex(input.mapping.siteNameColumn);
   const employeeNameColumnIndex = excelColumnLabelToIndex(input.mapping.employeeNameColumn);
   const hourlyRateColumnIndex = excelColumnLabelToIndex(input.mapping.hourlyRateColumn);
+  const codeColumn = normalizeText(input.mapping.employeeCodeColumn);
+  const employeeCodeColumnIndex = codeColumn ? excelColumnLabelToIndex(codeColumn) : undefined;
   const rows: ImportedSpreadsheetRow[] = [];
 
   for (let rowNumber = DATA_START_ROW; rowNumber <= worksheet.rowCount; rowNumber += 1) {
     const siteName = normalizeText(worksheet.getCell(rowNumber, siteNameColumnIndex).text);
     const employeeName = normalizeText(worksheet.getCell(rowNumber, employeeNameColumnIndex).text);
     const hourlyRateText = normalizeText(worksheet.getCell(rowNumber, hourlyRateColumnIndex).text);
+    const employeeCode = employeeCodeColumnIndex
+      ? normalizeText(worksheet.getCell(rowNumber, employeeCodeColumnIndex).text)
+      : "";
 
-    if (!siteName && !employeeName && !hourlyRateText) {
+    if (!employeeCode && !siteName && !employeeName && !hourlyRateText) {
       continue;
     }
 
     rows.push({
       rowNumber,
+      employeeCode,
       siteName,
       employeeName,
       hourlyRateText
@@ -236,117 +258,100 @@ const extractImportedRows = async (
 const createPreviewRow = (
   input: WorkforceWageBulkUpdatePreviewInput,
   row: ImportedSpreadsheetRow,
-  employeeLookup: Map<string, EmployeeLookupRow[]>
+  employeeLookup: EmployeeLookup
 ): WorkforceWageBulkUpdatePreviewRow => {
   const importedHourlyRate = parseImportedHourlyRate(row.hourlyRateText) ?? undefined;
+  const usesCode = Boolean(normalizeText(input.mapping.employeeCodeColumn));
+  const base = {
+    rowNumber: row.rowNumber,
+    siteName: row.siteName,
+    employeeName: row.employeeName,
+    employeeCode: row.employeeCode || undefined,
+    importedHourlyRate,
+    effectiveFrom: input.effectiveFrom
+  };
 
-  if (!row.siteName || !row.employeeName || !row.hourlyRateText) {
+  if (!row.hourlyRateText || (usesCode ? !row.employeeCode : !row.siteName || !row.employeeName)) {
     return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      importedHourlyRate,
-      effectiveFrom: input.effectiveFrom,
+      ...base,
       status: "missing-required-value",
       statusLabel: statusLabelByCode["missing-required-value"],
-      note: "근무지명, 이름, 시급 값이 모두 필요합니다."
+      note: usesCode ? "사번과 시급 값이 모두 필요합니다." : "근무지명, 이름, 시급 값이 모두 필요합니다."
     };
   }
 
   if (typeof importedHourlyRate !== "number") {
     return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      effectiveFrom: input.effectiveFrom,
+      ...base,
       status: "invalid-hourly-rate",
       statusLabel: statusLabelByCode["invalid-hourly-rate"],
       note: "시급은 숫자 또는 쉼표가 포함된 숫자만 지원합니다."
     };
   }
 
-  const lookupKey = `${row.siteName}::${row.employeeName}`.toLowerCase();
-  const matchedEmployees = employeeLookup.get(lookupKey) ?? [];
+  // 지정한 사번이 없거나 틀렸을 때 다른 사람의 이름으로 대체하지 않는다.
+  const candidates = usesCode
+    ? employeeLookup.byCode.get(row.employeeCode) ?? []
+    : employeeLookup.bySiteAndName.get(`${row.siteName}::${row.employeeName}`.toLowerCase()) ?? [];
 
-  if (matchedEmployees.length === 0) {
+  if (candidates.length === 0) {
     return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      importedHourlyRate,
-      effectiveFrom: input.effectiveFrom,
+      ...base,
       status: "employee-not-found",
       statusLabel: statusLabelByCode["employee-not-found"],
-      note: "현재 배정된 인력 목록에서 동일한 근무지명과 이름을 찾지 못했습니다."
+      note: usesCode
+        ? "입력한 사번과 일치하는 인력을 찾지 못했습니다. 사번을 확인해 주세요."
+        : "현재 배정된 인력 목록에서 동일한 근무지명과 이름을 찾지 못했습니다."
     };
   }
 
-  if (matchedEmployees.length > 1) {
+  // 기존 퇴사 판정은 유지하되 동명이인 판정 전에 적용한다.
+  const eligible = candidates.filter((employee) =>
+    employee.employmentEligible ?? (employee.status !== "retired" && !(employee.retireDate && employee.retireDate < input.effectiveFrom))
+  );
+  if (eligible.length === 0) {
+    const employee = candidates.length === 1 ? candidates[0] : undefined;
     return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      importedHourlyRate,
-      effectiveFrom: input.effectiveFrom,
+      ...base,
+      employeeId: employee?.id,
+      employeeCode: employee?.employeeCode ?? base.employeeCode,
+      currentHourlyRate: employee?.currentHourlyRate,
+      currentEffectiveFrom: employee?.currentEffectiveFrom,
+      previousEffectiveTo: shiftDateValue(input.effectiveFrom, -1),
+      status: "employee-retired",
+      statusLabel: employee?.employmentEligible===false ? "재직기간·예약 확인" : statusLabelByCode["employee-retired"],
+      note: employee?.employmentEligible === false ? "적용일이 재직기간 밖입니다. 재입사 예약 전 공백·취소한 예약에는 시급을 적용할 수 없습니다. 예약의 새 시급은 인력 상세의 예약 변경에서 확인해 주세요." : "적용일 기준 퇴사 처리된 인력입니다."
+    };
+  }
+
+  if (eligible.length > 1) {
+    return {
+      ...base,
       status: "ambiguous-employee",
       statusLabel: statusLabelByCode["ambiguous-employee"],
-      note: "같은 근무지와 이름으로 여러 인력이 조회되어 수동 확인이 필요합니다."
+      note: "같은 근무지와 이름으로 여러 재직 인력이 조회됩니다. 사번 열을 지정해 확인해 주세요."
     };
   }
 
-  const matchedEmployee = matchedEmployees[0]!;
-  const previousEffectiveTo = shiftDateValue(input.effectiveFrom, -1);
-
-  if (
-    matchedEmployee.status === "retired" ||
-    (matchedEmployee.retireDate && matchedEmployee.retireDate < input.effectiveFrom)
-  ) {
+  const employee = eligible[0]!;
+  const matched = {
+    ...base,
+    employeeId: employee.id,
+    employeeCode: employee.employeeCode,
+    currentHourlyRate: employee.currentHourlyRate,
+    currentEffectiveFrom: employee.currentEffectiveFrom,
+    previousEffectiveTo: shiftDateValue(input.effectiveFrom, -1)
+  };
+  if (employee.currentHourlyRate === importedHourlyRate) {
     return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      importedHourlyRate,
-      currentHourlyRate: matchedEmployee.currentHourlyRate,
-      currentEffectiveFrom: matchedEmployee.currentEffectiveFrom,
-      previousEffectiveTo,
-      effectiveFrom: input.effectiveFrom,
-      employeeId: matchedEmployee.id,
-      employeeCode: matchedEmployee.employeeCode,
-      status: "employee-retired",
-      statusLabel: statusLabelByCode["employee-retired"],
-      note: "적용일 기준 퇴사 처리된 인력입니다."
-    };
-  }
-
-  if (matchedEmployee.currentHourlyRate === importedHourlyRate) {
-    return {
-      rowNumber: row.rowNumber,
-      siteName: row.siteName,
-      employeeName: row.employeeName,
-      importedHourlyRate,
-      currentHourlyRate: matchedEmployee.currentHourlyRate,
-      currentEffectiveFrom: matchedEmployee.currentEffectiveFrom,
-      previousEffectiveTo,
-      effectiveFrom: input.effectiveFrom,
-      employeeId: matchedEmployee.id,
-      employeeCode: matchedEmployee.employeeCode,
+      ...matched,
       status: "same-rate",
       statusLabel: statusLabelByCode["same-rate"],
       note: "현재 활성 시급과 동일하여 변경하지 않습니다."
     };
   }
-
   return {
-    rowNumber: row.rowNumber,
-    siteName: row.siteName,
-    employeeName: row.employeeName,
-    importedHourlyRate,
-    currentHourlyRate: matchedEmployee.currentHourlyRate,
-    currentEffectiveFrom: matchedEmployee.currentEffectiveFrom,
-    previousEffectiveTo,
-    effectiveFrom: input.effectiveFrom,
-    employeeId: matchedEmployee.id,
-    employeeCode: matchedEmployee.employeeCode,
+    ...matched,
     status: "ready",
     statusLabel: statusLabelByCode.ready,
     note: "미리보기 검증을 통과했습니다."
@@ -407,7 +412,8 @@ export const previewWorkforceWageBulkUpdate = async (
 ) => evaluatePreview(input);
 
 export const applyWorkforceWageBulkUpdate = async (
-  input: WorkforceWageBulkUpdateApplyInput
+  input: WorkforceWageBulkUpdateApplyInput,
+  actor?: Pick<AuthSession, "userId" | "loginId" | "displayName" | "role">
 ) => {
   const database = requireReadyDatabase();
   const preview = await evaluatePreview(input);
@@ -425,7 +431,7 @@ export const applyWorkforceWageBulkUpdate = async (
           hourlyRate: row.importedHourlyRate,
           effectiveFrom: input.effectiveFrom,
           reason: `엑셀 일괄 시급 업데이트 (${preview.fileName})`
-        });
+        }, actor);
       });
 
       database.exec("COMMIT");

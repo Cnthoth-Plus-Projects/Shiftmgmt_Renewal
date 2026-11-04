@@ -1,3 +1,4 @@
+import { parseHolidayPatternPolicy, validateHolidayPolicy, getPatternDutyCodes } from "../../shared/domain/holiday-pattern";
 import { randomUUID } from "node:crypto";
 
 import type {
@@ -33,6 +34,7 @@ import { listStoredSites } from "./site-storage-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
 
 interface ShiftPatternRow {
+  holiday_policy_json?: string | null;
   id: string;
   site_id: string;
   name: string;
@@ -573,6 +575,7 @@ const toShiftPatternRecord = (
     startIndexRule: row.start_index_rule,
     patternStartDate: primaryCycle.patternStartDate,
     // 적용 시작일이 저장돼 있지 않은 예전 행은 패턴 시작일을 그대로 쓴다.
+    holidayPolicy: row.holiday_policy_json ? parseHolidayPatternPolicy(JSON.parse(row.holiday_policy_json)) : undefined,
     effectiveFrom: row.effective_from ?? primaryCycle.patternStartDate,
     status: row.status,
     createdAt: row.created_at,
@@ -1067,6 +1070,19 @@ const writeShiftPattern = (
   const createdAt = options?.createdAt ?? new Date().toISOString();
   const updatedAt = new Date().toISOString();
 
+  const policyError = validateHolidayPolicy(input.holidayPolicy,teamSettings.filter(t=>t.isActive!==false).map(t=>t.teamLabel),[...cycles.flatMap(c=>c.steps.map(s=>s.dutyCode)),...Object.values(getPatternDutyCodes(input.dutyTypes??[]))],input.effectiveFrom);
+  if(policyError)throw Error(policyError);
+  for (const row of input.holidayPolicy?.dateExceptions ?? []) if (row.scope === "employee") {
+    const person = getSqliteDatabase()!.prepare(`SELECT a.shift_group FROM employees e
+      JOIN employee_site_assignments a ON a.employee_id = e.id
+      WHERE e.id = ? AND e.deleted_at IS NULL AND a.site_id = ?
+      AND a.start_date <= ? AND (a.end_date IS NULL OR a.end_date >= ?)
+      AND (e.hire_date IS NULL OR e.hire_date <= ?)
+      AND (e.retire_date IS NULL OR e.retire_date > ?)
+      AND (e.status != 'retired' OR e.retire_date IS NOT NULL)
+      ORDER BY a.start_date DESC LIMIT 1`).get(row.employeeId!,input.siteId,row.from,row.to,row.from,row.to) as {shift_group?:string}|undefined;
+    if (!person || !teamSettings.some(t=>t.isActive!==false&&t.teamLabel===person.shift_group)) throw Error("개인 예외의 인원·날짜가 이 근무지의 배정 기간과 맞지 않습니다. 배정된 인원을 선택하고 예외 기간을 배정 기간 안으로 나눠 주세요.");
+  }
   if (input.dutyTypes && input.dutyTypes.length > 0) {
     const validation = validateDutyCatalog(
       input.dutyTypes.map((item, index) => ({
@@ -1094,6 +1110,7 @@ const writeShiftPattern = (
   try {
     database.prepare(`
       INSERT INTO shift_patterns (
+        holiday_policy_json,
         id,
         site_id,
         name,
@@ -1110,8 +1127,9 @@ const writeShiftPattern = (
         status,
         created_at,
         updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(id) DO UPDATE SET
+        holiday_policy_json = excluded.holiday_policy_json,
         site_id = excluded.site_id,
         name = excluded.name,
         team_count = excluded.team_count,
@@ -1127,6 +1145,7 @@ const writeShiftPattern = (
         status = excluded.status,
         updated_at = excluded.updated_at
     `).run(
+      input.holidayPolicy ? JSON.stringify(parseHolidayPatternPolicy(input.holidayPolicy)) : null,
       id,
       input.siteId,
       input.name,

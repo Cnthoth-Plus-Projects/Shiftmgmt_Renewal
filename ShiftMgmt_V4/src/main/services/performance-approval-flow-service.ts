@@ -1,7 +1,10 @@
+import { parsePolicyApplicationSnapshot, computePolicyApplicationFingerprint } from "../../shared/domain/policy-history";
+import { isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
+import { getWageTimelineRowForDate, resolveWageRateForDate } from "../../shared/domain/wage-rate";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-import type { BridgeResult } from "../../shared/bridge/contracts";
+import type { BridgeResult, PerformanceReturnToPendingResult } from "../../shared/bridge/contracts";
 import type { AuthSession } from "../../shared/domain/model";
 import type {
   PerformanceAlert,
@@ -27,6 +30,7 @@ import { resolvePerformanceEntryApprovalState } from "./performance-approval-res
 import { createPerformanceApprovalSnapshot } from "./performance-approval-snapshot-service";
 import {
   archiveApprovedPerformanceFile,
+  rollbackPerformanceReturnSource,
   restoreApprovedPerformanceFileToPending
 } from "./performance-file-archive-service";
 import { detectUnmarkedHolidayGap } from "./performance-holiday-gap-service";
@@ -35,15 +39,25 @@ import {
   listStoredPerformanceFileDetails,
   markStoredPerformanceFileArchivedAsEffective,
   moveStoredPerformanceFileToPending,
+  upsertPerformanceFileDetail,
   updateStoredPerformanceFileApprovalProgress
 } from "./performance-file-storage-service";
 import { getPendingPerformanceFileDetail } from "./performance-queue-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
+import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
+import { listStoredEmployees } from "./employee-storage-service";
+import { listStoredEmployeeWageRates } from "./employee-history-service";
 import {
   deleteAllowanceCalculationByApprovalId,
   getLatestAllowanceCalculationByApprovalId,
   runApprovedAllowanceCalculationForApproval
 } from "./approved-allowance-calculation-service";
+import type { PolicyActorSnapshot } from "../../shared/domain/policy-history";
+import {
+  isPolicyHistoryInitialized,
+  recordPolicyUse,
+  selectPolicyForWorkDate
+} from "./policy-history-service";
 
 const buildMissingFileResult = (): BridgeResult<PerformanceApprovalRecord> => ({
   ok: false,
@@ -185,6 +199,20 @@ const createApprovedPerformanceRecord = async (input: {
   }
 
   try {
+    if (input.entry.appliedPolicies) {
+      const application = parsePolicyApplicationSnapshot(input.entry.appliedPolicies);
+      const valid = application && application.workDate === input.entry.workDate &&
+        (input.entry.section !== "substitute" || application.bindings.some(binding => binding.kind === "substitute-eligibility")) &&
+        application.bindings.every(binding => {
+          const selected = selectPolicyForWorkDate(binding.kind, input.entry.workDate, transactionalDatabase ?? undefined)?.revision;
+          return selected && selected.id === binding.policyId && selected.ruleKey === binding.ruleKey && selected.versionNumber === binding.versionNumber && selected.effectiveFrom === binding.effectiveFrom && selected.criteriaJson === binding.criteriaJson && selected.implementationVersion === binding.implementationVersion;
+        }) && application.fingerprint === computePolicyApplicationFingerprint(application.workDate, application.bindings);
+      if (!valid) {
+        if (transactionalDatabase) transactionalDatabase.exec("ROLLBACK");
+        return { ok: false as const, errorCode: "POLICY_CONFLICT", message: "실적의 정책 기준이 변경되었거나 불완전합니다. 실적을 다시 읽고 확인한 뒤 승인해 주세요." };
+      }
+    }
+
     const record = createPerformanceApprovalRecord({
       fileId: input.detail.id,
       entry: input.entry,
@@ -209,6 +237,16 @@ const createApprovedPerformanceRecord = async (input: {
         errorCode: calculationResult.errorCode,
         message: calculationResult.message
       };
+    }
+
+    if (transactionalDatabase && isPolicyHistoryInitialized(transactionalDatabase) && input.entry.appliedPolicies?.bindings?.length) {
+      const actor: PolicyActorSnapshot = {
+        userId: input.session.userId,
+        loginId: input.session.userId,
+        displayName: input.session.displayName,
+        role: input.session.role
+      };
+      recordPolicyUse(transactionalDatabase, input.entry.appliedPolicies.bindings, record.id, actor);
     }
 
     if (transactionalDatabase) {
@@ -369,6 +407,7 @@ export const approvePerformanceFile = async (
   context?: {
     userDataPath?: string;
     env?: NodeJS.ProcessEnv;
+    requireExpectedPolicyFingerprint?: boolean;
   }
 ): Promise<BridgeResult<PerformanceApprovalRecord>> => {
   const detail = await getPendingPerformanceFileDetail(input.fileId);
@@ -393,12 +432,27 @@ export const approvePerformanceFile = async (
     return buildApprovalBlockedResult("품의승인 완료 수당은 재승인으로 변경할 수 없습니다.");
   }
 
+  // A failed source refresh can retain an old positive cached/manual wage. An explicit void still
+  // blocks a new approval; approved snapshots are never retroactively rewritten by this guard.
+  const wageEmployee = listStoredEmployees({ includeDeleted: true, includeHistoricalAssignments: true }).find(e => e.employeeCode === entry.employeeCode);
+  if(wageEmployee && !isManagedEmployeeEmployedOnDate(wageEmployee,entry.workDate))return {ok:false,errorCode:"PERFORMANCE_EMPLOYEE_NOT_EMPLOYED",message:"해당 근무일은 재직기간에 포함되지 않습니다. 퇴사 공백이나 취소한 재입사 예약의 실적은 수동 시급으로도 승인할 수 없습니다. 인력의 재직기간과 원본을 확인해 주세요."};
+  if (wageEmployee?.status === "retired" && wageEmployee.retireDate && entry.workDate >= wageEmployee.retireDate) {
+    return { ok:false, errorCode:"PERFORMANCE_EMPLOYEE_RETIRED", message:"퇴사일은 근무에서 제외되는 첫날입니다. 퇴사일 이후 실적은 수동 시급으로도 승인할 수 없습니다. 인력 정보와 원본을 확인해 주세요." };
+  }
+  if (wageEmployee && getWageTimelineRowForDate(listStoredEmployeeWageRates(wageEmployee.id), entry.workDate)?.invalidation) {
+    return { ok: false, errorCode: "PERFORMANCE_WAGE_INVALIDATED", message: "무효 처리한 시급의 적용 기간입니다. 인력 관리에서 유효한 시급을 등록한 뒤 실적을 다시 읽어 주세요. 수동 시급으로 승인할 수 없습니다." };
+  }
+
   const approvalEntry = resolveApprovalEntry(entry, input.manualHourlyRate);
   const resolvedApproval = resolvePerformanceEntryApprovalState({
     entry: approvalEntry,
     latestApproval
   });
   const hasCurrentCycleApproval = isCompletedInCurrentReapprovalCycle(detail, latestApproval);
+  const hasExplicitHourlyRateChange = Boolean(
+    input.manualHourlyRate && input.manualHourlyRate > 0 &&
+      input.manualHourlyRate !== resolvedApproval.approvedEntry?.hourlyRate
+  );
   const isPendingReapprovalFile = hasPriorApprovedContentForPendingFile(detail);
   const canReapproveCurrentCycle =
     latestApproval?.decision === "approved" &&
@@ -409,9 +463,27 @@ export const approvePerformanceFile = async (
   if (
     latestApproval?.decision === "approved" &&
     resolvedApproval.satisfied &&
+    !hasExplicitHourlyRateChange &&
     !canReapproveCurrentCycle
   ) {
     return buildAlreadyProcessedResult();
+  }
+
+  if (context?.requireExpectedPolicyFingerprint) {
+    if (!input.expectedPolicyFingerprint) {
+      return {
+        ok: false,
+        errorCode: "POLICY_CONFLICT",
+        message: "승인 시 정책 지문이 누락되었습니다. 실적 화면을 새로고침한 뒤 다시 승인하세요."
+      };
+    }
+    if (!entry.appliedPolicies || input.expectedPolicyFingerprint !== entry.appliedPolicies.fingerprint) {
+      return {
+        ok: false,
+        errorCode: "POLICY_CONFLICT",
+        message: "실적에 적용된 정책 기준이 최신이 아닙니다. 실적 화면을 새로고침하여 최신 정책 기준을 확인한 뒤 다시 승인하세요."
+      };
+    }
   }
 
   const creationResult = await createApprovedPerformanceRecord({
@@ -617,115 +689,100 @@ const buildReturnToPendingBlockedResult = (message: string): BridgeResult<Perfor
   message
 });
 
-// Official "승인완료 → 승인대기로 되돌리기" action. Replaces the unsafe manual move that strands an
-// orphan row: it keeps the same file id (so no re-id and no mass re-approval), physically moves the
-// workbook back into 승인대기 (tolerating a missing source), clears the effective flag for the
-// schedule, and then performs a CLEAN undo — dropping this file's approval records and their
-// allowance calculations so the file re-enters 승인대기 exactly as if freshly received. A file whose
-// allowance has already been 품의-approved (proposal-approved) is blocked, because returning it would
-// strand committed pay.
+// This explicit whole-file action retains the existing narrow approval/calculation deletion exception.
+// Cached source/time values stay intact; only their work-date wage is reapplied in that transaction.
+const reapplyReturnedEntryWages = (detail: PerformanceFileDetail) => {
+  const employees = new Map(listStoredEmployees({ includeDeleted: true, includeHistoricalAssignments: true }).map(e => [e.employeeCode, e]));
+  const ratesById = new Map<string, ReturnType<typeof listStoredEmployeeWageRates>>();
+  let appliedEntryCount = 0, unresolvedEntryCount = 0;
+  const entries = detail.entries.map(entry => {
+    if (!isPayablePerformanceEntry(entry)) return entry;
+    const employee = employees.get(entry.employeeCode);
+    let rates: ReturnType<typeof listStoredEmployeeWageRates> = [];
+    if (employee) {
+      if (!ratesById.has(employee.id)) ratesById.set(employee.id, listStoredEmployeeWageRates(employee.id));
+      rates = ratesById.get(employee.id)!;
+    }
+    const day = /^\d{4}-\d{2}-\d{2}$/.test(entry.workDate) ? new Date(`${entry.workDate}T00:00:00Z`) : null;
+    const validDay = day && Number.isFinite(day.getTime()) && day.toISOString().slice(0, 10) === entry.workDate;
+    // listStoredEmployeeWageRates orders latest effectiveFrom first, matching the intake resolver.
+    const rate = validDay ? resolveWageRateForDate(rates, entry.workDate) : undefined;
+    const alerts = entry.alerts.filter(alert => !(alert.severity === "error" && (
+      /^.+의 (?:시급 이력이 없습니다\.|\d{4}-\d{2}-\d{2} 기준 적용 시급을 찾지 못했습니다\. 현재 등록 시작일: \d{4}-\d{2}-\d{2})$/.test(alert.message.trim()) ||
+      alert.message.trim() === `${entry.employeeName}의 시급 정보가 없습니다.`
+    )));
+    if (rate) appliedEntryCount += 1;
+    else {
+      unresolvedEntryCount += 1;
+      alerts.push({ severity: "error", message: !employee
+        ? `${entry.employeeName}의 사번에 해당하는 인력 정보를 찾지 못했습니다.`
+        : !validDay ? "근무일을 확인할 수 없어 시급을 적용하지 않았습니다."
+        : rates[0]?.effectiveFrom ? `${entry.employeeName}의 ${entry.workDate} 기준 적용 시급을 찾지 못했습니다. 현재 등록 시작일: ${rates[0].effectiveFrom}`
+        : `${entry.employeeName}의 시급 이력이 없습니다.` });
+    }
+    return { ...entry, hourlyRate: rate?.hourlyRate, alerts };
+  });
+  upsertPerformanceFileDetail({ ...detail, entries });
+  return { status: unresolvedEntryCount ? "needs-review" as const : "completed" as const, appliedEntryCount, unresolvedEntryCount };
+};
+
 export const returnApprovedPerformanceFileToPending = async (
   input: PerformanceReapprovalFinalizeInput,
   _session: AuthSession,
-  context?: {
-    userDataPath?: string;
-    env?: NodeJS.ProcessEnv;
-  }
-): Promise<BridgeResult<PerformanceFileDetail>> => {
+  context?: { userDataPath?: string; env?: NodeJS.ProcessEnv }
+): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
   const detail = getStoredPerformanceFileDetail(input.fileId);
-
-  if (!detail) {
-    return buildReturnToPendingMissingResult();
-  }
-
-  if (detail.directoryType !== "approved") {
-    return buildReturnToPendingBlockedResult(
-      "승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다."
-    );
-  }
-
-  if (!context?.userDataPath) {
-    return buildReturnToPendingBlockedResult("되돌릴 파일을 옮길 경로를 확인할 수 없습니다.");
-  }
-
-  const fileApprovals = listPerformanceApprovalHistory().filter(
-    (approval) => approval.fileId === detail.id
-  );
-
-  if (fileApprovals.some((approval) => isChangeLockedApproval(approval))) {
-    return buildReturnToPendingBlockedResult(
-      "수당 품의가 승인된 실적은 되돌릴 수 없습니다. 먼저 수당 관리에서 품의 승인을 취소한 뒤 다시 시도하세요."
-    );
-  }
-
-  const restoreResult = await restoreApprovedPerformanceFileToPending({
-    detail,
-    userDataPath: context.userDataPath,
-    env: context.env,
-    allowMissingSource: true
-  });
-  const receivedAt = new Date().toISOString();
-
+  if (!detail) return buildReturnToPendingMissingResult();
+  if (detail.directoryType !== "approved") return buildReturnToPendingBlockedResult("승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다.");
+  if (!context?.userDataPath) return buildReturnToPendingBlockedResult("되돌릴 파일을 옮길 경로를 확인할 수 없습니다.");
   const database = getSqliteDatabase();
-
-  if (!database || !isSqliteStorageReady()) {
-    return {
-      ok: false,
-      errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED",
-      message: "되돌린 상태를 저장할 수 없습니다."
-    };
-  }
-
-  // The row demotion and the approval/allowance cleanup run in one transaction so a crash can never
-  // leave the file in 승인대기 while its own approvals survive — which would deadlock every future
-  // re-approval (PERFORMANCE_ALREADY_APPROVED). The physical workbook was already moved above, so a
-  // crash before COMMIT leaves the row still 'approved' (a recoverable orphan the startup recovery
-  // surfaces), never the deadlock. moveStoredPerformanceFileToPending also clears THIS file's
-  // is_effective bit; we intentionally do not touch sibling rows, so a live copy of the same
-  // 근무지·월 keeps its effective flag.
-  database.exec("BEGIN");
+  if (!database || !isSqliteStorageReady()) return buildReturnToPendingBlockedResult("실적 저장소가 연결되지 않았습니다.");
+  const ownApprovals = () => listPerformanceApprovalHistory().filter(a => a.fileId === detail.id);
+  const fileApprovals = ownApprovals();
+  if (fileApprovals.some(isChangeLockedApproval)) return buildReturnToPendingBlockedResult("수당 품의가 승인된 실적은 되돌릴 수 없습니다. 먼저 수당 관리에서 품의 승인을 취소한 뒤 다시 시도하세요.");
+  const settingsInput = { userDataPath: context.userDataPath, env: context.env };
+  const folders = () => { const s = getStoredAppSettingsSnapshot(settingsInput); return JSON.stringify([s.pendingDir, s.approvedDir]); };
+  const originalFolders = folders(), fileBinding = JSON.stringify(detail), approvalBinding = JSON.stringify(fileApprovals);
+  let movedSource: Awaited<ReturnType<typeof restoreApprovedPerformanceFileToPending>>;
   try {
-    const moved = moveStoredPerformanceFileToPending({
-      fileId: detail.id,
-      pendingFilePath: restoreResult.pendingFilePath,
-      receivedAt,
-      status: "pending"
-    });
-
-    if (!moved) {
-      throw new Error("승인대기로 되돌리는 중 상태 갱신에 실패했습니다.");
-    }
-
-    for (const approval of fileApprovals) {
-      deleteAllowanceCalculationByApprovalId(approval.id);
-      deletePerformanceApprovalRecord(approval.id);
-    }
-
-    database.exec("COMMIT");
+    movedSource = await restoreApprovedPerformanceFileToPending({ detail, ...settingsInput, allowMissingSource: true });
   } catch (error) {
-    database.exec("ROLLBACK");
-
-    return {
-      ok: false,
-      errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED",
-      message: error instanceof Error ? error.message : "승인대기로 되돌리지 못했습니다."
-    };
+    return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message: error instanceof Error ? error.message : "원본 파일을 옮기지 못했습니다." };
   }
-
-  const refreshed = getStoredPerformanceFileDetail(detail.id);
-
-  if (!refreshed) {
-    return {
-      ok: false,
-      errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED",
-      message: "되돌린 후 실적 파일 상태를 다시 불러오지 못했습니다."
-    };
-  }
-
-  return {
-    ok: true,
-    data: refreshed
+  const failAndRestore = async (message: string): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
+    try { await rollbackPerformanceReturnSource({ originalPath: detail.filePath, pendingPath: movedSource.pendingFilePath, sourceFileMissing: movedSource.sourceFileMissing }); }
+    catch (error) { message += ` 원본 파일 위치 복원을 완료하지 못했습니다. 승인완료·승인대기 폴더를 확인해 주세요. (${error instanceof Error ? error.message : "파일 복원 실패"})`; }
+    return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message };
   };
+  if (getSqliteDatabase() !== database || !isSqliteStorageReady()) return failAndRestore("읽는 동안 데이터 연결이 변경되었습니다. 다시 확인해 주세요.");
+  try {
+    const currentApprovals = ownApprovals();
+    if (currentApprovals.some(isChangeLockedApproval)) return failAndRestore("파일을 옮기는 동안 품의가 승인되어 되돌릴 수 없습니다.");
+    if (folders() !== originalFolders || JSON.stringify(getStoredPerformanceFileDetail(detail.id)) !== fileBinding || JSON.stringify(currentApprovals) !== approvalBinding) return failAndRestore("파일을 옮기는 동안 실적·승인 또는 폴더 설정이 변경되었습니다. 다시 확인해 주세요.");
+  } catch (error) {
+    return failAndRestore(error instanceof Error ? error.message : "복귀 전 승인 상태를 확인하지 못했습니다.");
+  }
+  let transactionOpen = false;
+  let wageReapplication: PerformanceReturnToPendingResult["wageReapplication"];
+  try {
+    database.exec("BEGIN"); transactionOpen = true;
+    if (!moveStoredPerformanceFileToPending({ fileId: detail.id, pendingFilePath: movedSource.pendingFilePath, receivedAt: new Date().toISOString(), status: "pending" })) throw new Error("승인대기로 되돌리는 중 상태 갱신에 실패했습니다.");
+    for (const approval of fileApprovals) { deleteAllowanceCalculationByApprovalId(approval.id); deletePerformanceApprovalRecord(approval.id); }
+    const pending = getStoredPerformanceFileDetail(detail.id);
+    if (!pending || pending.directoryType !== "pending") throw new Error("승인대기 상태를 확인할 수 없습니다.");
+    wageReapplication = { ...reapplyReturnedEntryWages(pending), sourceFileMissing: movedSource.sourceFileMissing };
+    database.exec("COMMIT"); transactionOpen = false;
+  } catch (error) {
+    let message = error instanceof Error ? error.message : "승인대기로 되돌리지 못했습니다.";
+    if (transactionOpen) {
+      try { database.exec("ROLLBACK"); }
+      catch (rollbackError) { message += ` 트랜잭션 복원 확인: ${rollbackError instanceof Error ? rollbackError.message : "롤백 실패"}`; }
+    }
+    return failAndRestore(message);
+  }
+  const refreshed = getStoredPerformanceFileDetail(detail.id);
+  if (!refreshed) return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message: "되돌린 후 실적 파일 상태를 다시 불러오지 못했습니다." };
+  return { ok: true, data: { ...refreshed, wageReapplication } };
 };
 
 export const rejectPerformanceFile = async (

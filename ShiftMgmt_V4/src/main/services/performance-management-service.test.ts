@@ -24,6 +24,8 @@ import {
   testAdminSession
 } from "./performance-test-helpers";
 import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { listStoredEmployees } from "./employee-storage-service";
+import { saveStoredEmployeeWageRate } from "./employee-history-service";
 
 const testRootBase = path.resolve(process.cwd(), "artifacts", "tests", "performance-management");
 const allocatedTestRoots: string[] = [];
@@ -39,6 +41,61 @@ const createTestRoot = () => {
 };
 
 describe("performance-management-service", () => {
+  it("W-05: wage-only real XLSX reread preserves historic approvals, displayed rate and calculations", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
+    const first = await syncPreparedReturnedSchedule(fixture);
+    for (const entry of first.entries) expect((await approvePerformanceFile({ fileId: first.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const db = getSqliteDatabase()!;
+    const tables = ["performance_approvals", "allowance_calculations", "allowance_calculation_items"];
+    const snapshot = () => tables.map(table => db.prepare(`SELECT * FROM ${table} ORDER BY id`).all());
+    const before = snapshot();
+    const schema = db.prepare("SELECT type,name,sql FROM sqlite_master ORDER BY type,name").all();
+    const target = first.entries.find(e => e.section === "overtime")!;
+    const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
+    saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 15500, effectiveFrom: "2026-03-01", reason: "W05 시급만 정정" });
+    await restageReturnedScheduleFixture(fixture);
+    const current = await syncPreparedReturnedSchedule(fixture);
+    const reread = current.entries.find(e => e.logicalKey === target.logicalKey)!;
+    expect(reread.hourlyRate).toBe(15500);
+    const overview = await listPerformanceOverview({ approvalScope: "pending", scheduleMonth: "2026-03" }, { pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir });
+    const row = overview.groups.flatMap(g => g.rows).find(r => r.logicalKey === target.logicalKey)!;
+    expect(row.approvalStatus).toBe("approved");
+    expect(row.needsReapproval).toBe(false);
+    expect(row.reapprovalStatus).toBe("none");
+    expect(row.canApprove).toBe(false);
+    expect(row.entry.hourlyRate).toBe(target.hourlyRate);
+    expect(row.entry.startTime).toBe(reread.startTime);
+    expect(row.entry.endTime).toBe(reread.endTime);
+    expect(row.entry.dutyCode).toBe(reread.dutyCode);
+    expect(overview.reapprovalFiles).toHaveLength(0);
+    const comparison = getPerformanceComparison({ fileId: current.id, entryId: reread.id })!;
+    expect(comparison.currentEntry.hourlyRate).toBe(15500);
+    expect(comparison.approvedEntry?.hourlyRate).toBe(target.hourlyRate);
+    expect(comparison.approvedCalculation?.hourlyRate).toBe(target.hourlyRate);
+    expect(snapshot()).toEqual(before);
+    expect(db.prepare("SELECT type,name,sql FROM sqlite_master ORDER BY type,name").all()).toEqual(schema);
+    const duplicate = await approvePerformanceFile({ fileId: current.id, entryId: reread.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(duplicate.ok).toBe(false);
+    expect(duplicate.errorCode).toBe("PERFORMANCE_ALREADY_APPROVED");
+    expect(snapshot()).toEqual(before);
+    const workbook = new ExcelJS.Workbook(); await workbook.xlsx.readFile(fixture.filePath);
+    (workbook.getWorksheet("교대 근무 계획표") ?? workbook.worksheets[0]).getCell("BE34").value = 2;
+    await workbook.xlsx.writeFile(fixture.filePath);
+    const changed = await syncPreparedReturnedSchedule(fixture);
+    const edited = changed.entries.find(e => e.section === "overtime")!;
+    const changedOverview = await listPerformanceOverview({ approvalScope: "pending", scheduleMonth: "2026-03" }, { pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir });
+    expect(changedOverview.groups.flatMap(g => g.rows).find(r => r.entryId === edited.id)?.needsReapproval).toBe(true);
+    const sibling = changedOverview.groups.flatMap(g => g.rows).find(r => r.fileId === changed.id && r.entryId !== edited.id)!;
+    expect(sibling.needsReapproval).toBe(false);
+    expect(sibling.reapprovalStatus).toBe("pending");
+    expect(snapshot()).toEqual(before);
+    expect((await approvePerformanceFile({ fileId: changed.id, entryId: edited.id, manualHourlyRate: 16000, comment: "원본 수정 후 명시 정정" }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    expect(listApprovedAllowanceCalculationResults().some(c => c.entryId === edited.id && c.hourlyRate === 16000)).toBe(true);
+    expect((await approvePerformanceFile({ fileId: changed.id, entryId: sibling.entryId }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    expect((await approvePerformanceFile({ fileId: changed.id, entryId: sibling.entryId }, testAdminSession, { userDataPath: fixture.userDataPath })).errorCode).toBe("PERFORMANCE_ALREADY_APPROVED");
+    for (let i = 0; i < tables.length; i++) for (const old of before[i]) expect(snapshot()[i]).toContainEqual(old);
+  }, 30_000);
+
   afterEach(() => {
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();

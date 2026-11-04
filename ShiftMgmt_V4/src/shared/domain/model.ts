@@ -62,11 +62,35 @@ export interface AuthSession {
   passwordChangeRequired: boolean;
 }
 
+export interface EmployeeEmploymentPeriod {
+  id: string;
+  startDate: string;
+  /** First excluded day; the interval is [startDate, endDate). */
+  endDate?: string;
+  cancelled?: boolean;
+}
+
+export interface ScheduledEmployeeRehire {
+  periodId: string;
+  startDate: string;
+  previousRetireDate: string;
+  hourlyRate?: number;
+  siteId: string;
+  siteName: string;
+  shiftGroup: string;
+  wageCount: number;
+  assignmentCount: number;
+  revisionToken: string;
+  canManage: boolean;
+  blockedReason?: string;
+}
+
 export interface EmployeeRecord extends AuditFields {
   id: string;
   employeeCode: string;
   name: string;
   contact?: string;
+  email?: string;
   rank?: EmployeeRank;
   employmentType: string;
   status: EmploymentStatus;
@@ -81,6 +105,12 @@ export interface EmployeeRecord extends AuditFields {
   currentAssignmentStartDate?: string;
   currentAssignmentEndDate?: string;
   currentHourlyRate?: number;
+  currentHourlyRateEffectiveFrom?: string;
+  currentHourlyRateEffectiveTo?: string;
+  currentHourlyRateAsOfDate?: string;
+  employmentPeriods?: EmployeeEmploymentPeriod[];
+  employmentPhase?: "employed" | "scheduled" | "retired";
+  scheduledRehire?: ScheduledEmployeeRehire;
 }
 
 export interface SiteRecord extends AuditFields {
@@ -112,6 +142,11 @@ export interface EmployeeSiteAssignment {
   endDate?: string;
   status: "active" | "ended";
   createdAt: string;
+  retirementDate?: string;
+  retirementExcluded?: boolean;
+  employmentPeriodId?: string;
+  employmentPeriodStart?: string;
+  employmentPeriodCancelled?: boolean;
 }
 
 export interface ShiftPatternStep {
@@ -189,6 +224,7 @@ export interface ShiftPatternDutyType {
 }
 
 export interface ShiftPatternRecord extends AuditFields {
+  holidayPolicy?: import("./holiday-pattern").HolidayPatternPolicy;
   id: string;
   siteId: string;
   name: string;
@@ -214,6 +250,20 @@ export interface ShiftPatternRecord extends AuditFields {
   poolBreakMinutes?: number;
 }
 
+export interface WageRateHistoryRecord {
+  id: string;
+  actionType: string;
+  hourlyRate: number;
+  effectiveFrom: string;
+  effectiveTo?: string;
+  reason?: string;
+  changeReason: string;
+  actorDisplayName: string;
+  actorLoginId: string;
+  actorRole: string;
+  occurredAt: string;
+}
+
 export interface WageRateRecord {
   id: string;
   employeeId: string;
@@ -224,6 +274,13 @@ export interface WageRateRecord {
   effectiveTo?: string;
   reason?: string;
   createdAt: string;
+  history?: WageRateHistoryRecord[];
+  invalidation?: WageRateHistoryRecord;
+  revisionToken?: string;
+  retirementDate?: string;
+  employmentPeriodId?: string;
+  employmentPeriodStart?: string;
+  employmentPeriodCancelled?: boolean;
 }
 
 export interface AllowanceRateItem {

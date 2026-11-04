@@ -1,0 +1,711 @@
+/* 인력 관리 (Workforce) 전용 스타일 */
+.workforce-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 상단 필터 바 */
+.workforce-filter-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface, #ffffff);
+  padding: 12px 16px;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 6px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.workforce-filter-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.workforce-filter-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.workforce-select,
+.workforce-input {
+  height: 36px;
+  border: 1px solid var(--line-strong, #cbd5e1);
+  border-radius: 4px;
+  padding: 0 10px;
+  font-size: 13px;
+  background: var(--surface, #ffffff);
+  color: var(--text, #1e293b);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.workforce-select:focus-visible,
+.workforce-input:focus-visible {
+  outline: 2px solid var(--accent, #2563eb);
+  outline-offset: 1px;
+}
+
+.workforce-input-search {
+  width: 180px;
+}
+
+.workforce-count-badge {
+  font-size: 13px;
+  color: var(--text-sub, #64748b);
+}
+
+/* 메인 2열 레이아웃: 테이블 영역 + 우측 상세 패널 */
+.workforce-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 16px;
+  align-items: start;
+}
+
+.workforce-content-grid > * { min-width: 0; }
+#workforce-table-wrapper { max-height: none; overflow-x: auto; }
+#workforce-table-wrapper .workforce-table { min-width: 1002px; table-layout: fixed; }
+.workforce-table-viewport { min-height: 0; }
+#workforce-table-wrapper .workforce-table td:not([colspan]), #workforce-table-wrapper .workforce-table th { overflow: hidden; text-overflow: ellipsis; }
+#workforce-table-wrapper .workforce-table th:first-child, #workforce-table-wrapper .workforce-row td:first-child { position: sticky; left: 0; z-index: 2; background: var(--surface); }
+#workforce-table-wrapper .workforce-table th:first-child { z-index: 3; background: #f8fafc; }
+#workforce-table-wrapper .workforce-row.selected td:first-child { background: #dff3ff; }
+.workforce-history-table { table-layout: fixed; }
+.workforce-history-table th, .workforce-history-table td { white-space: normal; overflow-wrap: anywhere; padding: 7px 5px; }
+#e2-wage-history th:nth-child(1) { width: 22%; }
+#e2-wage-history th:nth-child(2) { width: 34%; }
+#e2-wage-history th:nth-child(3) { width: 12%; }
+#e2-wage-history th:nth-child(4) { width: 32%; }
+#e2-wage-history .btn-close-wage { white-space: nowrap; padding: 5px 7px; font-size: 11px; }
+#e2-wage-history td:first-child { white-space: nowrap; }
+#e4-assignment-history th:nth-child(1) { width: 26%; }
+#e4-assignment-history th:nth-child(2) { width: 15%; }
+#e4-assignment-history th:nth-child(3) { width: 43%; }
+#e4-assignment-history th:nth-child(4) { width: 16%; }
+#e4-assignment-history td:nth-child(3) { overflow-wrap: normal; }
+#workforce-table-wrapper thead { position: sticky; top: 0; z-index: 1; }
+#workforce-detail-area { position: sticky; top: 0; max-height: calc(100dvh - 300px); overflow: auto; }
+.workforce-action-guide { padding: 14px; border: 1px solid var(--line, #e2e8f0); border-radius: 6px; background: #f8fafc; font-size: 13px; line-height: 1.65; }
+.workforce-action-guide p { margin: 6px 0 14px; }
+.workforce-action-guide p:last-child { margin-bottom: 0; }
+
+@media (max-width: 1100px) {
+  .workforce-content-grid {
+    grid-template-columns: 1fr;
+  }
+  #workforce-table-wrapper { max-height: none; }
+  #workforce-detail-area { position: static; max-height: none; }
+}
+
+/* 테이블 카드 */
+.workforce-table-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.workforce-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.workforce-table th {
+  background: #f8fafc;
+  color: var(--text-sub, #475569);
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+}
+
+.workforce-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line, #f1f5f9);
+  color: var(--text, #1e293b);
+}
+
+.workforce-table tbody tr {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.workforce-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.workforce-table tbody tr.selected {
+  background-color: #e0f2fe;
+}
+
+.workforce-table tbody tr:focus-visible {
+  outline: 2px solid var(--accent, #2563eb);
+  outline-offset: -2px;
+}
+
+/* 근무지 접기 헤더 행 */
+.workforce-group-row td {
+  background: #f1f5f9;
+  font-weight: 700;
+  color: var(--text, #1e293b);
+  cursor: pointer;
+}
+
+.workforce-group-toggle-icon {
+  vertical-align: middle;
+  font-size: 18px;
+  margin-right: 4px;
+}
+
+/* 상태 배지 */
+.workforce-status-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.workforce-status-active {
+  color: #1e7a46;
+  background: #e6f4ea;
+}
+
+.workforce-status-leave {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.workforce-status-retired {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
+/* 우측 상세 패널 */
+.workforce-detail-panel {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 6px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.workforce-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  padding-bottom: 12px;
+}
+
+.workforce-detail-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text, #0f172a);
+}
+
+.workforce-detail-sub {
+  font-size: 12px;
+  color: var(--text-sub, #64748b);
+  margin-top: 4px;
+}
+
+.workforce-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.workforce-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.workforce-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #1e293b);
+}
+
+.workforce-rate-box {
+  background: #f8fafc;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 4px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.workforce-scheduled-rate-text {
+  font-size: 12px;
+  color: var(--accent, #2563eb);
+  font-weight: 600;
+}
+
+.workforce-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.workforce-history-table th {
+  background: #f8fafc;
+  color: var(--text-sub, #64748b);
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  font-weight: 600;
+  text-align: left;
+}
+
+.workforce-history-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line, #f1f5f9);
+  color: var(--text, #1e293b);
+}
+
+.workforce-detail-actions {
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid var(--line, #e2e8f0);
+  padding-top: 12px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+/* 모달 오버레이 및 대화상자 */
+.workforce-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+}
+
+.workforce-modal-box {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.workforce-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+}
+
+.workforce-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text, #0f172a);
+}
+
+.workforce-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.workforce-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line, #e2e8f0);
+  background: #f8fafc;
+}
+
+/* 폼 컨트롤 */
+.workforce-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.workforce-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #334155);
+}
+
+.workforce-form-label-required::after {
+  content: " *";
+  color: #dc2626;
+}
+
+.workforce-form-hint {
+  font-size: 12px;
+  color: var(--text-sub, #64748b);
+}
+
+.workforce-form-error {
+  font-size: 12px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* 경고 배너 */
+.workforce-warning-banner {
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #92400e;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.workforce-info-banner {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #1e40af;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+/* 버튼 컴포넌트 */
+.workforce-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.workforce-btn-sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.workforce-btn-primary {
+  background: var(--accent, #2563eb);
+  color: #ffffff;
+  border-color: var(--accent, #2563eb);
+}
+
+.workforce-btn-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.workforce-btn-secondary {
+  background: #ffffff;
+  color: var(--text, #334155);
+  border-color: var(--line-strong, #cbd5e1);
+}
+
+.workforce-btn-secondary:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.workforce-btn-danger {
+  background: #ffffff;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.workforce-btn-danger:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.workforce-btn-ghost {
+  background: transparent;
+  color: var(--text-sub, #64748b);
+  border-color: transparent;
+  padding: 4px;
+  height: auto;
+}
+
+.workforce-btn-ghost:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: var(--text, #0f172a);
+}
+
+.workforce-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 엑셀 일괄 미리보기 테이블 */
+.workforce-preview-table-container {
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 4px;
+}
+
+.workforce-row-status-ready {
+  color: #1e7a46;
+  font-weight: 600;
+}
+
+.workforce-row-status-skip {
+  color: #d97706;
+}
+
+.workforce-row-status-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* 빈 상태 / 로딩 상태 안내 카드 */
+.workforce-empty-card,
+.workforce-loading-card,
+.workforce-error-card {
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 6px;
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.workforce-icon-large {
+  font-size: 36px;
+  color: var(--text-sub, #94a3b8);
+}
+
+/* CSP 안전 유틸리티 클래스 (인라인 style 대체) */
+.wf-hidden { display: none !important; }
+.wf-flex-col { display: flex; flex-direction: column; }
+.wf-gap-6 { gap: 6px; }
+.wf-gap-8 { gap: 8px; }
+.wf-gap-12 { gap: 12px; }
+.wf-gap-14 { gap: 14px; }
+.workforce-reorder-list { max-height: 300px; overflow-y: auto; }
+.wf-flex-row { display: flex; gap: 8px; align-items: center; }
+.wf-flex-between { display: flex; justify-content: space-between; align-items: center; }
+.wf-flex-gap-4 { display: flex; gap: 4px; }
+.wf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.wf-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; }
+.wf-icon-16 { font-size: 16px; }
+.wf-icon-18 { font-size: 18px; }
+.wf-icon-20 { font-size: 20px; }
+.wf-icon-success { font-size: 20px; color: #1e7a46; }
+.wf-icon-warn { font-size: 20px; color: #92400e; }
+.wf-icon-danger { color: #dc2626; }
+.wf-text-muted { color: var(--text-sub, #64748b); }
+.wf-text-danger { color: #dc2626; }
+.wf-text-warning { color: #b45309; }
+.wf-text-sm { font-size: 12px; color: var(--text-sub, #64748b); }
+.wf-text-xs { font-size: 11px; }
+.wf-text-md { font-size: 13px; }
+.wf-text-lg { font-size: 14px; font-weight: 600; }
+.wf-text-xl { font-size: 16px; font-weight: 700; color: #2563eb; }
+.wf-text-center { text-align: center; }
+.wf-preview-summary { font-size: 13px; font-weight: 600; color: var(--text-sub, #64748b); }
+.wf-uppercase { text-transform: uppercase; }
+.wf-flex-1 { flex: 1; }
+.wf-disabled-input { background: #f1f5f9; cursor: not-allowed; }
+.wf-mt-4 { margin-top: 4px; }
+.wf-mt-10 { margin-top: 10px; }
+.wf-p-10 { padding: 10px; }
+.wf-p-20 { padding: 20px; }
+.wf-badge-idx { font-weight: 700; color: var(--text-sub, #64748b); width: 20px; }
+.wf-code-bracket { font-size: 13px; font-weight: normal; color: var(--text-sub, #64748b); margin-left: 4px; }
+.wf-bg-highlight { border-color: var(--accent, #2563eb) !important; background-color: #eff6ff !important; }
+.workforce-rate-current { font-weight: 600; color: var(--text, #1e293b); }
+.workforce-rate-scheduled { color: var(--accent, #2563eb); font-weight: 600; }
+.workforce-rate-past { color: var(--text-sub, #64748b); }
+.wf-min-h-400 { min-height: 400px; }
+.wf-center { display: flex; justify-content: center; align-items: center; }
+
+/* 인력 현황과 검색·페이지 이동을 한 화면에서 처리하는 조밀한 배치 */
+body:has(#workforce-root) .page-content { padding: 16px; }
+.workforce-container { gap: 12px; }
+.workforce-kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.workforce-kpi { padding: 10px 12px; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.workforce-kpi span { color: var(--text-sub); font-size: 12px; }
+.workforce-kpi strong { font-size: 19px; color: var(--text); white-space: nowrap; }
+.workforce-filter-card { padding: 10px; gap: 8px; }
+.workforce-filter-left { gap: 6px; flex: 1; }
+.workforce-filter-card .workforce-select, .workforce-filter-card .workforce-input { height: 32px; font-size: 12px; }
+.workforce-filter-right { gap: 8px; }
+.workforce-filter-card .workforce-btn { min-height: 32px; padding: 6px 10px; }
+.workforce-table { font-size: 12px; }
+.workforce-table th, .workforce-table td { padding: 4px 8px; line-height: 18px; }
+.workforce-table .workforce-status-badge { padding: 1px 6px; line-height: 16px; font-size: 11px; }
+.workforce-detail-panel { padding: 12px; gap: 10px; }
+.workforce-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 9px 10px; border-top: 1px solid var(--line); background: var(--surface); font-size: 12px; }
+.workforce-pagination [role="status"] { margin-right: auto; white-space: nowrap; }
+@media (max-width: 1100px) { .workforce-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+@media (min-width: 1101px) {
+  body:has(#workforce-root) .page-content { min-height: 0; overflow: hidden; padding-bottom: 8px; }
+  .workforce-container { flex: 1; min-height: 0; }
+  .workforce-content-grid { flex: 1; min-height: 0; align-items: stretch; }
+  #workforce-table-area { display: flex; min-height: 0; }
+  #workforce-table-wrapper { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; overflow: hidden; }
+  .workforce-table-viewport { flex: 1; min-height: 0; overflow-x: auto; overflow-y: hidden; }
+  .workforce-pagination { flex-shrink: 0; padding-top: 5px; padding-bottom: 5px; }
+  #workforce-detail-area { position: static; height: 100%; min-height: 0; max-height: none; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); overflow: auto; }
+  #workforce-detail-area .workforce-detail-panel { min-height: 100%; border: 0; box-shadow: none; }
+}
+
+
+/* W09 retirement guidance: dates, outcomes and next steps. */
+.wf-retirement-guide,
+.wf-retirement-result {
+  --wf-retirement-accent: #353f90;
+  --wf-retirement-line: #e2e7f0;
+  color: #26334a;
+  font-size: 13px;
+  line-height: 1.6;
+}
+#modal-retirement-result .workforce-modal-box {
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 40px);
+  border: 1px solid rgba(226, 232, 240, .8);
+  border-radius: 16px;
+  box-shadow: 0 28px 84px rgba(15, 23, 42, .24);
+}
+.workforce-modal-box:has(.wf-retirement-guide) { max-width: calc(100vw - 32px); }
+#modal-retirement-result .workforce-modal-header { padding: 19px 24px; }
+#modal-retirement-result .workforce-modal-title { font-size: 17px; letter-spacing: -.3px; }
+#modal-retirement-result .workforce-modal-body { padding: 20px 24px; }
+#modal-retirement-result .workforce-modal-footer { padding: 14px 24px; background: #fafbfe; }
+#modal-retirement-result #btn-close-retirement-result { min-width: 90px; }
+.wf-retirement-result { display: flex; flex-direction: column; gap: 16px; }
+.wf-retirement-icon { flex: 0 0 auto; font-size: 20px; line-height: 1; }
+.wf-retirement-copy { color: #536178; font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
+.wf-retirement-copy--danger { color: #a83d32; }
+.wf-retirement-heading { display: flex; align-items: center; gap: 7px; color: #27354b; font-size: 13px; font-weight: 700; }
+.wf-retirement-section { display: flex; flex-direction: column; gap: 10px; }
+.wf-retirement-intro { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.wf-retirement-intro > .wf-retirement-icon { color: #23805a; }
+.wf-retirement-status-tag { padding: 3px 9px; border-radius: 20px; background: #e9f6ef; color: #1b6b49; font-size: 11px; font-weight: 700; }
+.wf-retirement-intro > .wf-retirement-copy { font-size: 12px; }
+.wf-retirement-dates { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid #dce2f1; border-radius: 12px; background: #f8fafd; }
+.wf-retirement-date { min-width: 0; padding: 15px 18px; display: flex; flex-direction: column; gap: 4px; }
+.wf-retirement-date + .wf-retirement-date { border-left: 1px solid #dce2f1; }
+.wf-retirement-date--primary { background: #eef1fc; }
+.wf-retirement-date-label { color: #63708b; font-size: 12px; font-weight: 600; }
+.wf-retirement-date-value { color: #27354b; font-size: 28px; font-weight: 750; font-variant-numeric: tabular-nums; letter-spacing: -.9px; line-height: 1.35; }
+.wf-retirement-date--primary .wf-retirement-date-label,
+.wf-retirement-date--primary .wf-retirement-date-value { color: var(--wf-retirement-accent); }
+.wf-retirement-caption { margin-top: -9px; color: #68768a; font-size: 12px; }
+.wf-retirement-correction { padding: 7px 11px; border-radius: 7px; background: #f1f3fb; color: #4a5689; font-size: 12px; }
+.wf-retirement-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.wf-retirement-metric { min-width: 0; padding: 12px; border: 1px solid var(--wf-retirement-line); border-radius: 10px; background: #fff; }
+.wf-retirement-metric-label { min-height: 34px; color: #67748a; font-size: 11px; line-height: 1.5; }
+.wf-retirement-metric-value { display: flex; align-items: baseline; gap: 5px; color: #2e3b67; font-size: 27px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.wf-retirement-metric-value > span { color: #68768a; font-size: 12px; font-weight: 500; }
+.wf-retirement-metric--empty { background: #fafbfd; }
+.wf-retirement-metric--empty .wf-retirement-metric-value { color: #738097; }
+.wf-retirement-callout { gap: 6px; padding: 12px 14px; border: 1px solid #dfe7ed; border-radius: 10px; }
+.wf-retirement-callout .wf-retirement-heading { font-size: 13px; }
+.wf-retirement-callout--neutral { background: #f8fafc; border-color: #e5eaf0; }
+.wf-retirement-callout--neutral .wf-retirement-heading { color: #4b645c; }
+.wf-retirement-callout--neutral .wf-retirement-copy { font-size: 12px; }
+.wf-retirement-callout--success { background: #f0faf5; border-color: #cfe8dc; }
+.wf-retirement-callout--success .wf-retirement-heading { color: #206849; }
+.wf-retirement-callout--info { background: #f4f7fb; border-color: #dfe6f0; }
+.wf-retirement-callout--info .wf-retirement-heading { color: #405778; }
+.wf-retirement-callout--warning { background: #fff8eb; border-color: #efdcb3; }
+.wf-retirement-callout--warning .wf-retirement-heading { color: #8f5c14; }
+.wf-retirement-callout--warning .wf-retirement-copy { color: #79572b; }
+.wf-retirement-next { padding: 12px 14px; border-left: 3px solid var(--wf-retirement-accent); border-radius: 0 9px 9px 0; background: #f4f6fd; gap: 5px; }
+.wf-retirement-next .wf-retirement-heading { color: #353f90; }
+.wf-retirement-details { border: 1px solid var(--wf-retirement-line); border-radius: 10px; overflow: hidden; }
+.wf-retirement-summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 13px; list-style: none; cursor: pointer; color: #516078; font-size: 12px; font-weight: 600; }
+.wf-retirement-summary::-webkit-details-marker { display: none; }
+.wf-retirement-summary > .wf-retirement-icon { color: #7d8aa1; transition: transform 150ms ease-out; }
+.wf-retirement-summary:hover { background: #f7f9fc; }
+.wf-retirement-summary:focus-visible { outline: 2px solid var(--wf-retirement-accent); outline-offset: -3px; border-radius: 8px; }
+.wf-retirement-details[open] > .wf-retirement-summary { background: #f7f9fc; }
+.wf-retirement-details[open] > .wf-retirement-summary > .wf-retirement-icon { transform: rotate(180deg); }
+.wf-retirement-detail-body { display: flex; flex-direction: column; gap: 10px; padding: 13px; border-top: 1px solid var(--wf-retirement-line); }
+.wf-retirement-guide { padding: 13px; border: 1px solid #dbe1f4; border-left: 3px solid #6472c9; border-radius: 11px; background: #f5f7fe; }
+.wf-retirement-guide-content { display: flex; flex-direction: column; gap: 11px; }
+.wf-retirement-guide-heading { display: flex; align-items: center; gap: 7px; color: #394574; font-size: 13px; font-weight: 700; }
+.wf-retirement-guide-heading .wf-retirement-icon { color: #6472bd; }
+.wf-retirement-dates--compact { background: #fff; }
+.wf-retirement-dates--compact .wf-retirement-date { padding: 9px 11px; gap: 3px; }
+.wf-retirement-dates--compact .wf-retirement-date-label { font-size: 11px; }
+.wf-retirement-dates--compact .wf-retirement-date-value { font-size: 20px; letter-spacing: -.5px; }
+.wf-retirement-guide-preserved { display: flex; align-items: center; gap: 6px; color: #34694e; font-size: 12px; }
+.wf-retirement-guide-preserved .wf-retirement-icon { font-size: 17px; }
+.wf-retirement-guide-meta { color: #58658d; font-size: 12px; }
+.wf-retirement-guide .wf-retirement-details { border-color: #dbe1f4; background: #fff; }
+.wf-retirement-guide .wf-retirement-detail-body { padding: 11px; }
+.wf-retirement-guide .wf-retirement-copy { font-size: 12px; }
+@media (max-width: 640px) {
+  #modal-retirement-result .workforce-modal-header,
+  #modal-retirement-result .workforce-modal-footer { padding: 15px 16px; }
+  #modal-retirement-result .workforce-modal-body { padding: 16px; }
+  .wf-retirement-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .wf-retirement-metric-label { min-height: 0; margin-bottom: 6px; }
+  .wf-retirement-date { padding: 12px; }
+  .wf-retirement-date-value { font-size: 22px; }
+}
+@media (max-width: 440px) {
+  .wf-retirement-result > .wf-retirement-dates { grid-template-columns: 1fr; }
+  .wf-retirement-result > .wf-retirement-dates .wf-retirement-date + .wf-retirement-date { border-left: 0; border-top: 1px solid #dce2f1; }
+  .wf-retirement-dates--compact .wf-retirement-date-value { font-size: 17px; }
+  .wf-retirement-intro > .wf-retirement-copy { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wf-retirement-summary > .wf-retirement-icon { transition: none; }
+}
+.wf-rehire{display:grid;gap:16px;color:var(--text-primary,#203044);line-height:1.65}
+.wf-rehire p,.wf-rehire h3{margin:0}.wf-rehire h3{font-size:15px;font-weight:750;letter-spacing:-.02em}
+.wf-rehire-steps{font-size:12px;font-weight:700;letter-spacing:.04em;color:#285e99;background:#eef5ff;border-radius:9px;padding:10px 14px}
+.wf-rehire .wf-rehire-identity{font-size:22px;letter-spacing:-.04em}
+.wf-rehire-dates{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wf-rehire-dates>div{display:flex;flex-direction:column;gap:4px;background:#f5f7fb;border:1px solid #e2e8f0;border-radius:12px;padding:15px 18px}.wf-rehire-dates span{font-size:12px;color:#586a7d}.wf-rehire-dates strong{font-size:21px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}.wf-rehire-dates>div:last-child{background:#eef5ff;border-color:#cbdff6}.wf-rehire-dates>div:last-child strong{color:#235c99}
+.wf-rehire-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.wf-rehire-fields label,.wf-rehire-reason{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:650}.wf-rehire-fields input,.wf-rehire-fields select,.wf-rehire-reason textarea{width:100%;min-width:0;box-sizing:border-box;font-weight:400}.wf-rehire-fields input:focus-visible,.wf-rehire-fields select:focus-visible,.wf-rehire-reason textarea:focus-visible{outline:2px solid #3778bb;outline-offset:2px}
+.wf-rehire-card{border:1px solid #dce5ef;border-radius:12px;padding:16px 18px;background:#fafcfe;display:grid;gap:5px}.wf-rehire-card p{font-size:13px;color:#485b70}.wf-rehire-preserve{background:#f0f7f5;border-color:#d3e9e1}.wf-rehire-preserve h3{color:#246452}.wf-rehire-warning{background:#fffbef;border-color:#ead9a7}.wf-rehire-warning h3{color:#805c16}.wf-rehire-next{background:#edf4ff;border-color:#cfdef3}.wf-rehire-next h3{color:#245993}
+.wf-rehire-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wf-rehire-stats>div{border:1px solid #dce5ef;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px}.wf-rehire-stats strong{font-size:24px;color:#286549}.wf-rehire-stats span{font-size:13px;color:#526477}
+.wf-rehire-detail{margin:16px 0;padding:16px;border:1px solid #cdddf1;background:#f5f9ff;border-radius:12px}.wf-rehire-detail h3{margin:0 0 7px;font-size:15px}.wf-rehire-detail p{font-size:13px;line-height:1.65;margin:7px 0}.wf-rehire-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.wf-rehire details,.wf-rehire-detail details{border-top:1px solid #dbe4ef;padding-top:12px;font-size:13px}.wf-rehire summary,.wf-rehire-detail summary{cursor:pointer;font-weight:650}.workforce-status-scheduled{background:#eaf1ff;color:#3c5991}
+@media(max-width:600px){.wf-rehire-dates,.wf-rehire-fields{grid-template-columns:1fr}.wf-rehire-dates strong{font-size:19px}}

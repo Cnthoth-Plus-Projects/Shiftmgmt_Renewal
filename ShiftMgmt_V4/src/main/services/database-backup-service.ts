@@ -10,6 +10,7 @@ import type {
 } from "../../shared/bridge/contracts";
 import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
 import { getSqliteDatabase } from "./sqlite-storage-service";
+import { initializePolicyHistory, isPolicyHistoryInitialized } from "./policy-history-service";
 
 interface BackupRuntimeState {
   interval: NodeJS.Timeout | null;
@@ -65,6 +66,10 @@ const listBackupTableSnapshots = (): BackupTableSnapshot[] => {
     throw new Error("데이터베이스가 초기화되지 않았습니다.");
   }
 
+  if (!isPolicyHistoryInitialized(database)) {
+    initializePolicyHistory(database);
+  }
+
   return listUserTableNames().map(({ name }) => {
     const columns = (
       database.prepare(`PRAGMA table_info(${quoteSqlIdentifier(name)})`).all() as Array<{
@@ -97,7 +102,7 @@ const buildJsonBackupSnapshot = (input: {
   );
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     createdAt: input.createdAt,
     tables
   };
@@ -213,7 +218,7 @@ export const runDatabaseBackupNow = async (input: {
       createdAt,
       jsonBackupPath: finalJsonPath,
       backupSha256,
-      schemaVersion: "1",
+      schemaVersion: "2",
       tableCount,
       rowCount: totalRowCount,
       warningMessages: []

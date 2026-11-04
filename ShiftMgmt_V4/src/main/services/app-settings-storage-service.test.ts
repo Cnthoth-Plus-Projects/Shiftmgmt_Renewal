@@ -9,7 +9,8 @@ import {
   saveStoredAppSettingEntry,
   saveStoredAppSettings
 } from "./app-settings-storage-service";
-import { initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { initializeSqliteStorage, resetSqliteStorageForTest, getSqliteDatabase } from "./sqlite-storage-service";
+import { initializePolicyHistory } from "./policy-history-service";
 
 const testRoot = path.resolve(process.cwd(), "artifacts", "tests", "app-settings-storage");
 const dbPath = path.resolve(testRoot, "app-settings-storage.test.sqlite");
@@ -183,5 +184,64 @@ describe("app-settings-storage-service", () => {
 
     saveStoredAppSettingEntry("changed_slot_priority_effective_from", "2026-09-01");
     expect(consumeSubstituteAllowancePolicyReparseMarker()).toBe(true);
+  });
+
+  it("blocks date modifications with POLICY_MANAGED_SETTINGS after policy bootstrap", () => {
+    initializeSqliteStorage({ dbPath });
+    // bootstrap 전에 raw 설정 저장
+    saveStoredAppSettingEntry("substitute_allowance_policy_effective_from", "2026-07-01");
+    const database = getSqliteDatabase()!;
+    initializePolicyHistory(database, { legacySubstituteDate: "2026-07-01" });
+
+    // 1. 저수준 saveStoredAppSettingEntry 방어 (다른 날짜로 변경 시도)
+    expect(() =>
+      saveStoredAppSettingEntry("substitute_allowance_policy_effective_from", "2026-08-01")
+    ).toThrowError(/정책 적용 시작일은 정책 관리 메뉴에서 변경해야 합니다/);
+
+    // 동일한 값 저장은 허용 (no-op)
+    expect(() =>
+      saveStoredAppSettingEntry("substitute_allowance_policy_effective_from", "2026-07-01")
+    ).not.toThrow();
+
+    // 2. saveStoredAppSettings 방어
+    const context = { userDataPath, env: { DATA_DIR: "./data-root" } };
+    const current = getStoredAppSettingsSnapshot(context);
+    const baseInput = {
+      holidayApiBaseUrl: "https://example.com/holidays",
+      pendingDir: "./runtime/pending",
+      approvedDir: "./runtime/approved",
+      scheduleExportDir: "./runtime/schedule-exports",
+      allowanceProposalExportDir: "./runtime/allowance/proposal",
+      allowanceAttachment1ExportDir: "./runtime/allowance/attachment1",
+      allowanceAttachment2ExportDir: "./runtime/allowance/attachment2",
+      databaseBackupDir: "./runtime/backups",
+      databaseBackupSchedule: "daily" as const,
+      databaseBackupTime: "02:00",
+      migrationFilePath: "",
+      scheduleConsecutiveNightLimit: 3,
+      scheduleMinimumRestMinutes: 660,
+      scheduleRequireWeeklyHoliday: true,
+      scheduleWeeklyMaxMinutes: 3120,
+    };
+
+    // 동일한 값(호환 payload)으로 저장 시도시 성공
+    expect(() =>
+      saveStoredAppSettings(
+        {
+          ...baseInput,
+          substituteAllowancePolicyEffectiveFrom: current.substituteAllowancePolicyEffectiveFrom,
+          changedSlotPriorityEffectiveFrom: current.changedSlotPriorityEffectiveFrom,
+        },
+        context
+      )
+    ).not.toThrow();
+
+    // 다른 값으로 변경 시도시 실패
+    expect(() =>
+      saveStoredAppSettings(
+        { ...baseInput, substituteAllowancePolicyEffectiveFrom: "2026-08-01" },
+        context
+      )
+    ).toThrowError(/정책 적용 시작일은 정책 관리 메뉴에서 변경해야 합니다/);
   });
 });

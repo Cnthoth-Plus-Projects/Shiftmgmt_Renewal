@@ -1,4 +1,5 @@
 import type { TeamWorkType } from "./team-work-type";
+import type { SubstituteEligibilityRuleKey } from "./policy-history";
 
 // 대체근무수당 지급 여부 판정. 조 이름이 아니라 조의 근무유형(POOL/FIXED_DAY/ROTATING)으로만 판단한다.
 // Pool 제외는 기존 규칙 그대로이고, 주간고정조 제외는 적용 시작일 이후 발생분에만 적용한다(forward-only).
@@ -105,22 +106,36 @@ export interface SubstituteAllowanceDecision extends SubstituteAllowanceEligibil
   reasonLabel: string;
 }
 
-// 실제 판정 진입점. Pool 제외는 날짜와 무관하게 기존대로 적용되고,
-// 이번에 새로 생긴 제외 사유(주간고정조 등)는 적용 시작일 이후 근무일에만 적용된다
-// (그 전 근무일은 기존 지급 규칙을 그대로 유지 → 과거 지급분이 바뀌지 않는다).
+// 실제 판정 진입점.
+// ruleKey가 명시된 경우 ruleKey(substitute-legacy vs substitute-team-type-v1)에 따라 정확히 분기.
+// ruleKey가 없는 경우 기존 policyEffectiveFrom 하위 호환 로직을 유지.
 export const resolveSubstituteAllowanceDecision = (
   input: SubstituteAllowanceEligibilityInput & {
     workDate: string;
     policyEffectiveFrom?: string;
+    ruleKey?: SubstituteEligibilityRuleKey;
   }
 ): SubstituteAllowanceDecision => {
   const baseDecision = determineSubstituteAllowanceEligibility(input);
-  const shouldDowngrade =
-    NEW_POLICY_REASON_CODES.has(baseDecision.reasonCode) &&
-    !isNewPolicyApplicable({
-      workDate: input.workDate,
-      policyEffectiveFrom: input.policyEffectiveFrom
-    });
+
+  let shouldDowngrade: boolean;
+  if (input.ruleKey !== undefined) {
+    if (input.ruleKey === "substitute-legacy") {
+      shouldDowngrade = NEW_POLICY_REASON_CODES.has(baseDecision.reasonCode);
+    } else if (input.ruleKey === "substitute-team-type-v1") {
+      shouldDowngrade = false;
+    } else {
+      throw new Error(`지원하지 않는 대체근무수당 정책 키입니다: ${String(input.ruleKey)}`);
+    }
+  } else {
+    shouldDowngrade =
+      NEW_POLICY_REASON_CODES.has(baseDecision.reasonCode) &&
+      !isNewPolicyApplicable({
+        workDate: input.workDate,
+        policyEffectiveFrom: input.policyEffectiveFrom
+      });
+  }
+
   const decision: SubstituteAllowanceEligibility = shouldDowngrade
     ? { eligible: true, reasonCode: "ROTATING_SUBSTITUTE_ELIGIBLE" }
     : baseDecision;
