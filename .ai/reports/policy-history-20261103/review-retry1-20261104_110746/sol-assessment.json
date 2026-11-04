@@ -1,0 +1,257 @@
+{
+  "taskId": "POLICY-HISTORY-01",
+  "status": "TECHNICALLY_ACCEPTED_AFTER_SOL_TAKEOVER",
+  "at": "2026-11-04T12:09:56.163625+09:00",
+  "implementationOwner": "Sol",
+  "gemini": {
+    "initial": 1,
+    "retry": 1,
+    "total": 2,
+    "additionalSubmissionRequested": false
+  },
+  "userApprovedFinalUI": false,
+  "preparation": "Original IMPLEMENT/preflight and closed55-file scope retained. Initial and retry receipts remain archived unchanged.",
+  "productImplementation": "Sol directly corrected 22 files relative to retry candidate; no extra file added.",
+  "formalAcceptance": "Sol independently checked actual source, 201 affected tests, full1454 tests, actual UI20/N12, performance18/exact known2, JSON40-to42 and fresh hashes.",
+  "source": {
+    "count": 510,
+    "allowlistCount": 55,
+    "protectedCount": 455,
+    "outsideAllowed": [],
+    "protectedChanged": [],
+    "taskChangedSinceBaseline": 48,
+    "solChangedSinceRetry": [
+      "scripts/ui-checks/operations.mjs",
+      "src/main/http/routes/operations-routes.test.ts",
+      "src/main/http/routes/operations-routes.ts",
+      "src/main/services/database-migration-service.test.ts",
+      "src/main/services/database-migration-service.ts",
+      "src/main/services/performance-approval-flow-service.ts",
+      "src/main/services/performance-approval-snapshot-service.ts",
+      "src/main/services/performance-file-intake-service.ts",
+      "src/main/services/performance-file-storage-service.ts",
+      "src/main/services/policy-history-impact-service.test.ts",
+      "src/main/services/policy-history-impact-service.ts",
+      "src/main/services/policy-history-integration.test.ts",
+      "src/main/services/policy-history-service.ts",
+      "src/main/services/schedule-return-performance-parser.ts",
+      "src/main/services/sqlite-storage-service.ts",
+      "src/shared/bridge/contracts.ts",
+      "src/shared/domain/policy-history.ts",
+      "src/web/policy-history.css",
+      "src/web/screens/operations-policy-dialog.ts",
+      "src/web/screens/operations-policy-history.ts",
+      "src/web/screens/operations-settings-view.ts",
+      "src/web/screens/operations-settings.ts"
+    ],
+    "frozen": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-frozen-source.json",
+      "bytes": 81761,
+      "sha256": "1CF3C003E39FCC38FF5C1C4D472DC9032A4F3F372B33F8894D4E451BDB2DE310"
+    },
+    "final": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-final-source.json",
+      "bytes": 81762,
+      "sha256": "2242E38900E040BB48500E84E022B2D98B4E133EC305B2356D5BAB318DD3838C"
+    },
+    "HEAD": "1e4450e085f8a90606dcf37bc2e8073d60dcf9e7",
+    "noCommitOrDeployment": true
+  },
+  "checks": {
+    "typecheck": {
+      "execution": "FRESH_EXECUTION_FINAL",
+      "exitCode": 0
+    },
+    "lint": {
+      "execution": "FRESH_EXECUTION_FINAL",
+      "exitCode": 0,
+      "errors": 0,
+      "existingWarnings": 3,
+      "newWarnings": 0
+    },
+    "map": {
+      "execution": "FRESH_EXECUTION_FINAL",
+      "exitCode": 0,
+      "paths": 239
+    },
+    "build": {
+      "execution": "FRESH_EXECUTION_FINAL",
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "exitCode": 0
+    },
+    "affected": {
+      "exitCode": 0,
+      "passed": 201
+    },
+    "unit": {
+      "execution": "FRESH_EXECUTION_BEFORE_FINAL_DISPLAY_ONLY_CHANGE",
+      "exitCode": 0,
+      "passed": 1454,
+      "files": 155,
+      "failed": 0,
+      "skipped": 0,
+      "elapsedSeconds": 396.68,
+      "baseline1425Preserved": true,
+      "renamedForApprovedContractCounts": 13,
+      "netAddedTests": 29
+    },
+    "operations": {
+      "execution": "FRESH_EXECUTION_FINAL",
+      "exitCode": 0,
+      "passed": 20,
+      "negativePassed": 12,
+      "unexpectedErrors": 0,
+      "servedAssets": [
+        {
+          "name": "app.js",
+          "bytes": 1604093,
+          "sha256": "7170d6b1421c9224b39a57f8cb35d3dd014deefbe125522a3203fba5b99f299d"
+        },
+        {
+          "name": "operations.css",
+          "bytes": 30691,
+          "sha256": "bdcc42586fb3cbfa9dae9c02ca279ae69d1b3631ee0ca87519943bffc865efd4"
+        },
+        {
+          "name": "policy-history.css",
+          "bytes": 10678,
+          "sha256": "0397a7054f0ea4920f19ac4c1dfd4ac20858428a5c65f25b7ab4800137e2918f"
+        }
+      ]
+    },
+    "performance": {
+      "execution": "FRESH_EXECUTION_BEFORE_FINAL_DISPLAY_ONLY_CHANGE",
+      "nativeExitCode": 2,
+      "passed": 18,
+      "knownBlocked": [
+        "S13",
+        "S16"
+      ],
+      "failed": 0,
+      "negativePassed": 12,
+      "unexpectedErrors": 0
+    },
+    "legacyJson": {
+      "execution": "FRESH_EXECUTION",
+      "exitCode": 0,
+      "input": {
+        "path": "C:\\Users\\pangyo\\AppData\\Roaming\\shiftmgmt-v3-4\\data\\backups\\json\\shiftmgmt-backup-20260917-194251.json",
+        "bytes": 3217906,
+        "sha256": "EFEC1F0EF364E6CA4D88DBBCF8D52E88FFDC2EAC452E258CA7D09B4BDDE28DB9"
+      },
+      "sourceTables": 40,
+      "sourceRows": 3599,
+      "targetTables": 42,
+      "businessCanonicalTablesEqual": 39,
+      "approvedCount": 64,
+      "approvedAmount": 13611839,
+      "quickCheck": "ok",
+      "integrityCheck": "ok"
+    },
+    "native": {
+      "url": "http://127.0.0.1:19114/",
+      "cdpPort": 19115,
+      "exampleDataOnly": true,
+      "denseRowHeightsPx": [
+        52.5,
+        52,
+        52,
+        52
+      ],
+      "viewedBySol": true
+    }
+  },
+  "finalDisplayEvidenceReuse": {
+    "classification": "RECORDED_EVIDENCE_REVALIDATION_FOR_UNCHANGED_UNIT_AND_PERFORMANCE_INPUTS",
+    "changedPaths": [
+      "src/web/policy-history.css",
+      "src/web/screens/operations-policy-history.ts"
+    ],
+    "change": "Short display labels, fixed table column widths and two-line period; no data, requests, permissions, lifecycle, producer, storage, formula or test changes. All other508 source bytes match fresh full-run fingerprints. Final browser build/typecheck/lint and full operations20/N12 re-executed, actual served bytes checked. No test directly imports either policy screen; CSS is outside the unit path.",
+    "preservedProof": "sol-frozen-source.json and original full/performance results retained; do not describe those as re-executed after the final presentation change."
+  },
+  "defects": {
+    "PH-D01": "Real bootstrap IDs and full immutable criteria/implementation bindings preserved through parser/storage/approval/readers; changed-worker actual Excel repro now bound.",
+    "PH-D02": "Captured timelines before workbook await; month fingerprint bound to captured context; missing/repeated conflicts rejected and pending-only cache refreshed.",
+    "PH-D03": "Public fingerprint required; approval transaction validates version/ID/date/rule/full criteria against current policy; used events atomic and retained after return.",
+    "PH-D04": "Preview never bootstraps; admin/session-bound immutable 5-minute single-use intent; full related state and folders/files revalidated within transaction; typed public failures.",
+    "PH-D05": "Validate duplicate/cross-kind/invalidated/no-op/past reservation changes; compute disjoint before/after impact intervals from actual stored rows; preserve cancellation reason.",
+    "PH-D06": "Strict v2 table/column/policy/event/snapshot/reference semantics; legacy nullable compatibility only v1; actual used tombstone roundtrip and negative validation preserve live DB.",
+    "PH-D07": "Common dialog token and generation ownership, edited draft invalidates token, fields locked during apply, stale/closed responses cannot overwrite current dialog; parent busy and auth/destroy integration.",
+    "PH-D08": "Current/next summaries, Dense paged revision/events, stored before/after human-readable details/reasons/locks; keyboard focus/Escape/return and five viewport checks.",
+    "PH-D09": "Removed fake JSON validation test in favor of actual backup/preview/restore; existing1425 cases preserved with13 approved count label changes, actual negative and UI paths exercised."
+  },
+  "executionEfficiency": {
+    "fullUnitStarts": 1,
+    "operationsFullStarts": 2,
+    "performanceFullStarts": 2,
+    "additionalFullReasons": [
+      "Second operations full after final display-only density refinement.",
+      "Second performance full records native RC explicitly: PowerShell converts a bare native RC2 to shell RC1; minimal node exit2 probe reproduced and explicit exit preserves2. Original18/2 result retained."
+    ],
+    "strategyReview": "Fixture validation corrected to use the real current rule and at least12 revisions for page2 rather than assume initial rule/page size. Related checks before full runs; no unchanged repeated product failure full loop.",
+    "elapsedUnitSeconds": 396.68,
+    "progressGapNotIndependentlyAudited": true,
+    "noClaimedTimeSavingPercentage": true
+  },
+  "artifacts": {
+    "fullUnit": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\fullUnit.json",
+      "bytes": 532449,
+      "sha256": "D96692FE246F39CBFD2E7DAA0F0209D2059ED8749016D3DE8C4C5850063F4C59"
+    },
+    "affected": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\affected.json",
+      "bytes": 77868,
+      "sha256": "C62ACCCCEDA2861A074AC877FC445386E8B9249DBD2C8B3699BFF6C7515E8B27"
+    },
+    "policyFocused": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\policyFocused.json",
+      "bytes": 10815,
+      "sha256": "365B798E54814193166FD66EEBC51D4BC840137A5447410777F9865203F935F4"
+    },
+    "operations": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\operations.json",
+      "bytes": 35281,
+      "sha256": "5DAAEE3405E05EDE8EEFAB58FD7CA7755F25D6318B8D42961CF7E256876A7A20"
+    },
+    "performance": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\performance.json",
+      "bytes": 14598,
+      "sha256": "0F35E2E8291D7DB5CBDAC13FAF61118E62996EEC4EB5CEC48D056570B4351727"
+    },
+    "uiRepros": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\uiRepros.json",
+      "bytes": 503,
+      "sha256": "D176627A0808F155A79AD8DCA75C3046C04BA24CB94CEDCFA7953379F9566B69"
+    },
+    "producerRepros": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\producerRepros.json",
+      "bytes": 575,
+      "sha256": "5979D334F9C0E2A26E2BF68A6FFBB886D508B0814BDE7F94F749E6B0085F2301"
+    },
+    "native": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\native.json",
+      "bytes": 155,
+      "sha256": "B7EDE5D43C719B3F866F88902011D65EEF5E360999C6765B88938F96226389D7"
+    },
+    "policy-overview-final.png": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\policy-overview-final.png",
+      "bytes": 165309,
+      "sha256": "222913FC032660E70E8460F1224E4AC66031D1D734919D99441D98063670D88F"
+    },
+    "policy-history-final.png": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-evidence\\policy-history-final.png",
+      "bytes": 164451,
+      "sha256": "7EE7BEA06B051859B9A4D2417FD555ED05A58AB5C00F158599626B37E57690A6"
+    }
+  },
+  "remaining": {
+    "technicalDefectsInTask": [],
+    "userVisualReview": "pending",
+    "operationalDeployment": "not authorized or performed",
+    "nextArea": "UI-ADMIN-REFINE / 공휴일 화면 범위 구체화, 이번 작업에서 구현하지 않음"
+  }
+}

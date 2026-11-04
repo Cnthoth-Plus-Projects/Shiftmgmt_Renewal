@@ -1,0 +1,22 @@
+[
+  {
+    "name": "first-parser-dangling-policy-id",
+    "rowsBefore": 0,
+    "rowsAfterParser": 0,
+    "storedBindingIdExistsAfterBootstrap": false,
+    "violation": true
+  },
+  {
+    "name": "changed-worker-binding-missing",
+    "actualReplacementSelected": true,
+    "bindingKinds": [],
+    "violation": true
+  },
+  {
+    "name": "related-approval-changed-after-preview",
+    "previewApprovedCount": 0,
+    "approvalSucceeded": true,
+    "oldPreviewApplied": true,
+    "violation": true
+  }
+]

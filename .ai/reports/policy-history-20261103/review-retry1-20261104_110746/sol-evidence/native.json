@@ -1,0 +1,10 @@
+{
+  "url": "http://127.0.0.1:19114/",
+  "helperPid": 18792,
+  "cdpPort": 19115,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "versions": 4
+}

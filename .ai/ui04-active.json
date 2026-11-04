@@ -1,0 +1,497 @@
+{
+  "schema": "shiftmgmt.ui-task.v1",
+  "task": "UI-04",
+  "parentTask": "UI-04",
+  "planId": "PLAN-20261026-01",
+  "status": "USER_APPROVED",
+  "stage": "ACCEPTED",
+  "issuedAt": "2026-10-28T20:42:39.459251+09:00",
+  "owner": "Sol",
+  "orchestrator": "Sol",
+  "action": "CLOSED_USER_APPROVED",
+  "initialSubmissions": 1,
+  "retrySubmissions": 1,
+  "cumulativeSubmissions": 2,
+  "issuedRequest": "RETRY",
+  "attempts": [
+    {
+      "kind": "INITIAL",
+      "number": 1,
+      "receivedAt": "2026-10-28T22:15:04.396345+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_221504_UI-04-Gemini-initial-received_HANDOFF.md",
+        "bytes": 43441,
+        "sha256": "FA638F6DDDDB0F2285AF2F0EFA414AF1E545E02C210927BEA5E65B606F935879"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\candidate-source.json",
+        "bytes": 68903,
+        "sha256": "17F513B367EBA999048490BCDF53557B9ABF004466E390071CEFF7493228CBC3"
+      },
+      "result": "CORRECT",
+      "reviewedAt": "2026-10-28T22:37:43.415433+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\assessment.json",
+        "bytes": 9837,
+        "sha256": "8D76744E332454D06EB70D00610A3F4D26D74522F0C1061017F5DA093FD8FF73"
+      },
+      "defectIds": [
+        "UI04-D01",
+        "UI04-D02",
+        "UI04-D03",
+        "UI04-D04",
+        "UI04-D05",
+        "UI04-D06",
+        "UI04-D07",
+        "UI04-D08"
+      ]
+    },
+    {
+      "kind": "RETRY",
+      "number": 1,
+      "receivedAt": "2026-10-29T00:27:15.575914+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_002715_UI-04-Gemini-retry-received_HANDOFF.md",
+        "bytes": 66402,
+        "sha256": "3C2EDBD0060EA21534D7B2748BB2AB11FD627586DD4EE036A8205C815524FFF8"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\candidate-source.json",
+        "bytes": 68906,
+        "sha256": "5909B56C5874E863C096EE59B90FC6988E19F07E819DD070D293ED3C02D7AFE6"
+      },
+      "result": "FAILED",
+      "reviewedAt": "2026-10-29T00:31:06.095231+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\assessment.json",
+        "bytes": 3091,
+        "sha256": "7E9B6D89BC11842B5F70CE0FCE8D59B6436202EA5B356E6307829AB82185BEB2"
+      }
+    }
+  ],
+  "baselineCommit": "1e4450e085f8a90606dcf37bc2e8073d60dcf9e7",
+  "branch": "main",
+  "expectedInitialStatus": "21authorized paths dirty;430files",
+  "allowedPaths": [
+    "src/web/screens/shell.ts",
+    "src/web/index.html",
+    "scripts/copy-web-assets.mjs",
+    "docs/codebase-map.md",
+    "src/shared/bridge/contracts.ts",
+    "src/shared/bridge/channel-contracts.ts",
+    "src/shared/bridge/channel-contracts.test.ts",
+    "src/web/bridge/app-bridge.test.ts",
+    "src/main/http/routes/workforce-routes.ts",
+    "src/main/http/routes/workforce-routes.test.ts",
+    "src/main/http/routes/operations-routes.test.ts",
+    "src/web/screens/schedule.ts",
+    "src/web/screens/schedule-model.ts",
+    "src/web/screens/schedule-model.test.ts",
+    "src/web/screens/schedule-view.ts",
+    "src/web/screens/schedule-calendar.ts",
+    "src/web/screens/schedule-history.ts",
+    "src/web/screens/schedule-actions.ts",
+    "src/web/schedule.css",
+    "scripts/ui-checks/schedule.mjs",
+    "scripts/ui-checks/schedule-fixtures.mjs"
+  ],
+  "existingPaths": [
+    "src/web/screens/shell.ts",
+    "src/web/index.html",
+    "scripts/copy-web-assets.mjs",
+    "docs/codebase-map.md",
+    "src/shared/bridge/contracts.ts",
+    "src/shared/bridge/channel-contracts.ts",
+    "src/shared/bridge/channel-contracts.test.ts",
+    "src/web/bridge/app-bridge.test.ts",
+    "src/main/http/routes/workforce-routes.ts",
+    "src/main/http/routes/workforce-routes.test.ts",
+    "src/main/http/routes/operations-routes.test.ts"
+  ],
+  "newPaths": [
+    "src/web/screens/schedule.ts",
+    "src/web/screens/schedule-model.ts",
+    "src/web/screens/schedule-model.test.ts",
+    "src/web/screens/schedule-view.ts",
+    "src/web/screens/schedule-calendar.ts",
+    "src/web/screens/schedule-history.ts",
+    "src/web/screens/schedule-actions.ts",
+    "src/web/schedule.css",
+    "scripts/ui-checks/schedule.mjs",
+    "scripts/ui-checks/schedule-fixtures.mjs"
+  ],
+  "protectedFileCount": 409,
+  "expectedInitialFileCount": 420,
+  "expectedFinalFileCount": 430,
+  "sourceBaseline": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\source-baseline.json",
+    "bytes": 67402,
+    "sha256": "794BC2B97699001716232C68DFB8DD3DAE233AC6B4448007775B649C2B8DE126"
+  },
+  "requirements": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R07",
+    "R08",
+    "R09",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "uiScenarios": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16"
+  ],
+  "negativeChecks": [
+    "N01",
+    "N02",
+    "N03",
+    "N04",
+    "N05",
+    "N06",
+    "N07",
+    "N08",
+    "N09",
+    "N10",
+    "N11",
+    "N12"
+  ],
+  "preflight": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\preflight.json",
+    "bytes": 5150,
+    "sha256": "CB43FACF9C7F0AFBC2BA1ECBC99FF01BB141AC6C43231A90065CB8EC2E69AAA6"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_082629_UI03-design-feedback-before-HANDOFF.md",
+    "bytes": 4079,
+    "sha256": "5D6FF8669A690B39E37373AAFE4724DAF704560FEA269819D7F2E725301278C1"
+  },
+  "todo": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+    "bytes": 36507,
+    "sha256": "A882CF361E4E84B0A9B4FAC055E9D99CB863CC503FBE5B62C60DD5F0AE9FEFD8"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 83289,
+    "sha256": "5FC191A1AD80F6366AEB631FAEEA066E654B145BC06D281581E227C8624E2478"
+  },
+  "commonUiStandard": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
+    "bytes": 10938,
+    "sha256": "1181F53879713C7DE5B90E092AF397C9BEEBEBCC7471858FA06FD6E9E9E8B900"
+  },
+  "previousHandoffArchive": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_204239_UI03-accepted-to-UI04-Gemini-IMPLEMENT_HANDOFF.md",
+    "bytes": 4196,
+    "sha256": "891A83B28AC47513AC23D79A99E6EA6A90EEDE36083E51FA1F76DF10A6D971D5"
+  },
+  "technicalAccepted": true,
+  "userApproved": true,
+  "previewPlanned": "http://127.0.0.1:18841/",
+  "lastReceivedAt": "2026-10-29T00:27:15.575914+09:00",
+  "receivedHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_002715_UI-04-Gemini-retry-received_HANDOFF.md",
+    "bytes": 66402,
+    "sha256": "3C2EDBD0060EA21534D7B2748BB2AB11FD627586DD4EE036A8205C815524FFF8"
+  },
+  "candidateSource": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\candidate-source.json",
+    "bytes": 68906,
+    "sha256": "5909B56C5874E863C096EE59B90FC6988E19F07E819DD070D293ED3C02D7AFE6"
+  },
+  "scopeCheck": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\scope-final.json",
+    "bytes": 1511,
+    "sha256": "9054C2EF66B5C462CFBE26F9482910819F79BCE8A0004EE416390F14C64EB26E"
+  },
+  "retryIssuedAt": "2026-10-28T22:37:43.415433+09:00",
+  "reviewDecision": "TECHNICAL_PASS_SOL_TAKEOVER",
+  "reviewAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\assessment.json",
+    "bytes": 13529,
+    "sha256": "08EAD80AC15A08200E7029EF1198458747B25B7DB8B283F0DAAE83BA968A4F5F"
+  },
+  "defectIds": [
+    "UI04-D01",
+    "UI04-D02",
+    "UI04-D03",
+    "UI04-D04",
+    "UI04-D05",
+    "UI04-D06",
+    "UI04-D07",
+    "UI04-D08"
+  ],
+  "retryBaseline": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\candidate-source.json",
+    "bytes": 68903,
+    "sha256": "17F513B367EBA999048490BCDF53557B9ABF004466E390071CEFF7493228CBC3"
+  },
+  "expectedResumeFileCount": 448,
+  "takeoverAt": "2026-10-29T00:31:06.095231+09:00",
+  "lastReviewedAt": "2026-10-29T01:22:35.879125+09:00",
+  "finalSource": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\source-final.json",
+    "bytes": 68908,
+    "sha256": "CCB463A366845B60D6970D9D2321E9388EF70E6BDB8DDFFC80D3352C754820E0"
+  },
+  "preview": {
+    "url": "http://127.0.0.1:18844/",
+    "samplePrimaryPeople": 56,
+    "allEmployees": 59,
+    "exportHistory": 57,
+    "batchPublished": 6,
+    "record": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\preview-summary.json",
+      "bytes": 5805,
+      "sha256": "7B628E8E740D3E4E4B6E5A9F73CCC770A2927A3D1655325AFE51F88C102903AB"
+    },
+    "nativeWindow": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\native-window.json",
+      "bytes": 97,
+      "sha256": "43B8A85A3E215CC7467CE8B5B1F6D38800CFF25865EE061A724689020BB71034"
+    },
+    "processRetained": true,
+    "prior18831Preserved": true
+  },
+  "solCompletion": {
+    "at": "2026-10-29T01:22:35.879125+09:00",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\assessment.json",
+      "bytes": 13529,
+      "sha256": "08EAD80AC15A08200E7029EF1198458747B25B7DB8B283F0DAAE83BA968A4F5F"
+    },
+    "priorFailedAssessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\assessment.json",
+      "bytes": 3091,
+      "sha256": "7E9B6D89BC11842B5F70CE0FCE8D59B6436202EA5B356E6307829AB82185BEB2"
+    }
+  },
+  "currentUserFeedback": {
+    "at": "2026-10-29T08:26:29.096393+09:00",
+    "subject": "UI03 design gap",
+    "UI04ExplicitApproval": false,
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-design-feedback-20261029_082629\\assessment.json",
+      "bytes": 6243,
+      "sha256": "27F568A9C04F51379DF7806913E6A6C45435F2E8441226165304FB7776395784"
+    }
+  },
+  "sharedInfrastructureFromUI03": {
+    "at": "2026-10-29T11:32:49.650449+09:00",
+    "source": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\source-final.json",
+      "bytes": 69873,
+      "sha256": "3F2A94F78F33B641AD42A8C7708024BCC25330D5912850229357503F637B3E77"
+    },
+    "changed": [
+      "docs/codebase-map.md",
+      "src/shared/bridge/contracts.ts",
+      "src/shared/bridge/channel-contracts.ts",
+      "src/shared/bridge/channel-contracts.test.ts",
+      "src/web/bridge/app-bridge.test.ts",
+      "src/main/http/routes/workforce-routes.ts",
+      "src/main/http/routes/workforce-routes.test.ts",
+      "src/main/http/routes/operations-routes.test.ts"
+    ],
+    "unchanged": [
+      "src/web/screens/shell.ts",
+      "src/web/index.html",
+      "scripts/copy-web-assets.mjs",
+      "src/web/screens/schedule.ts",
+      "src/web/screens/schedule-model.ts",
+      "src/web/screens/schedule-model.test.ts",
+      "src/web/screens/schedule-view.ts",
+      "src/web/screens/schedule-calendar.ts",
+      "src/web/screens/schedule-history.ts",
+      "src/web/screens/schedule-actions.ts",
+      "src/web/schedule.css",
+      "scripts/ui-checks/schedule.mjs",
+      "scripts/ui-checks/schedule-fixtures.mjs"
+    ],
+    "evidence": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\assessment.json",
+      "bytes": 8037,
+      "sha256": "5B7628F0380F2420FC7125FB35D2443F99332F12851E91ACBE0F415AFD4770D0"
+    },
+    "approvalUnchanged": true
+  },
+  "calendarFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-team-calendar-20261029_170130\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-team-calendar-20261029_170130\\source-final.json",
+    "preview": {
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-team-calendar-open-otqPwV\\preview.json",
+      "url": "http://127.0.0.1:18913/?developmentPreview=1",
+      "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-team-calendar-open-otqPwV\\calendar.png",
+      "fit": {
+        "width": 1707,
+        "height": 825,
+        "x": 0,
+        "calendarBottom": 785.3333587646484,
+        "staffBottom": 785.3333587646484,
+        "statusTop": 793.3333740234375,
+        "staffY": 0,
+        "days": 31,
+        "weekdays": [
+          "일",
+          "월",
+          "화",
+          "수",
+          "목",
+          "금",
+          "토"
+        ],
+        "publicDays": [
+          "2026-05-05"
+        ],
+        "teams": [
+          "A조",
+          "B조",
+          "C조",
+          "D조"
+        ],
+        "people": "배정 인력\n대상 월 31일 · 56개 근무 행\n56명",
+        "visibleDailyTeams": [
+          "A조",
+          "B조",
+          "C조",
+          "D조"
+        ]
+      }
+    },
+    "allowed": [
+      "src/web/screens/schedule.ts",
+      "src/web/screens/schedule-calendar.ts",
+      "src/web/screens/schedule-calendar-grid.ts",
+      "src/web/screens/schedule-calendar-grid.test.ts",
+      "src/web/screens/schedule-calendar-dialog.ts",
+      "src/web/schedule.css",
+      "scripts/ui-checks/schedule.mjs",
+      "scripts/ui-checks/schedule-fixtures.mjs"
+    ],
+    "excelProposal": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-calendar-20261029_160810\\excel-return-proposal.md",
+      "status": "DESIGN_ONLY_APPROVAL_PENDING",
+      "productChangesAuthorized": false
+    }
+  },
+  "realisticDataFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-realistic-data-20261029_173222\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-realistic-data-20261029_173222\\source-final.json",
+    "preview": {
+      "url": "http://127.0.0.1:18923/?developmentPreview=1",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-operational-preview-bcqXgW\\preview.json",
+      "fit": {
+        "width": 1707,
+        "height": 825,
+        "x": 0,
+        "staffY": 0,
+        "calendarBottom": 785.3333587646484,
+        "staffBottom": 785.3333587646484,
+        "statusTop": 793.3333740234375,
+        "visibleDailyTeams": [
+          "A조",
+          "B조",
+          "C조",
+          "D조"
+        ],
+        "scope": "A조 · B조 · C조 · D조 / 8명"
+      }
+    },
+    "allowed": [
+      "scripts/ui-checks/operational-scenarios.mjs"
+    ]
+  },
+  "currentReviewPreview": {
+    "url": "http://127.0.0.1:18923/?developmentPreview=1",
+    "metadata": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\off-duty-gray\\actual-check.json",
+    "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-offgray-thgCul\\calendar.png"
+  },
+  "calendarNamesFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-calendar-names-20261029_181019\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-calendar-names-20261029_181019\\source-final.json",
+    "allowed": [
+      "src/web/screens/schedule-calendar-grid.ts",
+      "src/web/schedule.css",
+      "scripts/ui-checks/schedule.mjs"
+    ],
+    "preview": {
+      "url": "http://127.0.0.1:18923/?developmentPreview=1",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-calendar-names-open-blD7Yg\\preview.json",
+      "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-calendar-names-open-blD7Yg\\calendar.png"
+    },
+    "status": "USER_APPROVED",
+    "userApproved": true,
+    "approvedAt": "2026-10-29T19:14:05.310570+09:00"
+  },
+  "readabilityFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-readability-20261029_191405\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-readability-20261029_191405\\source-final.json",
+    "allowed": [
+      "src/web/screens/schedule-calendar-grid.ts",
+      "src/web/screens/schedule-calendar.ts",
+      "src/web/schedule.css",
+      "scripts/ui-checks/schedule.mjs"
+    ],
+    "preview": {
+      "url": "http://127.0.0.1:18923/?developmentPreview=1",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-readability-open-r4AgQG\\preview-final.json",
+      "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-readability-open-r4AgQG\\calendar-final.png",
+      "fit": {
+        "width": 1920,
+        "height": 945,
+        "open": true,
+        "font": "16px",
+        "firstDateWorkers": [
+          "A조주간김현우·이도윤",
+          "B조비번박서준·최민서",
+          "C조야간정하은·강지호",
+          "D조비번조수빈·윤재현"
+        ]
+      }
+    }
+  },
+  "readabilityPaletteFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\source-final.json",
+    "allowed": [
+      "src/web/schedule.css"
+    ],
+    "preview": {
+      "url": "http://127.0.0.1:18923/?developmentPreview=1",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-highlight-open-myrVIm\\preview.json",
+      "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-highlight-open-myrVIm\\calendar.png"
+    }
+  },
+  "offDutyGrayFollowup": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\off-duty-gray\\assessment.json",
+    "preview": "http://127.0.0.1:18923/?developmentPreview=1",
+    "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui04-offgray-thgCul\\calendar.png"
+  },
+  "approvedAt": "2026-10-29T20:46:22.413645+09:00",
+  "acceptedCurrentSource": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui05-prepare-20261029_204622\\baseline-source.json",
+    "bytes": 69973,
+    "sha256": "5539C4AD1DBFE30F20F44D9F08B5037B623E53942FD575FFE4C3FC8E459D015C"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "at": "2026-11-04T12:11:45.899076+09:00",
+  "beforeArchives": {
+    "HANDOFF.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261104_121145_POLICY-HISTORY-01-before-accept-HANDOFF.md",
+      "bytes": 1107,
+      "sha256": "161C095A9078D86F9499467F2239F9B07C2976071BC0D6FB612957EE421A935C"
+    },
+    "TODO.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261104_121145_POLICY-HISTORY-01-before-accept-TODO.md",
+      "bytes": 80192,
+      "sha256": "3B84D9FEAB7B829CD0C730C85F0EA1CCA409BAB2BE47A29D4630F8E6351694B0"
+    },
+    ".ai/task-plan.json": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261104_121145_POLICY-HISTORY-01-before-accept-task-plan.json",
+      "bytes": 253970,
+      "sha256": "A630C62816ED72FB3B4FAEA5352AF4C2A66DAF924BC79C21A4E0417BC1727DFC"
+    },
+    ".ai/gemini-attempts.json": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261104_121145_POLICY-HISTORY-01-before-accept-gemini-attempts.json",
+      "bytes": 181482,
+      "sha256": "2E7704C3588403A4FFD06A47C85406037351B4FE3A34F350019EFAEC8CDD870F"
+    }
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 10227,
+    "sha256": "3D2A56AAA3AD236A26EAB531098C990500F5D3C70EF9CA48A2DE8F8284A430C9"
+  },
+  "todo": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+    "bytes": 81060,
+    "sha256": "40AE5B82E7508D135F77BD1E22EE76E746F9EBA001519EE6E1F73135947CF085"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 249244,
+    "sha256": "515B50080E56D35F39FDED5C8FB80BF31F17BF71F988F2F12233418BB489021A"
+  },
+  "attempts": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\gemini-attempts.json",
+    "bytes": 177947,
+    "sha256": "A8FBD87CA70328E275C659695C341E7EAF35E3AEFCBA13606BAB5B0BA7B8C48E"
+  }
+}

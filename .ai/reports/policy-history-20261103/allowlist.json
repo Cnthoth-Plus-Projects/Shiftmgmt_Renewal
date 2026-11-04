@@ -1,0 +1,467 @@
+[
+  {
+    "path": "src/shared/domain/policy-history.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/shared/domain/policy-history.test.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/shared/domain/performance-file.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 15687,
+      "sha256": "E659B7FF2958823703124C4E6BC8B344E243D1660F7567EF9FAEE15BBD918396"
+    }
+  },
+  {
+    "path": "src/shared/domain/substitute-allowance-policy.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 5619,
+      "sha256": "8EF1A77751AE82964324707C7AF201870A56BA6AF6C7D6E2A72C03C853556192"
+    }
+  },
+  {
+    "path": "src/shared/domain/changed-slot-priority-policy.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 1630,
+      "sha256": "8FA4C6537DC893171EC381C18E8B4A7CBDAB228D1239C9470ABDB4691E8A1F39"
+    }
+  },
+  {
+    "path": "src/shared/bridge/contracts.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 37224,
+      "sha256": "0A47B92128DFD50CD69A39F82B1B37885D66FBFD506DF842E38EFE34EFD022A7"
+    }
+  },
+  {
+    "path": "src/shared/bridge/channel-contracts.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 24480,
+      "sha256": "D0AE55188313776C8FFF80692E036B9CB037D7C76AFBA91CCB6794BB5AE0B7C7"
+    }
+  },
+  {
+    "path": "src/shared/bridge/channel-contracts.test.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 4857,
+      "sha256": "DCB6A26581D5D9F7001341EC53D4EC3C32608A406A024B5E97EBDF913339F8CA"
+    }
+  },
+  {
+    "path": "src/web/bridge/app-bridge.test.ts",
+    "requirement": "PH-R01~R04 domain/contracts",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 5944,
+      "sha256": "24C6EBC14A0B0755382EE03FBE26A34F2DD99B4F648D632C57C2E49C538936C0"
+    }
+  },
+  {
+    "path": "src/main/services/policy-history-service.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/main/services/policy-history-service.test.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/main/services/policy-history-impact-service.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/main/services/policy-history-impact-service.test.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/main/services/sqlite-storage-service.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 37631,
+      "sha256": "9B38B2AF83E56998FD8D314552A084A6781C3AD9526A9B5D78D0990D72797EAA"
+    }
+  },
+  {
+    "path": "src/main/services/sqlite-storage-service.test.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 16483,
+      "sha256": "7C92BB8C1D2CA55C2040DA39BC731905211484C4753C28DE1E2804A969692888"
+    }
+  },
+  {
+    "path": "src/main/services/app-settings-storage-service.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 19100,
+      "sha256": "5263B343E8A5E87A73C29EE0F3A87C8A27B178650859356D7FA72AA500D732D9"
+    }
+  },
+  {
+    "path": "src/main/services/app-settings-storage-service.test.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 7850,
+      "sha256": "5CD8BF8DB2BBD384052D6C334B7F9B2623D7063C2A3B35F680B2329E2DC78636"
+    }
+  },
+  {
+    "path": "src/main/http/routes/operations-routes.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 23104,
+      "sha256": "471B4CD59AA6DC1F8659749FD05CDB6525CE0CA8D390C497ABE204AE05875787"
+    }
+  },
+  {
+    "path": "src/main/http/routes/operations-routes.test.ts",
+    "requirement": "PH-R01~R06 storage/preview/auth",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 55447,
+      "sha256": "E0FA6655F5F378AC1C41135447A2388A64B44F9314C9D5BA324A95588CCD133B"
+    }
+  },
+  {
+    "path": "src/main/services/schedule-return-performance-parser.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 70987,
+      "sha256": "EB9799D92D7E48731AE443139525024062C802BE05096F24343D5DB580A8D0A3"
+    }
+  },
+  {
+    "path": "src/main/services/schedule-return-performance-parser.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 60412,
+      "sha256": "4119B76B8F0F3BA4478ABB26708C602464943FA612EB570FA681693EB139A1C5"
+    }
+  },
+  {
+    "path": "src/main/services/performance-file-intake-service.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 34023,
+      "sha256": "B0063178A87511E4B87256ECA94DE607C2601984CD7FC90034034C94A24FDF8D"
+    }
+  },
+  {
+    "path": "src/main/services/performance-file-intake-service.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 59157,
+      "sha256": "D71E8F245B0FDAFB1BA1211042A2D7EF5D19C997F99B6610960BFEC8867D617F"
+    }
+  },
+  {
+    "path": "src/main/services/performance-file-storage-service.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 29270,
+      "sha256": "DDDC00DDF09860CA1B0F78EE51C1CC4C22E62EEEC21073889052D76349DC8F3A"
+    }
+  },
+  {
+    "path": "src/main/services/performance-file-storage-service.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 8490,
+      "sha256": "38C2BFF645DE36392CBB0C3CCBBF31CE3A78FF622C6E1D4ACC790DCC88B9FF54"
+    }
+  },
+  {
+    "path": "src/main/services/performance-management-service.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 30681,
+      "sha256": "0D34E682A902D2180B657ED6645B77E70B7EFCE11A9CD7978156EDD9D7329235"
+    }
+  },
+  {
+    "path": "src/main/services/performance-approval-flow-service.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 31658,
+      "sha256": "719A71209FBBCD42331968938574358661A9C75EE5BB8A54E6DA0D966E39EC2B"
+    }
+  },
+  {
+    "path": "src/main/services/performance-approval-flow-service.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 52972,
+      "sha256": "411FFB9A4B489FE55C7BCCA194E38519227921BE8BF213D78EEFE4C1E73DB1AF"
+    }
+  },
+  {
+    "path": "src/main/services/performance-approval-snapshot-service.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 7274,
+      "sha256": "D1115B009B47BDE0E49E7DB1FFBA635BD7FE18EC80B2765BFA41D9C030BEB7A9"
+    }
+  },
+  {
+    "path": "src/main/http/routes/performance-routes.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 8832,
+      "sha256": "6FB3FFF06D10A64769E5515993C99BABA62304BB4D92F29F159678ACA0589103"
+    }
+  },
+  {
+    "path": "src/main/http/routes/performance-routes.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 15233,
+      "sha256": "1551C785B5325E11AC3233FD1D7D2CCE36977404E76F06BAE0F6A69D39920E34"
+    }
+  },
+  {
+    "path": "src/main/services/performance-test-helpers.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 16436,
+      "sha256": "25837DC1E6BC0D0685C54AB58449C474B6F1E4B4852EE0EFB18EA87176D0ED07"
+    }
+  },
+  {
+    "path": "src/main/services/policy-history-integration.test.ts",
+    "requirement": "PH-R07~R09 producer/cache/approval",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/main/services/database-backup-service.ts",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 7639,
+      "sha256": "E429FF69F069BF33264FCE17C566558530852D0D7B2550946FEA13B2CECC29CE"
+    }
+  },
+  {
+    "path": "src/main/services/database-backup-service.test.ts",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 11690,
+      "sha256": "A012E70F17FAFB09030FDBD760F37FAC30E6953F276812D77F5EFD39AFADB693"
+    }
+  },
+  {
+    "path": "src/main/services/database-migration-service.ts",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 93970,
+      "sha256": "D320B656C30D1BA477FFF16CC255F8BEC2918E9248EC440CF54B267E2FC8D37B"
+    }
+  },
+  {
+    "path": "src/main/services/database-migration-service.test.ts",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 90386,
+      "sha256": "C59EFE2A92149B94FA60E08CC8DA95B525AC6D0EA1415D4AEAA06CD1CD1BE3FC"
+    }
+  },
+  {
+    "path": "src/shared/domain/database-migration.ts",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 615,
+      "sha256": "A38D57D176A801F77D3BD87F38F5628953B1413F786B04BE783930460B915851"
+    }
+  },
+  {
+    "path": "scripts/verify-v3-json-migration.mjs",
+    "requirement": "PH-R10 JSON compatibility",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 29560,
+      "sha256": "5623B65C10A3A0F78DC2E87BC80F97A0B80C4F006A77E2CFD5CBB8AB2668AB49"
+    }
+  },
+  {
+    "path": "src/web/screens/operations-settings.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 30584,
+      "sha256": "7B56595D7BE3E9524345E434D337584626C7A09FE778654CF51D3154EC60C6DE"
+    }
+  },
+  {
+    "path": "src/web/screens/operations-settings-view.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 26665,
+      "sha256": "4CEEDAA87825DDECB5772EA4865B3A8CC732B49BCD45E7D9EAFAA38113A3C6A5"
+    }
+  },
+  {
+    "path": "src/web/screens/operations-policy-history.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/web/screens/operations-policy-dialog.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/web/screens/performance-actions.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 29991,
+      "sha256": "76574068A1C8302D0CA379359F0D245E78E47456729F8A0E5AE8DE1804F6AC4E"
+    }
+  },
+  {
+    "path": "src/web/screens/performance-detail.ts",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 15255,
+      "sha256": "FFD183010D1F3E939D39E2C67186E099D9D18643ADD246A1FB0F173A647B0567"
+    }
+  },
+  {
+    "path": "src/web/policy-history.css",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "create",
+    "baseline": null
+  },
+  {
+    "path": "src/web/index.html",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 1093,
+      "sha256": "27D93243F155FDA2DC013F20218D17DAEE4A5CB8B7B23A8FA9D571FFE8BF404B"
+    }
+  },
+  {
+    "path": "scripts/copy-web-assets.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 5089,
+      "sha256": "6B235948BF64221A2B91597A2CAF9150CAC5EF643FF0D345A5B2DE50138209BE"
+    }
+  },
+  {
+    "path": "scripts/ui-checks/operations.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 114625,
+      "sha256": "221EF9380E0315A9F6C3A6EC4D2AC1E8B8F8F33EBEACFA9A8C1AA9A751BF4E33"
+    }
+  },
+  {
+    "path": "scripts/ui-checks/operations-fixtures.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 5820,
+      "sha256": "CD5462147731DDEDE5C2B54787F802728AB2D6D64928AD1A45BEAC4B521AD117"
+    }
+  },
+  {
+    "path": "scripts/ui-checks/performance.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 61617,
+      "sha256": "7B78D9444F44D1370D341B4F56C5F00941F8470E4E5E09D2EA2F12763E9F6902"
+    }
+  },
+  {
+    "path": "scripts/ui-checks/performance-fixtures.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 14812,
+      "sha256": "9EEC23EEB4D2C4ED4668E4BA36ED1AACBB50D9296360BFDCD91118F6E5A94935"
+    }
+  },
+  {
+    "path": "scripts/ui-checks/allowance-fixtures.mjs",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 15923,
+      "sha256": "8A3CC3921AE12439D9FF8F8925E1514B610596720D4DC8F1137BBEBEE20FC4A4"
+    }
+  },
+  {
+    "path": "docs/codebase-map.md",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 31645,
+      "sha256": "074FBE705BEC26C610E4A16ADA0EE6E1FFA2AFE9A2D77A21FCFBF70A7BE1057A"
+    }
+  },
+  {
+    "path": "docs/api-convention.md",
+    "requirement": "PH-R11~R12 UI/actual checks",
+    "mode": "modify",
+    "baseline": {
+      "bytes": 35535,
+      "sha256": "E177DCF684B76E8CF7AC1074AF67F906AF66637D70EAC18708C66F9F379D7C97"
+    }
+  }
+]

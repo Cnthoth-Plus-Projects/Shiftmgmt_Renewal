@@ -28,6 +28,28 @@
 - Every delegation packet must include: objective, current state, exact inputs, read/write boundary, required checks, forbidden actions, output format, and completion criteria.
 - Sol independently checks cited files, diffs, hashes, and command evidence before relying on a subagent result.
 
+## Verification Efficiency (user request, 2026-10-26)
+
+- Apply `.ai/VERIFICATION_WORKFLOW.md` to implementation and verification tasks. Read its short execution/retry rules before launching a long suite.
+- Use preflight -> focused reproduction -> affected checks -> required final suite. Check command identities/counts, result parsing, and a representative actual path before the full suite.
+- Every additional full run needs a concrete source/control/environment change or invalidated evidence, plus a recorded reason. Two identical failures under unchanged inputs require a different diagnostic approach before another full run.
+- After 20 minutes without narrowing a diagnosis, or two validator corrections in one task, Sol revisits the strategy. These are diagnostic review triggers; preserve required tests, original deadlines, scope, and coding authority.
+- Report verified progress within 60 seconds during work, including elapsed time for long commands. Read terminal results and process status before claiming completion. Distinguish recorded evidence revalidation from a fresh execution.
+
+## Approved Task Queue and Scope Lock (user decision, 2026-10-26)
+
+- `TODO.md` is the only active work queue. `.ai/task-plan.json` is its derived index; its TODO hash and Task IDs must match. Archived historical TODO text is evidence, not an active queue.
+- Execute only the next authorized leaf Task. Before work, identify its ID, objective, file boundary, required checks, and concrete completion output. Internal evidence delegation stays within that Task.
+- Do not start unlisted features, general refactors, dependency changes, extra documentation projects, or new verification frameworks. If an active Task cannot finish within its scope, report the minimal gap and proposed change; add new scope only after explicit user authorization.
+- Necessary fixes/checks inside the active Task and its allowlist use the same Task/defect IDs. Do not ask again for routine authorized work, manufacture preparation phases, or reset Gemini attempts.
+- Before IMPLEMENT, validate verifier self-tests/fixtures and baseline feasibility. Actual new producer/reader integration, changed-binding verification, and candidate regressions occur after implementation. Never require nonexistent product code to pass before authorizing its implementation.
+- Reuse/group required checks with explicit coverage and actual rejection evidence; preserve original criteria and deadlines. Repeated rebuilds of unchanged protected source/hook/compiler are not default work; reuse only independently verified, locked proof with fresh fingerprints and actual served-byte checks, documented in a successor authority.
+- Task completion reports distinguish preparation, product implementation, and formal acceptance. Keep status in TODO/HANDOFF/existing ledgers, and avoid redundant report bundles. Operational deployment still requires the separate explicit authorization already specified.
+
+## Standing Direct Implementation Exception (user, 2026-10-31)
+
+- User: “응 진행해줘 별도 명시 할때까지는 너가 직접 작업해줘 Gemini 한도 초과”. Until explicitly changed, Sol directly implements the currently authorized TODO leaf Task, including product code/tests/config necessary inside its allowlist. This supersedes the normal Gemini-only writer boundary below and earlier UI-07-only exception. It does not authorize unlisted work, simultaneous Tasks, commit, or deployment. Gemini attempts remain actual submissions only; quota does not count as an attempt.
+
 ## Code Ownership Boundary
 
 - Gemini is the only normal product-code writer. Product code includes application source, tests, migrations, package/build/runtime configuration, and generated implementation artifacts.
@@ -43,6 +65,13 @@
 - Do not retroactively rewrite historical author or agent names in completed records.
 
 ## Handoff Protocol
+
+### Gemini attempt limit — user decision, 2026-10-21
+
+- Report Gemini attempts for every task: initial submission, retry submission, cumulative total, and current implementation owner.
+- A task permits **one initial Gemini attempt plus one retry**. If both fail Sol verification, **Sol takes over implementation directly** under the user's standing authorization; do not request permission again.
+- A new version, strategy, or defect label within the same unresolved task does not reset the count. Preserve historical counts; do not rewrite earlier records to fit the new policy.
+- Record each attempt and result in HANDOFF.md and the task ledger. The limit does not permit weaker acceptance checks, expanded file scope, or release actions.
 
 - The user manually relays work between Sol and Gemini. Do not invoke another AI through `codex`, `gemini`, or similar CLI commands unless the user explicitly asks for that invocation.
 - On a handoff check, read `HANDOFF.md`, validate its claims against the named sources, and put the complete response in `HANDOFF.md`, not only in chat.

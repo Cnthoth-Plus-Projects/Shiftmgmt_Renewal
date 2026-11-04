@@ -1,0 +1,72 @@
+{
+  "task": "3-2c-A2-U8-session-expired",
+  "planTaskId": "AH-U8",
+  "status": "ACCEPTED_SESSION_ORIGINAL7_ONLY",
+  "owner": "Sol",
+  "implementationOwner": "not required (product unchanged)",
+  "initialSubmissions": 0,
+  "retrySubmissions": 0,
+  "cumulativeSubmissions": 0,
+  "canonicalAccepted": 81,
+  "canonicalMissing": 0,
+  "newCanonicalAccepted": 7,
+  "productWrites": 0,
+  "startedAt": "2026-10-26T23:03:36.049729+09:00",
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336",
+  "sourceBefore": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336\\source-before.json",
+    "bytes": 62966,
+    "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+  },
+  "priorAccepted": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\u7-active.json",
+    "bytes": 3146,
+    "sha256": "1C18445C4EA5C79F0AA7F52E6731CC2BCC3F2DB24B8CCB0DE50C01FB949C50EE"
+  },
+  "archives": {
+    "TODO.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_TODO.md",
+      "bytes": 17281,
+      "sha256": "F4E1D686694B4BA88846A38C5E628BEB3612C696637B8A3EDA3710F6873F5201"
+    },
+    ".ai/task-plan.json": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_task-plan.json",
+      "bytes": 29012,
+      "sha256": "D74A6D032715739C6F183AB3EE13869DCA0066D6206AA18F906D602A6C0F998F"
+    },
+    ".ai/current-state.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_current-state.md",
+      "bytes": 694,
+      "sha256": "30D91210683FAC0721E1ED513B28E178B528DDC71DDB4CF8EC4F091191B59BE4"
+    }
+  },
+  "next": "AH-CLOSE not started",
+  "phase": "U8_CLOSED",
+  "verificationOwner": "Sol",
+  "closedAt": "2026-10-26T23:34:32.510178+09:00",
+  "assessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336\\assessment.json",
+    "bytes": 6860,
+    "sha256": "5B72E8B56743C637574903332E2FF4978479B9F71B81513B2EF7B7A17664BB1B"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 5547,
+    "sha256": "0EF029F38E7EBCF058B686D3AFD3C5625FA4EC1AF8222B6D1AC159F1FA1F3F60"
+  },
+  "authority": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u8-session\\authority.json",
+    "bytes": 4398,
+    "sha256": "9328849BAB482AEA3B17222C2A1E12998DD26E5668BAA2A01C8FCA98ECDAB3E4"
+  },
+  "seal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u8-session\\seal.json",
+    "bytes": 2537,
+    "sha256": "CCB1B014545F9173A52E94BF8DFE3B703DEF6CA2020FCFCC94898F32AFEEE74B"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 30661,
+    "sha256": "F5DBFB188E5F608901AB9F378307028A43376EB10420AD069E3A8AD5DDB58BE1"
+  }
+}

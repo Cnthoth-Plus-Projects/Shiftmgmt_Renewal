@@ -1,0 +1,873 @@
+{
+  "task": "UI-03",
+  "parentTask": "UI-03",
+  "planId": "PLAN-20261026-01",
+  "status": "USER_APPROVED",
+  "stage": "USER_REVIEW",
+  "issuedAt": "2026-10-28T08:38:30.650520+09:00",
+  "owner": "Sol",
+  "orchestrator": "Sol",
+  "initialSubmissions": 1,
+  "retrySubmissions": 1,
+  "cumulativeSubmissions": 2,
+  "attempts": [
+    {
+      "kind": "INITIAL",
+      "number": 1,
+      "receivedAt": "2026-10-28T10:45:42.891118+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_104542_UI-03-Gemini-initial-received_HANDOFF.md",
+        "bytes": 59851,
+        "sha256": "6226804E53BDC4B617CBDA3982628FEFCA229DE648565F8CBAE0AA3AEF16741C"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\candidate-source.json",
+        "bytes": 71626,
+        "sha256": "66DECD6FA2416F343A1490ED8C97FAED6C9D9A759D57C1C3D7C6EDFC99DC78F2"
+      },
+      "result": "CORRECT",
+      "reviewedAt": "2026-10-28T10:59:34.865560+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\assessment.json",
+        "bytes": 8063,
+        "sha256": "12764F26735D752F98907CF82F3D33DDE8E38E7FA68694ADC60C39971F871DC6"
+      },
+      "defectIds": [
+        "UI03-D01",
+        "UI03-D02",
+        "UI03-D03",
+        "UI03-D04",
+        "UI03-D05",
+        "UI03-D06",
+        "UI03-D07",
+        "UI03-D08",
+        "UI03-D09"
+      ]
+    },
+    {
+      "kind": "RETRY",
+      "number": 1,
+      "receivedAt": "2026-10-28T12:53:53.097339+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_125353_UI-03-Gemini-retry-received_HANDOFF.md",
+        "bytes": 80052,
+        "sha256": "3D603AA096ED9D53F8F8EBD3AC6E441E4AC049B8C83FB42C7C83D39C0C9493B4"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\candidate-source.json",
+        "bytes": 71630,
+        "sha256": "B26FB3620F1F4E8E6C1F9CFB36CB473E78C2385EC37F7AE3C4DABB50A954F3BA"
+      },
+      "result": "CORRECT",
+      "reviewedAt": "2026-10-28T12:56:27.429312+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\assessment.json",
+        "bytes": 2191,
+        "sha256": "648A8E0DD0E3BE7744DE9EEC871E240731B4E39262CE90B2ECAEBE0B891B6E69"
+      }
+    }
+  ],
+  "baselineCommit": "2d23ecb732389bb2ed990b1c1e7eba383ba14c8e",
+  "allowedPaths": [
+    "src/web/screens/shell.ts",
+    "src/web/index.html",
+    "scripts/copy-web-assets.mjs",
+    "docs/codebase-map.md",
+    "src/web/screens/sites.ts",
+    "src/web/screens/sites-model.ts",
+    "src/web/screens/sites-model.test.ts",
+    "src/web/screens/sites-pattern-model.ts",
+    "src/web/screens/sites-list.ts",
+    "src/web/screens/sites-detail.ts",
+    "src/web/screens/sites-wizard.ts",
+    "src/web/screens/sites-wizard-basics.ts",
+    "src/web/screens/sites-wizard-pattern.ts",
+    "src/web/screens/sites-wizard-palette.ts",
+    "src/web/screens/sites-wizard-review.ts",
+    "src/web/screens/sites-organization.ts",
+    "src/web/screens/sites-import.ts",
+    "src/web/screens/sites-simulation.ts",
+    "src/web/screens/sites-simulation.test.ts",
+    "src/web/screens/sites-commit.ts",
+    "src/web/sites.css",
+    "scripts/ui-checks/sites.mjs",
+    "scripts/ui-checks/sites-fixtures.mjs",
+    "src/web/pagination.ts",
+    "src/web/pagination.test.ts",
+    "src/web/common-controls.css",
+    "src/web/screens/workforce-list.ts"
+  ],
+  "sourceBaseline": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\source-baseline.json",
+    "bytes": 67672,
+    "sha256": "7B7829BC6C943911DDF54A29203D78634A6C24303F11AE2D822DE1424183F4A7"
+  },
+  "focusedBaseline": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\baseline-checks.json",
+    "bytes": 2669,
+    "sha256": "F429A611B93CCA8ABD18DBD4E68E1FA19C3BA0D5699A5B2A00D37D0C09221BCC"
+  },
+  "commonUiStandard": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
+    "bytes": 10938,
+    "sha256": "1181F53879713C7DE5B90E092AF397C9BEEBEBCC7471858FA06FD6E9E9E8B900"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 3773,
+    "sha256": "B35F1C5872BED962C9840562164D64C86938AB9BA3F170512AEE87347A189135"
+  },
+  "todo": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+    "bytes": 37676,
+    "sha256": "133001F9246EC6DEAD344AEDC7A9527171C013AB505219EF0057D5D2D5BD715D"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 85888,
+    "sha256": "DF334C57B90AC5C7EB253B234F5BB5CA884744667E8B6C04A063C28751C48CD2"
+  },
+  "previousHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_083830_UI-02-approved-before-UI-03_HANDOFF.md",
+    "bytes": 5795,
+    "sha256": "71FB595496A33F4FA0D72F450864740AB89795A2EE44FCF2822FD3CCAB72864D"
+  },
+  "preflight": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\preflight.json",
+    "bytes": 5528,
+    "sha256": "7BEC6DFAC852B2A363F904465279E1883E290659F499B45B04260F3710211A6A"
+  },
+  "productWrites": 20,
+  "userMenuReviewRequested": true,
+  "userSampleDataReconfirmed": true,
+  "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353",
+  "lastReviewedAt": "2026-10-29T12:31:19.289746+09:00",
+  "reviewDecision": "UI03_D09_TECHNICAL_PASS_USER_REVIEW_PENDING",
+  "reviewAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\assessment.json",
+    "bytes": 6638,
+    "sha256": "7174619C2DE63136279A85E34DB3E0962F7700E77B6A75744C53E43EA1D271AA"
+  },
+  "defectIds": [
+    "UI03-D01",
+    "UI03-D02",
+    "UI03-D03",
+    "UI03-D04",
+    "UI03-D05",
+    "UI03-D06",
+    "UI03-D07",
+    "UI03-D08",
+    "UI03-D09"
+  ],
+  "retryRemaining": 0,
+  "retrySource": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\candidate-source.json",
+    "bytes": 71626,
+    "sha256": "66DECD6FA2416F343A1490ED8C97FAED6C9D9A759D57C1C3D7C6EDFC99DC78F2"
+  },
+  "currentImplementationOwner": "Sol",
+  "userLayoutDirective": {
+    "approvedAt": "2026-10-28T12:07:36.547134+09:00",
+    "authorization": "추가로 우측에 상세라인이 너무 위로 갔지? 앞에 인력관리의 레이아웃 구조를 참조해서 동일하게 구성하도록 지시서에 추가해줘. 모든 테이블을 구성하는 메뉴는 인력관리 화면처럼 구조를 잡을꺼야",
+    "appliesTo": "UI-03 now and every table-based menu in its existing task",
+    "structure": "Full-width KPI > full-width search/filter/actions > body grid(table minmax(0,1fr), detail380px); same top/bottom; fill available height; footer visible",
+    "defectId": "UI03-D08",
+    "requirements": [
+      "R02",
+      "R18"
+    ],
+    "scenarios": [
+      "S02",
+      "S20"
+    ],
+    "rowCountContract": "Current UI03 default10 paging and55sample contract retained; this directive changes layout structure",
+    "implementationBoundary": "Same23 UI03 product paths; workforce source read-only reference"
+  },
+  "layoutSupplement": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\layout-directive-20261028_120736.json",
+    "bytes": 2676,
+    "sha256": "6966D57B164E59A2F76855370ACCD98D74113ACB6B28C16C6F0DD07CA287E835"
+  },
+  "takeoverAt": "2026-10-28T12:56:27.429312+09:00",
+  "technicalAccepted": true,
+  "userApproved": true,
+  "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-exceptions-20261029_151134\\source-final.json",
+  "finalChecks": {
+    "relatedTests": 56,
+    "relatedFiles": 3,
+    "wholeTests": 1010,
+    "wholeFiles": 138,
+    "wholeEvidenceKind": "RECORDED_EVIDENCE_REVALIDATION",
+    "wholeFreshThisFollowup": false,
+    "uiScenarios": 20,
+    "negativeGroups": 12,
+    "nativeWindowCases": 4,
+    "followupWholeRuns": 0,
+    "cumulativeUi03WholeRuns": 2
+  },
+  "preview": {
+    "url": "http://127.0.0.1:18831/",
+    "manifest": {
+      "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\preview.json",
+      "bytes": 14688,
+      "sha256": "8A081FE23DC2D6CCC0B8D98D1043B11A0F33FD0051607CC241D79088E4CD5B9A"
+    },
+    "captures": [
+      {
+        "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\captures\\native-maximized-sites.png",
+        "bytes": 271261,
+        "sha256": "3A2555A974D2A6E773C9D93C008D4D3656A86C8B480E5069E431A7F0F19997BB"
+      },
+      {
+        "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\captures\\native-maximized-workforce.png",
+        "bytes": 352516,
+        "sha256": "DF4C59649E97707FFB46E277964CF95D1D7552065200359B764C35D665C13C1C"
+      }
+    ]
+  },
+  "previousFunctionalAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\assessment.json",
+    "bytes": 12165,
+    "sha256": "C22B195EE09D90372FE3F69F41E5C10F002FD3753133BCC072091A42E2196482"
+  },
+  "layoutFollowup": {
+    "at": "2026-10-28T17:07:01.070165+09:00",
+    "changedPaths": [
+      "scripts/ui-checks/sites.mjs",
+      "src/web/sites.css"
+    ],
+    "focusedScenarios": 4,
+    "nativeWindowCases": 4,
+    "additionalWholeRuns": 0,
+    "previousFunctionalEvidenceKind": "RECORDED_EVIDENCE_REVALIDATION"
+  },
+  "previousLayoutAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-preview-window-20261028_165346\\assessment.json",
+    "bytes": 12849,
+    "sha256": "1F178AC09D78E3DD73AD0463E42C8E7441B7422D77E84256AE7C326807755E79"
+  },
+  "paginationAudit": {
+    "at": "2026-10-28T17:18:44.254957+09:00",
+    "productWrites": 0,
+    "findings": [
+      "UI03-P01",
+      "UI03-P02"
+    ],
+    "evidence": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pagination-audit-2026-10-28T08-16-59-457Z\\result.json",
+      "bytes": 6074,
+      "sha256": "F54C10DD49C8E23988BB940D692CAF15B15ABD83FEED01AD03CB4A139C458FBC"
+    }
+  },
+  "paginationPatchScope": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pagination-patch-20261028_172916\\scope.json",
+    "bytes": 1838,
+    "sha256": "BBFDAE918D232DDDAB73762AAC41483C63EAE50EF4A605A624187C17987467DD"
+  },
+  "paginationPatchResolved": [
+    "UI03-P01",
+    "UI03-P02"
+  ],
+  "layoutArrowFollowup": {
+    "at": "2026-10-28T18:01:15.906060+09:00",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-layout-arrow-20261028_175310\\assessment.json",
+      "bytes": 10417,
+      "sha256": "FF899B1F7EB3FDD8C726510762A7D81661FCAD5C712E828198B3F6EEED56234A"
+    },
+    "changedPaths": [
+      "scripts/ui-checks/sites.mjs",
+      "src/web/pagination.test.ts",
+      "src/web/pagination.ts",
+      "src/web/screens/sites.ts",
+      "src/web/sites.css"
+    ],
+    "paginationExample": "« ‹ 1 2 … 4 [5] 6 … 16 17 › »",
+    "additionalWholeRuns": 0
+  },
+  "rowFillFollowup": {
+    "at": "2026-10-28T18:18:14.932879+09:00",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\assessment.json",
+      "bytes": 10620,
+      "sha256": "28949D4E53B20A790BDE4E2A46C68473C0C7C525997B45C30B5CB7A7F904B481"
+    },
+    "changedPaths": [
+      "scripts/ui-checks/sites.mjs",
+      "src/web/common-controls.css",
+      "src/web/pagination.test.ts",
+      "src/web/pagination.ts",
+      "src/web/screens/sites-list.ts",
+      "src/web/screens/sites.ts",
+      "src/web/screens/workforce-list.ts",
+      "src/web/sites.css"
+    ],
+    "paginationExample": "« ‹ 1 2 … 4 [5] 6 … 16 17 › »",
+    "additionalWholeRuns": 0
+  },
+  "acceptedAt": "2026-10-29T16:08:10.745958+09:00",
+  "completedAt": "2026-10-28T20:18:07.002260+09:00",
+  "finalCommit": "1e4450e085f8a90606dcf37bc2e8073d60dcf9e7",
+  "userAcceptance": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\ui03-accepted.json",
+    "bytes": 1950,
+    "sha256": "45731FD81B423309DA321CF86C2D0000B895700D5A01C6A6A976DB7B6B7D8A75"
+  },
+  "acceptedHandoffArchive": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_204239_UI03-accepted-to-UI04-Gemini-IMPLEMENT_HANDOFF.md",
+    "bytes": 4196,
+    "sha256": "891A83B28AC47513AC23D79A99E6EA6A90EEDE36083E51FA1F76DF10A6D971D5"
+  },
+  "nextTask": "UI-04",
+  "nextHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 34797,
+    "sha256": "1A1C3ACCE550DD8D9FF49FE9D4ECF5C60505334CFEB95500A7AF8E3C98BAD6D3"
+  },
+  "priorAcceptanceBeforeDesignFeedback": {
+    "status": "ACCEPTED",
+    "reviewDecision": "TECHNICAL_PASS_AFTER_ROW_FILL_FOLLOWUP",
+    "reviewAssessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\assessment.json",
+      "bytes": 10620,
+      "sha256": "28949D4E53B20A790BDE4E2A46C68473C0C7C525997B45C30B5CB7A7F904B481"
+    },
+    "technicalAccepted": true,
+    "userApproved": true
+  },
+  "action": "AWAIT_USER_REVIEW",
+  "followupDefectId": "UI03-D09",
+  "implementationScope": [
+    "src/web/screens/sites.ts",
+    "src/web/screens/sites-wizard.ts",
+    "src/web/screens/sites-wizard-basics.ts",
+    "src/web/screens/sites-wizard-pattern.ts",
+    "src/web/screens/sites-wizard-palette.ts",
+    "src/web/screens/sites-simulation.ts",
+    "src/web/screens/sites-simulation.test.ts",
+    "src/web/sites.css",
+    "scripts/ui-checks/sites.mjs"
+  ],
+  "implementationPlan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\plan.json",
+  "followupSourceBefore": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\source-before.json",
+    "bytes": 68908,
+    "sha256": "CCB463A366845B60D6970D9D2321E9388EF70E6BDB8DDFFC80D3352C754820E0"
+  },
+  "followupSourceFinal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\source-final.json",
+    "bytes": 68908,
+    "sha256": "00CF284453CFC268ACA53A87DB403524D8D2A95A1A311B0394D6C2B6D717485A"
+  },
+  "expectedResumeFileCount": 448,
+  "currentProtectedFileCount": 413,
+  "currentAllowedPaths": [
+    "src/web/screens/sites-wizard-pattern.ts",
+    "src/web/screens/sites-pattern-model.ts",
+    "src/web/screens/sites-wizard-review.ts",
+    "src/web/screens/sites-wizard-basics.ts",
+    "src/web/screens/sites-wizard.ts",
+    "src/web/sites.css",
+    "scripts/ui-checks/sites.mjs",
+    "docs/codebase-map.md",
+    "src/shared/bridge/contracts.ts",
+    "src/shared/bridge/channel-contracts.ts",
+    "src/main/http/routes/workforce-routes.ts",
+    "src/main/services/database-migration-service.ts",
+    "src/main/services/database-migration-service.test.ts",
+    "src/shared/bridge/pattern-presets.ts",
+    "src/main/services/pattern-preset-storage-service.ts",
+    "src/main/services/pattern-preset-storage-service.test.ts",
+    "src/web/screens/sites-team-pattern.ts",
+    "src/web/screens/sites-team-pattern.test.ts",
+    "src/web/screens/sites-pattern-library.ts",
+    "src/main/http/routes/workforce-routes.test.ts",
+    "src/web/bridge/app-bridge.test.ts",
+    "src/shared/bridge/channel-contracts.test.ts",
+    "src/main/http/routes/operations-routes.test.ts"
+  ],
+  "followupPreview": {
+    "url": "http://127.0.0.1:18859/",
+    "serverPid": 39256,
+    "helperPid": 40352,
+    "initialView": "New worksite draft / eight-slot GUI team patterns / calculated review available",
+    "nativeFit": {
+      "width": 1707,
+      "height": 825,
+      "dpr": 1.5,
+      "panes": [
+        {
+          "name": "sites-editor-column sites-palette-column",
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "sites-editor-column sites-pattern-column",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "months": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 0
+        }
+      ]
+    },
+    "counts": {
+      "sites": 55,
+      "employees": 65,
+      "patterns": 63
+    },
+    "sample": "Four8-slot GUI rows, future-month-first draft, named PC preset 4조8일 교대 예시; next step has calculated timing.",
+    "captures": [
+      {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\captures\\D09-native-preview.png",
+        "bytes": 304817,
+        "sha256": "8C360CEF7A3191237D1BADAFF4D7E70726B7B0C42D0156B28CC4F919B6CAD3EB"
+      },
+      {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\captures\\D09-native-review.png",
+        "bytes": 220155,
+        "sha256": "3E6009D878B226192C1603B1F1E9DC34005BA38CCC15EDE91C7738DB01A3AD4B"
+      }
+    ]
+  },
+  "denseFollowup": {
+    "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126",
+    "allowedPaths": [
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-wizard-palette.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs"
+    ],
+    "reason": "user requested compact no-scroll layout",
+    "status": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\assessment.json",
+      "bytes": 2876,
+      "sha256": "97805E4864D6CDAFAD3C6410A2AD3AEA4A571B41CFC9D74988E64A2AF2CEB57E"
+    },
+    "preview": {
+      "url": "http://127.0.0.1:18851/",
+      "serverPid": 31756,
+      "helperPid": 59924,
+      "counts": {
+        "sites": 55,
+        "employees": 65,
+        "patterns": 63
+      },
+      "capture": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\captures\\D09-native-preview.png",
+        "bytes": 309925,
+        "sha256": "A0408BAC9737E2EBF953EFE89055136794D08137A68E0430B547395969E212EA"
+      }
+    }
+  },
+  "assessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\assessment.json",
+    "bytes": 8037,
+    "sha256": "5B7628F0380F2420FC7125FB35D2443F99332F12851E91ACBE0F415AFD4770D0"
+  },
+  "currentSourceFingerprint": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\source-final.json",
+    "bytes": 69873,
+    "sha256": "3F2A94F78F33B641AD42A8C7708024BCC25330D5912850229357503F637B3E77"
+  },
+  "mockupReferenceFollowup": {
+    "plan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\reference-followup\\plan.json",
+    "state": "USER_REVIEW",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\reference-followup\\assessment.json",
+      "bytes": 4605,
+      "sha256": "65CB1F514902E0A30B44F9B4D37C1B1ABA09CEE825E41325BED9A016846866A2"
+    },
+    "preview": {
+      "url": "http://127.0.0.1:18855/",
+      "serverPid": 30000,
+      "helperPid": 51576,
+      "counts": {
+        "sites": 55,
+        "employees": 65,
+        "patterns": 63
+      },
+      "capture": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\reference-followup\\captures\\D09-native-preview.png",
+        "bytes": 313586,
+        "sha256": "6CEA547FD3C9FB46C4BE625E243715D6C353F9974416DA2E38983D3F1080AC44"
+      }
+    }
+  },
+  "guiPatternFollowup": {
+    "plan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\plan.json",
+    "owner": "Sol",
+    "allowed": [
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-pattern-model.ts",
+      "src/web/screens/sites-wizard-review.ts",
+      "src/web/screens/sites-wizard-basics.ts",
+      "src/web/screens/sites-wizard.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs",
+      "docs/codebase-map.md",
+      "src/shared/bridge/contracts.ts",
+      "src/shared/bridge/channel-contracts.ts",
+      "src/main/http/routes/workforce-routes.ts",
+      "src/main/services/database-migration-service.ts",
+      "src/main/services/database-migration-service.test.ts",
+      "src/shared/bridge/pattern-presets.ts",
+      "src/main/services/pattern-preset-storage-service.ts",
+      "src/main/services/pattern-preset-storage-service.test.ts",
+      "src/web/screens/sites-team-pattern.ts",
+      "src/web/screens/sites-team-pattern.test.ts",
+      "src/web/screens/sites-pattern-library.ts"
+    ],
+    "status": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\assessment.json",
+      "bytes": 8037,
+      "sha256": "5B7628F0380F2420FC7125FB35D2443F99332F12851E91ACBE0F415AFD4770D0"
+    },
+    "preview": {
+      "url": "http://127.0.0.1:18859/",
+      "serverPid": 39256,
+      "helperPid": 40352,
+      "initialView": "New worksite draft / eight-slot GUI team patterns / calculated review available",
+      "nativeFit": {
+        "width": 1707,
+        "height": 825,
+        "dpr": 1.5,
+        "panes": [
+          {
+            "name": "sites-editor-column sites-palette-column",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "sites-editor-column sites-pattern-column",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "months": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "counts": {
+        "sites": 55,
+        "employees": 65,
+        "patterns": 63
+      },
+      "sample": "Four8-slot GUI rows, future-month-first draft, named PC preset 4조8일 교대 예시; next step has calculated timing.",
+      "captures": [
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\captures\\D09-native-preview.png",
+          "bytes": 304817,
+          "sha256": "8C360CEF7A3191237D1BADAFF4D7E70726B7B0C42D0156B28CC4F919B6CAD3EB"
+        },
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\captures\\D09-native-review.png",
+          "bytes": 220155,
+          "sha256": "3E6009D878B226192C1603B1F1E9DC34005BA38CCC15EDE91C7738DB01A3AD4B"
+        }
+      ]
+    }
+  },
+  "holidayOrgFollowup": {
+    "plan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\plan.json",
+    "owner": "Sol",
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\assessment.json",
+    "sourceFinal": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\source-final.json",
+    "allowed": [
+      "src/web/screens/sites-organization.ts",
+      "src/web/screens/sites-wizard-palette.ts",
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-team-pattern.ts",
+      "src/web/screens/sites-team-pattern.test.ts",
+      "src/web/screens/sites-pattern-model.ts",
+      "src/web/screens/sites-model.test.ts",
+      "src/web/screens/sites-wizard-review.ts",
+      "src/web/screens/sites-pattern-library.ts",
+      "src/web/screens/sites-simulation.ts",
+      "src/web/screens/sites-simulation.test.ts",
+      "src/web/screens/sites-commit.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs",
+      "docs/codebase-map.md",
+      "src/shared/domain/model.ts",
+      "src/shared/bridge/contracts.ts",
+      "src/shared/bridge/pattern-presets.ts",
+      "src/shared/domain/holiday-pattern.ts",
+      "src/shared/domain/holiday-pattern.test.ts",
+      "src/shared/domain/monthly-schedule-draft.ts",
+      "src/shared/domain/monthly-schedule-draft.test.ts",
+      "src/main/services/sqlite-storage-service.ts",
+      "src/main/services/shift-pattern-storage-service.ts",
+      "src/main/services/shift-pattern-storage-service.test.ts",
+      "src/main/services/database-migration-service.ts",
+      "src/main/services/database-migration-service.test.ts",
+      "src/web/screens/sites-holiday-policy.ts"
+    ],
+    "preview": {
+      "url": "http://127.0.0.1:18866/",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-holiday-org-preview-final\\preview.json",
+      "helperPid": 37344,
+      "serverPid": 42132,
+      "sampleSites": 55,
+      "sampleEmployees": 65,
+      "stagedTeamMembers": 8,
+      "holidayExample": "normal eight-day team pattern plus Saturday two-day alternating D/N rule, E unchecked and day shift +1hour",
+      "userApproved": false,
+      "viewport": {
+        "width": 1707,
+        "height": 825,
+        "dpr": 1.5,
+        "panes": [
+          {
+            "name": "sites-editor-column sites-palette-column",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "sites-editor-column sites-pattern-column",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "months": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      }
+    }
+  },
+  "developmentLoginBanner": {
+    "status": "COMPLETE",
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\dev-login-banner-20261029_132949\\assessment.json",
+    "sourceFinal": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\dev-login-banner-20261029_132949\\source-final.json",
+    "url": "http://127.0.0.1:18866/?developmentPreview=1",
+    "removeAt": "Development completion"
+  },
+  "timePatternDetail": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pattern-detail-20261029_135543\\assessment.json",
+    "preview": {
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-pattern-detail-preview\\preview.json",
+      "url": "http://127.0.0.1:18866/?developmentPreview=1",
+      "helperPid": 43500,
+      "currentView": "14day detailed pattern draft; all4teams populated; no DB writes",
+      "userApproved": false,
+      "sites": 55,
+      "employees": 65,
+      "width": 1707,
+      "height": 825,
+      "dpr": 1.5,
+      "days": 14,
+      "canvasOverflow": 0,
+      "labelsClipped": false
+    },
+    "allowed": [
+      "src/web/common-controls.ts",
+      "src/web/common-controls.css",
+      "src/web/screens/sites-pattern-dialog.ts",
+      "src/web/screens/sites-team-pattern.ts",
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs",
+      "docs/codebase-map.md",
+      "src/web/screens/login.ts"
+    ]
+  },
+  "patternGuide": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pattern-guide-20261029_141620\\assessment.json",
+    "preview": {
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-pattern-guide-preview\\preview.json",
+      "url": "http://127.0.0.1:18866/?developmentPreview=1",
+      "helperPid": 47400,
+      "currentView": "14day team overview; prominent holiday shortcuts and user guide; detached draft only",
+      "userApproved": false,
+      "sites": 55,
+      "employees": 65,
+      "width": 1707,
+      "height": 825,
+      "dpr": 1.5,
+      "cards": 4,
+      "paneX": 0,
+      "paneY": 0,
+      "entryVisible": true,
+      "stripWidth": 330.8333435058594
+    },
+    "allowed": [
+      "src/web/screens/sites-team-pattern.ts",
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-holiday-policy.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs"
+    ]
+  },
+  "holidayEvaluation": {
+    "status": "COMPLETE",
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-evaluation-20261029_143737\\assessment.json",
+    "preview": {
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-holiday-evaluation-preview\\preview.json",
+      "url": "http://127.0.0.1:18876/?developmentPreview=1",
+      "serverPid": 47416,
+      "helperPid": 39772,
+      "nativeFit": {
+        "width": 1707,
+        "height": 825,
+        "dpr": 1.5,
+        "panes": [
+          {
+            "name": "sites-editor-column sites-palette-column",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "sites-editor-column sites-pattern-column",
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "months": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "data": "55sites/65employees, detached example draft"
+    },
+    "allowed": [
+      "src/shared/domain/holiday-pattern.ts",
+      "src/shared/domain/holiday-pattern.test.ts",
+      "src/shared/domain/monthly-schedule-draft.test.ts",
+      "src/web/screens/sites-holiday-policy.ts",
+      "src/web/screens/sites-wizard-palette.ts",
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-wizard-review.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs"
+    ]
+  },
+  "exceptions": {
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-exceptions-20261029_151134\\assessment.json",
+    "preview": {
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-exceptions-preview-ZugkcV\\final-preview.json",
+      "url": "http://127.0.0.1:18884/?developmentPreview=1",
+      "serverPid": 516,
+      "helperPid": 49664,
+      "out": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-exceptions-preview-ZugkcV",
+      "userDataDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-exceptions-preview-ZugkcV\\user-data",
+      "currentView": "Existing sample worksite / refined basic settings; next step has dated/team/personal examples and actual preview",
+      "sample": {
+        "date": "2026-11-01",
+        "exceptionCount": 4,
+        "sites": 55,
+        "people": 65
+      },
+      "fit": {
+        "width": 1707,
+        "height": 825,
+        "x": 0,
+        "y": 0,
+        "cards": 2,
+        "templates": 3
+      },
+      "errors": [],
+      "userApproved": false,
+      "final": true,
+      "previewResultBox": {
+        "x": 253.6666717529297,
+        "y": 344.04168701171875,
+        "width": 1184.6667022705078,
+        "height": 375.5
+      },
+      "updatedAt": "2026-10-29T06:43:42.100Z"
+    },
+    "allowed": [
+      "src/shared/domain/schedule-exceptions.ts",
+      "src/shared/domain/schedule-exceptions.test.ts",
+      "src/shared/domain/holiday-pattern.ts",
+      "src/shared/domain/holiday-pattern.test.ts",
+      "src/shared/domain/monthly-schedule-draft.ts",
+      "src/shared/domain/monthly-schedule-draft.test.ts",
+      "src/shared/bridge/pattern-presets.ts",
+      "src/main/services/shift-pattern-storage-service.ts",
+      "src/main/services/shift-pattern-storage-service.test.ts",
+      "src/main/services/database-migration-service.test.ts",
+      "src/main/services/pattern-preset-storage-service.test.ts",
+      "src/web/screens/sites-wizard-basics.ts",
+      "src/web/screens/sites-wizard.ts",
+      "src/web/screens/sites-wizard-pattern.ts",
+      "src/web/screens/sites-holiday-policy.ts",
+      "src/web/screens/sites-exceptions.ts",
+      "src/web/screens/sites-pattern-model.ts",
+      "src/web/screens/sites-team-pattern.ts",
+      "src/web/screens/sites-team-pattern.test.ts",
+      "src/web/screens/sites-pattern-library.ts",
+      "src/web/screens/sites-wizard-review.ts",
+      "src/web/sites.css",
+      "scripts/ui-checks/sites.mjs"
+    ]
+  },
+  "flatListFollowup": {
+    "status": "USER_APPROVED",
+    "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-flat-list-20261029_175708\\assessment.json",
+    "finalSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-flat-list-20261029_175708\\source-final.json",
+    "preview": {
+      "url": "http://127.0.0.1:18923/?developmentPreview=1",
+      "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-flat-list-open-p5yGTe\\preview.json",
+      "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-flat-list-open-p5yGTe\\sites.png"
+    },
+    "allowed": [
+      "src/web/screens/sites-list.ts",
+      "src/web/screens/sites-model.ts",
+      "src/web/screens/sites-model.test.ts",
+      "scripts/ui-checks/sites.mjs"
+    ],
+    "userApproved": true,
+    "approvedAt": "2026-10-29T18:10:19.654757+09:00"
+  },
+  "currentReviewPreview": {
+    "url": "http://127.0.0.1:18923/?developmentPreview=1",
+    "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-flat-list-open-p5yGTe\\preview.json",
+    "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-flat-list-open-p5yGTe\\sites.png"
+  }
+}

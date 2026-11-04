@@ -1,0 +1,105 @@
+{
+  "policy-tests.json": {
+    "sha256": "A7BC46F7673213E50B245879AE972298A95A29EB9323A89C166678023B4239EB",
+    "mtime": 1793699038.3074799,
+    "total": 21,
+    "passed": 21,
+    "failed": 0,
+    "files": 4
+  },
+  "full-tests.json": {
+    "sha256": "50C55353B71DBC1D0350D55377C86FEA753D5A07C55529E76B998FFB4C076823",
+    "mtime": 1793699933.1534255,
+    "total": 1448,
+    "passed": 1448,
+    "failed": 0,
+    "files": 155
+  },
+  "ops-focused/summary.json": {
+    "sha256": "8DD14FA2C5F3FEE4AA78F99E13028C2923A87D81E1AAF6F22CF3BF0A336E0D75",
+    "mtime": 1793699114.683433,
+    "status": "PARTIAL_PASS",
+    "completed": [
+      "S03",
+      "S04",
+      "S19",
+      "S20"
+    ],
+    "failed": [],
+    "completedScenarios": null,
+    "failedScenarios": null,
+    "blockedScenarios": null,
+    "unexpectedErrors": []
+  },
+  "ops-full/summary.json": {
+    "sha256": "FF513C0BD859496D6DD955241168F58077957A4D25C2C3E0CA0B047662560A93",
+    "mtime": 1793700368.2334228,
+    "status": "PASS",
+    "completed": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S16",
+      "S17",
+      "S18",
+      "S19",
+      "S20"
+    ],
+    "failed": [],
+    "completedScenarios": null,
+    "failedScenarios": null,
+    "blockedScenarios": null,
+    "unexpectedErrors": []
+  },
+  "performance-full/results.json": {
+    "sha256": "9B94B40B167F85D503B3F2AA4F5917C8DD243282589D8DAFBD9B29209A41DE6E",
+    "mtime": 1793702092.3206792,
+    "status": "PARTIAL_BLOCKED",
+    "completed": null,
+    "failed": null,
+    "completedScenarios": [
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "S09",
+      "S10",
+      "S11",
+      "S12",
+      "S14",
+      "S15",
+      "S17",
+      "S18",
+      "S19",
+      "S20"
+    ],
+    "failedScenarios": [],
+    "blockedScenarios": [
+      {
+        "id": "S13",
+        "reason": "Existing protected API explicitly returns PERFORMANCE_REJECT_UNSUPPORTED. No rejection success or history mutation is claimed."
+      },
+      {
+        "id": "S16",
+        "reason": "Existing API blocks hiding calculated approvals."
+      }
+    ],
+    "unexpectedErrors": []
+  }
+}

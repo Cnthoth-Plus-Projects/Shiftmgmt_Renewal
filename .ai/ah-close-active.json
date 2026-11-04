@@ -1,0 +1,81 @@
+{
+  "schema": "shiftmgmt.ah-close.state.v1",
+  "task": "AH-CLOSE",
+  "status": "ACCEPTED",
+  "startedAt": "2026-10-26T23:41:24.299119+09:00",
+  "owner": "Sol",
+  "implementationOwner": "Gemini only if an authorized product fix is required",
+  "initialSubmissions": 0,
+  "retrySubmissions": 0,
+  "cumulativeSubmissions": 0,
+  "productWrites": 0,
+  "sourceBefore": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\source-before.json",
+    "bytes": 62966,
+    "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+  },
+  "receivedHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 5547,
+    "sha256": "0EF029F38E7EBCF058B686D3AFD3C5625FA4EC1AF8222B6D1AC159F1FA1F3F60"
+  },
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124",
+  "archives": {
+    "TODO.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_TODO.md",
+      "bytes": 17758,
+      "sha256": "BE7C6C20CA1CCFFE7C2F14F3E4F64998A28C86AD5C2C0D9DC84CC3CA673358AA"
+    },
+    ".ai/task-plan.json": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_task-plan.json",
+      "bytes": 30661,
+      "sha256": "F5DBFB188E5F608901AB9F378307028A43376EB10420AD069E3A8AD5DDB58BE1"
+    },
+    ".ai/current-state.md": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_current-state.md",
+      "bytes": 902,
+      "sha256": "D04BF8178867BF4F844BBBE763BD9E2C77852DC9852EEA0F74520D1AAF815838"
+    }
+  },
+  "scope": "Original124/normal81/B87 reconciliation; fullA2/B required evidence, affected regressions and commit review; user direct screen confirmation. No next Task or release.",
+  "checkpoint": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\progress-20261027_002930.json",
+    "bytes": 6834,
+    "sha256": "F96080D17CC2ADB8F97BAC1CE1ABC642644E9D16E3827D71F885457B9A23C361"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 2484,
+    "sha256": "38187D23B501CAED62447F11DC53BDC3B436F0E364B7F25546571C4588F32A44"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 32111,
+    "sha256": "26E34F2FB11F38AABE8A5E20A1A9A57D6CC5B1DE1CFDC839617390F7DEDE7165"
+  },
+  "userConfirmation": "APPROVED",
+  "supportingObligationsCollected": 124,
+  "unprovenOrAstPending": 0,
+  "phase": "CLOSED",
+  "technicalReviewCompletedAt": "2026-10-27T01:27:02.593081+09:00",
+  "technicalAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\assessment.json",
+    "bytes": 7561,
+    "sha256": "ADE7C8C3F6523B6A8A7E48F21E18E39BF7BD327ED02887B21B3C2AFB0AA68FEA"
+  },
+  "B87CriteriaEvidenced": 87,
+  "livePreviewUrl": "http://127.0.0.1:18808/",
+  "next": "TRIAGE-01 not started",
+  "closedAt": "2026-10-27T01:42:50.471121+09:00",
+  "finalAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\final-assessment.json",
+    "bytes": 3491,
+    "sha256": "A3148EA79EF4D8702E18D885370384D3C686CA161934B1440D6DABEEE68F2272"
+  },
+  "commit": "201c7b815aec842859da2fec7a2a1666064b1b70",
+  "sourceAfterCommit": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\source-after-approved-commit.json",
+    "bytes": 60883,
+    "sha256": "2C1404982FC22E2A902FE566CE9412E8DE9345BD20ABE6BD8ABB5B5536F2BD69"
+  }
+}

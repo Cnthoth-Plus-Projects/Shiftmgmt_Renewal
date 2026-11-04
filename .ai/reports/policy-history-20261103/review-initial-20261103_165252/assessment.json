@@ -1,0 +1,267 @@
+{
+  "taskId": "POLICY-HISTORY-01",
+  "attempt": "initial",
+  "status": "CORRECT_REQUIRED",
+  "at": "2026-11-03T17:11:14.379755+09:00",
+  "gemini": {
+    "initial": 1,
+    "retry": 0,
+    "total": 1,
+    "owner": "Gemini retry implementation; Sol verification"
+  },
+  "receiptWriterClaim": "Sol(Codex) under standing exception; conflicts with active packet and not proven by files",
+  "sourceCount": 510,
+  "protectedUnchanged": 455,
+  "outsideAllowedFiles": 0,
+  "candidateUnchangedDuringReview": true,
+  "defects": {
+    "PH-D01": {
+      "requirements": [
+        "PH-R02",
+        "PH-R07",
+        "PH-R09"
+      ],
+      "severity": "high",
+      "title": "실제 초기정책 없이 가상 ID 저장, 변경후 근무자 바인딩 누락, 기준 대신 사유 snapshot",
+      "evidence": [
+        "extra-repros.json:first-parser-dangling-policy-id",
+        "extra-repros.json:changed-worker-binding-missing"
+      ],
+      "sources": [
+        "policy-history-service.ts:314-345",
+        "schedule-return-performance-parser.ts:1110,1161-1179,1325-1372,2027-2031"
+      ]
+    },
+    "PH-D02": {
+      "requirements": [
+        "PH-R08"
+      ],
+      "severity": "high",
+      "title": "정책 월 cache 무효화와 파싱 중 정본 고정 실패",
+      "evidence": [
+        "backend-repros.json:real-excel-cache-and-same-rule-stale-approval"
+      ],
+      "sources": [
+        "performance-file-intake-service.ts:262-289,497-505",
+        "schedule-return-performance-parser.ts:2027-2031"
+      ]
+    },
+    "PH-D03": {
+      "requirements": [
+        "PH-R09"
+      ],
+      "severity": "high",
+      "title": "공개 승인 지문 누락 허용 및 같은 ruleKey의 다른 버전 승인",
+      "evidence": [
+        "backend-repros.json:real-excel-missing-client-fingerprint",
+        "backend-repros.json:real-excel-cache-and-same-rule-stale-approval"
+      ],
+      "sources": [
+        "performance-approval-flow-service.ts:203-204,445-452",
+        "performance-actions.ts:approvePendingFile payload"
+      ]
+    },
+    "PH-D04": {
+      "requirements": [
+        "PH-R05",
+        "PH-R06"
+      ],
+      "severity": "high",
+      "title": "preview DB 쓰기, service admin 누락, session/관련데이터 토큰 결합·transaction내 재검증 누락",
+      "evidence": [
+        "backend-repros.json:preview-writes",
+        "backend-repros.json:non-admin-service-write",
+        "extra-repros.json:related-approval-changed-after-preview"
+      ],
+      "sources": [
+        "policy-history-impact-service.ts:26-33,67-77,233-239,278-293"
+      ]
+    },
+    "PH-D05": {
+      "requirements": [
+        "PH-R01",
+        "PH-R03",
+        "PH-R04",
+        "PH-R05",
+        "PH-R06"
+      ],
+      "severity": "high",
+      "title": "정정 종류 불일치와 중복 활성일 허용, 영향 구간/행 수 산정 오류",
+      "evidence": [
+        "backend-repros.json:cross-kind-correction",
+        "backend-repros.json:duplicate-correction-date"
+      ],
+      "sources": [
+        "policy-history-impact-service.ts:127-226",
+        "policy-history-service.ts:799-829"
+      ]
+    },
+    "PH-D06": {
+      "requirements": [
+        "PH-R10"
+      ],
+      "severity": "high",
+      "title": "v2 JSON 정책·사건 참조/기준 검증과 엄격한 열 계약 미충족",
+      "evidence": [
+        "json-repros.json:wrong-kind-rule",
+        "json-repros.json:invalid-criteria-json",
+        "json-repros.json:missing-v2-email",
+        "json-repros.json:event-kind-mismatch"
+      ],
+      "sources": [
+        "database-migration-service.ts:1221-1228,1255-1297"
+      ]
+    },
+    "PH-D07": {
+      "requirements": [
+        "PH-R06",
+        "PH-R11",
+        "PH-R12"
+      ],
+      "severity": "high",
+      "title": "입력 변경·닫힌 창 응답이 이전 token을 확정에 사용",
+      "evidence": [
+        "ui-repros.json:draft-edit-during-preview",
+        "ui-repros.json:closed-dialog-response-ownership"
+      ],
+      "sources": [
+        "operations-policy-dialog.ts:108-123,143-225,228-236",
+        "operations-policy-history.ts:fetchAndPopulateTable/close"
+      ]
+    },
+    "PH-D08": {
+      "requirements": [
+        "PH-R11",
+        "PH-R12"
+      ],
+      "severity": "medium",
+      "title": "오류 지움/모달 focus·이름·수명 누락, 사용/상태 데이터 불일치 및 기간·사건 상세 미구현",
+      "evidence": [
+        "ui-repros.json:modal-focus-and-label",
+        "ui-repros.json:preview-error-visible"
+      ],
+      "sources": [
+        "operations-policy-dialog.ts:open,108-123,187-195,228-236",
+        "operations-policy-history.ts:93-106,134-174,225-260",
+        "policy-history-service.ts:561-590",
+        "operations-settings.ts:58-59"
+      ]
+    },
+    "PH-D09": {
+      "requirements": [
+        "PH-R12"
+      ],
+      "severity": "high",
+      "title": "검문 범위 부족·CSP 오류 숨김·제출 근거/구현 주체 서술 부정확",
+      "evidence": [
+        "submitted-artifacts.json",
+        "sol-policy-tests.json",
+        "backend-repros.json",
+        "json-repros.json",
+        "ui-repros.json",
+        "extra-repros.json"
+      ],
+      "sources": [
+        "performance.mjs:182-193",
+        "received HANDOFF:reply gates7/owner/complete claim"
+      ]
+    }
+  },
+  "freshChecks": {
+    "typecheck": {
+      "rc": 0
+    },
+    "policyTests": {
+      "rc": 0,
+      "files": 4,
+      "passed": 18,
+      "failed": 0
+    },
+    "focusedAdversarialReproductions": {
+      "completed": true,
+      "violationsObserved": 17,
+      "validJsonControlAccepted": true,
+      "runnerRc": 0,
+      "meaning": "RC0 means probe execution completed; observed violations are NOT product passes",
+      "onlyTempFixtures": true
+    },
+    "browserHarness": {
+      "actualCompiledUiSource": true,
+      "controlledServiceBoundary": true,
+      "environmentFallback": "Playwright default downloaded Chromium missing; used installed Chrome channel, no installation/product edits"
+    }
+  },
+  "recordedEvidenceRevalidation": {
+    "fullUnit": {
+      "passed": 1445,
+      "actualFiles": 155,
+      "nestedSuites": 408,
+      "mode": "submitted JSON parsed, not fresh full execution"
+    },
+    "opsFull": "recorded PASS20/N12, not fresh",
+    "performanceFull": "recorded PARTIAL_BLOCKED18+S13/S16, not fresh; broad CSP filter invalidates zero-error claim",
+    "submittedFileHashes": "8/8 match current source"
+  },
+  "fullSuiteRerunsBySol": 0,
+  "artifacts": [
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\backend-repros.json",
+      "bytes": 1056,
+      "sha256": "6A364360F18D0BD50ACFCD4C2F4278490D0CCB5563B193C4D0B699FCF8EFD20E"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\json-repros.json",
+      "bytes": 432,
+      "sha256": "DFBE5AC10B1D11BFE60506A832C34052F2006AC151678E182929D3DB93953E64"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\ui-repros.json",
+      "bytes": 480,
+      "sha256": "9558E57E8AA5B1EEBD83587601D304109AD9C219006F4286E07E815E81B7E053"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\extra-repros.json",
+      "bytes": 495,
+      "sha256": "1D93E24245CA8D371126ACECBB20C2AED314198B3D7F1B4BD90C5520BF2432B3"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\sol-policy-tests.json",
+      "bytes": 7304,
+      "sha256": "871DAC1E67EE1A6690D4C04F7DD6CDC28328F2E9F5D2389002CAA284326F8E96"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\candidate-source.json",
+      "bytes": 81464,
+      "sha256": "503EEE4D9044B51EBDEA6075945C59448DCDFDBF2C663C473524CD9EDD58FCCE"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\boundary.json",
+      "bytes": 2878,
+      "sha256": "44B3A042ADD85B215F61875CCB250163D5B7F457C93A114E0DBF7C107A0D4423"
+    },
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\submitted-artifacts.json",
+      "bytes": 2873,
+      "sha256": "545A200C48126A098CA114DA29A7171C817356129226C3F9CBECDAB9BC04DF2F"
+    }
+  ],
+  "handoffAuthorityCheck": {
+    "method": "anchored full heading, not inline heading mention",
+    "originalRequestChars": 26657,
+    "unchangedReceivedRequest": true,
+    "finalCorrectionComplete": true
+  },
+  "controlDraftProcess": {
+    "generatedIncompleteDraftCaught": true,
+    "cause": "inline heading mention matched unanchored split",
+    "preservedInAppendOnlyLog": true,
+    "recovery": "stage and validate complete authority/55 paths/12 requirements/9 defects before atomic root replace",
+    "productChanged": false,
+    "extraGeminiAttempt": false
+  },
+  "correctionPacket": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\CORRECT-retry1.md",
+    "bytes": 62818,
+    "sha256": "1D651375F5F0DFDC3DF9DF7CBEB53FAB178945BA5B0EB72648CDCFBA092F46F7"
+  }
+}

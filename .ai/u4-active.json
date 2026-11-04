@@ -1,0 +1,120 @@
+{
+  "task": "3-2c-A2-U4-filters",
+  "phase": "CLOSED_U4_ONLY",
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826",
+  "sourceFiles": 357,
+  "expectedInitialHead": "160940f9aaeb6696538447f83b44658073e382f0",
+  "formalAccepted": 45,
+  "formalMissing": 36,
+  "newFiltersAccepted": 15,
+  "GeminiSubmissions": {
+    "initial": 1,
+    "retry": 1,
+    "cumulative": 2
+  },
+  "implementationOwner": "Sol",
+  "nextActionOwner": "Sol",
+  "readyToCode": false,
+  "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u4-retry",
+  "seal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u4-retry\\seal.json",
+    "bytes": 1715,
+    "sha256": "6157C046726F32490044D8A1E4E581EE1F4C21D1E01FF5D449A20A3BA19E3C4D"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 11268,
+    "sha256": "5AEB4061DA7887FC5C248850D1CE91121DE6C5EA6FB49AF536B8B87518DE428A"
+  },
+  "IMPLEMENTIssued": false,
+  "issuedInitialPackets": 1,
+  "assessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\assessment.json",
+    "bytes": 2778,
+    "sha256": "5D52409D36DA1C0393D530D3D6D36CDC32468FA772B5C53693FC6B9F60ABE505"
+  },
+  "issuedRetryPackets": 1,
+  "lastRecheck": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-review-20261024_170244\\recheck-20261024_172717.json",
+    "bytes": 925,
+    "sha256": "3B1392BACA47A8E5307774C90355D0040972BC46C1107A88D0F90CC5D15B7819"
+  },
+  "currentSourceFiles": 357,
+  "CORRECTIssued": true,
+  "status": "ACCEPTED_FILTERS_ORIGINAL15_ONLY_CLOSED",
+  "owner": "Sol (direct implementation complete)",
+  "directImplementationAttempts": 1,
+  "remainingRetrySubmissions": 0,
+  "canonicalAccepted": 45,
+  "newCanonicalAccepted": 15,
+  "lastProgress": {
+    "at": "2026-10-25T00:44:51.268603+09:00",
+    "status": "ACCEPTED_FILTERS_ORIGINAL15_ONLY_CLOSED",
+    "owner": "Sol",
+    "canonicalAccepted": 45,
+    "newCanonicalAccepted": 15,
+    "missing": 36,
+    "completed": [
+      "final34 commands RC0",
+      "full88 RC0",
+      "actual runtime51 PASS",
+      "final source and4588 pins audit",
+      "HANDOFF/TODO/current-state/ledger updated"
+    ],
+    "pending": [],
+    "assessment": {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\assessment.json",
+      "bytes": 2778,
+      "sha256": "5D52409D36DA1C0393D530D3D6D36CDC32468FA772B5C53693FC6B9F60ABE505"
+    },
+    "GeminiInitial": 1,
+    "GeminiRetry": 1,
+    "GeminiTotal": 2,
+    "SolDirectAttempt": 1
+  },
+  "SolProductWrites": 3,
+  "cumulativeProductFilesChanged": 12,
+  "previousAssessments": [
+    {
+      "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-review-20261024_170244\\assessment.json",
+      "bytes": 13624,
+      "sha256": "C7470953B162DE9D21057838C2481CAAE998BFD541512DD3FEAE34FF283E1D00"
+    }
+  ],
+  "canonicalMissing": 36,
+  "finalAudit": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\final-audit.json",
+    "bytes": 16715,
+    "sha256": "11A41528E5F7B9B9AF7D6B953F91010DA0D64F9E86B8EB8F05FEFFF3CFDF01AB"
+  },
+  "closedAt": "2026-10-25T00:43:35.420605+09:00",
+  "next": "errors original8 scope/strategy discovery; no next implementation packet issued",
+  "progressHistory": [
+    {
+      "at": "2026-10-25T00:01:12.557504+09:00",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826",
+      "latestSource": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\source-final-candidate.json",
+      "canonicalAccepted": 30,
+      "newCanonicalAccepted": 0,
+      "completed": [
+        "final filters observed15",
+        "final filters plain15",
+        "reader40",
+        "lifecycle3",
+        "Sol supplemental fault5",
+        "nested input7 getter0"
+      ],
+      "pending": [
+        "final paired legacy regressions",
+        "full88/runtime51",
+        "final integration"
+      ],
+      "owner": "Sol",
+      "GeminiInitial": 1,
+      "GeminiRetry": 1,
+      "GeminiTotal": 2,
+      "SolDirectAttempt": 1
+    }
+  ],
+  "initialSourceFiles": 353
+}

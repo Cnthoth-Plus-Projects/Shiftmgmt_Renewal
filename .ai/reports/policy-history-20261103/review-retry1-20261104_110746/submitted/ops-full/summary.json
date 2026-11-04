@@ -1,0 +1,1366 @@
+{
+  "status": "PASS",
+  "fullRun": true,
+  "servedAssets": [
+    {
+      "name": "app.js",
+      "bytes": 1590874,
+      "sha256": "1f79c7aa2ec1533c55e101075809ecbe897ff559fbe7ce3d34ccfcb9a2718d6f"
+    },
+    {
+      "name": "operations.css",
+      "bytes": 30691,
+      "sha256": "bdcc42586fb3cbfa9dae9c02ca279ae69d1b3631ee0ca87519943bffc865efd4"
+    }
+  ],
+  "negativePlan": {
+    "N01": [
+      "three-roles-forced-zero-api-and-direct-guards"
+    ],
+    "N02": [
+      "settings-discard-cancel",
+      "watch-double-click",
+      "holiday-import-cancel",
+      "active-rate-confirm-cancel",
+      "user-delete-cancel",
+      "recovery-key-cancel",
+      "site-delete-cancel",
+      "layout-save-reset-cancel",
+      "restore-cancel-wrong-text-double-and-locks"
+    ],
+    "N03": [
+      "settings-missing-unit-time-date",
+      "holiday-year-duplicate"
+    ],
+    "N04": [
+      "missing-negative-started-date-period"
+    ],
+    "N05": [
+      "failed-partial-stale-impact",
+      "controlled-zero-warning-readonly"
+    ],
+    "N06": [
+      "empty-password-self-last-admin-and-omission"
+    ],
+    "N07": [
+      "protected-structure-binding-unknown-block",
+      "filename-token-path-extension"
+    ],
+    "N08": [
+      "stale-save-reset-preview-and-expired-ui"
+    ],
+    "N09": [
+      "invalid-json-unknown-missing-type"
+    ],
+    "N10": [
+      "path-sha-expiry-phrase-and-locked-db-preservation"
+    ],
+    "N11": [
+      "late-tab-and-expired-relogin-ownership",
+      "late-json-after-key-change",
+      "late-secret-response-modal-replacement"
+    ],
+    "N12": [
+      "site-literal-roundtrip",
+      "release-literal-detail",
+      "preview-error-literal",
+      "layout-canvas-literal"
+    ]
+  },
+  "negativeEvidence": {
+    "N01": [
+      "three-roles-forced-zero-api-and-direct-guards"
+    ],
+    "N02": [
+      "settings-discard-cancel",
+      "watch-double-click",
+      "holiday-import-cancel",
+      "active-rate-confirm-cancel",
+      "user-delete-cancel",
+      "recovery-key-cancel",
+      "site-delete-cancel",
+      "layout-save-reset-cancel",
+      "restore-cancel-wrong-text-double-and-locks"
+    ],
+    "N03": [
+      "settings-missing-unit-time-date",
+      "holiday-year-duplicate"
+    ],
+    "N04": [
+      "missing-negative-started-date-period"
+    ],
+    "N05": [
+      "controlled-zero-warning-readonly",
+      "failed-partial-stale-impact"
+    ],
+    "N06": [
+      "empty-password-self-last-admin-and-omission"
+    ],
+    "N07": [
+      "protected-structure-binding-unknown-block",
+      "filename-token-path-extension"
+    ],
+    "N08": [
+      "stale-save-reset-preview-and-expired-ui"
+    ],
+    "N09": [
+      "invalid-json-unknown-missing-type"
+    ],
+    "N10": [
+      "path-sha-expiry-phrase-and-locked-db-preservation"
+    ],
+    "N11": [
+      "late-json-after-key-change",
+      "late-secret-response-modal-replacement",
+      "late-tab-and-expired-relogin-ownership"
+    ],
+    "N12": [
+      "site-literal-roundtrip",
+      "release-literal-detail",
+      "layout-canvas-literal",
+      "preview-error-literal"
+    ]
+  },
+  "extraEvidence": {
+    "S01": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Seven actual tab loads and user shortcut agree with active panel"
+      ]
+    },
+    "S02": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "55 distinct records sorted globally before six pages; filter resets page"
+      ]
+    },
+    "S03": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Full settings saved once and re-read, unrelated fields preserved, invalid writes zero, areas navigated and focus restored, delayed draft and revert verified"
+      ]
+    },
+    "S04": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual watcher stop/restart state and double-click count, controlled failure display and recovery without side effects"
+      ],
+      "settingsAsyncOwnershipAndLiteralMessages": true
+    },
+    "S05": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Holiday add/rename/delete persisted; wrong year and duplicate rejected"
+      ]
+    },
+    "S06": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Local API compare/cancel/write-once and HTTP/parse failure preserve calendar"
+      ]
+    },
+    "S07": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual fifteen values/save/history; controlled read failures/partial/stale results produce no false zero or calculation writes"
+      ]
+    },
+    "S08": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Active transition confirmed once, prior active retired; rejected invalid edits preserve calculations"
+      ]
+    },
+    "S09": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "User edit persists role/contact/email, omitted password still logs in, delete cancel and actual delete"
+      ]
+    },
+    "S10": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual own recovery key rotated once; controlled clipboard sink and close wipe; secret excluded from evidence"
+      ]
+    },
+    "S11": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Site-name real roundtrip, duplicate/empty rejection, literal DOM and delete"
+      ]
+    },
+    "S12": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "55 actual manifests, semantic version order, required/backup filters and literal detail"
+      ]
+    },
+    "S13": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "All seven actual snapshots, members and exact block identities/counts; history 55/other keys 3+"
+      ]
+    },
+    "S14": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Real keyboard/drag/property share draft sent to actual preview; protected mutations rejected"
+      ]
+    },
+    "S15": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Nine actual generated PDF/XLSX members; controlled JSON/expiry UI cases explicitly separate; actual stale/unknown URL rejection"
+      ],
+      "binaries": [
+        {
+          "kind": "schedule-xlsx",
+          "variant": "template1",
+          "member": "main",
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "bytes": 21037
+        },
+        {
+          "kind": "schedule-xlsx",
+          "variant": "template2",
+          "member": "main",
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "bytes": 21583
+        },
+        {
+          "kind": "proposal-xlsx",
+          "member": "main",
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "bytes": 174205
+        },
+        {
+          "kind": "attachment1-xlsx",
+          "member": "main",
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "bytes": 175574
+        },
+        {
+          "kind": "attachment2-xlsx",
+          "member": "main",
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "bytes": 172788
+        },
+        {
+          "kind": "proposal-pdf",
+          "member": "proposal",
+          "mime": "application/pdf",
+          "bytes": 384106
+        },
+        {
+          "kind": "proposal-pdf",
+          "member": "attachment1",
+          "mime": "application/pdf",
+          "bytes": 314730
+        },
+        {
+          "kind": "proposal-pdf",
+          "member": "attachment2",
+          "mime": "application/pdf",
+          "bytes": 289895
+        },
+        {
+          "kind": "dashboard-report-pdf",
+          "member": "main",
+          "mime": "application/pdf",
+          "bytes": 43452
+        }
+      ],
+      "controlledClock": "Server clock advanced 11min for an actual generated preview URL; HTTP404 observed; clock restored"
+    },
+    "S16": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Dirty key cancel, actual save/new revision/history, invalid filenames zero writes, reset adds revision without deletion"
+      ]
+    },
+    "S17": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual JSON42/SHA/email, all table counts, cancel/wrong phrase zero writes, actual restore once and automatic pre-backup"
+      ]
+    },
+    "S18": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Invalid/schema cases and nullable legacy email; actual path/SHA/token expiry failures and SQLite-lock failure preserve active DB/watch state"
+      ],
+      "controlledClock": "Server Date.now offset +11min, restored to zero; actual token endpoint rejects expiry"
+    },
+    "S19": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual three role sessions/forced guards; delayed tab success and old-session failure after actual signout/relogin cannot replace new screen/session"
+      ]
+    },
+    "S20": {
+      "kind": "ACTUAL_UI_AND_API",
+      "assertions": [
+        "Actual widths and no page overflow; shared select/date popup, modal keyboard/focus, home/workforce/access-history navigation, label/clipping verified"
+      ],
+      "settingsControls": {
+        "timeApplyCancelEscape": true,
+        "keyboardAreas": true,
+        "fieldBindings": [
+          {
+            "id": "input-pendingDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-approvedDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-scheduleExportDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-allowanceProposalExportDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-allowanceAttachment1ExportDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-allowanceAttachment2ExportDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-databaseBackupDir",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-databaseBackupTime",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-migrationFilePath",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-scheduleConsecutiveNightLimit",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-scheduleMinimumRestMinutes",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-scheduleWeeklyMaxMinutes",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-holidayApiBaseUrl",
+            "labels": 1,
+            "hint": true,
+            "hintLinked": true
+          },
+          {
+            "id": "input-ro-appName",
+            "labels": 1,
+            "hint": false,
+            "hintLinked": true
+          },
+          {
+            "id": "input-ro-dataDir",
+            "labels": 1,
+            "hint": false,
+            "hintLinked": true
+          },
+          {
+            "id": "input-ro-databasePath",
+            "labels": 1,
+            "hint": false,
+            "hintLinked": true
+          },
+          {
+            "id": "select-databaseBackupSchedule",
+            "labels": 1,
+            "hint": false,
+            "hintLinked": true
+          },
+          {
+            "id": "checkbox-scheduleRequireWeeklyHoliday",
+            "labels": 2,
+            "hint": true,
+            "hintLinked": true
+          }
+        ]
+      },
+      "policyHelpChecks": [
+        {
+          "field": "input-scheduleConsecutiveNightLimit",
+          "sections": 4,
+          "escapeAndFocusRestore": true
+        },
+        {
+          "field": "input-scheduleMinimumRestMinutes",
+          "sections": 4,
+          "escapeAndFocusRestore": true
+        },
+        {
+          "field": "input-scheduleWeeklyMaxMinutes",
+          "sections": 4,
+          "escapeAndFocusRestore": true
+        },
+        {
+          "field": "checkbox-scheduleRequireWeeklyHoliday",
+          "sections": 4,
+          "escapeAndFocusRestore": true
+        }
+      ],
+      "settingsRects": [
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "area": "folders",
+          "footer": {
+            "x": 256,
+            "y": 642,
+            "width": 732,
+            "height": 58,
+            "top": 642,
+            "right": 988,
+            "bottom": 700,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 877.0625,
+            "y": 651,
+            "width": 97.9375,
+            "height": 40,
+            "top": 651,
+            "right": 975,
+            "bottom": 691,
+            "left": 877.0625
+          },
+          "revertBtn": {
+            "x": 748.640625,
+            "y": 651,
+            "width": 120.421875,
+            "height": 40,
+            "top": 651,
+            "right": 869.0625,
+            "bottom": 691,
+            "left": 748.640625
+          },
+          "panelClientHeight": 369,
+          "panelScrollHeight": 502,
+          "windowWidth": 1024,
+          "windowHeight": 768
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "area": "backup",
+          "footer": {
+            "x": 256,
+            "y": 642,
+            "width": 732,
+            "height": 58,
+            "top": 642,
+            "right": 988,
+            "bottom": 700,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 877.0625,
+            "y": 651,
+            "width": 97.9375,
+            "height": 40,
+            "top": 651,
+            "right": 975,
+            "bottom": 691,
+            "left": 877.0625
+          },
+          "revertBtn": {
+            "x": 748.640625,
+            "y": 651,
+            "width": 120.421875,
+            "height": 40,
+            "top": 651,
+            "right": 869.0625,
+            "bottom": 691,
+            "left": 748.640625
+          },
+          "panelClientHeight": 369,
+          "panelScrollHeight": 764,
+          "windowWidth": 1024,
+          "windowHeight": 768
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "area": "policy",
+          "footer": {
+            "x": 256,
+            "y": 642,
+            "width": 732,
+            "height": 58,
+            "top": 642,
+            "right": 988,
+            "bottom": 700,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 877.0625,
+            "y": 651,
+            "width": 97.9375,
+            "height": 40,
+            "top": 651,
+            "right": 975,
+            "bottom": 691,
+            "left": 877.0625
+          },
+          "revertBtn": {
+            "x": 748.640625,
+            "y": 651,
+            "width": 120.421875,
+            "height": 40,
+            "top": 651,
+            "right": 869.0625,
+            "bottom": 691,
+            "left": 748.640625
+          },
+          "panelClientHeight": 369,
+          "panelScrollHeight": 501,
+          "windowWidth": 1024,
+          "windowHeight": 768
+        },
+        {
+          "viewport": {
+            "width": 1024,
+            "height": 768
+          },
+          "area": "system",
+          "footer": {
+            "x": 256,
+            "y": 642,
+            "width": 732,
+            "height": 58,
+            "top": 642,
+            "right": 988,
+            "bottom": 700,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 877.0625,
+            "y": 651,
+            "width": 97.9375,
+            "height": 40,
+            "top": 651,
+            "right": 975,
+            "bottom": 691,
+            "left": 877.0625
+          },
+          "revertBtn": {
+            "x": 748.640625,
+            "y": 651,
+            "width": 120.421875,
+            "height": 40,
+            "top": 651,
+            "right": 869.0625,
+            "bottom": 691,
+            "left": 748.640625
+          },
+          "panelClientHeight": 369,
+          "panelScrollHeight": 584,
+          "windowWidth": 1024,
+          "windowHeight": 768
+        },
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "area": "folders",
+          "footer": {
+            "x": 256,
+            "y": 594,
+            "width": 988,
+            "height": 58,
+            "top": 594,
+            "right": 1244,
+            "bottom": 652,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1133.0625,
+            "y": 603,
+            "width": 97.9375,
+            "height": 40,
+            "top": 603,
+            "right": 1231,
+            "bottom": 643,
+            "left": 1133.0625
+          },
+          "revertBtn": {
+            "x": 1004.640625,
+            "y": 603,
+            "width": 120.421875,
+            "height": 40,
+            "top": 603,
+            "right": 1125.0625,
+            "bottom": 643,
+            "left": 1004.640625
+          },
+          "panelClientHeight": 383,
+          "panelScrollHeight": 452,
+          "windowWidth": 1280,
+          "windowHeight": 720
+        },
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "area": "backup",
+          "footer": {
+            "x": 256,
+            "y": 594,
+            "width": 988,
+            "height": 58,
+            "top": 594,
+            "right": 1244,
+            "bottom": 652,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1133.0625,
+            "y": 603,
+            "width": 97.9375,
+            "height": 40,
+            "top": 603,
+            "right": 1231,
+            "bottom": 643,
+            "left": 1133.0625
+          },
+          "revertBtn": {
+            "x": 1004.640625,
+            "y": 603,
+            "width": 120.421875,
+            "height": 40,
+            "top": 603,
+            "right": 1125.0625,
+            "bottom": 643,
+            "left": 1004.640625
+          },
+          "panelClientHeight": 383,
+          "panelScrollHeight": 440,
+          "windowWidth": 1280,
+          "windowHeight": 720
+        },
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "area": "policy",
+          "footer": {
+            "x": 256,
+            "y": 594,
+            "width": 988,
+            "height": 58,
+            "top": 594,
+            "right": 1244,
+            "bottom": 652,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1133.0625,
+            "y": 603,
+            "width": 97.9375,
+            "height": 40,
+            "top": 603,
+            "right": 1231,
+            "bottom": 643,
+            "left": 1133.0625
+          },
+          "revertBtn": {
+            "x": 1004.640625,
+            "y": 603,
+            "width": 120.421875,
+            "height": 40,
+            "top": 603,
+            "right": 1125.0625,
+            "bottom": 643,
+            "left": 1004.640625
+          },
+          "panelClientHeight": 383,
+          "panelScrollHeight": 501,
+          "windowWidth": 1280,
+          "windowHeight": 720
+        },
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "area": "system",
+          "footer": {
+            "x": 256,
+            "y": 594,
+            "width": 988,
+            "height": 58,
+            "top": 594,
+            "right": 1244,
+            "bottom": 652,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1133.0625,
+            "y": 603,
+            "width": 97.9375,
+            "height": 40,
+            "top": 603,
+            "right": 1231,
+            "bottom": 643,
+            "left": 1133.0625
+          },
+          "revertBtn": {
+            "x": 1004.640625,
+            "y": 603,
+            "width": 120.421875,
+            "height": 40,
+            "top": 603,
+            "right": 1125.0625,
+            "bottom": 643,
+            "left": 1004.640625
+          },
+          "panelClientHeight": 383,
+          "panelScrollHeight": 416,
+          "windowWidth": 1280,
+          "windowHeight": 720
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "area": "folders",
+          "footer": {
+            "x": 256,
+            "y": 774,
+            "width": 1148,
+            "height": 58,
+            "top": 774,
+            "right": 1404,
+            "bottom": 832,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1293.0625,
+            "y": 783,
+            "width": 97.9375,
+            "height": 40,
+            "top": 783,
+            "right": 1391,
+            "bottom": 823,
+            "left": 1293.0625
+          },
+          "revertBtn": {
+            "x": 1164.640625,
+            "y": 783,
+            "width": 120.421875,
+            "height": 40,
+            "top": 783,
+            "right": 1285.0625,
+            "bottom": 823,
+            "left": 1164.640625
+          },
+          "panelClientHeight": 563,
+          "panelScrollHeight": 563,
+          "windowWidth": 1440,
+          "windowHeight": 900
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "area": "backup",
+          "footer": {
+            "x": 256,
+            "y": 774,
+            "width": 1148,
+            "height": 58,
+            "top": 774,
+            "right": 1404,
+            "bottom": 832,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1293.0625,
+            "y": 783,
+            "width": 97.9375,
+            "height": 40,
+            "top": 783,
+            "right": 1391,
+            "bottom": 823,
+            "left": 1293.0625
+          },
+          "revertBtn": {
+            "x": 1164.640625,
+            "y": 783,
+            "width": 120.421875,
+            "height": 40,
+            "top": 783,
+            "right": 1285.0625,
+            "bottom": 823,
+            "left": 1164.640625
+          },
+          "panelClientHeight": 563,
+          "panelScrollHeight": 563,
+          "windowWidth": 1440,
+          "windowHeight": 900
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "area": "policy",
+          "footer": {
+            "x": 256,
+            "y": 774,
+            "width": 1148,
+            "height": 58,
+            "top": 774,
+            "right": 1404,
+            "bottom": 832,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1293.0625,
+            "y": 783,
+            "width": 97.9375,
+            "height": 40,
+            "top": 783,
+            "right": 1391,
+            "bottom": 823,
+            "left": 1293.0625
+          },
+          "revertBtn": {
+            "x": 1164.640625,
+            "y": 783,
+            "width": 120.421875,
+            "height": 40,
+            "top": 783,
+            "right": 1285.0625,
+            "bottom": 823,
+            "left": 1164.640625
+          },
+          "panelClientHeight": 563,
+          "panelScrollHeight": 563,
+          "windowWidth": 1440,
+          "windowHeight": 900
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "area": "system",
+          "footer": {
+            "x": 256,
+            "y": 774,
+            "width": 1148,
+            "height": 58,
+            "top": 774,
+            "right": 1404,
+            "bottom": 832,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1293.0625,
+            "y": 783,
+            "width": 97.9375,
+            "height": 40,
+            "top": 783,
+            "right": 1391,
+            "bottom": 823,
+            "left": 1293.0625
+          },
+          "revertBtn": {
+            "x": 1164.640625,
+            "y": 783,
+            "width": 120.421875,
+            "height": 40,
+            "top": 783,
+            "right": 1285.0625,
+            "bottom": 823,
+            "left": 1164.640625
+          },
+          "panelClientHeight": 563,
+          "panelScrollHeight": 563,
+          "windowWidth": 1440,
+          "windowHeight": 900
+        },
+        {
+          "viewport": {
+            "width": 1707,
+            "height": 825
+          },
+          "area": "folders",
+          "footer": {
+            "x": 256,
+            "y": 699,
+            "width": 1415,
+            "height": 58,
+            "top": 699,
+            "right": 1671,
+            "bottom": 757,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1560.0625,
+            "y": 708,
+            "width": 97.9375,
+            "height": 40,
+            "top": 708,
+            "right": 1658,
+            "bottom": 748,
+            "left": 1560.0625
+          },
+          "revertBtn": {
+            "x": 1431.640625,
+            "y": 708,
+            "width": 120.421875,
+            "height": 40,
+            "top": 708,
+            "right": 1552.0625,
+            "bottom": 748,
+            "left": 1431.640625
+          },
+          "panelClientHeight": 488,
+          "panelScrollHeight": 488,
+          "windowWidth": 1707,
+          "windowHeight": 825
+        },
+        {
+          "viewport": {
+            "width": 1707,
+            "height": 825
+          },
+          "area": "backup",
+          "footer": {
+            "x": 256,
+            "y": 699,
+            "width": 1415,
+            "height": 58,
+            "top": 699,
+            "right": 1671,
+            "bottom": 757,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1560.0625,
+            "y": 708,
+            "width": 97.9375,
+            "height": 40,
+            "top": 708,
+            "right": 1658,
+            "bottom": 748,
+            "left": 1560.0625
+          },
+          "revertBtn": {
+            "x": 1431.640625,
+            "y": 708,
+            "width": 120.421875,
+            "height": 40,
+            "top": 708,
+            "right": 1552.0625,
+            "bottom": 748,
+            "left": 1431.640625
+          },
+          "panelClientHeight": 488,
+          "panelScrollHeight": 488,
+          "windowWidth": 1707,
+          "windowHeight": 825
+        },
+        {
+          "viewport": {
+            "width": 1707,
+            "height": 825
+          },
+          "area": "policy",
+          "footer": {
+            "x": 256,
+            "y": 699,
+            "width": 1415,
+            "height": 58,
+            "top": 699,
+            "right": 1671,
+            "bottom": 757,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1560.0625,
+            "y": 708,
+            "width": 97.9375,
+            "height": 40,
+            "top": 708,
+            "right": 1658,
+            "bottom": 748,
+            "left": 1560.0625
+          },
+          "revertBtn": {
+            "x": 1431.640625,
+            "y": 708,
+            "width": 120.421875,
+            "height": 40,
+            "top": 708,
+            "right": 1552.0625,
+            "bottom": 748,
+            "left": 1431.640625
+          },
+          "panelClientHeight": 488,
+          "panelScrollHeight": 488,
+          "windowWidth": 1707,
+          "windowHeight": 825
+        },
+        {
+          "viewport": {
+            "width": 1707,
+            "height": 825
+          },
+          "area": "system",
+          "footer": {
+            "x": 256,
+            "y": 699,
+            "width": 1415,
+            "height": 58,
+            "top": 699,
+            "right": 1671,
+            "bottom": 757,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1560.0625,
+            "y": 708,
+            "width": 97.9375,
+            "height": 40,
+            "top": 708,
+            "right": 1658,
+            "bottom": 748,
+            "left": 1560.0625
+          },
+          "revertBtn": {
+            "x": 1431.640625,
+            "y": 708,
+            "width": 120.421875,
+            "height": 40,
+            "top": 708,
+            "right": 1552.0625,
+            "bottom": 748,
+            "left": 1431.640625
+          },
+          "panelClientHeight": 488,
+          "panelScrollHeight": 488,
+          "windowWidth": 1707,
+          "windowHeight": 825
+        },
+        {
+          "viewport": {
+            "width": 2048,
+            "height": 1080
+          },
+          "area": "folders",
+          "footer": {
+            "x": 256,
+            "y": 954,
+            "width": 1756,
+            "height": 58,
+            "top": 954,
+            "right": 2012,
+            "bottom": 1012,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1901.0625,
+            "y": 963,
+            "width": 97.9375,
+            "height": 40,
+            "top": 963,
+            "right": 1999,
+            "bottom": 1003,
+            "left": 1901.0625
+          },
+          "revertBtn": {
+            "x": 1772.640625,
+            "y": 963,
+            "width": 120.421875,
+            "height": 40,
+            "top": 963,
+            "right": 1893.0625,
+            "bottom": 1003,
+            "left": 1772.640625
+          },
+          "panelClientHeight": 743,
+          "panelScrollHeight": 743,
+          "windowWidth": 2048,
+          "windowHeight": 1080
+        },
+        {
+          "viewport": {
+            "width": 2048,
+            "height": 1080
+          },
+          "area": "backup",
+          "footer": {
+            "x": 256,
+            "y": 954,
+            "width": 1756,
+            "height": 58,
+            "top": 954,
+            "right": 2012,
+            "bottom": 1012,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1901.0625,
+            "y": 963,
+            "width": 97.9375,
+            "height": 40,
+            "top": 963,
+            "right": 1999,
+            "bottom": 1003,
+            "left": 1901.0625
+          },
+          "revertBtn": {
+            "x": 1772.640625,
+            "y": 963,
+            "width": 120.421875,
+            "height": 40,
+            "top": 963,
+            "right": 1893.0625,
+            "bottom": 1003,
+            "left": 1772.640625
+          },
+          "panelClientHeight": 743,
+          "panelScrollHeight": 743,
+          "windowWidth": 2048,
+          "windowHeight": 1080
+        },
+        {
+          "viewport": {
+            "width": 2048,
+            "height": 1080
+          },
+          "area": "policy",
+          "footer": {
+            "x": 256,
+            "y": 954,
+            "width": 1756,
+            "height": 58,
+            "top": 954,
+            "right": 2012,
+            "bottom": 1012,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1901.0625,
+            "y": 963,
+            "width": 97.9375,
+            "height": 40,
+            "top": 963,
+            "right": 1999,
+            "bottom": 1003,
+            "left": 1901.0625
+          },
+          "revertBtn": {
+            "x": 1772.640625,
+            "y": 963,
+            "width": 120.421875,
+            "height": 40,
+            "top": 963,
+            "right": 1893.0625,
+            "bottom": 1003,
+            "left": 1772.640625
+          },
+          "panelClientHeight": 743,
+          "panelScrollHeight": 743,
+          "windowWidth": 2048,
+          "windowHeight": 1080
+        },
+        {
+          "viewport": {
+            "width": 2048,
+            "height": 1080
+          },
+          "area": "system",
+          "footer": {
+            "x": 256,
+            "y": 954,
+            "width": 1756,
+            "height": 58,
+            "top": 954,
+            "right": 2012,
+            "bottom": 1012,
+            "left": 256
+          },
+          "saveBtn": {
+            "x": 1901.0625,
+            "y": 963,
+            "width": 97.9375,
+            "height": 40,
+            "top": 963,
+            "right": 1999,
+            "bottom": 1003,
+            "left": 1901.0625
+          },
+          "revertBtn": {
+            "x": 1772.640625,
+            "y": 963,
+            "width": 120.421875,
+            "height": 40,
+            "top": 963,
+            "right": 1893.0625,
+            "bottom": 1003,
+            "left": 1772.640625
+          },
+          "panelClientHeight": 743,
+          "panelScrollHeight": 743,
+          "windowWidth": 2048,
+          "windowHeight": 1080
+        }
+      ],
+      "viewports": [
+        {
+          "innerWidth": 1024,
+          "innerHeight": 768,
+          "outerWidth": 1024,
+          "devicePixelRatio": 1,
+          "documentWidth": 1024
+        },
+        {
+          "innerWidth": 1280,
+          "innerHeight": 720,
+          "outerWidth": 1280,
+          "devicePixelRatio": 1,
+          "documentWidth": 1280
+        },
+        {
+          "innerWidth": 1440,
+          "innerHeight": 900,
+          "outerWidth": 1440,
+          "devicePixelRatio": 1,
+          "documentWidth": 1440
+        },
+        {
+          "innerWidth": 1707,
+          "innerHeight": 825,
+          "outerWidth": 1707,
+          "devicePixelRatio": 1,
+          "documentWidth": 1707
+        },
+        {
+          "innerWidth": 2048,
+          "innerHeight": 1080,
+          "outerWidth": 2048,
+          "devicePixelRatio": 1,
+          "documentWidth": 2048
+        }
+      ]
+    }
+  },
+  "exactScenarios": true,
+  "planned": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
+  ],
+  "completed": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
+  ],
+  "failed": [],
+  "unexpectedErrors": [],
+  "expectedRejections": {
+    "N01": true,
+    "N02": true,
+    "N03": true,
+    "N04": true,
+    "N05": true,
+    "N06": true,
+    "N07": true,
+    "N08": true,
+    "N09": true,
+    "N10": true,
+    "N11": true,
+    "N12": true
+  },
+  "captures": [
+    "C:\\Users\\pangyo\\AppData\\Local\\Temp\\policy-history-implementation-20261103\\ops-full\\captures\\operations-final.png"
+  ]
+}

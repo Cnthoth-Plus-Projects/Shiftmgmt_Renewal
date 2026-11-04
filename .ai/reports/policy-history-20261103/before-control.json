@@ -1,0 +1,26 @@
+[
+  {
+    "source": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261103_101506_policy-history-before-HANDOFF.md",
+    "bytes": 5515,
+    "sha256": "6AA8F96AF9B5C28CD3E2E57F9C52D642B5FEE7E84CB87D7C92C3A679EB6C6F10"
+  },
+  {
+    "source": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+    "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261103_101506_policy-history-before-TODO.md",
+    "bytes": 80409,
+    "sha256": "4C34765243D621883D0CC986E985FB7EB5E5DEBE7A83797DF431E493FC5CE15B"
+  },
+  {
+    "source": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261103_101506_policy-history-before-task-plan.json",
+    "bytes": 246301,
+    "sha256": "10B6F353C2B0E14CF363C20FB621102124BC55A29D639799C756B8A934166F4B"
+  },
+  {
+    "source": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\gemini-attempts.json",
+    "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261103_101506_policy-history-before-gemini-attempts.json",
+    "bytes": 178902,
+    "sha256": "A7778A1C2BD89B002FBD5DC3941015857803FEB6AE625EF47800BC70154C0A47"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "url": "http://127.0.0.1:18817/",
+  "root": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-ui01-live-h0zvRC",
+  "helperPid": 39384,
+  "status": "LIVE",
+  "serverPid": 43416,
+  "screen": "인력 관리",
+  "operatingDataUsed": false,
+  "verification": "TECHNICALLY_VERIFIED_USER_REVIEW_PENDING",
+  "screenshot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-ui01-live-h0zvRC\\preview.png",
+  "viewportFit": {
+    "visibleRows": 17,
+    "cardHeight": 582.1666870117188,
+    "bottomGap": 8.0
+  },
+  "testData": {
+    "employees": 55,
+    "wageRows": 492,
+    "assignmentRows": 478
+  }
+}

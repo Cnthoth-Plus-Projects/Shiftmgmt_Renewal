@@ -1,0 +1,51 @@
+{
+  "task": "3-2c-A2-U5-errors",
+  "status": "COMPLETE_U5_ORIGINAL8_ONLY",
+  "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-public",
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721",
+  "initial": 1,
+  "retry": 1,
+  "cumulative": 2,
+  "directAttempt": 1,
+  "owner": "Sol",
+  "originalCriteria": 8,
+  "priorAccepted": 45,
+  "newAccepted": 8,
+  "productScope": "same14/protected347/source361/30000bytes/15sec",
+  "current": "Actual prefix37 and original88+4/runtime51 passed; count-only originalRC1 preserved, all92 semantically revalidated and finalscope39 freshPASS; errors8 accepted by Sol, remaining28.",
+  "implementationSources": {
+    "evidenceReadable": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\u5-evidence-readable.mjs",
+    "evidenceBuild": "node .ai/work/build-u5-evidence.cjs",
+    "doNotRerun": "implement-u5-core.py would overwrite subsequent manual fixes; u5-evidence-body.mjs is initial draft only"
+  },
+  "remaining": 28,
+  "latestTime": "2026-10-25T18:46:42.800945",
+  "fullRunSession": 20046,
+  "fullRunRoot": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-u5-verification-m0ia08cq",
+  "verificationOverlay": null,
+  "fullRunName": "sol-full39-v11",
+  "finalizer": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\finalize-u5-sol.py",
+  "pendingAuthority": null,
+  "pendingNativeScopeSession": null,
+  "smokeSession": null,
+  "nativeGitLauncher": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\run-u5-native-git.py",
+  "SolProductWrites": 11,
+  "pendingFocusedRuntimeSession": null,
+  "lastFailedFullRun": "sol-full39-v9",
+  "assessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721\\assessment.json",
+    "bytes": 153150,
+    "sha256": "7ACCA653658164AE7DCBE8283E07EBD7B6ECC034D8D615934611EB179E655307"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_005707_U6-recon-before-HANDOFF.md",
+    "bytes": 13163,
+    "sha256": "5BB3F1BB5E79A1D65B4EAE9908D28A75DCF969050A9BBDD9790C7B0C0D99B047"
+  },
+  "completion": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721\\completion.json",
+    "bytes": 749,
+    "sha256": "9E1EE9F84645A8FE8072CD571E1B1D5B111C8195DB8C603C01861D079D97103C"
+  },
+  "canonicalAccepted": 53
+}

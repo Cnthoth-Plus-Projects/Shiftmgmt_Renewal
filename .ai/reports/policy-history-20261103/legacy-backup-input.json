@@ -1,0 +1,8 @@
+{
+  "path": "C:\\Users\\pangyo\\AppData\\Roaming\\shiftmgmt-v3-4\\data\\backups\\json\\shiftmgmt-backup-20260917-194251.json",
+  "bytes": 3217906,
+  "sha256": "EFEC1F0EF364E6CA4D88DBBCF8D52E88FFDC2EAC452E258CA7D09B4BDDE28DB9",
+  "tableCount": 40,
+  "rows": 3599,
+  "mode": "read-only fingerprint/shape, migration not rerun before implementation"
+}

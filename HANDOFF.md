@@ -1,98 +1,94 @@
-# HANDOFF — A2 v1 독립검수 종결
+# HANDOFF — POLICY-HISTORY-01 검수 완료 / Sol 보완 후 기술 수용
 
-- Task: Gemini A2 v1 IMPLEMENTED 회신의 소스·실행·증거 독립검수
-- Action: CLOSED / FAILED_A2_NOT_ACCEPTED
-- From: Sol(xhigh, Codex) — sole orchestrator
-- To: 사용자 / 다음 Sol 세션
-- Time: 2026-10-14 13:52:00 KST
-- 회신: 불필요
-- Repository: `C:\Projects\Active\ShiftMgmt_V4` / main / HEAD `160940f9aaeb6696538447f83b44658073e382f0`
-- A1 prerequisite: 기존 Sol 직접수정 ACCEPTED/CLOSED 유지
-- A2/전체A/B87/전체3-2/배포: 미수용
-- 다음: Sol의 A2 전략·검증 설계 재정리. 새 구현지시/코드작성권한은 이 종결본에서 부여하지 않음.
+- Action: ACCEPTED_AFTER_SOL_TAKEOVER
+- 시각: 2026-11-04T12:11:45.899076+09:00
+- 최종 구현·통합·검수 담당: Sol(Codex)
+- Gemini: 최초1 / 재시도1 / 누적2. 두 제출 실패 기록 보존, 새 요청·횟수 초기화 없음.
+- 제품 구현·기술 수용 완료. 사용자 최종 화면 확인은 대기. 운영 적용·commit·배포는 수행하지 않았다.
+- 다음 메뉴를 자동 착수하지 않는다. TODO의 UI-ADMIN-REFINE에서 공휴일 메뉴 범위를 구체화할 순서다.
 
-## 1. 결론
+## 회신
 
-**A2 제출은 미수용이다.** 고정22명령과 기존A1 fault51/IPC/typed32/partial11/guard5/late15, 정상8 불완전 증거 판정 등의 통과 기록은 실제 파일과 일치한다. 그러나 음성112 전수 실측 주장은 원시험 대신 CLI 오류/직접throw/기대값 복사로 구성되어 성립하지 않고, 실제소스에 실측 가공·partial/첫오류 누락·검문 미구현이 남아 있다. 일부 parser/ledger 통과를 전체 원A 음성검증이나 제품수용으로 확대하지 않는다.
+### 판정과 근거
 
-Sol은 제품 코드 수정 없이 수신원문·source·44streams/diff/명령표를 검증하고 실제 exported-helper8개 및 owner/realSDK3조건을 추가 실행했다. 전체owner falsePASS 또는 false FAIL_INCOMPLETE 최종수용을 재현했다고 주장하지 않는다. 이번 actual owner3조건은 모두RC1/FAIL이었다. 그중2조건의 외부gate는 Chrome 환경 변화로 먼저거절했으며, 이를 제품결함 재현성공으로 세지 않는다. 별도로 확인한 실제viewport/raw불일치와 invalidworker publication/currentpartial 손실은 아래근거대로다.
+받은 재시도 회신은 그대로 Log에 보존했다. source510/허용55/보호455를 대조했고, 미초기화 preview가0→2 정책행을 쓰는 결함을 재현하여 재시도도 수용하지 않았다. 상시 두 번 실패 승계 규칙에 따라 Sol이 같은 Task 안에서22파일을 보완했다. 최초·재시도 판정은 소급 변경하지 않는다.
 
-## 2. 원문·범위·고정 실행 증거
+준비: 최초 IMPLEMENT.md의 요구/범위/필수 검문과 baseline500·보호455를 유지했다.
+구현: 실제 parser·저장·승인·정책이력·JSON·대화상자와 시험을 보완했다.
+형식 검수: 아래 실제 실행과 source/served-byte 대조 후 기술 수용한다. 사용자 화면 승인이나 운영 전환 완료를 뜻하지 않는다.
 
-- 수신37518bytes/SHA `B0FB77C3043912E576097474F5F6B8AE0D558C4C4DB823B0BB6E1E341FFFEF47`; 발송 request body byte-exact unchanged. 최초보존 `C:\Projects\Active\교대근무관리 시스템\Log\20261014_131126_3-2c-A2-v1-Gemini_수신원본.md`, 교체전보존 `C:\Projects\Active\교대근무관리 시스템\Log\20261014_135200_3-2c-A2-v1-Gemini_종결전수신원문.md`. 두보존원문 byte/fullSHA 일치.
-- source341/main/fullHEAD/dirty12 동일; 허용4 이외337파일 및 control571은 **검수중 전수 hash 불변**. frozen6575/guard2250도 원 기준 보존. source/diff SHA와 +/−/hunks는 회신·actual메타 일치. 줄바꿈은 before/after4 모두LF, CRLF변환 결함을 새로 주장하지 않는다.
+정본 평가: `C:\Projects\Active\교대근무관리 시스템\.ai\reports\policy-history-20261103\review-retry1-20261104_110746\sol-assessment.json`
+SHA-256: `E4BF819604E4AEB0D0D588C316A10CBE6EF26E4DD4DCDD20D00A7BC90E6CDD64` / 12529bytes.
+원래 계약: `.ai/reports/policy-history-20261103/IMPLEMENT.md` 및 첫 review의 CORRECT-retry1.md.
+증거 폴더: `C:\Projects\Active\교대근무관리 시스템\.ai\reports\policy-history-20261103\review-retry1-20261104_110746\sol-evidence`.
 
-|파일|bytes|full SHA-256|변경량|
-|---|---|---|---|
-| access-history.mjs | 29351 | `2490A4DC38D65E6FDDD571C64D9903882334F243239D2F697A807BDA481DC9E7` | +51/-44/11hunks |
-| access-history-shared.mjs | 29973 | `C0AB887F045AB3C71DC5878B195658668DAA8F7A47E95242E903DF565BB53EE4` | +53/-38/4hunks |
-| access-history-positive.mjs | 22530 | `77B3131220F578897630A9717ACFFC83437189FF2B2D80C13F51528DEE0BFE01` | +446/-362/1hunks |
-| access-history-negative.mjs | 27848 | `F49C87B2411664EFE6B2EF6C1DDE60010FB3AD8FCE710533A8C410A925A73BD6` | +620/-152/1hunks |
+### 사용자가 확인할 동작
 
-- 실제 result `27982`bytes/SHA `4A08CBE76C2F4A077BE5A8521CF557AB819EBF2A2B7DFBC2DBEB9DE4BFE87F78`: `C:\Users\pangyo\AppData\Local\Temp\shiftmgmt-gemini-a2-evidence-z0a_3vll\implementation-result.json`. 모든22명령RC0/timeoutfalse; companion command.json도일치, stdout/stderr44건 fullbytes/SHA일치. 실제UTC `2026-10-14T00:47:26.803682+00:00`~`00:59:04.022383+00:00`. 회신22 PID중20개(3~22)는그영수증과다르다.
-- 고정scope341/337/12/allowed4, typecheck/lint(existing5)/map90/diff/build/관련3files11·기존A1 actualfault51/observer37+변조9/양성3+관측3/final6/PNG12·IPC19+port·typed32/semantic6/top4/realChromeclose2·partial11·guard5·actual-late15 기록을 보존한다. Root가 통과한 원suite를 FAIL로 재작성하지 않는다.
-- 정상8 source/ownerRC1/FAIL_INCOMPLETE 및 independentfinalgateRC0의 **증거형식 통과** 기록도 보존. legacy canonical checks0/missingfullIDs이므로 UI87PASS가아니다. 캡처8 경로는 actualnormal suite에 있고 오류/stale2를 직접이미지조회했다. Screenshot만으로 firsterror/cleanup/실측수치가정확하다고판정하지 않는다.
+1. 운영 관리 → 설정 → 근무·수당 기준에서 두 정책의 현재 버전과 다음 예정 버전을 바로 확인한다.
+2. 이력 및 관리에서 과거·현재·예정/정정/취소 상태와 적용 기간을 페이지로 조회한다. 표는 약52px 행으로 정리했으며 기준 상세와 사건의 변경 전·후/사유를 별도로 읽는다.
+3. 새 정책은 기준·적용일·사유 입력 → 영향 확인 → 확인 후 등록 순서다. 일반 설정 저장과 별개로 등록된다. 입력이 바뀌면 이전 확인은 폐기되고, 저장 중에는 중복 입력·실행을 막는다.
+4. 예약 정정·취소는 아직 시작하지 않고 승인에 쓰지 않은 정책만 가능하다. 원본·변경 전후·취소 사유를 보존한다. 사용/초기/시작한 기준의 잠금 이유를 표시한다.
+5. 근무일별 해당 버전을 실제 엑셀 파싱부터 실적·승인 스냅샷까지 보존한다. 정책 변경으로 이미 승인한 금액을 다시 쓰지 않는다.
 
-## 3. 음성112 주장 검문
+예: V1은6/30까지, V2는7/1~8/31, V3는9/1부터 적용한다. 새 버전 추가로 이전 두 구간을 덮어쓰지 않는다. 현재 확인 창에는 이 예시와12월 예정 버전이 있으며 실제 운영 자료가 아닌 격리 fixture다.
 
-`negative-results.json`296677bytes/SHA `D5A12BCD1991EC216F37DFEA225B06DD0FB140AF483CE0EFA83B022969EB6F74`; 위치 `C:\Users\pangyo\AppData\Local\Temp\shiftmgmt-gemini-a2-tests-baYkci`. 생성기 `build_negative_results.py` SHA `A5FB032CB1A3E887CB5982247D833116A102D74EA9015C05874F155E3DF9D9DB`를 실행하지 않고 원문검토했다.
+### PH-D01~D09 보완 결과
 
-- A-N05/06/12/13/15/16/17/18 **45개**가 모두 `owner --case=invalid_...`/`reject_...`로 CLI rejection만실행. IPC packet/no-packet/symlink/timeout/spawn/쓰기/capture/preflightChrome/ownedport/envpoison 조건을 만들지 않는다.
-- A-N11은 SDKlaunch/close없이 resources.browser.error 문자열을직접설정하고 throw. A-N09는 canonical 길이를읽은뒤 직접throw, compiledlabel/hash/fixturedrift 주입0. A-N08은 없는 named export를import하고 모든 ID벡터를 같은code로처리. A-N10도console401벡터에consolemarker를넣지않는같은helpercode. N07constant-provenance와N20rawpointer벡터의actual/raw 결부없음.
-- N14sync/async/atomicrename3개모두NOT_USED지만 source의writeAtomic이실제writeFileSync+renameSync를사용. textfile의고정라인/다른파일code를AST처럼기재. 기존A1 retained final-denial 시험을 별도로보존하되 이3개NOT_USED전수주장을수용하지 않는다.
-- N03/04 knowncase는 각파일등록case 전부를독립실행해야하지만default1개씩뿐. N04 가짜healthy stub/request0관측없고단일사용안하는env값만설정.
-- 재사용101 command영수증은 childPID/시간/실제RC 대신 `os.getpid()`4720/새현재시간/expected에따른RC를작성. 101개 start=end. trace.actual은항상expected복사. 이사실을각trace의실제주입/실측증거로수용하지 않는다. N19여덟복사receipt는source/run/binding을확인한부분으로만취급.
-- Sol의 고정 `validate-negative.py` 자체는 completeness/hash/ledger검문일뿐 independent actual수용이아님을발송문에명시했다. 실제로이양식검문은PASS. 그PASS를112실제조건성공으로보고한회신이잘못됐다. 소스/주입발동 검문을 강제하는 후속설계가 필요하며, 기존잠긴checker를검수중고쳐서결과를만들지 않았다.
+| 결함 | 실제 보완 및 확인 |
+|---|---|
+| D01 실제 정책/바인딩 | parser 진입에서 실제 초기 이력 생성, 고정한 timeline으로 ID·Vn·기준 전문·구현 버전 보존. 최초 parser ID 실존과 실제 변경후 직원의 binding 재현 통과. |
+| D02 캐시/읽는 중 변경 | workbook await 전에 timeline 고정, 반환 지문도 그 기준으로 계산. 누락/연속 충돌은 재확인 오류. 영향 월 대기 cache만 재판독하고 승인 결과는 보존. 실제 Excel 비동기 경로 시험 통과. |
+| D03 공개 승인 | 지문 누락·stale 거부, 승인 transaction 안에서 ID/버전/기간/기준 전문 대조. 승인/계산/used 기록 원자성과 되돌림 이후 used 보존 확인. |
+| D04 무쓰기/권한/token | 미초기화 preview는 조회 안내만 하고 쓰지 않음. 관리자·동일 로그인 세션·5분·의도 복사·1회 token 및 실제 관련 행/승인/파일/폴더 지문을 transaction에서 재검사. typed 오류 공개. |
+| D05 정정/영향 | 종류·원본 상태·중복/과거 날짜·no-op 거부. 예약을 다른 버전 뒤로 옮길 때 두 개의 실제 변경 구간을 계산. 없는 행을 메타 entry_count로 만들지 않음. 취소 사유 영속 보존. |
+| D06 JSON | v2 표/열/기준 의미/전후 참조/스냅샷 엄격 검증. email/holiday 호환 예외는v1만. 실제 백업-미리보기-복원, 삭제된 승인에 대한 used tombstone 보존·잘못된v2 거부 시 live 불변 확인. |
+| D07 수명/소유권 | 공통 WorkforceDialog 재사용, 부모 busy·세션 종료·destroy·generation/token 결합. 늦은 preview/apply·다른 모달 열기·닫힌 창 응답·저장 중 입력 시나리오 실제 검문. |
+| D08 사용자 흐름/디자인 | 현재/예정 카드, Dense 페이지 이력·전후 상세·사유·잠금. Tab/ShiftTab/Escape/복귀, label,5개 크기의 기본 설정/하단 버튼과 스크롤 기준 통과. |
+| D09 실제 검증 | 가짜 JSON 규칙 배열 시험을 실제 서비스 왕복 시험으로 교체. 기존1425 보존, 계약 숫자13개 제목 대응, 신규29 추가. 실제 API·Excel·브라우저 경로 검증. |
 
-## 4. 통합 결함 목록
+### 실행과 결과
 
-|ID|결함|실제소스/근거|증거수준|
-|---|---|---|---|
-| A2V1-01 | 음성112 실측 주장이 증거와 불일치 | negative-results.json / build_negative_results.py:87-101,239-333,343-384 | RECEIVED_EVIDENCE_INVALID |
-| A2V1-02 | 미완료 HTTP·viewport·step/close 실측을 가공 | negative.mjs:181-198,236-264,316-324; positive.mjs:67-69,150-151,414-427 | SOURCE_AND_HELPER_REPRO |
-| A2V1-03 | normal reader 검문 누락과 오류 전 temp 제거 | negative.mjs:361-383; owner.mjs:255-260,311-323 | SOURCE_AND_HELPER_REPRO |
-| A2V1-04 | partial·첫 오류·보호 실행기 실패 연결 누락 | negative.mjs:267-273,621-628; positive.mjs:67-69,74-78,424-427; owner.mjs:256,379-387 | SOURCE_AND_ACTUAL_REPRO |
-| A2V1-05 | protected capture의 실제 run binding 대신 최신 sibling 선택 | positive.mjs:430-463 | SOURCE_VERIFIED |
-| A2V1-06 | query/request identity와 JSON drain 계약 이탈 | negative.mjs:143-158,450-480; positive.mjs:81-146,414-421 | SOURCE_AND_HELPER_REPRO |
-| A2V1-07 | Held timeout 정리·실패 경로 release/abort 누락 | negative.mjs:101-140,518-565; positive.mjs:304-332 | SOURCE_AND_HELPER_REPRO |
-| A2V1-08 | RAM secret registry/error redaction 부재 | negative.mjs:160-177,236-264,441-447; positive.mjs:142-146 | SOURCE_AND_HELPER_REPRO |
-| A2V1-09 | entry lexical path 비교로 junction direct CLI RC0 | positive.mjs:24; negative.mjs:388 | ACTUAL_CLI_REPRO |
-| A2V1-10 | fixture env 정리 및 normal ACK wire contract 이탈 | owner.mjs:buildChildEnv/ensureAuthBootstrapCredentials/ACK; shared.mjs:performWorkerIpcHandshake worker-ack | SOURCE_VERIFIED |
-| A2V1-11 | 회신20 command PID가 실제 고정 영수증과 불일치 | received HANDOFF §회신/검증증거; implementation-result.json | RECEIVED_REPLY_MISMATCH |
+실행 cwd: `C:\Projects\Active\ShiftMgmt_V4`.
+임시 실행 증거: `C:\Users\pangyo\AppData\Local\Temp\policy-history-retry-review-20261104`.
 
-### 실제 exported-helper 검문 — wholeowner 성공 판정 아님
+| 검문 | 판독 결과 |
+|---|---|
+| npm run typecheck | 최종 RC0 |
+| npm run lint | 최종 RC0 / 오류0 / 기존 보호 소스 경고3 / 신규0 |
+| npm run validate:map | 최종 RC0 /239경로 존재 |
+| 관련9파일 시험 | fresh RC0 /201개 통과 |
+| 새4개 정책 시험 |27개 통과, PH01~12 전부 포함 |
+| npm run build | 최종 RC0, 실제 browser/server 생성 |
+| operations --focus=S03,S04,S19,S20 | fresh RC0 /PARTIAL_PASS4/20, 전체 통과로 혼동하지 않음 |
+| npm test -- --no-cache --reporter=json | fresh RC0 /1454시험·155파일 /실패0·skip0 /396.68초. 기존1425 보존, 승인된 계약 제목13개 대응, 순증29 |
+| operations 전체 | 최종 fresh RC0 /PASS·fullRun·exactScenarios /20개·N12 전부 /오류0 |
+| performance 전체 | native RC2 /18PASS·정확S13/S16만 기존BLOCKED /실패0·N12 전부·예상외오류0 |
+| 실제 구형 JSON | fresh RC0 /원본40표3599행3217906bytes 불변 /target42 /사업39표 canonical 일치 /승인64건13,611,839원 보존 /SQLite무결성ok |
+| git diff --check /범위 | RC0 /보호455 불변 /범위외0 /source510 /UI각30KiB이하 /HEAD유지 |
+| native 시각 확인 | 로그인된 실제 정책 화면, 개정 표52~52.5px /개요와 이력 PNG 확인 |
 
-증거 `C:\Users\pangyo\AppData\Local\Temp\shiftmgmt-sol-a2-helper-review-uDrJWa\helper-result.json` (full메타는 final-evidence.json). Root가 actual SUT exports를읽어호출했고 trackedsource변경0:
+전체 단위/실적 실행 뒤 마지막 변경은 `operations-policy-history.ts`의 표시명·기간 줄바꿈과 `policy-history.css`의 표 컬럼 폭뿐이다. 다른508소스·시험·설정·backend/producer/reader/계산은 봉인한 full-run source와 byte 동일함을 재검증했다. 두 UI 파일을 시험에서 직접 가져오는 경로가 없고 최종 타입/lint/build와 전체 operations20/N12 및 실제 served JS/CSS bytes를 fresh로 다시 확인했다. 단위/실적 결과는 **마지막 표시 변경 뒤 다시 실행한 것으로 보고하지 않는다**. 이전 fresh 실행과 동일 입력의 기록 재검증을 구분한다. 원 proof는 sol-frozen-source.json, 마지막 후보는 sol-final-source.json에 보존했다.
 
-1. normal-partial와fallback 두실제fs.writeFileSync가ENOENT로실패해도return하고 primary/evidence/cleanup 모두빈값. Root stderr에원stack도미출력.
-2. step enterednull/closednull/cleanup error/pendingstatus0 상태로실제atomic raw+workerfinal출력. pendingHTTP200과완료시간을가공, FAIL_INCOMPLETE/1발행. parent/fullgate 수용을주장하지 않는다.
-3. raw.caseunknown/workerPid−1, workerfinalPASS/0/rawShaBAD/required[]를reader가반환. calleractualexit7도무시. standalonehelper 검문누락이며외부gate는추가검문을한다.
-4. Request.postDataJSON 호출0, 알수없는query필드를조용히삭제.
-5. fake harmless secretmarker가loginerror그대로반환. 실제credentials값으로시험하거나운영비밀번호유출을주장하지 않는다.
-6. Held성공후referencedtimer2/clear0; Root가자기시험timer만명시clear하여testprocess종료.
-7~8. Root ownjunction으로같은positive/negative파일을knowncaseCLI실행→두RC0/empty streams. 요구는directCLI RC1이고entryrealpath대조가누락됐다.
+실제 JSON 원본 SHA-256: EFEC1F0EF364E6CA4D88DBBCF8D52E88FFDC2EAC452E258CA7D09B4BDDE28DB9 (최종 재확인 동일).
+실적의 기존 S13=반려 미지원, S16=계산 이력 있는 승인 숨김 거부는 PASS로 바꾸지 않았다.
 
-### 실제 owner·실제 Chrome SDK 검문 3조건
+### 재실행·실패 기록
 
-증거 `C:\Users\pangyo\AppData\Local\Temp\shiftmgmt-sol-a2-review-runtime-1i_ofx62\review-runtime-result.json`. parent가자기privateworker에만외부preload명시주입, 원scope/protected/control불변:
+- 첫 focused 정책21개 중5개는 한국어 typed 오류/실제 행0과 옛 기대값15 불일치였다. 기대를 오류코드 및 실제 행으로 맞추고 실제 음성 사례를 추가했다.
+- C02의 새 v2 fixture가 기준{}/한 종류뿐인 무효 자료여서 거부됐다. 실제 bootstrap로 만든 두 종류/사건을 사용하여487열 검문의 원 의도를 보존했고 전체 통과했다.
+- UI fixture가 현재와 같은 기준을 추가하거나 page2에 부족한8행을 준비하던 부분은 실제 현재 rule과12개 개정으로 수정했다. 검증기 가정을 재검토하고 오류 문구를 노출해 원인을 좁혔다.
+- 현재/예정 카드 추가 후 스크롤과 표의 긴 줄바꿈을 실측해 해당 화면 안에서 배치를 줄였다. 마지막 표 보완 때문에 operations 전체를 두 번째 실행했다.
+- performance 첫 결과18/2는 정상이었으나 PowerShell의 bare native exit2가 shell RC1로 전달됐다. 최소 node exit2 재현 후 명시적 native RC 보존으로 재실행해 실제RC2를 확인했다. 첫 결과는 버리지 않았다.
+- Sol 전체 실행 시작: 단위1 /운영2 /실적2. 추가 실행 사유가 있는 범위만 진행했고 단위 전부를 안심용으로 다시 돌리지 않았다. 시간 절감률이나 전체 진행보고 간격 무누락을 측정 없이 주장하지 않는다.
 
-- viewport1440x901 실제context/page획득을SDK원함수에서관측했지만workerraw는[1440,900]. 실제resourceclose2/observedNodechildclose전수확인. owner FAIL/A1_GATE_REJECTED는현재Chrome환경불일치로거절되어 false최종수용이라고보지 않는다.
-- negative errors에서 context/browser 실제종료후각throw2를발동. 다른close도실행되고actualSDKclose2관측. source는각message만resource.error에두고primary/cleanup은빈값, worker-final FAIL_INCOMPLETE작성; ownertempRemovedtrue/candidate생성후gate거절. normal-partial은첫초기상태만, ownerraw/partialpath는null.
-- positive live-admin에서 context 실제종료후throw→protected helper가원cleanup오류와manifest/log를쓰고실제childRC2. parent원인은generic exit mismatch, 정상currentpartial/원stack연결0, workerfinal없음. ownserver/worker실제close, SDK2close관측. 이는환경오류와별개로source의failurebinding 결함을재현했다.
-- 관측한ownNode자식전부close/각case2 SDK awaitedclose return. universal OS descendant history를증명했다고확대하지 않고foreignPID kill0/타temp정리0.
+### 화면과 다음 상태
 
-## 5. 현재 재실행 환경의 한계
+로그인된 별도 확인 창: `http://127.0.0.1:19114/` (CDP19115). 현재 근무·수당 기준 화면을 열었다. 기존19100 확인 창과 운영 DB는 변경하지 않았다.
+PNG: `C:\Projects\Active\교대근무관리 시스템\.ai\reports\policy-history-20261103\review-retry1-20261104_110746\sol-evidence\policy-overview-final.png` / `C:\Projects\Active\교대근무관리 시스템\.ai\reports\policy-history-20261103\review-retry1-20261104_110746\sol-evidence\policy-history-final.png`.
 
-발송lockedenvironment Chrome `155.0.8059.40`, 현재실제installed/findChrome/SDK수행버전 `155.0.8059.41`. 원contract/environment-policy/checker/Chromebinary를검수중복원/수정하지않았다. 그래서freshnormal2의gate는Chrome불일치로먼저거절했고이두FAIL을그냥desiredfault검문PASS로세지않았다. 원제출당시22PASS/normal8PASS기록도이유로삭제하지않는다. 새로운실행기준은검수종결뒤Sol후속설계에서따로봉인해야하며, 현재v1target을조용히느슨하게바꾸지 않는다.
+현재 Task의 기술 미해결0. 최종 사용자 디자인 확인은 대기이며 운영 적용·commit·배포는 별도 범위다. 다음은 기존 UI-ADMIN-REFINE 공휴일 메뉴의 구체 Task/허용 범위 정리이며 이번 회신에서 새 제품 작업을 시작하지 않는다.
+TODO 정본: 81060bytes / SHA-256 40AE5B82E7508D135F77BD1E22EE76E746F9EBA001519EE6E1F73135947CF085.
 
-## 6. 완료한 검수와 권한 경계
+## 후속 Git 동기화 요청 — 2026-11-04
 
-검수중 scope341/protected337/controls571/hash/Solproductedits0. 수신/재보존 byte/fullSHA확인, requestbodyunchanged, source/diff메타전수, 22RC/44streams/companionrecords전수, negative112/생성기실제관측범위, directhelper8/SDK3/이미지2/source독립검토 및재검문을마쳤다. facts와위험가정/미재현항목을구분했다.
-
-결함11개는한묶음으로남겼다. Sol이지금제품수리를하거나GeminiCLI를호출하지않았다. 기존DEC-002예외는A1v7종결로충족됐으며A2직접수정권한으로연장하지않는다. R32C-06 CORRECT2소진/초기화0, A1v8패킷0, commit/push/deploy0, V3.4readonly.
-
-본target은 **CLOSED/FAILED_A2_NOT_ACCEPTED**. A1기반historicalACCEPTED는유지, A2/fullA/B87/whole3-2/release미수용. closure후TODO/state의사실상태만갱신하고v1baseline은historical/expired로남긴다. 원문·원PASS·원FAIL·Root새실패증거를모두보존한다.
-
-MCPsurfaceinspected/noMCPfailure; exactinstalledSDK/localsource가directauthority여서격리SDK사용. code_review/P04/P06/P17규칙과제품불변적용. FrontierSol; 기존balancedfallbackgpt-6-solsource검토자료를Root파일/실제프로브로재검문. Economyinventory의잘못된diffSHA/UTC해석은Root실파일과영수증으로교정했고위최종판정에사용하지않았다.
-
-검수전체정본: `C:\Projects\Active\교대근무관리 시스템\.ai\reports\phase3-2c-a2-v1-review-20261014_131126` / `initial-evidence.json`, `negative-ledger-audit.json`, `submitted-command-audit.json`, `runtime-probe-reference.json`, `preclose-scope.json`, `findings.json`, `final-evidence.json`.
+사용자가 현재 상태의 commit·push·동기화를 명시 승인했다. 위 기술 수용 당시 미수행이던 commit의 후속 승인이다. 제품510파일은 검수 정본과 byte 동일하며 995b92a85e8a006c3489b2ad171d2c5366dda8c8에 커밋했다. 대상은 기존 `Cnthoth-Plus-Projects/Shiftmgmt_Renewal`이며, 통합 `main`의 `ShiftMgmt_V4/` 구조와 전체 소스 이력을 보존하고 `source/shiftmgmt-v4`를 제품 작업 폴더의 추적 브랜치로 사용한다. 제품 코드·버전·배포 설정은 추가 변경하지 않는다. 실제 push/원격 동일성 결과는 후속 Git 실행 receipt로 확인한다.

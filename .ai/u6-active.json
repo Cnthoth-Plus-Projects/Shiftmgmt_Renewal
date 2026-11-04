@@ -1,0 +1,169 @@
+{
+  "status": "ACCEPTED_U6_ORIGINAL12_AFTER_SOL_TAKEOVER",
+  "owner": "Sol",
+  "implementationOwner": "Sol",
+  "initialSubmissions": 1,
+  "retrySubmissions": 1,
+  "cumulativeSubmissions": 2,
+  "remainingRetrySubmissions": 0,
+  "directImplementationAttempts": 1,
+  "SolProductWrites": 5,
+  "canonicalAccepted": 65,
+  "canonicalMissing": 16,
+  "newCanonicalAccepted": 12,
+  "originalCriteria": 12,
+  "readyToCode": true,
+  "IMPLEMENTIssued": true,
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604",
+  "assessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+    "bytes": 28540,
+    "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+  },
+  "handoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 5459,
+    "sha256": "9F61BC4ED972B7AA6151949BF248D071091974569EEC0F9EF9F971CFD192E17B"
+  },
+  "previousAcceptedHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_005707_U6-recon-before-HANDOFF.md",
+    "bytes": 13163,
+    "sha256": "5BB3F1BB5E79A1D65B4EAE9908D28A75DCF969050A9BBDD9790C7B0C0D99B047"
+  },
+  "sourceBefore": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-recon-20261026_004439\\source-before.json",
+    "bytes": 63278,
+    "sha256": "50493BCF500ECCDDA499786CFAFBD817F79544A2C8542B7D2C3E8E9E4218D841"
+  },
+  "sourceAfter": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\source-final.json",
+    "bytes": 62966,
+    "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+  },
+  "next": "AH-U7 role9; not started",
+  "submissions": [],
+  "phase": "U6_CLOSED",
+  "designAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1",
+  "designContract": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1\\contract.json",
+    "bytes": 7256,
+    "sha256": "D2511655B3E4085AF899AC33EBC551154CFF32F05D368BA7CBADC93132A9883C"
+  },
+  "designSeal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1\\seal.json",
+    "bytes": 5068,
+    "sha256": "A4A2882B03F36F7A7CC0F05DB8302B0CCD90F149EED5EA4587892328C730B0D1"
+  },
+  "priorPhaseHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_031644_U6-design-before-HANDOFF.md",
+    "bytes": 7748,
+    "sha256": "03A6AD2D473BAD416E9CAB63617E10263912B45CD0DEC571189DB401D4D77F53"
+  },
+  "planId": "PLAN-20261026-01",
+  "planTaskId": "AH-U6-V",
+  "priorPlanningHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_103346_approved-task-plan-before-HANDOFF.md",
+    "bytes": 8695,
+    "sha256": "90513BF4ED96A43B56A66F4C078C6188B574BA084BE9E5A8158A50E58D32B1FA"
+  },
+  "taskPlan": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+    "bytes": 27379,
+    "sha256": "78532D109891BBBF0B757DFF91A7863A1157D1E8E3B0E6247B98B11882BFF718"
+  },
+  "IMPLEMENTPacketCount": 1,
+  "runtimeAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-stale",
+  "runtimeSeal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-stale\\seal.json",
+    "bytes": 3309,
+    "sha256": "B820E8C022D94D41AD7DC73BA431E5BF55542FDC4639675ED4FE7645887F553E"
+  },
+  "preflight": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-packet-20261026_113710\\preflight.json",
+    "bytes": 7114,
+    "sha256": "55CA02045AAAAD5356B9EA74AC60DE77FAE48DD17DF04CCDB2932AE622D99816"
+  },
+  "designAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-design-20261026_030100\\assessment.json",
+    "bytes": 5035,
+    "sha256": "835E2F4A008EA89C9689EF6D51BFC9AB8549EFB29D8893EF6C86A8E84AAFCAAD"
+  },
+  "lastHandoffCheck": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-handoff-check-20261026_121404\\assessment.json",
+    "bytes": 1889,
+    "sha256": "93052716ECAAE7F4774F5B75809DAFC804DEAA5C2F3CF5F4EA6C15FDE35ED969"
+  },
+  "receivedHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_190604_U6-retry-Gemini-to-Sol-received.md",
+    "bytes": 31444,
+    "sha256": "D02CFCD95C250085195959ECCAAABB413D2CB8C9796B62AD889870CDF67CBFF7"
+  },
+  "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604",
+  "issuedCorrectionPackets": 1,
+  "defects": [
+    "U6-I01",
+    "U6-I02",
+    "U6-I03",
+    "U6-I04",
+    "U6-I05",
+    "U6-I06"
+  ],
+  "solControlDefects": [
+    "U6-C01"
+  ],
+  "takeover": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\takeover.json",
+    "bytes": 1106,
+    "sha256": "2445D014E4EF82E332EE938B9900EAE720FEA1836373E0798DF25E90EBCB711F"
+  },
+  "verificationAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-verification-v6",
+  "verificationSeal": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-verification-v6\\seal.json",
+    "bytes": 3263,
+    "sha256": "71CD5C8F81067C03817D862BDCFC860E600DB57E831C0626D7502EEB689F2245"
+  },
+  "firstFullRun": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\sol-full-v1.command.json",
+    "bytes": 1148,
+    "sha256": "CD26F9C4606CDDB100120D91D54EB3FC94BA45872C8BA01B4F0A9B1B7BF86369"
+  },
+  "activeContinuation": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\sol-final-remaining-active.json",
+    "bytes": 619,
+    "sha256": "F6AAB6EA3C2B92F1D01A5DF71060DC5756981EA51FDC8266708475A9D21A1356"
+  },
+  "controlCorrection": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\sol-historical-context-correction.json",
+    "bytes": 1437,
+    "sha256": "E627D853CE4BD569D638519F1C126A49FFF5A4B325E7B33A2529685ED3913BC8"
+  },
+  "SolDirectAttempt": 1,
+  "closedAt": "2026-10-26T20:51:00.319156+09:00",
+  "finalSolAssessment": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+    "bytes": 28540,
+    "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+  },
+  "currentHandoff": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+    "bytes": 5459,
+    "sha256": "9F61BC4ED972B7AA6151949BF248D071091974569EEC0F9EF9F971CFD192E17B"
+  },
+  "history": [
+    {
+      "event": "SOL_DIRECT_TAKEOVER_ACCEPTED_ORIGINAL12",
+      "time": "2026-10-26T20:51:00.319156+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+        "bytes": 28540,
+        "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+      },
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "SolProductWrites": 5,
+      "canonicalAccepted": 65,
+      "newCanonicalAccepted": 12
+    }
+  ]
+}

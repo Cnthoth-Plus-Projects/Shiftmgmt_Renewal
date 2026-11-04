@@ -1,0 +1,403 @@
+/* ==========================================================================
+   정책 이력 및 버전 관리 스타일 (POLICY-HISTORY-01) - CSP 완전 준수 (인라인 스타일 0)
+   ========================================================================== */
+
+.policy-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.policy-summary-card {
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.policy-summary-card.active-card {
+  border-left: 3px solid var(--color-primary, #2563eb);
+}
+
+.policy-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.policy-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main, #1e293b);
+  margin: 0;
+}
+
+.policy-card-body {
+  font-size: 11px;
+  color: var(--text-secondary, #475569);
+  line-height: 1.35;
+}
+
+.policy-version-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  margin-right: 4px;
+}
+
+.policy-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.policy-status-active {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.policy-status-scheduled {
+  background: #fefce8;
+  color: #a16207;
+  border: 1px solid #fef08a;
+}
+
+.policy-status-past {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.policy-status-cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  text-decoration: line-through;
+}
+
+.policy-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+/* Dense Policy History Table & Dialogs */
+.policy-history-dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.policy-history-dialog {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 90vw;
+  max-width: 960px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.policy-history-dialog.compact {
+  max-width: 580px;
+}
+
+.policy-dialog-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.policy-dialog-header-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.policy-dialog-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.policy-dialog-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.policy-history-dense-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.policy-history-dense-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.policy-history-dense-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.policy-history-dense-table tr:hover {
+  background: #f8fafc;
+}
+
+.policy-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 13px;
+}
+
+.policy-pagination.dialog-actions {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.policy-impact-preview-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.policy-impact-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #15803d;
+}
+
+.policy-impact-note {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.policy-form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.policy-form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.policy-form-input,
+.policy-form-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.policy-form-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.policy-btn-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.policy-btn-close-lg {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.policy-btn-primary {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.policy-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.policy-btn-secondary {
+  padding: 6px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #f8fafc;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.policy-btn-sm {
+  padding: 2px 6px;
+  font-size: 12px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.policy-btn-cancel-sm {
+  padding: 2px 6px;
+  font-size: 12px;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.policy-btn-page {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.policy-page-info {
+  color: #64748b;
+}
+
+.policy-page-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.policy-notice-text {
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 6px; font-size: 12px;
+}
+
+.policy-empty-box {
+  text-align: center;
+  padding: 30px;
+  color: #64748b;
+}
+
+.policy-error-box {
+  color: #dc2626;
+  padding: 20px;
+  text-align: center;
+}
+
+.policy-dialog-error {
+  display: none;
+  color: #dc2626;
+  font-size: 13px;
+  padding: 8px;
+  background: #fef2f2;
+  border-radius: 4px;
+}
+
+.policy-dialog-error.is-visible {
+  display: block;
+}
+
+.policy-th-ver {
+  width: 70px;
+}
+
+.policy-th-status {
+  width: 80px;
+}
+
+.policy-th-date {
+  width: 130px;
+}
+
+.policy-th-actor {
+  width: 110px;
+}
+
+.policy-th-created {
+  width: 130px;
+}
+
+.policy-th-action {
+  width: 110px;
+  text-align: center;
+}
+
+.policy-action-lock {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.policy-cell-reason {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.policy-cell-action {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ops-settings-section.policy-manage-section {
+  padding-bottom: 0px;
+  margin-bottom: 2px;
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "valid-control",
+    "accepted": true,
+    "violation": false
+  },
+  {
+    "name": "wrong-kind-rule",
+    "accepted": true,
+    "violation": true
+  },
+  {
+    "name": "invalid-criteria-json",
+    "accepted": true,
+    "violation": true
+  },
+  {
+    "name": "missing-v2-email",
+    "accepted": true,
+    "violation": true
+  },
+  {
+    "name": "event-kind-mismatch",
+    "accepted": true,
+    "violation": true
+  }
+]

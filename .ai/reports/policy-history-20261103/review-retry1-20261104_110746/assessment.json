@@ -1,0 +1,25 @@
+{
+  "taskId": "POLICY-HISTORY-01",
+  "attempt": "retry1",
+  "status": "SOL_TAKEOVER_IN_PROGRESS",
+  "at": "2026-11-04T11:10:21.828517+09:00",
+  "gemini": {
+    "initial": 1,
+    "retry": 1,
+    "total": 2
+  },
+  "owner": "Sol direct takeover under two-failed-submissions standing authorization",
+  "basis": "preview on uninitialized DB still writes rows0->2; remaining session/related-data/JSON strictness defects in read-only review",
+  "boundary": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\boundary.json",
+    "bytes": 3878,
+    "sha256": "02487CC3168E26C1A0096EE9E85F891D35707AD35548A01D57325562578D3786"
+  },
+  "repro": {
+    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\preview-write-repro.json",
+    "bytes": 88,
+    "sha256": "A219A3D70430F09426A3894B3E15D4650BCCB6B8D0F15E1795ECA4F7C6CBBDFB"
+  },
+  "freshFullRunsBeforeTakeover": 0,
+  "technicalAccepted": false
+}

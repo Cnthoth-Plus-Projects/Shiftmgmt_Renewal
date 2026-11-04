@@ -1,0 +1,298 @@
+{
+  "baseline": 1425,
+  "current": 1454,
+  "missing": [
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > C2 & RN1/RN2 contract counts (CN1, CN2) > verifies registerOperationsRoutes registers exactly 36 channels independently"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > W11 existing preview and restore channels serialize the exact source-bound employee date review"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > dispatches all 36 operations channels independently, verifying exact service effects and activity logs (21 tracked, 15 untracked)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches expectedActivities keys with recordsActivity manifest channels exactly"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 when tracked service throws an error (RN3, CN6)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/database-backup-service.test.ts",
+      "database-backup-service > should write a single JSON backup file with 40 tables, row count, and verified SHA-256 (J1, N8)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > defines exactly 111 channel contracts with unique channels and methods"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected counts for recordsActivity (61), dialog (6), usesDataDir (25)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected group distributions (17 core, 36 operations, 29 workforce, 16 performance, 13 allowance)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected guard distributions (36 admin, 37 session, 24 action, 1 accessHistory, 13 none)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/web/bridge/app-bridge.test.ts",
+      "app-bridge > exposes exactly 111 methods mapped to their contract channels (R8)"
+    ]
+  ],
+  "added": [
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > C2 & RN1/RN2 contract counts (CN1, CN2) > verifies registerOperationsRoutes registers exactly 39 channels independently"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > W11 existing preview and restore channels serialize the exact source-bound employee date review"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > dispatches all 39 operations channels independently, verifying exact service effects and activity logs (22 tracked, 17 untracked)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > matches expectedActivities keys with recordsActivity manifest channels exactly"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 when tracked service throws an error (RN3, CN6)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/app-settings-storage-service.test.ts",
+      "app-settings-storage-service > blocks date modifications with POLICY_MANAGED_SETTINGS after policy bootstrap"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/database-backup-service.test.ts",
+      "database-backup-service > should write a single JSON backup file with 42 tables, row count, and verified SHA-256 (J1, N8)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/performance-approval-flow-service.test.ts",
+      "performance-approval-flow-service > PH-R09: should reject approval with POLICY_CONFLICT when expectedPolicyFingerprint does not match and record used event on success"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH04, PH07] previews both changed intervals when moving a reservation past another version"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH05, PH06] requires a session and binds a token to the same login session"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH05] rejects apply when actor mismatches or lacks admin role"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH06] applies change with valid token and consumes token (single use)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH06] captures intent by value and rejects expired preview without writes"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH06] fresh preview is read-only even before bootstrap"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH06] preview does not write to database (0 mutations) and reports impact"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH07] detects a related file change even when file and approval counts are identical"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-impact-service.test.ts",
+      "policy-history-impact-service (PH-R05, PH-R06) > [PH07] rejects apply when registry changed since preview (fingerprint conflict)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-integration.test.ts",
+      "policy-history-integration (PH08 ~ PH12) > [PH08, PH09, PH10] complete policy lifecycle - bootstrap, parsing, preview, apply, approval, used event, and immutable lock"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-integration.test.ts",
+      "policy-history-integration (PH08 ~ PH12) > [PH08] freezes the actual Excel parser context before asynchronous workbook reads"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-integration.test.ts",
+      "policy-history-integration (PH08 ~ PH12) > [PH08] invalidates cache and re-reads pending file when policy fingerprint changes with identical size and mtime"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-integration.test.ts",
+      "policy-history-integration (PH08 ~ PH12) > [PH10] enforces mandatory policy fingerprint check in public approval route"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-integration.test.ts",
+      "policy-history-integration (PH08 ~ PH12) > [PH11, PH12] roundtrips actual policy provenance and used tombstones; rejects corrupt v2 data without live writes"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH01] bootstraps V1 (legacy) and V2 (effective date) when raw dates exist"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH01] bootstraps baseline V1 when no raw dates exist"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH01] initialization is idempotent and does not duplicate records"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH02] adds a scheduled policy revision and enforces validation"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH03] selects accurate policy for workDate across boundaries"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH04] cancels a scheduled future revision"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH04] corrects a scheduled future revision with audit trail"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH04] forbids correcting/cancelling initial baseline or used policies"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/main/services/policy-history-service.test.ts",
+      "policy-history-service > [PH05] lists revisions and events with pagination and enforces admin check"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > defines exactly 114 channel contracts with unique channels and methods"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected counts for recordsActivity (62), dialog (6), usesDataDir (25)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected group distributions (17 core, 39 operations, 29 workforce, 16 performance, 13 allowance)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "channel-contracts > matches expected guard distributions (39 admin, 37 session, 24 action, 1 accessHistory, 13 none)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/domain/policy-history.test.ts",
+      "Policy History Domain Model (PH01 ~ PH04) > [PH01] generates deterministic fingerprints for application and month context"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/domain/policy-history.test.ts",
+      "Policy History Domain Model (PH01 ~ PH04) > [PH02] verifies valid dates including leap years and rejects malformed dates"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/domain/policy-history.test.ts",
+      "Policy History Domain Model (PH01 ~ PH04) > [PH03] resolves active timeline with continuous periods (6/30, 7/1, 8/31, 9/1 boundaries)"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/shared/domain/policy-history.test.ts",
+      "Policy History Domain Model (PH01 ~ PH04) > [PH04] handles scheduled policy correction and cancellation with gapless timeline preservation"
+    ],
+    [
+      "C:/Projects/Active/ShiftMgmt_V4/src/web/bridge/app-bridge.test.ts",
+      "app-bridge > exposes exactly 114 methods mapped to their contract channels (R8)"
+    ]
+  ],
+  "renamed": [
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > C2 & RN1/RN2 contract counts (CN1, CN2) > verifies registerOperationsRoutes registers exactly 36 channels independently",
+      "to": "operations-routes > C2 & RN1/RN2 contract counts (CN1, CN2) > verifies registerOperationsRoutes registers exactly 39 channels independently"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > W11 existing preview and restore channels serialize the exact source-bound employee date review",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > W11 existing preview and restore channels serialize the exact source-bound employee date review"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > dispatches all 36 operations channels independently, verifying exact service effects and activity logs (21 tracked, 15 untracked)",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > dispatches all 39 operations channels independently, verifying exact service effects and activity logs (22 tracked, 17 untracked)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches expectedActivities keys with recordsActivity manifest channels exactly",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > matches expectedActivities keys with recordsActivity manifest channels exactly"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+      "from": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 when tracked service throws an error (RN3, CN6)",
+      "to": "operations-routes > R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 when tracked service throws an error (RN3, CN6)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/services/database-backup-service.test.ts",
+      "from": "database-backup-service > should write a single JSON backup file with 40 tables, row count, and verified SHA-256 (J1, N8)",
+      "to": "database-backup-service > should write a single JSON backup file with 42 tables, row count, and verified SHA-256 (J1, N8)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "from": "channel-contracts > defines exactly 111 channel contracts with unique channels and methods",
+      "to": "channel-contracts > defines exactly 114 channel contracts with unique channels and methods"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "from": "channel-contracts > matches expected counts for recordsActivity (61), dialog (6), usesDataDir (25)",
+      "to": "channel-contracts > matches expected counts for recordsActivity (62), dialog (6), usesDataDir (25)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "from": "channel-contracts > matches expected group distributions (17 core, 36 operations, 29 workforce, 16 performance, 13 allowance)",
+      "to": "channel-contracts > matches expected group distributions (17 core, 39 operations, 29 workforce, 16 performance, 13 allowance)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts",
+      "from": "channel-contracts > matches expected guard distributions (36 admin, 37 session, 24 action, 1 accessHistory, 13 none)",
+      "to": "channel-contracts > matches expected guard distributions (39 admin, 37 session, 24 action, 1 accessHistory, 13 none)"
+    },
+    {
+      "file": "C:/Projects/Active/ShiftMgmt_V4/src/web/bridge/app-bridge.test.ts",
+      "from": "app-bridge > exposes exactly 111 methods mapped to their contract channels (R8)",
+      "to": "app-bridge > exposes exactly 114 methods mapped to their contract channels (R8)"
+    }
+  ],
+  "unmatchedBaseline": [],
+  "netNewTests": 29,
+  "baselinePreserved": true
+}

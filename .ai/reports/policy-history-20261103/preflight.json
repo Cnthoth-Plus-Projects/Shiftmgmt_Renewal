@@ -1,0 +1,68 @@
+{
+  "taskId": "POLICY-HISTORY-01",
+  "stage": "READY_TO_CODE",
+  "productCodeChanged": false,
+  "sourceCount": 500,
+  "allowedExisting": 45,
+  "allowedNew": 10,
+  "protectedCount": 455,
+  "baselineTypecheck": {
+    "rc": 0,
+    "command": "npm run typecheck"
+  },
+  "baselineAffectedTests": {
+    "rc": 0,
+    "files": 16,
+    "total": 210,
+    "passed": 210,
+    "failed": 0,
+    "elapsedSeconds": 123.84
+  },
+  "baselineTestCollection": {
+    "rc": 0,
+    "files": 151,
+    "tests": 1425,
+    "execution": "collection only, not full-suite execution"
+  },
+  "implementationValidation": "new policy producer/reader/API/UI/candidate regressions are required after implementation, not nonexistent-code preconditions",
+  "gemini": {
+    "initial": 0,
+    "retry": 0,
+    "total": 0,
+    "owner": "Gemini implementation, Sol scope/verification"
+  },
+  "newFiles": [
+    "src/shared/domain/policy-history.ts",
+    "src/shared/domain/policy-history.test.ts",
+    "src/main/services/policy-history-service.ts",
+    "src/main/services/policy-history-service.test.ts",
+    "src/main/services/policy-history-impact-service.ts",
+    "src/main/services/policy-history-impact-service.test.ts",
+    "src/main/services/policy-history-integration.test.ts",
+    "src/web/screens/operations-policy-history.ts",
+    "src/web/screens/operations-policy-dialog.ts",
+    "src/web/policy-history.css"
+  ],
+  "baselineLint": {
+    "rc": 0,
+    "errors": 0,
+    "warnings": 3,
+    "existingWarnings": [
+      "allowance-document-export-service.ts:320 unused startDate",
+      "allowance-document-export-service.ts:501 unused captureWorksheetRowStyleRange",
+      "file-watch-runtime-service.ts:20 explicit any"
+    ],
+    "protectedFiles": true
+  },
+  "backupReview": {
+    "baselineSchema": 1,
+    "baselineTables": 40,
+    "writer": "all SQLite user tables automatically exported",
+    "reader": "exact table/column allowlists; old1/40 and new2/42 must be distinguished",
+    "confirmedSources": [
+      "database-backup-service.ts:41-103",
+      "database-migration-service.ts:44-86,1078-1141,1756-1777"
+    ],
+    "subagent": "Terra read-only evidence; Sol directly checked cited source"
+  }
+}

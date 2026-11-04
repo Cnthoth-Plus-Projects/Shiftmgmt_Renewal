@@ -1,0 +1,188 @@
+{
+  "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\baseline-component",
+  "sites": [
+    {
+      "records": 0,
+      "pageCount": 1,
+      "numericButtons": 0,
+      "lastRows": 0,
+      "lastRange": "검색 결과 0곳",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 1,
+      "pageCount": 1,
+      "numericButtons": 1,
+      "lastRows": 1,
+      "lastRange": "검색 결과 1곳 · 1–1곳 · 1/1페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 10,
+      "pageCount": 1,
+      "numericButtons": 1,
+      "lastRows": 10,
+      "lastRange": "검색 결과 10곳 · 1–10곳 · 1/1페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 11,
+      "pageCount": 2,
+      "numericButtons": 2,
+      "lastRows": 1,
+      "lastRange": "검색 결과 11곳 · 11–11곳 · 2/2페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 55,
+      "pageCount": 6,
+      "numericButtons": 6,
+      "lastRows": 5,
+      "lastRange": "검색 결과 55곳 · 51–55곳 · 6/6페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 101,
+      "pageCount": 11,
+      "numericButtons": 7,
+      "lastRows": 1,
+      "lastRange": "검색 결과 101곳 · 101–101곳 · 11/11페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "records": 1001,
+      "pageCount": 101,
+      "numericButtons": 7,
+      "lastRows": 1,
+      "lastRange": "검색 결과 1001곳 · 1001–1001곳 · 101/101페이지",
+      "lastNextDisabled": true,
+      "navRight": 989,
+      "cardRight": 1000,
+      "navOverflowsCard": false
+    },
+    {
+      "case": "page3/search/collection-shrink",
+      "passed": true,
+      "shrinkPage": "6→2"
+    }
+  ],
+  "workforce": [
+    {
+      "records": 0,
+      "pageCount": 1,
+      "buttonCount": 4,
+      "firstText": "검색 결과 0명«‹›»",
+      "lastText": "검색 결과 0명«‹›»",
+      "uniqueIds": 0,
+      "nextDisabled": true
+    },
+    {
+      "records": 1,
+      "pageCount": 1,
+      "buttonCount": 5,
+      "firstText": "검색 결과 1명 · 1–1명 · 1/1페이지«‹1›»",
+      "lastText": "검색 결과 1명 · 1–1명 · 1/1페이지«‹1›»",
+      "uniqueIds": 1,
+      "nextDisabled": true
+    },
+    {
+      "records": 10,
+      "pageCount": 1,
+      "buttonCount": 5,
+      "firstText": "검색 결과 10명 · 1–10명 · 1/1페이지«‹1›»",
+      "lastText": "검색 결과 10명 · 1–10명 · 1/1페이지«‹1›»",
+      "uniqueIds": 10,
+      "nextDisabled": true
+    },
+    {
+      "records": 11,
+      "pageCount": 1,
+      "buttonCount": 5,
+      "firstText": "검색 결과 11명 · 1–11명 · 1/1페이지«‹1›»",
+      "lastText": "검색 결과 11명 · 1–11명 · 1/1페이지«‹1›»",
+      "uniqueIds": 11,
+      "nextDisabled": true
+    },
+    {
+      "records": 55,
+      "pageCount": 4,
+      "buttonCount": 8,
+      "firstText": "검색 결과 55명 · 1–14명 · 1/4페이지«‹1234›»",
+      "lastText": "검색 결과 55명 · 43–55명 · 4/4페이지«‹1234›»",
+      "uniqueIds": 55,
+      "nextDisabled": true
+    },
+    {
+      "records": 101,
+      "pageCount": 8,
+      "buttonCount": 12,
+      "firstText": "검색 결과 101명 · 1–14명 · 1/8페이지«‹12345678›»",
+      "lastText": "검색 결과 101명 · 99–101명 · 8/8페이지«‹12345678›»",
+      "uniqueIds": 101,
+      "nextDisabled": true
+    },
+    {
+      "records": 1001,
+      "pageCount": 72,
+      "buttonCount": 11,
+      "firstText": "검색 결과 1001명 · 1–14명 · 1/72페이지«‹12345…7172›»",
+      "lastText": "검색 결과 1001명 · 995–1001명 · 72/72페이지«‹12…6869707172›»",
+      "uniqueIds": 1001,
+      "nextDisabled": true
+    },
+    {
+      "case": "resize/search/shrink/empty",
+      "sizes": [
+        {
+          "height": 300,
+          "viewportHeight": 253,
+          "lastBottom": 348.421875,
+          "viewportBottom": 350,
+          "rowHeight": 28,
+          "groupHeight": 28.921875,
+          "rows": 7,
+          "status": "검색 결과 55명 · 1–7명 · 1/8페이지«‹12345678›»"
+        },
+        {
+          "height": 500,
+          "viewportHeight": 453,
+          "lastBottom": 544.421875,
+          "viewportBottom": 550,
+          "rowHeight": 28,
+          "groupHeight": 28.921875,
+          "rows": 14,
+          "status": "검색 결과 55명 · 1–14명 · 1/4페이지«‹1234›»"
+        },
+        {
+          "height": 700,
+          "viewportHeight": 557,
+          "lastBottom": 628.421875,
+          "viewportBottom": 654,
+          "rowHeight": 28,
+          "groupHeight": 28.921875,
+          "rows": 17,
+          "status": "검색 결과 55명 · 1–17명 · 1/4페이지«‹1234›»"
+        }
+      ],
+      "passed": true
+    }
+  ]
+}

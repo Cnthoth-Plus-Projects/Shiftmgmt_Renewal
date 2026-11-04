@@ -104,6 +104,8 @@ diff 요약: <added/deleted lines, generated files, dependency changes>
 
 ## F. Sol acceptance and anti-ping-pong rules
 
+**User override — 2026-10-21:** A task allows one initial Gemini submission and one retry. Report initial/retry/cumulative attempts and current implementation owner every task. After both fail Sol verification, Sol directly takes over implementation under the user's standing authorization without another permission request. Version, strategy, or defect-label changes do not reset the same unresolved task's count. Preserve prior records and historical budgets; record actual submissions in HANDOFF.md and the task ledger. This overrides the older correction-count rule below and is the specific authorization exception in §A. Scope, validation, evidence, and deployment requirements remain applicable.
+
 Sol checks seven gates: **scope, invariants, static checks, relevant tests, negative tests, runtime/UI behavior, and reproducible diff/evidence**. An unchecked gate is `UNVERIFIED`, not pass.
 
 - Preflight closes design choices before Gemini receives the task. Do not ask Gemini to discover the design while coding.
@@ -111,6 +113,22 @@ Sol checks seven gates: **scope, invariants, static checks, relevant tests, nega
 - Allow at most two correction submissions for the same defect class. After the second failure, stop resending, diagnose whether the strategy/specification is wrong, and replan or ask the user for the material decision.
 - Each correction uses stable defect IDs and requires `cause -> changed location -> reproduction command -> result` for every ID.
 - A newly introduced regression reopens the relevant full gate; a narrow fix does not erase earlier evidence requirements.
+
+### F.1 Verification execution efficiency — 2026-10-26
+
+- Sol applies `.ai/VERIFICATION_WORKFLOW.md`: quick preflight, focused reproduction, affected checks, then the required final suite on frozen source.
+- Before issuing a packet or starting a long suite, verify explicit command/scenario identities, suite plus pre/post counts, final-result parsing, and a representative actual path. A plan check does not count as product runtime evidence.
+- A full rerun requires a recorded material change or invalidated evidence. Two identical failures with unchanged inputs require a different diagnostic approach. Twenty minutes without narrowing the diagnosis or two validator corrections trigger Sol's strategy review; these triggers do not end normal long-running tests or reduce acceptance requirements.
+- Keep all original failed receipts. Recorded revalidation and fresh execution must be reported separately. Exact required gates, deadlines, product boundaries, and attempt counts remain applicable.
+- Sol reports progress within 60 seconds during ongoing work and verifies the terminal result/RC before reporting completion. Gemini records stage, elapsed time, failure classification, and rerun reason in its reply.
+
+### F.2 Approved Task queue — user decision, 2026-10-26
+
+- Sol executes only the next leaf Task in `TODO.md`; `.ai/task-plan.json` is a matching derived index. Each packet/review identifies the Plan Task ID and stable parent implementation task ID.
+- New out-of-queue work is not automatically added or executed. Required fixes inside the active Task/allowlist use its existing defect IDs; only material new scope requires a concrete proposal and explicit user authorization.
+- Preparation validates the verifier, fixtures and baseline feasibility. New product producer/reader integration, changed bindings and candidate regressions are implementation acceptance checks after code exists; they are not circular prerequisites to IMPLEMENT.
+- Prefer reuse, grouped checks and a verified build per unchanged source/hook/compiler fingerprint. Any successor proof strategy must retain fresh source/served-byte checks, independent evidence, original negative coverage, deadlines and failure/partial behavior. Never edit a sealed prior authority or claim planned checks passed.
+- Continue authorized internal steps to a concrete output without asking for repeated proceed confirmations. Product author, Gemini initial/retry limits and deployment authorization remain unchanged.
 
 ## G. Handoff transport and audit trail
 

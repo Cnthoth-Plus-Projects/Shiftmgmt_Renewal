@@ -1,0 +1,48 @@
+[
+  {
+    "name": "preview-writes",
+    "before": 0,
+    "after": 2,
+    "previewSucceeded": true,
+    "error": "",
+    "violation": true
+  },
+  {
+    "name": "non-admin-service-write",
+    "nonAdminAccepted": true,
+    "violation": true
+  },
+  {
+    "name": "cross-kind-correction",
+    "accepted": true,
+    "row": {
+      "policy_kind": "changed-worker-priority",
+      "rule_key": "substitute-team-type-v1"
+    },
+    "violation": true
+  },
+  {
+    "name": "duplicate-correction-date",
+    "accepted": true,
+    "sameActiveStartCount": 2,
+    "violation": true
+  },
+  {
+    "name": "real-excel-cache-and-same-rule-stale-approval",
+    "entryDate": "2026-03-02",
+    "cacheFingerprintUnchanged": true,
+    "cachedRevisionMatchesCurrent": false,
+    "sameRule": true,
+    "staleApprovalAccepted": true,
+    "approvalCode": null,
+    "violation": true
+  },
+  {
+    "name": "real-excel-missing-client-fingerprint",
+    "requiredFlag": true,
+    "clientFingerprintProvided": false,
+    "accepted": true,
+    "approvalCode": null,
+    "violation": true
+  }
+]

@@ -1,0 +1,1381 @@
+import type { PatternPresetRecord, PatternPresetSaveInput, PatternPresetDeleteInput } from "./pattern-presets";
+import type {
+  PolicyKind,
+  PolicyRuleKey,
+  PolicyRevisionRecord,
+  PolicyEventRecord,
+  ActivePolicyProjection
+} from "../domain/policy-history";
+import type {
+  AllowanceRateHistoryRecord,
+  AllowanceRateVersion,
+  AuthSession,
+  EmployeeRecord,
+  EmployeeSiteAssignment,
+  HolidayCalendar,
+  HolidayItem,
+  MonthlyScheduleRecord,
+  ShiftPatternDutyType,
+  ShiftPatternRecord,
+  SiteNameOptionRecord,
+  SiteRecord,
+  TemplateType,
+  UserRecord,
+  WageRateRecord
+} from "../domain/model";
+import type {
+  DocumentTemplateProfile,
+  DocumentTemplateValidationSnapshot
+} from "../domain/document-template";
+import type {
+  AccessLogActionType,
+  AccessLogRecord
+} from "../domain/access-log";
+import type {
+  DocumentLayoutHistoryRecord,
+  DocumentLayoutKey,
+  DocumentLayoutPreview,
+  DocumentLayoutPreviewInput,
+  DocumentLayoutResetInput,
+  DocumentLayoutSaveInput,
+  DocumentLayoutSnapshot,
+  DocumentLayoutSummary
+} from "../domain/document-layout";
+import type { TeamWorkType } from "../domain/team-work-type";
+import type { AllowanceCalculationSnapshot } from "../domain/calculation";
+import type { AuthSessionPolicy } from "../config/auth-session-policy";
+import type {
+  AllowanceDocumentExportFormat,
+  AllowanceDocumentExportRecord
+} from "../domain/allowance-document";
+import type { AllowanceCalculationResultRecord } from "../domain/allowance-service";
+import type {
+  AllowanceApprovalRecord,
+  AllowanceProposalApprovalInput,
+  AllowanceProposalApprovalRecord,
+  AllowanceProposalPreview,
+  AllowanceReviewActionInput
+} from "../domain/allowance-workflow";
+import type {
+  SchedulePlanExportRecord,
+  SchedulePlanPreviewRecord
+} from "../domain/schedule-plan";
+import type {
+  PerformanceApprovalScope,
+  PerformanceApprovalActionInput,
+  PerformanceApprovedRowHiddenResult,
+  PerformanceApprovedRowHideInput,
+  PerformanceApprovalRecord,
+  PerformanceComparisonDetail,
+  PerformanceEntryRecord,
+  PerformanceEntrySection,
+  PerformanceFileDetail,
+  PerformanceFileSyncStateSnapshot,
+  PerformanceStartupRecoveryStatusSnapshot,
+  PerformanceRejectionInput,
+  PerformanceReapprovalFinalizeInput,
+  PerformanceOverviewSnapshot,
+  PerformanceQueueItem
+} from "../domain/performance-file";
+import type { ReleaseManifest, UpdateStateSnapshot } from "../domain/app-update";
+
+export interface AppHealth {
+  appVersion: string;
+  environment: "development" | "production";
+  databaseConfigured: boolean;
+  pendingDirectoryConfigured: boolean;
+  approvedDirectoryConfigured: boolean;
+  sessionPolicy: AuthSessionPolicy;
+  bootstrapCredentialsFilePath?: string;
+}
+
+export interface AppSettingsSnapshot {
+  appName: string;
+  holidayApiBaseUrl: string;
+  dataDir: string;
+  databasePath: string;
+  pendingDir: string;
+  approvedDir: string;
+  scheduleExportDir: string;
+  allowanceProposalExportDir: string;
+  allowanceAttachment1ExportDir: string;
+  allowanceAttachment2ExportDir: string;
+  databaseBackupDir: string;
+  databaseBackupSchedule: "monthly" | "weekly" | "daily";
+  databaseBackupTime: string;
+  migrationFilePath: string;
+  scheduleConsecutiveNightLimit?: number;
+  scheduleMinimumRestMinutes?: number;
+  scheduleRequireWeeklyHoliday?: boolean;
+  scheduleWeeklyMaxMinutes?: number;
+  // 대체근무수당 새 정책(Pool·주간고정조 제외) 적용 시작일. 비어 있으면 새 규칙을 적용하지 않는다.
+  substituteAllowancePolicyEffectiveFrom?: string;
+  // 변경후 우선 규칙 적용 시작일. 비어 있으면 옛 규칙(변경전 우선)을 그대로 쓴다.
+  changedSlotPriorityEffectiveFrom?: string;
+}
+
+export interface AppSettingsUpdateInput {
+  holidayApiBaseUrl: string;
+  pendingDir: string;
+  approvedDir: string;
+  scheduleExportDir: string;
+  allowanceProposalExportDir: string;
+  allowanceAttachment1ExportDir: string;
+  allowanceAttachment2ExportDir: string;
+  databaseBackupDir: string;
+  databaseBackupSchedule: "monthly" | "weekly" | "daily";
+  databaseBackupTime: string;
+  migrationFilePath: string;
+  scheduleConsecutiveNightLimit?: number;
+  scheduleMinimumRestMinutes?: number;
+  scheduleRequireWeeklyHoliday?: boolean;
+  scheduleWeeklyMaxMinutes?: number;
+  // 대체근무수당 새 정책(Pool·주간고정조 제외) 적용 시작일. 비어 있으면 새 규칙을 적용하지 않는다.
+  substituteAllowancePolicyEffectiveFrom?: string;
+  // 변경후 우선 규칙 적용 시작일. 비어 있으면 옛 규칙(변경전 우선)을 그대로 쓴다.
+  changedSlotPriorityEffectiveFrom?: string;
+}
+
+export interface FileWatchEventSnapshot {
+  type: "file-added" | "file-changed" | "file-removed" | "watcher-error";
+  occurredAt: string;
+  filePath: string;
+  fileName: string;
+  directoryType: "pending" | "approved" | "unknown";
+  duplicateKey?: string;
+  message?: string;
+}
+
+export interface FileWatchStatusSnapshot {
+  isRunning: boolean;
+  pendingDir: string;
+  approvedDir: string;
+  lastStartedAt?: string;
+  lastStoppedAt?: string;
+  lastErrorMessage?: string;
+  recentEvents: FileWatchEventSnapshot[];
+}
+
+export interface HolidayItemUpsertInput {
+  year: number;
+  holidayDate: string;
+  name: string;
+  isSubstitute?: boolean;
+}
+
+export interface HolidayItemRenameInput {
+  holidayItemId: string;
+  name: string;
+}
+
+export interface HolidayItemDeleteInput {
+  holidayItemId: string;
+}
+
+export interface HolidayCalendarReplaceInput {
+  year: number;
+  sourceName?: string;
+  sourceVersion?: string;
+  items: Array<Pick<HolidayItem, "holidayDate" | "name" | "isSubstitute">>;
+}
+
+export interface DirectorySelectionInput {
+  defaultPath?: string;
+  title?: string;
+  buttonLabel?: string;
+}
+
+export interface FileSelectionInput {
+  defaultPath?: string;
+  title?: string;
+  buttonLabel?: string;
+  filters?: Array<{
+    name: string;
+    extensions: string[];
+  }>;
+}
+
+export interface LocalFileSelection {
+  fileName: string;
+  filePath: string;
+}
+
+export interface JsonBackupFileSelectionInput {
+  defaultPath?: string;
+}
+
+export interface JsonBackupFileSelection {
+  fileName: string;
+  filePath: string;
+}
+
+export interface JsonDatabaseRestoreInput {
+  backupFilePath: string;
+}
+
+export type JsonDatabaseRestoreRequirementStatus =
+  | "ready"
+  | "invalid-json"
+  | "unsupported-schema"
+  | "missing-table"
+  | "check-failed";
+
+export interface JsonDatabaseRestoreRequirementCheck {
+  sourceType: "json";
+  isReady: boolean;
+  status: JsonDatabaseRestoreRequirementStatus;
+  checkedAt: string;
+  backupSha256?: string;
+  schemaVersion?: string;
+  tableCount?: number;
+  headline: string;
+  details: string[];
+  recommendedActions: string[];
+}
+
+export interface JsonDatabaseTableImpact {
+  tableName: string;
+  currentRowCount: number;
+  nextRowCount: number;
+}
+
+export interface ImportedEmployeeHireDateRow {
+  employeeId: string;
+  employeeCode: string;
+  employeeName: string;
+  archived: boolean;
+  sourceHireDate?: string | null;
+  classification: "source-date" | "missing" | "invalid";
+}
+
+export interface ImportedEmployeeHireDateReview {
+  policy: "preserve-source-no-fallback";
+  sourceBackupSha256: string;
+  totalEmployeeCount: number;
+  sourceDateCount: number;
+  missingDateCount: number;
+  invalidDateCount: number;
+  rows: ImportedEmployeeHireDateRow[];
+}
+
+export interface JsonDatabaseRestorePreview {
+  sourceType: "json";
+  backupFilePath: string;
+  backupSha256: string;
+  schemaVersion: string;
+  previewToken: string;
+  expiresAt: string;
+  tableImpacts: JsonDatabaseTableImpact[];
+  warningMessages: string[];
+  previewedAt: string;
+  employeeHireDateReview?: ImportedEmployeeHireDateReview;
+}
+
+export interface JsonDatabaseRestoreExecuteInput extends JsonDatabaseRestoreInput {
+  backupSha256: string;
+  previewToken: string;
+  confirmationText: "교체";
+}
+
+export interface JsonDatabaseBackupSummary {
+  createdAt: string;
+  jsonBackupPath: string;
+  backupSha256: string;
+  schemaVersion: string;
+  tableCount: number;
+  rowCount: number;
+  warningMessages: string[];
+}
+
+export interface JsonDatabaseRestoreSummary {
+  sourceType: "json";
+  backupFilePath: string;
+  sourceBackupSha256: string;
+  databasePath: string;
+  tableResults: JsonDatabaseTableImpact[];
+  backupBeforeRestore: JsonDatabaseBackupSummary;
+  warningMessages: string[];
+  completedAt: string;
+  employeeHireDateReview?: ImportedEmployeeHireDateReview;
+}
+
+export type DatabaseBackupSummary = JsonDatabaseBackupSummary;
+export type DatabaseMigrationRequirementCheck = JsonDatabaseRestoreRequirementCheck;
+export type DatabaseMigrationPreview = JsonDatabaseRestorePreview;
+export type DatabaseMigrationSummary = JsonDatabaseRestoreSummary;
+export type DatabaseMigrationRunInput = JsonDatabaseRestoreInput;
+
+
+export interface AllowanceRateItemSaveInput {
+  allowanceCode: string;
+  multiplier: number;
+  roundingPolicy?: string;
+}
+
+export interface AllowanceRateVersionSaveInput {
+  id?: string;
+  year: number;
+  versionLabel: string;
+  status: AllowanceRateVersion["status"];
+  effectiveFrom: string;
+  effectiveTo?: string;
+  changeReason?: string;
+  items: AllowanceRateItemSaveInput[];
+}
+
+export interface AllowanceRateVersionDeleteInput {
+  rateVersionId: string;
+}
+
+export interface OperationUserSaveInput {
+  id?: string;
+  loginId: string;
+  displayName: string;
+  role: UserRecord["role"];
+  status: UserRecord["status"];
+  password?: string;
+  extensionNumber?: string;
+  contact?: string;
+  email?: string;
+}
+
+export interface OperationUserDeleteInput {
+  userId: string;
+}
+
+export interface SignInInput {
+  loginId: string;
+  password: string;
+}
+
+export interface AuthPasswordChangeInput {
+  currentPassword: string;
+  nextPassword: string;
+}
+
+export interface AccountRecoveryAvailability {
+  configured: boolean;
+  adminLoginId: string;
+  issuedAt?: string;
+  lockedUntil?: string;
+}
+
+export interface AccountRecoveryInput {
+  recoveryKey: string;
+}
+
+export interface AccountRecoveryResult {
+  adminLoginId: string;
+  temporaryPassword: string;
+  backupPath: string;
+  recoveredAt: string;
+}
+
+export interface AccountRecoveryKeyRotationResult {
+  adminLoginId: string;
+  recoveryKey: string;
+  issuedAt: string;
+}
+
+export interface EmployeeListQuery {
+  siteId?: string;
+  status?: string;
+  keyword?: string;
+}
+
+export interface SiteUpsertInput {
+  id?: string;
+  siteCode: string;
+  name: string;
+  customerName?: string;
+  status: SiteRecord["status"];
+  timezone: string;
+}
+
+export interface SiteDeleteInput {
+  siteId: string;
+}
+
+export interface SiteNameOptionSaveInput {
+  id?: string;
+  name: string;
+}
+
+export interface SiteNameOptionDeleteInput {
+  optionId: string;
+}
+
+export type EmployeeRehireInput = {
+  operation: "start";
+  startDate: string;
+  siteId: string;
+  shiftGroup: string;
+  hourlyRate?: number;
+  reason?: string;
+  expectedUpdatedAt?: string;
+  expectedRetireDate: string;
+} | {
+  operation: "reschedule";
+  periodId: string;
+  expectedRevision: string;
+  startDate: string;
+  siteId: string;
+  shiftGroup: string;
+  hourlyRate?: number;
+  reason?: string;
+} | {
+  operation: "cancel";
+  periodId: string;
+  expectedRevision: string;
+  reason?: string;
+};
+
+export interface EmployeeUpsertInput {
+  id?: string;
+  employeeCode: string;
+  name: string;
+  contact?: string;
+  email?: string;
+  rank?: EmployeeRecord["rank"];
+  employmentType: string;
+  status: EmployeeRecord["status"];
+  hireDate?: string;
+  retireDate?: string;
+  siteId?: string;
+  shiftGroup?: string;
+  hourlyRate?: number;
+  rehire?: EmployeeRehireInput;
+}
+
+export interface EmployeeDeleteInput {
+  employeeId: string;
+}
+
+export interface EmployeeRetirementChange {
+  kind: "retirement" | "date-correction";
+  retireDate: string;
+  previousRetireDate?: string;
+  closedWageCount: number;
+  closedAssignmentCount: number;
+  excludedFutureWageCount: number;
+  excludedFutureAssignmentCount: number;
+  adjustedHistoryCount: number;
+  legacyProvenanceIncomplete: boolean;
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface EmployeeRehireChange {
+  kind: "rehire" | "reservation-updated" | "reservation-cancelled";
+  startDate: string;
+  previousStartDate?: string;
+  previousRetireDate: string;
+  employmentPeriodId: string;
+  newWageCount: number;
+  newAssignmentCount: number;
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface EmployeeSaveResult extends EmployeeRecord {
+  retirementChange?: EmployeeRetirementChange;
+  rehireChange?: EmployeeRehireChange;
+}
+
+export interface EmployeeWageRateInput {
+  employeeId: string;
+  hourlyRate: number;
+  effectiveFrom: string;
+  reason?: string;
+  revision?: {
+    operation: "correct" | "invalidate";
+    wageRateId: string;
+    expectedRevision: string;
+    changeReason: string;
+  };
+}
+
+export interface WagePendingPerformanceRefresh {
+  status: "completed" | "partial";
+  affectedEntryCount: number;
+  targetFileCount: number;
+  refreshedFileCount: number;
+  issues: { fileName: string; message: string }[];
+}
+
+export interface EmployeeWageRateSaveResult extends WageRateRecord {
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface PerformanceReturnToPendingResult extends PerformanceFileDetail {
+  wageReapplication?: {
+    status: "completed" | "needs-review";
+    appliedEntryCount: number;
+    unresolvedEntryCount: number;
+    sourceFileMissing: boolean;
+  };
+}
+
+export interface WorkforceWageBulkUpdateColumnMappingInput {
+  employeeCodeColumn?: string;
+  siteNameColumn: string;
+  employeeNameColumn: string;
+  hourlyRateColumn: string;
+}
+
+export type WorkforceWageBulkUpdateRowStatus =
+  | "ready"
+  | "applied"
+  | "missing-required-value"
+  | "invalid-hourly-rate"
+  | "employee-not-found"
+  | "ambiguous-employee"
+  | "employee-retired"
+  | "same-rate"
+  | "duplicate-entry";
+
+export interface WorkforceWageBulkUpdatePreviewInput {
+  filePath: string;
+  effectiveFrom: string;
+  mapping: WorkforceWageBulkUpdateColumnMappingInput;
+}
+
+export interface WorkforceWageBulkUpdateApplyInput extends WorkforceWageBulkUpdatePreviewInput {}
+
+export interface WorkforceWageBulkUpdatePreviewRow {
+  rowNumber: number;
+  siteName: string;
+  employeeName: string;
+  importedHourlyRate?: number;
+  currentHourlyRate?: number;
+  currentEffectiveFrom?: string;
+  previousEffectiveTo?: string;
+  effectiveFrom: string;
+  employeeId?: string;
+  employeeCode?: string;
+  status: WorkforceWageBulkUpdateRowStatus;
+  statusLabel: string;
+  note?: string;
+}
+
+export interface WorkforceWageBulkUpdatePreview {
+  fileName: string;
+  filePath: string;
+  sheetName: string;
+  effectiveFrom: string;
+  totalRows: number;
+  readyCount: number;
+  skippedCount: number;
+  rows: WorkforceWageBulkUpdatePreviewRow[];
+}
+
+export interface WorkforceWageBulkUpdateApplySummary {
+  fileName: string;
+  filePath: string;
+  sheetName: string;
+  effectiveFrom: string;
+  totalRows: number;
+  appliedCount: number;
+  skippedCount: number;
+  rows: WorkforceWageBulkUpdatePreviewRow[];
+  pendingPerformanceRefresh?: WagePendingPerformanceRefresh;
+}
+
+export interface EmployeeAssignmentInput {
+  employeeId: string;
+  siteId: string;
+  shiftGroup?: string;
+  sortOrder?: number;
+  teamName?: string;
+  startDate: string;
+}
+
+export interface EmployeeWageRateCloseInput {
+  wageRateId: string;
+  effectiveTo: string;
+}
+
+export interface EmployeeAssignmentCloseInput {
+  assignmentId: string;
+  endDate: string;
+}
+
+export interface EmployeeAssignmentReorderInput {
+  assignmentId: string;
+  direction: "up" | "down";
+}
+
+export interface ShiftPatternStepInput {
+  stepIndex: number;
+  dutyCode: string;
+  startTime?: string;
+  endTime?: string;
+  breakMinutes: number;
+  // 평·휴 분리(휴일 시간/휴게). 없으면 평일값을 그대로 사용한다.
+  holidayStartTime?: string;
+  holidayEndTime?: string;
+  holidayBreakMinutes?: number;
+}
+
+export interface ShiftPatternTeamIndexInput {
+  teamLabel: string;
+  index: number;
+}
+
+export interface ShiftPatternCycleInput {
+  cycleKey: string;
+  name: string;
+  order: number;
+  shiftCount: number;
+  patternCode: string;
+  patternString?: string;
+  patternStartDate?: string;
+  steps: ShiftPatternStepInput[];
+  teamIndexes: ShiftPatternTeamIndexInput[];
+  // 평·휴 분리 설정(없으면 "unified" = 기존 동작).
+  holidayTimeMode?: "unified" | "split";
+  weekdayPublicHolidayAsHoliday?: boolean;
+}
+
+export interface ShiftPatternTeamCycleAssignmentInput {
+  teamLabel: string;
+  cycleKey: string;
+}
+
+export interface ShiftPatternTeamCapacityInput {
+  teamLabel: string;
+  maxHeadcount?: number;
+}
+
+// 조별 근무유형/표시이름/사용여부. 없으면 이름 기준 기본값으로 채워진다(기존 동작 유지).
+export type { ShiftPatternDutyType };
+
+export interface ShiftPatternDutyTypeInput {
+  id: string;
+  kind: "work" | "off";
+  label: string;
+  sortOrder?: number;
+  startTime?: string;
+  endTime?: string;
+  breakMinutes?: number;
+  isBreakDirty?: boolean;
+  holidayStartTime?: string;
+  holidayEndTime?: string;
+  holidayBreakMinutes?: number;
+  isHolidayBreakDirty?: boolean;
+}
+
+export interface ShiftPatternTeamSettingInput {
+  teamLabel: string;
+  displayName?: string;
+  workType?: TeamWorkType;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
+export interface ShiftPatternUpsertInput {
+  holidayPolicy?: import("../domain/holiday-pattern").HolidayPatternPolicy;
+  id?: string;
+  siteId: string;
+  name: string;
+  teamCount: number;
+  patternCode: string;
+  startIndexRule: string;
+  patternStartDate?: string;
+  // 이 설정을 적용하기 시작할 날짜. 기존 설정과 날짜가 다르면 새 버전으로 저장된다.
+  effectiveFrom?: string;
+  status: ShiftPatternRecord["status"];
+  steps: ShiftPatternStepInput[];
+  teamIndexes: ShiftPatternTeamIndexInput[];
+  cycles?: ShiftPatternCycleInput[];
+  teamCycleAssignments?: ShiftPatternTeamCycleAssignmentInput[];
+  teamCapacities?: ShiftPatternTeamCapacityInput[];
+  teamSettings?: ShiftPatternTeamSettingInput[];
+  dutyTypes?: ShiftPatternDutyTypeInput[];
+  poolEnabled?: boolean;
+  poolStartTime?: string;
+  poolEndTime?: string;
+  poolBreakMinutes?: number;
+}
+
+export interface ShiftPatternDeactivateInput {
+  patternId: string;
+}
+
+export interface SitePatternImportAnalyzeInput {
+  filePath: string;
+  minConfidence?: number;
+}
+
+export interface SitePatternImportDatePreview {
+  date: string;
+  weekday: string;
+  holidayName?: string;
+}
+
+export interface SitePatternImportWorkerPreview {
+  name: string;
+  codes: string[];
+}
+
+export interface SitePatternImportMismatch {
+  index: number;
+  cycleIndex: number;
+  date: string;
+  weekday: string;
+  holidayName?: string;
+  actualCode: string;
+  expectedCode: string;
+}
+
+export interface SitePatternImportSkippedWorker {
+  name: string;
+  reason: string;
+}
+
+export interface SitePatternImportMember {
+  name: string;
+  offset: number;
+  confidence: number;
+  mismatchCount: number;
+  mismatches: SitePatternImportMismatch[];
+}
+
+export interface SitePatternImportTeamSuggestion {
+  offset: number;
+  headcount: number;
+  memberNames: string[];
+}
+
+export interface SitePatternImportGroup {
+  groupId: number;
+  cycleKey: string;
+  cycleLength: number;
+  cycleCodes: string[];
+  cycleDisplay: string;
+  shiftCount: number;
+  members: SitePatternImportMember[];
+  teamSuggestions: SitePatternImportTeamSuggestion[];
+}
+
+export interface SitePatternImportSuggestedTeamIndex {
+  teamLabel: string;
+  index: number;
+}
+
+export interface SitePatternImportSuggestedCycle {
+  cycleKey: string;
+  name: string;
+  shiftCount: number;
+  patternString: string;
+  patternStartDate: string;
+  breakMinutes: number;
+  shiftTimes: string[];
+  teamIndexes: SitePatternImportSuggestedTeamIndex[];
+  sourceCycleCodes: string[];
+}
+
+export interface SitePatternImportSuggestedTeam {
+  teamLabel: string;
+  cycleKey: string;
+  index: number;
+  maxHeadcount: number;
+  memberNames: string[];
+}
+
+export interface SitePatternImportDraftSuggestion {
+  teamCount: number;
+  cycleCount: number;
+  poolEnabled: boolean;
+  poolTimeRange: string;
+  poolBreakMinutes: number;
+  cycles: SitePatternImportSuggestedCycle[];
+  teams: SitePatternImportSuggestedTeam[];
+}
+
+export interface SitePatternImportAnalysis {
+  fileName: string;
+  filePath: string;
+  sheetName: string;
+  startDate: string;
+  endDate: string;
+  totalDays: number;
+  workerCount: number;
+  holidayCount: number;
+  detectedGroupCount: number;
+  uniqueCodes: string[];
+  analysisReport: string;
+  warningMessages: string[];
+  skippedWorkers: SitePatternImportSkippedWorker[];
+  dates: SitePatternImportDatePreview[];
+  previewRows: SitePatternImportWorkerPreview[];
+  groups: SitePatternImportGroup[];
+  suggestion: SitePatternImportDraftSuggestion;
+}
+
+export interface MonthlyScheduleItemInput {
+  employeeCode: string;
+  teamLabel?: string;
+  sortOrder?: number;
+  workDate: string;
+  dutyCode: string;
+  startTime?: string;
+  endTime?: string;
+  breakMinutes: number;
+}
+
+export interface MonthlyScheduleUpsertInput {
+  id?: string;
+  siteId: string;
+  scheduleMonth: string;
+  patternId: string;
+  generatedBy: string;
+  templateVersionId?: string;
+  items: MonthlyScheduleItemInput[];
+}
+export interface SchedulePreparationContext {
+  year: number;
+  publicHolidayDates: string[];
+  warningSettings: {
+    consecutiveNightLimit: number;
+    minimumRestMinutes: number;
+    requireWeeklyHoliday: boolean;
+    weeklyMaxMinutes: number;
+  };
+  exportDirectory: string;
+  publishDirectory: string;
+}
+
+
+export interface AllowancePreviewInput {
+  workDate: string;
+  startTime: string;
+  endTime: string;
+  breakMinutes: number;
+  hourlyRate: number;
+  isHoliday?: boolean;
+  workType?: "regular" | "overtime" | "night" | "holiday" | "substitute";
+}
+
+export interface AllowanceDocumentExportInput {
+  calculationIds: string[];
+  outputFormat: AllowanceDocumentExportFormat;
+}
+
+export interface AllowanceProposalPreviewInput {
+  calculationIds: string[];
+}
+
+export interface AllowanceEarlyPayoutInput {
+  calculationId: string;
+  earlyPayoutDate?: string | null;
+}
+
+export interface PerformanceFileListQuery {
+  status?: "pending" | "approved";
+  scheduleMonth?: string;
+}
+
+export interface PerformanceFileDetailQuery extends PerformanceFileListQuery {
+  fileId: string;
+}
+
+export interface PerformanceOverviewQuery {
+  approvalScope?: PerformanceApprovalScope;
+  forceReparse?: boolean;
+  section?: PerformanceEntrySection | "all";
+  scheduleMonth?: string;
+}
+
+export interface PerformanceComparisonQuery {
+  fileId: string;
+  entryId: string;
+}
+
+export type AllowanceApprovedCalculationInput =
+  | {
+      entryId: string;
+    }
+  | string;
+
+export interface DashboardChartExportFilterSummary {
+  year: string;
+  month: string;
+  periodLabel?: string;
+  siteName: string;
+  employeeName: string;
+  dataSource: string;
+}
+
+export interface DashboardChartExportColumn {
+  key: string;
+  header: string;
+  format?: "text" | "number" | "currency" | "percent";
+}
+
+export type DashboardChartExportCell = string | number | null;
+
+export interface DashboardChartExportRow {
+  [key: string]: DashboardChartExportCell;
+}
+
+export interface DashboardChartExportInput {
+  chartKey: "trend" | "site" | "ratio" | "ranking";
+  chartTitle: string;
+  sheetName: string;
+  filters: DashboardChartExportFilterSummary;
+  columns: DashboardChartExportColumn[];
+  rows: DashboardChartExportRow[];
+  outputFormat?: "xlsx" | "pdf";
+  chartImageDataUrl?: string;
+}
+
+export interface DashboardChartExportRecord {
+  chartKey: DashboardChartExportInput["chartKey"];
+  chartTitle: string;
+  outputFileName: string;
+  outputPath: string;
+  rowCount: number;
+  exportedAt: string;
+}
+
+export interface DashboardReportExportSection {
+  sectionKey: DashboardChartExportInput["chartKey"] | "ranking";
+  chartTitle: string;
+  sheetName: string;
+  columns: DashboardChartExportColumn[];
+  rows: DashboardChartExportRow[];
+  chartImageDataUrl?: string;
+}
+
+export interface DashboardReportExportInput {
+  title: string;
+  filters: DashboardChartExportFilterSummary;
+  outputFormat: "xlsx" | "pdf";
+  sections: DashboardReportExportSection[];
+}
+
+export interface DashboardReportExportRecord {
+  title: string;
+  outputFileName: string;
+  outputPath: string;
+  sectionCount: number;
+  exportedAt: string;
+}
+
+export interface DocumentTemplateInspectInput {
+  templateType: TemplateType;
+  sourcePath: string;
+}
+
+export interface DocumentTemplateSaveInput {
+  id?: string;
+  templateType: TemplateType;
+  versionLabel: string;
+  sourcePath: string;
+  managedFileName?: string;
+  profileSchemaVersion?: string;
+  profile: DocumentTemplateProfile;
+  validation: DocumentTemplateValidationSnapshot;
+}
+
+export interface DocumentTemplateOutputFileNameUpdateInput {
+  templateId: string;
+  outputFileNamePattern: string;
+}
+
+export interface DocumentTemplateFileSelection extends LocalFileSelection {}
+
+export interface DocumentTemplatePreviewInput {
+  templateType: TemplateType;
+  versionLabel?: string;
+  sourcePath: string;
+  profile: DocumentTemplateProfile;
+}
+
+export interface DocumentTemplatePreviewRecord {
+  templateType: TemplateType;
+  outputFileName: string;
+  outputPath: string;
+  previewedAt: string;
+}
+
+export interface BridgeSuccess<T> {
+  ok: true;
+  data: T;
+}
+
+export interface BridgeFailure {
+  ok: false;
+  errorCode: string;
+  message: string;
+}
+
+export type BridgeResult<T> = BridgeSuccess<T> | BridgeFailure;
+
+export interface AppBridge {
+  getAppVersion: () => Promise<string>;
+  getAppHealth: () => Promise<BridgeResult<AppHealth>>;
+  getUpdateState: () => Promise<BridgeResult<UpdateStateSnapshot>>;
+  checkForAppUpdate: () => Promise<BridgeResult<UpdateStateSnapshot>>;
+  downloadAppUpdate: () => Promise<BridgeResult<UpdateStateSnapshot>>;
+  installDownloadedUpdate: () => Promise<BridgeResult<UpdateStateSnapshot>>;
+  dismissUpdateNotice: (version: string) => Promise<BridgeResult<UpdateStateSnapshot>>;
+}
+
+export interface AccessLogListQuery {
+  dateFrom?: string;
+  dateTo?: string;
+  loginId?: string;
+  actionType?: AccessLogActionType | "all";
+  keyword?: string;
+}
+
+export interface ReleaseHistoryListQuery {
+  keyword?: string;
+  requiredFilter?: "all" | "required" | "optional";
+  backupFilter?: "all" | "required" | "not-required";
+}
+
+export interface AccessLogRecordInput {
+  actionType: AccessLogActionType;
+  actionLabel: string;
+  routeKey?: string;
+  routeLabel?: string;
+  details?: string;
+}
+
+export interface DashboardBridge {
+  exportDashboardChartData: (
+    input: DashboardChartExportInput
+  ) => Promise<BridgeResult<DashboardChartExportRecord>>;
+  exportDashboardReport: (
+    input: DashboardReportExportInput
+  ) => Promise<BridgeResult<DashboardReportExportRecord>>;
+}
+
+export interface AccessLogBridge {
+  listAccessLogs: (
+    query?: AccessLogListQuery
+  ) => Promise<BridgeResult<AccessLogRecord[]>>;
+  recordAccessLog: (
+    input: AccessLogRecordInput
+  ) => Promise<BridgeResult<null>>;
+}
+
+export interface AuthBridge {
+  signIn: (input: SignInInput) => Promise<BridgeResult<AuthSession>>;
+  changePassword: (input: AuthPasswordChangeInput) => Promise<BridgeResult<AuthSession>>;
+  getAccountRecoveryAvailability: () => Promise<BridgeResult<AccountRecoveryAvailability>>;
+  recoverAdminAccount: (
+    input: AccountRecoveryInput
+  ) => Promise<BridgeResult<AccountRecoveryResult>>;
+  signOut: () => Promise<BridgeResult<null>>;
+  getSession: () => Promise<BridgeResult<AuthSession | null>>;
+}
+
+export interface WorkforceBridge {
+  listEmployees: (
+    query?: EmployeeListQuery
+  ) => Promise<BridgeResult<EmployeeRecord[]>>;
+  listEmployeeWageRates: (
+    employeeId: string
+  ) => Promise<BridgeResult<WageRateRecord[]>>;
+  listEmployeeAssignments: (
+    employeeId: string
+  ) => Promise<BridgeResult<EmployeeSiteAssignment[]>>;
+  saveEmployee: (input: EmployeeUpsertInput) => Promise<BridgeResult<EmployeeSaveResult>>;
+  deleteEmployee: (input: EmployeeDeleteInput) => Promise<BridgeResult<EmployeeRecord>>;
+  saveEmployeeWageRate: (
+    input: EmployeeWageRateInput
+  ) => Promise<BridgeResult<EmployeeWageRateSaveResult>>;
+  closeEmployeeWageRate: (
+    input: EmployeeWageRateCloseInput
+  ) => Promise<BridgeResult<WageRateRecord>>;
+  saveEmployeeAssignment: (
+    input: EmployeeAssignmentInput
+  ) => Promise<BridgeResult<EmployeeSiteAssignment>>;
+  closeEmployeeAssignment: (
+    input: EmployeeAssignmentCloseInput
+  ) => Promise<BridgeResult<EmployeeSiteAssignment>>;
+  reorderEmployeeAssignment: (
+    input: EmployeeAssignmentReorderInput
+  ) => Promise<BridgeResult<EmployeeSiteAssignment[]>>;
+  previewWorkforceWageBulkUpdate: (
+    input: WorkforceWageBulkUpdatePreviewInput
+  ) => Promise<BridgeResult<WorkforceWageBulkUpdatePreview>>;
+  applyWorkforceWageBulkUpdate: (
+    input: WorkforceWageBulkUpdateApplyInput
+  ) => Promise<BridgeResult<WorkforceWageBulkUpdateApplySummary>>;
+  listSites: () => Promise<BridgeResult<SiteRecord[]>>;
+  saveSite: (input: SiteUpsertInput) => Promise<BridgeResult<SiteRecord>>;
+  deleteSite: (input: SiteDeleteInput) => Promise<BridgeResult<SiteRecord>>;
+}
+
+
+export interface PolicyHistoryListInput {
+  kind: PolicyKind;
+  view?: "revisions" | "events";
+  revisionId?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface PolicyHistoryListResult {
+  kind: PolicyKind;
+  currentRevision: ActivePolicyProjection | null;
+  nextScheduledRevision: ActivePolicyProjection | null;
+  timeline: ActivePolicyProjection[];
+  revisions: PolicyRevisionRecord[];
+  events: PolicyEventRecord[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  registryConfigFingerprint: string;
+}
+
+export interface PolicyChangePreviewInput {
+  action: "add" | "correct" | "cancel";
+  kind: PolicyKind;
+  ruleKey?: PolicyRuleKey;
+  effectiveFrom?: string;
+  reason: string;
+  targetRevisionId?: string;
+  expectedRegistryConfigFingerprint?: string;
+}
+
+export interface PolicyChangePreviewResult {
+  previewToken: string;
+  expiresAt: string;
+  action: "add" | "correct" | "cancel";
+  kind: PolicyKind;
+  ruleKey?: PolicyRuleKey;
+  effectiveFrom?: string | null;
+  effectiveTo?: string | null;
+  affectedPendingFileCount: number;
+  affectedPendingRowCount: number;
+  preservedApprovedRowCount: number;
+  impactSummary: string;
+  registryConfigFingerprint: string;
+}
+
+export interface PolicyChangeApplyInput {
+  previewToken: string;
+}
+
+export interface PolicyChangeApplyResult {
+  success: boolean;
+  kind: PolicyKind;
+  action: "add" | "correct" | "cancel";
+  revisionId: string;
+  versionNumber: number;
+  affectedPendingFileCount: number;
+  message: string;
+}
+
+export interface OperationsBridge {
+  getAppSettings: () => Promise<BridgeResult<AppSettingsSnapshot>>;
+  saveAppSettings: (
+    input: AppSettingsUpdateInput
+  ) => Promise<BridgeResult<AppSettingsSnapshot>>;
+  selectDirectory: (
+    input?: DirectorySelectionInput
+  ) => Promise<BridgeResult<string | null>>;
+  selectJsonBackupFile: (
+    input?: JsonBackupFileSelectionInput
+  ) => Promise<BridgeResult<JsonBackupFileSelection | null>>;
+  selectSpreadsheetFile: (
+    input?: FileSelectionInput
+  ) => Promise<BridgeResult<LocalFileSelection | null>>;
+  checkDatabaseMigrationRequirements: (
+    input: JsonDatabaseRestoreInput
+  ) => Promise<BridgeResult<JsonDatabaseRestoreRequirementCheck>>;
+  previewDatabaseMigrationUpdate: (
+    input: JsonDatabaseRestoreInput
+  ) => Promise<BridgeResult<JsonDatabaseRestorePreview>>;
+  updateDatabaseFromMigration: (
+    input: JsonDatabaseRestoreExecuteInput
+  ) => Promise<BridgeResult<JsonDatabaseRestoreSummary>>;
+  runDatabaseBackupNow: () => Promise<BridgeResult<JsonDatabaseBackupSummary>>;
+  getFileWatchStatus: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
+  restartFileWatch: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
+  stopFileWatch: () => Promise<BridgeResult<FileWatchStatusSnapshot>>;
+  listHolidayCalendars: (
+    year?: number
+  ) => Promise<BridgeResult<HolidayCalendar[]>>;
+  fetchHolidayApiItems: (
+    year: number
+  ) => Promise<BridgeResult<HolidayItem[]>>;
+  addHolidayItem: (
+    input: HolidayItemUpsertInput
+  ) => Promise<BridgeResult<HolidayCalendar>>;
+  renameHolidayItem: (
+    input: HolidayItemRenameInput
+  ) => Promise<BridgeResult<HolidayCalendar>>;
+  deleteHolidayItem: (
+    input: HolidayItemDeleteInput
+  ) => Promise<BridgeResult<HolidayCalendar>>;
+  replaceHolidayCalendar: (
+    input: HolidayCalendarReplaceInput
+  ) => Promise<BridgeResult<HolidayCalendar>>;
+  listAllowanceRateVersions: (
+    year?: number
+  ) => Promise<BridgeResult<AllowanceRateVersion[]>>;
+  listAllowanceRateHistory: () => Promise<BridgeResult<AllowanceRateHistoryRecord[]>>;
+  listReleaseHistory: (
+    query?: ReleaseHistoryListQuery
+  ) => Promise<BridgeResult<ReleaseManifest[]>>;
+  saveAllowanceRateVersion: (
+    input: AllowanceRateVersionSaveInput
+  ) => Promise<BridgeResult<AllowanceRateVersion>>;
+  deleteAllowanceRateVersion: (
+    input: AllowanceRateVersionDeleteInput
+  ) => Promise<BridgeResult<null>>;
+  listOperationUsers: () => Promise<BridgeResult<UserRecord[]>>;
+  saveOperationUser: (
+    input: OperationUserSaveInput
+  ) => Promise<BridgeResult<UserRecord>>;
+  deleteOperationUser: (
+    input: OperationUserDeleteInput
+  ) => Promise<BridgeResult<null>>;
+  rotateAccountRecoveryKey: () => Promise<BridgeResult<AccountRecoveryKeyRotationResult>>;
+  listSiteNameOptions: () => Promise<BridgeResult<SiteNameOptionRecord[]>>;
+  saveSiteNameOption: (
+    input: SiteNameOptionSaveInput
+  ) => Promise<BridgeResult<SiteNameOptionRecord>>;
+  deleteSiteNameOption: (
+    input: SiteNameOptionDeleteInput
+  ) => Promise<BridgeResult<null>>;
+  listDocumentLayouts: () => Promise<BridgeResult<DocumentLayoutSummary[]>>;
+  getDocumentLayout: (
+    key: DocumentLayoutKey
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  saveDocumentLayout: (
+    input: DocumentLayoutSaveInput
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  resetDocumentLayout: (
+    input: DocumentLayoutResetInput
+  ) => Promise<BridgeResult<DocumentLayoutSnapshot>>;
+  previewDocumentLayout: (
+    input: DocumentLayoutPreviewInput
+  ) => Promise<BridgeResult<DocumentLayoutPreview>>;
+  listDocumentLayoutHistory: (
+    key: DocumentLayoutKey
+  ) => Promise<BridgeResult<DocumentLayoutHistoryRecord[]>>;
+  listPatternPresets: () => Promise<BridgeResult<PatternPresetRecord[]>>;
+  savePatternPreset: (input: PatternPresetSaveInput) => Promise<BridgeResult<PatternPresetRecord>>;
+  deletePatternPreset: (input: PatternPresetDeleteInput) => Promise<BridgeResult<void>>;
+  listShiftPatterns: (
+    siteId?: string
+  ) => Promise<BridgeResult<ShiftPatternRecord[]>>;
+  analyzeSitePatternImport: (
+    input: SitePatternImportAnalyzeInput
+  ) => Promise<BridgeResult<SitePatternImportAnalysis>>;
+  saveShiftPattern: (
+    input: ShiftPatternUpsertInput
+  ) => Promise<BridgeResult<ShiftPatternRecord>>;
+  deactivateShiftPattern: (
+    input: ShiftPatternDeactivateInput
+  ) => Promise<BridgeResult<ShiftPatternRecord>>;
+  listMonthlySchedules: (
+    siteId?: string
+  ) => Promise<BridgeResult<MonthlyScheduleRecord[]>>;
+  saveMonthlySchedule: (
+    input: MonthlyScheduleUpsertInput
+  ) => Promise<BridgeResult<MonthlyScheduleRecord>>;
+  previewMonthlySchedulePlan: (
+    scheduleId: string
+  ) => Promise<BridgeResult<SchedulePlanPreviewRecord | null>>;
+  exportMonthlySchedulePlan: (
+    scheduleId: string
+  ) => Promise<BridgeResult<SchedulePlanExportRecord | null>>;
+  listSchedulePlanExports: (
+    scheduleId?: string
+  ) => Promise<BridgeResult<SchedulePlanExportRecord[]>>;
+  publishSchedulePlanExport: (
+    exportId: string
+  ) => Promise<BridgeResult<SchedulePlanExportRecord | null>>;  getSchedulePreparationContext: (
+    year: number
+  ) => Promise<BridgeResult<SchedulePreparationContext>>;
+  listPolicyHistory: (
+    input: PolicyHistoryListInput
+  ) => Promise<BridgeResult<PolicyHistoryListResult>>;
+  previewPolicyChange: (
+    input: PolicyChangePreviewInput
+  ) => Promise<BridgeResult<PolicyChangePreviewResult>>;
+  applyPolicyChange: (
+    input: PolicyChangeApplyInput
+  ) => Promise<BridgeResult<PolicyChangeApplyResult>>;
+}
+
+
+export interface AllowanceBridge {
+  previewCalculation: (
+    input: AllowancePreviewInput
+  ) => Promise<BridgeResult<AllowanceCalculationSnapshot>>;
+  listApprovedTargets: () => Promise<BridgeResult<PerformanceEntryRecord[]>>;
+  runApprovedCalculation: (
+    input: AllowanceApprovedCalculationInput
+  ) => Promise<BridgeResult<AllowanceCalculationResultRecord>>;
+  listCalculationResults: () => Promise<BridgeResult<AllowanceCalculationResultRecord[]>>;
+  listCalculationHistory: () => Promise<BridgeResult<AllowanceCalculationResultRecord[]>>;
+  setCalculationEarlyPayout: (
+    input: AllowanceEarlyPayoutInput
+  ) => Promise<BridgeResult<AllowanceCalculationResultRecord>>;
+  exportAllowanceDocuments: (
+    input: AllowanceDocumentExportInput
+  ) => Promise<BridgeResult<AllowanceDocumentExportRecord>>;
+  listAllowanceDocumentExports: () => Promise<BridgeResult<AllowanceDocumentExportRecord[]>>;
+  reviewAllowanceCalculations: (
+    input: AllowanceReviewActionInput
+  ) => Promise<BridgeResult<AllowanceApprovalRecord[]>>;
+  listAllowanceApprovalHistory: () => Promise<BridgeResult<AllowanceApprovalRecord[]>>;
+  previewAllowanceProposal: (
+    input: AllowanceProposalPreviewInput
+  ) => Promise<BridgeResult<AllowanceProposalPreview>>;
+  approveAllowanceProposal: (
+    input: AllowanceProposalApprovalInput
+  ) => Promise<BridgeResult<AllowanceProposalApprovalRecord>>;
+  listAllowanceProposalApprovals: () => Promise<BridgeResult<AllowanceProposalApprovalRecord[]>>;
+}
+
+export interface PerformanceBridge {
+  getPerformanceSyncState: () => Promise<BridgeResult<PerformanceFileSyncStateSnapshot>>;
+  getPerformanceStartupRecoveryStatus: () => Promise<
+    BridgeResult<PerformanceStartupRecoveryStatusSnapshot>
+  >;
+  retryPerformanceStartupRecovery: () => Promise<
+    BridgeResult<PerformanceStartupRecoveryStatusSnapshot>
+  >;
+  listPerformanceOverview: (
+    query?: PerformanceOverviewQuery
+  ) => Promise<BridgeResult<PerformanceOverviewSnapshot>>;
+  getPerformanceComparison: (
+    query: PerformanceComparisonQuery
+  ) => Promise<BridgeResult<PerformanceComparisonDetail | null>>;
+  listPerformanceFiles: (
+    query?: PerformanceFileListQuery
+  ) => Promise<BridgeResult<PerformanceQueueItem[]>>;
+  getPerformanceFileDetail: (
+    query: PerformanceFileDetailQuery
+  ) => Promise<BridgeResult<PerformanceFileDetail | null>>;
+  listPendingFiles: () => Promise<BridgeResult<PerformanceQueueItem[]>>;
+  getPendingFileDetail: (
+    fileId: string
+  ) => Promise<BridgeResult<PerformanceFileDetail | null>>;
+  approvePendingFile: (
+    input: PerformanceApprovalActionInput
+  ) => Promise<BridgeResult<PerformanceApprovalRecord>>;
+  finalizeReapprovedFile: (
+    input: PerformanceReapprovalFinalizeInput
+  ) => Promise<BridgeResult<PerformanceFileDetail>>;
+  returnApprovedFileToPending: (
+    input: PerformanceReapprovalFinalizeInput
+  ) => Promise<BridgeResult<PerformanceReturnToPendingResult>>;
+  rejectPendingFile: (
+    input: PerformanceRejectionInput
+  ) => Promise<BridgeResult<PerformanceApprovalRecord>>;
+  hideApprovedRow: (
+    input: PerformanceApprovedRowHideInput
+  ) => Promise<BridgeResult<PerformanceApprovedRowHiddenResult>>;
+  listApprovalHistory: () => Promise<BridgeResult<PerformanceApprovalRecord[]>>;
+  openPerformanceSourceFile: (fileId: string) => Promise<BridgeResult<null>>;
+}

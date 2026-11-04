@@ -1,0 +1,2112 @@
+import { resolveWageRateForDate } from "../../shared/domain/wage-rate";
+import { assignmentEmploymentBounds, isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
+import path from "node:path";
+import ExcelJS from "exceljs";
+
+import {
+  calculateAutomaticBreakMinutes,
+  calculateWorkBreakdown,
+  parseTimeToMinutes,
+  type TimeRange
+} from "../../shared/domain/calculation";
+import {
+  isBpDisplayName,
+} from "../../shared/domain/employment-type";
+import {
+  type ActivePolicyProjection,
+  type ChangedWorkerPriorityRuleKey,
+  type PolicyApplicationBinding,
+  type PolicyApplicationSnapshot,
+  type PolicyKind,
+  type SubstituteEligibilityRuleKey,
+  RULE_KEY_METADATA,
+  computeMonthPolicyFingerprint,
+  computePolicyApplicationFingerprint,
+  selectPolicyForWorkDate,
+} from "../../shared/domain/policy-history";
+import {
+  getActivePolicyTimeline,
+} from "./policy-history-service";
+import { isChangedSlotPriorityApplicable } from "../../shared/domain/changed-slot-priority-policy";
+import type { EmployeeRank } from "../../shared/domain/employee-rank";
+import type {
+  PerformanceAlert,
+  PerformanceEntryRecord
+} from "../../shared/domain/performance-file";
+import { parsePoolWorkerDisplayName } from "../../shared/domain/performance-file";
+import { resolveSubstituteAllowanceDecision } from "../../shared/domain/substitute-allowance-policy";
+import { getTeamWorkTypeFromPattern } from "../../shared/domain/team-membership";
+import { getDefaultTeamWorkType, type TeamWorkType } from "../../shared/domain/team-work-type";
+import { resolveShiftPatternForMonth } from "../../shared/domain/shift-pattern-version";
+import type { EmployeeEmploymentPeriod, MonthlyScheduleItem, MonthlyScheduleRecord, WorkType } from "../../shared/domain/model";
+import type {
+  SchedulePlanTemplateLayout,
+  SchedulePlanTemplateVariant,
+  SchedulePlanWorkingDutyCode
+} from "../../shared/domain/schedule-plan";
+import {
+  listStoredEmployeeAssignments,
+  listStoredEmployeeWageRates
+} from "./employee-history-service";
+import { listStoredEmployees } from "./employee-storage-service";
+import {
+  assertScheduleLayoutRevisionMetadata,
+  assertScheduleWorkbookProtectedStructure,
+  computeCanonicalDigestSha256,
+  inspectSchedulePlanTemplateFromDefinition,
+  inspectSchedulePlanTemplateFromWorkbook,
+  readScheduleLayoutRevisionMetadataFromWorkbook,
+  resolveScheduleSectionLayoutsFromDefinition
+} from "./schedule-plan-adapter";
+import { getDocumentLayoutDefinitionByRevision } from "./document-layout-storage-service";
+import {
+  getBuiltInDocumentLayoutDefinition,
+  parseDocumentLayoutStorageKey
+} from "./document-layout-definition-service";
+import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
+import { listStoredMonthlySchedules } from "./monthly-schedule-storage-service";
+import { listStoredShiftPatterns } from "./shift-pattern-storage-service";
+import { listStoredSites } from "./site-storage-service";
+import { getStoredAppSettingEntry } from "./app-settings-storage-service";
+
+interface SchedulePerformanceParseResult {
+  sheetName: string;
+  rowCount: number;
+  columnCount: number;
+  templateVariant: SchedulePlanTemplateVariant;
+  scheduleMonth: string;
+  siteName: string;
+  scheduleKey: string;
+  alerts: PerformanceAlert[];
+  previewRows: Array<Record<string, string | number>>;
+  entries: PerformanceEntryRecord[];
+  policyContextFingerprint?: string;
+}
+
+interface ResolvedEmployeeContext {
+  employeeCode: string;
+  employeeRank?: EmployeeRank;
+  hourlyRate?: number;
+  latestEffectiveFrom?: string;
+  duplicateNameCount: number;
+  isPoolWorker: boolean;
+  teamLabel?: string;
+  resolutionError?: string;
+}
+
+interface EmployeeRateResolver {
+  employeeCode: string;
+  employeeName: string;
+  employeeRank?: EmployeeRank;
+  currentSiteName?: string;
+  currentShiftGroup?: string;
+  hireDate?: string;
+  retireDate?: string;
+  employmentPeriods?: EmployeeEmploymentPeriod[];
+  currentAssignmentStartDate?: string;
+  currentAssignmentEndDate?: string;
+  assignments: Array<{
+    siteName?: string;
+    shiftGroup?: string;
+    startDate: string;
+    endDate?: string;
+  }>;
+  latestEffectiveFrom?: string;
+  resolveHourlyRate: (workDate: string) => number | undefined;
+  isPoolWorker: boolean;
+}
+
+interface EmployeeResolverIndex {
+  byCode: Map<string, EmployeeRateResolver>;
+  byName: Map<string, EmployeeRateResolver[]>;
+}
+
+interface ParsedFileIdentity {
+  scheduleMonth: string;
+  siteName: string;
+}
+
+interface ParsedWorkTime {
+  dutyCode?: string;
+  startTime?: string;
+  endTime?: string;
+  breakMinutes: number;
+  totalWorkMinutes: number;
+  baseWorkMinutes: number;
+  overtimeMinutes: number;
+  nightMinutes: number;
+}
+
+interface ResolvedScheduleContext {
+  schedule: MonthlyScheduleRecord | null;
+  scheduleAlerts: PerformanceAlert[];
+}
+
+interface RowParseContext {
+  fileId: string;
+  scheduleMonth: string;
+  scheduleKey: string;
+  siteName: string;
+  employeeResolvers: EmployeeResolverIndex;
+  schedule: MonthlyScheduleRecord | null;
+  // 조 이름 → 근무유형(Pool/주간고정/교대). 근무표가 쓰는 패턴의 조별 설정에서 읽고, 없으면 이름 기준 기본값.
+  resolveTeamWorkType: (teamLabel?: string) => TeamWorkType;
+  // 대체수당 새 정책 적용 시작일. 비어 있으면 새 제외 규칙을 적용하지 않는다.
+  substituteAllowancePolicyEffectiveFrom?: string;
+  // 변경후 우선 규칙 적용 시작일. 비어 있으면 옛 규칙(변경전 우선)을 그대로 쓴다.
+  changedSlotPriorityEffectiveFrom?: string;
+  resolvePolicyForDate?: (kind: PolicyKind, workDate: string) => ActivePolicyProjection | null;
+  monthPolicyFingerprint?: string;
+}
+
+interface SectionTableLayout {
+  dateColumns: string[];
+  startRow: number;
+  endRow: number;
+  originalWorkerColumns?: string[];
+  substituteWorkerColumns?: string[];
+  startHourColumn?: string;
+  startMinuteColumn?: string;
+  endHourColumn?: string;
+  endMinuteColumn?: string;
+  workerColumns?: string[];
+  reasonColumns: string[];
+  evidenceColumns: string[];
+}
+
+const HOLIDAY_FILL = "FFFFD1D1";
+const EMPTY_MARKERS = new Set(["", "-", "휴무"]);
+const VIRTUAL_ORIGINAL_WORKER_NAME = "홍길동";
+const NONE_ACTUAL_WORKER_KEY = "none";
+const SECTION_ORDER: Record<PerformanceEntryRecord["section"], number> = {
+  "legal-holiday": 0,
+  substitute: 1,
+  overtime: 2
+};
+
+const substituteLayoutByVariant: Record<SchedulePlanTemplateVariant, SectionTableLayout> = {
+  sample1: {
+    dateColumns: ["BA", "BB"],
+    startRow: 11,
+    endRow: 26,
+    originalWorkerColumns: ["BC", "BD"],
+    substituteWorkerColumns: ["BE", "BF"],
+    reasonColumns: ["BG", "BH", "BI"],
+    evidenceColumns: ["BJ", "BK"]
+  },
+  sample2: {
+    dateColumns: ["BI", "BJ"],
+    startRow: 11,
+    endRow: 26,
+    originalWorkerColumns: ["BK", "BL"],
+    substituteWorkerColumns: ["BM", "BN"],
+    reasonColumns: ["BO", "BP", "BQ"],
+    evidenceColumns: ["BR", "BS"]
+  }
+};
+
+const overtimeLayoutByVariant: Record<SchedulePlanTemplateVariant, SectionTableLayout> = {
+  sample1: {
+    dateColumns: ["BA", "BB"],
+    startRow: 34,
+    endRow: 100,
+    startHourColumn: "BC",
+    startMinuteColumn: "BD",
+    endHourColumn: "BE",
+    endMinuteColumn: "BF",
+    workerColumns: ["BG"],
+    reasonColumns: ["BH", "BI"],
+    evidenceColumns: ["BJ", "BK"]
+  },
+  sample2: {
+    dateColumns: ["BI", "BJ"],
+    startRow: 34,
+    endRow: 100,
+    startHourColumn: "BK",
+    startMinuteColumn: "BL",
+    endHourColumn: "BM",
+    endMinuteColumn: "BN",
+    workerColumns: ["BO"],
+    reasonColumns: ["BP", "BQ"],
+    evidenceColumns: ["BR", "BS"]
+  }
+};
+
+const readWorkbook = async (filePath: string) => {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile(filePath);
+  return workbook;
+};
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+const normalizeText = (value: string | undefined | null) => value?.trim() ?? "";
+
+export const normalizeLookupKey = (value: string | undefined | null) =>
+  normalizeText(value).replace(/[\s_]+/g, "").toLowerCase();
+
+const isPoolShiftGroup = (value?: string | null) => normalizeLookupKey(value) === "pool";
+
+const isEmptyMarker = (value: string | undefined | null) =>
+  EMPTY_MARKERS.has(normalizeText(value).toUpperCase());
+
+const isVirtualOriginalWorker = (value: string | undefined | null) =>
+  normalizeLookupKey(value) === normalizeLookupKey(VIRTUAL_ORIGINAL_WORKER_NAME);
+
+const isNoneActualWorker = (value: string | undefined | null) =>
+  normalizeLookupKey(value) === NONE_ACTUAL_WORKER_KEY;
+
+const isRealEmployeeCell = (value: string | undefined | null) =>
+  normalizeText(value).length > 0 &&
+  !isEmptyMarker(value) &&
+  !isNoneActualWorker(value) &&
+  !isVirtualOriginalWorker(value) &&
+  !isBpDisplayName(value);
+
+const isExcludedReturnedPerformanceEmployeeName = (
+  value: string | undefined | null,
+  employeeResolvers: EmployeeResolverIndex
+) => {
+  void employeeResolvers;
+  return isBpDisplayName(value);
+};
+
+export const stripFileDuplicateSuffix = (siteName: string) =>
+  // Bare trailing digits are valid site names such as "센터1"; strip only file-copy suffixes.
+  normalizeText(siteName).replace(/(?:_dup\d+|_\d+)$/i, "");
+
+const toScheduleMonth = (year: string, month: string) =>
+  `${year}-${String(Number(month)).padStart(2, "0")}`;
+
+const resolveScheduleMonthFromCell = (
+  value: ExcelJS.CellValue | undefined | null
+): string | null => {
+  if (value instanceof Date) {
+    return toScheduleMonth(String(value.getFullYear()), String(value.getMonth() + 1));
+  }
+
+  if (isRecord(value) && value.result instanceof Date) {
+    return toScheduleMonth(String(value.result.getFullYear()), String(value.result.getMonth() + 1));
+  }
+
+  const text = normalizeCellText(value);
+  const matched = text.match(/^(\d{4})[-.](\d{1,2})(?:[-.]\d{1,2})?$/);
+
+  return matched ? toScheduleMonth(matched[1], matched[2]) : null;
+};
+
+const parseFileIdentity = (fileName: string): ParsedFileIdentity | null => {
+  const yyyyUnderscoreMatched = fileName.match(/^(\d{4})_(\d{1,2})_(.+)\.(xlsx|xlsm|xls)$/i);
+
+  if (yyyyUnderscoreMatched) {
+    return {
+      scheduleMonth: toScheduleMonth(yyyyUnderscoreMatched[1], yyyyUnderscoreMatched[2]),
+      siteName: stripFileDuplicateSuffix(
+        path.basename(yyyyUnderscoreMatched[3], path.extname(yyyyUnderscoreMatched[3]))
+      )
+    };
+  }
+
+  const siteFirstMatched = fileName.match(/^(.+?)_(\d{4})-(\d{1,2})(?:_.+)?\.(xlsx|xlsm|xls)$/i);
+
+  if (!siteFirstMatched) {
+    return null;
+  }
+
+  return {
+    scheduleMonth: toScheduleMonth(siteFirstMatched[2], siteFirstMatched[3]),
+    siteName: stripFileDuplicateSuffix(siteFirstMatched[1])
+  };
+};
+
+const resolveFileIdentityFromWorksheet = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout,
+  fileName: string
+): ParsedFileIdentity => {
+  const fileIdentity = parseFileIdentity(fileName);
+  const worksheetSiteName = normalizeCellText(worksheet.getCell(layout.siteNameCell).value);
+  const worksheetScheduleMonth = resolveScheduleMonthFromCell(
+    worksheet.getCell(layout.monthTitleCell).value
+  );
+  const scheduleMonth = fileIdentity?.scheduleMonth ?? worksheetScheduleMonth;
+  const siteName = stripFileDuplicateSuffix(fileIdentity?.siteName || worksheetSiteName || "");
+
+  if (scheduleMonth && siteName) {
+    return {
+      scheduleMonth,
+      siteName
+    };
+  }
+
+  throw new Error(`근무표 파일명에서 접수월/근무지를 해석할 수 없습니다: ${fileName}`);
+};
+
+const normalizeCellText = (value: ExcelJS.CellValue | undefined | null): string => {
+  if (value === undefined || value === null) {
+    return "";
+  }
+
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  if (typeof value === "object") {
+    if ("text" in value && typeof value.text === "string") {
+      return value.text.trim();
+    }
+
+    if ("result" in value) {
+      return normalizeCellText(value.result as ExcelJS.CellValue | undefined | null);
+    }
+  }
+
+  return String(value).trim();
+};
+
+const normalizeDateText = (value: ExcelJS.CellValue | undefined | null): string => {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  if (isRecord(value) && value.result instanceof Date) {
+    return value.result.toISOString().slice(0, 10);
+  }
+
+  const text = normalizeCellText(value);
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text;
+  }
+
+  if (/^\d{4}\.\d{2}\.\d{2}$/.test(text)) {
+    return text.replaceAll(".", "-");
+  }
+
+  return text;
+};
+
+const getRowText = (
+  worksheet: ExcelJS.Worksheet,
+  rowNumber: number,
+  columns: string[]
+): string => {
+  for (const column of columns) {
+    const text = normalizeCellText(worksheet.getCell(`${column}${rowNumber}`).value);
+
+    if (text.length > 0) {
+      return text;
+    }
+  }
+
+  return "";
+};
+
+const getHolidayFill = (worksheet: ExcelJS.Worksheet, address: string) =>
+  (() => {
+    const fill = worksheet.getCell(address).fill as { fgColor?: { argb?: string } } | undefined;
+    return typeof fill?.fgColor?.argb === "string" ? fill.fgColor.argb : "";
+  })();
+
+// 대체표 행의 날짜를 본표(그리드) 날짜칸으로 되짚어, 그 칸이 휴일색(분홍)인지 판정한다.
+// 휴일 대체근무의 이중계산 차단(원근무자 그리드 슬롯 취소)에 쓰인다.
+const isHolidayGridDate = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout,
+  workDate: string
+): boolean => {
+  for (const dateAddress of layout.rescheduleDateCells) {
+    if (normalizeDateText(worksheet.getCell(dateAddress).value) === workDate) {
+      return getHolidayFill(worksheet, dateAddress) === HOLIDAY_FILL;
+    }
+  }
+
+  return false;
+};
+
+const resolveEmployeeContexts = () => {
+  const employees = listStoredEmployees({
+    includeDeleted: true,
+    includeHistoricalAssignments: true
+  });
+  const byCode = new Map<string, EmployeeRateResolver>();
+  const byName = new Map<string, EmployeeRateResolver[]>();
+
+  employees.forEach((employee) => {
+    const wageRates = listStoredEmployeeWageRates(employee.id);
+    const assignments = listStoredEmployeeAssignments(employee.id).filter(assignment => !assignmentEmploymentBounds(assignment).excluded).map((assignment) => ({
+      siteName: assignment.siteName,
+      shiftGroup: assignment.shiftGroup,
+      startDate: assignmentEmploymentBounds(assignment).startDate,
+      endDate: assignmentEmploymentBounds(assignment).endDate
+    }));
+    const resolver: EmployeeRateResolver = {
+      employeeCode: employee.employeeCode,
+      employeeName: employee.name,
+      employeeRank: employee.rank,
+      currentSiteName: employee.currentSiteName,
+      currentShiftGroup: employee.currentShiftGroup,
+      hireDate: employee.hireDate,
+      retireDate: employee.retireDate,
+      employmentPeriods: employee.employmentPeriods,
+      currentAssignmentStartDate: employee.currentAssignmentStartDate,
+      currentAssignmentEndDate: employee.currentAssignmentEndDate,
+      assignments,
+      latestEffectiveFrom: wageRates[0]?.effectiveFrom,
+      isPoolWorker:
+        isPoolShiftGroup(employee.currentShiftGroup) ||
+        assignments.some((assignment) => isPoolShiftGroup(assignment.shiftGroup)),
+      resolveHourlyRate: (workDate: string) => isManagedEmployeeEmployedOnDate(employee, workDate) ? resolveWageRateForDate(wageRates, workDate)?.hourlyRate : undefined
+    };
+    const normalizedName = normalizeLookupKey(employee.name);
+    const nameBucket = byName.get(normalizedName) ?? [];
+
+    byCode.set(employee.employeeCode, resolver);
+    nameBucket.push(resolver);
+    byName.set(normalizedName, nameBucket);
+  });
+
+  return {
+    byCode,
+    byName
+  } satisfies EmployeeResolverIndex;
+};
+
+// 근무표가 사용한 패턴의 조별 설정에서 근무유형을 읽는다. 패턴을 못 찾으면 이름 기준 기본값으로 떨어져
+// 기존 동작(Pool 이름만 Pool 취급)과 같아진다.
+const createTeamWorkTypeResolver = (
+  schedule: MonthlyScheduleRecord | null,
+  siteName: string,
+  scheduleMonth: string
+): ((teamLabel?: string) => TeamWorkType) => {
+  const patterns = listStoredShiftPatterns();
+  const scheduledPattern = schedule
+    ? patterns.find((pattern) => pattern.id === schedule.patternId)
+    : undefined;
+  const normalizedSiteKey = normalizeLookupKey(siteName);
+  const siteId = listStoredSites({ includeDeleted: true }).find(
+    (site) => normalizeLookupKey(site.name) === normalizedSiteKey
+  )?.id;
+  // 근무표 저장본이 없을 때는 그 달에 유효했던 설정 버전으로 떨어진다.
+  const fallbackPattern = resolveShiftPatternForMonth(
+    patterns.filter((pattern) => pattern.siteId === siteId),
+    scheduleMonth
+  );
+  const activePattern = scheduledPattern ?? fallbackPattern ?? undefined;
+
+  return (teamLabel?: string) =>
+    getTeamWorkTypeFromPattern(activePattern, teamLabel) ?? getDefaultTeamWorkType(teamLabel);
+};
+
+// 대체 투입자가 대체한 그 근무를 원래 자기 정규근무로 하고 있었는지(= 추가근무가 아님) 확인한다.
+// 같은 날 자기 근무를 따로 하고 추가로 다른 근무를 대체한 경우는 추가근무이므로, 근무코드가 같을 때만 정규근무로 본다.
+const OFF_DUTY_CODE_KEYS = new Set(["", "O", "OFF", "X", "휴", "휴무"]);
+
+const hasOwnRegularDutyOnDate = (
+  schedule: MonthlyScheduleRecord | null,
+  employeeCode: string | undefined,
+  workDate: string,
+  dutyCode: string | undefined
+) => {
+  const normalizedDutyCode = String(dutyCode ?? "").trim().toUpperCase();
+
+  if (!schedule || !employeeCode || OFF_DUTY_CODE_KEYS.has(normalizedDutyCode)) {
+    return false;
+  }
+
+  return schedule.items.some(
+    (item) =>
+      item.employeeCode === employeeCode &&
+      item.workDate === workDate &&
+      String(item.dutyCode ?? "").trim().toUpperCase() === normalizedDutyCode
+  );
+};
+
+const isEmployeeAvailableOnDate = (employee: EmployeeRateResolver, workDate: string) => {
+  if (!isManagedEmployeeEmployedOnDate(employee, workDate)) return false;
+  const scheduleStartDate = employee.hireDate ?? employee.currentAssignmentStartDate;
+
+  if (scheduleStartDate && workDate < scheduleStartDate) {
+    return false;
+  }
+
+  if (employee.retireDate && workDate >= employee.retireDate) {
+    return false;
+  }
+
+  if (
+    employee.assignments.length === 0 &&
+    employee.currentAssignmentEndDate &&
+    workDate >= employee.currentAssignmentEndDate
+  ) {
+    return false;
+  }
+
+  return true;
+};
+
+const hasAssignmentAtSiteOnDate = (
+  employee: EmployeeRateResolver,
+  siteName: string,
+  workDate: string
+) => {
+  const normalizedSiteKey = normalizeLookupKey(siteName);
+
+  if (!normalizedSiteKey) {
+    return false;
+  }
+
+  return employee.assignments.some((assignment) => {
+    if (normalizeLookupKey(assignment.siteName) !== normalizedSiteKey) {
+      return false;
+    }
+
+    if (workDate < assignment.startDate) {
+      return false;
+    }
+
+    if (assignment.endDate && workDate >= assignment.endDate) {
+      return false;
+    }
+
+    return true;
+  });
+};
+
+const resolveEmployeeTeamLabel = (
+  employee: EmployeeRateResolver,
+  siteName: string,
+  workDate: string
+) => {
+  const normalizedSiteKey = normalizeLookupKey(siteName);
+  const matchedAssignment = employee.assignments.find((assignment) => {
+    if (normalizedSiteKey && normalizeLookupKey(assignment.siteName) !== normalizedSiteKey) {
+      return false;
+    }
+
+    if (workDate < assignment.startDate) {
+      return false;
+    }
+
+    if (assignment.endDate && workDate >= assignment.endDate) {
+      return false;
+    }
+
+    return Boolean(assignment.shiftGroup?.trim());
+  });
+
+  return matchedAssignment?.shiftGroup?.trim() || employee.currentShiftGroup?.trim() || undefined;
+};
+
+// 휴일 대체표 한 행이 가리키는 '바로 그 그리드 슬롯' 하나만 찾아 취소 대상으로 삼는다.
+// 같은 이름이 여러 슬롯에 있어도(같은 사람이 두 자리에서 근무, 또는 동명이인) 한 대체 행은 한
+// 슬롯만 취소해야, 직접 근무한 다른 슬롯이나 다른 동명이인의 슬롯이 통째로 사라지는 수당 누락을
+// 막는다. 변경후 칸이 대체자와 일치하는 슬롯을 우선 고르고(대체된 자리가 확실), 없으면 원근무자
+// 이름이 일치하는 첫 슬롯을 고른다. 원근무자가 그리드 어디에도 없으면 null(취소할 자리 없음).
+const resolveHolidaySubstituteCancellationSlot = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout,
+  workDate: string,
+  originalWorker: string,
+  substituteWorker: string
+): { dutyCode: SchedulePlanWorkingDutyCode; slotIndex: number } | null => {
+  const originalKey = normalizeLookupKey(originalWorker);
+  const substituteKey = normalizeLookupKey(substituteWorker);
+
+  if (originalKey.length === 0) {
+    return null;
+  }
+
+  let fallback: { dutyCode: SchedulePlanWorkingDutyCode; slotIndex: number } | null = null;
+
+  for (const dateAddress of layout.rescheduleDateCells) {
+    const rowNumber = Number(dateAddress.match(/\d+$/)?.[0] ?? 0);
+
+    if (normalizeDateText(worksheet.getCell(dateAddress).value) !== workDate) {
+      continue;
+    }
+
+    for (const dutyCode of layout.supportedWorkingDutyCodes) {
+      const regularColumns = layout.regularPlanColumns[dutyCode] ?? [];
+      const changedColumns = layout.changedPlanColumns[dutyCode] ?? [];
+
+      for (let slotIndex = 0; slotIndex < regularColumns.length; slotIndex += 1) {
+        const regularName = normalizeCellText(
+          worksheet.getCell(`${regularColumns[slotIndex]}${rowNumber}`).value
+        );
+
+        if (normalizeLookupKey(regularName) !== originalKey) {
+          continue;
+        }
+
+        const changedColumn = changedColumns[slotIndex];
+        const changedName = changedColumn
+          ? normalizeCellText(worksheet.getCell(`${changedColumn}${rowNumber}`).value)
+          : "";
+
+        // 변경후 칸이 대체자와 일치하면 그 슬롯이 대체된 자리임이 확실하다 — 즉시 선택.
+        if (substituteKey.length > 0 && normalizeLookupKey(changedName) === substituteKey) {
+          return { dutyCode, slotIndex };
+        }
+
+        // 그 외에는 원근무자 이름이 일치하는 첫 슬롯을 후보로 잡아 둔다.
+        if (!fallback) {
+          fallback = { dutyCode, slotIndex };
+        }
+      }
+    }
+  }
+
+  return fallback;
+};
+
+interface HolidaySlotCancellations {
+  // 이름 기준 취소(기존 None-대체 규칙 유지): 그 날 같은 이름의 본표 슬롯 취소.
+  names: Set<string>;
+  // 슬롯 기준 취소(휴일 실명 대체 규칙): "dutyCode:slotIndex" 하나만 정확히 취소.
+  slots: Set<string>;
+}
+
+const createNoneActualWorkerCancellationMap = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout
+) => {
+  const sectionLayout = substituteLayoutByVariant[layout.variant];
+  const cancellationsByDate = new Map<string, HolidaySlotCancellations>();
+
+  const ensureBucket = (workDate: string) => {
+    const existing = cancellationsByDate.get(workDate);
+    if (existing) {
+      return existing;
+    }
+    const created: HolidaySlotCancellations = { names: new Set<string>(), slots: new Set<string>() };
+    cancellationsByDate.set(workDate, created);
+    return created;
+  };
+
+  for (let rowNumber = sectionLayout.startRow; rowNumber <= sectionLayout.endRow; rowNumber += 1) {
+    const workDate = normalizeDateText(
+      worksheet.getCell(`${sectionLayout.dateColumns[0]}${rowNumber}`).value
+    );
+    const originalWorker = getRowText(
+      worksheet,
+      rowNumber,
+      sectionLayout.originalWorkerColumns ?? []
+    );
+    const substituteWorker = getRowText(
+      worksheet,
+      rowNumber,
+      sectionLayout.substituteWorkerColumns ?? []
+    );
+    const originalWorkerKey = normalizeLookupKey(originalWorker);
+
+    const isValidWorkDate = /^\d{4}-\d{2}-\d{2}$/.test(workDate);
+
+    // 기존 규칙: 대체자=None → 원근무자가 그 날 근무하지 않은 것으로 보고 본표 슬롯을 취소(이름 기준, 기존 동작 유지).
+    const cancelledByNoneSubstitute =
+      isValidWorkDate &&
+      originalWorkerKey.length > 0 &&
+      !isEmptyMarker(originalWorker) &&
+      !isNoneActualWorker(originalWorker) &&
+      isNoneActualWorker(substituteWorker);
+
+    if (cancelledByNoneSubstitute) {
+      ensureBucket(workDate).names.add(originalWorkerKey);
+    }
+
+    // 신규 규칙: 휴일(본표 분홍칸)에 실명 대체자가 들어오면, 본표(원근무자)+대체표(대체자) 이중계산을
+    // 막기 위해 본표 원근무자 슬롯을 취소한다. 단 이름이 아니라 '그 대체 행이 가리키는 슬롯 하나'만
+    // 취소해, 같은 사람이 직접 근무한 다른 슬롯이나 동명이인의 슬롯이 함께 사라지지 않게 한다.
+    // 원근무자가 그리드에 없으면(취소할 본표 슬롯 없음) 대체만 인정되고 이중계산도 없으므로 건너뛴다.
+    const cancelledByHolidaySubstitute =
+      isValidWorkDate &&
+      isRealEmployeeCell(originalWorker) &&
+      isRealEmployeeCell(substituteWorker) &&
+      isHolidayGridDate(worksheet, layout, workDate);
+
+    if (cancelledByHolidaySubstitute) {
+      const slot = resolveHolidaySubstituteCancellationSlot(
+        worksheet,
+        layout,
+        workDate,
+        originalWorker,
+        substituteWorker
+      );
+
+      if (slot) {
+        ensureBucket(workDate).slots.add(`${slot.dutyCode}:${slot.slotIndex}`);
+      }
+    }
+  }
+
+  return cancellationsByDate;
+};
+
+const narrowEmployeeCandidates = (
+  candidates: EmployeeRateResolver[],
+  workDate: string,
+  siteName: string
+) => {
+  const availableCandidates = candidates.filter((employee) =>
+    isEmployeeAvailableOnDate(employee, workDate)
+  );
+  const dateScopedCandidates =
+    availableCandidates.length > 0 ? availableCandidates : candidates;
+  const normalizedSiteKey = normalizeLookupKey(siteName);
+  const historicalSiteCandidates = normalizedSiteKey
+    ? dateScopedCandidates.filter((employee) =>
+        hasAssignmentAtSiteOnDate(employee, siteName, workDate)
+      )
+    : [];
+  const siteScopedCandidates = normalizedSiteKey
+    ? dateScopedCandidates.filter(
+        (employee) => normalizeLookupKey(employee.currentSiteName) === normalizedSiteKey
+      )
+    : [];
+
+  if (historicalSiteCandidates.length > 0) {
+    return historicalSiteCandidates;
+  }
+
+  return siteScopedCandidates.length > 0 ? siteScopedCandidates : dateScopedCandidates;
+};
+
+const createAmbiguousEmployeeMessage = (
+  employeeName: string,
+  workDate: string,
+  candidates: EmployeeRateResolver[]
+) => {
+  const candidateLabels = candidates
+    .map((employee) =>
+      `${employee.employeeName}(${employee.employeeCode}${
+        employee.currentSiteName ? `/${employee.currentSiteName}` : ""
+      })`
+    )
+    .join(", ");
+
+  return `${employeeName}의 ${workDate} 인력 정보가 동명이인 ${candidates.length}명과 매칭되어 사번을 확정할 수 없습니다. 후보: ${candidateLabels}`;
+};
+
+const resolveHourlyRate = (
+  employeeResolvers: EmployeeResolverIndex,
+  employeeName: string,
+  workDate: string,
+  siteName: string,
+  employeeCodeHint?: string
+): ResolvedEmployeeContext | null => {
+  const hintedCandidates = employeeCodeHint
+    ? [employeeResolvers.byCode.get(employeeCodeHint)].filter(
+        (value): value is EmployeeRateResolver => Boolean(value)
+      )
+    : [];
+  const nameCandidates = employeeResolvers.byName.get(normalizeLookupKey(employeeName)) ?? [];
+  const candidates =
+    hintedCandidates.length > 0
+      ? hintedCandidates
+      : narrowEmployeeCandidates(nameCandidates, workDate, siteName);
+
+  if (candidates.length === 0) {
+    return null;
+  }
+
+  if (hintedCandidates.length === 0 && candidates.length > 1) {
+    return {
+      employeeCode: "",
+      hourlyRate: undefined,
+      latestEffectiveFrom: undefined,
+      duplicateNameCount: candidates.length,
+      isPoolWorker: false,
+      teamLabel: undefined,
+      resolutionError: createAmbiguousEmployeeMessage(employeeName, workDate, candidates)
+    };
+  }
+
+  const matchedEmployee =
+    [...candidates].find((employee) => employee.resolveHourlyRate(workDate) !== undefined) ??
+    candidates[0];
+
+  const teamLabel = resolveEmployeeTeamLabel(matchedEmployee, siteName, workDate);
+  const outsideEmployment = !isManagedEmployeeEmployedOnDate(matchedEmployee, workDate);
+
+  return {
+    employeeCode: matchedEmployee.employeeCode,
+    employeeRank: matchedEmployee.employeeRank,
+    hourlyRate: matchedEmployee.resolveHourlyRate(workDate),
+    latestEffectiveFrom: matchedEmployee.latestEffectiveFrom,
+    duplicateNameCount: nameCandidates.length || candidates.length,
+    isPoolWorker: isPoolShiftGroup(teamLabel),
+    teamLabel,
+    ...(outsideEmployment ? { resolutionError: `${matchedEmployee.employeeName}의 ${workDate}은 재직기간 밖입니다. 퇴사 공백이나 취소한 재입사 예약에는 수당을 승인할 수 없습니다. 인력 관리에서 재입사일을 확인해 주세요.` } : {})
+  };
+};
+
+const resolveScheduleContext = (scheduleMonth: string, rawSiteName: string): ResolvedScheduleContext => {
+  const normalizedSiteKey = normalizeLookupKey(rawSiteName);
+  const matchedSchedules = listStoredMonthlySchedules().filter(
+    (schedule) =>
+      schedule.scheduleMonth === scheduleMonth &&
+      normalizeLookupKey(schedule.siteName) === normalizedSiteKey
+  );
+
+  if (matchedSchedules.length === 0) {
+    return {
+      schedule: null,
+      scheduleAlerts: [
+        {
+          severity: "error",
+          message: `${scheduleMonth} ${rawSiteName} 월간 근무표 저장본을 찾지 못했습니다.`
+        }
+      ]
+    };
+  }
+
+  const sortedSchedules = [...matchedSchedules].sort((left, right) =>
+    right.generatedAt.localeCompare(left.generatedAt)
+  );
+  const scheduleAlerts: PerformanceAlert[] = [];
+
+  if (matchedSchedules.length > 1) {
+    scheduleAlerts.push({
+      severity: "warning",
+      message: `${scheduleMonth} ${rawSiteName} 월간 근무표 저장본이 ${matchedSchedules.length}건 있어 최신 생성본을 기준으로 파싱했습니다.`
+    });
+  }
+
+  return {
+    schedule: sortedSchedules[0] ?? null,
+    scheduleAlerts
+  };
+};
+
+const resolveScheduleItem = (
+  schedule: MonthlyScheduleRecord | null,
+  employeeName: string,
+  workDate: string
+): MonthlyScheduleItem | null => {
+  if (!schedule) {
+    return null;
+  }
+
+  const normalizedEmployeeName = normalizeLookupKey(employeeName);
+
+  return (
+    schedule.items.find(
+      (item) =>
+        item.workDate === workDate && normalizeLookupKey(item.employeeName) === normalizedEmployeeName
+    ) ?? null
+  );
+};
+
+const resolveScheduleItemByDutyCode = (
+  schedule: MonthlyScheduleRecord | null,
+  dutyCode: SchedulePlanWorkingDutyCode,
+  workDate: string
+): MonthlyScheduleItem | null => {
+  if (!schedule) {
+    return null;
+  }
+
+  const matchedItem =
+    schedule.items.find(
+      (item) =>
+        item.workDate === workDate &&
+        item.dutyCode === dutyCode &&
+        Boolean(item.startTime) &&
+        Boolean(item.endTime)
+    ) ??
+    schedule.items.find(
+      (item) =>
+        item.dutyCode === dutyCode &&
+        Boolean(item.startTime) &&
+        Boolean(item.endTime)
+    );
+
+  return matchedItem
+    ? {
+        ...matchedItem,
+        workDate,
+        dutyCode
+      }
+    : null;
+};
+
+const resolveScheduleItemFromReturnedDutySlot = (input: {
+  worksheet: ExcelJS.Worksheet;
+  layout: SchedulePlanTemplateLayout;
+  schedule: MonthlyScheduleRecord | null;
+  workDate: string;
+  originalWorker: string;
+  substituteWorker: string;
+}): {
+  dutyCode: SchedulePlanWorkingDutyCode;
+  rowNumber: number;
+  slotIndex: number;
+  regularName: string;
+  changedName: string;
+  scheduleItem: MonthlyScheduleItem | null;
+} | null => {
+  const substituteWorkerKey = normalizeLookupKey(input.substituteWorker);
+
+  for (const dateAddress of input.layout.rescheduleDateCells) {
+    const rowNumber = Number(dateAddress.match(/\d+$/)?.[0] ?? 0);
+    const workDate = normalizeDateText(input.worksheet.getCell(dateAddress).value);
+
+    if (workDate !== input.workDate) {
+      continue;
+    }
+
+    for (const dutyCode of input.layout.supportedWorkingDutyCodes) {
+      const regularColumns = input.layout.regularPlanColumns[dutyCode] ?? [];
+      const changedColumns = input.layout.changedPlanColumns[dutyCode] ?? [];
+
+      for (let slotIndex = 0; slotIndex < regularColumns.length; slotIndex += 1) {
+        const regularName = normalizeCellText(
+          input.worksheet.getCell(`${regularColumns[slotIndex]}${rowNumber}`).value
+        );
+        const changedColumn = changedColumns[slotIndex];
+        const changedName = changedColumn
+          ? normalizeCellText(input.worksheet.getCell(`${changedColumn}${rowNumber}`).value)
+          : "";
+        const changedWorkerMatches =
+          substituteWorkerKey.length > 0 && normalizeLookupKey(changedName) === substituteWorkerKey;
+        const matchesEmptySlot =
+          isEmptyMarker(input.originalWorker) && isEmptyMarker(regularName) && changedWorkerMatches;
+        const matchesVirtualSlot =
+          isVirtualOriginalWorker(input.originalWorker) &&
+          isVirtualOriginalWorker(regularName) &&
+          (changedName.length === 0 || changedWorkerMatches);
+        const matchesRealOriginal =
+          !isEmptyMarker(input.originalWorker) &&
+          !isVirtualOriginalWorker(input.originalWorker) &&
+          normalizeLookupKey(regularName) === normalizeLookupKey(input.originalWorker);
+
+        if (!matchesEmptySlot && !matchesVirtualSlot && !matchesRealOriginal) {
+          continue;
+        }
+
+        return {
+          dutyCode,
+          rowNumber,
+          slotIndex,
+          regularName,
+          changedName,
+          scheduleItem: resolveScheduleItemByDutyCode(input.schedule, dutyCode, workDate)
+        };
+      }
+    }
+  }
+
+  return null;
+};
+
+const createWorkTimeFromTimeRange = (
+  timeRange: TimeRange,
+  dutyCode?: string
+): ParsedWorkTime => {
+  const breakdown = calculateWorkBreakdown({
+    isHoliday: false,
+    workType: "overtime",
+    timeRange
+  });
+
+  return {
+    dutyCode,
+    startTime: timeRange.startTime,
+    endTime: timeRange.endTime,
+    breakMinutes: timeRange.breakMinutes,
+    totalWorkMinutes: breakdown.totalWorkMinutes,
+    baseWorkMinutes: breakdown.baseWorkMinutes,
+    overtimeMinutes: breakdown.overtimeMinutes,
+    nightMinutes: breakdown.nightMinutes
+  };
+};
+
+const createWorkTimeFromScheduleItem = (
+  scheduleItem: MonthlyScheduleItem | null,
+  workType: WorkType
+): ParsedWorkTime => {
+  if (!scheduleItem?.startTime || !scheduleItem.endTime) {
+    return {
+      dutyCode: scheduleItem?.dutyCode,
+      breakMinutes: scheduleItem?.breakMinutes ?? 0,
+      totalWorkMinutes: 0,
+      baseWorkMinutes: 0,
+      overtimeMinutes: 0,
+      nightMinutes: 0
+    };
+  }
+
+  const breakdown = calculateWorkBreakdown({
+    isHoliday: workType === "holiday",
+    workType,
+    timeRange: {
+      startTime: scheduleItem.startTime,
+      endTime: scheduleItem.endTime,
+      breakMinutes: scheduleItem.breakMinutes
+    }
+  });
+
+  return {
+    dutyCode: scheduleItem.dutyCode,
+    startTime: scheduleItem.startTime,
+    endTime: scheduleItem.endTime,
+    breakMinutes: scheduleItem.breakMinutes,
+    totalWorkMinutes: breakdown.totalWorkMinutes,
+    baseWorkMinutes: breakdown.baseWorkMinutes,
+    overtimeMinutes: breakdown.overtimeMinutes,
+    nightMinutes: breakdown.nightMinutes
+  };
+};
+
+const createSummaryText = (entry: Pick<
+  PerformanceEntryRecord,
+  "totalWorkMinutes" | "baseWorkMinutes" | "overtimeMinutes" | "nightMinutes" | "breakMinutes"
+>) => {
+  const toHourText = (minutes: number) => {
+    const hours = minutes / 60;
+    return Number.isInteger(hours) ? String(hours) : hours.toFixed(1);
+  };
+
+  return `총 ${toHourText(entry.totalWorkMinutes)} / 기본 ${toHourText(entry.baseWorkMinutes)} / 연장 ${toHourText(entry.overtimeMinutes)} / 야간 ${toHourText(entry.nightMinutes)} / 휴게 ${toHourText(entry.breakMinutes)}`;
+};
+
+const toScheduleItemSource = (item: MonthlyScheduleItem | null | undefined) =>
+  item
+    ? {
+        employeeCode: item.employeeCode ?? "",
+        employeeName: item.employeeName ?? "",
+        workDate: item.workDate,
+        dutyCode: item.dutyCode,
+        startTime: item.startTime ?? "",
+        endTime: item.endTime ?? "",
+        breakMinutes: item.breakMinutes,
+        teamLabel: item.teamLabel ?? "",
+        sortOrder: item.sortOrder ?? 0
+      }
+    : null;
+
+const createEntrySourceSignature = (
+  section: PerformanceEntryRecord["section"],
+  source: Record<string, unknown>
+) => `returned-schedule-source:v1:${section}:${JSON.stringify(source)}`;
+
+const buildEntry = (input: {
+  context: RowParseContext;
+  employeeName: string;
+  workDate: string;
+  workType: WorkType;
+  section: PerformanceEntryRecord["section"];
+  sourceToken: string;
+  sourceRowNumber: number;
+  sortOrder: number;
+  workTime: ParsedWorkTime;
+  reason?: string;
+  evidence?: string;
+  alerts?: PerformanceAlert[];
+  note?: string;
+  teamLabel?: string;
+  employeeCodeHint?: string;
+  sourceSignature?: string;
+  hasChangedSlotPriority?: boolean;
+}): PerformanceEntryRecord => {
+  const parsedEmployeeName = parsePoolWorkerDisplayName(input.employeeName);
+  const employeeName = parsedEmployeeName.employeeName;
+  const employeeContext = resolveHourlyRate(
+    input.context.employeeResolvers,
+    employeeName,
+    input.workDate,
+    input.context.siteName,
+    input.employeeCodeHint
+  );
+  const alerts = [...(input.alerts ?? [])];
+  const isPoolWorker = Boolean(
+    employeeContext?.isPoolWorker || parsedEmployeeName.isPoolDisplayName
+  );
+  // 대체근무 행만 판정한다. 투입자의 그날 소속 조로 근무유형을 정하고, 대체 대상은 슬롯(원 근무자)의 조를 본다.
+  // 조를 모르면 기존처럼 지급되도록 ROTATING으로 둔다(새 규칙이 과거 동작을 건드리지 않게).
+  const activeSubPolicy = input.context.resolvePolicyForDate?.(
+    "substitute-eligibility",
+    input.workDate
+  );
+  const activeChgPolicy = input.context.resolvePolicyForDate?.(
+    "changed-worker-priority",
+    input.workDate
+  );
+
+  const substituteDecision =
+    input.section === "substitute"
+      ? resolveSubstituteAllowanceDecision({
+          isAdditionalWork: !hasOwnRegularDutyOnDate(
+            input.context.schedule,
+            employeeContext?.employeeCode,
+            input.workDate,
+            input.workTime.dutyCode
+          ),
+          policyEffectiveFrom: activeSubPolicy
+            ? (activeSubPolicy.effectiveFrom ?? undefined)
+            : input.context.substituteAllowancePolicyEffectiveFrom,
+          ruleKey: activeSubPolicy?.revision.ruleKey as SubstituteEligibilityRuleKey | undefined,
+          substituteWorkType: isPoolWorker
+            ? "POOL"
+            : input.context.resolveTeamWorkType(employeeContext?.teamLabel),
+          targetWorkType: input.teamLabel
+            ? input.context.resolveTeamWorkType(input.teamLabel)
+            : "ROTATING",
+          workDate: input.workDate
+        })
+      : undefined;
+
+  const policyBindings: PolicyApplicationBinding[] = [];
+
+  if (input.section === "substitute" && activeSubPolicy) {
+    policyBindings.push({
+      kind: "substitute-eligibility",
+      policyId: activeSubPolicy.revision.id,
+      versionNumber: activeSubPolicy.revision.versionNumber,
+      ruleKey: activeSubPolicy.revision.ruleKey,
+      effectiveFrom: activeSubPolicy.effectiveFrom,
+      criteriaSummary: RULE_KEY_METADATA[activeSubPolicy.revision.ruleKey]?.summary ?? activeSubPolicy.revision.ruleKey
+    });
+  }
+
+  if (input.hasChangedSlotPriority && activeChgPolicy) {
+    policyBindings.push({
+      kind: "changed-worker-priority",
+      policyId: activeChgPolicy.revision.id,
+      versionNumber: activeChgPolicy.revision.versionNumber,
+      ruleKey: activeChgPolicy.revision.ruleKey,
+      effectiveFrom: activeChgPolicy.effectiveFrom,
+      criteriaSummary: RULE_KEY_METADATA[activeChgPolicy.revision.ruleKey]?.summary ?? activeChgPolicy.revision.ruleKey
+    });
+  }
+
+  const appliedPolicies: PolicyApplicationSnapshot = {
+    workDate: input.workDate,
+    fingerprint: computePolicyApplicationFingerprint(input.workDate, policyBindings),
+    bindings: policyBindings
+  };
+  const isNonPayableSubstitute = Boolean(substituteDecision && !substituteDecision.eligible);
+
+  if (!employeeContext) {
+    alerts.push(
+      isPoolWorker
+        ? {
+            severity: "warning",
+            message: `${input.employeeName}은 Pool 표시로 인식했지만 등록 인력 정보를 찾지 못했습니다.`
+          }
+        : {
+            severity: "error",
+            message: `${employeeName} 인력 정보를 찾지 못했습니다.`
+          }
+    );
+  } else if (employeeContext.resolutionError) {
+    alerts.push({
+      severity: "error",
+      message: employeeContext.resolutionError
+    });
+  } else if (!isPoolWorker && employeeContext.hourlyRate === undefined) {
+    alerts.push({
+      severity: "error",
+      message: employeeContext.latestEffectiveFrom
+        ? `${employeeName}의 ${input.workDate} 기준 적용 시급을 찾지 못했습니다. 현재 등록 시작일: ${employeeContext.latestEffectiveFrom}`
+        : `${employeeName}의 시급 이력이 없습니다.`
+    });
+  }
+
+  const notes = [
+    input.note,
+    isPoolWorker ? (input.section === "substitute" ? "Pool 대체근무" : "Pool 근무") : undefined,
+    !isPoolWorker && isNonPayableSubstitute ? substituteDecision?.reasonLabel : undefined,
+    isPoolWorker || isNonPayableSubstitute ? "수당 미지급" : undefined,
+    parsedEmployeeName.isPoolDisplayName && employeeName !== input.employeeName
+      ? `원본 표기 ${input.employeeName}`
+      : undefined
+  ].filter((note): note is string => Boolean(note?.trim()));
+
+  return {
+    id: `${input.context.fileId}:${input.sourceToken}`,
+    performanceFileId: input.context.fileId,
+    logicalKey: `${input.context.scheduleKey}:${input.sourceToken}`,
+    scheduleMonth: input.context.scheduleMonth,
+    scheduleKey: input.context.scheduleKey,
+    siteName: input.context.siteName,
+    employeeCode: employeeContext?.employeeCode ?? "",
+    employeeName,
+    employeeRank: employeeContext?.employeeRank,
+    workDate: input.workDate,
+    workType: input.workType,
+    section: input.section,
+    dutyCode: input.workTime.dutyCode,
+    startTime: input.workTime.startTime,
+    endTime: input.workTime.endTime,
+    breakMinutes: input.workTime.breakMinutes,
+    totalWorkMinutes: input.workTime.totalWorkMinutes,
+    baseWorkMinutes: input.workTime.baseWorkMinutes,
+    overtimeMinutes: input.workTime.overtimeMinutes,
+    nightMinutes: input.workTime.nightMinutes,
+    reason: input.reason,
+    evidence: input.evidence,
+    sourceSignature: input.sourceSignature,
+    sourceRowNumber: input.sourceRowNumber,
+    sortOrder: input.sortOrder,
+    teamLabel: input.teamLabel ?? employeeContext?.teamLabel,
+    alerts,
+    status: "pending",
+    hourlyRate: employeeContext?.hourlyRate,
+    note: notes.length > 0 ? notes.join(" / ") : undefined,
+    workHours: input.workTime.totalWorkMinutes / 60,
+    department: input.context.siteName,
+    category: input.section,
+    isPoolWorker,
+    substituteWorkType: substituteDecision?.substituteWorkType,
+    targetWorkType: substituteDecision?.targetWorkType,
+    substituteAllowanceEligible:
+      input.section === "substitute"
+        ? isPoolWorker
+          ? false
+          : substituteDecision?.eligible
+        : undefined,
+    substituteAllowanceReasonCode:
+      input.section === "substitute"
+        ? isPoolWorker
+          ? "POOL_SUBSTITUTE_EXCLUDED"
+          : substituteDecision?.reasonCode
+        : undefined,
+    substituteAllowancePolicyVersion: substituteDecision?.policyVersion,
+    appliedPolicies
+  };
+};
+
+const buildHolidayEntries = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout,
+  context: RowParseContext
+) => {
+  const entries: PerformanceEntryRecord[] = [];
+  const noneActualWorkerCancellations = createNoneActualWorkerCancellationMap(
+    worksheet,
+    layout
+  );
+
+  layout.rescheduleDateCells.forEach((dateAddress, rowIndex) => {
+    const rowNumber = Number(dateAddress.match(/\d+$/)?.[0] ?? 0);
+    const workDate = normalizeDateText(worksheet.getCell(dateAddress).value);
+    const holidayFill = getHolidayFill(worksheet, dateAddress);
+
+    if (holidayFill !== HOLIDAY_FILL || !/^\d{4}-\d{2}-\d{2}$/.test(workDate)) {
+      return;
+    }
+
+    layout.supportedWorkingDutyCodes.forEach((dutyCode) => {
+      const regularColumns = layout.regularPlanColumns[dutyCode] ?? [];
+      const changedColumns = layout.changedPlanColumns[dutyCode] ?? [];
+
+      regularColumns.forEach((columnLetter, slotIndex) => {
+        const regularName = normalizeCellText(worksheet.getCell(`${columnLetter}${rowNumber}`).value);
+        const changedColumn = changedColumns[slotIndex];
+        const changedName = changedColumn
+          ? normalizeCellText(worksheet.getCell(`${changedColumn}${rowNumber}`).value)
+          : "";
+        const hasChangedActualWorker =
+          isRealEmployeeCell(changedName) &&
+          !isExcludedReturnedPerformanceEmployeeName(changedName, context.employeeResolvers);
+        const hasManualVirtualActualWorker =
+          isVirtualOriginalWorker(regularName) &&
+          hasChangedActualWorker;
+        const hasManualEmptySlotActualWorker =
+          (isEmptyMarker(regularName) || isNoneActualWorker(regularName)) &&
+          hasChangedActualWorker;
+        // 적용 시작일 이후 근무일이면, 변경전 칸에 무엇이 적혀 있든 변경후 사람이 실제 근무자다.
+        // 이 판정이 아래의 BP 제외/변경전 실명 경로보다 먼저 걸리므로, 변경전이 BP(...)라 조용히
+        const activeChgPolicyForDate = context.resolvePolicyForDate?.(
+          "changed-worker-priority",
+          workDate
+        );
+        const hasChangedSlotPriorityWorker =
+          hasChangedActualWorker &&
+          normalizeLookupKey(changedName) !== normalizeLookupKey(regularName) &&
+          isChangedSlotPriorityApplicable({
+            workDate,
+            ruleKey: activeChgPolicyForDate?.revision.ruleKey as ChangedWorkerPriorityRuleKey | undefined,
+            effectiveFrom: activeChgPolicyForDate
+              ? (activeChgPolicyForDate.effectiveFrom ?? undefined)
+              : context.changedSlotPriorityEffectiveFrom
+          });
+        const cancellation = noneActualWorkerCancellations.get(workDate);
+        const isCancelledByNoneActualWorker =
+          (cancellation?.names.has(normalizeLookupKey(regularName)) ?? false) ||
+          (cancellation?.slots.has(`${dutyCode}:${slotIndex}`) ?? false);
+
+        // 변경후가 None/BP면 (변경전이 누구든) 그 자리는 근무하지 않은 것으로 보고 건너뛴다.
+        if (
+          isNoneActualWorker(changedName) ||
+          isBpDisplayName(changedName) ||
+          isCancelledByNoneActualWorker
+        ) {
+          return;
+        }
+
+        // 변경전이 빈칸/"-"/"휴무"/None이면 "정해진 원근무자 없음"으로 본다. 변경후에 실제 근무자가
+        // 있으면 그 사람을 파싱하고(아래 가상/빈슬롯 분기), 없으면 그 자리는 건너뛴다.
+        // (None을 빈칸과 동일하게 취급 — None이 다른 자리 파싱을 막지 않도록.)
+        if (
+          regularName.length === 0 ||
+          isEmptyMarker(regularName) ||
+          isNoneActualWorker(regularName)
+        ) {
+          if (!hasManualEmptySlotActualWorker) {
+            return;
+          }
+        }
+
+        const alerts: PerformanceAlert[] = [];
+
+        if (
+          isVirtualOriginalWorker(regularName) ||
+          hasManualEmptySlotActualWorker ||
+          hasChangedSlotPriorityWorker
+        ) {
+          if (
+            !hasManualVirtualActualWorker &&
+            !hasManualEmptySlotActualWorker &&
+            !hasChangedSlotPriorityWorker
+          ) {
+            return;
+          }
+
+          const dutyScheduleItem = resolveScheduleItemByDutyCode(
+            context.schedule,
+            dutyCode,
+            workDate
+          );
+          const directScheduleItem = resolveScheduleItem(context.schedule, changedName, workDate);
+          const scheduleItem = dutyScheduleItem ?? directScheduleItem;
+
+          if (!dutyScheduleItem && directScheduleItem) {
+            alerts.push({
+              severity: "warning",
+              message: `${changedName}의 ${workDate} ${dutyCode} 근무열 기준을 찾지 못해 투입자 원래 근무시간을 사용했습니다.`
+            });
+          }
+
+          if (!scheduleItem) {
+            alerts.push({
+              severity: "warning",
+              message: `${changedName}의 ${workDate} ${dutyCode} 근무시간 기준을 찾지 못했습니다.`
+            });
+          }
+
+          entries.push(
+            buildEntry({
+              context,
+              employeeName: changedName,
+              employeeCodeHint: directScheduleItem?.employeeCode,
+              workDate,
+              workType: "holiday",
+              section: "legal-holiday",
+              hasChangedSlotPriority: Boolean(hasChangedSlotPriorityWorker),
+              sourceToken: `holiday:${rowNumber}:${dutyCode}:${slotIndex}`,
+              sourceRowNumber: rowNumber,
+              sortOrder: SECTION_ORDER["legal-holiday"] * 10000 + rowIndex * 100 + slotIndex,
+              teamLabel: scheduleItem?.teamLabel,
+              workTime: createWorkTimeFromScheduleItem(scheduleItem, "holiday"),
+              alerts,
+              note: hasManualEmptySlotActualWorker
+                ? "빈 근무열 기준 법정휴일근로"
+                : isVirtualOriginalWorker(regularName)
+                  ? `${VIRTUAL_ORIGINAL_WORKER_NAME} 기준 법정휴일근로`
+                  : `원 근무자 ${regularName} 대신 투입 법정휴일근로`,
+              sourceSignature: createEntrySourceSignature("legal-holiday", {
+                rowNumber,
+                slotIndex,
+                workDate,
+                dutyCode,
+                holidayFill,
+                regularColumn: columnLetter,
+                changedColumn: changedColumn ?? "",
+                regularName,
+                changedName,
+                dutyScheduleItem: toScheduleItemSource(dutyScheduleItem),
+                directScheduleItem: toScheduleItemSource(directScheduleItem)
+              })
+            })
+          );
+          return;
+        }
+
+        if (isExcludedReturnedPerformanceEmployeeName(regularName, context.employeeResolvers)) {
+          return;
+        }
+
+        if (
+          changedName.length > 0 &&
+          normalizeLookupKey(changedName) !== normalizeLookupKey(regularName) &&
+          !isEmptyMarker(changedName)
+        ) {
+          // 여기까지 왔다는 건 변경후 이름을 실제 근무자로 인정하지 못했다는 뜻이다. 이유가 둘이라
+          // 각각 다르게 알려준다 — 운영자가 무엇을 고쳐야 하는지 문구만 보고 알 수 있어야 한다.
+          alerts.push({
+            severity: "warning",
+            message: hasChangedActualWorker
+              ? `${workDate.slice(5)} 변경후 ${changedName}은(는) 변경후 우선 적용 시작일 이전 근무라 반영하지 않고 원 근무자 ${regularName}(으)로 처리했습니다.`
+              : `${workDate.slice(5)} 변경후 ${changedName}을(를) 인력 정보에서 찾지 못해 반영하지 않고 원 근무자 ${regularName}(으)로 처리했습니다.`
+          });
+        }
+
+        const directScheduleItem = resolveScheduleItem(context.schedule, regularName, workDate);
+        // A holiday row sits under a fixed duty-code column whose slot time is identical regardless of
+        // who works it. If the named worker is not individually present in the (possibly only
+        // partially restored) monthly schedule, fall back to that duty-code slot time instead of
+        // collapsing to 0 minutes. The common case (worker IS scheduled) keeps directScheduleItem, so
+        // the source signature is byte-identical and no reapproval is triggered.
+        const dutyScheduleItem = directScheduleItem
+          ? null
+          : resolveScheduleItemByDutyCode(context.schedule, dutyCode, workDate);
+        const scheduleItem = directScheduleItem ?? dutyScheduleItem;
+
+        if (!directScheduleItem && dutyScheduleItem) {
+          alerts.push({
+            severity: "warning",
+            message: `${regularName}의 ${workDate} 개인 근무표 기준을 찾지 못해 ${dutyCode} 근무열 시간을 사용했습니다.`
+          });
+        }
+
+        if (!scheduleItem) {
+          alerts.push({
+            severity: "warning",
+            message: `${regularName}의 ${workDate} 근무표 저장 정보를 찾지 못했습니다.`
+          });
+        }
+
+        const hadChangedCandidate =
+          changedName.length > 0 &&
+          normalizeLookupKey(changedName) !== normalizeLookupKey(regularName) &&
+          !isEmptyMarker(changedName);
+
+        entries.push(
+          buildEntry({
+            context,
+            employeeName: regularName,
+            employeeCodeHint: directScheduleItem?.employeeCode,
+            workDate,
+            workType: "holiday",
+            section: "legal-holiday",
+            hasChangedSlotPriority: hadChangedCandidate,
+            sourceToken: `holiday:${rowNumber}:${dutyCode}:${slotIndex}`,
+            sourceRowNumber: rowNumber,
+            sortOrder: SECTION_ORDER["legal-holiday"] * 10000 + rowIndex * 100 + slotIndex,
+            teamLabel: scheduleItem?.teamLabel,
+            workTime: createWorkTimeFromScheduleItem(scheduleItem, "holiday"),
+            alerts,
+            sourceSignature: createEntrySourceSignature("legal-holiday", {
+              rowNumber,
+              slotIndex,
+              workDate,
+              dutyCode,
+              holidayFill,
+              regularColumn: columnLetter,
+              changedColumn: changedColumn ?? "",
+              regularName,
+              changedName,
+              scheduleItem: toScheduleItemSource(scheduleItem)
+            })
+          })
+        );
+      });
+    });
+  });
+
+  return entries;
+};
+
+const buildSubstituteEntries = (
+  worksheet: ExcelJS.Worksheet,
+  layout: SchedulePlanTemplateLayout,
+  context: RowParseContext,
+  customSectionLayout?: SectionTableLayout
+) => {
+  const sectionLayout = customSectionLayout ?? substituteLayoutByVariant[layout.variant];
+  const entries: PerformanceEntryRecord[] = [];
+
+  for (let rowNumber = sectionLayout.startRow; rowNumber <= sectionLayout.endRow; rowNumber += 1) {
+    const workDate = normalizeDateText(
+      worksheet.getCell(`${sectionLayout.dateColumns[0]}${rowNumber}`).value
+    );
+    const originalWorker = getRowText(
+      worksheet,
+      rowNumber,
+      sectionLayout.originalWorkerColumns ?? []
+    );
+    const substituteWorker = getRowText(
+      worksheet,
+      rowNumber,
+      sectionLayout.substituteWorkerColumns ?? []
+    );
+
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(workDate) ||
+      !originalWorker ||
+      !substituteWorker ||
+      isNoneActualWorker(originalWorker) ||
+      isNoneActualWorker(substituteWorker) ||
+      isEmptyMarker(substituteWorker) ||
+      isVirtualOriginalWorker(substituteWorker)
+    ) {
+      continue;
+    }
+
+    if (isExcludedReturnedPerformanceEmployeeName(substituteWorker, context.employeeResolvers)) {
+      continue;
+    }
+
+    const alerts: PerformanceAlert[] = [];
+    const directScheduleItem = resolveScheduleItem(context.schedule, originalWorker, workDate);
+    const slotScheduleItem =
+      !directScheduleItem
+        ? resolveScheduleItemFromReturnedDutySlot({
+            worksheet,
+            layout,
+            schedule: context.schedule,
+            workDate,
+            originalWorker,
+            substituteWorker
+          })
+        : null;
+
+    if (
+      isVirtualOriginalWorker(originalWorker) &&
+      !directScheduleItem &&
+      !slotScheduleItem
+    ) {
+      continue;
+    }
+
+    if (isEmptyMarker(originalWorker) && !slotScheduleItem) {
+      continue;
+    }
+
+    const scheduleItem =
+      directScheduleItem ??
+      slotScheduleItem?.scheduleItem ??
+      null;
+
+    if (slotScheduleItem && !slotScheduleItem.scheduleItem) {
+      alerts.push({
+        severity: "warning",
+        message: `${workDate} ${slotScheduleItem.dutyCode} 대체근무 슬롯 시간 기준을 찾지 못했습니다.`
+      });
+    }
+
+    if (slotScheduleItem?.scheduleItem && !directScheduleItem) {
+      alerts.push({
+        severity: "warning",
+        message: `${originalWorker} 원근무자 이름으로 근무표를 찾지 못해 ${workDate} ${slotScheduleItem.dutyCode} 슬롯 시간을 사용했습니다.`
+      });
+    }
+
+    const reason = getRowText(worksheet, rowNumber, sectionLayout.reasonColumns);
+    const evidence = getRowText(worksheet, rowNumber, sectionLayout.evidenceColumns);
+
+    if (!scheduleItem) {
+      alerts.push({
+        severity: "warning",
+        message: isVirtualOriginalWorker(originalWorker)
+          ? `${VIRTUAL_ORIGINAL_WORKER_NAME}의 ${workDate} None 표식 근무시간을 찾지 못했습니다.`
+          : `${originalWorker}의 ${workDate} 원래 근무표 정보를 찾지 못했습니다.`
+      });
+    }
+
+    entries.push(
+      buildEntry({
+        context,
+        employeeName: substituteWorker,
+        workDate,
+        workType: "substitute",
+        section: "substitute",
+        sourceToken: `substitute:${rowNumber}`,
+        sourceRowNumber: rowNumber,
+        sortOrder: SECTION_ORDER.substitute * 10000 + rowNumber,
+        teamLabel: scheduleItem?.teamLabel,
+        workTime: createWorkTimeFromScheduleItem(scheduleItem, "substitute"),
+        reason,
+        evidence,
+        alerts,
+        note: `원 근무자 ${originalWorker}`,
+        sourceSignature: createEntrySourceSignature("substitute", {
+          rowNumber,
+          workDate,
+          originalWorker,
+          substituteWorker,
+          reason,
+          evidence,
+          directScheduleItem: toScheduleItemSource(directScheduleItem),
+          // 과거 휴일표 리졸버는 항상 빈 결과였으므로 서명 입력값은 변함없이 false/null로 고정한다
+          // (제거해도 entry 서명·식별이 동일하게 유지되어 재승인이 발생하지 않음).
+          virtualFoundNoneMarker: false,
+          virtualScheduleItem: null,
+          slotDutyCode: slotScheduleItem?.dutyCode ?? "",
+          slotRowNumber: slotScheduleItem?.rowNumber ?? 0,
+          slotIndex: slotScheduleItem?.slotIndex ?? -1,
+          slotRegularName: slotScheduleItem?.regularName ?? "",
+          slotChangedName: slotScheduleItem?.changedName ?? "",
+          slotScheduleItem: toScheduleItemSource(slotScheduleItem?.scheduleItem)
+        })
+      })
+    );
+  }
+
+  return entries;
+};
+
+const toTimeText = (hourText: string, minuteText: string) => {
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+
+  if (!Number.isInteger(hour) || !Number.isInteger(minute)) {
+    return null;
+  }
+
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+    return null;
+  }
+
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+};
+
+const buildOvertimeEntries = (
+  worksheet: ExcelJS.Worksheet,
+  variant: SchedulePlanTemplateVariant,
+  context: RowParseContext,
+  customSectionLayout?: SectionTableLayout
+) => {
+  const sectionLayout = customSectionLayout ?? overtimeLayoutByVariant[variant];
+  const entries: PerformanceEntryRecord[] = [];
+  const finalRow = Math.min(sectionLayout.endRow, worksheet.rowCount);
+
+  for (let rowNumber = sectionLayout.startRow; rowNumber <= finalRow; rowNumber += 1) {
+    const workDate = normalizeDateText(
+      worksheet.getCell(`${sectionLayout.dateColumns[0]}${rowNumber}`).value
+    );
+    const employeeName = getRowText(worksheet, rowNumber, sectionLayout.workerColumns ?? []);
+
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(workDate) ||
+      employeeName.length === 0 ||
+      isNoneActualWorker(employeeName)
+    ) {
+      continue;
+    }
+
+    if (isExcludedReturnedPerformanceEmployeeName(employeeName, context.employeeResolvers)) {
+      continue;
+    }
+
+    const startTime = toTimeText(
+      normalizeCellText(worksheet.getCell(`${sectionLayout.startHourColumn}${rowNumber}`).value),
+      normalizeCellText(worksheet.getCell(`${sectionLayout.startMinuteColumn}${rowNumber}`).value)
+    );
+    const endTime = toTimeText(
+      normalizeCellText(worksheet.getCell(`${sectionLayout.endHourColumn}${rowNumber}`).value),
+      normalizeCellText(worksheet.getCell(`${sectionLayout.endMinuteColumn}${rowNumber}`).value)
+    );
+    const startHourText = normalizeCellText(
+      worksheet.getCell(`${sectionLayout.startHourColumn}${rowNumber}`).value
+    );
+    const startMinuteText = normalizeCellText(
+      worksheet.getCell(`${sectionLayout.startMinuteColumn}${rowNumber}`).value
+    );
+    const endHourText = normalizeCellText(
+      worksheet.getCell(`${sectionLayout.endHourColumn}${rowNumber}`).value
+    );
+    const endMinuteText = normalizeCellText(
+      worksheet.getCell(`${sectionLayout.endMinuteColumn}${rowNumber}`).value
+    );
+    const reason = getRowText(worksheet, rowNumber, sectionLayout.reasonColumns);
+    const evidence = getRowText(worksheet, rowNumber, sectionLayout.evidenceColumns);
+    const alerts: PerformanceAlert[] = [];
+
+    if (!startTime || !endTime) {
+      alerts.push({
+        severity: "warning",
+        message: `${employeeName}의 연장근무 시작/종료 시각이 올바르지 않습니다.`
+      });
+    }
+
+    // Invalid clock values must yield ZERO minutes (mirroring the schedule-missing
+    // convention above). The previous "00:00-00:00" placeholder was interpreted by
+    // the overnight normalization as a full 24-hour shift — a typo like 25시 became
+    // 1440 payable overtime minutes guarded only by a non-blocking warning.
+    const workTime: ParsedWorkTime = startTime && endTime
+      ? createWorkTimeFromTimeRange(
+          {
+            startTime,
+            endTime,
+            breakMinutes: calculateAutomaticBreakMinutes({ startTime, endTime })
+          },
+          "OT"
+        )
+      : {
+          dutyCode: "OT",
+          breakMinutes: 0,
+          totalWorkMinutes: 0,
+          baseWorkMinutes: 0,
+          overtimeMinutes: 0,
+          nightMinutes: 0
+        };
+
+    entries.push(
+      buildEntry({
+        context,
+        employeeName,
+        workDate,
+        workType: "overtime",
+        section: "overtime",
+        sourceToken: `overtime:${rowNumber}`,
+        sourceRowNumber: rowNumber,
+        sortOrder: SECTION_ORDER.overtime * 10000 + rowNumber,
+        workTime,
+        reason,
+        evidence,
+        alerts,
+        sourceSignature: createEntrySourceSignature("overtime", {
+          rowNumber,
+          workDate,
+          employeeName,
+          startHourText,
+          startMinuteText,
+          endHourText,
+          endMinuteText,
+          reason,
+          evidence
+        })
+      })
+    );
+  }
+
+  return entries;
+};
+
+const toDateOrdinal = (workDate: string) => {
+  const matched = workDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+  if (!matched) {
+    return null;
+  }
+
+  return Math.floor(
+    Date.UTC(Number(matched[1]), Number(matched[2]) - 1, Number(matched[3])) / 86400000
+  );
+};
+
+const createEntryRange = (entry: PerformanceEntryRecord) => {
+  if (!entry.startTime || !entry.endTime) {
+    return null;
+  }
+
+  const dateOrdinal = toDateOrdinal(entry.workDate);
+
+  if (dateOrdinal === null) {
+    return null;
+  }
+
+  try {
+    const startMinutes = parseTimeToMinutes(entry.startTime);
+    const endMinutes = parseTimeToMinutes(entry.endTime);
+    const dayStartMinutes = dateOrdinal * 24 * 60;
+    const normalizedEndMinutes =
+      endMinutes <= startMinutes ? endMinutes + 24 * 60 : endMinutes;
+
+    return {
+      start: dayStartMinutes + startMinutes,
+      end: dayStartMinutes + normalizedEndMinutes
+    };
+  } catch {
+    return null;
+  }
+};
+
+const appendConflictAlert = (entry: PerformanceEntryRecord, message: string) => {
+  if (entry.alerts.some((alert) => alert.message === message)) {
+    return;
+  }
+
+  entry.alerts.push({
+    severity: "error",
+    message
+  });
+};
+
+const formatEntryTimeLabel = (entry: PerformanceEntryRecord) =>
+  `${entry.workDate} ${entry.startTime ?? "-"}-${entry.endTime ?? "-"}`;
+
+const createConflictMessage = (
+  entry: PerformanceEntryRecord,
+  otherEntry: PerformanceEntryRecord
+) => {
+  const isExactDuplicate =
+    entry.workDate === otherEntry.workDate &&
+    entry.startTime === otherEntry.startTime &&
+    entry.endTime === otherEntry.endTime;
+  const identityLabel = `${entry.employeeName}(${entry.employeeCode})`;
+
+  if (isExactDuplicate) {
+    return `${identityLabel} ${formatEntryTimeLabel(entry)} 근무가 중복되었습니다. 같은 근무지/날짜/사번/시간대 중복 근무는 등록할 수 없습니다.`;
+  }
+
+  return `${identityLabel} ${formatEntryTimeLabel(entry)} 근무시간이 ${formatEntryTimeLabel(otherEntry)} 근무와 겹칩니다. 같은 근무지/사번의 근무시간은 겹칠 수 없습니다.`;
+};
+
+const validateEmployeeTimeConflicts = (entries: PerformanceEntryRecord[]) => {
+  const entriesByIdentity = new Map<string, PerformanceEntryRecord[]>();
+
+  entries.forEach((entry) => {
+    if (!entry.employeeCode) {
+      return;
+    }
+
+    const key = [normalizeLookupKey(entry.siteName), entry.employeeCode].join(":");
+    const identityEntries = entriesByIdentity.get(key) ?? [];
+
+    identityEntries.push(entry);
+    entriesByIdentity.set(key, identityEntries);
+  });
+
+  entriesByIdentity.forEach((identityEntries) => {
+    const entriesWithRanges = identityEntries
+      .map((entry) => ({
+        entry,
+        range: createEntryRange(entry)
+      }))
+      .filter(
+        (
+          item
+        ): item is { entry: PerformanceEntryRecord; range: { start: number; end: number } } =>
+          item.range !== null
+      )
+      .sort(
+        (left, right) => left.range.start - right.range.start || left.range.end - right.range.end
+      );
+
+    for (let leftIndex = 0; leftIndex < entriesWithRanges.length; leftIndex += 1) {
+      const left = entriesWithRanges[leftIndex]!;
+
+      for (let rightIndex = leftIndex + 1; rightIndex < entriesWithRanges.length; rightIndex += 1) {
+        const right = entriesWithRanges[rightIndex]!;
+
+        if (right.range.start >= left.range.end) {
+          break;
+        }
+
+        if (left.range.start < right.range.end && right.range.start < left.range.end) {
+          appendConflictAlert(left.entry, createConflictMessage(left.entry, right.entry));
+          appendConflictAlert(right.entry, createConflictMessage(right.entry, left.entry));
+        }
+      }
+    }
+  });
+
+  return entries;
+};
+
+const buildPreviewRows = (entries: PerformanceEntryRecord[]) =>
+  entries.slice(0, 12).map((entry) => ({
+    날짜: entry.workDate,
+    이름: entry.employeeName,
+    근로유형:
+      entry.section === "legal-holiday"
+        ? "법정휴일근무"
+        : entry.section === "substitute"
+          ? "대체근무"
+          : "연장근무",
+    근무시간: createSummaryText(entry),
+    사유: entry.reason ?? "-",
+    알림: entry.alerts.map((alert) => alert.message).join(" / ") || "-"
+  }));
+
+const isScheduleDependentEntry = (entry: PerformanceEntryRecord) =>
+  entry.section === "legal-holiday" || entry.section === "substitute";
+
+const markMissingScheduleRows = (
+  entries: PerformanceEntryRecord[],
+  scheduleMonth: string,
+  siteName: string
+) => {
+  const message = `${scheduleMonth} ${siteName} 월간 근무표 저장본이 없어 근무시간을 산출할 수 없습니다. 근무지 관리에서 해당 월 근무표를 생성/저장한 뒤 다시 실적을 추출하세요.`;
+
+  return entries.map((entry) => {
+    if (!isScheduleDependentEntry(entry)) {
+      return entry;
+    }
+
+    if (entry.alerts.some((alert) => alert.message === message)) {
+      return entry;
+    }
+
+    return {
+      ...entry,
+      alerts: [
+        {
+          severity: "error" as const,
+          message
+        },
+        ...entry.alerts
+      ]
+    };
+  });
+};
+
+export const parseReturnedSchedulePerformanceFile = async (input: {
+  filePath: string;
+  fileId: string;
+}): Promise<SchedulePerformanceParseResult> => {
+  // 워크북을 한 번만 읽고, 같은 워크북에서 레이아웃을 도출한다(파일 중복 읽기 제거).
+  const workbook = await readWorkbook(input.filePath);
+  const metadata = readScheduleLayoutRevisionMetadataFromWorkbook(workbook);
+
+  let layout: SchedulePlanTemplateLayout;
+  let customSectionLayouts: { substitute: SectionTableLayout; overtime: SectionTableLayout } | undefined;
+
+  if (metadata !== null) {
+    assertScheduleLayoutRevisionMetadata(metadata);
+    const key = parseDocumentLayoutStorageKey(metadata.layoutKey);
+
+    let historicalDefinition: DocumentLayoutDefinition;
+    if (metadata.revisionKind === "stored") {
+      historicalDefinition = getDocumentLayoutDefinitionByRevision(key, metadata.revisionId);
+    } else if (metadata.revisionKind === "built-in") {
+      historicalDefinition = getBuiltInDocumentLayoutDefinition(key);
+      const expectedBuiltInId = `builtin:${metadata.layoutKey}:${computeCanonicalDigestSha256(historicalDefinition)}`;
+      if (metadata.revisionId !== expectedBuiltInId) {
+        throw new Error(`메타데이터 검증 실패: built-in revisionId가 규약과 일치하지 않습니다: ${metadata.revisionId}`);
+      }
+    } else {
+      throw new Error(`메타데이터 검증 실패: 알 수 없는 revisionKind입니다: ${String(metadata.revisionKind)}`);
+    }
+
+    const actualDigest = computeCanonicalDigestSha256(historicalDefinition);
+    if (actualDigest !== metadata.definitionSha256) {
+      throw new Error(
+        `메타데이터 검증 실패: 레이아웃 정의 digest 불일치 (기대: ${metadata.definitionSha256}, 실제: ${actualDigest})`
+      );
+    }
+    if (historicalDefinition.generatorCompatibilityVersion !== metadata.generatorCompatibilityVersion) {
+      throw new Error(
+        `메타데이터 검증 실패: generatorCompatibilityVersion 불일치 (기대: ${metadata.generatorCompatibilityVersion}, 실제: ${historicalDefinition.generatorCompatibilityVersion})`
+      );
+    }
+
+    assertScheduleWorkbookProtectedStructure(workbook, historicalDefinition);
+    layout = inspectSchedulePlanTemplateFromDefinition(historicalDefinition, workbook);
+    customSectionLayouts = resolveScheduleSectionLayoutsFromDefinition(historicalDefinition);
+  } else {
+    const baseLayout = inspectSchedulePlanTemplateFromWorkbook(workbook);
+    const defaultDef = getBuiltInDocumentLayoutDefinition({
+      documentKind: "schedule-xlsx",
+      variant: baseLayout.variant === "sample2" ? "template2" : "template1"
+    });
+    assertScheduleWorkbookProtectedStructure(workbook, defaultDef);
+    layout = baseLayout;
+    customSectionLayouts = undefined;
+  }
+
+  const worksheet = workbook.getWorksheet(layout.sheetName) ?? workbook.worksheets[0];
+  const identity = resolveFileIdentityFromWorksheet(worksheet, layout, path.basename(input.filePath));
+  const scheduleContext = resolveScheduleContext(identity.scheduleMonth, identity.siteName);
+  const employeeResolvers = resolveEmployeeContexts();
+  const resolvedSiteName = scheduleContext.schedule?.siteName ?? identity.siteName;
+  const scheduleKey = `${identity.scheduleMonth}:${normalizeLookupKey(resolvedSiteName)}`;
+  // 파일 전체가 한 고정 정책 snapshot/resolver를 사용한다.
+  const subTimeline = getActivePolicyTimeline("substitute-eligibility");
+  const chgTimeline = getActivePolicyTimeline("changed-worker-priority");
+
+  const context: RowParseContext = {
+    fileId: input.fileId,
+    scheduleMonth: identity.scheduleMonth,
+    scheduleKey,
+    siteName: resolvedSiteName,
+    employeeResolvers,
+    schedule: scheduleContext.schedule,
+    resolveTeamWorkType: createTeamWorkTypeResolver(
+      scheduleContext.schedule,
+      resolvedSiteName,
+      identity.scheduleMonth
+    ),
+    substituteAllowancePolicyEffectiveFrom:
+      getStoredAppSettingEntry("substitute_allowance_policy_effective_from") ?? undefined,
+    changedSlotPriorityEffectiveFrom:
+      getStoredAppSettingEntry("changed_slot_priority_effective_from") ?? undefined,
+    resolvePolicyForDate: (kind, workDate) => {
+      const timeline = kind === "substitute-eligibility" ? subTimeline : chgTimeline;
+      const proj = selectPolicyForWorkDate(timeline, workDate);
+      if (!proj) {
+        throw new Error(`[PerformanceParser] 근무일 ${workDate}에 해당하는 ${kind} 정책 기준을 찾지 못했습니다.`);
+      }
+      return proj;
+    }
+  };
+  const parsedEntries = [
+    ...buildHolidayEntries(worksheet, layout, context),
+    ...buildSubstituteEntries(worksheet, layout, context, customSectionLayouts?.substitute),
+    ...buildOvertimeEntries(worksheet, layout.variant, context, customSectionLayouts?.overtime)
+  ].sort(
+      (left, right) =>
+        left.sortOrder - right.sortOrder ||
+        left.workDate.localeCompare(right.workDate) ||
+        left.employeeName.localeCompare(right.employeeName, "ko")
+  );
+
+  const filteredEntries: PerformanceEntryRecord[] = [];
+  let unassignedCodeCount = 0;
+
+  for (const entry of parsedEntries) {
+    if (
+      !isBpDisplayName(entry.employeeName) &&
+      (!entry.employeeCode || entry.employeeCode.trim() === "")
+    ) {
+      unassignedCodeCount++;
+    } else {
+      filteredEntries.push(entry);
+    }
+  }
+
+  const scheduleAlerts = [...scheduleContext.scheduleAlerts];
+  if (unassignedCodeCount > 0) {
+    scheduleAlerts.push({
+      severity: "warning",
+      message: `사번 없는 실적 ${unassignedCodeCount}건을 실적 목록에서 제외했습니다.`
+    });
+  }
+
+  const retainedEntries = scheduleContext.schedule
+    ? filteredEntries
+    : markMissingScheduleRows(filteredEntries, identity.scheduleMonth, resolvedSiteName);
+
+  const entries = validateEmployeeTimeConflicts(retainedEntries);
+
+  return {
+    sheetName: worksheet.name,
+    rowCount: worksheet.rowCount,
+    columnCount: worksheet.columnCount,
+    templateVariant: layout.variant,
+    scheduleMonth: identity.scheduleMonth,
+    siteName: resolvedSiteName,
+    scheduleKey,
+    alerts: scheduleAlerts,
+    previewRows: buildPreviewRows(entries),
+    entries,
+    policyContextFingerprint: (() => {
+      try {
+        const subTimeline = getActivePolicyTimeline("substitute-eligibility");
+        const chgTimeline = getActivePolicyTimeline("changed-worker-priority");
+        return computeMonthPolicyFingerprint(identity.scheduleMonth, {
+          "substitute-eligibility": subTimeline,
+          "changed-worker-priority": chgTimeline,
+        });
+      } catch (err) {
+        console.error('=== FINGERPRINT CATCH ERROR ===', err);
+        return undefined;
+      }
+    })()
+  };
+};

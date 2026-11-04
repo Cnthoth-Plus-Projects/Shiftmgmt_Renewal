@@ -1,0 +1,3850 @@
+{
+  "policyEffective": "2026-10-21",
+  "policy": {
+    "initialLimit": 1,
+    "retryLimit": 1,
+    "onBothFailed": "Sol direct implementation under standing user authorization",
+    "resetByVersionOrStrategy": false,
+    "reportEveryTask": true
+  },
+  "tasks": {
+    "3-2c-A2-G2-B2": {
+      "status": "ACCEPTED_G2B2_ONLY_CLOSED",
+      "owner": "Sol (direct fix complete)",
+      "legacyGeminiSubmissions": 3,
+      "thisTakeoverGeminiSubmissions": 0,
+      "history": [
+        {
+          "version": "v1",
+          "kind": "IMPLEMENT (legacy new-strategy packet, not CORRECT)",
+          "result": "SOL_NOT_ACCEPTED",
+          "receipt": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261020_192014_B2-v1-Gemini-to-Sol-수신보존.md"
+        },
+        {
+          "version": "v2",
+          "kind": "IMPLEMENT (legacy new-strategy packet, not CORRECT)",
+          "result": "SOL_NOT_ACCEPTED",
+          "receipt": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261020_230749_B2-v2-Gemini-to-Sol-수신보존.md"
+        },
+        {
+          "version": "v3",
+          "kind": "IMPLEMENT (legacy new-strategy packet, not CORRECT)",
+          "result": "SOL_NOT_ACCEPTED",
+          "receipt": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261021_094341_B2-v3-Gemini-to-Sol-수신보존.md"
+        }
+      ],
+      "takeoverAuthorization": "직접 승계할께 작업해",
+      "futureTaskReportFields": [
+        "initial",
+        "retry",
+        "cumulative",
+        "owner"
+      ],
+      "closed": "2026-10-21 10:24:06 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-b2-v3-sol-fix-20261021_100252\\assessment.json"
+    },
+    "3-2c-A2-G3-1-negative-lifecycle": {
+      "status": "ACCEPTED_G3_1_NEGATIVE_ONLY",
+      "owner": "Sol (authorized direct fix completed)",
+      "parentStage": "3-2c-A2-G3",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "currentPacketAttempt": "SOL_DIRECT_FIX_COMPLETE",
+      "issuedPackets": 2,
+      "history": [
+        {
+          "attempt": "INITIAL",
+          "submission": 1,
+          "result": "FAILED_G3_1_NOT_ACCEPTED",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261021_133058_G3-1-Gemini-to-Sol-수신보존.md",
+            "bytes": 29987,
+            "sha256": "87A691430FCBFB2FDF234D35B0C5D02B3AFEEBC95347C3A933158E1220F0371D"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-1-review-20261021_133058\\assessment.json",
+            "bytes": 132016,
+            "sha256": "370927CA8E6754F2B3BE213E403BFC51CF74B08CFC40D6E1ACE4FA74E41BF082"
+          },
+          "findings": [
+            "G3F-01",
+            "G3F-02",
+            "G3F-03",
+            "G3F-04",
+            "G3F-05",
+            "G3F-06"
+          ],
+          "time": "2026-10-21 13:40:56 KST"
+        },
+        {
+          "attempt": "RETRY_1_OF_1",
+          "submission": 2,
+          "result": "FAILED_G3_1_R1_NOT_ACCEPTED",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261021_154826_G3-1-R1-Gemini-to-Sol-수신보존.md",
+            "bytes": 34152,
+            "sha256": "47C076CBC3146F4AE0DC3444ACEF525564FDA7A80E4E0ABC082E4B29F0BD46DE"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-1-r1-review-20261021_154826\\assessment.json",
+            "bytes": 127712,
+            "sha256": "AAB41934CE157D16534C9D50FF6A5D96520C5431D1570B6BD3D0DA2920648B38"
+          },
+          "remainingFindings": [
+            "G3F-02",
+            "G3F-03",
+            "G3F-05"
+          ],
+          "time": "2026-10-21 16:02:04 KST"
+        }
+      ],
+      "noResetByVersionOrStrategy": true,
+      "onBothFailed": "Sol direct takeover under standing user authorization",
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-1-r1",
+      "prepared": "2026-10-21 12:20:58 KST",
+      "retryRemaining": 0,
+      "reviewed": "2026-10-21 16:32:41 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-1-sol-fix-20261021_160330\\assessment.json",
+      "preparedRetry": "2026-10-21 14:41:04 KST",
+      "takeoverAuthorization": "initial1+retry1 both failed, user standing instruction",
+      "solAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-1-sol",
+      "solReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-1-sol-fix-20261021_160330",
+      "SolTakeoverPhase": "ACCEPTED_CLOSED",
+      "solEvents": [
+        {
+          "event": "DIRECT_FIX_ACCEPTED",
+          "time": "2026-10-21 16:32:41 KST",
+          "GeminiAdditionalSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-1-sol-fix-20261021_160330\\assessment.json",
+            "bytes": 127673,
+            "sha256": "055E43A86299D6029F375A49ED2427EAE3745F1FFC911DC7DE695FF852994311"
+          }
+        }
+      ]
+    },
+    "3-2c-A2-G3-2-positive-sdk-owner": {
+      "status": "ACCEPTED_G3_2_POSITIVE_SDK_OWNER_ONLY",
+      "owner": "Sol (explicit direct implementation completed)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "retryRemaining": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-2-sol",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-2-sol-20261021_164348",
+      "authorization": "직접 작업해",
+      "time": "2026-10-21 16:43:48 KST",
+      "currentPacketAttempt": "SOL_DIRECT_COMPLETE",
+      "reviewed": "2026-10-21 17:21:49 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-2-sol-20261021_164348\\assessment.json",
+      "solEvents": [
+        {
+          "event": "DIRECT_IMPLEMENTATION_ACCEPTED",
+          "time": "2026-10-21 17:21:49 KST",
+          "GeminiSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-2-sol-20261021_164348\\assessment.json",
+            "bytes": 127404,
+            "sha256": "8B659EE6DE851A5C4310E470AFAA9E0C45D60A15DBE7489E2AB15FB06F6F4A53"
+          }
+        }
+      ]
+    },
+    "3-2c-A2-G3-3-held-route-settlement": {
+      "status": "ACCEPTED_G3_3_HELD_ROUTE_SETTLEMENT_ONLY",
+      "owner": "Sol (explicit direct implementation completed)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-3-sol",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-3-sol-20261021_173431",
+      "authorization": "direct work continuation",
+      "currentPacketAttempt": "SOL_DIRECT_COMPLETE",
+      "reviewed": "2026-10-21 18:15:19 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-3-sol-20261021_173431\\assessment.json",
+      "solEvents": [
+        {
+          "event": "DIRECT_IMPLEMENTATION_ACCEPTED",
+          "time": "2026-10-21 18:15:19 KST",
+          "GeminiSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-3-sol-20261021_173431\\assessment.json",
+            "bytes": 127859,
+            "sha256": "C66A9F7022CD0C184D1382AB006F7C1EEEE28BF63ABD1D6D266B424F32586731"
+          }
+        }
+      ]
+    },
+    "3-2c-A2-G3-4-sdk-observation": {
+      "status": "ACCEPTED_G3_4_SDK_OBSERVATION_ONLY",
+      "owner": "Sol (direct implementation completed)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-4-sol",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-4-sol-20261021_183829",
+      "authorization": "direct SDK continuation",
+      "currentPacketAttempt": "SOL_DIRECT_COMPLETE",
+      "reviewed": "2026-10-21 19:10:26 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-4-sol-20261021_183829\\assessment.json",
+      "solEvents": [
+        {
+          "event": "DIRECT_IMPLEMENTATION_ACCEPTED",
+          "time": "2026-10-21 19:10:26 KST",
+          "GeminiSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-4-sol-20261021_183829\\assessment.json",
+            "bytes": 128223,
+            "sha256": "5E6AEF9818FDF9F94ECBE9F2BE6094F1B637B0525951397D3F7ED7002C458951"
+          }
+        }
+      ]
+    },
+    "3-2c-A2-G3-5-artifact-privacy": {
+      "status": "ACCEPTED_G3_5_ARTIFACT_PRIVACY_ONLY",
+      "owner": "Sol (direct implementation completed)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-5-sol-r3",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-5-sol-r3-20261021_205310",
+      "authorization": "latest user resumes redaction",
+      "priorFailedValidation": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-5-sol-r1-20261021_201404\\full\\failed.json",
+      "priorCancelledValidation": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-5-sol-r2-20261021_203042\\full\\failed.json",
+      "currentPacketAttempt": "SOL_DIRECT_COMPLETE",
+      "reviewed": "2026-10-21 21:45:43 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-5-sol-r3-20261021_205310\\assessment.json",
+      "solEvents": [
+        {
+          "event": "DIRECT_IMPLEMENTATION_ACCEPTED",
+          "time": "2026-10-21 21:45:43 KST",
+          "GeminiSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-5-sol-r3-20261021_205310\\assessment.json",
+            "bytes": 132630,
+            "sha256": "AC1D6E1A33EC9CDDAC9D1A6830AB11DF9604709DD066D8590BE0023E867E384E"
+          }
+        }
+      ]
+    },
+    "3-2c-A2-G3-6-gateway-schema": {
+      "status": "ACCEPTED_G3_6_GATEWAY_SCHEMA_ONLY",
+      "owner": "Sol direct completed",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-g3-6-sol-r1",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-6-sol-r1-20261021_235136",
+      "authorization": "User next-task continuation of prior direct implementation; no additional masking",
+      "currentPacketAttempt": "SOL_DIRECT_COMPLETE",
+      "preparationFailure": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-6-sol-20261021_234324\\verification-initial\\failed.json",
+      "reviewed": "2026-10-22 00:13:14 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-6-sol-r1-20261021_235136\\assessment.json",
+      "solEvents": [
+        {
+          "event": "DIRECT_COLLECTOR_SCHEMA_ACCEPTED",
+          "time": "2026-10-22 00:13:14 KST",
+          "GeminiInitial": 0,
+          "GeminiRetry": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-g3-6-sol-r1-20261021_235136\\assessment.json",
+            "bytes": 128358,
+            "sha256": "EBCC6A7C76B9E2776ED86A02AD5E2935B9F7758A1571D5EA84736BE9C24A2498"
+          },
+          "maskingExpanded": false
+        }
+      ]
+    },
+    "3-2c-A2-U1-live-evidence-design": {
+      "status": "CLOSED_DESIGN_NATIVE_RECON_ONLY",
+      "owner": "Sol",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-live-design",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-live-design-20261022_083109",
+      "userConstraint": "NO_ADDITIONAL_MASKING",
+      "productSourceBoundary": "READ_ONLY_ALL346",
+      "closedAt": "2026-10-22 08:53:53 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-live-design-20261022_083109\\assessment.json",
+      "canonicalAccepted": 0,
+      "canonicalMissing": 81,
+      "productWrites": 0,
+      "next": "U1-R control preparation; IMPLEMENT not issued"
+    },
+    "3-2c-A2-U1-R-runtime-fix": {
+      "status": "ACCEPTED_U1_R_TWO_UI_FIXES_ONLY",
+      "owner": "Gemini implementation complete; Sol verification complete",
+      "initialSubmissions": 1,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 1,
+      "history": [
+        {
+          "event": "INITIAL_GEMINI_SUBMISSION_ACCEPTED",
+          "time": "2026-10-22 11:46:07 KST",
+          "submissionNumber": 1,
+          "initial": 1,
+          "retry": 0,
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261022_113610_U1-R-Gemini최초회신-검수수신원본.md",
+            "bytes": 22459,
+            "sha256": "1203A98FF6B1AC10D6FF4E943CC5BA46BE7F0A60163B636CA613C158812B75DB"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-r-review-20261022_113610\\assessment.json",
+            "bytes": 6545,
+            "sha256": "1F7FA38F439ACCFD995E086AC898AE1DF88CF7F8C83CC5889C40F07AC286A0E7"
+          },
+          "independentRun": {
+            "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-u1r-independent-review-3d0vsks9\\result.json",
+            "bytes": 127619,
+            "sha256": "1A1376C42B10C54AE367F03F0688FA64EF5BF2CD57D4EFFB23C7E622DECC1B6D"
+          }
+        }
+      ],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-r",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-r-prepare-20261022_092946",
+      "originalProductBoundary": "READ_ONLY_DURING_PREPARATION",
+      "newMasking": 0,
+      "preparedAt": "2026-10-22 10:31:57 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-r-review-20261022_113610\\assessment.json",
+      "preparationProductWrites": 0,
+      "sourceAllowedFiles": 5,
+      "semanticFiles": 2,
+      "protectedFiles": 341,
+      "preview88Passed": true,
+      "actualAfterUiExecuted": true,
+      "reviewed": "2026-10-22 11:46:07 KST",
+      "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-r-review-20261022_113610",
+      "currentPacketAttempt": "INITIAL_ACCEPTED",
+      "twoUiFixesAccepted": true,
+      "canonicalAccepted": 0,
+      "canonicalMissing": 81,
+      "fullUiAccepted": false,
+      "next": "Continue existing TODO U1-E strict schema fixtures and independent original-8 JS/Python evaluation/connection design; preserve unimplemented 7 cases as incomplete"
+    },
+    "3-2c-A2-U1-E-live-evidence": {
+      "status": "ACCEPTED_U1_E_LIVE_ADMIN_ORIGINAL8_ONLY",
+      "owner": "Sol direct implementation and integration complete — user one-time exception",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "history": [],
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-runtime",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109",
+      "preparedAt": "2026-10-22 21:16:36 KST",
+      "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109\\assessment.json",
+      "sourceBoundary": "EXACT8_SOL_DIRECT_ONCE_26_SLOTS_30000_PROTECTED340",
+      "newMasking": 0,
+      "canonicalAccepted": 8,
+      "canonicalMissing": 73,
+      "fullUiAccepted": false,
+      "readyToCode": false,
+      "IMPLEMENTIssued": true,
+      "next": "Remaining7 scenarios original73 and whole G3/A2 in existing TODO order; no additional implementation authorized by this one-time exception.",
+      "solEvents": [
+        {
+          "event": "SCHEMA_AND_PROBE_PREREQUISITE_CLOSED",
+          "time": "2026-10-22 12:21:09 KST",
+          "GeminiSubmissions": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-prepare-20261022_115654\\assessment.json",
+            "bytes": 3243,
+            "sha256": "C919A96B24C4F31A743CB64F71A52060EFEA199F826C9728665B6E429A3CC091"
+          }
+        },
+        {
+          "event": "INDEPENDENT_SEMANTIC_CONTROL_CLOSED",
+          "time": "2026-10-22 14:08:46 KST",
+          "GeminiSubmissions": 0,
+          "semanticCases": 71,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-semantics-20261022_124022\\assessment.json",
+            "bytes": 3167,
+            "sha256": "FF09644409942EDF516FE746BEB03C1E87917489EDA1AA28D15D16F73EE74621"
+          }
+        },
+        {
+          "event": "COLLECTION_TRANSITION_CONTROL_CLOSED",
+          "time": "2026-10-22 15:26:59 KST",
+          "GeminiSubmissions": 0,
+          "requestBinding": 25,
+          "pause": 18,
+          "protocol": 6,
+          "transitionEachLanguage": 137,
+          "actualChrome": 34,
+          "actualSdkResponses": 27,
+          "freshLegacy88": true,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-integration-20261022_142756\\assessment.json",
+            "bytes": 3746,
+            "sha256": "CDEBD9F82ACE14FF08EF4C83794E1F4A452E56E3B4FAA9DE38088FFE4FED95FB"
+          }
+        },
+        {
+          "event": "CANONICAL_401_OWNER_BOUNDARY_CONTROL_CLOSED",
+          "time": "2026-10-22 16:20:23 KST",
+          "GeminiSubmissions": 0,
+          "expected401EachLanguage": 53,
+          "ownerBoundary": 66,
+          "actualLegacyRechecked": 8,
+          "incorrectAllowReproducedAndFixed": 3,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-admission-20261022_155523\\assessment.json",
+            "bytes": 2595,
+            "sha256": "958447993D60A2B8D4647DE38EA4AA82BF2636BE55AD9943275E0624B549AFE8"
+          }
+        },
+        {
+          "event": "FILE_SEMANTIC_OWNER_FINAL_COMPOSITION_CONTROL_CLOSED",
+          "time": "2026-10-22 17:44:11 KST",
+          "GeminiSubmissions": 0,
+          "semanticEachLanguage": 47,
+          "finalControls": 14,
+          "actualControlGateProcesses": 3,
+          "fixedReviewedBoundaries": 3,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-composition-20261022_163212\\assessment.json",
+            "bytes": 3184,
+            "sha256": "FC7B35B2673D578008087F5F222F995E386D0546E1AC0F173A13068608824C8E"
+          }
+        },
+        {
+          "event": "EXACT8_PRODUCTION_AUTHORITY_CONTROL_CLOSED",
+          "time": "2026-10-22 18:41:48 KST",
+          "GeminiSubmissions": 0,
+          "sourceControls": 76,
+          "copiedFileControls": 47,
+          "identityControls": 2,
+          "actualGateCliControls": 6,
+          "parentDependenciesVerified": 1370,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-exact8-20261022_175454\\assessment.json",
+            "bytes": 3516,
+            "sha256": "C1B7972DECFB38FE25CF29D84D9EEB2FA8B9F77F06B90CD63C27CD9A911615B7"
+          }
+        },
+        {
+          "event": "EXACT8_LEGACY88_ACTUAL_UI_REGRESSION_CONTROL_CLOSED",
+          "time": "2026-10-22 20:06:00 KST",
+          "GeminiSubmissions": 0,
+          "legacyCommands": 88,
+          "nativeRegressions": 34,
+          "actualGateChildren": 16,
+          "normalIncomplete": 8,
+          "workerHashesMatched": 16,
+          "gatewayRejected": 32,
+          "nativeOraclesRejected": 32,
+          "parentDependenciesVerified": 1411,
+          "canonicalAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-regression-20261022_192017\\assessment.json",
+            "bytes": 5150,
+            "sha256": "1EC4913A4E897F856023971694855F45582C95C23AFA7AD3ECDCFF1082F03D95"
+          }
+        },
+        {
+          "event": "INITIAL_IMPLEMENT_PACKET_ISSUED",
+          "time": "2026-10-22 21:16:36 KST",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "issuedPackets": 1,
+          "currentImplementationOwner": "Gemini manual relay pending",
+          "readiness": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-implementation-20261022_201537\\readiness.json",
+            "bytes": 2704,
+            "sha256": "5D649DD7F919D3F134A0641F4C0AC84AB5718AC93B0F8E0DD369C3A45A684AAE"
+          },
+          "packetManifest": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-implementation\\packet-manifest.json",
+            "bytes": 523612,
+            "sha256": "7C13D96F8B8672E02D924BB70C8081F6DFB447856936A9FF0919D89C47ACADE5"
+          },
+          "handoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-implementation-20261022_201537\\issued-HANDOFF.md",
+            "bytes": 50194,
+            "sha256": "7EEF314D6781D431E7240A969E6E1606082A705865DF2A6377AE6025EA4A3130"
+          },
+          "sourceFilesUnchanged": 346,
+          "dirtyPathsUnchanged": 18,
+          "parentDependenciesVerified": 1729,
+          "legacyCommands": 88,
+          "nativeRegressions": 34,
+          "futureProductApiChecks": 152,
+          "futureCanonicalRuns": 2,
+          "futureActualReaderChecks": 16,
+          "canonicalAccepted": 0
+        },
+        {
+          "event": "USER_EXPLICIT_SOL_DIRECT_IMPLEMENTATION_ONCE",
+          "time": "2026-10-22 22:12:17 KST",
+          "authorization": "직접 작업하자 1회",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261022_221109_U1-E-Sol-direct-intake-HANDOFF.md",
+            "bytes": 50194,
+            "sha256": "7EEF314D6781D431E7240A969E6E1606082A705865DF2A6377AE6025EA4A3130"
+          },
+          "packetManifest": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-implementation\\packet-manifest.json",
+            "bytes": 523612,
+            "sha256": "7C13D96F8B8672E02D924BB70C8081F6DFB447856936A9FF0919D89C47ACADE5"
+          },
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109"
+        },
+        {
+          "event": "SOL_DIRECT_ONCE_ORIGINAL8_ACCEPTED",
+          "time": "2026-10-22 23:39:29 KST",
+          "authorization": "직접 작업하자 1회",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolDirectAttempts": 1,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109\\assessment.json",
+            "bytes": 6242,
+            "sha256": "2F55A81EE3559389629DD4575DDF1E05D706873E4AF6BA14544F1F11F5891291"
+          },
+          "suite": {
+            "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-sol-u1e-verify-n4yrus5m\\result.json",
+            "bytes": 19035,
+            "sha256": "4A19F0061D137ED98ED463266F964F96024311825C81C42BBE8EAE88C9FA000A"
+          },
+          "handoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109\\accepted-HANDOFF.md",
+            "bytes": 13898,
+            "sha256": "574E6228B6541D37C94C73BF635BD109EFCCEC0BF1A35D6DD828E6DCF4ACC949"
+          },
+          "canonicalAccepted": 8,
+          "canonicalMissing": 73,
+          "canonicalExtra": 55,
+          "fullUiAccepted": false,
+          "G3Accepted": false,
+          "A2Accepted": false
+        }
+      ],
+      "parentAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-exact8",
+      "productionAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-regression",
+      "issuedImplementationPackets": 1,
+      "currentPacketAttempt": "CLOSED_USER_SOL_DIRECT_ONCE_GEMINI_NOT_SUBMITTED",
+      "packetManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-implementation\\packet-manifest.json",
+        "bytes": 523612,
+        "sha256": "7C13D96F8B8672E02D924BB70C8081F6DFB447856936A9FF0919D89C47ACADE5"
+      },
+      "canonicalExtra": 55,
+      "G3Accepted": false,
+      "A2Accepted": false,
+      "directAuthorization": "직접 작업하자 1회",
+      "directImplementationAttempts": 1,
+      "assessmentRef": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u1-e-sol-20261022_221109\\assessment.json",
+        "bytes": 6242,
+        "sha256": "2F55A81EE3559389629DD4575DDF1E05D706873E4AF6BA14544F1F11F5891291"
+      },
+      "initialPacketDisposition": "Issued once; replaced by explicit user Sol direct-once instruction; actual Gemini counters remain0/0/0",
+      "implementationComplete": true,
+      "handoffClosed": true,
+      "acceptedAt": "2026-10-22 23:39:29 KST",
+      "validationPacketManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u1-e-sol-validation\\packet-manifest.json",
+        "bytes": 529993,
+        "sha256": "55F193914B9FBCC886C49811D0F08F8F0FA30907B9D7243DB5116803D832F8F6"
+      }
+    },
+    "3-2c-A2-U2-list-fixture": {
+      "status": "ACCEPTED_U2_LIST14_ONLY_CLOSED",
+      "owner": "Sol (direct implementation complete)",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "history": [
+        {
+          "attempt": "initial",
+          "submissionNumber": 1,
+          "receivedAt": "2026-10-23T14:08:09.604409+09:00",
+          "archive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_134734_U2-INITIAL-Gemini-received-HANDOFF.md",
+            "bytes": 32884,
+            "sha256": "72135A88DE5FE29933E90E9AF030202C8F1A33917A35229CBF95DEAADB78DDA8"
+          },
+          "result": "REJECTED",
+          "findings": [
+            "U2F-01",
+            "U2F-02",
+            "U2F-03",
+            "U2F-04",
+            "U2F-05"
+          ],
+          "source": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-initial-review-20261023_134734\\source-received.json",
+            "bytes": 60852,
+            "sha256": "7F241E6C34469FFEA4753DEF8F06768B9EA978A84DBE8A64DC0900CF5D9E4AF4"
+          },
+          "review": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-initial-review-20261023_134734\\assessment.json",
+            "bytes": 5890,
+            "sha256": "F4E7AF8CFA954EB6C2F9B4B77A8EA7E4045D7E4EA2EEF0BCE63FD20B9D7FA6AF"
+          }
+        },
+        {
+          "attempt": "retry",
+          "submissionNumber": 2,
+          "receivedAt": "2026-10-23T15:42:28.296690+09:00",
+          "archive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_153724_U2-RETRY-Gemini-received-HANDOFF.md",
+            "bytes": 35479,
+            "sha256": "FD91239682DFD11C96F6E937489439C5E5229F1DE2794415871BDD81A88C2610"
+          },
+          "result": "REJECTED",
+          "takeover": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-retry-review-20261023_153724\\takeover.json"
+        }
+      ],
+      "directImplementationAttempts": 1,
+      "directProductAuthorization": true,
+      "phase": "U2 implementation accepted and closed",
+      "scope": "original LIST-01..14 only; U1-E closed LIVE8 preserved",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-retry-review-20261023_153724",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-retry-review-20261023_153724\\assessment.json",
+        "bytes": 7083,
+        "sha256": "153BE18A3E22AE936DCE529A5DF3DAA695AC34CB63BC04499D1CE79F66A6F3F0"
+      },
+      "specManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u2-list-spec\\manifest.json",
+        "bytes": 2570,
+        "sha256": "2CDDD33ED9FC91C260D61A339C34EA8664ABAC5F6FCAEF3EB236676D8B096391"
+      },
+      "productWrites": 3,
+      "sourceFiles": 351,
+      "dirtyPaths": 23,
+      "actualReconCriteria": 14,
+      "criteriaControls": 64,
+      "newCanonicalAccepted": 14,
+      "canonicalAccepted": 22,
+      "canonicalMissing": 59,
+      "canonicalExtra": 55,
+      "fullUiAccepted": false,
+      "G3Accepted": false,
+      "A2Accepted": false,
+      "readyToCode": false,
+      "IMPLEMENTIssued": true,
+      "issuedImplementationPackets": 1,
+      "next": "empty-fixture original8: bounded requirements and implementation handoff under normal ownership; no further U2 Gemini relay",
+      "solEvents": [
+        {
+          "event": "USER_NEXT_WORK_SOL_LIST14_SPEC_RECON_CLOSED",
+          "time": "2026-10-23T01:09:21.240054+09:00",
+          "authorization": "응 다음 작업진행해줘",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-list-design-20261023_004046\\assessment.json",
+            "bytes": 3468,
+            "sha256": "C0D032D7F575E760B60AA03075E2CCB591B07A0F9990FA7D86379DB679640ECB"
+          },
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolProductAttempts": 0,
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_004046_U1-E-closed-before-U2-list-HANDOFF.md",
+            "bytes": 13898,
+            "sha256": "574E6228B6541D37C94C73BF635BD109EFCCEC0BF1A35D6DD828E6DCF4ACC949"
+          }
+        },
+        {
+          "event": "USER_NEXT_WORK_TYPED_WIRE_CONTROL_GATE_CLOSED",
+          "time": "2026-10-23T08:47:02.323314+09:00",
+          "authorization": "다음작업 진행해줘",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-wire-20261023_082336\\assessment.json",
+            "bytes": 3560,
+            "sha256": "373AC5573C999B5E73C436E547A63CF7A00421F52411C6BF1586B73794E4E1D9"
+          },
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolProductAttempts": 0,
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_082336_U2a-before-U2b-wire-HANDOFF.md",
+            "bytes": 11164,
+            "sha256": "C8B225665DD3A8DB28672AD9824FD06E872B0D0B4AAA68C88BEF63FD124A7706"
+          }
+        },
+        {
+          "event": "USER_FAST_NEXT_INITIAL_IMPLEMENT_ISSUED",
+          "time": "2026-10-23T10:08:07.556856+09:00",
+          "authorization": "응 다음 작업 빠르게 넘어가자",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolProductAttempts": 0,
+          "scope": "exact11/20slots; exact2 old observer clock records; no assertion relaxation",
+          "preparation": "36 source controls and actual preview plain live8; full88 moved to unchanged postimplementation acceptance",
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_095108_before-functional-next-HANDOFF.md",
+            "bytes": 11855,
+            "sha256": "23918084DF1B8A920FE0BD3CEFFEF1E171A26791C175ECFEEB25CEF66EC2EEC9"
+          }
+        },
+        {
+          "event": "INITIAL_REVIEW_REJECTED_AND_SINGLE_RETRY_ISSUED",
+          "time": "2026-10-23T14:08:09.604409+09:00",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 0,
+            "cumulative": 1
+          },
+          "SolProductAttempts": 0,
+          "mutableFiles": [
+            "scripts/ui-checks/access-history-evidence-dispatch.mjs",
+            "scripts/ui-checks/access-history-list-evidence.mjs",
+            "scripts/ui-checks/access-history-list-observer.mjs"
+          ],
+          "formalAccepted": 8,
+          "missing": 73
+        },
+        {
+          "event": "TWO_REJECTIONS_STANDING_AUTHORIZATION_SOL_TAKEOVER",
+          "time": "2026-10-23T15:42:28.296690+09:00",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolProductAttempts": 1,
+          "mutableFiles": [
+            "scripts/ui-checks/access-history-evidence-dispatch.mjs",
+            "scripts/ui-checks/access-history-list-evidence.mjs",
+            "scripts/ui-checks/access-history-list-observer.mjs"
+          ]
+        },
+        {
+          "event": "SOL_DIRECT_IMPLEMENTATION_ACCEPTED_U2_LIST14_ONLY",
+          "time": "2026-10-23T16:29:30.269633+09:00",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolProductAttempts": 1,
+          "formalAccepted": 22,
+          "missing": 59,
+          "newListAccepted": 14,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u2-retry-review-20261023_153724\\assessment.json",
+            "bytes": 7083,
+            "sha256": "153BE18A3E22AE936DCE529A5DF3DAA695AC34CB63BC04499D1CE79F66A6F3F0"
+          }
+        }
+      ],
+      "wireManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u2-list-wire\\manifest.json",
+        "bytes": 5726,
+        "sha256": "AEDFDF4EE1C7CD7937FCCE03232CE00F0821A5DF5D98543166932F8DF3141C2C"
+      },
+      "typedWireControls": 145,
+      "bilingualControls": 135,
+      "implementationAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u2-implementation",
+      "issuedCorrectionPackets": 1,
+      "SolProductWrites": 3,
+      "productChangedByGemini": true,
+      "changedProductFiles": 11,
+      "productChangedBySol": true
+    },
+    "3-2c-A2-U3-empty-fixture": {
+      "status": "ACCEPTED_CLOSED",
+      "owner": "Sol",
+      "phase": "U3 EMPTY original8 accepted; next filters15 specification",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "directImplementationAttempts": 1,
+      "productWrites": 9,
+      "SolProductWrites": 9,
+      "sourceFiles": 353,
+      "dirtyPaths": 25,
+      "originalCriteria": 8,
+      "actualReconMet": 8,
+      "criteriaControls": 10,
+      "newCanonicalAccepted": 8,
+      "canonicalAccepted": 30,
+      "canonicalMissing": 51,
+      "fullUiAccepted": false,
+      "G3Accepted": false,
+      "A2Accepted": false,
+      "readyToCode": false,
+      "IMPLEMENTIssued": true,
+      "issuedImplementationPackets": 2,
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-poll-20261024_115308",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-retry-prepare-20261023_211729\\assessment.json",
+        "bytes": 14919,
+        "sha256": "46A0B5928AD856B9F9BB8B28CADDDBA44E7498B897D95635D74862AC34065BB0"
+      },
+      "specManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-empty-spec\\manifest.json",
+        "bytes": 4150,
+        "sha256": "3ED6C298189C66B94EF55742E1B928E595DE527AC247A0D7AA8FBAFB65A2A6FF"
+      },
+      "terminalManifest": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-empty-terminal-boundary\\manifest.json",
+        "bytes": 3166,
+        "sha256": "E754956A9B11B9FC9D5CC788A62BB9FC3C77150C7DC568F31A7AA8D588807C11"
+      },
+      "next": "Sol prepares original filters15 requirements, source boundary, implementation strategy and verification packet. No new Gemini implementation packet issued.",
+      "solEvents": [
+        {
+          "event": "USER_NEXT_WORK_EMPTY8_RECON_AND_TERMINAL_FAILURE_STRATEGY",
+          "time": "2026-10-23T17:07:52.436972+09:00",
+          "authorization": "응 다음 작업 진행해줘",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolProductAttempts": 0,
+          "all351Unchanged": true,
+          "canonicalAccepted": 22,
+          "canonicalMissing": 59
+        },
+        {
+          "event": "USER_NEXT_WORK_U3_INITIAL_IMPLEMENTATION_PACKET_READY",
+          "time": "2026-10-23T18:09:53.895641+09:00",
+          "authorization": "응 다음 작업 진행해줘",
+          "GeminiSubmissions": {
+            "initial": 0,
+            "retry": 0,
+            "cumulative": 0
+          },
+          "SolProductAttempts": 0,
+          "all351Unchanged": true,
+          "allowedProductFiles": 9,
+          "protectedProductFiles": 344,
+          "sourceBoundaryControls": 27,
+          "emptyWireControls": 36,
+          "canonicalAccepted": 22,
+          "canonicalMissing": 59,
+          "issuedImplementationPackets": 1
+        },
+        {
+          "event": "USER_HANDOFF_CHECK_INITIAL_REJECTED",
+          "time": "2026-10-23T21:06:31.756581+09:00",
+          "authorization": "핸드오프 확인해",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 0,
+            "cumulative": 1
+          },
+          "SolProductAttempts": 0,
+          "sourceUnchangedDuringReview": true,
+          "canonicalAccepted": 22,
+          "canonicalMissing": 59,
+          "remainingRetrySubmissions": 1,
+          "retryPacketIssued": false
+        },
+        {
+          "event": "USER_NEXT_WORK_SINGLE_RETRY_PACKET_ISSUED",
+          "time": "2026-10-23T22:18:07.481928+09:00",
+          "authorization": "응 다음 작업 진행해",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 0,
+            "cumulative": 1
+          },
+          "remainingRetrySubmissions": 1,
+          "issuedRetryPackets": 1,
+          "SolProductAttempts": 0,
+          "all353Unchanged": true,
+          "canonicalAccepted": 22,
+          "canonicalMissing": 59,
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-retry-prepare-20261023_211729"
+        },
+        {
+          "event": "RETRY_REJECTED_SOL_STANDING_AUTHORIZATION_TAKEOVER",
+          "time": "2026-10-24T02:17:03.981099+09:00",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "canonicalAccepted": 22,
+          "newEmptyAccepted": 0
+        },
+        {
+          "event": "HANDOFF_REVIEW_CLOSED_DIRECT_FIX_STAGED_NOT_ACCEPTED",
+          "time": "2026-10-24T05:36:58.388674+09:00",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "formalAccepted": 22,
+          "newEmptyAccepted": 0,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-retry-review-20261024_020438\\review-assessment.json",
+            "bytes": 7144,
+            "sha256": "485DD69220ADDC9EDF1051853917706F881159785A89246C4025D99202788EB2"
+          }
+        },
+        {
+          "event": "LATENCY_SUCCESSOR_SEALED_PENDING_VERIFICATION",
+          "time": "2026-10-24T11:11:12.186184+09:00",
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-latency-20261024_105849",
+          "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-latency",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "predecessorImmutable": true,
+          "allPins": 3538,
+          "deadlineMs": 15000
+        },
+        {
+          "event": "SYNTAX_BATCH_SUCCESSOR_SEALED_PENDING_VERIFICATION",
+          "time": "2026-10-24T11:35:36.101627+09:00",
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-syntax-batch-20261024_112808",
+          "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-batch",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "pins": 3780,
+          "deadlineMs": 15000,
+          "predecessorFailureRetained": true
+        },
+        {
+          "event": "POLLED_CAPTURE_SUCCESSOR_LIST_OBSERVED_PASS_PENDING_FULL",
+          "time": "2026-10-24T12:00:07.592465+09:00",
+          "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-poll",
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-poll-20261024_115308",
+          "pins": 4022,
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "listObservedGateMs": 6746
+        },
+        {
+          "event": "U3_EMPTY_ORIGINAL8_ACCEPTED",
+          "time": "2026-10-24T12:36:04.007834+09:00",
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-poll-20261024_115308",
+          "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-poll",
+          "GeminiSubmissions": {
+            "initial": 1,
+            "retry": 1,
+            "cumulative": 2
+          },
+          "SolDirectAttempt": 1,
+          "canonicalAccepted": 30,
+          "canonicalMissing": 51,
+          "newEmptyAccepted": 8,
+          "full88Passed": true,
+          "pins": 4022
+        }
+      ],
+      "implementationAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-poll",
+      "sourceBoundaryControls": 27,
+      "emptyWireControls": 36,
+      "plannedAllowedProductFiles": 9,
+      "plannedProtectedProductFiles": 344,
+      "reconReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-empty-recon-20261023_163924",
+      "receivedHandoffArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_180953_U3-recon-before-initial-implementation-HANDOFF.md",
+        "bytes": 6233,
+        "sha256": "5DBC494485823BAD665A58188EA2BEBC870E9E1E92AD3DA1A819C07C41AEC1F3"
+      },
+      "retryPacketIssued": false,
+      "remainingRetrySubmissions": 0,
+      "GeminiChangedProductFiles": 9,
+      "assessmentPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-poll-20261024_115308\\assessment.json",
+      "receivedImplementationArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_204912_U3-INITIAL-Gemini-received-HANDOFF.md",
+        "bytes": 29607,
+        "sha256": "D877815FCB6285856FC20D067E0381998C816DBAB9A1212F19013032172F6018"
+      },
+      "defects": [
+        "U3F-01",
+        "U3F-02",
+        "U3F-03",
+        "U3F-04",
+        "U3F-05",
+        "U3F-06",
+        "U3F-07"
+      ],
+      "submissions": [
+        {
+          "kind": "INITIAL",
+          "number": 1,
+          "time": "2026-10-23T21:06:31.756581+09:00",
+          "result": "FAILED_INITIAL_NOT_ACCEPTED",
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261023_204912_U3-INITIAL-Gemini-received-HANDOFF.md",
+            "bytes": 29607,
+            "sha256": "D877815FCB6285856FC20D067E0381998C816DBAB9A1212F19013032172F6018"
+          },
+          "sourceSnapshot": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-initial-review-20261023_204912\\source-received.json",
+            "bytes": 57052,
+            "sha256": "891748895B8CDDECB756624303EAFC5F7662EED027F0ABA8101A0D102CF59488"
+          },
+          "sourceFiles": 353,
+          "dirtyPaths": 25,
+          "actualHelperProbes": 28,
+          "actualHelperBadInputsAccepted": 25,
+          "gateCallerProbes": 5,
+          "implementationOwner": "Gemini",
+          "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-initial-review-20261023_204912"
+        },
+        {
+          "kind": "RETRY",
+          "number": 2,
+          "time": "2026-10-24T02:17:03.981099+09:00",
+          "receivedVerdict": "BLOCKED",
+          "verificationResult": "NOT_ACCEPTED_PRODUCT_INTEGRITY_FAILURES_AND_CONTROL_DEFECTS",
+          "receivedArchive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261024_020438_U3-RETRY-Gemini-received-HANDOFF.md",
+            "bytes": 27903,
+            "sha256": "64B5D0D2A6CDD3471A2EEB55060F26962A4991ED2663BC0924262BE296AAEF30"
+          },
+          "sourceSnapshot": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-retry-review-20261024_020438\\source-received.json",
+            "bytes": 57052,
+            "sha256": "0B9A98E7D05674DB2F57BB02F36A7E3B5E86CE793200F27CB19C195594632375"
+          },
+          "additionalProbes": 16,
+          "invalidAccepted": 15
+        }
+      ],
+      "CORRECTIssued": true,
+      "issuedInitialPackets": 1,
+      "issuedRetryPackets": 1,
+      "initialImplementationAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-empty-implementation",
+      "sourceUnchangedDuringRetryPreparation": true,
+      "retryEvidenceProbeCount": 125,
+      "retryPublicationInitialProbeCount": 19,
+      "retryProcessProbeCount": 8,
+      "scopeReuseCanaries": 11,
+      "retryReceivedArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261024_020438_U3-RETRY-Gemini-received-HANDOFF.md",
+        "bytes": 27903,
+        "sha256": "64B5D0D2A6CDD3471A2EEB55060F26962A4991ED2663BC0924262BE296AAEF30"
+      },
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u3-sol-poll",
+      "SolProductFilesModified": 9,
+      "productWriteMetric": "distinct files; multiple revisions retained",
+      "reviewClosedAt": "2026-10-24T05:36:58.388674+09:00",
+      "finalReviewAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-retry-review-20261024_020438\\review-assessment.json",
+        "bytes": 7144,
+        "sha256": "485DD69220ADDC9EDF1051853917706F881159785A89246C4025D99202788EB2"
+      },
+      "SolImplementationAcceptedAt": "2026-10-24T12:36:04.007834+09:00"
+    },
+    "3-2c-A2-U4-filters": {
+      "status": "ACCEPTED_FILTERS_ORIGINAL15_ONLY_CLOSED",
+      "owner": "Sol (direct implementation complete)",
+      "specOwner": "Sol",
+      "phase": "CLOSED_U4_ONLY",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "directImplementationAttempts": 1,
+      "productWrites": 12,
+      "SolProductWrites": 3,
+      "canonicalAccepted": 45,
+      "canonicalMissing": 36,
+      "newCanonicalAccepted": 15,
+      "originalCriteria": 15,
+      "readyToCode": false,
+      "IMPLEMENTIssued": false,
+      "issuedInitialPackets": 1,
+      "issuedRetryPackets": 1,
+      "remainingRetrySubmissions": 0,
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826",
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-filters-recon-20261024_125936\\source-before.json",
+        "bytes": 61334,
+        "sha256": "02406207D5BB98A208969AE7C39F3FC7AE1BAA2166C95FEA56ABEE16E096B261"
+      },
+      "predecessorAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u3-poll-20261024_115308\\assessment.json",
+        "bytes": 73024,
+        "sha256": "DD9E35C8EF0E43779692E8AE8298530B2CFFAB7B9FC446D0AC743FC7FC780CDC"
+      },
+      "submissions": [
+        {
+          "kind": "initial",
+          "ordinal": 1,
+          "claimedStatus": "BLOCKED",
+          "receivedAt": "2026-10-24T17:02:44.526040+09:00",
+          "archive": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261024_170244_U4-Gemini-initial-received-HANDOFF.md",
+            "bytes": 36814,
+            "sha256": "1CBCC89F6F06F8353AC6491021377F284A04EE946C548697E65C5BCFEECAABDB"
+          },
+          "verificationStatus": "REJECTED_PRODUCT6_AND_SOL_HARNESS3",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-review-20261024_170244\\assessment.json",
+            "bytes": 13624,
+            "sha256": "C7470953B162DE9D21057838C2481CAAE998BFD541512DD3FEAE34FF283E1D00"
+          }
+        },
+        {
+          "kind": "retry",
+          "ordinal": 2,
+          "receivedAt": "2026-10-24T22:58:26.938336+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261024_225826_U4-reported-accepted-received-HANDOFF.md",
+            "bytes": 8022,
+            "sha256": "85732C2A08708D7D876F3C9E3F8BDF82742E15653A69FBDCE80424425E6F678E"
+          },
+          "claimedStatus": "ACCEPTED",
+          "verificationStatus": "REJECTED_REMAINING13_GETTER2",
+          "verificationReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\retry-extra-probes.json",
+          "GeminiOriginalArchive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261024_211410_U4-Gemini-retry-received-HANDOFF.md"
+        }
+      ],
+      "next": "errors original8 scope/strategy discovery; no next implementation packet issued",
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u4-retry",
+      "seal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u4-retry\\seal.json",
+        "bytes": 1715,
+        "sha256": "6157C046726F32490044D8A1E4E581EE1F4C21D1E01FF5D449A20A3BA19E3C4D"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 11268,
+        "sha256": "5AEB4061DA7887FC5C248850D1CE91121DE6C5EA6FB49AF536B8B87518DE428A"
+      },
+      "scope": {
+        "before": 353,
+        "after": 357,
+        "existing": 8,
+        "new": 4,
+        "allowed": 12,
+        "protected": 345,
+        "pins": 4588,
+        "maxBytes": 30000,
+        "adjudicatorMs": 15000
+      },
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\assessment.json",
+        "bytes": 2778,
+        "sha256": "5D52409D36DA1C0393D530D3D6D36CDC32468FA772B5C53693FC6B9F60ABE505"
+      },
+      "lastRecheck": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-review-20261024_170244\\recheck-20261024_172717.json",
+        "bytes": 925,
+        "sha256": "3B1392BACA47A8E5307774C90355D0040972BC46C1107A88D0F90CC5D15B7819"
+      },
+      "CORRECTIssued": true,
+      "implementationOwner": "Sol",
+      "nextActionOwner": "Sol",
+      "productWriteCountDefinition": "distinct product source files changed: cumulative original baseline12, Sol direct takeover3",
+      "currentPacketAttempt": "SOL_DIRECT_ATTEMPT1_COMPLETE",
+      "scopeHistory": [
+        {
+          "before": 353,
+          "after": 357,
+          "existing": 8,
+          "new": 4,
+          "allowed": 12,
+          "protected": 345,
+          "pins": 4297
+        }
+      ],
+      "history": [
+        {
+          "at": "2026-10-25T00:39:35.534731+09:00",
+          "event": "RECONCILE_CURRENT_TAKEOVER_COUNTERS",
+          "GeminiInitial": 1,
+          "GeminiRetry": 1,
+          "GeminiTotal": 2,
+          "SolDirectAttempt": 1,
+          "SolFilesChanged": 3,
+          "result": "FINAL_FULL88_IN_PROGRESS_NO_NEW_UI_ACCEPTANCE",
+          "proof": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826"
+        },
+        {
+          "at": "2026-10-25T00:43:35.420605+09:00",
+          "event": "SOL_DIRECT_U4_ONLY_ACCEPTED",
+          "initial": 1,
+          "retry": 1,
+          "cumulative": 2,
+          "SolDirectAttempt": 1,
+          "newCanonicalAccepted": 15,
+          "canonicalAccepted": 45,
+          "missing": 36,
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\assessment.json",
+            "bytes": 2778,
+            "sha256": "5D52409D36DA1C0393D530D3D6D36CDC32468FA772B5C53693FC6B9F60ABE505"
+          }
+        }
+      ],
+      "previousAssessments": [
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-review-20261024_170244\\assessment.json",
+          "bytes": 13624,
+          "sha256": "C7470953B162DE9D21057838C2481CAAE998BFD541512DD3FEAE34FF283E1D00"
+        }
+      ],
+      "finalAudit": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u4-retry-audit-20261024_225826\\final-audit.json",
+        "bytes": 16715,
+        "sha256": "11A41528E5F7B9B9AF7D6B953F91010DA0D64F9E86B8EB8F05FEFFF3CFDF01AB"
+      },
+      "closedAt": "2026-10-25T00:43:35.420605+09:00"
+    },
+    "3-2c-A2-U5-errors": {
+      "status": "ACCEPTED_SOL_DIRECT_COMPLETE",
+      "owner": "Sol",
+      "implementationOwner": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "remainingRetrySubmissions": 0,
+      "directImplementationAttempts": 1,
+      "SolProductWrites": 11,
+      "canonicalAccepted": 53,
+      "canonicalMissing": 28,
+      "newCanonicalAccepted": 8,
+      "originalCriteria": 8,
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721",
+      "submissions": [
+        {
+          "kind": "INITIAL_IMPLEMENTATION_CANDIDATE",
+          "receivedAt": "2026-10-25T14:35:03.705666+09:00",
+          "basis": "User handoff-check request and on-disk361-file/14-change implementation candidate. Unchanged original packet response remains blank; internal six runs are not six submissions.",
+          "formalReplyPresent": false,
+          "source": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-review-20261025_141843\\source-received.json",
+            "bytes": 63278,
+            "sha256": "B3D5EBB3064EEAB76EBF56DF9717ED8744091EE52D0D03247D541108CC0C7258"
+          },
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261025_141843_U5-received-HANDOFF.md",
+            "bytes": 21899,
+            "sha256": "C455C10CE33E15F36A1227CD865EF9EBA8FF744DC74824D9D6B908B0819429D0"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-review-20261025_141843\\assessment.json",
+            "bytes": 15445,
+            "sha256": "4B8120E42BD1413BDFB09EE22458348BF7400FF39D7ACB11E63251067B310C58"
+          },
+          "accepted": false
+        },
+        {
+          "kind": "INTERRUPTED_RETRY_IMPLEMENTATION_CANDIDATE",
+          "receivedAt": "2026-10-25T18:02:03.986485+09:00",
+          "basis": "User reports Gemini interruption and explicitly requests Sol finish this task; current361 partial candidate/C8 bindings and latest FAIL_UI logs; formal reply absent",
+          "formalReplyPresent": false,
+          "source": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721\\source-received.json",
+            "bytes": 63278,
+            "sha256": "12000FCC8E9102DFFEC0A508B35D1D8BD2F15B81B2A68928D5BA954DF6B2FC53"
+          },
+          "accepted": false,
+          "result": "INTERRUPTED_PARTIAL_TAKEN_OVER_BY_EXPLICIT_USER_AUTHORIZATION"
+        }
+      ],
+      "issuedInitialPackets": 1,
+      "issuedRetryPackets": 1,
+      "IMPLEMENTIssued": true,
+      "readyToCode": false,
+      "sourceBefore": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-errors-recon-20261025_012129\\source-before.json",
+      "priorHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261025_012129_U4-accepted-before-U5-HANDOFF.md",
+        "bytes": 11268,
+        "sha256": "5AEB4061DA7887FC5C248850D1CE91121DE6C5EA6FB49AF536B8B87518DE428A"
+      },
+      "next": "U5 original8 closed. Remaining28 not accepted; next Sol recon follows TODO, no new implementation packet issued.",
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-public",
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_005707_U6-recon-before-HANDOFF.md",
+        "bytes": 13163,
+        "sha256": "5BB3F1BB5E79A1D65B4EAE9908D28A75DCF969050A9BBDD9790C7B0C0D99B047"
+      },
+      "seal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-final\\seal.json",
+        "bytes": 1482,
+        "sha256": "C1CE6C0302A1417A4D8E9F7CEE74A83F9C2B317E815C601FA23A113962A4BF93"
+      },
+      "authorityRevisions": [
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-errors",
+          "status": "UNPUBLISHED_SUPERSEDED_PRESERVED"
+        },
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-errors-r1",
+          "status": "ISSUED_FIRST_IMPLEMENT_NO_PRODUCT_SUBMISSION"
+        },
+        {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-retry",
+          "status": "ISSUED_ONE_CORRECT_RETRY_PACKET_NO_RETRY_SUBMISSION_YET",
+          "seal": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-retry\\seal.json",
+            "bytes": 1585,
+            "sha256": "B510AC7CA709C12192B1EA287D1F32F4DE9A64D2A5462C0C02E6642FF29770C7"
+          }
+        }
+      ],
+      "activeAction": "ACCEPT_RESULT_NO_IMPLEMENT",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721\\assessment.json",
+        "bytes": 153150,
+        "sha256": "7ACCA653658164AE7DCBE8283E07EBD7B6ECC034D8D615934611EB179E655307"
+      },
+      "formalGeminiReplyPresent": false,
+      "readiness": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-retry-prep-20261025_144958\\readiness.json",
+        "bytes": 26053,
+        "sha256": "3D34A2AC27C2C3B2F409DD2695C4B3C0F467DEF4B9F50A3DC414B8915D361FD3"
+      },
+      "retryReceivedSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-retry\\received-source.json",
+        "bytes": 63278,
+        "sha256": "B3D5EBB3064EEAB76EBF56DF9717ED8744091EE52D0D03247D541108CC0C7258"
+      },
+      "priorReviewHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261025_154843_U5-initial-review-before-retry-HANDOFF.md",
+        "bytes": 12646,
+        "sha256": "95CA578ACA009353BE9C1A7123374C07D690266DC7E908B0C37048583DD994E1"
+      },
+      "controlsClosed": [
+        "H01",
+        "H02"
+      ],
+      "retryPackets": [
+        {
+          "issuedAt": "2026-10-25T15:48:43.603387+09:00",
+          "action": "CORRECT",
+          "stableDefects": [
+            "U5-I01",
+            "U5-I02",
+            "U5-I03",
+            "U5-I04",
+            "U5-I05",
+            "U5-I06",
+            "U5-I07",
+            "U5-I08",
+            "U5-D01"
+          ],
+          "handoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+            "bytes": 28963,
+            "sha256": "870AF0F341710A1C040B2D03E129106603779A0C7A7941A8A80B65C2EDA07888"
+          },
+          "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-retry",
+          "readiness": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-retry-prep-20261025_144958\\readiness.json",
+            "bytes": 26053,
+            "sha256": "3D34A2AC27C2C3B2F409DD2695C4B3C0F467DEF4B9F50A3DC414B8915D361FD3"
+          },
+          "actualRetrySubmissionsAtIssue": 0
+        }
+      ],
+      "takeoverAuthorization": "Explicit current user request: 해당건은 너가마무리하자",
+      "SolProductChangedFiles": [
+        "scripts/ui-checks/access-history-errors-evidence.mjs",
+        "scripts/ui-checks/access-history-errors-observer.mjs",
+        "scripts/ui-checks/access-history-errors-scenario.mjs",
+        "scripts/ui-checks/access-history-errors-semantic.mjs",
+        "scripts/ui-checks/access-history-evidence-dispatch.mjs",
+        "scripts/ui-checks/access-history-filters-evidence.mjs",
+        "scripts/ui-checks/access-history-g1.mjs",
+        "scripts/ui-checks/access-history-list-evidence.mjs",
+        "scripts/ui-checks/access-history-live-evidence.mjs",
+        "scripts/ui-checks/access-history-shared.mjs",
+        "scripts/ui-checks/access-history.mjs"
+      ],
+      "verificationOverlay": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-public",
+      "overlaySeal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u5-verify\\seal.json",
+        "bytes": 402,
+        "sha256": "790968BB633F6FADAF1274CE336D9407B0A05FC61D20246AF6C405FB660C0F0F"
+      },
+      "closedAt": "2026-10-25T23:57:48.490031+09:00",
+      "finalSolAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u5-sol-takeover-20261025_175721\\assessment.json",
+        "bytes": 153150,
+        "sha256": "7ACCA653658164AE7DCBE8283E07EBD7B6ECC034D8D615934611EB179E655307"
+      }
+    },
+    "3-2c-A2-U6-stale-response": {
+      "status": "ACCEPTED_U6_ORIGINAL12_AFTER_SOL_TAKEOVER",
+      "owner": "Sol",
+      "implementationOwner": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "remainingRetrySubmissions": 0,
+      "directImplementationAttempts": 1,
+      "SolProductWrites": 5,
+      "canonicalAccepted": 65,
+      "canonicalMissing": 16,
+      "newCanonicalAccepted": 12,
+      "originalCriteria": 12,
+      "readyToCode": true,
+      "IMPLEMENTIssued": true,
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+        "bytes": 28540,
+        "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5459,
+        "sha256": "9F61BC4ED972B7AA6151949BF248D071091974569EEC0F9EF9F971CFD192E17B"
+      },
+      "previousAcceptedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_005707_U6-recon-before-HANDOFF.md",
+        "bytes": 13163,
+        "sha256": "5BB3F1BB5E79A1D65B4EAE9908D28A75DCF969050A9BBDD9790C7B0C0D99B047"
+      },
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-recon-20261026_004439\\source-before.json",
+        "bytes": 63278,
+        "sha256": "50493BCF500ECCDDA499786CFAFBD817F79544A2C8542B7D2C3E8E9E4218D841"
+      },
+      "sourceAfter": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\source-final.json",
+        "bytes": 62966,
+        "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+      },
+      "next": "AH-U7 role9; not started",
+      "submissions": [],
+      "phase": "U6_CLOSED",
+      "designAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1",
+      "designContract": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1\\contract.json",
+        "bytes": 7256,
+        "sha256": "D2511655B3E4085AF899AC33EBC551154CFF32F05D368BA7CBADC93132A9883C"
+      },
+      "designSeal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-design-r1\\seal.json",
+        "bytes": 5068,
+        "sha256": "A4A2882B03F36F7A7CC0F05DB8302B0CCD90F149EED5EA4587892328C730B0D1"
+      },
+      "priorPhaseHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_031644_U6-design-before-HANDOFF.md",
+        "bytes": 7748,
+        "sha256": "03A6AD2D473BAD416E9CAB63617E10263912B45CD0DEC571189DB401D4D77F53"
+      },
+      "planId": "PLAN-20261026-01",
+      "planTaskId": "AH-U6-V",
+      "priorPlanningHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_103346_approved-task-plan-before-HANDOFF.md",
+        "bytes": 8695,
+        "sha256": "90513BF4ED96A43B56A66F4C078C6188B574BA084BE9E5A8158A50E58D32B1FA"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 27379,
+        "sha256": "78532D109891BBBF0B757DFF91A7863A1157D1E8E3B0E6247B98B11882BFF718"
+      },
+      "issuedImplementationPackets": 1,
+      "authority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-stale",
+      "history": [
+        {
+          "event": "IMPLEMENT_PACKET_ISSUED",
+          "time": "2026-10-26T11:37:10.114570+09:00",
+          "planTaskId": "AH-U6-I",
+          "packet": "U6-IMPLEMENT-1",
+          "countsSubmission": false,
+          "initialSubmissions": 0,
+          "retrySubmissions": 0,
+          "cumulativeSubmissions": 0,
+          "handoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+            "bytes": 32508,
+            "sha256": "26D98F4939A377477F62ADDDEF78AB9C5774830DB57AF676EF84741974B52EA7"
+          }
+        },
+        {
+          "event": "SOL_HANDOFF_CHECK_NO_GEMINI_SUBMISSION",
+          "time": "2026-10-26T12:15:04.047307+09:00",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_121404_U6-handoff-check-received.md",
+            "bytes": 32508,
+            "sha256": "26D98F4939A377477F62ADDDEF78AB9C5774830DB57AF676EF84741974B52EA7"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-handoff-check-20261026_121404\\assessment.json",
+            "bytes": 1889,
+            "sha256": "93052716ECAAE7F4774F5B75809DAFC804DEAA5C2F3CF5F4EA6C15FDE35ED969"
+          },
+          "countsSubmission": false
+        },
+        {
+          "event": "INITIAL_SUBMISSION_RECEIVED",
+          "time": "2026-10-26T16:44:11.162558+09:00",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_164411_U6-initial-Gemini-to-Sol-received.md",
+            "bytes": 40731,
+            "sha256": "00E3A2F9D66F8BDD78BFFCC016229B79F57470295072E972B0D20D12D7215C45"
+          },
+          "result": "PENDING_SOL_VERIFICATION",
+          "initialSubmissions": 1,
+          "retrySubmissions": 0,
+          "cumulativeSubmissions": 1
+        },
+        {
+          "event": "INITIAL_NOT_ACCEPTED_AND_CORRECT_1_ISSUED",
+          "time": "2026-10-26T17:08:17.352099+09:00",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_164411_U6-initial-Gemini-to-Sol-received.md",
+            "bytes": 40731,
+            "sha256": "00E3A2F9D66F8BDD78BFFCC016229B79F57470295072E972B0D20D12D7215C45"
+          },
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-initial-review-20261026_164411\\assessment.json",
+            "bytes": 8874,
+            "sha256": "D35EFFDB13E57BA0CB8AD9185A1210B9D633ECFD85D0ADF06B7C21796C39C415"
+          },
+          "defects": [
+            "U6-I01",
+            "U6-I02",
+            "U6-I03",
+            "U6-I04",
+            "U6-I05",
+            "U6-I06"
+          ],
+          "solControlDefects": [
+            "U6-C01"
+          ],
+          "correctionPacket": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-initial-review-20261026_164411\\CORRECT.md",
+            "bytes": 23739,
+            "sha256": "B901FDA6B3B5F32C4E6C08678530D2C02594E26B1EB24F44D5238CF8F6FFB21A"
+          },
+          "countsSubmission": false,
+          "initialSubmissions": 1,
+          "retrySubmissions": 0,
+          "cumulativeSubmissions": 1
+        },
+        {
+          "event": "RETRY_SUBMISSION_RECEIVED",
+          "time": "2026-10-26T19:06:04.463027+09:00",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_190604_U6-retry-Gemini-to-Sol-received.md",
+            "bytes": 31444,
+            "sha256": "D02CFCD95C250085195959ECCAAABB413D2CB8C9796B62AD889870CDF67CBFF7"
+          },
+          "result": "PENDING_SOL_VERIFICATION",
+          "initialSubmissions": 1,
+          "retrySubmissions": 1,
+          "cumulativeSubmissions": 2
+        },
+        {
+          "event": "RETRY_NOT_ACCEPTED_SOL_TAKEOVER",
+          "time": "2026-10-26T19:11:20.357458+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\takeover.json",
+            "bytes": 1106,
+            "sha256": "2445D014E4EF82E332EE938B9900EAE720FEA1836373E0798DF25E90EBCB711F"
+          },
+          "policy": "standing authorization after both failed",
+          "initialSubmissions": 1,
+          "retrySubmissions": 1,
+          "cumulativeSubmissions": 2
+        },
+        {
+          "event": "SOL_DIRECT_TAKEOVER_ACCEPTED_ORIGINAL12",
+          "time": "2026-10-26T20:51:00.319156+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+            "bytes": 28540,
+            "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+          },
+          "initialSubmissions": 1,
+          "retrySubmissions": 1,
+          "cumulativeSubmissions": 2,
+          "SolProductWrites": 5,
+          "canonicalAccepted": 65,
+          "newCanonicalAccepted": 12
+        }
+      ],
+      "currentHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5459,
+        "sha256": "9F61BC4ED972B7AA6151949BF248D071091974569EEC0F9EF9F971CFD192E17B"
+      },
+      "issuedCorrectionPackets": 1,
+      "SolDirectAttempt": 1,
+      "verificationAuthority": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-verification-v6",
+      "closedAt": "2026-10-26T20:51:00.319156+09:00",
+      "finalSolAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+        "bytes": 28540,
+        "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+      },
+      "verificationSeal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u6-verification-v6\\seal.json",
+        "bytes": 3263,
+        "sha256": "71CD5C8F81067C03817D862BDCFC860E600DB57E831C0626D7502EEB689F2245"
+      }
+    },
+    "3-2c-A2-U7-role-guard": {
+      "task": "3-2c-A2-U7-role-guard",
+      "planTaskId": "AH-U7",
+      "status": "ACCEPTED_ROLE_ORIGINAL9_ONLY",
+      "owner": "Sol",
+      "implementationOwner": "not required (product unchanged)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "remainingRetrySubmissions": 1,
+      "canonicalAccepted": 74,
+      "canonicalMissing": 7,
+      "newCanonicalAccepted": 9,
+      "productWrites": 0,
+      "startedAt": "2026-10-26T21:55:38.764026+09:00",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u7-20261026_215538",
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u7-20261026_215538\\source-before.json",
+        "bytes": 62966,
+        "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+      },
+      "previousAcceptedAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u6-retry-review-20261026_190604\\assessment.json",
+        "bytes": 28540,
+        "sha256": "0B49DFB3BE6B3A95296F4D9C70B35B447761A10CCE411187DAC2C90E6CC31D52"
+      },
+      "archives": {
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_215538_U7-start_TODO.md",
+          "bytes": 16723,
+          "sha256": "01BE710A3EE4453A20C272216352B9417F843A9775A6211AB11FA87928E8C9FE"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_215538_U7-start_task-plan.json",
+          "bytes": 27379,
+          "sha256": "78532D109891BBBF0B757DFF91A7863A1157D1E8E3B0E6247B98B11882BFF718"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_215538_U7-start_current-state.md",
+          "bytes": 640,
+          "sha256": "98D75BD3408F42E93EBA5F189D7568F8C719FA8F832F25D79196E46A9B2B7485"
+        }
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 29012,
+        "sha256": "D74A6D032715739C6F183AB3EE13869DCA0066D6206AA18F906D602A6C0F998F"
+      },
+      "next": "AH-U8 not started",
+      "phase": "U7_CLOSED",
+      "verificationOwner": "Sol",
+      "closedAt": "2026-10-26T22:41:01.298605+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u7-20261026_215538\\assessment.json",
+        "bytes": 6028,
+        "sha256": "351F63D35AD9834F1EC4EBA8331C3243B10AAE6C6432D98C440C1B86E0266FE5"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5568,
+        "sha256": "CA7CF0C7985990749B0B6262625E451D2B915B6D22D248E43C88ACBA1941846C"
+      },
+      "authority": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u7-role\\authority.json",
+        "bytes": 4281,
+        "sha256": "08A340C6BCDF9CB266142E31D116C95AB46FA6CD1C888E51B3A68010B8C23886"
+      },
+      "seal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u7-role\\seal.json",
+        "bytes": 2249,
+        "sha256": "648C2F3A811C96FEFEE397D377D3D17C6FBB93992F05E7A768D6F90C96BFD297"
+      },
+      "history": [
+        {
+          "event": "ACCEPTED_ROLE9_PRODUCT_UNCHANGED",
+          "time": "2026-10-26T22:41:01.298605+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u7-20261026_215538\\assessment.json",
+            "bytes": 6028,
+            "sha256": "351F63D35AD9834F1EC4EBA8331C3243B10AAE6C6432D98C440C1B86E0266FE5"
+          },
+          "initialSubmissions": 0,
+          "retrySubmissions": 0,
+          "cumulativeSubmissions": 0,
+          "productWrites": 0
+        }
+      ]
+    },
+    "3-2c-A2-U8-session-expired": {
+      "task": "3-2c-A2-U8-session-expired",
+      "planTaskId": "AH-U8",
+      "status": "ACCEPTED_SESSION_ORIGINAL7_ONLY",
+      "owner": "Sol",
+      "implementationOwner": "not required (product unchanged)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "canonicalAccepted": 81,
+      "canonicalMissing": 0,
+      "newCanonicalAccepted": 7,
+      "productWrites": 0,
+      "startedAt": "2026-10-26T23:03:36.049729+09:00",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336",
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336\\source-before.json",
+        "bytes": 62966,
+        "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+      },
+      "priorAccepted": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\u7-active.json",
+        "bytes": 3146,
+        "sha256": "1C18445C4EA5C79F0AA7F52E6731CC2BCC3F2DB24B8CCB0DE50C01FB949C50EE"
+      },
+      "archives": {
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_TODO.md",
+          "bytes": 17281,
+          "sha256": "F4E1D686694B4BA88846A38C5E628BEB3612C696637B8A3EDA3710F6873F5201"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_task-plan.json",
+          "bytes": 29012,
+          "sha256": "D74A6D032715739C6F183AB3EE13869DCA0066D6206AA18F906D602A6C0F998F"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_230336_U8-start_current-state.md",
+          "bytes": 694,
+          "sha256": "30D91210683FAC0721E1ED513B28E178B528DDC71DDB4CF8EC4F091191B59BE4"
+        }
+      },
+      "next": "AH-CLOSE not started",
+      "phase": "U8_CLOSED",
+      "verificationOwner": "Sol",
+      "closedAt": "2026-10-26T23:34:32.510178+09:00",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336\\assessment.json",
+        "bytes": 6860,
+        "sha256": "5B72E8B56743C637574903332E2FF4978479B9F71B81513B2EF7B7A17664BB1B"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5547,
+        "sha256": "0EF029F38E7EBCF058B686D3AFD3C5625FA4EC1AF8222B6D1AC159F1FA1F3F60"
+      },
+      "authority": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u8-session\\authority.json",
+        "bytes": 4398,
+        "sha256": "9328849BAB482AEA3B17222C2A1E12998DD26E5668BAA2A01C8FCA98ECDAB3E4"
+      },
+      "seal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\contracts\\phase3-2c-a2-u8-session\\seal.json",
+        "bytes": 2537,
+        "sha256": "CCB1B014545F9173A52E94BF8DFE3B703DEF6CA2020FCFCC94898F32AFEEE74B"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 30661,
+        "sha256": "F5DBFB188E5F608901AB9F378307028A43376EB10420AD069E3A8AD5DDB58BE1"
+      },
+      "history": [
+        {
+          "event": "ACCEPTED_SESSION7_PRODUCT_UNCHANGED",
+          "time": "2026-10-26T23:34:32.510178+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\phase3-2c-a2-u8-20261026_230336\\assessment.json",
+            "bytes": 6860,
+            "sha256": "5B72E8B56743C637574903332E2FF4978479B9F71B81513B2EF7B7A17664BB1B"
+          },
+          "initialSubmissions": 0,
+          "retrySubmissions": 0,
+          "cumulativeSubmissions": 0,
+          "productWrites": 0
+        }
+      ]
+    },
+    "AH-CLOSE": {
+      "schema": "shiftmgmt.ah-close.state.v1",
+      "task": "AH-CLOSE",
+      "status": "ACCEPTED",
+      "startedAt": "2026-10-26T23:41:24.299119+09:00",
+      "owner": "Sol",
+      "implementationOwner": "Gemini only if an authorized product fix is required",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "productWrites": 0,
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\source-before.json",
+        "bytes": 62966,
+        "sha256": "2E46075F315CF658662C8A20B77FA9AB17E7AF5E371C0C2B5B7B1B24955B7B3C"
+      },
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5547,
+        "sha256": "0EF029F38E7EBCF058B686D3AFD3C5625FA4EC1AF8222B6D1AC159F1FA1F3F60"
+      },
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124",
+      "archives": {
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_TODO.md",
+          "bytes": 17758,
+          "sha256": "BE7C6C20CA1CCFFE7C2F14F3E4F64998A28C86AD5C2C0D9DC84CC3CA673358AA"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_task-plan.json",
+          "bytes": 30661,
+          "sha256": "F5DBFB188E5F608901AB9F378307028A43376EB10420AD069E3A8AD5DDB58BE1"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261026_234124_AH-CLOSE-start_current-state.md",
+          "bytes": 902,
+          "sha256": "D04BF8178867BF4F844BBBE763BD9E2C77852DC9852EEA0F74520D1AAF815838"
+        }
+      },
+      "scope": "Original124/normal81/B87 reconciliation; fullA2/B required evidence, affected regressions and commit review; user direct screen confirmation. No next Task or release.",
+      "checkpoint": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\progress-20261027_002930.json",
+        "bytes": 6834,
+        "sha256": "F96080D17CC2ADB8F97BAC1CE1ABC642644E9D16E3827D71F885457B9A23C361"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 2484,
+        "sha256": "38187D23B501CAED62447F11DC53BDC3B436F0E364B7F25546571C4588F32A44"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 32111,
+        "sha256": "26E34F2FB11F38AABE8A5E20A1A9A57D6CC5B1DE1CFDC839617390F7DEDE7165"
+      },
+      "userConfirmation": "APPROVED",
+      "supportingObligationsCollected": 124,
+      "unprovenOrAstPending": 0,
+      "phase": "CLOSED",
+      "technicalReviewCompletedAt": "2026-10-27T01:27:02.593081+09:00",
+      "technicalAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\assessment.json",
+        "bytes": 7561,
+        "sha256": "ADE7C8C3F6523B6A8A7E48F21E18E39BF7BD327ED02887B21B3C2AFB0AA68FEA"
+      },
+      "B87CriteriaEvidenced": 87,
+      "livePreviewUrl": "http://127.0.0.1:18808/",
+      "next": "TRIAGE-01 not started",
+      "history": [
+        {
+          "event": "TECHNICAL_REVIEW_READY_NOT_USER_APPROVED",
+          "time": "2026-10-27T01:27:02.593081+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\assessment.json",
+            "bytes": 7561,
+            "sha256": "ADE7C8C3F6523B6A8A7E48F21E18E39BF7BD327ED02887B21B3C2AFB0AA68FEA"
+          },
+          "GeminiInitial": 0,
+          "GeminiRetry": 0,
+          "cumulative": 0,
+          "productWrites": 0
+        },
+        {
+          "event": "USER_APPROVED_AND_COMMITTED_ACCEPTED",
+          "time": "2026-10-27T01:42:50.471121+09:00",
+          "commit": "201c7b815aec842859da2fec7a2a1666064b1b70",
+          "finalAssessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\final-assessment.json",
+            "bytes": 3491,
+            "sha256": "A3148EA79EF4D8702E18D885370384D3C686CA161934B1440D6DABEEE68F2272"
+          }
+        }
+      ],
+      "closedAt": "2026-10-27T01:42:50.471121+09:00",
+      "finalAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\final-assessment.json",
+        "bytes": 3491,
+        "sha256": "A3148EA79EF4D8702E18D885370384D3C686CA161934B1440D6DABEEE68F2272"
+      },
+      "commit": "201c7b815aec842859da2fec7a2a1666064b1b70",
+      "sourceAfterCommit": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\source-after-approved-commit.json",
+        "bytes": 60883,
+        "sha256": "2C1404982FC22E2A902FE566CE9412E8DE9345BD20ABE6BD8ABB5B5536F2BD69"
+      }
+    },
+    "TRIAGE-01": {
+      "task": "TRIAGE-01",
+      "status": "DONE",
+      "startedAt": "2026-10-27T01:44:31.448079+09:00",
+      "owner": "Sol",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "productWrites": 0,
+      "productHead": "201c7b815aec842859da2fec7a2a1666064b1b70",
+      "report": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\triage-01-20261027_014431",
+      "sourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\source-after-approved-commit.json",
+        "bytes": 60883,
+        "sha256": "2C1404982FC22E2A902FE566CE9412E8DE9345BD20ABE6BD8ABB5B5536F2BD69"
+      },
+      "previousAccepted": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ah-close-20261026_234124\\final-assessment.json",
+        "bytes": 3491,
+        "sha256": "A3148EA79EF4D8702E18D885370384D3C686CA161934B1440D6DABEEE68F2272"
+      },
+      "archives": {
+        "HANDOFF.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_014431_TRIAGE-01-start_HANDOFF.md",
+          "bytes": 2484,
+          "sha256": "38187D23B501CAED62447F11DC53BDC3B436F0E364B7F25546571C4588F32A44"
+        },
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_014431_TRIAGE-01-start_TODO.md",
+          "bytes": 19085,
+          "sha256": "6FB2267B90302DC939297D6F19BCA5F3F637F73CB662BE589E0AE78449469E3B"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_014431_TRIAGE-01-start_task-plan.json",
+          "bytes": 32111,
+          "sha256": "26E34F2FB11F38AABE8A5E20A1A9A57D6CC5B1DE1CFDC839617390F7DEDE7165"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_014431_TRIAGE-01-start_current-state.md",
+          "bytes": 405,
+          "sha256": "B1203E319C7BADB7B65DE2DD14F20089F5CF9E686EFDAF213CDDDE4B09504693"
+        }
+      },
+      "scope": "Read original MINOR13 and remaining decisions; classify under existing approved Tasks. No product edits/newfeatures or nextTask implementation.",
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 3268,
+        "sha256": "33726A7955F8239849EE19F20D0D73A945AF0B887355B89383BFABFC9F894305"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 37585,
+        "sha256": "42A96EFD698B1D1662F9F21A865507A5D18CFD73CD294C6C3FEE822EE9678305"
+      },
+      "completedAt": "2026-10-27T02:00:27.491982+09:00",
+      "result": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\triage-01-20261027_014431\\classification.json",
+        "bytes": 29542,
+        "sha256": "B2304D8FE2B193223B6AD669A40FE95BFA16AD83DE5AC7224DC5B4617D1380C6"
+      },
+      "humanResult": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\triage-01-20261027_014431\\RESULT.md",
+        "bytes": 13859,
+        "sha256": "4249EEC411B68992EA063B39D69B8A555FECAA392C0A90066A6A0FBB785E0694"
+      },
+      "next": "UI-01 not started",
+      "remainingEstimatedHours": [
+        232,
+        408
+      ]
+    },
+    "UI-01": {
+      "task": "UI-01",
+      "parentTask": "UI-01",
+      "planId": "PLAN-20261026-01",
+      "status": "ACCEPTED",
+      "stage": "CLOSED",
+      "issuedAt": "2026-10-27T09:48:27.898820+09:00",
+      "owner": "Sol",
+      "orchestrator": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "attempts": [
+        {
+          "kind": "INITIAL",
+          "number": 1,
+          "receivedAt": "2026-10-27T12:06:17.736764+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_120617_UI-01-Gemini-initial-received_HANDOFF.md",
+            "bytes": 41237,
+            "sha256": "4A7680AA047CC61CD7404B477663ABC06705E7BDDB145A06E31F6EFF92372852"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-review-20261027_120617\\candidate-source.json",
+            "bytes": 63419,
+            "sha256": "7F2CECB90D2779516233D5FB7A0A63A50DAEC02A702E7C9EA5C9A91643E7CBBF"
+          },
+          "result": "CORRECT",
+          "assessedAt": "2026-10-27T12:20:03.471628+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-review-20261027_120617\\assessment.json",
+            "bytes": 6423,
+            "sha256": "BB1929A91E18863BCD723D08B8D867444FB4FE8D179160AFFE8C0D27D3502E08"
+          },
+          "defectIds": [
+            "UI01-D01",
+            "UI01-D02",
+            "UI01-D03",
+            "UI01-D04",
+            "UI01-D05",
+            "UI01-D06",
+            "UI01-D07",
+            "UI01-D08"
+          ]
+        },
+        {
+          "kind": "RETRY",
+          "number": 1,
+          "receivedAt": "2026-10-27T14:52:56.709030+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_145256_UI-01-Gemini-retry-received_HANDOFF.md",
+            "bytes": 53624,
+            "sha256": "3E3691C4C60BD101E7137D4EBB69374022250CB9BC687F5E395A3F72D8417242"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\gemini-retry-source.json",
+            "bytes": 63419,
+            "sha256": "82A66FE4E1EB533232718D7833067E4EE68C6B0A05A63A63339B6AE7D1BC85C3"
+          },
+          "result": "REJECTED_SOL_TAKEOVER",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\retry-assessment.json",
+            "bytes": 1283,
+            "sha256": "2D911EA8C7A1B98995B7149351CEF0FC8B33C758CCE93327DB69235A92D3711A"
+          }
+        }
+      ],
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_173029_UI-01-approved-before-UI-02_HANDOFF.md",
+        "bytes": 4309,
+        "sha256": "5C3CB0B9137B5C0310945B2CD54A7EA7CAA8DD701FCABA94EDF5D88CCE9E31E1"
+      },
+      "todo": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+        "bytes": 24423,
+        "sha256": "902E45789686142EC4666B177D77E96D1AC63AF6A17B30E906CE30C0A052603E"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 50908,
+        "sha256": "A0024637F11E96F61B9FE999CDEC47E6676D834C196A5A1EC802A1157FDF5DE3"
+      },
+      "sourceBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\triage-01-20261027_014431\\source-after.json",
+        "bytes": 60883,
+        "sha256": "2C1404982FC22E2A902FE566CE9412E8DE9345BD20ABE6BD8ABB5B5536F2BD69"
+      },
+      "focusedBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\work\\ui01-focused-baseline.json",
+        "bytes": 1202,
+        "sha256": "D9C553EA32E6D667A077CF8F274E6B09802FCBBD606113DD3D2C4D6AD7774BAE"
+      },
+      "allowedPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/index.html",
+        "scripts/copy-web-assets.mjs",
+        "docs/codebase-map.md",
+        "src/web/screens/workforce.ts",
+        "src/web/screens/workforce-model.ts",
+        "src/web/screens/workforce-list.ts",
+        "src/web/screens/workforce-detail.ts",
+        "src/web/screens/workforce-employee-form.ts",
+        "src/web/screens/workforce-wage.ts",
+        "src/web/screens/workforce-assignment.ts",
+        "src/web/screens/workforce-bulk.ts",
+        "src/web/screens/workforce-dialog.ts",
+        "src/web/screens/workforce-model.test.ts",
+        "src/web/workforce.css",
+        "scripts/ui-checks/workforce.mjs",
+        "src/web/app.ts",
+        "src/web/common-controls.ts",
+        "src/web/common-controls.css",
+        "src/shared/domain/model.ts",
+        "src/shared/bridge/contracts.ts",
+        "src/main/services/employee-storage-service.ts",
+        "src/main/services/employee-storage-service.test.ts",
+        "src/main/services/sqlite-storage-service.ts",
+        "src/main/services/sqlite-storage-service.test.ts",
+        "src/main/services/database-migration-service.ts",
+        "src/main/services/database-migration-service.test.ts"
+      ],
+      "archives": {
+        "HANDOFF.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_094827_UI-01-IMPLEMENT-before_HANDOFF.md",
+          "bytes": 3268,
+          "sha256": "33726A7955F8239849EE19F20D0D73A945AF0B887355B89383BFABFC9F894305"
+        },
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_094827_UI-01-IMPLEMENT-before_TODO.md",
+          "bytes": 20264,
+          "sha256": "5724CB8B711B2C3CA9356F9D2BABEBAEAD46DB277640DA42F6E3590865AD7587"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_094827_UI-01-IMPLEMENT-before_task-plan.json",
+          "bytes": 37585,
+          "sha256": "42A96EFD698B1D1662F9F21A865507A5D18CFD73CD294C6C3FEE822EE9678305"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_094827_UI-01-IMPLEMENT-before_current-state.md",
+          "bytes": 562,
+          "sha256": "FD9388EEF0BC43E6FE28E751A449A647DAE3C2278252237B0A1DD62934AFD8C5"
+        }
+      },
+      "userMenuReviewRequested": true,
+      "productWrites": 26,
+      "issuedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 30104,
+        "sha256": "DE80508BCA23B33E496EBA884C4143FDFE1FB407A053440B8E1BB18F0C30B408"
+      },
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_120617_UI-01-Gemini-initial-received_HANDOFF.md",
+        "bytes": 41237,
+        "sha256": "4A7680AA047CC61CD7404B477663ABC06705E7BDDB145A06E31F6EFF92372852"
+      },
+      "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256",
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\gemini-retry-source.json",
+        "bytes": 63419,
+        "sha256": "82A66FE4E1EB533232718D7833067E4EE68C6B0A05A63A63339B6AE7D1BC85C3"
+      },
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\feedback-1\\assessment.json",
+        "bytes": 11670,
+        "sha256": "5E5E42375609F8FB23D1D5B8E6F58DA15FE64AE03EC2970B912C951E61D5A420"
+      },
+      "retryRequestedAt": "2026-10-27T12:20:03.471628+09:00",
+      "expectedRetryInitialSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-review-20261027_120617\\candidate-source.json",
+        "bytes": 63419,
+        "sha256": "7F2CECB90D2779516233D5FB7A0A63A50DAEC02A702E7C9EA5C9A91643E7CBBF"
+      },
+      "defectIds": [
+        "UI01-D01",
+        "UI01-D02",
+        "UI01-D03",
+        "UI01-D04",
+        "UI01-D05",
+        "UI01-D06",
+        "UI01-D07",
+        "UI01-D08"
+      ],
+      "reviewArchives": {
+        "TODO.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_122003_UI-01-initial-CORRECT-before_TODO.md",
+          "bytes": 21008,
+          "sha256": "AB620E8FA9C9679870F7B8C37326797B53EFCE5887039CDC54EC7C17198F5C57"
+        },
+        ".ai/task-plan.json": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_122003_UI-01-initial-CORRECT-before_task-plan.json",
+          "bytes": 40222,
+          "sha256": "8BAFA3AE5FE214C632274DF6C095B9589FF63A70B20F2A2B46F0252318994EAD"
+        },
+        ".ai/current-state.md": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_122003_UI-01-initial-CORRECT-before_current-state.md",
+          "bytes": 1040,
+          "sha256": "1C064B5ED8ED34A641C5162AE21486732E8FB76274F7F95C0013A72322E73369"
+        }
+      },
+      "receivedRetry": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_145256_UI-01-Gemini-retry-received_HANDOFF.md",
+        "bytes": 53624,
+        "sha256": "3E3691C4C60BD101E7137D4EBB69374022250CB9BC687F5E395A3F72D8417242"
+      },
+      "retryAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\retry-assessment.json",
+        "bytes": 1283,
+        "sha256": "2D911EA8C7A1B98995B7149351CEF0FC8B33C758CCE93327DB69235A92D3711A"
+      },
+      "userLivePreview": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\ui01-live.json",
+        "bytes": 672,
+        "sha256": "0B12234D8B8899976452318E2AD7F5F10FBDF4F107171D5506FD02F673DA7F58"
+      },
+      "technicalAccepted": true,
+      "verifiedAt": "2026-10-27T18:07:50.299149+09:00",
+      "solChangedPaths": [
+        "docs/codebase-map.md",
+        "scripts/copy-web-assets.mjs",
+        "scripts/ui-checks/workforce.mjs",
+        "src/main/services/database-migration-service.test.ts",
+        "src/main/services/database-migration-service.ts",
+        "src/main/services/employee-storage-service.test.ts",
+        "src/main/services/employee-storage-service.ts",
+        "src/main/services/sqlite-storage-service.test.ts",
+        "src/main/services/sqlite-storage-service.ts",
+        "src/shared/bridge/contracts.ts",
+        "src/shared/domain/model.ts",
+        "src/web/app.ts",
+        "src/web/common-controls.css",
+        "src/web/common-controls.ts",
+        "src/web/index.html",
+        "src/web/screens/workforce-assignment.ts",
+        "src/web/screens/workforce-bulk.ts",
+        "src/web/screens/workforce-detail.ts",
+        "src/web/screens/workforce-dialog.ts",
+        "src/web/screens/workforce-employee-form.ts",
+        "src/web/screens/workforce-list.ts",
+        "src/web/screens/workforce-model.test.ts",
+        "src/web/screens/workforce-model.ts",
+        "src/web/screens/workforce-wage.ts",
+        "src/web/screens/workforce.ts",
+        "src/web/workforce.css"
+      ],
+      "sourceFinal": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\feedback-1\\source-final-after.json",
+        "bytes": 65798,
+        "sha256": "FFEFFBD80D6E4D9B119DA92B181E5BB43D77102A03842203812F16BF6B5EB12D"
+      },
+      "feedbackReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\feedback-1",
+      "feedbackAuthorization": {
+        "userRequests": 5,
+        "archive": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_161427_UI-01-before-user-feedback-1_HANDOFF.md",
+        "bytes": 5304,
+        "sha256": "1318A0D72C9658E4069A6EEC9E035DF86395D89E3944523F8525210BE87DF669",
+        "scope": "User explicitly requests common selectors/calendar across menus+modals and employee email create/edit/display, fixed table/details and isolated 55-person preview. Same unresolved UI-01; standing Sol owner, attempts remain1/1/2."
+      },
+      "feedbackChanges": [
+        "Stable column widths and reserved expanded card height",
+        "Global shared select/calendar styles, keyboard and bounds in menus/modals",
+        "55 isolated test employees, 492 wage and 478 assignment histories",
+        "Unassigned option replaces former-site button, includes deleted-site links",
+        "Visible sticky employee code, contact/email columns, email create/edit/storage and legacy DB/JSON compatibility",
+        "380px detail panel and compact rows",
+        "Sort full collection by worksite/team/order/code before pagination; global group counts and shared collapse state on continued pages",
+        "Initial selection constrained to current filtered collection"
+      ],
+      "formalAccepted": true,
+      "userApprovedAt": "2026-10-27T18:26:25.536701+09:00",
+      "acceptance": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-sol-finish-20261027_145256\\feedback-1\\acceptance.json",
+        "bytes": 952,
+        "sha256": "EFDEDD9AB4E530160B9BA79B8984E4592AB057D2FF8C93004B95F9EC1E478461"
+      },
+      "acceptedCommit": "889966e9f7ae633338fbac4636e41376678c145b",
+      "nextTask": "UI-02",
+      "viewportAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-viewport\\assessment.json",
+        "bytes": 5219,
+        "sha256": "667361D01248D62D4FFEAC74D2BE2270E7F9D78BBC4F9520DF0C2591F08C1056"
+      },
+      "viewportSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-viewport\\verified-source.json",
+        "bytes": 2171,
+        "sha256": "045CE656C3FA1E08D4D1C183D34C27700AC50C847812D211F5C8D0F98FB7A4BE"
+      },
+      "viewportAcceptance": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-viewport\\acceptance.json",
+        "bytes": 1000,
+        "sha256": "61722E30980AD39CDF6FDE5719E92AC7A0DD8197DBC91204D5F2EFFE59823CC0"
+      }
+    },
+    "UI-02": {
+      "task": "UI-02",
+      "parentTask": "UI-02",
+      "planId": "PLAN-20261026-01",
+      "status": "ACCEPTED",
+      "stage": "CLOSED",
+      "issuedAt": "2026-10-27T17:30:29.831511+09:00",
+      "owner": "Sol",
+      "orchestrator": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "attempts": [
+        {
+          "kind": "INITIAL",
+          "number": 1,
+          "receivedAt": "2026-10-27T19:47:39.719448+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_194739_UI-02-Gemini-initial-received_HANDOFF.md",
+            "bytes": 48151,
+            "sha256": "D0E0A6CA7F5B4B2F2DF643B66DB480D5927CE3505BD7580BD46581BD3C1AEE39"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-review-20261027_194739\\candidate-source.json",
+            "bytes": 68857,
+            "sha256": "88A6AA8F41D02F871F062C04F1DA597BF800244A8F998FFAAB0B8418E9C9B6D2"
+          },
+          "result": "CORRECT",
+          "reviewedAt": "2026-10-27T20:01:52.841514+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-review-20261027_194739\\assessment.json",
+            "bytes": 7569,
+            "sha256": "C187B69E80D77AE2E779EEEC1C5F73FB1C1D96FEB720E9AE31E7F1757B03EEE5"
+          },
+          "defectIds": [
+            "UI02-D01",
+            "UI02-D02",
+            "UI02-D03",
+            "UI02-D04",
+            "UI02-D05",
+            "UI02-D06",
+            "UI02-D07",
+            "UI02-D08"
+          ]
+        },
+        {
+          "kind": "RETRY",
+          "number": 1,
+          "receivedAt": "2026-10-27T21:52:33.748211+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_215233_UI-02-Gemini-retry-received_HANDOFF.md",
+            "bytes": 57298,
+            "sha256": "1F6839015FD6B21CDA0BDBDC916BB65F0D9F73F183BFFAAF7DB2E5F3D0AD5BCF"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\candidate-source.json",
+            "bytes": 68861,
+            "sha256": "5654E70E02656DECDAF78834FE7255E15C744ADF181CA76F65D53D782CC069D4"
+          },
+          "result": "CORRECT",
+          "reviewedAt": "2026-10-27T21:57:13.350169+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\assessment.json",
+            "bytes": 4039,
+            "sha256": "DA30BF3C8615144C6EDE00E1088F5D5619974EF501246A19EF49AFD3BAE946A0"
+          }
+        }
+      ],
+      "allowedPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/index.html",
+        "scripts/copy-web-assets.mjs",
+        "docs/codebase-map.md",
+        "src/web/data-table.ts",
+        "src/web/data-table.css",
+        "src/web/screens/operations.ts",
+        "src/web/screens/operations-model.ts",
+        "src/web/screens/operations-model.test.ts",
+        "src/web/screens/operations-ui.ts",
+        "src/web/screens/operations-settings.ts",
+        "src/web/screens/operations-backup.ts",
+        "src/web/screens/operations-holidays.ts",
+        "src/web/screens/operations-rates.ts",
+        "src/web/screens/operations-users.ts",
+        "src/web/screens/operations-site-names.ts",
+        "src/web/screens/operations-releases.ts",
+        "src/web/screens/operations-layout.ts",
+        "src/web/screens/operations-layout-canvas.ts",
+        "src/web/screens/operations-layout-preview.ts",
+        "src/web/operations.css",
+        "scripts/ui-checks/operations.mjs",
+        "scripts/ui-checks/operations-fixtures.mjs",
+        "src/main/services/database-migration-service.ts",
+        "src/main/services/database-migration-service.test.ts",
+        "src/main/http/security-headers.ts",
+        "src/main/server.test.ts"
+      ],
+      "sourceBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-start\\source-baseline.json",
+        "bytes": 64571,
+        "sha256": "4E352817AB9721290CDBF32C4BB8021A698CFBBEB214935651BC2747E289FE05"
+      },
+      "focusedBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-start\\baseline-checks.json",
+        "bytes": 4451,
+        "sha256": "CA7677C787845148EC6B6146D1A322DFF1C5043098A1EAC677FA0AB6B28CA9A7"
+      },
+      "commonUiStandard": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
+        "bytes": 4795,
+        "sha256": "A1E9B4858FFCBABEE7F8D5F95A83CD4DEBE60E013AC2B98DC7FEDAFDC077520C"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 34934,
+        "sha256": "D2B963FDE76706D5D155A4E44E1B4E89D7EB2A7118D8FF9B8BFA05ED10D301BE"
+      },
+      "todo": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+        "bytes": 24309,
+        "sha256": "DF43A6A1D10FAE13218AA1A2B13D147AE00FA11E077E0455443F2EC67A6727B9"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 52607,
+        "sha256": "ECC7C9ACB9F1806D33E902924FA0C5733893707FD007EB1F22AA04D3B01DEDA1"
+      },
+      "previousHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_173029_UI-01-approved-before-UI-02_HANDOFF.md",
+        "bytes": 4309,
+        "sha256": "5C3CB0B9137B5C0310945B2CD54A7EA7CAA8DD701FCABA94EDF5D88CCE9E31E1"
+      },
+      "baselineCommit": "889966e9f7ae633338fbac4636e41376678c145b",
+      "productWrites": 18,
+      "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233",
+      "userMenuReviewRequested": true,
+      "previousIssuedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_173224_UI-02-before-preview-contract-clarification_HANDOFF.md",
+        "bytes": 32673,
+        "sha256": "CBCE4BCE89CBE741E58190D48E0537F029CE4A62F72F3E75711EE980FAF30F72"
+      },
+      "concurrentSolException": [
+        "src/web/screens/workforce.ts",
+        "src/web/screens/workforce-list.ts",
+        "src/web/screens/workforce-model.ts",
+        "src/web/screens/workforce-model.test.ts",
+        "src/web/workforce.css",
+        "scripts/ui-checks/workforce.mjs"
+      ],
+      "concurrentNoticeArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_174517_UI-02-before-concurrent-UI01_HANDOFF.md",
+        "bytes": 32982,
+        "sha256": "A6CAF5587C2597B34B832CA06B3FC7099F7EEB87E8CBFD0982D47BB5BAAA669D"
+      },
+      "concurrentSolVerifiedSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui01-viewport\\verified-source.json",
+        "bytes": 2171,
+        "sha256": "045CE656C3FA1E08D4D1C183D34C27700AC50C847812D211F5C8D0F98FB7A4BE"
+      },
+      "concurrentControlOverride": {
+        "authorization": "2026-10-27T17:45:17.590764+09:00",
+        "explanation": "User explicitly authorizes Sol UI01 and Gemini UI02 concurrently. Pre-concurrency HANDOFF TODO/plan hashes are historical; these Sol6 files and UI01 status updates are authorized exceptions, not Gemini defects.",
+        "currentTodo": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+          "bytes": 27882,
+          "sha256": "67FB41B2A85DA99D6F65D822570BB44F757FC75BA28A617FC184E58A1CF1BA4F"
+        },
+        "currentTaskPlan": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+          "bytes": 58468,
+          "sha256": "07012C04059CD348B7E060EEF609A96336DDF9D6F87EA158C1AA6285CDE10BFF"
+        }
+      },
+      "concurrentRegressionNotes": {
+        "modelBaselineAddedTests": 3,
+        "unchangedOriginal950Preserved": true,
+        "nextWholeExpected": "950 original +3 Sol viewport model tests +new operations-model cases; file count baseline134 plus newoperations model1. Do not treat authorized extra3 as Gemini count failure.",
+        "sourceBinding": "Use concurrentSolVerifiedSource six-path hashes for source composition. Recheck workforce viewport on combined UI02 CSS/build before acceptance."
+      },
+      "userWaitRequestedAt": "2026-10-27T18:26:25.536701+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261027_194739_UI-02-Gemini-initial-received_HANDOFF.md",
+        "bytes": 48151,
+        "sha256": "D0E0A6CA7F5B4B2F2DF643B66DB480D5927CE3505BD7580BD46581BD3C1AEE39"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-review-20261027_194739\\candidate-source.json",
+        "bytes": 68857,
+        "sha256": "88A6AA8F41D02F871F062C04F1DA597BF800244A8F998FFAAB0B8418E9C9B6D2"
+      },
+      "lastReviewedAt": "2026-10-27T21:57:13.350169+09:00",
+      "reviewDecision": "CORRECT_SOL_TAKEOVER",
+      "reviewAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\assessment.json",
+        "bytes": 4039,
+        "sha256": "DA30BF3C8615144C6EDE00E1088F5D5619974EF501246A19EF49AFD3BAE946A0"
+      },
+      "defectIds": [
+        "UI02-D01",
+        "UI02-D02",
+        "UI02-D03",
+        "UI02-D04",
+        "UI02-D05",
+        "UI02-D06",
+        "UI02-D07",
+        "UI02-D08"
+      ],
+      "retryRemaining": 0,
+      "retryControl": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-review-20261027_194739\\retry-control.json",
+        "bytes": 1557,
+        "sha256": "B5130E1FFDD3C0FD8A186F886C2A0B593CF225B2540CA822E732B1AA64041077"
+      },
+      "scopeExtension": {
+        "approvedAt": "2026-10-27T23:02:42.891484+09:00",
+        "authorization": "User explicit reply: 두 파일 수정 승인",
+        "paths": [
+          "src/main/services/database-migration-service.ts",
+          "src/main/services/database-migration-service.test.ts"
+        ],
+        "purpose": "Accept and restore existing optional site_name_options_json business data in own JSON backups; malformed list/unknown key rejection tests; no schema/API/path/amount/auth policy change.",
+        "existingLargeFileException": "Two existing server files keep their current structure; new UI TS/CSS 30KB limit remains.",
+        "protectedOtherPaths": 368
+      },
+      "lastUpdatedAt": "2026-10-28T08:04:19.164439+09:00",
+      "progressAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\sol-scope-pending-assessment.json",
+        "bytes": 5206,
+        "sha256": "26B611B65603BD11EB4EE12CDDF7E9B54D29F1180D5EC43C5004D38D7AD05DC9"
+      },
+      "technicalAccepted": true,
+      "pendingScopeApproval": {
+        "paths": [
+          "src/main/http/security-headers.ts",
+          "src/main/server.test.ts"
+        ],
+        "proposal": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\pdf-frame-csp-proposal.patch",
+          "bytes": 1083,
+          "sha256": "31117EB1C6187A8870DC1CB5922AB40914AEC9D6A76417923FD1209C1AE3B279"
+        },
+        "status": "APPROVED",
+        "question": "PDF 미리보기 수정 승인 / 화면 내 PDF는 보류",
+        "approvalBoundary": "Earlier 두 파일 수정 승인 applies only to database-migration-service.ts/.test.ts, not these CSP files.",
+        "approvedAt": "2026-10-28T07:50:09.466319+09:00",
+        "authorization": "User: 응 다음 작업 진행해 — affirmative continuation after the explicit CSP two-file approval request"
+      },
+      "scopeExtensionCsp": {
+        "paths": [
+          "src/main/http/security-headers.ts",
+          "src/main/server.test.ts"
+        ],
+        "approvedAt": "2026-10-28T07:50:09.466319+09:00",
+        "authorization": "User: 응 다음 작업 진행해 — affirmative continuation after the explicit CSP two-file approval request"
+      },
+      "technicalReviewCompletedAt": "2026-10-28T08:04:19.164439+09:00",
+      "userReview": {
+        "status": "APPROVED",
+        "openVisibleChromeOnMenuCompletion": true,
+        "url": "http://127.0.0.1:18821/",
+        "previewPort": 18821,
+        "operatingDataUsed": false,
+        "evidence": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\live-preview.json",
+          "bytes": 1078,
+          "sha256": "691B88F0F0A8B2207B1F935E853FDEC53FF93C31B73A18121C5690E7C87D1FF0"
+        },
+        "approvedAt": "2026-10-28T08:25:22.367385+09:00",
+        "authorization": "응 다음 작업 진행해줘. 샘플 데이터 잊지말고"
+      },
+      "technicalAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\final-assessment.json",
+        "bytes": 14341,
+        "sha256": "266B0598E356F6FD3EE6B05ADBF4619E1AC0F470ADA6BF19D34879123035413E"
+      },
+      "finalSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\final-source.json",
+        "bytes": 68869,
+        "sha256": "489588057166470C26B45A07B2584CD9DC55E37C582AB43770797AAF02FEBC59"
+      },
+      "productWritesBasis": "Count of paths whose bytes Sol changed since Gemini retry candidate; historical zero described initial review only",
+      "solChangedPathsSinceRetry": [
+        "scripts/ui-checks/operations-fixtures.mjs",
+        "scripts/ui-checks/operations.mjs",
+        "src/main/http/security-headers.ts",
+        "src/main/server.test.ts",
+        "src/main/services/database-migration-service.test.ts",
+        "src/main/services/database-migration-service.ts",
+        "src/web/screens/operations-backup.ts",
+        "src/web/screens/operations-holidays.ts",
+        "src/web/screens/operations-layout-canvas.ts",
+        "src/web/screens/operations-layout-preview.ts",
+        "src/web/screens/operations-layout.ts",
+        "src/web/screens/operations-rates.ts",
+        "src/web/screens/operations-releases.ts",
+        "src/web/screens/operations-settings.ts",
+        "src/web/screens/operations-site-names.ts",
+        "src/web/screens/operations-ui.ts",
+        "src/web/screens/operations-users.ts",
+        "src/web/screens/operations.ts"
+      ],
+      "freshWholeSuiteRuns": 1,
+      "currentHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5795,
+        "sha256": "71FB595496A33F4FA0D72F450864740AB89795A2EE44FCF2822FD3CCAB72864D"
+      },
+      "currentTodo": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+        "bytes": 27882,
+        "sha256": "67FB41B2A85DA99D6F65D822570BB44F757FC75BA28A617FC184E58A1CF1BA4F"
+      },
+      "currentTaskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 58468,
+        "sha256": "07012C04059CD348B7E060EEF609A96336DDF9D6F87EA158C1AA6285CDE10BFF"
+      },
+      "issuedControlReferencesAreHistorical": true,
+      "closedAt": "2026-10-28T08:25:22.367385+09:00",
+      "commit": "2d23ecb732389bb2ed990b1c1e7eba383ba14c8e",
+      "userApprovedClosure": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui02-retry-review-20261027_215233\\user-approved-close.json",
+        "bytes": 4713,
+        "sha256": "2AF290B45952E86E75B8242C9CAE015E16F5E88A5162EFD967E590FF754620AF"
+      }
+    },
+    "UI-03": {
+      "task": "UI-03",
+      "parentTask": "UI-03",
+      "planId": "PLAN-20261026-01",
+      "status": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+      "stage": "USER_REVIEW",
+      "issuedAt": "2026-10-28T08:38:30.650520+09:00",
+      "owner": "Sol",
+      "orchestrator": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "attempts": [
+        {
+          "kind": "INITIAL",
+          "number": 1,
+          "receivedAt": "2026-10-28T10:45:42.891118+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_104542_UI-03-Gemini-initial-received_HANDOFF.md",
+            "bytes": 59851,
+            "sha256": "6226804E53BDC4B617CBDA3982628FEFCA229DE648565F8CBAE0AA3AEF16741C"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\candidate-source.json",
+            "bytes": 71626,
+            "sha256": "66DECD6FA2416F343A1490ED8C97FAED6C9D9A759D57C1C3D7C6EDFC99DC78F2"
+          },
+          "result": "CORRECT",
+          "reviewedAt": "2026-10-28T10:59:34.865560+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\assessment.json",
+            "bytes": 8063,
+            "sha256": "12764F26735D752F98907CF82F3D33DDE8E38E7FA68694ADC60C39971F871DC6"
+          },
+          "defectIds": [
+            "UI03-D01",
+            "UI03-D02",
+            "UI03-D03",
+            "UI03-D04",
+            "UI03-D05",
+            "UI03-D06",
+            "UI03-D07",
+            "UI03-D08",
+            "UI03-D09"
+          ]
+        },
+        {
+          "kind": "RETRY",
+          "number": 1,
+          "receivedAt": "2026-10-28T12:53:53.097339+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_125353_UI-03-Gemini-retry-received_HANDOFF.md",
+            "bytes": 80052,
+            "sha256": "3D603AA096ED9D53F8F8EBD3AC6E441E4AC049B8C83FB42C7C83D39C0C9493B4"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\candidate-source.json",
+            "bytes": 71630,
+            "sha256": "B26FB3620F1F4E8E6C1F9CFB36CB473E78C2385EC37F7AE3C4DABB50A954F3BA"
+          },
+          "result": "CORRECT",
+          "reviewedAt": "2026-10-28T12:56:27.429312+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\assessment.json",
+            "bytes": 2191,
+            "sha256": "648A8E0DD0E3BE7744DE9EEC871E240731B4E39262CE90B2ECAEBE0B891B6E69"
+          }
+        }
+      ],
+      "baselineCommit": "2d23ecb732389bb2ed990b1c1e7eba383ba14c8e",
+      "allowedPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/index.html",
+        "scripts/copy-web-assets.mjs",
+        "docs/codebase-map.md",
+        "src/web/screens/sites.ts",
+        "src/web/screens/sites-model.ts",
+        "src/web/screens/sites-model.test.ts",
+        "src/web/screens/sites-pattern-model.ts",
+        "src/web/screens/sites-list.ts",
+        "src/web/screens/sites-detail.ts",
+        "src/web/screens/sites-wizard.ts",
+        "src/web/screens/sites-wizard-basics.ts",
+        "src/web/screens/sites-wizard-pattern.ts",
+        "src/web/screens/sites-wizard-palette.ts",
+        "src/web/screens/sites-wizard-review.ts",
+        "src/web/screens/sites-organization.ts",
+        "src/web/screens/sites-import.ts",
+        "src/web/screens/sites-simulation.ts",
+        "src/web/screens/sites-simulation.test.ts",
+        "src/web/screens/sites-commit.ts",
+        "src/web/sites.css",
+        "scripts/ui-checks/sites.mjs",
+        "scripts/ui-checks/sites-fixtures.mjs",
+        "src/web/pagination.ts",
+        "src/web/pagination.test.ts",
+        "src/web/common-controls.css",
+        "src/web/screens/workforce-list.ts"
+      ],
+      "sourceBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\source-baseline.json",
+        "bytes": 67672,
+        "sha256": "7B7829BC6C943911DDF54A29203D78634A6C24303F11AE2D822DE1424183F4A7"
+      },
+      "focusedBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\baseline-checks.json",
+        "bytes": 2669,
+        "sha256": "F429A611B93CCA8ABD18DBD4E68E1FA19C3BA0D5699A5B2A00D37D0C09221BCC"
+      },
+      "commonUiStandard": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
+        "bytes": 10938,
+        "sha256": "1181F53879713C7DE5B90E092AF397C9BEEBEBCC7471858FA06FD6E9E9E8B900"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 3773,
+        "sha256": "B35F1C5872BED962C9840562164D64C86938AB9BA3F170512AEE87347A189135"
+      },
+      "todo": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+        "bytes": 37676,
+        "sha256": "133001F9246EC6DEAD344AEDC7A9527171C013AB505219EF0057D5D2D5BD715D"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 85888,
+        "sha256": "DF334C57B90AC5C7EB253B234F5BB5CA884744667E8B6C04A063C28751C48CD2"
+      },
+      "previousHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_083830_UI-02-approved-before-UI-03_HANDOFF.md",
+        "bytes": 5795,
+        "sha256": "71FB595496A33F4FA0D72F450864740AB89795A2EE44FCF2822FD3CCAB72864D"
+      },
+      "preflight": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-start\\preflight.json",
+        "bytes": 5528,
+        "sha256": "7BEC6DFAC852B2A363F904465279E1883E290659F499B45B04260F3710211A6A"
+      },
+      "productWrites": 20,
+      "userMenuReviewRequested": true,
+      "userSampleDataReconfirmed": true,
+      "reviewReport": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353",
+      "lastReviewedAt": "2026-10-29T09:16:11.542968+09:00",
+      "reviewDecision": "UI03_D09_TECHNICAL_PASS_USER_REVIEW_PENDING",
+      "reviewAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\assessment.json",
+        "bytes": 6638,
+        "sha256": "7174619C2DE63136279A85E34DB3E0962F7700E77B6A75744C53E43EA1D271AA"
+      },
+      "defectIds": [
+        "UI03-D01",
+        "UI03-D02",
+        "UI03-D03",
+        "UI03-D04",
+        "UI03-D05",
+        "UI03-D06",
+        "UI03-D07",
+        "UI03-D08",
+        "UI03-D09"
+      ],
+      "retryRemaining": 0,
+      "retrySource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\candidate-source.json",
+        "bytes": 71626,
+        "sha256": "66DECD6FA2416F343A1490ED8C97FAED6C9D9A759D57C1C3D7C6EDFC99DC78F2"
+      },
+      "currentImplementationOwner": "Sol",
+      "userLayoutDirective": {
+        "approvedAt": "2026-10-28T12:07:36.547134+09:00",
+        "authorization": "추가로 우측에 상세라인이 너무 위로 갔지? 앞에 인력관리의 레이아웃 구조를 참조해서 동일하게 구성하도록 지시서에 추가해줘. 모든 테이블을 구성하는 메뉴는 인력관리 화면처럼 구조를 잡을꺼야",
+        "appliesTo": "UI-03 now and every table-based menu in its existing task",
+        "structure": "Full-width KPI > full-width search/filter/actions > body grid(table minmax(0,1fr), detail380px); same top/bottom; fill available height; footer visible",
+        "defectId": "UI03-D08",
+        "requirements": [
+          "R02",
+          "R18"
+        ],
+        "scenarios": [
+          "S02",
+          "S20"
+        ],
+        "rowCountContract": "Current UI03 default10 paging and55sample contract retained; this directive changes layout structure",
+        "implementationBoundary": "Same23 UI03 product paths; workforce source read-only reference"
+      },
+      "layoutSupplement": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-review-20261028_104542\\layout-directive-20261028_120736.json",
+        "bytes": 2676,
+        "sha256": "6966D57B164E59A2F76855370ACCD98D74113ACB6B28C16C6F0DD07CA287E835"
+      },
+      "takeoverAt": "2026-10-28T12:56:27.429312+09:00",
+      "technicalAccepted": true,
+      "userApproved": false,
+      "finalSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\source-frozen.json",
+        "bytes": 67402,
+        "sha256": "794BC2B97699001716232C68DFB8DD3DAE233AC6B4448007775B649C2B8DE126"
+      },
+      "finalChecks": {
+        "relatedTests": 56,
+        "relatedFiles": 3,
+        "wholeTests": 1010,
+        "wholeFiles": 138,
+        "wholeEvidenceKind": "RECORDED_EVIDENCE_REVALIDATION",
+        "wholeFreshThisFollowup": false,
+        "uiScenarios": 20,
+        "negativeGroups": 12,
+        "nativeWindowCases": 4,
+        "followupWholeRuns": 0,
+        "cumulativeUi03WholeRuns": 2
+      },
+      "preview": {
+        "url": "http://127.0.0.1:18831/",
+        "manifest": {
+          "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\preview.json",
+          "bytes": 14688,
+          "sha256": "8A081FE23DC2D6CCC0B8D98D1043B11A0F33FD0051607CC241D79088E4CD5B9A"
+        },
+        "captures": [
+          {
+            "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\captures\\native-maximized-sites.png",
+            "bytes": 271261,
+            "sha256": "3A2555A974D2A6E773C9D93C008D4D3656A86C8B480E5069E431A7F0F19997BB"
+          },
+          {
+            "path": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-row-fill-native-preview\\captures\\native-maximized-workforce.png",
+            "bytes": 352516,
+            "sha256": "DF4C59649E97707FFB46E277964CF95D1D7552065200359B764C35D665C13C1C"
+          }
+        ]
+      },
+      "previousFunctionalAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-retry-review-20261028_125353\\assessment.json",
+        "bytes": 12165,
+        "sha256": "C22B195EE09D90372FE3F69F41E5C10F002FD3753133BCC072091A42E2196482"
+      },
+      "layoutFollowup": {
+        "at": "2026-10-28T17:07:01.070165+09:00",
+        "changedPaths": [
+          "scripts/ui-checks/sites.mjs",
+          "src/web/sites.css"
+        ],
+        "focusedScenarios": 4,
+        "nativeWindowCases": 4,
+        "additionalWholeRuns": 0,
+        "previousFunctionalEvidenceKind": "RECORDED_EVIDENCE_REVALIDATION"
+      },
+      "previousLayoutAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-preview-window-20261028_165346\\assessment.json",
+        "bytes": 12849,
+        "sha256": "1F178AC09D78E3DD73AD0463E42C8E7441B7422D77E84256AE7C326807755E79"
+      },
+      "paginationAudit": {
+        "at": "2026-10-28T17:18:44.254957+09:00",
+        "productWrites": 0,
+        "findings": [
+          "UI03-P01",
+          "UI03-P02"
+        ],
+        "evidence": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pagination-audit-2026-10-28T08-16-59-457Z\\result.json",
+          "bytes": 6074,
+          "sha256": "F54C10DD49C8E23988BB940D692CAF15B15ABD83FEED01AD03CB4A139C458FBC"
+        }
+      },
+      "paginationPatchScope": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pagination-patch-20261028_172916\\scope.json",
+        "bytes": 1838,
+        "sha256": "BBFDAE918D232DDDAB73762AAC41483C63EAE50EF4A605A624187C17987467DD"
+      },
+      "paginationPatchResolved": [
+        "UI03-P01",
+        "UI03-P02"
+      ],
+      "layoutArrowFollowup": {
+        "at": "2026-10-28T18:01:15.906060+09:00",
+        "assessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-layout-arrow-20261028_175310\\assessment.json",
+          "bytes": 10417,
+          "sha256": "FF899B1F7EB3FDD8C726510762A7D81661FCAD5C712E828198B3F6EEED56234A"
+        },
+        "changedPaths": [
+          "scripts/ui-checks/sites.mjs",
+          "src/web/pagination.test.ts",
+          "src/web/pagination.ts",
+          "src/web/screens/sites.ts",
+          "src/web/sites.css"
+        ],
+        "paginationExample": "« ‹ 1 2 … 4 [5] 6 … 16 17 › »",
+        "additionalWholeRuns": 0
+      },
+      "rowFillFollowup": {
+        "at": "2026-10-28T18:18:14.932879+09:00",
+        "assessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\assessment.json",
+          "bytes": 10620,
+          "sha256": "28949D4E53B20A790BDE4E2A46C68473C0C7C525997B45C30B5CB7A7F904B481"
+        },
+        "changedPaths": [
+          "scripts/ui-checks/sites.mjs",
+          "src/web/common-controls.css",
+          "src/web/pagination.test.ts",
+          "src/web/pagination.ts",
+          "src/web/screens/sites-list.ts",
+          "src/web/screens/sites.ts",
+          "src/web/screens/workforce-list.ts",
+          "src/web/sites.css"
+        ],
+        "paginationExample": "« ‹ 1 2 … 4 [5] 6 … 16 17 › »",
+        "additionalWholeRuns": 0
+      },
+      "acceptedAt": "2026-10-28T20:18:07.002260+09:00",
+      "completedAt": "2026-10-28T20:18:07.002260+09:00",
+      "finalCommit": "1e4450e085f8a90606dcf37bc2e8073d60dcf9e7",
+      "userAcceptance": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\ui03-accepted.json",
+        "bytes": 1950,
+        "sha256": "45731FD81B423309DA321CF86C2D0000B895700D5A01C6A6A976DB7B6B7D8A75"
+      },
+      "acceptedHandoffArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_204239_UI03-accepted-to-UI04-Gemini-IMPLEMENT_HANDOFF.md",
+        "bytes": 4196,
+        "sha256": "891A83B28AC47513AC23D79A99E6EA6A90EEDE36083E51FA1F76DF10A6D971D5"
+      },
+      "nextTask": "UI-04",
+      "nextHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 34797,
+        "sha256": "1A1C3ACCE550DD8D9FF49FE9D4ECF5C60505334CFEB95500A7AF8E3C98BAD6D3"
+      },
+      "priorAcceptanceBeforeDesignFeedback": {
+        "status": "ACCEPTED",
+        "reviewDecision": "TECHNICAL_PASS_AFTER_ROW_FILL_FOLLOWUP",
+        "reviewAssessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-row-fill-20261028_180824\\assessment.json",
+          "bytes": 10620,
+          "sha256": "28949D4E53B20A790BDE4E2A46C68473C0C7C525997B45C30B5CB7A7F904B481"
+        },
+        "technicalAccepted": true,
+        "userApproved": true
+      },
+      "action": "AWAIT_USER_REVIEW",
+      "followupDefectId": "UI03-D09",
+      "implementationScope": [
+        "src/web/screens/sites.ts",
+        "src/web/screens/sites-wizard.ts",
+        "src/web/screens/sites-wizard-basics.ts",
+        "src/web/screens/sites-wizard-pattern.ts",
+        "src/web/screens/sites-wizard-palette.ts",
+        "src/web/screens/sites-simulation.ts",
+        "src/web/screens/sites-simulation.test.ts",
+        "src/web/sites.css",
+        "scripts/ui-checks/sites.mjs"
+      ],
+      "implementationPlan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\plan.json",
+      "followupSourceBefore": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-calendar-layout-20261029_083641\\source-before.json",
+        "bytes": 68908,
+        "sha256": "CCB463A366845B60D6970D9D2321E9388EF70E6BDB8DDFFC80D3352C754820E0"
+      },
+      "followupSourceFinal": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\source-final.json",
+      "expectedResumeFileCount": 436,
+      "currentProtectedFileCount": 413,
+      "currentAllowedPaths": [
+        "src/web/screens/sites-wizard-pattern.ts",
+        "src/web/screens/sites-pattern-model.ts",
+        "src/web/screens/sites-wizard-review.ts",
+        "src/web/screens/sites-wizard-basics.ts",
+        "src/web/screens/sites-wizard.ts",
+        "src/web/sites.css",
+        "scripts/ui-checks/sites.mjs",
+        "docs/codebase-map.md",
+        "src/shared/bridge/contracts.ts",
+        "src/shared/bridge/channel-contracts.ts",
+        "src/main/http/routes/workforce-routes.ts",
+        "src/main/services/database-migration-service.ts",
+        "src/main/services/database-migration-service.test.ts",
+        "src/shared/bridge/pattern-presets.ts",
+        "src/main/services/pattern-preset-storage-service.ts",
+        "src/main/services/pattern-preset-storage-service.test.ts",
+        "src/web/screens/sites-team-pattern.ts",
+        "src/web/screens/sites-team-pattern.test.ts",
+        "src/web/screens/sites-pattern-library.ts",
+        "src/main/http/routes/workforce-routes.test.ts",
+        "src/web/bridge/app-bridge.test.ts",
+        "src/shared/bridge/channel-contracts.test.ts",
+        "src/main/http/routes/operations-routes.test.ts"
+      ],
+      "followupPreview": {
+        "url": "http://127.0.0.1:18866/",
+        "metadata": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\ui03-holiday-org-preview-final\\preview.json",
+        "helperPid": 37344,
+        "serverPid": 42132,
+        "sampleSites": 55,
+        "sampleEmployees": 65,
+        "stagedTeamMembers": 8,
+        "holidayExample": "normal eight-day team pattern plus Saturday two-day alternating D/N rule, E unchecked and day shift +1hour",
+        "userApproved": false,
+        "viewport": {
+          "width": 1707,
+          "height": 825,
+          "dpr": 1.5,
+          "panes": [
+            {
+              "name": "sites-editor-column sites-palette-column",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "name": "sites-editor-column sites-pattern-column",
+              "x": 0,
+              "y": 0
+            }
+          ],
+          "months": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 0,
+              "y": 0
+            }
+          ]
+        }
+      },
+      "currentSourceFingerprint": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\source-final.json",
+        "bytes": 69873,
+        "sha256": "3F2A94F78F33B641AD42A8C7708024BCC25330D5912850229357503F637B3E77"
+      },
+      "followupHistory": [
+        {
+          "at": "2026-10-29T10:01:21.215108+09:00",
+          "kind": "SOL_DENSE_FEEDBACK_FOLLOWUP",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "result": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\assessment.json",
+            "bytes": 2876,
+            "sha256": "97805E4864D6CDAFAD3C6410A2AD3AEA4A571B41CFC9D74988E64A2AF2CEB57E"
+          }
+        },
+        {
+          "at": "2026-10-29T10:19:50.224021+09:00",
+          "kind": "SOL_MOCKUP_REFERENCE_FOLLOWUP",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "result": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-dense-20261029_094126\\reference-followup\\assessment.json",
+            "bytes": 4605,
+            "sha256": "65CB1F514902E0A30B44F9B4D37C1B1ABA09CEE825E41325BED9A016846866A2"
+          }
+        },
+        {
+          "at": "2026-10-29T10:44:20.458673+09:00",
+          "kind": "SOL_GUI_PATTERN_FEATURE",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "plan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\plan.json"
+        },
+        {
+          "at": "2026-10-29T11:32:49.650449+09:00",
+          "kind": "SOL_GUI_PATTERN_FEATURE_COMPLETE",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "result": "TECHNICAL_PASS_USER_REVIEW_PENDING",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-gui-pattern-20261029_104408\\assessment.json",
+            "bytes": 8037,
+            "sha256": "5B7628F0380F2420FC7125FB35D2443F99332F12851E91ACBE0F415AFD4770D0"
+          }
+        },
+        {
+          "at": "2026-10-29T11:51:15.697609+09:00",
+          "kind": "SOL_HOLIDAY_ORG_FEATURE",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "plan": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\plan.json"
+        },
+        {
+          "at": "2026-10-29T12:31:19.289746+09:00",
+          "kind": "SOL_HOLIDAY_ORG_TECHNICAL_PASS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-org-20261029_115115\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T13:32:41.825344+09:00",
+          "kind": "USER_REQUESTED_DEVELOPMENT_LOGIN_BANNER",
+          "owner": "Sol",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\dev-login-banner-20261029_132949\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T14:06:12.059724+09:00",
+          "kind": "SOL_TIME_PICKER_LONG_PATTERN_DETAIL",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pattern-detail-20261029_135543\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T14:29:15.428473+09:00",
+          "kind": "SOL_PATTERN_CARDS_HOLIDAY_ENTRY_GUIDES",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-pattern-guide-20261029_141620\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T14:48:48.523506+09:00",
+          "kind": "SOL_HOLIDAY_COVERAGE_MINIMAL_FIXES",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-holiday-evaluation-20261029_143737\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T15:46:56.178147+09:00",
+          "kind": "SOL_BASICS_DATE_TEAM_PERSON_EXCEPTIONS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-exceptions-20261029_151134\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T18:02:35.584501+09:00",
+          "kind": "SOL_REMOVE_SITE_GROUPING",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-flat-list-20261029_175708\\assessment.json"
+        }
+      ]
+    },
+    "UI-04": {
+      "schema": "shiftmgmt.ui-task.v1",
+      "task": "UI-04",
+      "parentTask": "UI-04",
+      "planId": "PLAN-20261026-01",
+      "status": "USER_APPROVED",
+      "stage": "USER_REVIEW",
+      "issuedAt": "2026-10-28T20:42:39.459251+09:00",
+      "owner": "Sol",
+      "orchestrator": "Sol",
+      "action": "AWAIT_USER_REVIEW",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "issuedRequest": "RETRY",
+      "attempts": [
+        {
+          "kind": "INITIAL",
+          "number": 1,
+          "receivedAt": "2026-10-28T22:15:04.396345+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_221504_UI-04-Gemini-initial-received_HANDOFF.md",
+            "bytes": 43441,
+            "sha256": "FA638F6DDDDB0F2285AF2F0EFA414AF1E545E02C210927BEA5E65B606F935879"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\candidate-source.json",
+            "bytes": 68903,
+            "sha256": "17F513B367EBA999048490BCDF53557B9ABF004466E390071CEFF7493228CBC3"
+          },
+          "result": "CORRECT",
+          "reviewedAt": "2026-10-28T22:37:43.415433+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\assessment.json",
+            "bytes": 9837,
+            "sha256": "8D76744E332454D06EB70D00610A3F4D26D74522F0C1061017F5DA093FD8FF73"
+          },
+          "defectIds": [
+            "UI04-D01",
+            "UI04-D02",
+            "UI04-D03",
+            "UI04-D04",
+            "UI04-D05",
+            "UI04-D06",
+            "UI04-D07",
+            "UI04-D08"
+          ]
+        },
+        {
+          "kind": "RETRY",
+          "number": 1,
+          "receivedAt": "2026-10-29T00:27:15.575914+09:00",
+          "receivedHandoff": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_002715_UI-04-Gemini-retry-received_HANDOFF.md",
+            "bytes": 66402,
+            "sha256": "3C2EDBD0060EA21534D7B2748BB2AB11FD627586DD4EE036A8205C815524FFF8"
+          },
+          "candidateSource": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\candidate-source.json",
+            "bytes": 68906,
+            "sha256": "5909B56C5874E863C096EE59B90FC6988E19F07E819DD070D293ED3C02D7AFE6"
+          },
+          "result": "FAILED",
+          "reviewedAt": "2026-10-29T00:31:06.095231+09:00",
+          "assessment": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\assessment.json",
+            "bytes": 3091,
+            "sha256": "7E9B6D89BC11842B5F70CE0FCE8D59B6436202EA5B356E6307829AB82185BEB2"
+          }
+        }
+      ],
+      "baselineCommit": "1e4450e085f8a90606dcf37bc2e8073d60dcf9e7",
+      "branch": "main",
+      "expectedInitialStatus": "21authorized paths dirty;430files",
+      "allowedPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/index.html",
+        "scripts/copy-web-assets.mjs",
+        "docs/codebase-map.md",
+        "src/shared/bridge/contracts.ts",
+        "src/shared/bridge/channel-contracts.ts",
+        "src/shared/bridge/channel-contracts.test.ts",
+        "src/web/bridge/app-bridge.test.ts",
+        "src/main/http/routes/workforce-routes.ts",
+        "src/main/http/routes/workforce-routes.test.ts",
+        "src/main/http/routes/operations-routes.test.ts",
+        "src/web/screens/schedule.ts",
+        "src/web/screens/schedule-model.ts",
+        "src/web/screens/schedule-model.test.ts",
+        "src/web/screens/schedule-view.ts",
+        "src/web/screens/schedule-calendar.ts",
+        "src/web/screens/schedule-history.ts",
+        "src/web/screens/schedule-actions.ts",
+        "src/web/schedule.css",
+        "scripts/ui-checks/schedule.mjs",
+        "scripts/ui-checks/schedule-fixtures.mjs"
+      ],
+      "existingPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/index.html",
+        "scripts/copy-web-assets.mjs",
+        "docs/codebase-map.md",
+        "src/shared/bridge/contracts.ts",
+        "src/shared/bridge/channel-contracts.ts",
+        "src/shared/bridge/channel-contracts.test.ts",
+        "src/web/bridge/app-bridge.test.ts",
+        "src/main/http/routes/workforce-routes.ts",
+        "src/main/http/routes/workforce-routes.test.ts",
+        "src/main/http/routes/operations-routes.test.ts"
+      ],
+      "newPaths": [
+        "src/web/screens/schedule.ts",
+        "src/web/screens/schedule-model.ts",
+        "src/web/screens/schedule-model.test.ts",
+        "src/web/screens/schedule-view.ts",
+        "src/web/screens/schedule-calendar.ts",
+        "src/web/screens/schedule-history.ts",
+        "src/web/screens/schedule-actions.ts",
+        "src/web/schedule.css",
+        "scripts/ui-checks/schedule.mjs",
+        "scripts/ui-checks/schedule-fixtures.mjs"
+      ],
+      "protectedFileCount": 409,
+      "expectedInitialFileCount": 420,
+      "expectedFinalFileCount": 430,
+      "sourceBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\source-baseline.json",
+        "bytes": 67402,
+        "sha256": "794BC2B97699001716232C68DFB8DD3DAE233AC6B4448007775B649C2B8DE126"
+      },
+      "requirements": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14"
+      ],
+      "uiScenarios": [
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16"
+      ],
+      "negativeChecks": [
+        "N01",
+        "N02",
+        "N03",
+        "N04",
+        "N05",
+        "N06",
+        "N07",
+        "N08",
+        "N09",
+        "N10",
+        "N11",
+        "N12"
+      ],
+      "preflight": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-start-20261028_201807\\preflight.json",
+        "bytes": 5150,
+        "sha256": "CB43FACF9C7F0AFBC2BA1ECBC99FF01BB141AC6C43231A90065CB8EC2E69AAA6"
+      },
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_082629_UI03-design-feedback-before-HANDOFF.md",
+        "bytes": 4079,
+        "sha256": "5D6FF8669A690B39E37373AAFE4724DAF704560FEA269819D7F2E725301278C1"
+      },
+      "todo": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
+        "bytes": 36507,
+        "sha256": "A882CF361E4E84B0A9B4FAC055E9D99CB863CC503FBE5B62C60DD5F0AE9FEFD8"
+      },
+      "taskPlan": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\task-plan.json",
+        "bytes": 83289,
+        "sha256": "5FC191A1AD80F6366AEB631FAEEA066E654B145BC06D281581E227C8624E2478"
+      },
+      "commonUiStandard": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
+        "bytes": 10938,
+        "sha256": "1181F53879713C7DE5B90E092AF397C9BEEBEBCC7471858FA06FD6E9E9E8B900"
+      },
+      "previousHandoffArchive": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261028_204239_UI03-accepted-to-UI04-Gemini-IMPLEMENT_HANDOFF.md",
+        "bytes": 4196,
+        "sha256": "891A83B28AC47513AC23D79A99E6EA6A90EEDE36083E51FA1F76DF10A6D971D5"
+      },
+      "technicalAccepted": true,
+      "userApproved": true,
+      "previewPlanned": "http://127.0.0.1:18841/",
+      "lastReceivedAt": "2026-10-29T00:27:15.575914+09:00",
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261029_002715_UI-04-Gemini-retry-received_HANDOFF.md",
+        "bytes": 66402,
+        "sha256": "3C2EDBD0060EA21534D7B2748BB2AB11FD627586DD4EE036A8205C815524FFF8"
+      },
+      "candidateSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\candidate-source.json",
+        "bytes": 68906,
+        "sha256": "5909B56C5874E863C096EE59B90FC6988E19F07E819DD070D293ED3C02D7AFE6"
+      },
+      "scopeCheck": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\scope-final.json",
+        "bytes": 1511,
+        "sha256": "9054C2EF66B5C462CFBE26F9482910819F79BCE8A0004EE416390F14C64EB26E"
+      },
+      "retryIssuedAt": "2026-10-28T22:37:43.415433+09:00",
+      "reviewDecision": "TECHNICAL_PASS_SOL_TAKEOVER",
+      "reviewAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\assessment.json",
+        "bytes": 13529,
+        "sha256": "08EAD80AC15A08200E7029EF1198458747B25B7DB8B283F0DAAE83BA968A4F5F"
+      },
+      "defectIds": [
+        "UI04-D01",
+        "UI04-D02",
+        "UI04-D03",
+        "UI04-D04",
+        "UI04-D05",
+        "UI04-D06",
+        "UI04-D07",
+        "UI04-D08"
+      ],
+      "retryBaseline": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-review-20261028_221504\\candidate-source.json",
+        "bytes": 68903,
+        "sha256": "17F513B367EBA999048490BCDF53557B9ABF004466E390071CEFF7493228CBC3"
+      },
+      "expectedResumeFileCount": 430,
+      "takeoverAt": "2026-10-29T00:31:06.095231+09:00",
+      "lastReviewedAt": "2026-10-29T01:22:35.879125+09:00",
+      "finalSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\source-final.json",
+        "bytes": 68908,
+        "sha256": "CCB463A366845B60D6970D9D2321E9388EF70E6BDB8DDFFC80D3352C754820E0"
+      },
+      "preview": {
+        "url": "http://127.0.0.1:18844/",
+        "samplePrimaryPeople": 56,
+        "allEmployees": 59,
+        "exportHistory": 57,
+        "batchPublished": 6,
+        "record": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\preview-summary.json",
+          "bytes": 5805,
+          "sha256": "7B628E8E740D3E4E4B6E5A9F73CCC770A2927A3D1655325AFE51F88C102903AB"
+        },
+        "nativeWindow": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\native-window.json",
+          "bytes": 97,
+          "sha256": "43B8A85A3E215CC7467CE8B5B1F6D38800CFF25865EE061A724689020BB71034"
+        },
+        "processRetained": true,
+        "prior18831Preserved": true
+      },
+      "solCompletion": {
+        "at": "2026-10-29T01:22:35.879125+09:00",
+        "assessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-sol-takeover-20261029_005635\\assessment.json",
+          "bytes": 13529,
+          "sha256": "08EAD80AC15A08200E7029EF1198458747B25B7DB8B283F0DAAE83BA968A4F5F"
+        },
+        "priorFailedAssessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-retry-review-20261029_002715\\assessment.json",
+          "bytes": 3091,
+          "sha256": "7E9B6D89BC11842B5F70CE0FCE8D59B6436202EA5B356E6307829AB82185BEB2"
+        }
+      },
+      "currentUserFeedback": {
+        "at": "2026-10-29T08:26:29.096393+09:00",
+        "subject": "UI03 design gap",
+        "UI04ExplicitApproval": false,
+        "assessment": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui03-design-feedback-20261029_082629\\assessment.json",
+          "bytes": 6243,
+          "sha256": "27F568A9C04F51379DF7806913E6A6C45435F2E8441226165304FB7776395784"
+        }
+      },
+      "followupHistory": [
+        {
+          "at": "2026-10-29T16:42:30.057919+09:00",
+          "kind": "SOL_ACTUAL_MONTH_CALENDAR_UNIQUE_TEAMS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-calendar-20261029_160810\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T17:19:15.301371+09:00",
+          "kind": "SOL_TEAM_CALENDAR_USER_CORRECTION_DB_AUDIT",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-team-calendar-20261029_170130\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T17:52:08.826363+09:00",
+          "kind": "SOL_REALISTIC_OPERATIONAL_REVIEW_DATA",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-realistic-data-20261029_173222\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T18:15:37.561252+09:00",
+          "kind": "SOL_CALENDAR_ACTUAL_WORKER_NAMES",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-calendar-names-20261029_181019\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T19:26:28.685238+09:00",
+          "kind": "SOL_CALENDAR_READABILITY_LARGE_TEXT",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-readability-20261029_191405\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T19:40:54.418301+09:00",
+          "kind": "SOL_READABILITY_MUTED_PALETTE",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-palette-20261029_193909\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T19:53:41.945893+09:00",
+          "kind": "SOL_READABILITY_COLORED_DUTY_ROWS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-color-20261029_195140\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T20:20:32.221084+09:00",
+          "kind": "SOL_READABILITY_VIVID_DUTY_ROWS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-vivid-20261029_201838\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T20:34:02.604514+09:00",
+          "kind": "SOL_READABILITY_FOUR_LIGHT_HIGHLIGHTS",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\assessment.json"
+        },
+        {
+          "at": "2026-10-29T20:39:21.797768+09:00",
+          "kind": "SOL_OFF_DUTY_GRAY",
+          "initial": 1,
+          "retry": 1,
+          "total": 2,
+          "assessment": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui04-highlight-20261029_203033\\off-duty-gray\\assessment.json"
+        }
+      ],
+      "approvedAt": "2026-10-29T20:46:22.413645+09:00"
+    },
+    "UI-05": {
+      "initial": 1,
+      "retry": 1,
+      "total": 2,
+      "currentOwner": "Sol",
+      "status": "AWAITING_USER_POLICY_DECISION",
+      "issued": true,
+      "scope": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui05-prepare-20261029_204622\\scope.json",
+      "issuedAt": "2026-10-29T20:56:07.986171+09:00",
+      "issuedRequest": "RETRY",
+      "handoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 41795,
+        "sha256": "9AEBC6F08675CE4D8314BA9AE4845358EBE6DC385BA4C14A556D5FA9505B053A"
+      },
+      "receivedHandoff": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261030_003259_UI05-Gemini-retry-received_HANDOFF.md",
+        "bytes": 55283,
+        "sha256": "B2714122503DDB24F6094F7ADCEC3079B712F3321968E5A90730066A43B1401C"
+      },
+      "review": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui05-retry-review-20261030_003259",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui05-retry-review-20261030_003259\\assessment.json",
+        "bytes": 2032,
+        "sha256": "7FC1B63979A961BE0FA52C048387DD909161DDBC86F4A8038B6FA457B0B5B7A1"
+      },
+      "defectIds": [
+        "UI05-D01",
+        "UI05-D02",
+        "UI05-D03",
+        "UI05-D04",
+        "UI05-D05",
+        "UI05-D06",
+        "UI05-D07",
+        "UI05-D08"
+      ],
+      "solAssessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui05-retry-review-20261030_003259\\sol-final-assessment.json",
+        "bytes": 6610,
+        "sha256": "D4B2F7C5BD51154F771DE8BB004AB7B39803667ECDC4B9047B83B280ACFC90E4"
+      }
+    },
+    "INT-01": {
+      "status": "ACCEPTED_CLOSED",
+      "owner": "Gemini (implementation accepted); Sol verifier",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "pendingSubmission": null,
+      "packet": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5723,
+        "sha256": "AB3657EBEFE6B15A9B8848D30C6B3D40FB25545E91FF66EC8213709784D6F5DE"
+      },
+      "scope": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\int01-gemini-20261102_094022\\correction-retry1-20261102_111956.json",
+        "bytes": 4258,
+        "sha256": "3FBCDA57AC4B03B4CC3BB7F122F50E82025ED5B5D6565FBE2C9921B44AADF888"
+      },
+      "history": [
+        {
+          "kind": "initial",
+          "number": 1,
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_111008_INT01-Gemini-received-HANDOFF.md",
+            "bytes": 29894,
+            "sha256": "7765E28BDD8C61897FDDF61B1441AAA20889EC678AFA15F595E15744370B614A"
+          },
+          "review": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\int01-gemini-20261102_094022\\review-initial-20261102_111821.json",
+            "bytes": 11237,
+            "sha256": "D1DF83928A315154CA904C3D2C44B4127FF4B14C099B87F516AFD666526B3D20"
+          },
+          "result": "PARTIAL_PASS_NOT_ACCEPTED_SCOPE_GAP"
+        },
+        {
+          "kind": "retry",
+          "number": 1,
+          "received": {
+            "at": "2026-11-02T12:13:12.977382+09:00",
+            "kind": "retry1",
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_121312_INT01-Gemini-retry1-received-HANDOFF.md",
+            "bytes": 27249,
+            "sha256": "16635A9CF9887F583A1CF6AD51EAB1A44462BF5D3F995C8F8E70DE7C6F37E8C5"
+          },
+          "review": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\int01-gemini-20261102_094022\\assessment.json",
+            "bytes": 12819,
+            "sha256": "C5A1A5BE62440BE4833DE72824FECD4D63196B5B91629B9EEFA6F38B7E6FEEAE"
+          },
+          "result": "SOL_ACCEPTED_REDUCED_SCOPE"
+        }
+      ],
+      "previousScope": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\int01-gemini-20261102_094022\\task.json",
+        "bytes": 18845,
+        "sha256": "F5D6411ED0B127D67F61F99BA30B244A74BF4745D794EF22660CF83E26B0FC22"
+      },
+      "lastPacketChange": "Sol single-link evidence completed; same initial0/0/0, no reexecution assigned to Gemini",
+      "assessment": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\int01-gemini-20261102_094022\\assessment.json",
+        "bytes": 12819,
+        "sha256": "C5A1A5BE62440BE4833DE72824FECD4D63196B5B91629B9EEFA6F38B7E6FEEAE"
+      }
+    },
+    "REL-01": {
+      "status": "ACCEPTED_CLOSED",
+      "owner": "Gemini D01/D02 and Sol D03/D04 accepted; user-approved REL01 closure",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "pendingSubmission": null,
+      "packet": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 3886,
+        "sha256": "42FB063FF40C41EFCCF158C378E1ABB0AD9CCDD2379F5428ABCF5385AF4F3214"
+      },
+      "scope": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_160600_REL01-D04-final-before-assessment.json",
+        "bytes": 3519,
+        "sha256": "4FE58744C6AA34A870E70D3AFE48BED1969651078297A5CA6F444DF94F286FCC"
+      },
+      "allowedPaths": [
+        "src/web/dashboard.css"
+      ],
+      "baselineSource": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\sol-review-initial-20261102_140340\\candidate-source.json",
+        "bytes": 77693,
+        "sha256": "636BA752B263CCF5DC42C0E54410C7F951599C2BDEDACFB7BDCE37831FA8F0D2"
+      },
+      "history": [
+        {
+          "kind": "initial",
+          "number": 1,
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_140340_REL01-Gemini-initial-received-HANDOFF.md",
+            "bytes": 22506,
+            "sha256": "E0F66A3616BAE1DB22A4444B055DD06EEAA06D66B204918EA8548AE7FF182BCB"
+          },
+          "result": "SOL_ACCEPTED_DEFECT_FIX",
+          "review": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\sol-review-initial-20261102_140340\\assessment.json",
+            "bytes": 10739,
+            "sha256": "36E353BEFEDBAC8CB7BB15A33A15F8045A82D3FC6F7AF4616C1FED2FD7AF0241"
+          }
+        },
+        {
+          "kind": "retry",
+          "number": 1,
+          "defect": "REL01-D02",
+          "received": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_150524_REL01-Gemini-retry1-D02-received-HANDOFF.md",
+            "bytes": 17570,
+            "sha256": "6FEDE22F6785C5C3968E01EBD29C4F6A0917771C2F9F0FE63E87753571F6D52E"
+          },
+          "result": "SOL_ACCEPTED_D02",
+          "review": {
+            "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\sol-review-D02-retry1-20261102_150524\\assessment.json",
+            "bytes": 9950,
+            "sha256": "0F225487C0DC0A4E40DC6A6DD8BC728AB13B53875262C084331243EC295B25CB"
+          }
+        }
+      ],
+      "authorization": {
+        "at": "2026-11-02T13:20:02.517841+09:00",
+        "userMessage": "응 진행해",
+        "context": "User approves proposed REL01-D01 two-file dashboard compatibility fix",
+        "allowedProductPaths": [
+          "src/web/screens/dashboard-model.ts",
+          "src/web/screens/dashboard-model.test.ts"
+        ],
+        "excluded": [
+          "DB/API/calculation/migration/dependencies/config changes",
+          "other product files",
+          "REL-02",
+          "REL-03",
+          "commit",
+          "deploy",
+          "operating data writes"
+        ]
+      },
+      "note": "No Gemini submission reset or extra attempt; user approved Sol CSS1-file correction.",
+      "received": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261102_150524_REL01-Gemini-retry1-D02-received-HANDOFF.md",
+        "bytes": 17570,
+        "sha256": "6FEDE22F6785C5C3968E01EBD29C4F6A0917771C2F9F0FE63E87753571F6D52E"
+      },
+      "reviewPath": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\sol-review-D02-retry1-20261102_150524",
+      "review": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\D04-sol-20261102_154702\\assessment.json",
+        "bytes": 14266,
+        "sha256": "E874B907F899ED33256824646CDB338BC711A2C272C96393B35CB372872AF520"
+      },
+      "lastReviewResult": "SOL_ACCEPTED_D02",
+      "issuedPacketFingerprint": {
+        "bytes": 17187,
+        "sha256": "4DBEC1B2059EEF2E96E05FB0E44EA4DB5B290787DF305A28D0881C107D85D862",
+        "description": "Historical IMPLEMENT packet fingerprint at issuance; complete received instruction plus response is preserved at history[0].received."
+      },
+      "lastPacketChange": "User-authorized D02 CSS-only polish after D01 accepted; same REL01 counters1/0/1 retained. No new actual submission yet.",
+      "solDirectException": {
+        "defect": "REL01-D03",
+        "authorization": {
+          "userAnswer": "Codex가 직접 수정·검수 (권장)",
+          "scope": "Current window5 ranking rows, CSS1 file; preserve font sizes, bottom gutter and monetary data",
+          "exception": "Specific Sol direct writer exception for REL01-D03 only; Gemini1/1/2 counters unchanged"
+        },
+        "review": {
+          "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\D03-sol-20261102_153059\\assessment.json",
+          "bytes": 12172,
+          "sha256": "D02E33FE75F65C8F0C22545548BB3B6092541DAD869A0B848ACD5B2F92A66CE4"
+        },
+        "countsUnchanged": true
+      },
+      "taskClosure": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\rel01-20261102_123102\\assessment.json",
+        "bytes": 21929,
+        "sha256": "F31A70A73B1BDE418763831408D5943BA9152484319140D025C44470E4A05249"
+      },
+      "userApproval": {
+        "at": "2026-11-02T16:17:41.847515+09:00",
+        "userMessage": "오케이 승인할께 다음 작업은 뭐야?",
+        "approved": true,
+        "scope": "Reviewed dashboard D01-D04 corrections and REL01 one-month comparison results; no assertion user personally reran every registration/intake/calculation scenario. Existing INT01 workflow evidence reused."
+      }
+    },
+    "UI-FINAL-01": {
+      "status": "DESIGN_DELIVERED",
+      "owner": "Sol (user explicit direct authorization for UI-FINAL-03)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "pendingSubmission": null,
+      "evidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui-final-review-20261102\\assessment.json",
+        "bytes": 11367,
+        "sha256": "4B1FB1E6DEE42863DFD12AE2D81969365725D17E8EEDF57FC62F9CB953D9B469"
+      }
+    },
+    "UI-FINAL-02": {
+      "status": "EXISTING_REAL_UI_DISPLAY_DELIVERED",
+      "owner": "Sol (user explicit direct authorization for UI-FINAL-03)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "pendingSubmission": null,
+      "evidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui-final-review-20261102\\assessment.json",
+        "bytes": 11367,
+        "sha256": "4B1FB1E6DEE42863DFD12AE2D81969365725D17E8EEDF57FC62F9CB953D9B469"
+      }
+    },
+    "UI-FINAL-03": {
+      "status": "USER_APPROVED_CLOSED",
+      "owner": "Sol (user explicit direct authorization for UI-FINAL-03)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "pendingSubmission": null,
+      "evidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui-final-review-20261102\\assessment.json",
+        "bytes": 11367,
+        "sha256": "4B1FB1E6DEE42863DFD12AE2D81969365725D17E8EEDF57FC62F9CB953D9B469"
+      },
+      "userApprovalEvidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui-admin-settings-20261102\\task.json",
+        "bytes": 5515,
+        "sha256": "133FAE04DA54F6DF62CBD7DFC9B40195F381868DB9A17CC47CDFAE3F9D3CEFEA"
+      }
+    },
+    "UI-ADMIN-01-SETTINGS": {
+      "status": "USER_APPROVED_CLOSED",
+      "owner": "Sol takeover complete; user review pending",
+      "orchestratorAndVerifier": "Sol",
+      "initialSubmissions": 1,
+      "retrySubmissions": 1,
+      "cumulativeSubmissions": 2,
+      "pendingSubmission": null,
+      "allowedPaths": [
+        "src/web/screens/operations-settings.ts",
+        "src/web/screens/operations-settings-view.ts",
+        "src/web/screens/operations-backup.ts",
+        "src/web/operations.css",
+        "scripts/ui-checks/operations.mjs",
+        "docs/codebase-map.md"
+      ],
+      "evidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\ui-admin-system-20261103\\assessment.json",
+        "bytes": 5034,
+        "sha256": "CA0BB46E637E64D0DB356D43BD9536514FBB6ED663DCCBB5490EC507E10EF77B"
+      },
+      "packet": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 5515,
+        "sha256": "6AA8F96AF9B5C28CD3E2E57F9C52D642B5FEE7E84CB87D7C92C3A679EB6C6F10"
+      },
+      "userApproved": true
+    },
+    "POLICY-HISTORY-01": {
+      "status": "SOL_VERIFY_INITIAL",
+      "owner": "Gemini implementation; Sol verification",
+      "initialSubmissions": 1,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 1,
+      "pendingSubmission": null,
+      "evidence": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\preflight.json",
+        "bytes": 2238,
+        "sha256": "FB55109A491D9663E8DE2122A7E893270B900CA76C0A2D947E8812C3DACA2F5D"
+      },
+      "packet": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\HANDOFF.md",
+        "bytes": 41883,
+        "sha256": "72F1C8082F4408E1918D805FAFC43001382B64A8FFF730CDEA6A6C690BB16A7A"
+      },
+      "received": {
+        "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261103_165252_POLICY-HISTORY-01-initial-received-HANDOFF.md",
+        "bytes": 50469,
+        "sha256": "BBE2044A9A122A595BDBB05A9CBCB71BC843768C21FF3D4C0B0BD895EDDFBE39",
+        "review": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252"
+      }
+    }
+  }
+}

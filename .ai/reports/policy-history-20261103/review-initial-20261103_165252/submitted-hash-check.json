@@ -1,0 +1,34 @@
+[
+  {
+    "path": "src/main/http/routes/operations-routes.ts",
+    "match": true
+  },
+  {
+    "path": "src/main/services/policy-history-service.ts",
+    "match": true
+  },
+  {
+    "path": "src/main/services/policy-history-impact-service.ts",
+    "match": true
+  },
+  {
+    "path": "src/main/services/policy-history-integration.test.ts",
+    "match": true
+  },
+  {
+    "path": "src/shared/domain/policy-history.ts",
+    "match": true
+  },
+  {
+    "path": "src/web/policy-history.css",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/operations-policy-dialog.ts",
+    "match": true
+  },
+  {
+    "path": "src/web/screens/operations-policy-history.ts",
+    "match": true
+  }
+]

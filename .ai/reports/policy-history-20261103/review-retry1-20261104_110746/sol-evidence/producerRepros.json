@@ -1,0 +1,25 @@
+[
+  {
+    "name": "first-parser-dangling-policy-id",
+    "rowsBefore": 0,
+    "rowsAfterParser": 3,
+    "storedBindingIdExistsAfterBootstrap": true,
+    "violation": false
+  },
+  {
+    "name": "changed-worker-binding-missing",
+    "actualReplacementSelected": true,
+    "bindingKinds": [
+      "changed-worker-priority"
+    ],
+    "violation": false
+  },
+  {
+    "name": "related-approval-changed-after-preview",
+    "previewApprovedCount": 0,
+    "approvalSucceeded": true,
+    "oldPreviewApplied": false,
+    "rejectionCode": "POLICY_CONFLICT",
+    "violation": false
+  }
+]

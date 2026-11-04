@@ -1,0 +1,25 @@
+[
+  {
+    "name": "modal-focus-and-label",
+    "focusInside": true,
+    "labelled": true,
+    "violation": false
+  },
+  {
+    "name": "preview-error-visible",
+    "text": "검수용 서버 오류",
+    "visible": true,
+    "violation": false
+  },
+  {
+    "name": "draft-edit-during-preview",
+    "confirmEnabled": false,
+    "appliedOldToken": false,
+    "violation": false
+  },
+  {
+    "name": "closed-dialog-response-ownership",
+    "lastAppliedToken": "new-dialog-token",
+    "violation": false
+  }
+]

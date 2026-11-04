@@ -1,0 +1,64 @@
+{
+  "policy-tests.json": {
+    "bytes": 7315,
+    "sha256": "0CB66887B3BA72C962DAFC0BCCC7E3E941C6988956C350E5796B9A8EBDD75ABF",
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "actualFiles": 4,
+    "claimedSuites": 8,
+    "testNames": [
+      "policy-history-integration (PH01 ~ PH09) PH01~PH09: complete policy lifecycle - bootstrap, parsing, preview, apply, approval, used event, and immutable lock",
+      "Policy History Domain Model (PH01 ~ PH04) [PH02] verifies valid dates including leap years and rejects malformed dates",
+      "Policy History Domain Model (PH01 ~ PH04) [PH03] resolves active timeline with continuous periods (6/30, 7/1, 8/31, 9/1 boundaries)",
+      "Policy History Domain Model (PH01 ~ PH04) [PH04] handles scheduled policy correction and cancellation with gapless timeline preservation",
+      "Policy History Domain Model (PH01 ~ PH04) [PH01] generates deterministic fingerprints for application and month context"
+    ]
+  },
+  "full-tests.json": {
+    "bytes": 529013,
+    "sha256": "5CF50B716ACDA538C73002760EB6709F6333738BA27D5DFCC59A66D69DF91AFB",
+    "total": 1445,
+    "passed": 1445,
+    "failed": 0,
+    "actualFiles": 155,
+    "claimedSuites": 408,
+    "testNames": [
+      "policy-history-integration (PH01 ~ PH09) PH01~PH09: complete policy lifecycle - bootstrap, parsing, preview, apply, approval, used event, and immutable lock",
+      "Policy History Domain Model (PH01 ~ PH04) [PH02] verifies valid dates including leap years and rejects malformed dates",
+      "Policy History Domain Model (PH01 ~ PH04) [PH03] resolves active timeline with continuous periods (6/30, 7/1, 8/31, 9/1 boundaries)",
+      "Policy History Domain Model (PH01 ~ PH04) [PH04] handles scheduled policy correction and cancellation with gapless timeline preservation",
+      "Policy History Domain Model (PH01 ~ PH04) [PH01] generates deterministic fingerprints for application and month context"
+    ]
+  },
+  "ops-focused/summary.json": {
+    "bytes": 28704,
+    "sha256": "2958722BA484E5040AB679BDB8C34BDB4E09F8A2810A6E654D1D9C47A70E26E1",
+    "status": "PARTIAL_PASS",
+    "fullRun": false,
+    "exactScenarios": true,
+    "failed": [],
+    "failedScenarios": null,
+    "unexpectedErrors": []
+  },
+  "ops-full/summary.json": {
+    "bytes": 34960,
+    "sha256": "C541FA64483ABA25AB6EC1179A041A96934B44488E9ED9412093FA4FB60BD242",
+    "status": "PASS",
+    "fullRun": true,
+    "exactScenarios": true,
+    "failed": [],
+    "failedScenarios": null,
+    "unexpectedErrors": []
+  },
+  "performance-full/results.json": {
+    "bytes": 14583,
+    "sha256": "7112D59E307B7CB0CC6CC32873251756D5E94F148F039427B0CCD93C3FC2903F",
+    "status": "PARTIAL_BLOCKED",
+    "fullRun": null,
+    "exactScenarios": null,
+    "failed": null,
+    "failedScenarios": [],
+    "unexpectedErrors": []
+  }
+}

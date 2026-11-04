@@ -1,0 +1,496 @@
+{
+  "status": "PARTIAL_BLOCKED",
+  "plannedScenarios": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
+  ],
+  "completedScenarios": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10",
+    "S11",
+    "S12",
+    "S14",
+    "S15",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
+  ],
+  "blockedScenarios": [
+    {
+      "id": "S13",
+      "reason": "Existing protected API explicitly returns PERFORMANCE_REJECT_UNSUPPORTED. No rejection success or history mutation is claimed."
+    },
+    {
+      "id": "S16",
+      "reason": "Existing API blocks hiding calculated approvals."
+    }
+  ],
+  "failedScenarios": [],
+  "expectedRejections": {
+    "N01": true,
+    "N02": true,
+    "N03": true,
+    "N04": true,
+    "N05": true,
+    "N06": true,
+    "N07": true,
+    "N08": true,
+    "N09": true,
+    "N10": true,
+    "N11": true,
+    "N12": true
+  },
+  "negativeEvidence": {
+    "N04": {
+      "cancelledWithoutMutation": true
+    },
+    "N02": {
+      "requests": 1,
+      "duplicateCode": "PERFORMANCE_ALREADY_APPROVED",
+      "calculations": 12
+    },
+    "N05": {
+      "zeroBlocked": true,
+      "reasonRequired": true,
+      "overrideStored": true
+    },
+    "N03": {
+      "blankReasonBlocked": true
+    },
+    "N06": {
+      "incompleteFinalizeCode": "PERFORMANCE_REAPPROVAL_FINALIZE_BLOCKED"
+    },
+    "approvePendingFile": "PERFORMANCE_APPROVAL_BLOCKED",
+    "returnApprovedFileToPending": "PERFORMANCE_RETURN_TO_PENDING_BLOCKED",
+    "hideApprovedRow": "PERFORMANCE_APPROVED_ARCHIVE_REQUIRED",
+    "N07": {
+      "lockedOperationsBlocked": true
+    },
+    "N10": {
+      "missingSourceReported": true
+    },
+    "N01": [
+      {
+        "role": "operator",
+        "code": "AUTH_FORBIDDEN"
+      },
+      {
+        "role": "planner",
+        "code": "AUTH_FORBIDDEN"
+      }
+    ],
+    "N11": {
+      "actionClosed": true,
+      "lateComparisonIgnored": true,
+      "expiredSessionLoggedOut": true
+    },
+    "N08": {
+      "excludedPoolCode": "PERFORMANCE_APPROVAL_BLOCKED"
+    },
+    "N09": {
+      "invalidWorkbookReported": true,
+      "uniquePaidSignatures": 14
+    },
+    "N12": {
+      "literalMarkup": true,
+      "execution": false
+    }
+  },
+  "observations": {
+    "S01": {
+      "verified": true
+    },
+    "S02": [
+      {
+        "size": {
+          "width": 1707,
+          "height": 825
+        },
+        "a": {
+          "x": 260,
+          "y": 276,
+          "width": 1015,
+          "height": 477
+        },
+        "b": {
+          "x": 1287,
+          "y": 276,
+          "width": 380,
+          "height": 477
+        }
+      },
+      {
+        "size": {
+          "width": 1920,
+          "height": 945
+        },
+        "a": {
+          "x": 260,
+          "y": 276,
+          "width": 1228,
+          "height": 597
+        },
+        "b": {
+          "x": 1500,
+          "y": 276,
+          "width": 380,
+          "height": 597
+        }
+      }
+    ],
+    "S03": {
+      "rows": 89,
+      "pollingPageRetained": true,
+      "resizeSelectionRetained": true,
+      "configuredName": "1근",
+      "configuredColor": "D"
+    },
+    "S04": {
+      "verified": true
+    },
+    "S05": {
+      "verified": true
+    },
+    "S06": {
+      "failureVisible": true,
+      "recovered": true
+    },
+    "S07": {
+      "running": true
+    },
+    "S08": {
+      "approved": 18,
+      "pending": 68,
+      "rejected": 1,
+      "reapprovalPending": 1,
+      "reapprovalCompleted": 1,
+      "locked": 1,
+      "nonpayable": 11,
+      "holiday": 43
+    },
+    "S09": {
+      "entry": "2026_05_보라매DC.xlsx::1793687930827:overtime:35",
+      "amount": 72600
+    },
+    "S10": {
+      "verified": true
+    },
+    "S11": {
+      "normalRateUnchanged": true,
+      "stored": true
+    },
+    "S12": {
+      "verified": true
+    },
+    "S13": {
+      "blocked": "Existing protected API explicitly returns PERFORMANCE_REJECT_UNSUPPORTED. No rejection success or history mutation is claimed.",
+      "code": "PERFORMANCE_REJECT_UNSUPPORTED"
+    },
+    "S14": {
+      "file": "2026_05_보라매DC.xlsx::1793687933769",
+      "finalized": true
+    },
+    "S15": {
+      "file": "2026_05_송도데이터센터.xlsx::1793687930567",
+      "explicitWholeFileReturn": true,
+      "w07": {
+        "oldRate": 12200,
+        "newRate": 14422,
+        "workDate": "2026-05-11",
+        "result": {
+          "status": "completed",
+          "appliedEntryCount": 13,
+          "unresolvedEntryCount": 0,
+          "sourceFileMissing": false
+        },
+        "cancelPreserved": true,
+        "duplicatePostsBlocked": true,
+        "sourceFieldsPreserved": true,
+        "onlyOwnHistoryDeleted": true,
+        "noAutomaticApproval": true,
+        "reapprovalUsesCurrentRate": true
+      }
+    },
+    "S16": {
+      "blocked": "Existing API blocks hiding calculated approvals.",
+      "code": "PERFORMANCE_ALLOWANCE_HISTORY_EXISTS"
+    },
+    "S17": {
+      "verified": true
+    },
+    "S18": {
+      "verified": true
+    },
+    "S19": {
+      "verified": true
+    },
+    "S20": {
+      "w05": {
+        "originalRate": 12200,
+        "rereadRate": 13311,
+        "displayedRate": 12200,
+        "logicalKey": "2026-05:성남바이오생산동:overtime:34",
+        "approvedSourceUnchanged": true,
+        "needsReapproval": false,
+        "approvalAndCalculationsUnchanged": true,
+        "duplicateCode": "PERFORMANCE_ALREADY_APPROVED",
+        "actualUiReparse": true
+      },
+      "w06": {
+        "logicalKey": "2026-05:구로오피스관제센터:overtime:34",
+        "singleRate": 13634,
+        "bulkRate": 13979,
+        "failedRate": 14079,
+        "single": {
+          "status": "completed",
+          "affectedEntryCount": 1,
+          "targetFileCount": 1,
+          "refreshedFileCount": 1,
+          "issues": []
+        },
+        "bulk": {
+          "status": "completed",
+          "affectedEntryCount": 1,
+          "targetFileCount": 1,
+          "refreshedFileCount": 1,
+          "issues": []
+        },
+        "locked": {
+          "status": "partial",
+          "affectedEntryCount": 1,
+          "targetFileCount": 1,
+          "refreshedFileCount": 0,
+          "issues": [
+            {
+              "fileName": "2026_05_구로오피스관제센터.xlsx",
+              "message": "EBUSY: resource busy or locked, open 'C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_구로오피스관제센터.xlsx'"
+            }
+          ]
+        },
+        "actualUiBoth": true,
+        "noManualReparseBetweenSaves": true,
+        "realExclusiveSourceLock": true,
+        "cacheRetainedOnFailure": true,
+        "manualReparseAfterUnlock": true,
+        "approvedHistoryAndCalculationsUnchanged": true
+      },
+      "w08": {
+        "file": "2026_05_구로오피스관제센터.xlsx::1793687930666",
+        "entry": "2026_05_구로오피스관제센터.xlsx::1793687930666:overtime:34",
+        "invalidRate": 14079,
+        "replacementRate": 15079,
+        "void": {
+          "id": "56c6b1a9-3578-4ae2-8f80-ad186d9d6835",
+          "actionType": "invalidated",
+          "hourlyRate": 14079,
+          "effectiveFrom": "2026-05-11",
+          "effectiveTo": "2026-12-31",
+          "reason": "W06 파일 잠금 실패 안내",
+          "changeReason": "W08 원본 시급 등록 오류 확인",
+          "actorDisplayName": "관리자",
+          "actorLoginId": "admin",
+          "actorRole": "admin",
+          "occurredAt": "2026-11-03T06:39:50.659Z"
+        },
+        "refresh": {
+          "status": "completed",
+          "affectedEntryCount": 1,
+          "targetFileCount": 1,
+          "refreshedFileCount": 1,
+          "issues": []
+        },
+        "actualUiVoid": true,
+        "sourceKept": true,
+        "approvedHistoryAndCalculationsPreservedBeforeExplicitApproval": true,
+        "gapBlockedApproval": true,
+        "explicitSameDateReplacement": true,
+        "newCalculationUsesReplacement": true
+      },
+      "w09": {
+        "file": "2026_05_구로오피스관제센터.xlsx::1793687930666",
+        "entry": "2026_05_구로오피스관제센터.xlsx::1793687930666:overtime:35",
+        "retirement": {
+          "kind": "retirement",
+          "retireDate": "2026-05-20",
+          "closedWageCount": 1,
+          "closedAssignmentCount": 1,
+          "excludedFutureWageCount": 1,
+          "excludedFutureAssignmentCount": 0,
+          "adjustedHistoryCount": 0,
+          "legacyProvenanceIncomplete": false,
+          "pendingPerformanceRefresh": {
+            "status": "completed",
+            "affectedEntryCount": 1,
+            "targetFileCount": 1,
+            "refreshedFileCount": 1,
+            "issues": []
+          }
+        },
+        "corrected": {
+          "kind": "date-correction",
+          "retireDate": "2026-05-22",
+          "previousRetireDate": "2026-05-20",
+          "closedWageCount": 1,
+          "closedAssignmentCount": 1,
+          "excludedFutureWageCount": 1,
+          "excludedFutureAssignmentCount": 0,
+          "adjustedHistoryCount": 2,
+          "legacyProvenanceIncomplete": false,
+          "pendingPerformanceRefresh": {
+            "status": "completed",
+            "affectedEntryCount": 1,
+            "targetFileCount": 1,
+            "refreshedFileCount": 1,
+            "issues": []
+          }
+        },
+        "actualUi": true,
+        "firstExcludedDay": true,
+        "cachedManualApprovalBlocked": true,
+        "approvedSnapshotsPreserved": true,
+        "correctedDateReappliesValidWage": true,
+        "explicitApprovalAfterCorrection": true
+      },
+      "w10": {
+        "file": "2026_05_강서통합관제센터.xlsx::1793687930725",
+        "entry": "2026_05_강서통합관제센터.xlsx::1793687930725:substitute:11",
+        "retirement": {
+          "kind": "retirement",
+          "retireDate": "2026-05-03",
+          "closedWageCount": 1,
+          "closedAssignmentCount": 1,
+          "excludedFutureWageCount": 1,
+          "excludedFutureAssignmentCount": 0,
+          "adjustedHistoryCount": 0,
+          "legacyProvenanceIncomplete": false,
+          "pendingPerformanceRefresh": {
+            "status": "completed",
+            "affectedEntryCount": 2,
+            "targetFileCount": 1,
+            "refreshedFileCount": 1,
+            "issues": []
+          }
+        },
+        "rehire": {
+          "kind": "rehire",
+          "startDate": "2026-05-05",
+          "previousRetireDate": "2026-05-03",
+          "employmentPeriodId": "d3ab9a5e-23b1-46ee-8370-5239e9a955c6",
+          "newWageCount": 1,
+          "newAssignmentCount": 1,
+          "pendingPerformanceRefresh": {
+            "status": "completed",
+            "affectedEntryCount": 2,
+            "targetFileCount": 1,
+            "refreshedFileCount": 1,
+            "issues": []
+          }
+        },
+        "sameIdentity": true,
+        "firstHirePreserved": true,
+        "actualUi": true,
+        "actualXlsxReparse": true,
+        "gapBlocksCachedManualApproval": true,
+        "approvedSnapshotsPreserved": true
+      }
+    }
+  },
+  "fixture": {
+    "totalGeneratedRows": 60,
+    "createdExcelFiles": [
+      {
+        "siteName": "송도데이터센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_송도데이터센터.xlsx",
+        "fileName": "2026_05_송도데이터센터.xlsx"
+      },
+      {
+        "siteName": "수원부품공장",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_수원부품공장.xlsx",
+        "fileName": "2026_05_수원부품공장.xlsx"
+      },
+      {
+        "siteName": "평택설비운영센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_평택설비운영센터.xlsx",
+        "fileName": "2026_05_평택설비운영센터.xlsx"
+      },
+      {
+        "siteName": "구로오피스관제센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_구로오피스관제센터.xlsx",
+        "fileName": "2026_05_구로오피스관제센터.xlsx"
+      },
+      {
+        "siteName": "성남바이오생산동",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_성남바이오생산동.xlsx",
+        "fileName": "2026_05_성남바이오생산동.xlsx"
+      },
+      {
+        "siteName": "강서통합관제센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_강서통합관제센터.xlsx",
+        "fileName": "2026_05_강서통합관제센터.xlsx"
+      },
+      {
+        "siteName": "판교연구센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_판교연구센터.xlsx",
+        "fileName": "2026_05_판교연구센터.xlsx"
+      },
+      {
+        "siteName": "인천허브",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_인천허브.xlsx",
+        "fileName": "2026_05_인천허브.xlsx"
+      },
+      {
+        "siteName": "동탄센터",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_동탄센터.xlsx",
+        "fileName": "2026_05_동탄센터.xlsx"
+      },
+      {
+        "siteName": "보라매DC",
+        "filePath": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e\\data\\imports\\pending\\2026_05_보라매DC.xlsx",
+        "fileName": "2026_05_보라매DC.xlsx"
+      }
+    ],
+    "syncResult": {
+      "rowCount": 89,
+      "approvedScopeRowCount": 9,
+      "groupsCount": 10,
+      "reapprovalFilesCount": 1,
+      "reapprovalPendingCount": 1,
+      "reapprovalCompletedCount": 1,
+      "changeLockedCount": 1,
+      "approvedCount": 10,
+      "rejectedCount": 1,
+      "nonPayableCount": 10,
+      "legalHolidayCount": 39
+    }
+  },
+  "userDataDir": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\shiftmgmt-perf-data-453bf76c6e",
+  "out": "C:\\Users\\pangyo\\AppData\\Local\\Temp\\policy-history-implementation-20261103\\performance-full",
+  "unexpectedErrors": []
+}

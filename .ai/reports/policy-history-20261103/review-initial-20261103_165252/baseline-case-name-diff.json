@@ -1,0 +1,54 @@
+[
+  {
+    "name": "database-backup-service > should write a single JSON backup file with 40 tables, row count, and verified SHA-256 (J1, N8)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/services/database-backup-service.test.ts"
+  },
+  {
+    "name": "channel-contracts > defines exactly 111 channel contracts with unique channels and methods",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts"
+  },
+  {
+    "name": "channel-contracts > matches expected group distributions (17 core, 36 operations, 29 workforce, 16 performance, 13 allowance)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts"
+  },
+  {
+    "name": "channel-contracts > matches expected guard distributions (36 admin, 37 session, 24 action, 1 accessHistory, 13 none)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts"
+  },
+  {
+    "name": "channel-contracts > matches expected counts for recordsActivity (61), dialog (6), usesDataDir (25)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/shared/bridge/channel-contracts.test.ts"
+  },
+  {
+    "name": "app-bridge > exposes exactly 111 methods mapped to their contract channels (R8)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/web/bridge/app-bridge.test.ts"
+  },
+  {
+    "name": "operations-routes > C2 & RN1/RN2 contract counts (CN1, CN2) > verifies registerOperationsRoutes registers exactly 36 channels independently",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > W11 existing preview and restore channels serialize the exact source-bound employee date review",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > matches expectedActivities keys with recordsActivity manifest channels exactly",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > dispatches all 36 operations channels independently, verifying exact service effects and activity logs (21 tracked, 15 untracked)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 when tracked service throws an error (RN3, CN6)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  },
+  {
+    "name": "operations-routes > R2-1 & R2-2. 36 Channel service/effect and 21 activity verification (RN1, RN2, RN3, CN5, CN6) > verifies activity is 0 and DOCUMENT_LAYOUT_PREVIEW_FAILED returned when preview-document-layout encounters error (N4, N5)",
+    "file": "C:/Projects/Active/ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts"
+  }
+]

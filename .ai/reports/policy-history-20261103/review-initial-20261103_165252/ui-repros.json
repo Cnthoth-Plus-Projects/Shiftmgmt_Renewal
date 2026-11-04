@@ -1,0 +1,25 @@
+[
+  {
+    "name": "modal-focus-and-label",
+    "focusInside": false,
+    "labelled": false,
+    "violation": true
+  },
+  {
+    "name": "preview-error-visible",
+    "text": "",
+    "visible": false,
+    "violation": true
+  },
+  {
+    "name": "draft-edit-during-preview",
+    "confirmEnabled": true,
+    "appliedOldToken": true,
+    "violation": true
+  },
+  {
+    "name": "closed-dialog-response-ownership",
+    "lastAppliedToken": "closed-dialog-token",
+    "violation": true
+  }
+]

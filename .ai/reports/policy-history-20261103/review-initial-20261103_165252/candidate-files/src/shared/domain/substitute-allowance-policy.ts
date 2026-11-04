@@ -1,0 +1,150 @@
+import type { TeamWorkType } from "./team-work-type";
+import type { SubstituteEligibilityRuleKey } from "./policy-history";
+
+// 대체근무수당 지급 여부 판정. 조 이름이 아니라 조의 근무유형(POOL/FIXED_DAY/ROTATING)으로만 판단한다.
+// Pool 제외는 기존 규칙 그대로이고, 주간고정조 제외는 적용 시작일 이후 발생분에만 적용한다(forward-only).
+
+export type SubstituteAllowanceReasonCode =
+  | "POOL_SUBSTITUTE_EXCLUDED"
+  | "FIXED_DAY_SUBSTITUTE_EXCLUDED"
+  | "ROTATING_SUBSTITUTE_ELIGIBLE"
+  | "NOT_ADDITIONAL_WORK"
+  | "TARGET_IS_NOT_ROTATING_SHIFT"
+  | "MANUAL_EXCLUSION"
+  | "NO_ALLOWANCE_POLICY";
+
+export interface SubstituteAllowanceEligibility {
+  eligible: boolean;
+  reasonCode: SubstituteAllowanceReasonCode;
+}
+
+// 판정 당시 어떤 정책이 적용됐는지 기록하기 위한 값. 규칙이 바뀌면 이 값을 올린다.
+export const SUBSTITUTE_ALLOWANCE_POLICY_VERSION = "2026-07-team-work-type";
+
+export const substituteAllowanceReasonLabels: Record<SubstituteAllowanceReasonCode, string> = {
+  POOL_SUBSTITUTE_EXCLUDED: "Pool은 교대조 대체근무수당 지급 대상이 아닙니다.",
+  FIXED_DAY_SUBSTITUTE_EXCLUDED: "주간고정조는 교대조 대체근무수당 지급 대상이 아닙니다.",
+  ROTATING_SUBSTITUTE_ELIGIBLE: "교대조 간 대체근무로 기존 지급 규칙을 적용합니다.",
+  NOT_ADDITIONAL_WORK: "본인의 정규근무라 추가근무가 아닙니다.",
+  TARGET_IS_NOT_ROTATING_SHIFT: "대체 대상 근무가 교대조 근무가 아닙니다.",
+  MANUAL_EXCLUSION: "관리자가 지급 대상에서 제외했습니다.",
+  NO_ALLOWANCE_POLICY: "적용할 수당 정책이 없습니다."
+};
+
+export const getSubstituteAllowanceReasonLabel = (reasonCode: SubstituteAllowanceReasonCode) =>
+  substituteAllowanceReasonLabels[reasonCode];
+
+export interface SubstituteAllowanceEligibilityInput {
+  // 대체 대상(원 근무자)의 근무유형
+  targetWorkType: TeamWorkType;
+  // 실제로 대체 투입된 사람의 근무유형
+  substituteWorkType: TeamWorkType;
+  // 본인의 원래 근무가 아니라 추가로 들어간 근무인지
+  isAdditionalWork: boolean;
+  // 관리자가 명시적으로 제외한 경우(기본은 사용하지 않음)
+  manualExclusion?: boolean;
+}
+
+export const determineSubstituteAllowanceEligibility = (
+  params: SubstituteAllowanceEligibilityInput
+): SubstituteAllowanceEligibility => {
+  if (params.manualExclusion === true) {
+    return { eligible: false, reasonCode: "MANUAL_EXCLUSION" };
+  }
+
+  if (params.targetWorkType !== "ROTATING") {
+    return { eligible: false, reasonCode: "TARGET_IS_NOT_ROTATING_SHIFT" };
+  }
+
+  if (!params.isAdditionalWork) {
+    return { eligible: false, reasonCode: "NOT_ADDITIONAL_WORK" };
+  }
+
+  if (params.substituteWorkType === "POOL") {
+    return { eligible: false, reasonCode: "POOL_SUBSTITUTE_EXCLUDED" };
+  }
+
+  if (params.substituteWorkType === "FIXED_DAY") {
+    return { eligible: false, reasonCode: "FIXED_DAY_SUBSTITUTE_EXCLUDED" };
+  }
+
+  if (params.substituteWorkType === "ROTATING") {
+    return { eligible: true, reasonCode: "ROTATING_SUBSTITUTE_ELIGIBLE" };
+  }
+
+  return { eligible: false, reasonCode: "NO_ALLOWANCE_POLICY" };
+};
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+// 이번에 새로 생긴 제외 사유들. Pool 제외는 예전부터 있던 규칙이라 여기 들어가지 않는다.
+// 관리자 수동 제외도 명시적 조치이므로 시작일과 무관하게 적용한다.
+const NEW_POLICY_REASON_CODES = new Set<SubstituteAllowanceReasonCode>([
+  "FIXED_DAY_SUBSTITUTE_EXCLUDED",
+  "TARGET_IS_NOT_ROTATING_SHIFT",
+  "NOT_ADDITIONAL_WORK"
+]);
+
+// 새 제외 규칙에만 적용되는 시작일 판정. 시작일이 설정돼 있지 않으면 새 규칙을 적용하지 않는다.
+export const isNewPolicyApplicable = (input: {
+  workDate: string;
+  policyEffectiveFrom?: string;
+}) => {
+  const effectiveFrom = input.policyEffectiveFrom?.trim() ?? "";
+
+  if (!DATE_PATTERN.test(effectiveFrom) || !DATE_PATTERN.test(input.workDate)) {
+    return false;
+  }
+
+  return input.workDate >= effectiveFrom;
+};
+
+export interface SubstituteAllowanceDecision extends SubstituteAllowanceEligibility {
+  policyVersion: string;
+  targetWorkType: TeamWorkType;
+  substituteWorkType: TeamWorkType;
+  reasonLabel: string;
+}
+
+// 실제 판정 진입점.
+// ruleKey가 명시된 경우 ruleKey(substitute-legacy vs substitute-team-type-v1)에 따라 정확히 분기.
+// ruleKey가 없는 경우 기존 policyEffectiveFrom 하위 호환 로직을 유지.
+export const resolveSubstituteAllowanceDecision = (
+  input: SubstituteAllowanceEligibilityInput & {
+    workDate: string;
+    policyEffectiveFrom?: string;
+    ruleKey?: SubstituteEligibilityRuleKey;
+  }
+): SubstituteAllowanceDecision => {
+  const baseDecision = determineSubstituteAllowanceEligibility(input);
+
+  let shouldDowngrade: boolean;
+  if (input.ruleKey !== undefined) {
+    if (input.ruleKey === "substitute-legacy") {
+      shouldDowngrade = NEW_POLICY_REASON_CODES.has(baseDecision.reasonCode);
+    } else if (input.ruleKey === "substitute-team-type-v1") {
+      shouldDowngrade = false;
+    } else {
+      throw new Error(`지원하지 않는 대체근무수당 정책 키입니다: ${String(input.ruleKey)}`);
+    }
+  } else {
+    shouldDowngrade =
+      NEW_POLICY_REASON_CODES.has(baseDecision.reasonCode) &&
+      !isNewPolicyApplicable({
+        workDate: input.workDate,
+        policyEffectiveFrom: input.policyEffectiveFrom
+      });
+  }
+
+  const decision: SubstituteAllowanceEligibility = shouldDowngrade
+    ? { eligible: true, reasonCode: "ROTATING_SUBSTITUTE_ELIGIBLE" }
+    : baseDecision;
+
+  return {
+    ...decision,
+    policyVersion: SUBSTITUTE_ALLOWANCE_POLICY_VERSION,
+    reasonLabel: substituteAllowanceReasonLabels[decision.reasonCode],
+    substituteWorkType: input.substituteWorkType,
+    targetWorkType: input.targetWorkType
+  };
+};
