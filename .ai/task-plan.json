@@ -5405,7 +5405,7 @@
       "id": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
       "title": "근무표·실적 FLOW-01/02/03 수정 및1.0.1 배포 준비",
       "status": "IN_PROGRESS",
-      "stage": "VERIFYING_FROZEN_CANDIDATE",
+      "stage": "VERIFYING_FROZEN_CANDIDATE_RUN2",
       "owner": "Sol",
       "implementationOwner": "Sol (standing direct implementation exception + user 응 수정하자)",
       "gemini": {
@@ -5456,7 +5456,8 @@
         "ShiftMgmt_V4/docs/fresh-install.md",
         "ShiftMgmt_V4/docs/release-1.0.1.md",
         "ShiftMgmt_V4/src/main/http/routes/performance-routes.ts",
-        "ShiftMgmt_V4/src/main/http/routes/performance-routes.test.ts"
+        "ShiftMgmt_V4/src/main/http/routes/performance-routes.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-queue-service.test.ts"
       ],
       "controlAllowlist": [
         "TODO.md",
@@ -5498,7 +5499,7 @@
         "bytes": 2991,
         "sha256": "3C275E547F0925D662A415BE8F8C407E44AC74FB28758ADDECAFDFBE9C5B9382"
       },
-      "scopeClarification": "New original-source await requires existing session/permission revalidation pattern before approval writes; add only matching performance route and route test. Necessary preservation inside FLOW-01, not new auth feature.",
+      "scopeClarification": "New original-source await requires existing session/permission revalidation pattern before approval writes; add only matching performance route and route test. Necessary preservation inside FLOW-01, not new auth feature. Necessary FLOW-02 existing regression expectation: add performance-queue-service.test.ts only, preserving real approvals before archived lookup and explicitly rejecting the deleted-approval fixture. Same approved defect/task; no new product behavior.",
       "runtimeOutputs": [
         "ShiftMgmt_V4/dist (ignored fresh build)",
         "ShiftMgmt_V4/artifacts/tests (existing isolated test runtime, ignored)",
@@ -5513,12 +5514,14 @@
         "related": "affected-02.json:241 pass,1 failed fixture corrected; model-final.json:29 pass",
         "browser": "browser-fixed.json:7 PASS; original failed fixture preserved",
         "schedule": "schedule-ui/summary.json:S01/S08/S09 PASS",
-        "performance": "performance-ui/results.json:S01/S05/S09 PASS"
+        "performance": "performance-ui/results.json:S01/S05/S09 PASS",
+        "queue": "queue-final-03.json:4 PASS, positive forced reparse and missing-approval rejection; focused prior failures retained"
       },
       "retryNotes": [
         "Missing new mock/header fixtures and manual-rate compatibility fixed before final suite; original result JSON retained",
         "Affected-02 sole model fixture used June workDate with May scheduleMonth; fixture corrected to June identity; focused29 PASS",
-        "Chrome original probe overlap blocked correctly; midnight fixture moved March5; original failure retained"
+        "Chrome original probe overlap blocked correctly; midnight fixture moved March5; original failure retained",
+        "Final full run1:1553 pass/1 fail (queue test deletes approvals before expecting approved). Correct only that required regression fixture, retain real approval/calculation positive checks and add missing-approval rejection. No product runtime changes. Full run2 required because frozen test source changes."
       ]
     }
   ],
@@ -7887,6 +7890,12 @@
       "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
       "status": "VERIFYING_FROZEN_CANDIDATE",
       "note": "Partial regressions and real Chrome/HTTP passed; freeze candidate for one required full run."
+    },
+    {
+      "at": "2026-11-07T13:12:29.376Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+      "status": "FINAL_REGRESSION_FIXTURE_CORRECTION",
+      "note": "Final full run1:1553 pass/1 fail (queue test deletes approvals before expecting approved). Correct only that required regression fixture, retain real approval/calculation positive checks and add missing-approval rejection. No product runtime changes. Full run2 required because frozen test source changes."
     }
   ],
   "remainingEstimatedHours": [
@@ -7930,7 +7939,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-07T13:02:25.155Z",
+  "updatedAt": "2026-11-07T13:14:44.900Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
