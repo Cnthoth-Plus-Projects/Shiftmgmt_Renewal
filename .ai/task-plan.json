@@ -3368,7 +3368,13 @@
         "TODO.md",
         ".ai/task-plan.json",
         "HANDOFF.md",
-        "Log/new-immutable-archives"
+        "Log/new-immutable-archives",
+        "ShiftMgmt_V4/scripts/build-browser.mjs",
+        "ShiftMgmt_V4/scripts/dev.mjs",
+        "ShiftMgmt_V4/src/web/screens/development-login.ts",
+        "ShiftMgmt_V4/scripts/release-install-smoke.mjs",
+        "ShiftMgmt_V4/scripts/smoke-require.mjs",
+        "ShiftMgmt_V4/scripts/release-check.mjs"
       ],
       "requiredChecks": [
         "Source/privacy staged-path review and non-force Git push",
@@ -3385,7 +3391,14 @@
       ],
       "deploymentAuthorized": false,
       "releasePublication": "draft assets only; operational PC installation remains REL-03",
-      "startedAt": "2026-11-07T03:40:12.335Z"
+      "startedAt": "2026-11-07T03:40:12.335Z",
+      "necessaryGap": "Formal build excludes development autofill at build time; dev builder retains explicit preview behavior. No authentication contract changes.",
+      "checkpoint": {
+        "main": "e49cb8bf96fdbfa0a636fb6e1925297533587a27",
+        "source": "60520375570fec66dc332f245f312ad09ddc6e25",
+        "tree": "0fd98feed40122bf24a29dc9a2c99ff3d0097f1c"
+      },
+      "preflightFinding": "Legacy smoke count79 vs current89; all current source/build names matched independently. Keep fixed89 plus exact source/build name comparison, require every module. Record original failure; no product service changed."
     },
     {
       "id": "REL-03",

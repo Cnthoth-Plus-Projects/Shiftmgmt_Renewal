@@ -1,6 +1,6 @@
 {
   "name": "shiftmgmt",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "교대근무관리 시스템 — 한 대의 PC에 설치하는 작은 프로그램(로컬 서버 + 크롬 화면)",
   "engines": {
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run build:server && npm run build:browser && node scripts/copy-web-assets.mjs",
     "build:server": "node scripts/clean-server-build.mjs && tsc -p tsconfig.server.json",
-    "build:browser": "esbuild src/web/app.ts --bundle --format=esm --platform=browser --target=es2022 --outfile=dist/browser/web/app.js --sourcemap --log-level=warning",
+    "build:browser": "node scripts/build-browser.mjs",
     "start": "node dist/server/main/server.js",
     "dev": "node scripts/dev.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.server.json && tsc --noEmit -p tsconfig.browser.json",
@@ -18,7 +18,9 @@
     "validate:map": "node scripts/validate-codebase-map.mjs",
     "release:check": "node scripts/release-check.mjs",
     "capture": "node scripts/capture-screen.mjs",
-    "smoke": "node scripts/smoke-require.mjs"
+    "smoke": "node scripts/smoke-require.mjs",
+    "release:package": "node scripts/package-windows.mjs",
+    "release:smoke": "node scripts/release-install-smoke.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9",
