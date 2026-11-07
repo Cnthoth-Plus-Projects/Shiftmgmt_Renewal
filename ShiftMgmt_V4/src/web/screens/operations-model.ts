@@ -5,7 +5,8 @@ import type {
 } from "../../shared/bridge/contracts";
 import type {
   HolidayItem,
-  SiteNameOptionRecord
+  SiteNameOptionRecord,
+  UserStatus
 } from "../../shared/domain/model";
 import type {
   DocumentLayoutKey,
@@ -256,6 +257,12 @@ export interface UserValidationResult {
   errors: Record<string, string>;
 }
 
+export const OPERATION_USER_STATUS_OPTIONS: ReadonlyArray<{ value: UserStatus; label: string }> = [
+  { value: "active", label: "활성" },
+  { value: "inactive", label: "비활성" },
+  { value: "pending", label: "대기" }
+];
+
 export function validateOperationUser(input: {
   loginId: string;
   displayName: string;
@@ -280,7 +287,7 @@ export function validateOperationUser(input: {
     errors.role = "유효한 역할을 선택하세요.";
   }
 
-  if (!["active", "suspended", "retired"].includes(input.status)) {
+  if (!OPERATION_USER_STATUS_OPTIONS.some(option => option.value === input.status)) {
     errors.status = "유효한 상태를 선택하세요.";
   }
 

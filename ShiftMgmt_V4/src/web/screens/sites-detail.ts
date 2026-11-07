@@ -71,8 +71,8 @@ export class SitesDetail {
 
     if (!this.site) {
       card.innerHTML = `
-        <div style="text-align:center; padding:48px 16px; color:var(--text-sub, #4B5563); font-size:13px;">
-          <span class="material-symbols-outlined" style="font-size:36px; color:#848A93; margin-bottom:8px;">domain</span>
+        <div class="sites-empty-detail">
+          <span class="material-symbols-outlined sites-empty-icon">domain</span>
           <div>목록에서 근무지를 선택하면<br>상세 정보와 설정 이력을 확인할 수 있습니다.</div>
         </div>
       `;
@@ -93,8 +93,8 @@ export class SitesDetail {
       <div>
         ${
           this.site.status === "active"
-            ? `<span style="padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold; background:#E8F5EE; color:#1E7A46;">활성</span>`
-            : `<span style="padding:2px 8px; border-radius:4px; font-size:12px; font-weight:bold; background:#F1F2F4; color:#4B5563;">비활성</span>`
+            ? `<span class="sites-detail-active">활성</span>`
+            : `<span class="sites-detail-inactive">비활성</span>`
         }
       </div>
     `;
@@ -178,21 +178,21 @@ export class SitesDetail {
         const verStatus = resolvePatternVersionStatus(pat, sitePatterns);
         let badgeHtml = "";
         if (verStatus === "current") {
-          badgeHtml = `<span style="background:#E8F5EE; color:#1E7A46; padding:1px 5px; border-radius:3px; font-weight:bold; font-size:10px;">현재</span>`;
+          badgeHtml = `<span class="sites-version-current">현재</span>`;
         } else if (verStatus === "scheduled") {
-          badgeHtml = `<span style="background:#EFF6FF; color:#1D4ED8; padding:1px 5px; border-radius:3px; font-weight:bold; font-size:10px;">예정</span>`;
+          badgeHtml = `<span class="sites-version-upcoming">예정</span>`;
         } else if (verStatus === "past") {
-          badgeHtml = `<span style="background:#F1F2F4; color:#6B7280; padding:1px 5px; border-radius:3px; font-weight:bold; font-size:10px;">과거</span>`;
+          badgeHtml = `<span class="sites-version-past">과거</span>`;
         } else {
-          badgeHtml = `<span style="background:#FEE2E2; color:#991B1B; padding:1px 5px; border-radius:3px; font-weight:bold; font-size:10px;">비활성</span>`;
+          badgeHtml = `<span class="sites-version-inactive">비활성</span>`;
         }
 
         itemDiv.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <strong style="color:var(--text, #1F2430);">${this.escape(pat.name)}</strong>
+          <div class="sites-version-heading">
+            <strong class="sites-text-primary">${this.escape(pat.name)}</strong>
             ${badgeHtml}
           </div>
-          <div style="color:var(--text-sub, #4B5563); font-size:11px;">
+          <div class="sites-version-meta">
             적용일: ${this.escape(pat.effectiveFrom || "미지정")} · ${pat.teamCount}개 조 · ${this.escape(pat.patternCode || "패턴")}
           </div>
         `;
@@ -289,10 +289,10 @@ export class SitesDetail {
             .join(", ");
 
           row.innerHTML = `
-            <div style="font-weight:bold; color:var(--text, #1F2430); margin-bottom:2px;">
+            <div class="sites-team-name">
               ${this.escape(team)} (${emps.length}명)
             </div>
-            <div style="color:var(--text-sub, #4B5563); word-break:break-all;">
+            <div class="sites-team-cycle">
               ${this.escape(names)}
             </div>
           `;
@@ -324,7 +324,7 @@ export class SitesDetail {
       noticeDiv.style.padding = "6px 8px";
       noticeDiv.style.borderRadius = "4px";
       noticeDiv.style.border = "1px solid var(--line, #E2E5EA)";
-      noticeDiv.innerHTML = `선택 버전: <strong>${this.escape(selectedPat?.name || "기본")}</strong> (적용일: ${selectedPat?.effectiveFrom || "미지정"})<br><span style="font-size:10px; color:#6B7280;">동일한 적용일로 수정 시 기존 설정이 덮어써지며, 새로운 적용일을 입력하면 신규 버전이 생성됩니다.</span>`;
+      noticeDiv.innerHTML = `선택 버전: <strong>${this.escape(selectedPat?.name || "기본")}</strong> (적용일: ${selectedPat?.effectiveFrom || "미지정"})<br><span class="sites-version-help">동일한 적용일로 수정 시 기존 설정이 덮어써지며, 새로운 적용일을 입력하면 신규 버전이 생성됩니다.</span>`;
       actionsDiv.appendChild(noticeDiv);
 
       const editBtn = document.createElement("button");
@@ -333,7 +333,7 @@ export class SitesDetail {
       editBtn.id = "btn-edit-site";
       editBtn.style.justifyContent = "center";
       editBtn.innerHTML = `
-        <span class="material-symbols-outlined" style="font-size:16px;">edit</span>
+        <span class="material-symbols-outlined sites-icon-small">edit</span>
         <span>선택 버전 및 조 수정</span>
       `;
       editBtn.addEventListener("click", () => {

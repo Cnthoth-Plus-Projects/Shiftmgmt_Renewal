@@ -14,6 +14,7 @@ import {
 } from "../../shared/domain/allowance-rate-impact";
 import {
   el,
+  OperationsWorkspace,
   createButton,
   createFormGroup,
   formatErrorMessage,
@@ -30,6 +31,8 @@ import {
 import { DataTable } from "../data-table";
 
 export class OperationsRatesTab {
+  private workspace?: OperationsWorkspace;
+  private activeArea = "versions";
   private container: HTMLElement;
   private onSessionExpired?: () => void;
   private isDestroyed = false;
@@ -123,6 +126,7 @@ export class OperationsRatesTab {
   }
 
   public destroy(): void {
+    this.workspace?.destroy();
     this.isDestroyed = true;
     this.impactRequestId++;
     this.loadRequestId++;
@@ -131,6 +135,8 @@ export class OperationsRatesTab {
 
   private render(): void {
     if (this.isDestroyed) return;
+    this.activeArea = this.workspace?.activeArea || this.activeArea;
+    this.workspace?.destroy();
     this.container.innerHTML = "";
     const wrap = el("div", "operations-rates-wrap");
 
@@ -202,26 +208,47 @@ export class OperationsRatesTab {
     editorSec.id = "rate-editor-section";
     wrap.appendChild(editorSec);
 
-    this.container.appendChild(wrap);
-    this.renderEditor();
-    const history = el("details", "rate-history-section");
-    history.appendChild(el("summary", "section-title", "요율 변경 이력 (최근 40건)"));
+    const history = el("section", "rate-history-section");
+    history.appendChild(el("h4", "section-title", "요율 변경 이력 (최근 40건)"));
     const historyContent = el("div", "rate-history-table");
     history.appendChild(historyContent);
+    let historyTable: DataTable<AllowanceRateHistoryRecord> | undefined;
     if (this.historyError) historyContent.appendChild(el("div", "alert-danger", this.historyError));
     else {
       const actions: Record<string, string> = { registered: "등록", updated: "수정", applied: "활성 적용", deleted: "삭제" };
-      new DataTable<AllowanceRateHistoryRecord>({
+      historyTable = new DataTable<AllowanceRateHistoryRecord>({
         container: historyContent, pageSize: 10, getRowId: row => row.id,
         columns: [
-          { key: "occurredAt", label: "변경 일시", render: row => new Date(row.occurredAt).toLocaleString("ko-KR") },
+          { key: "occurredAt", label: "변경 일시", width: "200px", render: row => {
+            const date = new Date(row.occurredAt);
+            const pad = (value: number) => String(value).padStart(2, "0");
+            const time = el("time", "ops-rate-history-time", `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`);
+            time.setAttribute("datetime", row.occurredAt);
+            time.title = date.toLocaleString("ko-KR");
+            return time;
+          } },
           { key: "versionLabel", label: "요율 버전", sticky: true },
           { key: "actionType", label: "변경", render: row => actions[row.actionType] || row.actionType },
           { key: "reason", label: "변경 사유" }
         ]
-      }).setData(this.history);
+      });
+      historyTable.setData(this.history);
     }
-    wrap.appendChild(history);
+    const versions = el("div", "ops-rate-version-panel"); versions.append(listSec, editorSec);
+    const impact = el("section", "ops-rate-impact-panel");
+    const impactSlot = el("div"); impactSlot.id = "rate-impact-slot";
+    impact.append(el("p", "ops-area-guidance", "요율 버전에서 배율과 적용 기간을 편집한 뒤 아래 ‘영향도 비교 분석’을 누르세요. 저장된 계산 결과와 비교만 하며 실제 지급액이나 승인 이력을 변경하지 않습니다."), impactSlot);
+    const context = el("span", "ops-menu-selection"); context.id = "ops-rate-current-label";
+    this.workspace = new OperationsWorkspace(wrap, { id: "rates", initialArea: this.activeArea, context,
+      areas: [
+        { id: "versions", label: "요율 버전", hint: "버전 선택과 수당별 배율", icon: "percent", description: "버전을 선택하고 적용 기간·수당별 배율을 편집합니다. 저장 전 영향도를 확인하고, 활성 적용은 확인창에서 결정하세요.", content: versions },
+        { id: "impact", label: "영향도 비교", hint: "적용 전 금액 영향 확인", icon: "compare_arrows", description: "편집 중인 요율을 저장된 계산 결과와 비교합니다. 비교 결과는 조회 전용이며 요율 저장이나 재계산을 실행하지 않습니다.", content: impact },
+        { id: "history", label: "변경 이력", hint: "기존 변경 기록 조회", icon: "history", description: "등록·수정·활성 적용의 변경 사유와 일시를 확인합니다. 과거 승인 결과를 이 화면에서 덮어쓰지 않습니다.", content: history }
+      ], footerText: "배율 편집 → 영향도 비교 → 변경 사유 확인 → 요율 버전 저장 순서로 진행하세요.", canChange: () => !this.isSaving && !this.isDestroyed });
+    this.container.appendChild(wrap);
+    this.renderEditor();
+    this.workspace.observeTable(this.versionTable!, tableWrap);
+    if (historyTable) this.workspace.observeTable(historyTable, historyContent);
   }
 
   private renderEditor(): void {
@@ -231,7 +258,9 @@ export class OperationsRatesTab {
 
     const titleBox = el("div", "editor-header");
     const vName = this.selectedVersion ? this.selectedVersion.versionLabel : "새 요율 버전";
-    titleBox.appendChild(el("h4", "section-title", `요율 5×3 매트릭스 설정: ${vName}`));
+    titleBox.appendChild(el("h4", "section-title", `수당별 배율: ${vName}`));
+    const currentLabel = this.container.querySelector("#ops-rate-current-label");
+    if (currentLabel) currentLabel.textContent = `선택 버전: ${vName}`;
     editorSec.appendChild(titleBox);
 
     // 폼 메타데이터 필드 (버전명, 연도, 상태, 적용기간, 사유)
@@ -343,12 +372,12 @@ export class OperationsRatesTab {
     btnSave.id = "btn-save-rate-version";
     actBar.appendChild(btnSave);
 
-    editorSec.appendChild(actBar);
+    this.workspace?.actions.replaceChildren(actBar);
 
     // 영향도 분석 결과 컨테이너
     const impactContainer = el("div", "impact-preview-container");
     impactContainer.id = "rate-impact-container";
-    editorSec.appendChild(impactContainer);
+    this.container.querySelector("#rate-impact-slot")?.replaceChildren(impactContainer);
     const invalidateImpact = () => { this.impactRequestId++; impactContainer.replaceChildren(); };
     editorSec.addEventListener("input", invalidateImpact);
     editorSec.addEventListener("change", invalidateImpact);
@@ -376,6 +405,7 @@ export class OperationsRatesTab {
   }
 
   private async handleCompareImpact(fromDate: string, toDate?: string): Promise<void> {
+    this.workspace?.select("impact");
     const bridge = window.appBridge;
     const impactBox = document.getElementById("rate-impact-container");
     if (!impactBox || !bridge || this.isDestroyed) return;

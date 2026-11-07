@@ -89,8 +89,8 @@ export class SitesScreen {
 
     if (this.isLoading) {
       root.innerHTML = `
-        <div style="display:flex; justify-content:center; align-items:center; height:300px; color:var(--text-sub, #4B5563);">
-          <span class="material-symbols-outlined" style="font-size:32px; animation:spin 1.5s linear infinite; margin-right:8px;">sync</span>
+        <div class="sites-loading">
+          <span class="material-symbols-outlined sites-loading-icon">sync</span>
           <span>근무지 및 교대 패턴 정보를 불러오는 중입니다...</span>
         </div>
       `;
@@ -100,10 +100,10 @@ export class SitesScreen {
 
     if (this.errorMessage) {
       root.innerHTML = `
-        <div style="padding:24px; background:#FCEBE9; border:1px solid #C0392B; border-radius:8px; color:#C0392B; text-align:center;">
-          <div style="font-weight:bold; font-size:15px; margin-bottom:8px;">데이터 조회 오류</div>
-          <div style="font-size:13px; margin-bottom:14px;">${this.escape(this.errorMessage)}</div>
-          <button type="button" class="btn-primary" id="btn-sites-retry" style="margin:0 auto;">다시 시도</button>
+        <div class="sites-load-error">
+          <div class="sites-error-title">데이터 조회 오류</div>
+          <div class="sites-error-copy">${this.escape(this.errorMessage)}</div>
+          <button type="button" class="btn-primary sites-retry" id="btn-sites-retry">다시 시도</button>
         </div>
       `;
       root.querySelector("#btn-sites-retry")?.addEventListener("click", () => {
@@ -173,15 +173,15 @@ export class SitesScreen {
           </div>
           <div class="sites-kpi-card">
             <span class="sites-kpi-label">활성 근무지</span>
-            <span class="sites-kpi-value" id="kpi-active-sites" style="color:#1E7A46;">${kpis.activeSites}</span>
+            <span class="sites-kpi-value sites-success-text" id="kpi-active-sites">${kpis.activeSites}</span>
           </div>
           <div class="sites-kpi-card">
             <span class="sites-kpi-label">준비/비활성</span>
-            <span class="sites-kpi-value" id="kpi-inactive-sites" style="color:#C0392B;">${kpis.inactiveSites}</span>
+            <span class="sites-kpi-value sites-danger-text" id="kpi-inactive-sites">${kpis.inactiveSites}</span>
           </div>
           <div class="sites-kpi-card">
             <span class="sites-kpi-label">총 배정 인원</span>
-            <span class="sites-kpi-value" id="kpi-total-employees" style="color:var(--accent, #3E56B6);">${kpis.totalAssignedEmployees}명</span>
+            <span class="sites-kpi-value sites-accent-text" id="kpi-total-employees">${kpis.totalAssignedEmployees}명</span>
           </div>
         </div>
       `;

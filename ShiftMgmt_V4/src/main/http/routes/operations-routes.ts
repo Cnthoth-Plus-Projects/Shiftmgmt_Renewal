@@ -25,6 +25,7 @@ import type {
   DocumentLayoutResetInput,
   DocumentLayoutSaveInput,
 } from "../../../shared/domain/document-layout";
+import { preserveSessionForDatabasePreview } from "../../services/auth-service";
 import {
   getStoredAppSettingsSnapshot,
   saveStoredAppSettings,
@@ -276,7 +277,7 @@ export const registerOperationsRoutes = (
       userDataPath: context.dataDir,
     });
     return runIpcActionWithCleanup({
-      action: () =>
+      action: () => preserveSessionForDatabasePreview(() =>
         previewDatabaseMigrationUpdate({
           userDataPath: context.dataDir,
           backupFilePath: restorePath,
@@ -292,7 +293,7 @@ export const registerOperationsRoutes = (
               },
             );
           },
-        }),
+        }), context.session?.sessionToken),
       cleanup: () =>
         restartFileWatchRuntime({
           userDataPath: context.dataDir,
@@ -311,14 +312,17 @@ export const registerOperationsRoutes = (
       userDataPath: context.dataDir,
     });
     return runIpcActionWithCleanup({
-      action: () =>
-        runDatabaseMigrationUpdate({
+      action: async () => {
+        const result = await runDatabaseMigrationUpdate({
           userDataPath: context.dataDir,
           backupFilePath: restorePath,
           backupSha256: input.backupSha256,
           previewToken: input.previewToken,
           confirmationText: input.confirmationText,
-        }),
+        });
+        sessionManager.clear();
+        return result;
+      },
       cleanup: () =>
         restartFileWatchRuntime({
           userDataPath: context.dataDir,
@@ -571,6 +575,9 @@ export const registerOperationsRoutes = (
     const input = args[0] as OperationUserDeleteInput;
     return runIpcAction({
       action: () => {
+        if (input.userId === context.session?.userId) {
+          throw new Error("현재 로그인한 본인 계정은 삭제할 수 없습니다. 다른 관리자에게 요청해 주세요.");
+        }
         deleteStoredOperationUser(input.userId);
         return null;
       },

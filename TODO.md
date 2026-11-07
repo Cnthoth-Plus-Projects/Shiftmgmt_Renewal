@@ -1,10 +1,21 @@
 # TODO — 현재 실행 계획
 
+## 2026-11-07 정식 릴리즈 준비 — 현재 유효 범위
+
+- 실행 leaf: **REL-02**, 사용자 “깃푸쉬 해주고 정식 릴리즈 배포를 위한 작업” 및 “새 PC에 처음 설치”. 과거 UI 우선/commit 금지 문구보다 이 승인이 우선한다.
+- 첫 정식 버전 **1.0.0**. main과 기존 source/shiftmgmt-v4에 소스·문서만 비강제 push한다. 공개 저장소에 DB·자격정보·급여/개인정보가 포함될 수 있는 새 로컬 검증 자료를 올리지 않는다.
+- Node24 x64 포함 Windows ZIP, 해시 매니페스트·라이선스, 새 설치/실행/바로가기, 설치 안내. 기존 PC 이관/덮어쓰기는 하지 않는다.
+- 허용 파일: REL-02 장부 allowlist. 기존 검수 변경은 먼저 checkpoint; 추가 제품 수정은 위 배포 파일과 버전/표시 상수로 한정한다. 계산·권한·DB 스키마 불변.
+- 검문: 빌드/프로덕션 lock 설치, ZIP 전체 무결성·데이터 제외, TEMP 새 설치·첫 로그인/강제 비번 변경·개발 로그인 비노출·종료/재실행, 변조/설치 충돌 거절, release:check 전체·지도·smoke. 추정 3~6시간은 기존 상한이며 실제 경과를 기록한다.
+- Sol 구현·Gemini 최초0/재시도0/누적0. REL-03 실제 PC 적용은 별도 승인 전 미실행. GitHub 공개 릴리즈는 검증된 draft까지 준비.
+- 직전 대시보드/양식 기술검수 이력과 미실행 구분은 보존한다. 이번 사용자 릴리즈 진행 지시로 다음 leaf를 REL-02로 변경한다.
+
+
 
 
 - Plan: **PLAN-20261026-01** / 사용자 요청 반영: 2026-10-26T10:39:35.851991+09:00
 
-- **현재: POLICY-HISTORY-01 Sol 보완 후 기술 수용 완료·사용자 화면 확인 대기.** 전체1454/155, 운영20/N12, 실적18/기존S13·S16 제한2, 실제 JSON40→42/승인64건13,611,839원 보존. Gemini최초1/재시도1/누적2·최종담당Sol. 보호455·범위외0. 다음은 UI-ADMIN-REFINE의 공휴일 메뉴 범위 구체화이며 이번 턴에서 착수하지 않음.
+- **현재: REL-02 — 사용자 Git push·정식 릴리즈 준비 승인 / 새 PC 첫 설치 / Sol 직접 구현·검수.** 새20/N12·12크기·시스템/다크·13→70px. Sol/Gemini0/0/0.
 
 - **사용자 안내 기준:** 대화의 승인·선택 요청과 프로그램 안내 모두 필요한 이유, 선택별 결과, 실제 데이터 영향, 권장 이유와 다음 행동을 쉬운 말로 설명한다. 현재 W09에 반영하고 다른 메뉴는 해당 Task 범위에서 적용한다.
 
@@ -15,6 +26,15 @@
 - 기존 장문 진행 이력은 [이전 TODO 원문](Log/20261026_103346_approved-task-plan-before-TODO.md)으로 그대로 보존했다. 과거 author/agent/결과는 재작성하지 않는다.
 
 
+
+## 2026-11-05 사용자 요청 — 최종 종합 품질 점검
+
+- [x] **FINAL-QUALITY-REVIEW-01** — 최종 점검 결과 전달 후 사용자 “오케이 진행하자”. 제품518무변경·새1476/156 PASS·Q01~04 재현. 결과 원문과 이력은 보존. .ai/reports/final-quality-20261105/REVIEW.md
+
+- [x] **FINAL-QUALITY-FIX-01** — 구현·기술검수 결과 전달 후 사용자 다음 단계 진행 승인. 새1501/157·운영20/N12·실적19+S16/N12. 이전평가/개별실사용을직접모두재현했다고주장하지않음. .ai/reports/final-quality-fix-20261105/assessment.json
+- [x] **FINAL-QUALITY-FIX-02** — 사용자 “오케이 승인했어. 다음 작업 이어서 진행하자”로 수용. 메뉴/내계정/CSP0·새1501/157·운영20/N12·근무지26/N12·테마13·Chrome15. .ai/reports/final-quality-fix-20261106/assessment.json
+- [x] **FINAL-QUALITY-FIX-03** — 취소 전 원문·사유/금액 비교·JSON1/2/3 기술검수 후 사용자 “응 오케이 확인했어 다음 작업 진행해줘”로 확인 완료. 보안 시험 문구는 정상 사유의 별도 검토 fixture로 정리, 제품/기록 원문 유지. .ai/reports/final-quality-cancellation-20261106/assessment.json
+- [ ] **FINAL-QUALITY-FOLLOWUP** — FIX-03 결과 확인 후 양식 최종 대조·운영 준비를 순차 검토. Q07 이력 보존은 FIX-03에서 구현·기술검수 완료.
 
 ## 실행 범위 — 목록 밖 작업 금지
 
@@ -54,11 +74,14 @@
 - [x] **UI-FINAL-01** — 근무표 조정 용도·사용자 흐름·구현 계획. 설계만; 소스 구현 없음.
 - [x] **UI-FINAL-02** — 공통 시간 선택기·긴 반복 패턴 실제 화면 재표시. 기존 UI03 실제 창을 열어 검토 전달; 사용자 승인 별도.
 - [x] **UI-FINAL-03** — 품의서 세 이력 Dense·높이 대응 페이지 조회. 3파일 직접 구현·실제 페이지/검색/크기/읽기전용 검증. **구현·기술검수 후 2026-11-02 사용자 승인 완료.** 행32px·높이 대응 페이지·백업/문서 상세. 실제263계산/64검토 전체페이지, 24화면 조건, 품의/출력55건씩 독립 컴포넌트 시험 통과. 실제 창1707×825에서13행. 근거 `.ai/reports/ui-final-review-20261102/assessment.json`.
-- [ ] **UI-ADMIN-REFINE** — 관리 카테고리 설정 메뉴별 개선. 각 메뉴 순차 설계·디자인·사용자 흐름 개선. 스크롤을 최소화하는 Dense 구성을 기본으로 적용.
+- [x] **UI-ADMIN-REFINE** — 운영 관리7탭 카테고리·공통규격·버튼·Dense·사용안내 및 요율/양식 후속 보완 구현·기술검수·사용자 확인 완료. 2026-11-04 “오케이 다음 작업 진행하자”.
   - [x] **UI-ADMIN-01-SETTINGS** — Dense·6개 기준 설명 및 시스템 정보/공휴일/감시 디자인 보완 기술검수·사용자 승인 완료. 새S04/S20·native 네영역 내부스크롤0. Gemini1/1/2·담당Sol. 근거 `.ai/reports/ui-admin-system-20261103/assessment.json`.
-  - [x] **POLICY-HISTORY-01** — 최초·재시도 실패 뒤 Sol 직접 보완·기술 수용 완료. 현재/예정·기간별 버전·예약 정정/취소 사유·Dense 이력/상세·실적 적용 기준·엄격 JSON 보존. 기존1425 시험 유지+신규29=1454/155, 운영20/N12, 실적18/정확기존2 BLOCKED, 보호455·범위외0. 사용자 최종 화면 확인은 대기. Gemini1/1/2 보존. `.ai/reports/policy-history-20261103/review-retry1-20261104_110746/sol-assessment.json`.
-- [ ] **UI-DARK-MODE** — 눈의 피로가 적은 다크 모드. 관리 메뉴 다음; 상세 범위는 착수 시 확정.
-- [ ] **UI-TEMPLATE-REFINE** — 엑셀·근무표 양식 개선. 다크 모드 다음; 이전 화면 개선 중 알고리즘 검토 기록.
+  - [x] **POLICY-HISTORY-01** — 최초·재시도 실패 뒤 Sol 직접 보완·기술 수용 완료. 현재/예정·기간별 버전·예약 정정/취소 사유·Dense 이력/상세·실적 적용 기준·엄격 JSON 보존. 기존1425 시험 유지+신규29=1454/155, 운영20/N12, 실적18/정확기존2 BLOCKED, 보호455·범위외0. 2026-11-04 사용자 “오케이 다음 작업 진행하자”로 최종 화면 확인 완료. Gemini1/1/2 보존. `.ai/reports/policy-history-20261103/review-retry1-20261104_110746/sol-assessment.json`.
+  - [x] **UI-ADMIN-02-HOLIDAYS** — 같은Task 운영7탭 공통화와 요율변경일시/양식편집 보완까지 사용자 확인 완료. 최종새97/8·관련7·운영20/N12·7탭×3크기21측정·추가3크기/초안불변 통과. 최종허용15/보호497·제품512·Gemini1/1/2·Sol승계 이력 보존. `.ai/reports/operations-uniform-20261104/editor-usability-followup/assessment.json`.
+- [x] **UI-DARK-MODE** — 시스템/다크2모드 구현·집중4/최종테마12 검증 및 사용자 확인 완료. 이전light는system으로 자동이행. 허용10/보호506·Gemini0/0/0·Sol직접. .ai/reports/dark-mode-20261105/two-mode/assessment.json
+- 추가 보완 **DASHBOARD-SMALL-WINDOW** — 900×700 차트13→70px, 12크기·시스템/다크·새20/N12 기술검수완료. .ai/reports/dashboard-small-20261107/REPORT.md
+- [ ] **UI-NAV-LAYOUT-REFINE** — 이전표/메뉴보완보존·작은창대시보드압축수정 기술검수완료/사용자확인대기. 새20/N12·12크기·두테마·기능/내보내기보존. .ai/reports/dashboard-small-20261107/REPORT.md
+- [ ] **UI-TEMPLATE-REFINE** — 인쇄범위정정 보존·별첨2제목/로고겹침보완 기술검수완료. 관련144/10·실제Office겹침0·제목/본문/합계보존/사용자검토대기. .ai/reports/template-final-20261106/attachment2-header/REPORT.md
 
 근무표 조정 계획: `.ai/reports/ui-final-review-20261102/schedule-adjust-plan.md` (설계 전달만, 구현 승인 아님). 시간 선택기/31일 반복 편집창과 최종 이력 검토 탭을 실제 Chrome에 유지.
 
@@ -513,3 +536,45 @@ UI-FINAL-03은 사용자 명시 선택으로 Sol(Codex)이 직접 수정·검수
 - 2026-11-04T12:11:45.899076+09:00 · POLICY-HISTORY-01 Sol takeover 기술 수용. 준비/실제 구현/형식 검수 구분: 기존55파일 계약 유지, Sol22파일 보완, full1454/155·ops20/N12·perf18/known2/nativeRC2·legacy40→42/승인64건13,611,839원 보존. 마지막 표 배치2파일은 변경된 화면 전체ops20/N12와 최종빌드·타입·lint로 재검증, 이전 전체 단위/실적 결과는 동일508소스의 기록 재검증으로 구분. Gemini1/1/2·최종Sol·사용자확인대기·commit/배포0.
 
 - 2026-11-04T13:09:19.743942 · 사용자 후속 지시 “현재 상황을 깃 푸쉬하고 동기화”. 검증된 제품510파일을 995b92a85e8a006c3489b2ad171d2c5366dda8c8에 커밋. 기존 Shiftmgmt_Renewal 통합 main 및 source/shiftmgmt-v4 소스 브랜치를 동기화 대상으로 지정. 원격 기존 이력/다른 작업 브랜치 보존, 운영 배포 없음.
+
+- 2026-11-04T08:45:22.025Z · 사용자 이전 정책 이력 화면 확인 및 다음 진행 승인. POLICY-HISTORY-01 사용자 확인 완료로 기록하고 UI-ADMIN-02-HOLIDAYS 단일 leaf를 확정했다. 기존 HANDOFF 원문은 Log/20261104_174522_before-HANDOFF-POLICY-HISTORY-01.md에 바이트/SHA 동일 보존. 현재 제품510파일 변경0, Gemini0/0/0; 준비와 구현을 구분하며 외부 전달은 사용자 수동 중계다.
+
+- 2026-11-04T09:36:09.195Z · UI-ADMIN-02-HOLIDAYS 최초 제출 검수: 범위·6SHA·보호506 불변 및 fresh72/정적 통과를 인정하나 실제 재현 HOL-D01~07로 미수용. 같은6파일·동일Task의 유일한 재시도 CORRECT를 HANDOFF에 발행. 원문 Log/20261104_181935_received-HOLIDAYS-initial-Gemini.md byte/SHA 일치 보존. Sol제품수정0·추가전체UI실행0·commit/배포0.
+
+- 2026-11-04T11:09:47.484Z · UI-ADMIN-02-HOLIDAYS 재시도1 수신 및 미수용. 원문 Log/20261104_195159_received-HOLIDAYS-retry1-Gemini.md를 byte/SHA 동일 보존. HOL-D02 Esc 잠금/늦은 오류 재현은 .ai/reports/holidays-20261104/review-retry1-20261104_195159/retry-assessment.json. 최초1/재시도1/누적2 한도 소진, 기존 상시 규칙으로 Sol이 같은 Task/허용6·보호506에서 직접 보완. 세 번째 Gemini 제출 요청0.
+
+- 2026-11-04T11:27:56.154Z · UI-ADMIN-02-HOLIDAYS Sol 승계 보완 후 기술 수용. 최초1/재시도1 실패는 원문/판정에 보존, fresh74·운영20/N12·집중5·native V2 확인. 보호506불변, Sol변경3/허용6. 사용자 화면 확인 대기, 다음 작업·commit·배포 미착수. 정본 .ai/reports/holidays-20261104/review-retry1-20261104_195159/sol-assessment.json.
+
+- 2026-11-04T11:46:52.146Z · 사용자 운영 관리 카테고리·버튼 의견 반영:7탭/2폭14화면 실측, native danger 스타일 원인 확인, 클릭형 시안 작성. 기존 공휴일Task 화면승인 처리하지 않고 같은6파일 디자인수정 대상으로 유지. 다른 메뉴는 동일 구조/버튼 기준으로 순차 개선; 제품변경0. .ai/reports/operations-design-review-20261104/review.json.
+
+- 2026-11-04T11:55:48.958Z · 사용자 시안 확인 및 구현 진행 승인. 같은 공휴일Task·허용6·Sol승계·Gemini1/1/2 유지. 메뉴별 목적/다음행동/변경영향/취소 안내를 공통 사용자편의 기준으로 확정. 제품 구현 후 새 후보에서 관련74·집중5·운영20/N12·native를 확인한다.
+
+- 2026-11-04T12:05:49.461Z · 공휴일 승인 시안 실제 구현·기술수용. 새74시험/집중5/전체20/N12 및 native 통과, source512·보호506불변, Sol변경4/허용6. 사용자 실화면 확인 대기. 각 메뉴 목적/다음행동/변경영향/취소안내는 공통 기준으로 유지. 다음 요율 미착수. .ai/reports/holidays-20261104/visual-refinement-20261104/assessment.json.
+
+- 2026-11-04T12:20:55.406Z · 사용자 지적 개발자동입력 누락 복구: 운영관리preview에 flag와 기존버튼 시험계정 일치·하단배너/로그아웃/새context 정상로그인 확인. 일반모드숨김 및 새S01/S17/S18 통과. 실패한부분검문/세션fixture 진단 보존. launcher1외511불변·앱JS/CSS동일로 기존74/20N12는 기록재검증·새전체0. .ai/reports/holidays-20261104/visual-refinement-20261104/preview-login-followup/assessment.json.
+
+- 2026-11-04T12:30:24.102Z · 사용자 전체메뉴 미완료/불일치 지적 및7탭 통일 명시 지시. 기존 순차 한메뉴 제한을 이번 같은 미완료 디자인 보완에 한해7탭 공통화로 변경한다. 범위만 사용자 승인으로 확대하며 Task/기존실패1/1/2·Sol승계는 초기화하지 않는다. 정확 허용14/보호498, 새 기능/계산/API/DB/인증/배포 제외. 정본 .ai/reports/operations-uniform-20261104.
+
+- 2026-11-04T13:08:13.076Z · 운영 관리7탭 모두 실제 공통화·기술수용. 1476/156·운영20/N12·기존기능10/10·21레이아웃/전체카테고리·키보드·초안보존 통과. 최초180s wrapper종료·S20 상태줄조회집계2실패는 보존, 실제완료결과만 수용. 보호498·범위외0. 전체화면 사용자확인 대기, 다음요율별도미구현 상태는 이번7탭공통화 결과로 대체한다. 운영PC/commit/배포0. .ai/reports/operations-uniform-20261104/assessment.json.
+
+- 2026-11-04T13:31:18.986Z · 사용자 요율 변경일시 잘림/양식편집 보기 불편·실제화면 요청 수신. 같은 디자인 보완Task를 유지하고 canvas view만 추가 허용15/보호497로 범위 명시. 실제 전후캡처·날짜전체/fit문서비율/zoom모델불변·기존드래그/키보드/보호속성·출력/저장 검문. .ai/reports/operations-uniform-20261104/editor-usability-followup.
+
+- 2026-11-04T13:45:10.902Z · 같은Task 사용자 보완 기술수용: 요율 변경일시135→200px/전체일시, 양식 문서맞춤·보기zoom·속성우선·파일명접기. 실제3크기 날짜잘림0/비율유지/가로넘침0, 보기변경 초안불변·암묵저장0. 새관련97/8·집중7·전체20/N12 PASS. 이전1476은 기록 재판독이며 새전체1476으로 보고하지 않음. 허용15/보호497·시도1/1/2 유지. .ai/reports/operations-uniform-20261104/editor-usability-followup/assessment.json.
+
+- 2026-11-04T14:07:23.462Z · 사용자 다음작업 지시로 운영관리 부모/leaf 사용자수용 종결, UI-DARK-MODE 단일leaf 착수·Gemini 구현지시 발행 준비. 복구된Gemini 정상writer 유지, 신규시도0/0/0·제품수정0. .ai/reports/dark-mode-20261104/IMPLEMENT.md / preflight.json. 다음 UI-TEMPLATE-REFINE 미착수·배포/commit0.
+
+- 2026-11-04T14:13:02.213Z · 사용자 이번다크모드 Sol 직접구현 질문에 “응 진행해” 명시 승인. UI-DARK-MODE만 직접구현·검증, 일반Gemini workflow는 다른Task에서 유지. 허용10·기존보호506·Gemini제출0/0/0. .ai/reports/dark-mode-20261104/sol-direct/authorization.json.
+
+- 2026-11-04T18:46:23.503Z · UI-DARK-MODE Sol 직접구현 기술수용. 사용자 한도복구·이어가기 지시에 동일Task 계속. 새1476/156·원운영20N12·원대시보드20N12·최종테마12 PASS. 범위10/보호506·신규4·Gemini실제제출0. 기존Sites CSP167/167 동일·새위반0, PDF검증환경은 TEMP에 격리. 사용자확인/양식후속/운영적용 별도. .ai/reports/dark-mode-20261104/sol-direct/assessment.json.
+
+- 2026-11-04T18:56:26.790Z · 사용자 전체화면 dark 누락 및 단일모드아이콘 요청. 같은 미수용 UI-DARK-MODE 후속보완, 이전검증의 세부상태 커버리지 한계 재검토. .ai/reports/dark-mode-20261105/surface-followup.
+
+- 2026-11-04T19:36:50.980Z · 동일 UI-DARK-MODE 사용자 전체화면/아이콘 피드백 보완 결과. 기존얕은 커버리지의 실제누락 재현·수정, 단일3모드아이콘과89상태실측·시각검토. Gemini0/0/0·허용10/보호506·후속3파일만 변경. 이전성공/실패와범위한계 보존. .ai/reports/dark-mode-20261105/surface-followup/assessment.json.
+
+- 2026-11-04T23:42:00.154Z · UI-DARK-MODE 사용자 기존화면확인 및 시스템/다크만 선택 후속 반영. init/controls/theme검증기3파일, 다른513파일 동일. 이번새검증 집중T01~T04 및 최종T12; 이전1476/20/20/89는 과거수용근거로 구분하며 새실행으로 보고하지 않음. .ai/reports/dark-mode-20261105/two-mode/assessment.json.
+
+- 2026-11-04T23:45:08.790Z · 사용자 “오케이 다음 작업은 뭐뭐있어?”로 직전2모드 확인 완료 기록. UI-DARK-MODE 사용자수용, 다음 UI-TEMPLATE-REFINE은 계획 안내만 하고 미착수. 제품516파일 최종manifest일치, 새제품수정/검사/배포0. 이전HANDOFF Log/20261104_234508_DARK-MODE-user-accepted.md.
+
+- 2026-11-04T23:54:17.184Z · 사용자 새화면지적을 양식보다 앞선 UI-NAV-LAYOUT-REFINE 한Task로 등록. 3크기 실측과 실제준비안내 확인, 구체5파일 수정안·관련회귀범위 준비. 기존새Task정상Geminiwriter 규칙에 따라 직접예외 여부를 한 번 질문했으며 승인 전 제품은 바꾸지 않았다. .ai/reports/menu-layout-20261105/review.json.
+
+- 2026-11-05T00:50:09.077Z · 사용자직접승인 UI-NAV-LAYOUT-REFINE 기술검수 완료. 실제3폭×양테마×사이드바2상태 비교, 장문/스크롤/필터더보기, 셸역할/실적관련3 및 새최종T12 PASS. 옛고정폭정본/실패보존, 전체1476/실적20/활동원81 새실행 주장은하지않음. .ai/reports/menu-layout-20261105/assessment.json.

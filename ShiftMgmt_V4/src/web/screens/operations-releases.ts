@@ -2,6 +2,7 @@
 import type { ReleaseHistoryListQuery } from "../../shared/bridge/contracts";
 import type { ReleaseManifest } from "../../shared/domain/app-update";
 import {
+  OperationsWorkspace,
   el,
   createFormGroup,
   formatErrorMessage
@@ -9,6 +10,7 @@ import {
 import { DataTable } from "../data-table";
 
 export class OperationsReleasesTab {
+  private workspace?: OperationsWorkspace;
   private container: HTMLElement;
   private onSessionExpired?: () => void;
   private isDestroyed = false;
@@ -36,6 +38,7 @@ export class OperationsReleasesTab {
   }
 
   public destroy(): void {
+    this.workspace?.destroy();
     this.isDestroyed = true;
     this.loadRequestId++;
     this.container.innerHTML = "";
@@ -90,6 +93,7 @@ export class OperationsReleasesTab {
   }
 
   private render(): void {
+    this.workspace?.destroy();
     this.container.innerHTML = "";
     const wrap = el("div", "operations-releases-wrap");
 
@@ -197,7 +201,12 @@ export class OperationsReleasesTab {
     contentRow.appendChild(detailCol);
 
     wrap.appendChild(contentRow);
+    const panel = el("div", "ops-releases-panel"); panel.append(filterBar, contentRow);
+    this.workspace = new OperationsWorkspace(wrap, { id: "releases",
+      areas: [{ id: "updates", label: "업데이트 내역", hint: "버전별 변경 내용 조회", icon: "history", description: "버전을 검색하고 목록에서 선택하면 변경 내용을 확인할 수 있습니다. 이 화면은 조회 전용이며 업데이트를 설치하거나 자료를 바꾸지 않습니다.", content: panel }],
+      footerText: "필수 업데이트와 백업 필요 표시는 해당 버전의 안내입니다. 실제 설치는 별도 적용 절차를 따릅니다." });
     this.container.appendChild(wrap);
+    this.workspace.observeTable(this.table, listCol);
 
     this.renderDetail();
   }

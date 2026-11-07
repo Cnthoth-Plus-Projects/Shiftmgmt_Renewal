@@ -1,3 +1,4 @@
+import { parsePerformanceReturnSnapshot, RETURN_SNAPSHOT_TABLES } from "./performance-return-history-service";
 import { parseHolidayPatternPolicy } from "../../shared/domain/holiday-pattern";
 import { buildImportedEmployeeHireDateReview } from "./employee-hire-date-review";
 import { PATTERN_PRESETS_SETTING_KEY, parsePatternPresetRecords } from "../../shared/bridge/pattern-presets";
@@ -85,7 +86,7 @@ const JSON_IMPORT_TABLE_ORDER_V1 = [
   "allowance_proposal_approvals"
 ] as const;
 
-const JSON_IMPORT_TABLE_ORDER = [
+const JSON_IMPORT_TABLE_ORDER_V2 = [
   "sites",
   "employees",
   "employee_employment_periods",
@@ -129,7 +130,10 @@ const JSON_IMPORT_TABLE_ORDER = [
   "allowance_proposal_approvals"
 ] as const;
 
+const JSON_IMPORT_TABLE_ORDER = [...JSON_IMPORT_TABLE_ORDER_V2, "performance_return_history"] as const;
+
 const TABLE_SCHEMA_COLUMNS: Record<string, readonly string[]> = {
+  performance_return_history: ["id", "file_id", "occurred_at", "actor_user_id", "actor_name", "reason", "snapshot_json", "snapshot_sha256"],
   sites: [
     "id", "site_code", "name", "customer_name", "status", "timezone", "deleted_at", "created_at", "updated_at"
   ],
@@ -267,6 +271,7 @@ interface TableColumnContract {
 }
 
 const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
+  performance_return_history: ["id", "file_id", "occurred_at", "actor_user_id", "actor_name", "reason", "snapshot_json", "snapshot_sha256"].map(name => ({ name, declaredType: "TEXT", notNull: true })),
   sites: [
     { name: "id", declaredType: "TEXT", notNull: false },
     { name: "site_code", declaredType: "TEXT", notNull: true },
@@ -1166,9 +1171,9 @@ const parseAndValidateBackupJson = (
   const rawObj = parsed as Record<string, unknown>;
   const schemaVersion = Number(rawObj.schemaVersion);
 
-  if (schemaVersion !== 1 && schemaVersion !== 2) {
+  if (schemaVersion !== 1 && schemaVersion !== 2 && schemaVersion !== 3) {
     const err = new Error(
-      `지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 백업 파일 버전: ${String(rawObj.schemaVersion)})`
+      `지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 3, 백업 파일 버전: ${String(rawObj.schemaVersion)})`
     );
     (err as unknown as { code: string }).code = "UNSUPPORTED_SCHEMA";
     throw err;
@@ -1185,7 +1190,7 @@ const parseAndValidateBackupJson = (
   const allRequiredTableNames =
     schemaVersion === 1
       ? [...JSON_IMPORT_TABLE_ORDER_V1, APP_SETTINGS_TABLE_NAME]
-      : [...JSON_IMPORT_TABLE_ORDER, APP_SETTINGS_TABLE_NAME];
+      : schemaVersion === 2 ? [...JSON_IMPORT_TABLE_ORDER_V2, APP_SETTINGS_TABLE_NAME] : [...JSON_IMPORT_TABLE_ORDER, APP_SETTINGS_TABLE_NAME];
   const requiredTableSet = new Set<string>(allRequiredTableNames);
   const rawTableNames = Object.keys(tablesObj);
 
@@ -1199,7 +1204,7 @@ const parseAndValidateBackupJson = (
     ]
       .filter(Boolean)
       .join("; ");
-    const expectedCount = schemaVersion === 1 ? 40 : 42;
+    const expectedCount = allRequiredTableNames.length;
     const err = new Error(
       missingTables.length > 0
         ? `백업 JSON에 필수 표가 누락되었습니다: ${missingTables.join(", ")}`
@@ -1256,7 +1261,16 @@ const parseAndValidateBackupJson = (
     }
   }
 
-  if (schemaVersion === 2) {
+  if (schemaVersion === 3) {
+    const seen = new Set<string>();
+    for (const row of tablesObj.performance_return_history as Array<Record<string, unknown>>) {
+      if (seen.has(String(row.id))) throw Error("취소 보관 이력 식별자가 중복되었습니다.");
+      seen.add(String(row.id));
+      const snapshot = parsePerformanceReturnSnapshot(row);
+      for (const table of RETURN_SNAPSHOT_TABLES) validateTableRowsSchema(table, snapshot.tables[table]);
+    }
+  }
+  if (schemaVersion >= 2) {
     const bad = (message: string): never => { throw Object.assign(new Error(`정책 백업 검증 실패: ${message}`), { code: "INVALID_POLICY_HISTORY" }); };
     const revisions = tablesObj.policy_revisions as Array<Record<string, unknown>>;
     const events = tablesObj.policy_events as Array<Record<string, unknown>>;
@@ -1354,7 +1368,8 @@ const parseAndValidateBackupJson = (
       }
       return application;
     };
-    for (const entry of tablesObj.performance_entries as Array<Record<string, unknown>>) {
+    const archived = schemaVersion === 3 ? (tablesObj.performance_return_history as Array<Record<string, unknown>>).map(row => parsePerformanceReturnSnapshot(row).tables) : [];
+    for (const entry of [...tablesObj.performance_entries as Array<Record<string, unknown>>, ...archived.flatMap(tables => tables.performance_entries)]) {
       if (entry.policy_snapshot_json !== null) {
         let value: unknown;
         try { value = JSON.parse(String(entry.policy_snapshot_json)); } catch { bad("실적 정책 스냅샷 JSON이 올바르지 않습니다."); }
@@ -1362,7 +1377,7 @@ const parseAndValidateBackupJson = (
         if (entry.section === "substitute" && !application.bindings.some(binding => binding.kind === "substitute-eligibility")) bad("대체 실적의 적용 기준이 누락되었습니다.");
       }
     }
-    for (const approval of tablesObj.performance_approvals as Array<Record<string, unknown>>) {
+    for (const approval of [...tablesObj.performance_approvals as Array<Record<string, unknown>>, ...archived.flatMap(tables => tables.performance_approvals)]) {
       let snapshot: {entry?: {workDate?: unknown; appliedPolicies?: unknown}} | undefined;
       // Opaque old snapshots are preserved verbatim. A present policy payload must be complete.
       try { snapshot = approval.snapshot_json ? JSON.parse(String(approval.snapshot_json)) : undefined; } catch { snapshot = undefined; }

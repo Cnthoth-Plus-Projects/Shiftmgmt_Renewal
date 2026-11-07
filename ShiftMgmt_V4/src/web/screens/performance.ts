@@ -137,7 +137,6 @@ export class PerformanceScreen {
 
     this.detailPanel = new PerformanceDetailPanel(detailEl, {
       onApprove: row => this.handleApprove(row),
-      onReject: row => this.handleReject(row),
       onCompare: row => this.handleCompare(row),
       onHistory: row => this.handleHistory(row),
       onHideRow: row => this.handleHideRow(row),
@@ -434,14 +433,6 @@ export class PerformanceScreen {
     });
   }
 
-  private async handleReject(row: PerformanceOverviewRow): Promise<void> {
-    if (this.isDestroyed) return;
-    await this.actionManager.promptReject(row, async () => {
-      if (this.isDestroyed) return;
-      await this.loadData(false);
-    });
-  }
-
   private async handleCompare(row: PerformanceOverviewRow): Promise<void> {
     if (this.isDestroyed) return;
     const gen = this.generationId;
@@ -475,7 +466,8 @@ export class PerformanceScreen {
     this.historyModal.show(
       `${row.entry.employeeName} (${row.entry.employeeCode})`,
       this.approvalHistory,
-      row.logicalKey
+      row.logicalKey,
+      { fileId: row.fileId, load: () => this.bridge.getPerformanceFileDetail({ fileId: row.fileId }), currentCalculation: this.calculationsMap.get(`${row.fileId}_${row.entryId}`) || null }
     );
   }
 

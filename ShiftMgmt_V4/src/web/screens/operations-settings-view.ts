@@ -251,6 +251,7 @@ export interface OperationsSettingsViewDelegate {
 }
 
 export class OperationsSettingsView {
+  private layoutObserver?: ResizeObserver;
   private delegate: OperationsSettingsViewDelegate;
   private activeAreaId: SettingsAreaId = "folders";
   private rootEl?: HTMLElement;
@@ -267,7 +268,8 @@ export class OperationsSettingsView {
 
   public mount(container: HTMLElement): HTMLElement {
     const wrap = document.createElement("div");
-    wrap.className = "operations-settings-wrap ops-settings-workspace";
+    wrap.className = "operations-settings-wrap ops-settings-workspace ops-menu-workspace";
+    wrap.dataset.opsMenu = "settings";
     this.rootEl = wrap;
 
     // 1. 헤더 (간결한 제목 및 목적 안내)
@@ -292,7 +294,7 @@ export class OperationsSettingsView {
 
     // 탭 목록 (role="tablist")
     const nav = document.createElement("div");
-    nav.className = "ops-settings-nav";
+    nav.className = "ops-settings-nav ops-category-nav";
     nav.setAttribute("role", "tablist");
     nav.setAttribute("aria-label", "운영 설정 영역 선택");
 
@@ -300,7 +302,7 @@ export class OperationsSettingsView {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.id = `btn-settings-area-${area.id}`;
-      btn.className = "ops-settings-tab-btn";
+      btn.className = "ops-settings-tab-btn ops-category-button";
       btn.setAttribute("role", "tab");
       btn.setAttribute("aria-controls", `settings-area-${area.id}`);
       btn.setAttribute("aria-selected", area.id === this.activeAreaId ? "true" : "false");
@@ -346,12 +348,12 @@ export class OperationsSettingsView {
 
       // 패널 헤더 (영역별 안내 문구)
       const panelHeader = document.createElement("div");
-      panelHeader.className = "ops-settings-panel-header";
+      panelHeader.className = "ops-settings-panel-header ops-menu-heading";
       const panelTitle = document.createElement("h4");
-      panelTitle.className = "ops-settings-panel-title";
+      panelTitle.className = "ops-settings-panel-title ops-menu-title";
       panelTitle.textContent = area.title;
       const panelDesc = document.createElement("p");
-      panelDesc.className = "ops-settings-panel-desc";
+      panelDesc.className = "ops-settings-panel-desc ops-menu-description";
       panelDesc.textContent = area.description;
       panelHeader.appendChild(panelTitle);
       panelHeader.appendChild(panelDesc);
@@ -371,7 +373,7 @@ export class OperationsSettingsView {
 
     // 3. 하단 고정 액션 바
     const footer = document.createElement("div");
-    footer.className = "ops-settings-footer";
+    footer.className = "ops-settings-footer ops-menu-footer";
 
     const statusCol = document.createElement("div");
     statusCol.className = "ops-settings-status-col";
@@ -414,6 +416,9 @@ export class OperationsSettingsView {
     wrap.appendChild(footer);
 
     container.appendChild(wrap);
+    this.layoutObserver?.disconnect();
+    this.layoutObserver = new ResizeObserver(() => nav.setAttribute("aria-orientation", window.innerWidth <= 1100 ? "horizontal" : "vertical"));
+    this.layoutObserver.observe(wrap);
     return wrap;
   }
 
@@ -491,6 +496,7 @@ export class OperationsSettingsView {
   }
 
   public destroy(): void {
+    this.layoutObserver?.disconnect();
     if (policyHelpToken !== undefined && sharedDialog.isCurrent(policyHelpToken)) sharedDialog.close();
     this.tabButtons.clear();
     this.panelEls.clear();

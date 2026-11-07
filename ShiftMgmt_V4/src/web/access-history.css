@@ -4,6 +4,21 @@
   flex-direction: column;
   gap: 14px;
   width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.access-history-desc,
+.access-history-alert-container,
+.access-history-filter-card {
+  flex-shrink: 0;
+}
+
+.access-history-body-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .access-history-desc {
@@ -166,6 +181,10 @@
 
 /* 테이블 카드 */
 .access-history-table-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -173,8 +192,10 @@
 }
 
 .access-history-table-wrapper {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .access-history-table-wrapper:focus-visible {
@@ -184,6 +205,7 @@
 
 .access-history-table {
   width: 100%;
+  min-width: 1100px;
   table-layout: fixed;
   border-collapse: collapse;
   font-size: 14px;
@@ -191,6 +213,9 @@
 }
 
 .access-history-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background: #F8F9FA;
   font-weight: 600;
   color: var(--text-sub);
@@ -206,36 +231,32 @@
 
 .access-history-table th:nth-child(1),
 .access-history-table td:nth-child(1) {
-  width: 130px;
-  max-width: 130px;
+  width: 208px;
+  white-space: nowrap;
 }
 
 .access-history-table th:nth-child(2),
 .access-history-table td:nth-child(2) {
-  width: 140px;
-  max-width: 140px;
+  width: 200px;
 }
 
 .access-history-table th:nth-child(3),
 .access-history-table td:nth-child(3) {
-  width: 100px;
-  max-width: 100px;
+  width: 96px;
 }
 
 .access-history-table th:nth-child(4),
 .access-history-table td:nth-child(4) {
-  width: 160px;
-  max-width: 160px;
+  width: 200px;
 }
 
 .access-history-table th:nth-child(5),
 .access-history-table td:nth-child(5) {
-  min-width: 200px;
+  min-width: 396px;
 }
 
 .access-history-table tbody tr {
-  height: 40px;
-  max-height: 40px;
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -243,14 +264,13 @@
   padding: 8px 12px;
   border-bottom: 1px solid var(--line);
   height: 40px;
-  max-height: 40px;
   box-sizing: border-box;
   color: var(--text);
   font-size: 14px;
   font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
   vertical-align: middle;
 }
 
@@ -263,9 +283,8 @@
 }
 
 .access-history-user-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .access-history-user-sub {
@@ -275,9 +294,8 @@
 }
 
 .access-history-detail-cell {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 /* 활동 배지 */
@@ -314,11 +332,12 @@
 
 /* 더 보기 영역 */
 .access-history-load-more-row {
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 12px;
-  background: #F8F9FA;
+  background: var(--surface);
   border-top: 1px solid var(--line);
   gap: 8px;
 }
@@ -386,4 +405,6 @@
 #main-content:has(> .access-history-container) {
   padding: 16px 20px;
   gap: 14px;
+  min-height: 0;
+  overflow: hidden;
 }

@@ -235,12 +235,12 @@ export const deleteAllowanceCalculationByApprovalId = (approvalId: string) => {
   if (database && isSqliteStorageReady()) {
     database.prepare(`
       DELETE FROM allowance_calculation_items
-      WHERE calculation_id = ?
-    `).run(existing.id);
+      WHERE calculation_id IN (SELECT id FROM allowance_calculations WHERE performance_approval_id = ?)
+    `).run(approvalId);
     database.prepare(`
       DELETE FROM allowance_calculations
-      WHERE id = ?
-    `).run(existing.id);
+      WHERE performance_approval_id = ?
+    `).run(approvalId);
     return;
   }
 

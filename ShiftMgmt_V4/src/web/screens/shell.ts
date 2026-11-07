@@ -1,5 +1,6 @@
 // 앱 셸 (Shell, Header, Sidebar, Navigation, Content) 관리
 import type { AuthSession } from "../../shared/domain/model";
+import { createThemeControl } from "../theme-controls";
 import { StatusBar } from "./status-bar";
 import { HomeScreen } from "./home";
 import { AccessHistoryScreen } from "./access-history";
@@ -11,6 +12,7 @@ import { PerformanceScreen } from "./performance";
 import { AllowanceScreen } from "./allowance";
 import { DashboardScreen } from "./dashboard";
 import { showConfirm, showNotice } from "./operations-ui";
+import { SelfAccount } from "./self-account";
 
 export interface ShellScreenOptions {
   container: HTMLElement;
@@ -30,24 +32,23 @@ interface NavMenuItem {
 const MENU_ITEMS: NavMenuItem[] = [
   // 준비
   { id: "sites", label: "근무지 관리", icon: "domain", group: "ready" },
-  { id: "schedule-create", label: "근무표 생성", icon: "calendar_add_on", group: "ready" },
-  { id: "performance-intake", label: "실적 가져오기", icon: "upload_file", group: "ready" },
-  // 운영
-  { id: "workforce", label: "인력 관리", icon: "badge", group: "ops" },
-  { id: "schedule-status", label: "근무 현황", icon: "dashboard", group: "ops" },
-  { id: "schedule-adjust", label: "근무표 조정", icon: "edit_calendar", group: "ops" },
+  { id: "workforce", label: "인력 관리", icon: "badge", group: "ready" },
+  // 근무 운영
+  { id: "schedule-create", label: "근무표 생성·배포", icon: "calendar_add_on", group: "ops" },
+  { id: "schedule-status", label: "근무표 배포 이력", icon: "dashboard", group: "ops" },
+  { id: "performance-intake", label: "실적 관리", icon: "upload_file", group: "ops" },
   // 정산
   { id: "allowance-calc", label: "수당 관리", icon: "calculate", group: "settle" },
-  { id: "proposal-export", label: "품의서 출력", icon: "description", group: "settle" },
+  { id: "proposal-export", label: "품의·문서 출력", icon: "description", group: "settle" },
   { id: "dashboard", label: "대시보드", icon: "monitoring", group: "settle" },
   // 관리 (admin only)
   { id: "operations", label: "운영 관리", icon: "settings", group: "admin", adminOnly: true },
-  { id: "org-mgmt", label: "조직 관리", icon: "corporate_fare", group: "admin", adminOnly: true },
   { id: "user-mgmt", label: "사용자 관리", icon: "manage_accounts", group: "admin", adminOnly: true },
   { id: "access-history", label: "활동 이력", icon: "history", group: "admin", adminOnly: true },
 ];
 
 export class ShellScreen {
+  private destroyThemeControl?: () => void;
   private container: HTMLElement;
   private session: AuthSession;
   private onSignOut: () => void;
@@ -66,15 +67,22 @@ export class ShellScreen {
   private allowanceScreen: AllowanceScreen | null = null;
   private dashboardScreen: DashboardScreen | null = null;
   private syncObserver: MutationObserver | null = null;
+  private selfAccount: SelfAccount;
 
   constructor(options: ShellScreenOptions) {
     this.container = options.container;
     this.session = options.session;
     this.onSignOut = options.onSignOut;
     this.onSessionExpired = options.onSessionExpired;
+    this.selfAccount = new SelfAccount({
+      getSession: () => this.session,
+      onSessionChanged: session => { this.session = session; },
+      onSessionExpired: () => { this.destroy(); (this.onSessionExpired || this.onSignOut)(); }
+    });
   }
 
   public render(): void {
+    this.destroyThemeControl?.();
     this.container.innerHTML = "";
 
     const shell = document.createElement("div");
@@ -134,6 +142,9 @@ export class ShellScreen {
   }
 
   public destroy(): void {
+    this.selfAccount.destroy();
+    this.destroyThemeControl?.();
+    this.destroyThemeControl = undefined;
     this.dashboardScreen?.destroy(); this.dashboardScreen = null;
     if (this.syncObserver) {
       this.syncObserver.disconnect();
@@ -337,10 +348,10 @@ export class ShellScreen {
 
     // 그룹별 항목 렌더링
     const groups: Array<{ key: "ready" | "ops" | "settle" | "admin"; label: string; adminOnly?: boolean }> = [
-      { key: "ready", label: "준비" },
-      { key: "ops", label: "운영" },
+      { key: "ready", label: "업무 준비" },
+      { key: "ops", label: "근무 운영" },
       { key: "settle", label: "정산" },
-      { key: "admin", label: "관리", adminOnly: true },
+      { key: "admin", label: "시스템", adminOnly: true },
     ];
 
     for (const grp of groups) {
@@ -373,23 +384,7 @@ export class ShellScreen {
         btn.dataset.id = item.id;
         btn.addEventListener("click", () => {
           this.navigateWithDirtyCheck(() => {
-            if (
-              item.id === "sites" ||
-              item.id === "schedule-create" ||
-              item.id === "schedule-status" ||
-              item.id === "access-history" ||
-              item.id === "workforce" ||
-              item.id === "operations" ||
-              item.id === "user-mgmt" ||
-              item.id === "allowance-calc" ||
-              item.id === "proposal-export"
-              || item.id === "dashboard"
-            ) {
-              this.noticeMessage = "";
-            } else {
-              // 아직 구현되지 않은 업무 화면 클릭 시 차단 안내
-              this.noticeMessage = `화면 준비 중 — '${item.label}' 화면은 다음 구현 단계에서 연결됩니다.`;
-            }
+            this.noticeMessage = "";
             this.currentTitle = item.label;
             this.updateActiveNav(navList, btn);
             this.refreshMain();
@@ -439,6 +434,9 @@ export class ShellScreen {
 
     const right = document.createElement("div");
     right.className = "header-user-actions";
+    const theme = createThemeControl("shell");
+    this.destroyThemeControl = theme.destroy;
+    right.appendChild(theme.element);
 
     // 역할 칩
     const roleBadge = document.createElement("span");
@@ -446,9 +444,13 @@ export class ShellScreen {
     roleBadge.textContent = this.formatRole(this.session.role);
 
     // 계정 텍스트 (시안의 아바타 대신 텍스트)
-    const userText = document.createElement("span");
+    const userText = document.createElement("button");
+    userText.type = "button";
+    userText.id = "btn-self-account";
     userText.className = "user-name-text";
-    userText.textContent = this.session.displayName || this.session.loginId;
+    userText.textContent = "내 계정 · " + (this.session.displayName || this.session.loginId);
+    userText.setAttribute("aria-haspopup", "dialog");
+    userText.addEventListener("click", () => this.selfAccount.open(userText));
 
     // 로그아웃 버튼
     const logoutBtn = document.createElement("button");
@@ -557,7 +559,7 @@ export class ShellScreen {
       return main;
     }
 
-        if (this.currentTitle === "실적 가져오기") {
+        if (this.currentTitle === "실적 관리") {
       this.performanceScreen = new PerformanceScreen({
         container: main,
         session: this.session,
@@ -575,11 +577,12 @@ export class ShellScreen {
       return main;
     }
 
-    if (this.currentTitle === "근무표 생성" || this.currentTitle === "근무 현황") {
+    if (this.currentTitle === "근무표 생성·배포" || this.currentTitle === "근무표 배포 이력") {
       this.scheduleScreen = new ScheduleScreen({
         container: main,
         session: this.session,
-        initialTab: this.currentTitle === "근무 현황" ? "history" : "calendar",
+        initialTab: this.currentTitle === "근무표 배포 이력" ? "history" : "calendar",
+        onTabChange: tab => this.syncActiveMenu(tab === "history" ? "schedule-status" : "schedule-create"),
         onSessionExpired: () => {
           this.destroy();
           if (this.onSessionExpired) {
@@ -634,7 +637,7 @@ export class ShellScreen {
           }
         },
         onNavigatePerformance: () => {
-          this.currentTitle = "실적 가져오기";
+          this.currentTitle = "실적 관리";
           this.noticeMessage = "";
           const navList = this.container.querySelector<HTMLElement>(".nav-list");
           const perfBtn = navList?.querySelector<HTMLButtonElement>('button[data-id="performance-intake"]');
@@ -690,11 +693,12 @@ export class ShellScreen {
       return main;
     }
 
-    if (this.currentTitle === "수당 관리" || this.currentTitle === "품의서 출력") {
+    if (this.currentTitle === "수당 관리" || this.currentTitle === "품의·문서 출력") {
       this.allowanceScreen = new AllowanceScreen({
         container: main,
         session: this.session,
-        initialTab: this.currentTitle === "품의서 출력" ? "exports" : "results",
+        initialTab: this.currentTitle === "품의·문서 출력" ? "exports" : "results",
+        onTabChange: tab => this.syncActiveMenu(tab === "exports" || tab === "proposals" ? "proposal-export" : "allowance-calc"),
         onSessionExpired: () => {
           this.destroy();
           if (this.onSessionExpired) {
@@ -782,6 +786,17 @@ export class ShellScreen {
       const newMain = this.createMainContent();
       oldMain.parentElement.replaceChild(newMain, oldMain);
     }
+  }
+
+  private syncActiveMenu(id: string): void {
+    const item = MENU_ITEMS.find(menu => menu.id === id);
+    if (!item) return;
+    this.currentTitle = item.label;
+    const title = this.container.querySelector(".header-title");
+    if (title) title.textContent = item.label;
+    const nav = this.container.querySelector<HTMLElement>(".nav-list");
+    const button = nav?.querySelector<HTMLElement>(`button[data-id="${id}"]`);
+    if (nav && button) this.updateActiveNav(nav, button);
   }
 
   private updateActiveNav(navList: HTMLElement, activeBtn: HTMLElement): void {

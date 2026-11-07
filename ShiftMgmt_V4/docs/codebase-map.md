@@ -22,6 +22,11 @@
 
 | 파일 | 하는 일 |
 |---|---|
+| `src/main/services/document-layout-print-service.ts` | 품의서·별첨1·별첨2의 A4 인쇄 영역·표 가로 맞춤·빈 끝쪽 제외. 근무표/대시보드 Excel 원형 보존 |
+| `src/main/services/document-layout-print-service.test.ts` | 세 서류 A4·추가 행/열·이동 로고·실제 저장 보존 및 인쇄 비대상 무개입 검증 |
+
+| 파일 | 하는 일 |
+|---|---|
 | `docs/codebase-map.md` | 이 문서 |
 | `docs/api-convention.md` | 화면과 서버가 주고받는 규약(창구 111개 계약표 사본 포함) — 1-3 구현의 기준 |
 
@@ -96,6 +101,7 @@
 | `src/main/runtime.test.ts` | 런타임 수명주기 시험 |
 | `src/main/http/static-files.test.ts` | 경로 탈출·형식 시험 5건 |
 | `src/main/http/session.test.ts` | 세션 수명주기 및 권한 가드 시험 |
+| `src/main/http/account-lifecycle.integration.test.ts` | 실제 HTTP·SQLite 계정 상태/권한 변경·활성 관리자·JSON 복원 후 세션 검증 |
 | `src/main/http/route-registry.test.ts` | 라우트 레지스트리 가드 및 등록 시험 |
 | `src/main/http/dialog-bridge.test.ts` | 다이얼로그 브리지 단일 큐 및 실패 격리 시험 |
 | `src/main/http/routes/core-routes.test.ts` | Core 라우트 17개 및 비활성 업데이트·내보내기 시험 |
@@ -134,6 +140,7 @@
 | `src/web/login.css` | 로그인 L1~L5 화면 전용 스타일시트 |
 | `src/web/shell.css` | 앱 셸, 사이드바, 헤더, 상태줄 레이아웃 스타일시트 |
 | `src/web/screens/login.ts` | 로그인 L1~L5 화면 렌더링, 폼 입력, 규칙 검증, 계정복구 처리 |
+| `src/web/screens/self-account.ts` | 모든 역할의 내 계정 비밀번호 변경 대화상자, 현재 작업 유지·응답 손실 확인 |
 | `src/web/screens/shell.ts` | 역할별 앱 셸, 메뉴 네비게이션, 사이드바 토글, 로그아웃 화면 |
 | `src/web/screens/status-bar.ts` | DB·동기화·대기파일·감시·업데이트 실제 API 상태줄 컴포넌트 |
 | `src/web/access-history.css` | 활동 이력 화면 전용 스타일시트(필터·테이블·빈 상태) |
@@ -155,13 +162,19 @@
 | `src/web/screens/operations-settings.ts` | 환경 및 운영 설정 탭 조율 (4개 영역 폼, 변경 상태 계산, 저장/되돌리기/감시) |
 | `src/web/screens/operations-settings-view.ts` | 운영 설정 4개 영역 UI 헬퍼 (영역 탭 내비게이션, Dense 패널, 고정 액션 바, 6개 기준 상세 설명, 시스템 서비스 카드, 접근성) |
 | `src/web/screens/operations-backup.ts` | DB 백업 및 JSON 마이그레이션 교체 흐름 모듈 |
-| `src/web/screens/operations-holidays.ts` | 공휴일 관리 탭 (연도별 달력, 공공데이터 API 교체, 추가/수정/삭제) |
+| `src/web/screens/operations-holidays.ts` | 공휴일 관리 탭 (운영 관리 공통 화면 규격, 등록/외부 연동·비교/교체 안내·조회/CRUD/수명 보호) |
+| `src/web/screens/operations-holidays-model.ts` | 공휴일 순수 도메인/비교/필터 모델 (요약 통계, 검색/정렬, API 비교 및 지문 직렬화) |
+| `src/web/screens/operations-holidays-model.test.ts` | 공휴일 순수 모델 단위 검증 시험 (불변성, 비교 매칭, 유효성 검증, 대량 스트레스) |
 | `src/web/screens/operations-rates.ts` | 수당 요율 버전 관리 탭 (5x3 매트릭스, 영향도 읽기전용 분석, 활성화 확인) |
 | `src/web/screens/operations-users.ts` | 운영 사용자 관리 탭 (계정 등록/수정/삭제, 내 복구키 재발급) |
 | `src/web/screens/operations-site-names.ts` | 근무지 이름 관리 탭 (55개 목록, 등록/수정/삭제) |
 | `src/web/screens/operations-releases.ts` | 시스템 릴리즈 이력 탭 (55개 매니페스트, 필터/정렬/상세 뷰) |
 | `src/web/screens/operations-layout.ts` | 문서 양식 및 레이아웃 편집 탭 (7개 키 관리, 초안 저장, 기본값 복원) |
-| `src/web/screens/operations-layout-canvas.ts` | 양식 편집 캔버스 및 속성 제어 모듈 |
+| `src/web/screens/operations-layout-canvas.ts` | 양식 편집 캔버스: 문서 비율 자동 맞춤·보기 확대/축소·블록 선택과 속성 편집 (보기 변경은 초안 불변) |
+| `src/web/theme-init.js` | 최초 페인트 전 테마 상태·선호 저장·시스템/다른 창 동기화 |
+| `src/web/theme-controls.ts` | 로그인·셸 공통 테마 선택과 구독 정리 |
+| `src/web/theme.css` | 전체 업무 화면의 다크 색상·대비·문서 종이 보존 |
+| `scripts/ui-checks/theme.mjs` | 격리 실제 브라우저 테마 T01~T12·저장/초안/차트 출력 보존 검문 |
 | `src/web/screens/operations-layout-preview.ts` | 양식 실제 생성물(PDF/XLSX) 바이너리 Blob 미리보기 모듈 |
 | `scripts/ui-checks/operations-fixtures.mjs` | 운영 관리 UI 검증용 TEMP 격리 55개 픽스처 생성기 |
 | `scripts/ui-checks/operations.mjs` | 운영 관리 화면 UI 시나리오(S01~S20) 및 음성 검문(N01~N12) 자동화 러너 |
@@ -207,11 +220,13 @@
 | `src/main/services/workforce-wage-performance-service.ts` | 단건·일괄 시급 저장 후 대상 대기 파일 재읽기, 시급/파일 검문·실패 캐시 보존·실제 결과 요약 |
 | `src/main/services/workforce-wage-performance-service.test.ts` | 실제 XLSX 재읽기·금융 보존·기간/중복·실패 롤백·동시 승인/원본변경 시험 |
 | `src/main/services/performance-approval-resolution-service.ts` | 원본 실적 동등성·재승인 판정(후속 시급 변경 제외, 승인 스냅샷 보존) |
+| `src/main/services/performance-return-history-service.ts` | 승인대기 복귀 전 원문·계산·판정·검토 스냅샷의 원자 보관, 무결성 검증과 읽기 전용 이력 조회 |
+| `src/main/services/performance-return-history-service.test.ts` | 실제 엑셀 승인·취소·재승인, 보관 실패 롤백·권한·중복·JSON 보존 회귀 |
 | `src/main/services/performance-approval-flow-service.ts` | 실적 승인·재승인·명시 시급 정정·대기복귀 근무일 시급 적용 및 중복/잠금 차단 |
 | `src/main/services/performance-file-archive-service.ts` | 승인 원본 보관·명시적 대기 복귀·실패 시 원본 위치 배타적 복원 |
 | `src/main/services/performance-management-service.ts` | 실적 목록·재승인 요약·기승인 시급 표시와 현재/승인 비교 조회 |
 | `src/web/screens/performance-history.ts` | 실적 승인 및 반려 이력 표/모달 |
-| `src/web/screens/performance-actions.ts` | 실적 승인/반려/확정/되돌리기/숨김/원본 액션 조율기 |
+| `src/web/screens/performance-actions.ts` | 실적 승인/확정/되돌리기/숨김/원본 액션 조율기. 오류 수정은 원본 엑셀 수정·다시 읽기 안내 |
 | `src/web/screens/performance-intake.ts` | 실적 폴더 감시 상태, 대기 엑셀 목록, 시작 복구 상태 모달 |
 | `scripts/ui-checks/performance-fixtures.mjs` | 실적 관리 UI 검증용 TEMP 격리 50+실적/상태별 픽스처 생성기 |
 | `scripts/ui-checks/performance.mjs` | 실적 관리 화면 UI 시나리오(S01~S20) 및 음성 검문(N01~N12) 자동화 러너 |

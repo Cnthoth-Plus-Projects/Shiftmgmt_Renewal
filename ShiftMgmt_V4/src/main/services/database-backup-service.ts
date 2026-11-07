@@ -102,7 +102,7 @@ const buildJsonBackupSnapshot = (input: {
   );
 
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     createdAt: input.createdAt,
     tables
   };
@@ -218,7 +218,7 @@ export const runDatabaseBackupNow = async (input: {
       createdAt,
       jsonBackupPath: finalJsonPath,
       backupSha256,
-      schemaVersion: "2",
+      schemaVersion: "3",
       tableCount,
       rowCount: totalRowCount,
       warningMessages: []

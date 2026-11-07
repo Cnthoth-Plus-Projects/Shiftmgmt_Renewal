@@ -262,6 +262,21 @@ describe("document-layout-preview-service", () => {
     }
   });
 
+  it("같은 PDF 파일명 초안도 미리보기 세 문서를 분리하고 재생성 시 이전 파일을 보존한다", async () => {
+    const definition = getDefaultDocumentLayoutDefinition({ documentKind: "proposal-pdf" });
+    for (const output of definition.outputs) output.outputFileNamePattern = "같은 문서.pdf";
+    const result = await generateDocumentLayoutPreview({ definition, outputDir: tempDir });
+    expect(result.artifacts.map(a => path.basename(a.filePath))).toEqual([
+      "같은 문서.pdf", "같은 문서_dup01.pdf", "같은 문서_dup02.pdf"
+    ]);
+    expect(result.artifacts.map(a => a.memberId)).toEqual(["proposal", "attachment1", "attachment2"]);
+    const originalBytes = result.artifacts.map(a => fs.readFileSync(a.filePath));
+    for (const bytes of originalBytes) expect(bytes.subarray(0, 5).toString("ascii")).toBe("%PDF-");
+    const again = await generateDocumentLayoutPreview({ definition, outputDir: tempDir });
+    expect(new Set([...result.artifacts, ...again.artifacts].map(a => a.filePath)).size).toBe(6);
+    for (let i = 0; i < 3; i++) expect(fs.readFileSync(result.artifacts[i]!.filePath)).toEqual(originalBytes[i]);
+  });
+
   it("should generate 1 valid readable PDF artifact for dashboard-report-pdf layout key (T7, T10)", async () => {
     const definition = getDefaultDocumentLayoutDefinition({
       documentKind: "dashboard-report-pdf"

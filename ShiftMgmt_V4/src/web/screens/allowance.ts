@@ -31,12 +31,14 @@ export interface AllowanceScreenOptions {
   session: AuthSession;
   onSessionExpired?: () => void;
   initialTab?: AllowanceTabId;
+  onTabChange?: (tab: AllowanceTabId) => void;
 }
 
 export class AllowanceScreen {
   private container: HTMLElement;
   private session: AuthSession;
   private onSessionExpired?: () => void;
+  private onTabChange?: AllowanceScreenOptions["onTabChange"];
   private sessionExpiredHandled = false;
 
   private bridge: BrowserAppBridge;
@@ -85,6 +87,7 @@ export class AllowanceScreen {
     this.container = options.container;
     this.session = options.session;
     this.onSessionExpired = options.onSessionExpired;
+    this.onTabChange = options.onTabChange;
     if (options.initialTab) {
       this.activeTab = options.initialTab;
     }
@@ -406,6 +409,7 @@ export class AllowanceScreen {
         if (this.isBusy()) return;
         this.closeOwnedDialogs();
         this.activeTab = tabId;
+        this.onTabChange?.(tabId);
         this.updateScreen();
       },
       onRefresh: () => void this.loadData(true),

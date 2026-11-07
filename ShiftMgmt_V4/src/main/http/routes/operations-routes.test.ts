@@ -807,6 +807,33 @@ describe("operations-routes", () => {
   });
 
   describe("R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
+    it("rejects self deletion before calling storage even if other admins exist", async () => {
+      const env=setupTestEnv(),registry=assembleRoutes(env.sessionManager);
+      const self=env.sessionManager.resolveSession(env.cookie)!;
+      const response=await dispatchAsAdmin(registry,"operations:delete-user",[{userId:self.userId}],env);
+      expect(response.result.body).toMatchObject({ok:false,errorCode:"OPERATION_USER_DELETE_FAILED"});
+      expect(mocks.deleteStoredOperationUser).not.toHaveBeenCalled();
+      expect(env.sessionManager.requireAuthenticatedSession(env.cookie).ok).toBe(true);
+    });
+
+    it("clears the old session after restore even if watcher cleanup subsequently fails", async () => {
+      const env=setupTestEnv(),registry=assembleRoutes(env.sessionManager);
+      mocks.restartFileWatchRuntime.mockRejectedValueOnce(new Error("Controlled cleanup failure after restore"));
+      const response=await dispatchAsAdmin(registry,"operations:update-database-from-migration",validArgsMap["operations:update-database-from-migration"],env);
+      expect(mocks.runDatabaseMigrationUpdate).toHaveBeenCalledTimes(1);
+      expect(response.result.body).toMatchObject({ok:false});
+      expect(env.sessionManager.getMapSize()).toBe(0);
+      expect(env.sessionManager.requireAuthenticatedSession(env.cookie).ok).toBe(false);
+    });
+
+    it("does not clear a session when restore fails before replacing the database", async () => {
+      const env=setupTestEnv(),registry=assembleRoutes(env.sessionManager);
+      mocks.runDatabaseMigrationUpdate.mockRejectedValueOnce(new Error("Controlled validation failure before replacement"));
+      const response=await dispatchAsAdmin(registry,"operations:update-database-from-migration",validArgsMap["operations:update-database-from-migration"],env);
+      expect(response.result.body).toMatchObject({ok:false,errorCode:"DATABASE_MIGRATION_FAILED"});
+      expect(env.sessionManager.requireAuthenticatedSession(env.cookie).ok).toBe(true);
+    });
+
     it("matches validArgsMap and descriptor keys with OPERATIONS_CHANNELS exactly", () => {
       const expectedKeys = [...OPERATIONS_CHANNELS].sort();
       expect(Object.keys(validArgsMap).sort()).toEqual(expectedKeys);

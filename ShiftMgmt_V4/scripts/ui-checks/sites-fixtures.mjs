@@ -15,7 +15,8 @@ export async function seedSitesFixtures({ page, resourcesDir }) {
       const site=take(await b.saveSite({name,customerName:clients[i%clients.length],status:i>2&&i%7===0?"inactive":"active",timezone:"Asia/Seoul"}),"seed site "+i);ids.push(site.id);sitesCount++;
     }
     for(let i=initialPeople.length;i<65;i++){
-      take(await b.saveEmployee({employeeCode:"DEMO-"+String(i+1).padStart(3,"0"),name:i===14||i===15?"홍길동":"시연직원 "+String(i+1).padStart(3,"0"),rank:["팀장","부팀장","반장","선임기사","관제사","조원"][i%6],status:i>18&&i%11===0?"leave":i>18&&i%13===0?"retired":"active",employmentType:i%5===0?"BP":"정규",contact:"010-0000-"+String(i+1).padStart(4,"0"),email:"staff"+(i+1)+"@example.invalid"}),"seed employee "+i);employeesCreated++;
+      const status=i>18&&i%11===0?"leave":i>18&&i%13===0?"retired":"active";
+      take(await b.saveEmployee({employeeCode:"DEMO-"+String(i+1).padStart(3,"0"),name:i===14||i===15?"홍길동":"시연직원 "+String(i+1).padStart(3,"0"),rank:["팀장","부팀장","반장","선임기사","관제사","조원"][i%6],status,hireDate:"2024-01-01",retireDate:status==="retired"?"2026-01-01":undefined,employmentType:i%5===0?"BP":"정규",contact:"010-0000-"+String(i+1).padStart(4,"0"),email:"staff"+(i+1)+"@example.invalid"}),"seed employee "+i);employeesCreated++;
     }
     const teams=["A조","B조","C조","D조"];
     const make=(siteId,name,date,version,three=true)=>{

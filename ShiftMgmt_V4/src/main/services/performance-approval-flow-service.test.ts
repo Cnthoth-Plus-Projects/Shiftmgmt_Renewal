@@ -86,7 +86,7 @@ describe("performance-approval-flow-service", () => {
     const {fixture,detail,target,employee}=await prepareApprovedReturn();const before=returnFinancial();
     saveStoredEmployee({...employee,status:"retired",retireDate:target.workDate,hourlyRate:undefined},testAdminSession);
     expect(returnFinancial()).toEqual(before);
-    const returned=await returnApprovedPerformanceFileToPending({fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
+    const returned=await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
     expect(returned.data.entries.find(e=>e.id===target.id)?.hourlyRate).toBeUndefined();expect(returned.data.wageReapplication?.unresolvedEntryCount).toBe(1);
     expect((await approvePerformanceFile({fileId:detail.id,entryId:target.id,manualHourlyRate:20000,comment:"퇴사 후 우회 차단"},testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(false);
   });
@@ -95,7 +95,7 @@ describe("performance-approval-flow-service", () => {
     const {fixture,detail,target,employee}=await prepareApprovedReturn();const before=returnFinancial(), rate=listStoredEmployeeWageRates(employee.id)[0];
     saveStoredEmployeeWageRate({employeeId:employee.id,effectiveFrom:rate.effectiveFrom,hourlyRate:rate.hourlyRate,revision:{operation:"invalidate",wageRateId:rate.id,expectedRevision:rate.revisionToken!,changeReason:"W08 원본 시급 무효"}},testAdminSession);
     expect(returnFinancial()).toEqual(before);expect(getStoredPerformanceFileDetail(detail.id)?.entries.find(e=>e.id===target.id)?.hourlyRate).toBe(target.hourlyRate);
-    const returned=await returnApprovedPerformanceFileToPending({fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
+    const returned=await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId:detail.id},testAdminSession,{userDataPath:fixture.userDataPath});expect(returned.ok).toBe(true);if(!returned.ok)throw new Error(returned.message);
     expect(returned.data.entries.find(e=>e.id===target.id)?.hourlyRate).toBeUndefined();expect(returned.data.wageReapplication?.unresolvedEntryCount).toBe(1);
     expect((await approvePerformanceFile({fileId:detail.id,entryId:target.id},testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(false);
   });
@@ -107,7 +107,7 @@ describe("performance-approval-flow-service", () => {
     const target = detail.entries.find(e => e.section === "overtime")!;
     const employee = listStoredEmployees().find(e => e.employeeCode === target.employeeCode)!;
     saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 15500, effectiveFrom: target.workDate });
-    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(returned.ok).toBe(true);
     if (!returned.ok) throw new Error(returned.message);
     expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBe(15500);
@@ -126,7 +126,7 @@ describe("performance-approval-flow-service", () => {
       closeStoredEmployeeWageRate({ employeeId: employee.id, wageRateId: rate.id, effectiveTo: previousDay(target.workDate) });
       if (mode === "future-only") saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: "2026-04-01" });
     }
-    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
     expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBeUndefined();
     expect(returned.data.wageReapplication).toMatchObject({ status: "needs-review", unresolvedEntryCount: 1 });
@@ -138,7 +138,7 @@ describe("performance-approval-flow-service", () => {
     const { fixture, detail, target } = await prepareApprovedReturn();
     if (mode === "missing-employee") getSqliteDatabase()!.prepare("UPDATE performance_entries SET employee_code = 'W07-UNKNOWN' WHERE id = ?").run(target.id);
     else getSqliteDatabase()!.prepare("UPDATE performance_entries SET work_date = '2026-02-30' WHERE id = ?").run(target.id);
-    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
     expect(returned.data.entries.find(e => e.id === target.id)?.hourlyRate).toBeUndefined();
     expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(false);
@@ -149,7 +149,7 @@ describe("performance-approval-flow-service", () => {
     saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: target.workDate });
     if (mode === "missing-source") { const fs = await import("node:fs"); fs.unlinkSync(detail.filePath); }
     else writeFileSync(detail.filePath, "corrupt workbook, cached Excel source retained");
-    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
     const entry = returned.data.entries.find(e => e.id === target.id)!;
     expect(entry.hourlyRate).toBe(16600); expect(entry.sourceSignature).toBe(target.sourceSignature);
@@ -162,7 +162,7 @@ describe("performance-approval-flow-service", () => {
     expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id, manualHourlyRate: 19000, comment: "이전 수동 정정" }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
     getSqliteDatabase()!.prepare("UPDATE performance_entries SET hourly_rate = 19000, alert_json = ? WHERE id = ?").run(JSON.stringify([{ severity: "error", message: `${target.employeeName}의 시급 정보가 없습니다.` }, { severity: "warning", message: "증빙 확인 메모" }]), target.id);
     saveStoredEmployeeWageRate({ employeeId: employee.id, hourlyRate: 16600, effectiveFrom: target.workDate });
-    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(result.ok).toBe(true); if (!result.ok) throw new Error(result.message);
     const entry = result.data.entries.find(e => e.id === target.id)!;
     expect(entry.hourlyRate).toBe(16600); expect(entry.alerts).toEqual([{ severity: "warning", message: "증빙 확인 메모" }]);
@@ -171,7 +171,7 @@ describe("performance-approval-flow-service", () => {
   it("W-07: unrelated blocking source errors survive wage application", async () => {
     const { fixture, detail, target } = await prepareApprovedReturn();
     getSqliteDatabase()!.prepare("UPDATE performance_entries SET alert_json = ? WHERE id = ?").run(JSON.stringify([{ severity: "error", message: "시급 증빙 적용 내용이 원본과 다릅니다." }]), target.id);
-    const returned = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(returned.ok).toBe(true); if (!returned.ok) throw new Error(returned.message);
     expect(returned.data.entries.find(e => e.id === target.id)?.alerts).toEqual([{ severity: "error", message: "시급 증빙 적용 내용이 원본과 다릅니다." }]);
     expect((await approvePerformanceFile({ fileId: detail.id, entryId: target.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(false);
@@ -188,7 +188,7 @@ describe("performance-approval-flow-service", () => {
       else saveStoredAppSettings({ ...getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), pendingDir: path.join(fixture.rootDir, "changed-pending") }, { userDataPath: fixture.userDataPath });
       return moved;
     });
-    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(expected);
     expect(getStoredPerformanceFileDetail(detail.id)?.directoryType).toBe("approved"); expect(existsSync(detail.filePath)).toBe(true);
   });
@@ -198,7 +198,7 @@ describe("performance-approval-flow-service", () => {
     const db = getSqliteDatabase()!;
     db.exec(`CREATE TRIGGER w07_failed_insert BEFORE INSERT ON performance_entries BEGIN SELECT RAISE(${failure}, 'W07 insert failure'); END`);
     try {
-      const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+      const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
       expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(before);
       expect(getStoredPerformanceFileDetail(detail.id)?.directoryType).toBe("approved"); expect(existsSync(detail.filePath)).toBe(true);
     } finally { db.exec("DROP TRIGGER w07_failed_insert"); }
@@ -209,7 +209,7 @@ describe("performance-approval-flow-service", () => {
     const blocked = path.join(fixture.rootDir, "pending-is-a-file");
     saveStoredAppSettings({ ...getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath }), pendingDir: blocked }, { userDataPath: fixture.userDataPath });
     rmdirSync(blocked); writeFileSync(blocked, "not a directory");
-    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(result.ok).toBe(false); expect(returnFinancial()).toEqual(before); expect(existsSync(detail.filePath)).toBe(true);
   });
 
@@ -241,7 +241,7 @@ describe("performance-approval-flow-service", () => {
     });
     const db = getSqliteDatabase()!; db.exec("CREATE TRIGGER w07_failed_insert BEFORE INSERT ON performance_entries BEGIN SELECT RAISE(ABORT, 'W07 insert failure'); END");
     try {
-      const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+      const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
       expect(result.ok).toBe(false); if (result.ok) throw new Error("Rollback collision must be reported");
       expect(result.message).toContain("복원"); expect(returnFinancial()).toEqual(before);
       expect(readFileSync(detail.filePath, "utf8")).toBe("new unrelated file"); expect(readFileSync(pendingPath)).toEqual(bytes);
@@ -258,7 +258,7 @@ describe("performance-approval-flow-service", () => {
     const history = listPerformanceApprovalHistory().filter(a => a.fileId === other.id);
     const calculations = listApprovedAllowanceCalculationResults().filter(c => c.fileId === other.id);
     const bytes = readFileSync(fixture.filePath);
-    const result = await returnApprovedPerformanceFileToPending({ fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id }, testAdminSession, { userDataPath: fixture.userDataPath });
     expect(result.ok).toBe(true); if (!result.ok) throw new Error(result.message);
     expect(result.data.filePath).not.toBe(fixture.filePath); expect(readFileSync(fixture.filePath)).toEqual(bytes);
     expect(result.data.entries.find(e => e.id === target.id)?.sourceSignature).toBe(target.sourceSignature);
@@ -966,8 +966,7 @@ describe("performance-approval-flow-service", () => {
     });
     const detail = await syncPreparedReturnedSchedule(fixture);
 
-    const result = await returnApprovedPerformanceFileToPending(
-      { fileId: detail.id },
+    const result = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id },
       testAdminSession,
       { userDataPath: fixture.userDataPath }
     );
@@ -1004,8 +1003,7 @@ describe("performance-approval-flow-service", () => {
       listApprovedAllowanceCalculationResults().filter((item) => item.fileId === detail.id).length
     ).toBeGreaterThan(0);
 
-    const returnResult = await returnApprovedPerformanceFileToPending(
-      { fileId: detail.id },
+    const returnResult = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id },
       testAdminSession,
       { userDataPath: fixture.userDataPath }
     );

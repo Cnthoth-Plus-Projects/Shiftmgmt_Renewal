@@ -1,6 +1,6 @@
 // 인력 관리 화면: 인력 목록 테이블, 필터, 정렬, 그룹 접기
 import type { EmployeeRecord, SiteRecord } from "../../shared/domain/model";
-import { renderPagination, paginateGroupsForHeight, measurePaginationBody } from "../pagination";
+import { renderPagination, paginateGroupsForHeight } from "../pagination";
 import { formatCurrency, formatEmployeeRank, isBpEmploymentType, sortEmployeesByWorksite, type EmployeePageRange } from "./workforce-model";
 
 import { employeeStatusLabel } from "./workforce-model";
@@ -9,7 +9,7 @@ export interface WorkforceListOptions {
   tableContainer?: HTMLElement;
   canWrite: boolean;
   isAdmin: boolean;
-  onSelectEmployee: (employeeId: string) => void;
+  onSelectEmployee: (employeeId: string, openDetail?: boolean) => void;
   onOpenNewEmployeeModal: () => void;
   onOpenBulkModal: () => void;
   onFilterChange: () => void;
@@ -20,7 +20,7 @@ export class WorkforceList {
   private tableContainer: HTMLElement;
   private canWrite: boolean;
   private isAdmin: boolean;
-  private onSelectEmployee: (employeeId: string) => void;
+  private onSelectEmployee: (employeeId: string, openDetail?: boolean) => void;
   private onOpenNewEmployeeModal: () => void;
   private onOpenBulkModal: () => void;
   private onFilterChange: () => void;
@@ -32,6 +32,7 @@ export class WorkforceList {
   private bodyHeight = 0;
   private rowHeight = 27;
   private groupHeight = 28;
+  private measuredTableWidth = 0;
   private resizeObserver: ResizeObserver | null = null;
   private resizeFrame: number | null = null;
   private filterSignature = "";
@@ -61,7 +62,10 @@ export class WorkforceList {
 
   public setData(employees: EmployeeRecord[], sites: SiteRecord[], selectedId?: string | null, allEmployees?: EmployeeRecord[]): void {
     const signature = JSON.stringify(this.getFilterState());
-    if (signature !== this.filterSignature) this.page = 1;
+    if (signature !== this.filterSignature) {
+      this.page = 1;
+      this.rowHeight = 27;
+    }
     this.filterSignature = signature;
     this.employees = sortEmployeesByWorksite(employees);
     this.allEmployees = allEmployees ?? employees;
@@ -217,6 +221,11 @@ export class WorkforceList {
     countBadge.textContent = `전체 ${this.employees.length}명`;
     filterRight.appendChild(countBadge);
 
+    const compactNote = document.createElement("span");
+    compactNote.className = "workforce-compact-note";
+    compactNote.textContent = "연락처·이메일은 인력 상세에서 확인할 수 있습니다.";
+    filterRight.appendChild(compactNote);
+
     // 시급 일괄 업데이트 버튼 (UI01-D05: operator/reviewer도 열어서 읽기 preview 가능)
     const bulkBtn = document.createElement("button");
     bulkBtn.type = "button";
@@ -256,7 +265,7 @@ export class WorkforceList {
     table.id = "table-emp-e1";
 
     const colgroup = document.createElement("colgroup");
-    for (const width of [96, 80, 48, 64, 52, 90, 98, 52, 220, 122, 190]) { const col = document.createElement("col"); col.style.width = `${width}px`; colgroup.appendChild(col); }
+    for (const width of [9, 7, 5, 7, 6, 9, 11, 5, 17, 10, 14]) { const col = document.createElement("col"); col.style.width = `${width}%`; colgroup.appendChild(col); }
     table.appendChild(colgroup);
     const thead = document.createElement("thead");
     thead.innerHTML = `
@@ -424,7 +433,7 @@ export class WorkforceList {
         const selectThis = () => {
           this.selectedEmployeeId = emp.id;
           this.updateSelectionHighlight();
-          this.onSelectEmployee(emp.id);
+          this.onSelectEmployee(emp.id, true);
         };
 
         tr.addEventListener("click", selectThis);
@@ -438,6 +447,7 @@ export class WorkforceList {
         body.appendChild(tr);
       }
     }
+    this.fitToHeight();
   }
 
   public updateSelectionHighlight(): void {
@@ -460,7 +470,11 @@ export class WorkforceList {
     description.textContent = total ? `검색 결과 ${total}명 · ${range.start + 1}–${range.end}명 · ${this.page}/${pages}페이지` : "검색 결과 0명";
     pager.appendChild(description);
     pager.appendChild(renderPagination({currentPage:this.page,totalPages:pages,totalCount:total,idPrefix:"employees",label:"인력 목록 페이지 이동",onPageChange:page=>{
-      this.page=page;this.renderTableRows();const first=this.employees[this.pages[this.page-1].start];if(first)this.onSelectEmployee(first.id);
+      this.page = page;
+      const first = this.employees[this.pages[this.page - 1].start];
+      if (first) this.selectedEmployeeId = first.id;
+      this.renderTableRows();
+      if (first) this.onSelectEmployee(first.id);
     }}));
   }
 
@@ -490,10 +504,21 @@ export class WorkforceList {
     const viewport = this.tableContainer.querySelector<HTMLElement>("#workforce-row-slots");
     const head = this.tableContainer.querySelector<HTMLElement>("thead");
     if (!viewport?.isConnected || !head) return;
-    const row = this.tableContainer.querySelector<HTMLElement>(".workforce-row");
     const group = this.tableContainer.querySelector<HTMLElement>(".workforce-group-row");
-    const height = measurePaginationBody(viewport, head);
-    const rowHeight = row?.getBoundingClientRect().height || this.rowHeight;
+    // This list also fills a bounded viewport on narrow screens. The shared
+    // legacy measurement returns zero there (fixed ten-row fallback).
+    const scrollbar = Math.max(0, viewport.offsetHeight - viewport.clientHeight);
+    const height = Math.max(0, viewport.getBoundingClientRect().height - scrollbar - head.getBoundingClientRect().height - 0.5);
+    // Wrapped rows can differ in height. Keep the largest observation at this
+    // width so paging never oscillates when a tall row moves to another page.
+    if (Math.abs(viewport.clientWidth - this.measuredTableWidth) > 0.5) {
+      this.measuredTableWidth = viewport.clientWidth;
+      this.rowHeight = 27;
+    }
+    const rowHeight = Math.max(this.rowHeight, ...Array.from(
+      this.tableContainer.querySelectorAll<HTMLElement>(".workforce-row"),
+      row => row.getBoundingClientRect().height
+    ));
     const groupHeight = group?.getBoundingClientRect().height || this.groupHeight;
     if (Math.abs(height - this.bodyHeight) < 0.25 && Math.abs(rowHeight - this.rowHeight) < 0.25 && Math.abs(groupHeight - this.groupHeight) < 0.25) return;
     const anchor = this.selectedEmployeeId || this.employees[this.pages[this.page - 1]?.start]?.id;

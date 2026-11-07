@@ -14,11 +14,50 @@ import {
   clearStoredOperationAuthFailures,
   findStoredOperationAuthByLoginId,
   findStoredOperationAuthByUserId,
+  readStoredOperationAuthByUserId,
   recordStoredOperationAuthFailure
 } from "./operations-storage-service";
-import { getSqliteStorageContext } from "./sqlite-storage-service";
+import { getSqliteDatabase, getSqliteStorageContext } from "./sqlite-storage-service";
 
 let currentSession: AuthSession | null = null;
+let sessionIdentity: { database: ReturnType<typeof getSqliteDatabase>; passwordHash: string } | null = null;
+
+const clearCurrentSession = () => {
+  currentSession = null;
+  sessionIdentity = null;
+};
+
+const matchesSessionUser = (
+  user: ReturnType<typeof readStoredOperationAuthByUserId>,
+  session: AuthSession,
+  passwordHash: string
+): user is NonNullable<ReturnType<typeof readStoredOperationAuthByUserId>> =>
+  Boolean(user && user.status === "active" && user.role === session.role &&
+    user.loginId === session.loginId && user.passwordHash === passwordHash &&
+    user.mustChangePassword === session.passwordChangeRequired);
+
+// Preview synchronously opens a temporary DB then reopens the unchanged live DB.
+// Only that trusted operation may retain its session across a connection change.
+export const preserveSessionForDatabasePreview = <T>(
+  action: () => T,
+  expectedSessionToken: string | undefined
+): T => {
+  const session = currentSession;
+  const identity = sessionIdentity;
+  const databasePath = getSqliteStorageContext()?.dbPath;
+  try {
+    return action();
+  } finally {
+    if (session && identity && expectedSessionToken && session.sessionToken === expectedSessionToken &&
+        currentSession === session && sessionIdentity === identity && databasePath &&
+        getSqliteStorageContext()?.dbPath === databasePath && getSqliteDatabase()) {
+      const user = readStoredOperationAuthByUserId(session.userId);
+      if (matchesSessionUser(user, session, identity.passwordHash)) {
+        sessionIdentity = { ...identity, database: getSqliteDatabase() };
+      }
+    }
+  }
+};
 
 const createSessionExpiration = (now: number) =>
   new Date(now + AUTH_SESSION_DURATION_MS).toISOString();
@@ -93,8 +132,23 @@ const resolveActiveSession = (input?: {
   const expiresAt = parseSessionExpiration(currentSession);
 
   if (expiresAt === null || expiresAt <= now) {
-    currentSession = null;
+    clearCurrentSession();
     return null;
+  }
+
+  // A replacement/reopened database invalidates even otherwise identical restored credentials.
+  if (!sessionIdentity?.database || sessionIdentity.database !== getSqliteDatabase()) {
+    clearCurrentSession();
+    return null;
+  }
+  const user = readStoredOperationAuthByUserId(currentSession.userId);
+  if (!matchesSessionUser(user, currentSession, sessionIdentity.passwordHash)) {
+    clearCurrentSession();
+    return null;
+  }
+
+  if (currentSession.displayName !== user.displayName) {
+    currentSession = { ...currentSession, displayName: user.displayName };
   }
 
   if (input?.renew) {
@@ -157,6 +211,7 @@ export const signIn = (input: SignInInput): BridgeResult<AuthSession> => {
     displayName: user.displayName,
     passwordChangeRequired: user.mustChangePassword
   });
+  sessionIdentity = { database: getSqliteDatabase(), passwordHash: user.passwordHash };
 
   return {
     ok: true,
@@ -176,7 +231,7 @@ export const changePassword = (
   const user = findStoredOperationAuthByUserId(activeSession.userId);
 
   if (!user || user.status !== "active" || !user.passwordHash) {
-    currentSession = null;
+    clearCurrentSession();
     return buildSessionRequiredFailure();
   }
 
@@ -210,6 +265,7 @@ export const changePassword = (
       displayName: updatedUser.displayName,
       passwordChangeRequired: false
     });
+    sessionIdentity = { database: getSqliteDatabase(), passwordHash: updatedUser.passwordHash ?? "" };
 
     return {
       ok: true,
@@ -221,7 +277,7 @@ export const changePassword = (
 };
 
 export const signOut = (): BridgeResult<null> => {
-  currentSession = null;
+  clearCurrentSession();
 
   return {
     ok: true,
@@ -242,5 +298,5 @@ export const getSessionWithRenewal = (): BridgeResult<AuthSession | null> => ({
 });
 
 export const resetAuthStateForTest = () => {
-  currentSession = null;
+  clearCurrentSession();
 };

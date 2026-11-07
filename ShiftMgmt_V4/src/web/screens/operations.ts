@@ -1,5 +1,5 @@
 // 운영 관리 메인 화면 (R01, R14)
-// 7개 탭 조율 및 관리자 권한 가드
+// 운영 6개 탭 / 독립 사용자 관리 및 관리자 권한 가드
 import type { AuthSession } from "../../shared/domain/model";
 import { el, showConfirm, sharedDialog } from "./operations-ui";
 import { OperationsSettingsTab } from "./operations-settings";
@@ -28,7 +28,6 @@ const TABS: TabConfig[] = [
   { id: "settings", label: "설정" },
   { id: "holidays", label: "공휴일" },
   { id: "rates", label: "요율" },
-  { id: "users", label: "사용자" },
   { id: "layout", label: "양식 편집" },
   { id: "site-names", label: "근무지 이름" },
   { id: "releases", label: "릴리즈 이력" }
@@ -52,6 +51,7 @@ export class OperationsScreen {
   private tabContentEl?: HTMLElement;
   private isDestroyed = false;
   private mountRequestId = 0;
+  private userManagementOnly = false;
 
   constructor(
     optionsOrContainer: OperationsScreenOptions | HTMLElement,
@@ -68,6 +68,7 @@ export class OperationsScreen {
       this.session = session;
       this.currentTab = initialTab;
     }
+    this.userManagementOnly = this.currentTab === "users";
   }
 
   public reportSessionExpired(): void {
@@ -104,15 +105,17 @@ export class OperationsScreen {
 
     // 화면 타이틀
     const header = el("div", "operations-screen-header");
-    header.appendChild(el("h2", "screen-title", "시스템 운영 관리"));
+    const title = el("h2", "screen-title", this.userManagementOnly ? "사용자 관리" : "시스템 운영 관리");
+    title.id = "operations-screen-title";
+    header.appendChild(title);
     wrap.appendChild(header);
 
-    // 3. 7개 탭 내비게이션 바 (ARIA tablist)
+    // 3. 운영 6개 탭. 사용자 관리는 사이드바에서 독립 진입한다.
     const tabList = el("div", "operations-tab-list");
     tabList.setAttribute("role", "tablist");
     tabList.setAttribute("aria-label", "운영 관리 탭 메뉴");
 
-    TABS.forEach((t, index) => {
+    if (!this.userManagementOnly) TABS.forEach((t, index) => {
       const btn = el("button", `tab-btn ${t.id === this.currentTab ? "active" : ""}`, t.label);
       btn.type = "button";
       btn.setAttribute("role", "tab");
@@ -149,13 +152,14 @@ export class OperationsScreen {
       tabList.appendChild(btn);
     });
 
-    wrap.appendChild(tabList);
+    if (!this.userManagementOnly) wrap.appendChild(tabList);
+    else wrap.appendChild(el("div", "operations-context-summary", "사용자 계정 · 권한 · 복구키 관리"));
 
     // 4. 탭 콘텐츠 영역
     const content = el("div", "operations-tab-content");
-    content.setAttribute("role", "tabpanel");
+    content.setAttribute("role", this.userManagementOnly ? "region" : "tabpanel");
     content.setAttribute("id", `tab-panel-${this.currentTab}`);
-    content.setAttribute("aria-labelledby", `tab-btn-${this.currentTab}`);
+    content.setAttribute("aria-labelledby", this.userManagementOnly ? title.id : `tab-btn-${this.currentTab}`);
     this.tabContentEl = content;
     wrap.appendChild(content);
 
@@ -167,6 +171,7 @@ export class OperationsScreen {
 
   public async switchTab(tabId: OperationsTabId): Promise<void> {
     if (this.isDestroyed) return;
+    if (this.userManagementOnly ? tabId !== "users" : tabId === "users") return;
     if (this.currentTab === tabId && this.activeTabInstance) return;
 
     // 미저장 초안 확인 가드 (UI02-D02)

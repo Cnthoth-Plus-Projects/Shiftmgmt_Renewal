@@ -4,8 +4,10 @@ import type { AuthSession } from "../shared/domain/model";
 import { LoginScreen } from "./screens/login";
 import { ShellScreen } from "./screens/shell";
 import { installCommonControls } from "./common-controls";
+import { installTableLayout } from "./table-layout";
 
 installCommonControls();
+installTableLayout();
 
 // Phase 3-1b 앱 진입점
 // 브리지 세션 확인 -> 상태별(로그인 L1~L5 / 셸) 렌더링 조정

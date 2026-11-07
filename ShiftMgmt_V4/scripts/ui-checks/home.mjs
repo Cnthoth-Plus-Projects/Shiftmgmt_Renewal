@@ -246,7 +246,7 @@ async function verifyActionLifetime(page, kind, capture) {
             await page.locator(selector).waitFor({ state: "visible" });
             if (!(await page.locator(selector).isDisabled())) throw new Error("진행 중 요청의 새 버튼 잠금 누락");
           } else if (scenario === "leave") {
-            await page.getByRole("button", { name: "근무 현황", exact: true }).click();
+            await page.getByRole("button", { name: "근무표 배포 이력", exact: true }).click();
             await page.locator(".notice-banner").waitFor({ state: "visible" });
           }
           release();
@@ -594,7 +594,7 @@ for (const currentCase of casesToRun) {
         await performLogin(page, adminCreds, waitForFontsReady);
 
         // 홈 진입 중 사이드바 메뉴 클릭으로 홈 이탈 후 재진입
-        const opsMenuBtn = page.getByRole("button", { name: "근무 현황" });
+        const opsMenuBtn = page.getByRole("button", { name: "근무표 배포 이력" });
         await opsMenuBtn.click();
 
         // 화면 준비 중 안내 확인
@@ -1000,7 +1000,7 @@ for (const currentCase of casesToRun) {
         }
 
         // 5. 응답 도달 전 화면 이탈 (사이드바 근무 현황 클릭)
-        const opsMenuBtn = page.getByRole("button", { name: "근무 현황" });
+        const opsMenuBtn = page.getByRole("button", { name: "근무표 배포 이력" });
         await opsMenuBtn.click();
         const noticeBanner = page.locator(".notice-banner");
         await noticeBanner.waitFor({ state: "visible", timeout: 5_000 });
@@ -1078,7 +1078,7 @@ for (const currentCase of casesToRun) {
         }
 
         // 5. 응답 도달 전 화면 이탈 (사이드바 근무표 생성 클릭)
-        const createMenuBtn = page.getByRole("button", { name: "근무표 생성" });
+        const createMenuBtn = page.getByRole("button", { name: "근무표 생성·배포" });
         await createMenuBtn.click();
         const noticeBanner = page.locator(".notice-banner");
         await noticeBanner.waitFor({ state: "visible", timeout: 5_000 });

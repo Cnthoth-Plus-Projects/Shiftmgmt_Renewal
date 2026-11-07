@@ -117,7 +117,8 @@ export const resolveDocumentLayoutFileName = (
 export const resolveDocumentLayoutOutputFilePath = (
   baseDir: string,
   pattern: string,
-  tokens: DocumentLayoutFileNameTokens
+  tokens: DocumentLayoutFileNameTokens,
+  reservedOutputPaths?: Set<string>
 ): string => {
   const resolvedRelative = resolveDocumentLayoutFileName(pattern, tokens);
   if (resolvedRelative.includes("\\")) {
@@ -135,7 +136,18 @@ export const resolveDocumentLayoutOutputFilePath = (
   const parentDir = path.dirname(targetPath);
   mkdirSync(parentDir, { recursive: true });
 
-  if (!existsSync(targetPath)) {
+  // Writers may choose every member's name before creating any files.
+  const tryReserve = (candidatePath: string): boolean => {
+    const resolvedPath = path.resolve(candidatePath);
+    const key = process.platform === "win32" ? resolvedPath.toLowerCase() : resolvedPath;
+    if (existsSync(candidatePath) || reservedOutputPaths?.has(key)) {
+      return false;
+    }
+    reservedOutputPaths?.add(key);
+    return true;
+  };
+
+  if (tryReserve(targetPath)) {
     return targetPath;
   }
 
@@ -147,7 +159,7 @@ export const resolveDocumentLayoutOutputFilePath = (
   while (true) {
     const dupSuffix = `_dup${String(duplicateIndex).padStart(2, "0")}`;
     const candidatePath = path.resolve(parentDir, `${baseName}${dupSuffix}${ext}`);
-    if (!existsSync(candidatePath)) {
+    if (tryReserve(candidatePath)) {
       return candidatePath;
     }
     duplicateIndex += 1;

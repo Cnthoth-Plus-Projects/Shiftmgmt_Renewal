@@ -4,12 +4,19 @@
    Follows UI_ACCEPTANCE_STANDARD.md
    ========================================================================== */
 
+#main-content:has(> #perf-screen-root) {
+  padding: 16px 16px 8px;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .performance-screen {
   display: flex;
   flex-direction: column;
   gap: 12px;
   height: 100%;
-  padding: 16px;
+  min-height: 0;
+  padding: 0;
   box-sizing: border-box;
   background-color: #f8fafc;
   color: #1e293b;
@@ -550,6 +557,17 @@
   gap: 8px;
 }
 
+.perf-correction-help {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line, #e2e5ea);
+  border-radius: 6px;
+  background: var(--bg, #f8fafc);
+  color: var(--text-sub, #4b5563);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 .perf-btn-primary {
   flex: 1;
   height: 36px;
@@ -776,3 +794,31 @@
 
 .perf-modal-backdrop .workforce-modal-body:has(> .perf-dialog-content) { padding:0; }
 .perf-dialog-content > .perf-modal-footer { position:sticky; bottom:0; }
+/* Cancellation records are read-only and separate from active payment totals. */
+.perf-return-reason-label { display:block; margin:14px 0 6px; font-weight:600; }
+.perf-return-reason { display:block; width:100%; min-height:84px; height:auto; padding:8px 10px; resize:vertical; }
+.perf-cancellation-history { margin-top:18px; padding-top:14px; border-top:1px solid var(--line); }
+.perf-cancellation-history h4 { margin:0 0 8px; font-size:14px; }
+.perf-cancel-event { margin:10px 0; border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+.perf-cancel-event summary { cursor:pointer; line-height:1.7; }
+.perf-cancel-reason { white-space:pre-wrap; overflow-wrap:anywhere; }
+.workforce-modal-box.perf-history-dialog { max-width:min(1040px,calc(100vw - 32px)); }
+#performance-dialog .perf-history-dialog .perf-history-approvals { table-layout:fixed; min-width:0; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td) { min-width:0!important; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(1) { width:170px; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(2) { width:60px; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(3) { width:80px; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(4) { width:100px; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(5) { width:150px; }
+#performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):last-child .app-table-cell-content { max-width:none; white-space:normal; overflow-wrap:anywhere; }
+.perf-cancel-entry { margin-top:10px; padding:12px; border:1px solid var(--line); border-radius:6px; }
+.perf-cancel-identity { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; }
+.perf-cancel-approval { color:var(--text-sub); margin:6px 0 12px; }
+.perf-cancel-values { min-width:0; overflow-wrap:anywhere; }
+.perf-cancel-values p { margin:8px 0 0; line-height:1.6; }
+.perf-cancel-calculation > strong { font-size:16px; }
+@media(max-width:760px) { #performance-dialog .perf-history-dialog .perf-history-approvals :is(th,td):nth-child(n) { width:auto; padding-inline:5px; white-space:normal; } #performance-dialog .perf-history-dialog .perf-history-approvals .app-table-cell-content { white-space:normal; overflow-wrap:anywhere; } }
+.perf-cancel-calculation { margin-bottom:8px; }
+.perf-cancel-calculation ul { padding-left:18px; margin:6px 0; }
+.perf-cancellation-history [hidden] { display:none!important; }
+.perf-history-stamp { white-space:nowrap; min-width:150px; font-variant-numeric:tabular-nums; }

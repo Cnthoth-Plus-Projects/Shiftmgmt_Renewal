@@ -116,7 +116,8 @@ async function closeAnyOpenModal(page) {
 
 async function switchToTab(page, tabId) {
   await closeAnyOpenModal(page);
-  await page.click(`#tab-btn-${tabId}`);
+  if(tabId==='users') await page.click('button[data-id="user-mgmt"]');
+  else { if(!await page.locator('#tab-btn-settings').count()) await page.click('button[data-id="operations"]'); await page.click(`#tab-btn-${tabId}`); }
   await sleep(300);
   // 미저장 초안 확인 가드 모달이 뜬 경우 이동 승인 (UI02-D02)
   const confirmModal = page.locator("#operations-confirm-modal");
@@ -170,6 +171,7 @@ async function main() {
   ensureAuthBootstrapCredentials({ userDataPath: userDataDir, env });
   seedBootstrapSecrets(bootstrapFile);
   artifactRegistry.register("Sm!nextStrongPw7a");
+  if (isPreview) artifactRegistry.register("ShiftTest1234!");
   for(let i=1;i<=55;i++)artifactRegistry.register(`Password${String(i).padStart(2,'0')}!@#`);
   for(const folder of ['pending','approved','export'])fs.mkdirSync(path.join(userDataDir,folder),{recursive:true});
 
@@ -253,13 +255,14 @@ async function main() {
   });
 
   const performLogin = async (loginId, password) => {
-    await page.goto(targetUrl, { waitUntil: "networkidle" });
+    await page.goto(isPreview ? `${targetUrl}?developmentPreview=1` : targetUrl, { waitUntil: "networkidle" });
     const logoutBtn = page.locator(".btn-logout");
     if (await logoutBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
       await logoutBtn.click();
     }
     const idInput = page.locator("#login-id");
     await idInput.waitFor({ state: "visible", timeout: 10000 });
+    if (!isPreview) assert.equal(await page.locator("#btn-development-autofill").count(), 0);
     await idInput.fill(loginId);
     await page.locator("#login-password").fill(password);
     await page.locator("button[type='submit']").click();
@@ -270,7 +273,7 @@ async function main() {
     ]);
 
     if (mode === "L4") {
-      const nextPw = "Sm!nextStrongPw7a";
+      const nextPw = isPreview ? "ShiftTest1234!" : "Sm!nextStrongPw7a";
       await page.locator("#l4-current-pw").fill(password);
       await page.locator("#l4-new-pw").fill(nextPw);
       await page.locator("#l4-confirm-pw").fill(nextPw);
@@ -296,9 +299,54 @@ async function main() {
   await installCalls(page);
 
   if (isPreview) {
+    const previewUrl = `${targetUrl}?developmentPreview=1`;
+    // 기존 UI-03-DEV-LOGIN 계약: 로그아웃/새 브라우저에서도 하단 자동입력으로 정상 로그인.
+    await page.locator(".btn-logout").click();
+    await page.locator("#btn-development-autofill").waitFor({state:"visible"});
+    await page.goto(targetUrl, {waitUntil:"networkidle"});
+    await page.locator("#btn-development-autofill").waitFor({state:"visible"});
+    await page.goto(`${targetUrl}?developmentPreview=0`, {waitUntil:"networkidle"});
+    await page.locator("#login-id").waitFor({state:"visible"});
+    assert.equal(await page.locator("#btn-development-autofill").count(), 0);
+    await page.goto(previewUrl, {waitUntil:"networkidle"});
+    const autofill = page.locator("#btn-development-autofill");
+    await autofill.waitFor({state:"visible"});
+    const bannerBelowLogin = await page.evaluate(() => {
+      const banner = document.querySelector("#btn-development-autofill"), submit = document.querySelector(".login-form button[type=submit]");
+      return banner.getBoundingClientRect().top >= submit.getBoundingClientRect().bottom;
+    });
+    assert.ok(bannerBelowLogin);
+    const loginCapture = path.join(capturesDir, "login-autofill.png");
+    await page.screenshot({path:loginCapture,fullPage:true});
+    await autofill.click();
+    assert.ok(await page.locator("#login-id").inputValue() === adminCreds.loginId);
+    assert.ok(await page.locator("#login-password").inputValue() === adminCreds.password);
+    const freshContext = await browser.newContext({viewport:{width:1024,height:768}});
+    try {
+      const freshPage = await freshContext.newPage();
+      await freshPage.goto(previewUrl, {waitUntil:"networkidle"});
+      await freshPage.locator("#btn-development-autofill").waitFor({state:"visible"});
+      await freshPage.locator("#btn-development-autofill").click();
+      assert.ok(await freshPage.locator("#login-id").inputValue() === adminCreds.loginId);
+      assert.ok(await freshPage.locator("#login-password").inputValue() === adminCreds.password);
+      await freshPage.locator(".login-form button[type=submit]").click();
+      await freshPage.locator(".btn-logout").waitFor({state:"visible"});
+    } finally { await freshContext.close(); }
+    // 새 브라우저 로그인은 이전 세션을 종료하므로 확인용 주 창을 마지막에 로그인한다.
+    await page.locator(".login-form button[type=submit]").click();
+    await page.locator(".btn-logout").waitFor({state:"visible"});
     await page.click('button[data-id="operations"]');
     await page.waitForSelector(".operations-screen-root", { timeout: 10000 });
-    process.stdout.write(`[Preview] Live preview ready at ${targetUrl} (PID: ${process.pid}, Server PID: ${serverProcess?.pid})\n`);
+    await switchToTab(page, "holidays");
+    const previewCapture = path.join(capturesDir, "holidays-preview.png");
+    await page.screenshot({ path: previewCapture, fullPage: true });
+    fs.writeFileSync(path.join(resolvedOut, "preview.json"), artifactJSON({
+      url: previewUrl, runnerPid: process.pid, serverPid: serverProcess?.pid,
+      userDataDir, resourcesDir, viewport: await page.evaluate(() => ({width:innerWidth,height:innerHeight})),
+      nativeViewport: true, captures: [previewCapture, loginCapture], servedAssets,
+      autofillCheck: {bannerBelowLogin, persistedAfterLogout:true, persistedAtPlainLocalUrl:true, disabledModeHidden:true, fieldsMatch:true, normalLoginSuccess:true, freshBrowserContextLogin:true}
+    }, null, 2), "utf8");
+    process.stdout.write(`[Preview] Live preview ready at ${previewUrl} (PID: ${process.pid}, Server PID: ${serverProcess?.pid})\n`);
     return;
   }
 
@@ -312,13 +360,14 @@ async function main() {
     await page.click('button[data-id="operations"]');
     await page.waitForSelector(".operations-screen-root", { timeout: 10000 });
     const tabs = page.locator(".tab-btn");
-    assert.equal(await tabs.count(), 7, "7개 탭이 존재해야 함");
+    assert.equal(await tabs.count(), 6, "운영 6개 탭이 존재해야 함");
 
     // 사용자 관리 바로가기 메뉴 클릭 시 같은 화면의 '사용자' 탭으로 전환 확인
     await page.click('button[data-id="user-mgmt"]');
     await sleep(200);
-    const activeTab = await page.locator(".tab-btn.active").textContent();
-    assert.equal(activeTab?.trim(), "사용자", "사용자 탭으로 전환되어야 함");
+    await page.locator('.operations-users-wrap').waitFor();
+    assert.equal(await page.locator('.operations-tab-list').count(),0,"사용자 관리는 독립 메뉴");
+    assert.equal(await page.locator('.screen-title').textContent(),"사용자 관리");
 
     await verifyScenario("S01", { page, browser, context, adminCreds, seeded, resourcesDir });
     process.stdout.write("[S01] verified\n");
@@ -328,17 +377,18 @@ async function main() {
   }
   }
 
-  // --- S02: 사용자 또는 이름 55개에서 전체 정렬/필터 -> 6페이지 (10/10/10/10/10/5) ---
+  // --- S02: 이름55개 전체 정렬/필터 → 실제 높이별 페이지의 모든 행 검증 ---
   if (!focusIDs.size || focusIDs.has("S02")) {
   try {
     await switchToTab(page, "site-names");
     const paginationText = await page.locator(".data-table-pagination .pagination-info").textContent();
-    assert(paginationText?.includes("6"), "55개 데이터는 총 6페이지여야 함");
+    const capacity = await page.locator(".data-table-body .table-row").count();
+    assert(capacity > 0 && paginationText?.includes(String(Math.ceil(55 / capacity))));
     // 마지막 페이지 이동
     await page.click(".btn-last-page");
     await sleep(200);
     const rowCount = await page.locator(".data-table-body .table-row").count();
-    assert.equal(rowCount, 5, "6번째 마지막 페이지는 5개 행이어야 함");
+    assert.equal(rowCount, 55 % capacity || capacity, "마지막 페이지는 남은 실제 행과 일치해야 함");
 
     await verifyScenario("S02", { page, browser, context, adminCreds, seeded, resourcesDir });
     process.stdout.write("[S02] verified\n");
@@ -413,6 +463,69 @@ async function main() {
     await sleep(500);
     await page.click("#btn-notice-close");
     await sleep(200);
+
+    // H01: Dense 레이아웃 및 KPI 검증
+    const kpiTotal = parseInt(await page.locator('#holidays-kpi-total .ops-holidays-kpi-val').innerText(), 10);
+    const kpiRegular = parseInt(await page.locator('#holidays-kpi-regular .ops-holidays-kpi-val').innerText(), 10);
+    const kpiSubstitute = parseInt(await page.locator('#holidays-kpi-substitute .ops-holidays-kpi-val').innerText(), 10);
+    assert.equal(kpiTotal, kpiRegular + kpiSubstitute);
+
+    // 표 및 상세 패널 높이 정렬 검증 (top/bottom 오차 2px 이내)
+    const alignDiff = await page.evaluate(() => {
+      const tbl = document.querySelector('.ops-holidays-table-panel');
+      const dtl = document.querySelector('.ops-holidays-detail-panel');
+      if (!tbl || !dtl) return 999;
+      const tr = tbl.getBoundingClientRect();
+      const dr = dtl.getBoundingClientRect();
+      return Math.max(Math.abs(tr.top - dr.top), Math.abs(tr.bottom - dr.bottom));
+    });
+    assert(alignDiff <= 2, `표와 상세 패널의 top/bottom 오차는 2px 이내여야 함 (실측: ${alignDiff}px)`);
+
+    // HOL-D05: 행 높이 실측 32~36px 검증
+    const rowHeight = await page.evaluate(() => {
+      const row = document.querySelector("#holidays-table-body tr.holidays-table-row");
+      return row ? row.getBoundingClientRect().height : 0;
+    });
+    assert(rowHeight >= 32 && rowHeight <= 36, `공휴일 행 높이는 32~36px여야 함 (실측: ${rowHeight}px)`);
+
+    // HOL-D06: 라벨 htmlFor 연결 및 버튼 키보드 조작 검증
+    await page.click("#btn-add-holiday");
+    await sleep(200);
+    const hasLabelsFor = await page.evaluate(() => {
+      const dateLabel = document.querySelector('label[for="input-add-holiday-date"]');
+      const nameLabel = document.querySelector('label[for="input-add-holiday-name"]');
+      return !!dateLabel && !!nameLabel;
+    });
+    assert(hasLabelsFor, "추가 모달 입력 필드에 label for 연결 확인");
+    await page.click("#btn-modal-cancel");
+    await sleep(200);
+
+    await page.locator('.btn-rename-holiday').first().focus();
+    await page.keyboard.press('Enter');
+    await sleep(200);
+    assert.equal(await page.locator('#modal-rename-holiday').count(), 1, "수정 버튼 Enter 시 수정 모달 열림 확인");
+    await page.click('#btn-modal-cancel');
+    await sleep(200);
+
+    // H02/H03: 검색 필터 작동 확인
+    await page.fill('#holiday-search-input', '시험종료일');
+    await sleep(250);
+    const filteredRowCount = await page.locator('#holidays-table-body tr.holidays-table-row').count();
+    assert.equal(filteredRowCount, 1);
+    await page.fill('#holiday-search-input', '');
+    await sleep(250);
+
+    // H04: 추가 모달 음성 검증 (중복 날짜 거절)
+    await page.click('#btn-add-holiday');
+    await sleep(200);
+    await page.fill("#modal-add-holiday input[type='date']", "2026-12-31");
+    await page.fill("#modal-add-holiday input[placeholder*='명칭']", "중복추가시도");
+    await page.click('#btn-modal-submit');
+    await sleep(200);
+    assert(await page.locator('#modal-add-holiday .alert-danger').isVisible());
+    await page.click('#btn-modal-cancel');
+    await sleep(200);
+
     await verifyScenario("S05", { page, browser, context, adminCreds, seeded, resourcesDir });
     process.stdout.write("[S05] verified\n");
     completedScenarios.push("S05");
@@ -452,6 +565,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S08")) {
   try {
     await closeAnyOpenModal(page);
+    await selectOperationsArea(page,"rates","versions");
     const fromInput = page.locator("#input-rate-effective-from");
     await fromInput.fill(""); // 빈 시작일 거절 검문
     await page.click("#btn-save-rate-version");
@@ -505,7 +619,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S10")) {
   try {
     await closeAnyOpenModal(page);
-    await page.click("#btn-rotate-my-recovery-key");
+    await selectOperationsArea(page,"users","security");await page.click("#btn-rotate-my-recovery-key");
     await page.locator("#btn-confirm-ok").waitFor({ state: "visible", timeout: 5000 });
     await page.click("#btn-confirm-ok"); // 확인 모달 승인
     const keyModal = page.locator("#modal-recovery-key-display");
@@ -632,6 +746,7 @@ async function main() {
   if (!focusIDs.size || focusIDs.has("S16")) {
   try {
     await closeAnyOpenModal(page);
+    await selectOperationsArea(page,"layout","history");
     const histTableWrap = page.locator(".history-table-wrap");
     await histTableWrap.waitFor({ state: "visible", timeout: 8000 });
     await sleep(500);
@@ -711,7 +826,7 @@ async function main() {
   }
 
   // 최종 캡처 및 결과 파일 저장
-  const negativePlan = {"N01": ["three-roles-forced-zero-api-and-direct-guards"], "N02": ["settings-discard-cancel", "watch-double-click", "holiday-import-cancel", "active-rate-confirm-cancel", "user-delete-cancel", "recovery-key-cancel", "site-delete-cancel", "layout-save-reset-cancel", "restore-cancel-wrong-text-double-and-locks"], "N03": ["settings-missing-unit-time-date", "holiday-year-duplicate"], "N04": ["missing-negative-started-date-period"], "N05": ["failed-partial-stale-impact", "controlled-zero-warning-readonly"], "N06": ["empty-password-self-last-admin-and-omission"], "N07": ["protected-structure-binding-unknown-block", "filename-token-path-extension"], "N08": ["stale-save-reset-preview-and-expired-ui"], "N09": ["invalid-json-unknown-missing-type"], "N10": ["path-sha-expiry-phrase-and-locked-db-preservation"], "N11": ["late-tab-and-expired-relogin-ownership", "late-json-after-key-change", "late-secret-response-modal-replacement"], "N12": ["site-literal-roundtrip", "release-literal-detail", "preview-error-literal", "layout-canvas-literal"]};
+  const negativePlan = {"N01": ["three-roles-forced-zero-api-and-direct-guards"], "N02": ["settings-discard-cancel", "watch-double-click", "holiday-import-cancel", "active-rate-confirm-cancel", "user-delete-cancel", "recovery-key-cancel", "site-delete-cancel", "layout-save-reset-cancel", "restore-cancel-wrong-text-double-and-locks"], "N03": ["settings-missing-unit-time-date", "holiday-year-duplicate"], "N04": ["missing-negative-started-date-period"], "N05": ["failed-partial-stale-impact", "controlled-zero-warning-readonly"], "N06": ["empty-password-self-last-admin-and-omission"], "N07": ["protected-structure-binding-unknown-block", "filename-token-path-extension"], "N08": ["stale-save-reset-preview-and-expired-ui", "holiday-stale-calendar-identity"], "N09": ["invalid-json-unknown-missing-type"], "N10": ["path-sha-expiry-phrase-and-locked-db-preservation"], "N11": ["late-tab-and-expired-relogin-ownership", "late-json-after-key-change", "late-secret-response-modal-replacement", "holiday-late-response-and-modal-close"], "N12": ["site-literal-roundtrip", "release-literal-detail", "preview-error-literal", "layout-canvas-literal", "holiday-literal-name"]};
   for(const [id,labels] of Object.entries(negativePlan)) expectedRejections[id]=labels.every(label=>negativeEvidence[id].includes(label));
   const exactScenarios=completedScenarios.length===plannedScenarios.length&&new Set(completedScenarios).size===plannedScenarios.length&&plannedScenarios.every(id=>completedScenarios.includes(id));
   const accepted=!focusIDs.size&&exactScenarios&&failedScenarios.length===0&&unexpectedErrors.length===0&&Object.values(expectedRejections).every(Boolean);
@@ -786,7 +901,7 @@ async function restoreBridge(page,method) {
 }
 async function notice(page) {await page.locator('#btn-notice-close').waitFor();await page.locator('#btn-notice-close').click();}
 async function freshTab(page,id) {
-  if(await page.locator(`#tab-btn-${id}`).getAttribute('aria-selected')==='true') {
+  if(id==='users' ? await page.locator('.operations-users-wrap').count()>0 : await page.locator(`#tab-btn-${id}`).count()>0 && await page.locator(`#tab-btn-${id}`).getAttribute('aria-selected')==='true') {
     await switchToTab(page,id==='settings'?'holidays':'settings');
   }
   await switchToTab(page,id);
@@ -818,6 +933,284 @@ async function prepareRestore(page,file) {
   await page.locator('#input-restore-backup-path').fill(file);
   await page.locator('#btn-check-db-requirements').click();await page.locator('#btn-generate-db-preview').click();await page.locator('#btn-execute-db-restore').waitFor();
 }
+
+async function verifyOperationsUniformLayout(page) {
+  const tabs=['settings','holidays','rates','users','layout','site-names','releases'];
+  // status-bar.ts가 주기적으로 읽는 정확한5개. 변경 API는 이 분류에서 제거되지 않는다.
+  const statusReads=new Set(['getAppHealth','getPerformanceSyncState','listPendingFiles','getFileWatchStatus','getUpdateState']);
+  const mutationProbes=['saveAppSettings','replaceHolidayCalendar','rotateAccountRecoveryKey'];
+  assert.deepEqual([...statusReads,...mutationProbes].filter(name=>!statusReads.has(name)),mutationProbes);
+  const evidence=[];
+  for(const size of [{width:1024,height:768},{width:1440,height:900},{width:2048,height:1080}]) {
+    await page.setViewportSize(size);
+    const starts=[];
+    for(const tab of tabs) {
+      await freshTab(page,tab);
+      await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))));
+      const metrics=await page.evaluate(()=>{
+        const root=document.querySelector('.ops-menu-workspace'),nav=root.querySelector('.ops-category-nav');
+        const visible=e=>e.getClientRects().length&&getComputedStyle(e).display!=='none';
+        const title=[...root.querySelectorAll('.ops-menu-title')].find(visible),heading=title.closest('.ops-menu-heading');
+        const bodyRows=[...root.querySelectorAll('tr.table-row,.holidays-table-row')].filter(visible);
+        const mainButtons=[...root.querySelectorAll('.btn')].filter(e=>visible(e)&&!e.closest('td'));
+        const rows=[...root.querySelectorAll('.dt-table-wrapper')].filter(visible).map(viewport=>{
+          const rowList=[...viewport.querySelectorAll('tr.table-row')];const footer=viewport.closest('.dt-container').querySelector('.pagination-info');
+          const total=Number(footer.textContent.match(/총\s+(\d+)/)?.[1]||0),scrollbar=Math.max(0,viewport.offsetHeight-viewport.clientHeight);
+          return {count:rowList.length,total,unused:rowList.length?viewport.getBoundingClientRect().bottom-rowList.at(-1).getBoundingClientRect().bottom-scrollbar:0};
+        });
+        return {width:innerWidth,height:innerHeight,menu:root.dataset.opsMenu,frameTop:root.getBoundingClientRect().top,titleTop:title.getBoundingClientRect().top,titleLeft:title.getBoundingClientRect().left,rootLeft:root.getBoundingClientRect().left,titleFont:getComputedStyle(title).fontSize,navWidth:nav.getBoundingClientRect().width,headingTop:heading.getBoundingClientRect().top,pageOverflow:document.documentElement.scrollWidth-innerWidth,rootOverflow:root.scrollWidth-root.clientWidth,rows:bodyRows.map(row=>row.getBoundingClientRect().height),mainButtons:mainButtons.map(button=>button.getBoundingClientRect().height),tables:rows};
+      });
+      assert.equal(metrics.menu,tab);assert.equal(metrics.titleFont,'18px');assert(metrics.pageOverflow<=1&&metrics.rootOverflow<=1);
+      assert(metrics.rows.every(height=>height>=33.5&&height<=34.5));
+      assert(metrics.mainButtons.every(height=>height>=33.5&&height<=34.5));
+      if(size.width>1100) {
+        assert(Math.abs(metrics.navWidth-180)<=1);assert(Math.abs(metrics.titleLeft-metrics.rootLeft-196)<=1);
+        for(const table of metrics.tables)if(table.total>table.count&&table.count>0)assert(table.unused<36,'Table must fill every complete row slot');
+      }
+      starts.push(metrics.titleTop);
+      await page.waitForLoadState('networkidle');
+      const before=await page.evaluate(()=>window.__opsCalls.length);
+      const categoryIDs=await page.locator('.ops-category-nav [role=tab]').evaluateAll(buttons=>buttons.map(b=>b.id));
+      for(const id of categoryIDs) {
+        await page.locator('#'+id).click();
+        const panelID=await page.locator('#'+id).getAttribute('aria-controls');
+        assert.equal(await page.locator('#'+panelID).isVisible(),true);
+        assert.equal(await page.locator('#'+id).getAttribute('aria-selected'),'true');
+      }
+      await page.locator('#'+categoryIDs.at(-1)).focus();
+      await page.keyboard.press('Home');assert.equal(await page.locator('#'+categoryIDs[0]).getAttribute('aria-selected'),'true');
+      await page.keyboard.press('End');assert.equal(await page.locator('#'+categoryIDs.at(-1)).getAttribute('aria-selected'),'true');
+      if(categoryIDs.length>1) {
+        await page.keyboard.press(size.width<=1100?'ArrowLeft':'ArrowUp');
+        assert.equal(await page.locator('#'+categoryIDs.at(-2)).getAttribute('aria-selected'),'true');
+        await page.keyboard.press(size.width<=1100?'ArrowRight':'ArrowDown');
+        assert.equal(await page.locator('#'+categoryIDs.at(-1)).getAttribute('aria-selected'),'true');
+      }
+      const categoryCalls=await page.evaluate(before=>window.__opsCalls.slice(before),before);
+      const areaCalls=categoryCalls.filter(name=>!statusReads.has(name));
+      assert.deepEqual(areaCalls,[],'Category selection must not call APIs or write; only existing status-bar reads are separate');
+      evidence.push({...metrics,categories:categoryIDs.length,categoryCalls:areaCalls.length,backgroundStatusReads:categoryCalls.filter(name=>statusReads.has(name))});
+    }
+    assert(Math.max(...starts)-Math.min(...starts)<=2,'All seven menu headings must share the same start line');
+  }
+  await page.setViewportSize({width:1440,height:900});
+  await freshTab(page,'rates');
+  const rate=page.locator('#input-rate-version-label'),label=await rate.inputValue();await rate.fill(label+'-초안보존');
+  await selectOperationsArea(page,'rates','impact');await selectOperationsArea(page,'rates','history');await selectOperationsArea(page,'rates','versions');
+  assert.equal(await rate.inputValue(),label+'-초안보존');await rate.fill(label);
+  await freshTab(page,'layout');
+  await page.locator('.filename-section summary').click();
+  const filename=page.locator('[id^=input-layout-filename-]').first();
+  const originalName=await filename.inputValue();await filename.fill('초안보존-'+originalName);
+  await selectOperationsArea(page,'layout','preview');await selectOperationsArea(page,'layout','history');await selectOperationsArea(page,'layout','editor');
+  assert.equal(await filename.inputValue(),'초안보존-'+originalName);await filename.fill(originalName);
+  await freshTab(page,'users');await page.locator('.users-table-wrap .dt-search-input').fill('admin');
+  await selectOperationsArea(page,'users','security');await selectOperationsArea(page,'users','users');
+  assert.equal(await page.locator('.users-table-wrap .dt-search-input').inputValue(),'admin');
+  const editButton=page.locator('.users-table-wrap tr.table-row').first().getByRole('button',{name:'수정',exact:true});
+  await editButton.focus();await page.keyboard.press('Enter');
+  await page.locator('.workforce-modal-overlay').waitFor({state:'visible'});
+  assert((await page.locator('.workforce-modal-title').innerText()).includes('수정'));
+  await page.keyboard.press('Escape');assert.equal(await page.locator('.workforce-modal-overlay').count(),0);
+  await page.locator('.users-table-wrap .dt-search-input').fill('');
+  return {viewports:3,menus:7,measurements:evidence,draftAndSearchPreserved:true,keyboardCategories:true,sharedTableKeyboardAction:true,categorySwitchWrites:0};
+}
+
+async function selectOperationsArea(page, menu, area) {
+  const button=page.locator('#ops-'+menu+'-area-'+area);
+  if(await button.getAttribute('aria-selected')!=='true')await button.click();
+  await page.locator('#ops-'+menu+'-panel-'+area).waitFor({state:'visible'});
+}
+
+async function verifyEditorUsability(page) {
+  const measurements=[];
+  for(const viewport of [{width:1440,height:900},{width:1024,height:768},{width:929,height:917}]) {
+    await page.setViewportSize(viewport);
+    await freshTab(page,'rates');await selectOperationsArea(page,'rates','history');
+    const dates=await page.locator('.rate-history-table tbody tr td:first-child').evaluateAll(cells=>cells.map(cell=>({text:cell.textContent,width:cell.clientWidth,scroll:cell.scrollWidth,datetime:cell.querySelector('time')?.getAttribute('datetime')})));
+    assert(dates.length>0);assert(dates.every(d=>/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(d.text)&&d.datetime&&d.scroll<=d.width),'Every visible change timestamp must fit');
+    await freshTab(page,'layout');await page.locator('.actual-canvas-board').waitFor();
+    await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+    const geometry=await page.evaluate(()=>{const board=document.querySelector('.actual-canvas-board'),view=document.querySelector('.canvas-viewport'),b=board.getBoundingClientRect(),v=view.getBoundingClientRect();return {paperWidth:b.width,paperHeight:b.height,viewportWidth:v.width,viewportHeight:v.height,expectedRatio:Number(board.dataset.canvasWidth)/Number(board.dataset.canvasHeight),overflow:document.documentElement.scrollWidth-innerWidth};});
+    assert(geometry.paperWidth<=geometry.viewportWidth-20&&geometry.paperHeight<=geometry.viewportHeight-20,'Fit must show the complete paper');
+    assert(Math.abs(geometry.paperWidth/geometry.paperHeight-geometry.expectedRatio)<0.02,'Uniform document aspect ratio');
+    assert(geometry.paperHeight>=200,'Paper must remain usable on short screens');assert.equal(geometry.overflow,0);
+    measurements.push({viewport,dates,geometry});
+  }
+  await page.setViewportSize({width:1440,height:900});
+  await freshTab(page,'layout');
+  const baseline=await bridgeData(page,'getDocumentLayout',layoutKeys[0]);
+  const saves=await callCount(page,'saveDocumentLayout'),resets=await callCount(page,'resetDocumentLayout');
+  const before=await page.locator('.actual-canvas-board').boundingBox();
+  await page.locator('#btn-canvas-zoom-in').click();
+  assert.equal(await page.locator('.actual-canvas-board').getAttribute('data-view-zoom'),'1.25');
+  const enlarged=await page.locator('.actual-canvas-board').boundingBox();assert(enlarged.width>before.width);
+  await page.locator('#btn-canvas-zoom-out').click();await page.locator('#btn-canvas-fit').click();
+  await page.locator('.canvas-block-select').selectOption({index:1});
+  assert.equal(await page.locator('.canvas-block-select').inputValue(),await page.locator('.block-item-btn.selected').getAttribute('id').then(id=>id.slice('block-item-'.length)));
+  assert.equal(await page.locator('.filename-section').getAttribute('open'),null);
+  await overrideBridge(page,'previewDocumentLayout','async input=>{window.__viewOnlyDraft=input;return window.__opsActual.previewDocumentLayout(input);}');
+  await page.locator('#btn-preview-layout').click();await page.locator('#preview-display-area a').waitFor();
+  assert.deepEqual(await page.evaluate(()=>window.__viewOnlyDraft.definition),baseline.definition,'Zoom, fit, selection and resize must not change the draft');
+  await restoreBridge(page,'previewDocumentLayout');
+  assert.equal(await callCount(page,'saveDocumentLayout'),saves);assert.equal(await callCount(page,'resetDocumentLayout'),resets);
+  return {measurements,viewOnlyDraftUnchanged:true,zoomAndFit:true,blockSelection:true,implicitWrites:0,actualPreview:true};
+}
+
+async function fetchHolidayPreview(page) {
+  if(await page.locator('#holiday-area-import').getAttribute('aria-selected')!=='true') await page.locator('#holiday-area-import').click();
+  await page.locator('#holiday-panel-import').waitFor({state:'visible'});
+  await page.locator('#btn-fetch-holiday-api').click();
+}
+
+async function verifyHolidayCategories(page) {
+  const writes=await callCount(page,'replaceHolidayCalendar'),fetches=await callCount(page,'fetchHolidayApiItems');
+  await page.locator('#holiday-search-input').fill('시험공휴일');
+  await page.waitForFunction(()=>document.querySelector('.cell-name')?.textContent.includes('시험공휴일'));
+  await page.locator('#btn-holidays-number-2').click();
+  const prior=await page.evaluate(()=>({selected:document.querySelector('.holidays-table-row.selected')?.dataset.id,page:document.querySelector('.ops-holidays-pagination-info')?.textContent,year:document.querySelector('#holiday-year-select').value}));
+  await page.locator('#holiday-area-calendar').focus();await page.keyboard.press('End');
+  assert.equal(await page.locator('#holiday-area-import').getAttribute('aria-selected'),'true');
+  assert.equal(await page.locator('#holiday-panel-calendar').isVisible(),false);
+  assert.equal(await page.locator('.ops-holiday-import-steps li').count(),3);
+  const copy=await page.locator('#holiday-panel-import').innerText();
+  for(const phrase of ['불러오기와 비교는 저장된 공휴일을 변경하지 않습니다','직접 추가한 공휴일','취소하면 기존 목록을 유지','설정 → 시스템·감시'])assert(copy.includes(phrase),phrase);
+  assert.equal(await callCount(page,'replaceHolidayCalendar'),writes);assert.equal(await callCount(page,'fetchHolidayApiItems'),fetches);
+  await page.keyboard.press('Home');
+  assert.equal(await page.locator('#holiday-search-input').inputValue(),'시험공휴일');
+  const after=await page.evaluate(()=>({selected:document.querySelector('.holidays-table-row.selected')?.dataset.id,page:document.querySelector('.ops-holidays-pagination-info')?.textContent,year:document.querySelector('#holiday-year-select').value}));
+  assert.deepEqual(after,prior);
+  const buttons=await page.evaluate(()=>[...document.querySelectorAll('.holidays-table-row:first-child .btn')].map(button=>{const s=getComputedStyle(button);return {height:button.getBoundingClientRect().height,font:s.fontFamily,border:s.border,radius:s.borderRadius};}));
+  assert.equal(buttons.length,2);assert(buttons.every(b=>b.height===28&&!b.border.includes('outset')&&b.radius==='6px'));assert.equal(buttons[0].font,buttons[1].font);
+  await page.locator('#holiday-search-input').fill('');
+  await page.waitForFunction(()=>document.querySelector('.cell-name')?.textContent==='신정');
+  return {keyboardCategories:true,searchPageSelectionPreserved:true,categorySwitchFetches:0,categorySwitchWrites:0,threeStepsAndDataImpactCopy:true,buttons};
+}
+
+async function verifyHolidayBoundaries(page, adminCreds) {
+  const data=(name,...args)=>bridgeData(page,name,...args), count=name=>callCount(page,name);
+  const evidence={};
+  await freshTab(page,'holidays');
+  evidence.categories=await verifyHolidayCategories(page);
+  const writesBeforeCancel=await count('replaceHolidayCalendar');
+  for(const close of ['Escape','header']) {
+    await fetchHolidayPreview(page);
+    await page.locator('#modal-compare-holidays').waitFor();
+    assert.equal(await page.locator('#holiday-year-select').isDisabled(),true);
+    assert.equal(await page.locator('#btn-add-holiday').isDisabled(),true);
+    if(close==='Escape') await page.keyboard.press('Escape');
+    else await page.locator('#modal-compare-holidays .workforce-modal-header button').click();
+    assert.equal(await page.locator('#modal-compare-holidays').count(),0);
+    assert.equal(await page.locator('#holiday-year-select').isDisabled(),false);
+    assert.equal(await page.locator('#btn-add-holiday').isDisabled(),false);
+  }
+  assert.equal(await count('replaceHolidayCalendar'),writesBeforeCancel);
+  evidence.closePathsUnlockWithoutWrites=true;
+
+  await overrideBridge(page,'fetchHolidayApiItems','async()=>new Promise((resolve,reject)=>{window.__holidayOldReject=reject;})');
+  await fetchHolidayPreview(page);
+  await page.waitForFunction(()=>!!window.__holidayOldReject);
+  const locked=await page.evaluate(()=>['#holiday-year-select','#btn-add-holiday','#btn-fetch-holiday-api','#holiday-area-calendar','#holiday-area-import','.btn-rename-holiday','.btn-delete-holiday'].every(selector=>document.querySelector(selector)?.disabled));
+  assert.equal(locked,true);
+  await page.evaluate(()=>document.querySelector('.holidays-table-row')?.click());
+  assert.equal(await page.locator('#modal-holiday-detail').count(),0);
+  await page.locator('#tab-btn-settings').click();
+  await page.locator('.ops-settings-workspace').waitFor();
+  await page.locator('#tab-btn-holidays').click();
+  await page.locator('#holidays-table').waitFor();
+  await page.locator('#btn-add-holiday').click();
+  await page.locator('#input-add-holiday-name').fill('새 화면의 입력 보존');
+  await page.evaluate(()=>window.__holidayOldReject(new Error('CONTROLLED_OLD_HOLIDAY_FETCH')));
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+  assert.equal(await page.locator('#modal-add-holiday').count(),1);
+  assert.equal(await page.locator('#input-add-holiday-name').inputValue(),'새 화면의 입력 보존');
+  assert.equal(await page.locator('#operations-notice-modal').count(),0);
+  assert.equal(await page.locator('#btn-add-holiday').isDisabled(),true);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#btn-add-holiday').isDisabled(),false);
+  await restoreBridge(page,'fetchHolidayApiItems');
+  evidence.lateOldFailurePreservesNewDialog=true;
+
+  const collision=await data('replaceHolidayCalendar',{year:2028,sourceName:'검수',items:[{holidayDate:'2028-01-01',name:'Name',isSubstitute:false},{holidayDate:'2028-02-01',name:'Other',isSubstitute:false}]});
+  await page.locator('#holiday-year-select').selectOption('2028');
+  await page.waitForFunction(()=>document.querySelector('.cell-date')?.textContent.includes('2028'));
+  await fetchHolidayPreview(page);
+  await page.locator('#modal-compare-holidays').waitFor();
+  const a=collision.items[0],b=collision.items[1];
+  await data('renameHolidayItem',{holidayItemId:a.id,name:`${a.name}|0;${b.id}|${b.holidayDate}|${b.name}`});
+  await data('deleteHolidayItem',{holidayItemId:b.id});
+  const writes=await count('replaceHolidayCalendar');
+  await page.locator('#btn-confirm-ok').click();
+  await page.locator('#modal-compare-holidays .alert-danger').waitFor({state:'visible'});
+  assert((await page.locator('#modal-compare-holidays .alert-danger').innerText()).includes('변경'));
+  assert.equal(await count('replaceHolidayCalendar'),writes);
+  assert.equal(await page.locator('#btn-confirm-ok').isDisabled(),true);
+  await page.locator('#btn-confirm-cancel').click();
+  await data('replaceHolidayCalendar',{year:2028,items:[]});
+  await page.locator('#holiday-year-select').selectOption('2026');
+  await page.waitForFunction(()=>document.querySelector('.cell-date')?.textContent.includes('2026'));
+  negative('N08','holiday-stale-calendar-identity',()=>assert.equal(evidence.closePathsUnlockWithoutWrites,true));
+  evidence.changedCalendarRejectedWithoutWrite=true;
+  await page.locator('#holiday-area-calendar').click();
+
+  const dimensions=[];
+  for(const size of [{width:929,height:917},{width:1024,height:768},{width:1440,height:900},{width:2048,height:1080}]) {
+    await page.setViewportSize(size);
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    const measured=await page.evaluate(()=>{
+      const vp=document.querySelector('#holidays-table-viewport'),rows=[...document.querySelectorAll('.holidays-table-row')],table=document.querySelector('.ops-holidays-table-panel'),detail=document.querySelector('.ops-holidays-detail-panel'),footer=document.querySelector('#holidays-pagination-container');
+      return {width:innerWidth,height:innerHeight,rowHeight:rows[0].getBoundingClientRect().height,rows:rows.length,extraSpace:vp.getBoundingClientRect().bottom-rows.at(-1).getBoundingClientRect().bottom,align:innerWidth>1100?Math.max(Math.abs(table.getBoundingClientRect().top-detail.getBoundingClientRect().top),Math.abs(table.getBoundingClientRect().bottom-detail.getBoundingClientRect().bottom)):0,footerBottom:footer.getBoundingClientRect().bottom,headerHidden:getComputedStyle(document.querySelector('.operations-screen-header')).display==='none',pageOverflow:document.documentElement.scrollWidth-innerWidth};
+    });
+    assert(measured.rowHeight>=32&&measured.rowHeight<=36);
+    assert(measured.headerHidden&&measured.align<=2&&measured.pageOverflow<=1);
+    assert(measured.footerBottom<=size.height);
+    if(size.width>1100)assert(measured.extraSpace<measured.rowHeight+2,'Wide table should fill every complete row slot');
+    if(size.width<=1100) {
+      await page.locator('#holiday-area-calendar').focus();await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('#holiday-panel-import').isVisible(),true);
+      await page.keyboard.press('ArrowLeft');assert.equal(await page.locator('#holiday-panel-calendar').isVisible(),true);
+    }
+    dimensions.push(measured);
+  }
+  evidence.dimensions=dimensions;
+  await page.setViewportSize({width:1440,height:900});
+
+  const literal=('HOL-LITERAL <img src=x onerror="window.__holidayLiteral=1"> | ; '+ '긴 공휴일 이름 '.repeat(100)).trim();
+  const saved=await data('addHolidayItem',{year:2026,holidayDate:'2026-12-27',name:literal,isSubstitute:false});
+  const literalItem=saved.items.find(item=>item.holidayDate==='2026-12-27');assert(literalItem);
+  await freshTab(page,'holidays');
+  await page.locator('#holiday-search-input').fill('HOL-LITERAL');
+  await page.waitForFunction(()=>document.querySelectorAll('.holidays-table-row').length===1);
+  assert.equal(await page.locator('.cell-name').innerText(),literal);
+  assert.equal(await page.locator('.cell-name img').count(),0);
+  assert((await page.locator('#holidays-detail-container').innerText()).includes(literal));
+  assert.equal(await page.evaluate(()=>window.__holidayLiteral),undefined);
+  await data('deleteHolidayItem',{holidayItemId:literalItem.id});
+  await freshTab(page,'holidays');
+  negative('N12','holiday-literal-name',()=>assert.equal(literal.includes('| ;'),true));
+  evidence.literalNamePreservedWithoutExecution=true;
+
+  for(const errorCode of ['AUTH_SESSION_REQUIRED','SESSION_EXPIRED']) {
+    await fetchHolidayPreview(page);
+    await page.locator('#modal-compare-holidays').waitFor();
+    await bridgeData(page,'signOut');
+    await overrideBridge(page,'listHolidayCalendars',`async()=>({ok:false,errorCode:${JSON.stringify(errorCode)},message:'통제된 세션 만료'})`);
+    await page.locator('#btn-confirm-ok').click();
+    await page.locator('#login-id').waitFor({state:'visible'});
+    assert.equal(await page.locator('#modal-compare-holidays').count(),0);
+    await restoreBridge(page,'listHolidayCalendars');
+    await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));
+    await installCalls(page);
+    await page.locator('button[data-id="operations"]').click();
+    await page.locator('.ops-settings-workspace').waitFor();
+    await page.locator('#tab-btn-holidays').click();
+    await page.locator('#holidays-table').waitFor();
+  }
+  evidence.currentSessionErrorsReturnToLogin=true;
+  negative('N11','holiday-late-response-and-modal-close',()=>assert(evidence.lateOldFailurePreservesNewDialog&&evidence.currentSessionErrorsReturnToLogin));
+  return evidence;
+}
+
 async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourcesDir}) {
   const api=(name,...args)=>bridgeCall(page,name,...args), data=(name,...args)=>bridgeData(page,name,...args);
   const count=name=>callCount(page,name);
@@ -827,31 +1220,38 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     assert(Object.values(seeded).every(value=>value>=55),'All six fixture sets contain at least 55 actual records');
     for(const tab of ['settings','holidays','rates','users','layout','site-names','releases']) {
       await freshTab(page,tab);
-      assert.equal(await page.locator('.tab-btn.active').getAttribute('id'),`tab-btn-${tab}`);
-      assert.equal(await page.locator('.operations-tab-content[role=tabpanel]').getAttribute('aria-labelledby'),`tab-btn-${tab}`);
+      if(tab==='users') {
+        assert.equal(await page.locator('.operations-tab-list').count(),0);
+        assert.equal(await page.locator('.operations-tab-content[role=region]').getAttribute('aria-labelledby'),'operations-screen-title');
+      } else {
+        assert.equal(await page.locator('.tab-btn.active').getAttribute('id'),`tab-btn-${tab}`);
+        assert.equal(await page.locator('.operations-tab-content[role=tabpanel]').getAttribute('aria-labelledby'),`tab-btn-${tab}`);
+      }
     }
     await page.locator('button[data-id="user-mgmt"]').click();
     await page.locator('.operations-users-wrap').waitFor();
-    assert.equal((await page.locator('.tab-btn.active').textContent()).trim(),'사용자');
-    record('Seven actual tab loads and user shortcut agree with active panel');
+    assert.equal(await page.locator('.operations-users-wrap').count(),1);
+    assert.equal(await page.locator('.operations-tab-list').count(),0);
+    record('Six actual operation tabs and standalone user menu retain all seven features with accessible panels');
   }
   if(id==='S02') {
     await freshTab(page,'site-names');
     const actual=await data('listSiteNameOptions');assert.equal(actual.length,55);
     await page.locator('.dt-table th').first().click();
     const ids=[],names=[],counts=[];
-    for(let pageNo=1;pageNo<=6;pageNo++) {
+    const capacity=await page.locator(".dt-table tr.table-row").count(), pageCount=Math.ceil(actual.length/capacity);
+    for(let pageNo=1;pageNo<=pageCount;pageNo++) {
       const rows=await page.locator('.dt-table tr.table-row').evaluateAll(rows=>rows.map(r=>({id:r.dataset.id,name:r.querySelector('td')?.textContent})));
       counts.push(rows.length);ids.push(...rows.map(r=>r.id));names.push(...rows.map(r=>r.name));
-      if(pageNo<6) await page.locator('.btn-next-page').click();
+      if(pageNo<pageCount) await page.locator('.btn-next-page').click();
     }
-    assert.deepEqual(counts,[10,10,10,10,10,5]);assert.equal(new Set(ids).size,55);
+    assert.deepEqual(counts,Array.from({length:pageCount},(_,i)=>Math.min(capacity,actual.length-i*capacity)));assert.equal(new Set(ids).size,55);
     assert.deepEqual(new Set(ids),new Set(actual.map(r=>r.id)));
     assert.deepEqual(names,[...actual].sort((a,b)=>a.name.localeCompare(b.name,'ko')).map(r=>r.name));
     await page.locator('.dt-search-input').fill('시험근무지_01');
     assert.equal(await page.locator('tr.table-row').count(),1);
     assert.match(await page.locator('tr.table-row').innerText(),/시험근무지_01/);
-    await page.locator('.dt-search-input').fill('');record('55 distinct records sorted globally before six pages; filter resets page');
+    await page.locator('.dt-search-input').fill('');record('55 distinct records sorted globally across height-adaptive pages; filter resets page');
   }
   if(id==='S03') {
     await freshTab(page,'settings');
@@ -1147,16 +1547,60 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     const {createServer}=await import('node:http');
     holidayServer=createServer((request,response)=>{
       response.setHeader('Content-Type','application/json');
+      const url = new URL(request.url, 'http://127.0.0.1');
+      const reqYear = url.searchParams.get('year') || '2026';
       if(holidayMode==='error'){response.statusCode=503;response.end('{}');}
-      else response.end(holidayMode==='parse'?'bad-json':JSON.stringify([{date:'2026-11-01',name:'로컬 API 공휴일',isSubstitute:false},{date:'2026-11-02',name:'로컬 대체일',isSubstitute:true}]));
+      else if(holidayMode==='parse'){response.end('bad-json');}
+      else if(reqYear==='2027'){
+        const items2027 = Array.from({length: 15}, (_, i) => ({
+          date: `2027-${String(Math.min(12, Math.floor(i / 2) + 1)).padStart(2, '0')}-${String((i % 20) + 1).padStart(2, '0')}`,
+          name: `2027공휴일_${i + 1}`,
+          isSubstitute: i % 3 === 0
+        }));
+        response.end(JSON.stringify(items2027));
+      } else {
+        response.end(JSON.stringify([{date:`${reqYear}-11-01`,name:'로컬 API 공휴일',isSubstitute:false},{date:`${reqYear}-11-02`,name:'로컬 대체일',isSubstitute:true}]));
+      }
     });await new Promise(resolve=>holidayServer.listen(0,'127.0.0.1',resolve));
     const settings=await data('getAppSettings');await data('saveAppSettings',{...settings,holidayApiBaseUrl:`http://127.0.0.1:${holidayServer.address().port}/holidays`});
     await freshTab(page,'holidays');const before=await data('getHolidayCalendar',2026),writes=await count('replaceHolidayCalendar');
-    await page.locator('#btn-fetch-holiday-api').click();await page.locator('#btn-confirm-cancel').click();assert.equal(await count('replaceHolidayCalendar'),writes);
-    await page.locator('#btn-fetch-holiday-api').click();await page.locator('#btn-confirm-ok').click();await notice(page);
+    await fetchHolidayPreview(page);
+    await page.locator('#modal-compare-holidays').waitFor();
+    assert.equal(await page.locator('#modal-compare-holidays').count(), 1);
+    assert((await page.locator('.compare-diff-table .diff-row').count()) >= 2);
+    await page.locator('#btn-confirm-cancel').click();assert.equal(await count('replaceHolidayCalendar'),writes);
+    await fetchHolidayPreview(page);await page.locator('#btn-confirm-ok').click();await notice(page);
     assert.equal(await count('replaceHolidayCalendar'),writes+1);const imported=await data('getHolidayCalendar',2026);assert.equal(imported.items.length,2);
-    for(const mode of ['error','parse']) {holidayMode=mode;await page.locator('#btn-fetch-holiday-api').click();await notice(page);assert.deepEqual(await data('getHolidayCalendar',2026),imported);}
+    for(const mode of ['error','parse']) {holidayMode=mode;await fetchHolidayPreview(page);await notice(page);assert.deepEqual(await data('getHolidayCalendar',2026),imported);}
     holidayMode='ok';await data('replaceHolidayCalendar',{year:2026,items:before.items});
+
+    // HOL-D01 & HOL-D04: 미등록 빈 연도(2027) 첫 가져오기 및 비교 모달 페이징 검증
+    await page.locator('#holiday-year-select').selectOption('2027');
+    await sleep(250);
+    const writes2027 = await count('replaceHolidayCalendar');
+    await fetchHolidayPreview(page);
+    await page.locator('#modal-compare-holidays').waitFor();
+    assert.equal(await page.locator('.compare-diff-table .diff-row').count(), 10);
+    const pagerInfo = await page.locator('.compare-pagination-info').innerText();
+    assert(pagerInfo.includes('전체 15건') && pagerInfo.includes('1/2페이지'));
+    await page.locator('#btn-compare-holidays-number-2').click();
+    await sleep(100);
+    assert.equal(await page.locator('.compare-diff-table .diff-row').count(), 5);
+    await page.locator('#btn-confirm-cancel').click();
+    assert.equal(await count('replaceHolidayCalendar'), writes2027);
+    await fetchHolidayPreview(page);
+    await page.locator('#modal-compare-holidays').waitFor();
+    await page.locator('#btn-confirm-ok').click();
+    await notice(page);
+    assert.equal(await count('replaceHolidayCalendar'), writes2027 + 1);
+    const imported2027 = await data('getHolidayCalendar', 2027);
+    assert.equal(imported2027.items.length, 15);
+    await data('replaceHolidayCalendar', { year: 2027, items: [] });
+    await page.locator('#holiday-year-select').selectOption('2026');
+    await sleep(200);
+
+    extraEvidence[id].holidayBoundaries = await verifyHolidayBoundaries(page, adminCreds);
+
     negative('N02','holiday-import-cancel',()=>assert.equal(imported.items.length,2));record('Local API compare/cancel/write-once and HTTP/parse failure preserve calendar');
   }
   if(id==='S07') {
@@ -1186,6 +1630,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await page.locator('#btn-rate-impact-preview').click();await page.locator('#rate-impact-container .alert-danger').waitFor();assert.equal(await page.locator('.impact-result-card').count(),0);
     await overrideBridge(page,'listCalculationResults','async()=>new Promise(resolve=>{window.__releaseImpact=()=>resolve({ok:true,data:[]});})');
     await page.locator('#btn-rate-impact-preview').click();await page.waitForFunction(()=>!!window.__releaseImpact);
+    await selectOperationsArea(page,'rates','versions');
     await page.locator('.matrix-cell-input').first().fill('2.7');await page.evaluate(()=>window.__releaseImpact());
     await page.waitForFunction(()=>!document.querySelector('#rate-impact-container .loading-spinner'));assert.equal(await page.locator('.impact-result-card').count(),0);
     await restoreBridge(page,'listCalculationResults');
@@ -1223,6 +1668,15 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await field('사용자 이름').fill('연락처 수정');await field('연락처').fill('010-1234-8888');await field('이메일').fill('edited@example.invalid');
     assert.equal(await field('비밀번호').inputValue(),'');await page.locator('#btn-modal-submit').click();await notice(page);
     const edited=(await data('listOperationUsers')).find(u=>u.id===created.id);assert.equal(edited.contact,'010-1234-8888');assert.equal(edited.email,'edited@example.invalid');assert.equal(edited.role,'planner');
+    for(const status of ['inactive','pending','active']){
+      await page.locator('.users-table-wrap .dt-search-input').fill('sol_ui02_user');
+      await row.getByRole('button',{name:'수정',exact:true}).click();await field('계정 상태').selectOption(status);
+      await page.locator('#btn-modal-submit').click();await notice(page);
+      assert.equal((await data('listOperationUsers')).find(u=>u.id===created.id).status,status);
+      await page.locator('.users-table-wrap .dt-search-input').fill('sol_ui02_user');
+      await row.getByRole('button',{name:'수정',exact:true}).click();assert.equal(await field('계정 상태').inputValue(),status);
+      await page.keyboard.press('Escape');
+    }
     const authContext=await browser.newContext();const authPage=await authContext.newPage();await performNormalLogin(authPage,targetUrl,{loginId:'sol_ui02_user',password},null,value=>artifactRegistry.register(value));await authContext.close();
     await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));await installCalls(page);await page.locator('button[data-id="operations"]').click();await page.locator('.operations-settings-wrap').waitFor();await freshTab(page,'users');await page.locator('.users-table-wrap .dt-search-input').fill('sol_ui02_user');
     const empty=await api('saveOperationUser',{loginId:'sol_empty_password',displayName:'빈암호',role:'operator',status:'active',password:''});assert.equal(empty.ok,false);
@@ -1234,8 +1688,8 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
   }
   if(id==='S10') {
     await freshTab(page,'users');const before=await count('rotateAccountRecoveryKey');
-    await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-cancel').click();assert.equal(await count('rotateAccountRecoveryKey'),before);
-    await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-ok').click();await page.locator('.key-input').waitFor();
+    await selectOperationsArea(page,"users","security");await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-cancel').click();assert.equal(await count('rotateAccountRecoveryKey'),before);
+    await selectOperationsArea(page,"users","security");await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-ok').click();await page.locator('.key-input').waitFor();
     const key=await page.locator('.key-input').inputValue();assert(key.length>=16);artifactRegistry.register(key);assert.equal(await count('rotateAccountRecoveryKey'),before+1);
     await page.evaluate(()=>{window.__retainedKeyNode=document.querySelector('.key-input');Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async value=>{window.__copiedKey=value;}}});});
     await page.getByRole('button',{name:'복사',exact:true}).click();assert.equal(await page.evaluate(()=>window.__copiedKey),key);
@@ -1351,7 +1805,9 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     record('Nine actual generated PDF/XLSX members; controlled JSON/expiry UI cases explicitly separate; actual stale/unknown URL rejection');
   }
   if(id==='S16') {
+    await selectOperationsArea(page,'layout','editor');
     await selectLayout(page,0);const before=await data('getDocumentLayout',layoutKeys[0]),history=await data('listDocumentLayoutHistory',layoutKeys[0]);
+    await page.locator('.filename-section summary').click();
     const filename=page.locator('#input-layout-filename-main');await filename.fill('검수/{year}-{month2}-{siteName}.xlsx');
     const keyValue=await page.locator('.layout-key-select').inputValue();const values=await page.locator('.layout-key-select option').evaluateAll(options=>options.map(o=>o.value));
     await page.locator('.layout-key-select').selectOption(values[1]);await page.locator('#btn-confirm-cancel').click();assert.equal(await page.locator('.layout-key-select').inputValue(),keyValue);assert.equal(await filename.inputValue(),'검수/{year}-{month2}-{siteName}.xlsx');
@@ -1359,6 +1815,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await page.locator('#btn-save-layout').click();await page.locator('#btn-modal-submit').click();await notice(page);assert.equal(await count('saveDocumentLayout'),writes+1);
     const saved=await data('getDocumentLayout',layoutKeys[0]);assert.notEqual(saved.activeRevisionId,before.activeRevisionId);assert.equal(saved.definition.outputs[0].outputFileNamePattern,'검수/{year}-{month2}-{siteName}.xlsx');
     const afterHistory=await data('listDocumentLayoutHistory',layoutKeys[0]);assert.equal(afterHistory.length,history.length+1);
+    await page.locator('.filename-section summary').click();
     const invalidWrites=[];for(const pattern of ['../bad.xlsx','{unknown}.xlsx','{year}.pdf']) {
       await filename.fill(pattern);const n=await count('saveDocumentLayout');await page.locator('#btn-save-layout').click();await notice(page);invalidWrites.push((await count('saveDocumentLayout'))-n);
     }
@@ -1374,20 +1831,20 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await freshTab(page,'settings');
     await selectSettingsArea(page, 'backup');
     const employee=await data('saveEmployee',{employeeCode:'SOL-BACKUP-EMAIL',name:'백업 이메일 검수',employmentType:'정규',status:'active',email:'backup@example.invalid',contact:'010-1111-2222'});
-    const backup=await data('runDatabaseBackupNow');assert.equal(backup.tableCount,42);assert(fs.existsSync(backup.jsonBackupPath));
+    const backup=await data('runDatabaseBackupNow');assert.equal(backup.tableCount,43);assert(fs.existsSync(backup.jsonBackupPath));
     const bytes=fs.readFileSync(backup.jsonBackupPath);assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(),backup.backupSha256.toUpperCase());
-    const payload=JSON.parse(bytes);assert.equal(Object.keys(payload.tables).length,42);assert(JSON.stringify(payload.tables.employees).includes(employee.email));
+    const payload=JSON.parse(bytes);assert.equal(Object.keys(payload.tables).length,43);assert(JSON.stringify(payload.tables.employees).includes(employee.email));
     const extra=await data('saveSiteNameOption',{name:'복원 이후 제거되어야 하는 시험자료'});
     await prepareRestore(page,backup.jsonBackupPath);
-    const preview=(await page.evaluate(()=>window.__lastDbPreview)).data;assert.equal(preview.tableImpacts.length,42);
+    const preview=(await page.evaluate(()=>window.__lastDbPreview)).data;assert.equal(preview.tableImpacts.length,43);
     const shown=[];for(let n=0;n<5;n++) {
       shown.push(...await page.locator('.restore-flow-container tr.table-row').evaluateAll(rows=>rows.map(row=>({name:row.children[0].textContent.trim(),before:Number(row.children[1].textContent.replaceAll(',','')),after:Number(row.children[2].textContent.replaceAll(',',''))}))));
       if(n<4)await page.locator('.restore-flow-container .btn-next-page').click();
     }
-    assert.equal(new Set(shown.map(r=>r.name)).size,42);for(const row of shown){const expected=preview.tableImpacts.find(t=>t.tableName===row.name);assert(expected);assert.equal(row.before,expected.currentRowCount);assert.equal(row.after,expected.nextRowCount);}
+    assert.equal(new Set(shown.map(r=>r.name)).size,43);for(const row of shown){const expected=preview.tableImpacts.find(t=>t.tableName===row.name);assert(expected);assert.equal(row.before,expected.currentRowCount);assert.equal(row.after,expected.nextRowCount);}
     const writes=await count('updateDatabaseFromMigration');await page.locator('#btn-execute-db-restore').click();await page.locator('#btn-prompt-cancel').click();assert.equal(await count('updateDatabaseFromMigration'),writes);
     await page.locator('#btn-execute-db-restore').click();await page.locator('.prompt-input').fill('확인');await page.locator('#btn-prompt-ok').click();assert.equal(await count('updateDatabaseFromMigration'),writes);assert(await page.locator('.form-error').isVisible());
-    await overrideBridge(page,'updateDatabaseFromMigration','async input=>{const result=await window.__opsActual.updateDatabaseFromMigration(input);window.__lastRestore=result;return new Promise(resolve=>{window.__releaseRestore=()=>resolve(result);});}');
+    await overrideBridge(page,'updateDatabaseFromMigration','async input=>new Promise(resolve=>{window.__releaseRestore=async()=>{const result=await window.__opsActual.updateDatabaseFromMigration(input);window.__lastRestore=result;resolve(result);};})');
     await page.locator('.prompt-input').fill('교체');await page.locator('#btn-prompt-ok').evaluate(button=>{button.click();button.click();});
     await page.waitForFunction(()=>!!window.__releaseRestore);assert.equal(await count('updateDatabaseFromMigration'),writes+1);
     assert(await page.locator('.db-backup-section input,.db-backup-section button').evaluateAll(controls=>controls.every(c=>c.disabled)));
@@ -1401,8 +1858,13 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await notice(page);
     assert.equal(await count('saveAppSettings'), writesDuringRestore, 'busy 중 저장 차단되어 추가 쓰기 0');
 
-    await page.evaluate(()=>window.__releaseRestore());await page.waitForFunction(()=>document.querySelector('.restore-flow-container')?.textContent.includes('교체 직전 자동 백업'));
-    const result=await page.evaluate(()=>window.__lastRestore);assert(result.ok);assert(fs.existsSync(result.data.backupBeforeRestore.jsonBackupPath));assert.equal(result.data.tableResults.length,42);
+    await page.evaluate(()=>window.__releaseRestore());await page.waitForFunction(()=>!!window.__lastRestore);
+    const result=await page.evaluate(()=>window.__lastRestore);assert(result.ok);assert(fs.existsSync(result.data.backupBeforeRestore.jsonBackupPath));assert.equal(result.data.tableResults.length,43);
+    const expired=await page.evaluate(()=>window.appBridge.getSession());assert.equal(expired.ok,true);assert.equal(expired.data,null,'Successful restore revokes the old cookie');
+    await page.reload();await page.locator('#login-id').waitFor({state:'visible'});
+    await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));await installCalls(page);
+    await page.locator('button[data-id="operations"]').click();await page.locator('.operations-settings-wrap').waitFor();
+    await selectSettingsArea(page,'backup');
     assert(!(await data('listSiteNameOptions')).some(site=>site.id===extra.id));assert.equal((await data('listEmployees')).find(e=>e.id===employee.id).email,employee.email);
     await restoreBridge(page,'updateDatabaseFromMigration');scenarioState.backup=backup;scenarioState.backupPayload=payload;scenarioState.databasePath=result.data.databasePath;
 
@@ -1420,7 +1882,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await notice(page);
 
 
-    negative('N02','restore-cancel-wrong-text-double-and-locks',()=>assert.equal(shown.length,42));record('Actual JSON42/SHA/email, all table counts, cancel/wrong phrase zero writes, actual restore once and automatic pre-backup');
+    negative('N02','restore-cancel-wrong-text-double-and-locks',()=>assert.equal(shown.length,43));record('Actual JSON43/SHA/email, all table counts, cancel/wrong phrase zero writes, actual restore once and automatic pre-backup');
   }
   if(id==='S18') {
     await freshTab(page,'settings');
@@ -1435,7 +1897,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     ]) {const p=clone(original);mutate(p);const file=path.join(userDataDir,name+'.json');fs.writeFileSync(file,JSON.stringify(p));invalids.push(file);}
     const rejected=[];for(const file of invalids){const result=await api('checkDatabaseMigrationRequirements',{backupFilePath:file});rejected.push(!result.ok||!result.data.isReady);}
     negative('N09','invalid-json-unknown-missing-type',()=>assert(rejected.length===4&&rejected.every(Boolean)));
-    const legacy=clone(original);legacy.schemaVersion=1;delete legacy.tables.policy_revisions;delete legacy.tables.policy_events;legacy.tableCount=40;for(const employee of legacy.tables.employees)delete employee.email;const legacyFile=path.join(userDataDir,'legacy-no-email.json');fs.writeFileSync(legacyFile,JSON.stringify(legacy));assert.equal((await data('checkDatabaseMigrationRequirements',{backupFilePath:legacyFile})).isReady,true);
+    const legacy=clone(original);legacy.schemaVersion=1;delete legacy.tables.policy_revisions;delete legacy.tables.policy_events;delete legacy.tables.performance_return_history;legacy.tableCount=40;for(const employee of legacy.tables.employees)delete employee.email;const legacyFile=path.join(userDataDir,'legacy-no-email.json');fs.writeFileSync(legacyFile,JSON.stringify(legacy));assert.equal((await data('checkDatabaseMigrationRequirements',{backupFilePath:legacyFile})).isReady,true);
     const file=scenarioState.backup.jsonBackupPath,preview=await data('previewDatabaseMigrationUpdate',{backupFilePath:file});
     const base={backupFilePath:file,backupSha256:preview.backupSha256,previewToken:preview.previewToken,confirmationText:'교체'};
     const copy=path.join(userDataDir,'different-path.json');fs.copyFileSync(file,copy);
@@ -1479,18 +1941,18 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));await installCalls(page);await page.locator('button[data-id="operations"]').click();await page.locator('.operations-settings-wrap').waitFor();
     await freshTab(page,'settings');
     await freshTab(page,'users');await overrideBridge(page,'rotateAccountRecoveryKey','async()=>{const actual=await window.__opsActual.rotateAccountRecoveryKey();if(actual.ok)await window.registerOpsSecret(actual.data.recoveryKey);return new Promise(resolve=>{window.__releaseLateKey=()=>resolve(actual);});}');
-    await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-ok').click();await page.waitForFunction(()=>!!window.__releaseLateKey);
-    await page.locator('#btn-add-user').click();const newModalId=await page.locator('.workforce-modal-overlay').getAttribute('id');
+    await selectOperationsArea(page,"users","security");await page.locator('#btn-rotate-my-recovery-key').click();await page.locator('#btn-confirm-ok').click();await page.waitForFunction(()=>!!window.__releaseLateKey);
+    await selectOperationsArea(page,"users","users");await page.locator('#btn-add-user').click();const newModalId=await page.locator('.workforce-modal-overlay').getAttribute('id');
     await page.evaluate(()=>window.__releaseLateKey());await page.evaluate(()=>new Promise(resolve=>setTimeout(resolve,0)));assert.equal(await page.locator('.workforce-modal-overlay').getAttribute('id'),newModalId);assert.equal(await page.locator('.key-input').count(),0);
     await page.locator('#btn-modal-cancel').click();await page.evaluate(()=>{delete window.__releaseLateKey;});await restoreBridge(page,'rotateAccountRecoveryKey');
     negative('N11','late-secret-response-modal-replacement',()=>assert.equal(newModalId,'modal-add-user'));
     await overrideBridge(page,'getDocumentLayout','async key=>{const actual=await window.__opsActual.getDocumentLayout(key);window.__heldLayout=true;return new Promise(resolve=>{window.__releaseLayout=()=>resolve(actual);});}');
-    await page.locator('#tab-btn-layout').click();await page.waitForFunction(()=>window.__heldLayout);await page.locator('#tab-btn-holidays').click();await page.locator('.operations-holidays-wrap').waitFor();
+    await switchToTab(page,'layout');await page.waitForFunction(()=>window.__heldLayout);await page.locator('#tab-btn-holidays').click();await page.locator('.operations-holidays-wrap').waitFor();
     await page.evaluate(()=>window.__releaseLayout());await page.evaluate(()=>new Promise(resolve=>setTimeout(resolve,0)));assert.equal(await page.locator('.operations-holidays-wrap').count(),1);await restoreBridge(page,'getDocumentLayout');
     await overrideBridge(page,'listOperationUsers','async()=>new Promise(resolve=>{window.__lateUsers=()=>resolve({ok:false,errorCode:"AUTH_SESSION_REQUIRED",message:"controlled delayed old-session response"});})');
-    await page.locator('#tab-btn-users').click();await page.waitForFunction(()=>!!window.__lateUsers);
+    await page.locator('button[data-id="user-mgmt"]').click();await page.waitForFunction(()=>!!window.__lateUsers);
     await page.evaluate(()=>{window.__loginRenders=0;window.__loginObserver=new MutationObserver(records=>{for(const record of records)for(const node of record.addedNodes)if(node.nodeType===1&&(node.matches?.('.login-form')||node.querySelector?.('.login-form')))window.__loginRenders++;});window.__loginObserver.observe(document.body,{childList:true,subtree:true});});
-    await api('signOut');await page.locator('#tab-btn-settings').click();await page.locator('.login-form').waitFor();
+    await api('signOut');await page.locator('button[data-id="operations"]').click();await page.locator('.login-form').waitFor();
     await page.locator('#login-id').fill(adminCreds.loginId);await page.locator('#login-password').fill(adminCreds.password);await page.locator('.login-form button[type=submit]').click();await page.locator('.btn-logout').waitFor();
     await page.evaluate(()=>window.__lateUsers());await page.evaluate(()=>new Promise(resolve=>setTimeout(resolve,0)));assert.equal(await page.locator('.btn-logout').count(),1);
     const loginRenders=await page.evaluate(()=>{window.__loginObserver.disconnect();return window.__loginRenders;});assert.equal(loginRenders,1);
@@ -1498,6 +1960,8 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     negative('N11','late-tab-and-expired-relogin-ownership',()=>assert.equal(loginRenders,1));record('Actual three role sessions/forced guards; delayed tab success and old-session failure after actual signout/relogin cannot replace new screen/session');
   }
   if(id==='S20') {
+    extraEvidence[id].uniformLayout=await verifyOperationsUniformLayout(page);
+    extraEvidence[id].editorUsability=await verifyEditorUsability(page);
     await freshTab(page,'settings');const metrics=[];
     for(const viewport of [{width:1024,height:768},{width:1280,height:720},{width:1440,height:900},{width:1707,height:825},{width:2048,height:1080}]) {
       await page.setViewportSize(viewport);metrics.push(await page.evaluate(()=>({innerWidth,innerHeight,outerWidth,devicePixelRatio,documentWidth:document.documentElement.scrollWidth})));

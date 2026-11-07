@@ -77,6 +77,9 @@ export class SitesList {
     const toolbar = document.createElement("div");
     toolbar.className = "sites-toolbar";
 
+    const toolbarTop = document.createElement("div");
+    toolbarTop.className = "sites-toolbar-top";
+
     const toolbarLeft = document.createElement("div");
     toolbarLeft.className = "sites-toolbar-left";
 
@@ -115,7 +118,7 @@ export class SitesList {
       });
       chipGroup.appendChild(chip);
     });
-    toolbarLeft.appendChild(chipGroup);
+    toolbarTop.appendChild(chipGroup);
 
     // 패턴 유무 필터 칩 (UI03-D08)
     const patGroup = document.createElement("div");
@@ -137,15 +140,12 @@ export class SitesList {
       });
       patGroup.appendChild(chip);
     });
-    toolbarLeft.appendChild(patGroup);
+    toolbarTop.appendChild(patGroup);
 
     // 정렬 드롭다운 (UI03-D08)
     const sortSelect = document.createElement("select");
     sortSelect.id = "sites-sort-select";
     sortSelect.className = "sites-form-select";
-    sortSelect.style.fontSize = "12px";
-    sortSelect.style.height = "28px";
-    sortSelect.style.padding = "2px 6px";
     sortSelect.innerHTML = `
       <option value="customer" ${this.filter.sortBy === "customer" ? "selected" : ""}>고객사순</option>
       <option value="name" ${this.filter.sortBy === "name" ? "selected" : ""}>근무지명순</option>
@@ -160,7 +160,7 @@ export class SitesList {
     });
     toolbarLeft.appendChild(sortSelect);
 
-    toolbar.appendChild(toolbarLeft);
+    toolbar.append(toolbarTop, toolbarLeft);
 
     // 우측: 등록 버튼 (planner, admin만 가능)
     const canEdit = this.session.role === "admin" || this.session.role === "planner";
@@ -170,11 +170,11 @@ export class SitesList {
       createBtn.className = "btn-primary";
       createBtn.id = "btn-sites-create";
       createBtn.innerHTML = `
-        <span class="material-symbols-outlined" style="font-size:18px;">add</span>
+        <span class="material-symbols-outlined sites-icon-add">add</span>
         <span>근무지 등록</span>
       `;
       createBtn.addEventListener("click", () => this.onOpenCreateWizard());
-      toolbar.appendChild(createBtn);
+      toolbarTop.appendChild(createBtn);
     }
 
     if (this.toolbarContainer) {
@@ -201,16 +201,16 @@ export class SitesList {
     const table = document.createElement("table");
     table.className = "sites-table";
     table.innerHTML = `
-      <colgroup><col style="width:80px"><col style="width:62px"><col style="width:130px"><col><col style="width:52px"><col style="width:65px"><col style="width:126px"></colgroup>
+      <colgroup><col class="sites-col-code"><col class="sites-col-status"><col class="sites-col-client"><col><col class="sites-col-teams"><col class="sites-col-assignments"><col class="sites-col-pattern"></colgroup>
       <thead>
         <tr>
           <th>코드</th><th>상태</th>
-          <th style="width:130px;">고객사</th>
+          <th class="sites-client-heading">고객사</th>
           <th>근무지명</th>
 
-          <th style="width:80px; text-align:center;">조 수</th>
-          <th style="width:90px; text-align:center;">배정인원</th>
-          <th style="width:140px;">현재 패턴</th>
+          <th class="sites-teams-heading">조 수</th>
+          <th class="sites-assignments-heading">배정인원</th>
+          <th class="sites-pattern-heading">현재 패턴</th>
         </tr>
       </thead>
     `;
@@ -220,7 +220,7 @@ export class SitesList {
     if (pageResult.items.length === 0) {
       const emptyTr = document.createElement("tr");
       emptyTr.innerHTML = `
-        <td colspan="7" style="text-align:center; padding:32px; color:var(--text-sub, #4B5563);">
+        <td class="sites-empty-row" colspan="7">
           검색 및 필터 조건에 일치하는 근무지가 없습니다.
         </td>
       `;
@@ -233,17 +233,17 @@ export class SitesList {
 
         const statusBadge =
           site.status === "active"
-            ? `<span style="display:inline-block; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:600; background:#E8F5EE; color:#1E7A46;">활성</span>`
-            : `<span style="display:inline-block; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:600; background:#F1F2F4; color:#4B5563;">비활성</span>`;
+            ? `<span class="sites-status-active">활성</span>`
+            : `<span class="sites-status-inactive">비활성</span>`;
 
         tr.innerHTML = `
           <td class="sites-code-cell">${this.escape(site.siteCode)}</td><td>${statusBadge}</td>
           <td>${this.escape(site.customerName)}</td>
-          <td style="font-weight:600;">${this.escape(site.name)}</td>
+          <td class="sites-site-name">${this.escape(site.name)}</td>
 
-          <td style="text-align:center;">${site.teamCount > 0 ? `${site.teamCount}조` : "-"}</td>
-          <td style="text-align:center;">${site.assignedCount > 0 ? `${site.assignedCount}명` : "-"}</td>
-          <td style="color:var(--text-sub, #4B5563);">${this.escape(site.activePatternName || "패턴 미설정")}</td>
+          <td class="sites-text-center">${site.teamCount > 0 ? `${site.teamCount}조` : "-"}</td>
+          <td class="sites-text-center">${site.assignedCount > 0 ? `${site.assignedCount}명` : "-"}</td>
+          <td class="sites-muted">${this.escape(site.activePatternName || "패턴 미설정")}</td>
         `;
 
         tr.addEventListener("click", () => {

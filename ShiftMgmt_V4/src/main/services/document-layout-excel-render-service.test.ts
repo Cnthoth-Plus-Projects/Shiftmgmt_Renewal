@@ -101,6 +101,30 @@ describe("document-layout-excel-render-service", () => {
     }).toThrow("기본 디렉터리");
   });
 
+  it("파일을 쓰기 전에도 같은 배치의 경로와 기존 파일을 피해 이름을 고른다", () => {
+    const reserved = new Set<string>();
+    const existing = path.join(tempDir, "문서.xlsx");
+    writeFileSync(existing, "이전 문서");
+    const first = resolveDocumentLayoutOutputFilePath(tempDir, "문서.xlsx", {}, reserved);
+    const second = resolveDocumentLayoutOutputFilePath(path.join(tempDir, "."), "문서.xlsx", {}, reserved);
+    const third = resolveDocumentLayoutOutputFilePath(tempDir, "문서.xlsx", {}, reserved);
+    expect([first, second, third].map(p => path.basename(p))).toEqual([
+      "문서_dup01.xlsx", "문서_dup02.xlsx", "문서_dup03.xlsx"
+    ]);
+    expect([first, second, third].every(p => !existsSync(p))).toBe(true);
+  });
+
+  it("배치 예약은 폴더를 구별하고 Windows의 대소문자 충돌도 피한다", () => {
+    const reserved = new Set<string>();
+    const first = resolveDocumentLayoutOutputFilePath(tempDir, "Report.xlsx", {}, reserved);
+    const second = resolveDocumentLayoutOutputFilePath(tempDir, "report.xlsx", {}, reserved);
+    expect(path.basename(second)).toBe(process.platform === "win32" ? "report_dup01.xlsx" : "report.xlsx");
+    const otherDir = resolveDocumentLayoutOutputFilePath(path.join(tempDir, "다른 폴더"), "Report.xlsx", {}, reserved);
+    expect(path.basename(otherDir)).toBe("Report.xlsx");
+    expect(resolveDocumentLayoutOutputFilePath(tempDir, "Report.xlsx", {}, new Set())).toBe(first);
+    expect(() => resolveDocumentLayoutOutputFilePath(tempDir, "../escape.xlsx", {}, reserved)).toThrow("기본 디렉터리");
+  });
+
   it("PDF 파일명 패턴 토큰({name}, {timestamp}) 치환 및 특수문자 정제 (T8)", () => {
     const pattern = "{name}_{timestamp}.pdf";
     const fileName = resolveDocumentLayoutFileName(pattern, {

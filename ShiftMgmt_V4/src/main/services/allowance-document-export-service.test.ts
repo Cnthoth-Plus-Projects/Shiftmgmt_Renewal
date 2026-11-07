@@ -2531,6 +2531,56 @@ describe("allowance-document-export-service", () => {
     }
   }, exportDocumentTestTimeoutMs);
 
+  it("같은 폴더·파일명의 품의·별첨 세 Excel을 모두 보존하고 재출력 이력도 분리한다", async () => {
+    const fs = await import("node:fs");
+    const os = await import("node:os");
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "allowance-batch-collision-"));
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: tempDir, templateVariant: "sample1" });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(e => e.employeeName === fixture.workers.overtime.name)!;
+    expect((await approvePerformanceFile({ fileId: detail.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const calculated = await runApprovedAllowanceCalculation({ entryId: entry.id });
+    expect(calculated.ok).toBe(true);
+    if (!calculated.ok) return;
+    expect((await reviewAllowanceCalculations({ calculationIds: [calculated.data.id], decision: "approved" }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const outputDir = path.join(tempDir, "공통 출력");
+    const settings = getStoredAppSettingsSnapshot({ userDataPath: fixture.userDataPath });
+    saveStoredAppSettings({ ...settings, allowanceProposalExportDir: outputDir, allowanceAttachment1ExportDir: outputDir, allowanceAttachment2ExportDir: outputDir }, { userDataPath: fixture.userDataPath });
+    for (const documentKind of ["proposal-xlsx", "attachment1-xlsx", "attachment2-xlsx"] as const) {
+      const definition = getDefaultDocumentLayoutDefinition({ documentKind });
+      definition.outputs[0]!.outputFileNamePattern = "공통문서.xlsx";
+      saveDocumentLayout({ definition, expectedRevisionId: null, versionLabel: "같은 이름 출력" });
+    }
+    fs.mkdirSync(outputDir, { recursive: true });
+    const existingPath = path.join(outputDir, "공통문서.xlsx");
+    fs.writeFileSync(existingPath, "기존 문서 보존");
+    const input = { calculationIds: [calculated.data.id], outputFormat: "xlsx" as const };
+    const first = await exportAllowanceDocuments(input, { userDataPath: fixture.userDataPath });
+    expect(first.ok).toBe(true);
+    if (!first.ok) return;
+    const targets = [first.data.proposalPath, first.data.attachment1Path, first.data.attachment2Path];
+    expect(targets.map(p => path.basename(p))).toEqual(["공통문서_dup01.xlsx", "공통문서_dup02.xlsx", "공통문서_dup03.xlsx"]);
+    const originals = targets.map(p => fs.readFileSync(p));
+    const sheetNames = [];
+    for (const target of targets) {
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.readFile(target);
+      sheetNames.push(workbook.worksheets[0]!.name);
+    }
+    expect(sheetNames).toEqual(["품의서", "별첨1", "별첨2"]);
+    const second = await exportAllowanceDocuments(input, { userDataPath: fixture.userDataPath });
+    expect(second.ok).toBe(true);
+    if (!second.ok) return;
+    const nextTargets = [second.data.proposalPath, second.data.attachment1Path, second.data.attachment2Path];
+    expect(new Set([...targets, ...nextTargets]).size).toBe(6);
+    expect(fs.readFileSync(existingPath, "utf8")).toBe("기존 문서 보존");
+    for (let i = 0; i < targets.length; i++) expect(fs.readFileSync(targets[i]!)).toEqual(originals[i]);
+    for (const exported of [first.data, second.data]) {
+      const stored = listStoredAllowanceDocumentExports().find(row => row.id === exported.id)!;
+      expect([stored.proposalPath, stored.attachment1Path, stored.attachment2Path]).toEqual([exported.proposalPath, exported.attachment1Path, exported.attachment2Path]);
+    }
+  }, exportDocumentTestTimeoutMs);
+
   it("should apply customized saved layout definitions and handle duplicate output filenames with _dup01", async () => {
     const fixture = await prepareReturnedScheduleFixture({
       rootDir: testRoot,
@@ -2762,12 +2812,35 @@ describe("allowance-document-export-service", () => {
       const att2WbExplicit = new ExcelJS.Workbook();
       await att2WbExplicit.xlsx.readFile(att2ExplicitPath);
 
+      const titleText = att2WbExplicit.worksheets[0]!.getCell("A1").text;
+      expect(titleText).toBe("별첨2. 월간 DT사업1팀 교대근무 직원의 연장근로 수당 지급 현황 202605");
+      expect(att2WbExplicit.worksheets[0]!.getCell("A1").alignment.wrapText).toBe(true);
+      expect(att2WbExplicit.worksheets[0]!.getRow(1).height).toBeGreaterThanOrEqual(32);
+      expect(att2WbExplicit.worksheets[0]!.model.merges).toContain("A1:E1");
+
       expect(att2WbExplicit.worksheets).toHaveLength(att2WbOmitted.worksheets.length);
       for (let i = 0; i < att2WbOmitted.worksheets.length; i++) {
         expect(extractWorksheetSemanticSnapshot(att2WbExplicit.worksheets[i]!)).toEqual(
           extractWorksheetSemanticSnapshot(att2WbOmitted.worksheets[i]!)
         );
       }
+
+      const movedTitleDef = structuredClone(att2Def);
+      const movedTitle = movedTitleDef.outputs[0]!.blocks.find(block => block.id === "attachment2.title")!;
+      Object.assign(movedTitle, { x: 1, y: 90, width: 4, height: 2 });
+      movedTitle.font = { ...movedTitle.font, sizePt: 14 };
+      const movedPath = path.join(tempDir, "att2_custom_title.xlsx");
+      await writeAttachmentTwoWorkbookForTest({ outputPath: movedPath, workMonth: "2026-05", rows, totalAllowanceAmount, definition: movedTitleDef });
+      const movedWorkbook = new ExcelJS.Workbook(); await movedWorkbook.xlsx.readFile(movedPath);
+      const movedSheet = movedWorkbook.worksheets[0]!;
+      expect(movedSheet.getCell("B91").text).toBe(titleText);
+      expect(movedSheet.getCell("B91").font.size).toBe(14);
+      expect(movedSheet.model.merges).toContain("B91:E92");
+      expect(movedSheet.getCell("A1").value).toBeNull();
+      att2WbExplicit.worksheets[0]!.eachRow((row, rowNumber) => {
+        if (rowNumber < 2) return;
+        row.eachCell(cell => expect(movedSheet.getCell(cell.address).value).toEqual(cell.value));
+      });
     } finally {
       if (fs.existsSync(tempDir)) {
         fs.rmSync(tempDir, { recursive: true, force: true });

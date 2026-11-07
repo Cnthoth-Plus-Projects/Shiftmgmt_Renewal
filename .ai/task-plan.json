@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "UI-ADMIN-REFINE",
-  "executingTaskId": null,
+  "nextTaskId": "REL-02",
+  "executingTaskId": "REL-02",
   "tasks": [
     {
       "id": "PLAN-00",
@@ -3324,13 +3324,13 @@
       "dependsOn": [
         "REL-01"
       ],
-      "goal": "백업/최종 이관·새 판 ZIP/적용 스크립트 준비",
-      "doneWhen": "검증/백업·버전·적용 전 점검 완료, 실제 운영 PC 교체는 아직 하지 않음",
+      "goal": "Review/push current source; prepare self-contained Windows x64 fresh-install ZIP, manifest/checksum, launcher and desktop shortcut; verify isolated first login and release checks",
+      "doneWhen": "main/source branch pushed without force; 1.0.0 ZIP built, hashes/license inventory verified, isolated fresh install/start/login/stop and rejection checks pass, release:check passes; no operational PC or existing DB changed",
       "whyRequired": "운영 데이터 보호",
-      "owner": "Sol 설계 → Gemini 구현 → Sol 검수",
-      "status": "TODO",
+      "owner": "Sol",
+      "status": "IN_PROGRESS",
       "geminiTaskId": null,
-      "productChangesAuthorizedByThisPlan": false,
+      "productChangesAuthorizedByThisPlan": true,
       "triageDecisionIds": [
         "DEC-001"
       ],
@@ -3339,7 +3339,53 @@
         "bytes": 29542,
         "sha256": "B2304D8FE2B193223B6AD669A40FE95BFA16AD83DE5AC7224DC5B4617D1380C6"
       },
-      "deferredBy": "2026-11-02 user UI review priorities; operating PC unknown"
+      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "implementationOwner": "Sol (standing direct implementation exception; user Git push/release preparation request)",
+      "authorization": "2026-11-07 user: git push and prepare formal release; installation target: fresh PC",
+      "installationTarget": "FRESH_PC",
+      "version": "1.0.0",
+      "allowlist": [
+        ".gitignore",
+        "ShiftMgmt_V4/.gitignore",
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/src/shared/config/app-brand.ts",
+        "ShiftMgmt_V4/scripts/package-windows.mjs",
+        "ShiftMgmt_V4/scripts/verify-windows-package.mjs",
+        "ShiftMgmt_V4/scripts/start-installed.mjs",
+        "ShiftMgmt_V4/build/fresh-install.ps1",
+        "ShiftMgmt_V4/build/install.cmd",
+        "ShiftMgmt_V4/build/start.cmd",
+        "ShiftMgmt_V4/docs/release-1.0.0.md",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/src/main/services/windows-release.test.ts",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "Log/new-immutable-archives"
+      ],
+      "requiredChecks": [
+        "Source/privacy staged-path review and non-force Git push",
+        "Build and production npm lock install; all packaged bytes SHA256, runtime version/license and no DB/credentials/source fixtures",
+        "Private TEMP installation: manifest tamper/target collision reject, shortcut, launch health/static/version, admin first-login forced password change, dev-login unavailable, clean DB, graceful stop/restart",
+        "npm run release:check (typecheck/lint/full unit tests); npm run validate:map; npm run smoke"
+      ],
+      "protected": [
+        "existing operational data",
+        "C:/Projects/Active/ShiftMgmt_V3.4",
+        "historical Log bytes",
+        "calculation/auth/DB schema/product workflows",
+        "all files outside allowlist except reviewed existing checkpoint changes"
+      ],
+      "deploymentAuthorized": false,
+      "releasePublication": "draft assets only; operational PC installation remains REL-03",
+      "startedAt": "2026-11-07T03:40:12.335Z"
     },
     {
       "id": "REL-03",
@@ -3831,7 +3877,7 @@
       "title": "관리 카테고리 설정 메뉴별 개선",
       "phase": "후속 개선",
       "owner": "Sol design/verify; Gemini implementation",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "goal": "관리 카테고리 설정 메뉴별 개선",
       "doneWhen": "각 메뉴 순차 설계·디자인·사용자 흐름 개선",
       "dependsOn": [
@@ -3847,51 +3893,263 @@
       "authorization": "2026-11-02 사용자 요청",
       "children": [
         "UI-ADMIN-01-SETTINGS",
-        "POLICY-HISTORY-01"
+        "POLICY-HISTORY-01",
+        "UI-ADMIN-02-HOLIDAYS"
       ],
-      "designStandard": "Each management settings menu must receive an actual cohesive visual redesign, not only functional grouping; current settings accepted technically, remaining menus sequential.",
-      "nextAreaAfterCurrentReview": "공휴일",
-      "stage": "NEXT_MENU_SCOPE_PENDING"
+      "designStandard": "설정의 세부 카테고리 골격·역할별 현대적인 버튼을 운영 관리 탭에 순차 적용; 단순 메뉴는 단일 영역 허용",
+      "nextAreaAfterCurrentReview": "UI-DARK-MODE (운영 관리 전체 화면 확인 후 기존 순서)",
+      "stage": "USER_ACCEPTED",
+      "technicalAccepted": true,
+      "userApproved": true,
+      "userApprovedAt": "2026-11-04T14:07:23.462Z",
+      "completedAt": "2026-11-04T14:07:23.462Z",
+      "userApprovalEvidence": {
+        "path": ".ai/reports/dark-mode-20261104/previous-user-acceptance.json",
+        "bytes": 823,
+        "sha256": "4A2CE6F6B413206B79B3EBC921A67AD709CEF7C2150B4C0C2ADDFB735BD85602"
+      }
     },
     {
       "id": "UI-DARK-MODE",
       "title": "눈의 피로가 적은 다크 모드",
       "phase": "후속 개선",
-      "owner": "착수 시 확정",
-      "status": "TODO",
-      "goal": "눈의 피로가 적은 다크 모드",
-      "doneWhen": "관리 메뉴 다음; 상세 범위는 착수 시 확정",
+      "owner": "Sol implementation/verification; user approved",
+      "status": "USER_APPROVED",
+      "goal": "로그인과 전체 업무 화면에서 시스템/다크 두 모드를 선택·유지하고 업무초안/문서·차트출력을 보존",
+      "doneWhen": "허용10/보호506, 새테마12·원운영20N12·원대시보드20N12·원1476/156 통과, Sol독립검수 및 사용자화면확인",
       "dependsOn": [
         "UI-ADMIN-REFINE"
       ],
-      "productChangesAuthorizedByThisPlan": false,
-      "allowedPaths": [],
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "ShiftMgmt_V4/src/web/index.html",
+        "ShiftMgmt_V4/src/web/screens/shell.ts",
+        "ShiftMgmt_V4/src/web/screens/login.ts",
+        "ShiftMgmt_V4/src/web/screens/dashboard-charts.ts",
+        "ShiftMgmt_V4/scripts/copy-web-assets.mjs",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/src/web/theme-init.js",
+        "ShiftMgmt_V4/src/web/theme-controls.ts",
+        "ShiftMgmt_V4/src/web/theme.css",
+        "ShiftMgmt_V4/scripts/ui-checks/theme.mjs"
+      ],
       "gemini": {
         "initial": 0,
         "retry": 0,
         "total": 0
       },
-      "authorization": "2026-11-02 사용자 요청"
+      "authorization": "2026-11-02 사용자 요청",
+      "stage": "COMPLETE",
+      "protectedFiles": 506,
+      "baselineProductFiles": 512,
+      "expectedProductFilesAfterImplementation": 516,
+      "newProductFiles": 4,
+      "implementationWriter": "Sol",
+      "implementationStarted": true,
+      "technicalAccepted": true,
+      "userApproved": true,
+      "authorizedAt": "2026-11-04T14:07:23.462Z",
+      "currentHandoff": {
+        "path": ".ai/reports/dark-mode-20261104/IMPLEMENT.md",
+        "bytes": 19633,
+        "sha256": "5717E35FED0765312A50D3B5EA0EC5E82B8F3C628C7108A621E6DE87FC9F05EC"
+      },
+      "preflight": {
+        "path": ".ai/reports/dark-mode-20261104/preflight.json",
+        "bytes": 3730,
+        "sha256": "44018A20088F23E4375E6C8F20BE5BA63490FDB7E6E69A78E83A4A80B140F5F9"
+      },
+      "baselineSource": {
+        "path": ".ai/reports/dark-mode-20261104/baseline-source.json",
+        "bytes": 79751,
+        "sha256": "E42D569C51F1BA6C039B52F13AD53FAB57BA082B5ECC05D2B478C7A458BF5963"
+      },
+      "runtimeVerification": "FRESH_TWO_MODE_T12_PASS",
+      "implementationWorkflowRef": "implementationWorkflow (2026-11-01 restored normal Gemini workflow)",
+      "directAuthorization": {
+        "path": ".ai/reports/dark-mode-20261104/sol-direct/authorization.json",
+        "bytes": 461,
+        "sha256": "6A3CE30CF764156D9290F6D1192A63714E94992BF74A77B20D6AC12006C203D0"
+      },
+      "technicalAcceptedAt": "2026-11-04T23:42:00.154Z",
+      "themeAssessment": {
+        "path": ".ai/reports/dark-mode-20261105/two-mode/assessment.json",
+        "bytes": 3494,
+        "sha256": "6DEC8E1CEDB436C4F9BFF7B9CF7196DE0E5B9EDAD4926B5601036E6969F4C904"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/dark-mode-20261105/two-mode/source.json",
+        "bytes": 80295,
+        "sha256": "0D0B88AF7399863CA8D06F548227B3464D98A170014617274E3F7E266A0F47A9"
+      },
+      "preview": {
+        "url": "http://127.0.0.1:19271/?developmentPreview=1",
+        "runnerPid": 33692,
+        "serverPid": 23540,
+        "data": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-theme-data-tIfaud",
+        "resources": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-theme-res-qIBDzg",
+        "metadata": {
+          "path": ".ai/reports/dark-mode-20261105/two-mode/native-v1/preview.json",
+          "bytes": 1101,
+          "sha256": "0DBF9C8C822229F5C17493C124B6E2F6C35001486D54CF0B49CB9A27046B1C68"
+        }
+      },
+      "nextTaskAfterUserReview": "UI-TEMPLATE-REFINE",
+      "surfaceFeedback": {
+        "at": "2026-11-04T18:56:26.790Z",
+        "report": ".ai/reports/dark-mode-20261105/surface-followup",
+        "request": "각화면 모두확인/미적용메뉴 수정 및 모드에 따라 변하는 단일아이콘",
+        "result": {
+          "path": ".ai/reports/dark-mode-20261105/surface-followup/assessment.json",
+          "bytes": 9606,
+          "sha256": "1D209B9BCD92D54BD0AA3BEA1B98EE1132A1FE85E6EE51841EE4A11344FC61C5"
+        }
+      },
+      "previousSurfaceUserConfirmedAt": "2026-11-04T23:37:17.920Z",
+      "twoModeRequest": {
+        "at": "2026-11-04T23:37:17.920Z",
+        "report": ".ai/reports/dark-mode-20261105/two-mode",
+        "request": "시스템과 다크만 선택; 이전light선택 제거",
+        "result": {
+          "path": ".ai/reports/dark-mode-20261105/two-mode/assessment.json",
+          "bytes": 3494,
+          "sha256": "6DEC8E1CEDB436C4F9BFF7B9CF7196DE0E5B9EDAD4926B5601036E6969F4C904"
+        }
+      },
+      "userAcceptedAt": "2026-11-04T23:45:08.790Z",
+      "userAcceptance": {
+        "at": "2026-11-04T23:45:08.790Z",
+        "quote": "오케이 다음 작업은 뭐뭐있어?",
+        "scope": "Previous system/dark mode completion acknowledged; asks remaining plan, not implementation start",
+        "archive": "Log/20261104_234508_DARK-MODE-user-accepted.md",
+        "bytes": 2865,
+        "sha256": "422345935385180BC6F6DC6D9526F651A0EE8150C31822D44013184E9D030A43"
+      }
     },
     {
       "id": "UI-TEMPLATE-REFINE",
       "title": "엑셀·근무표 양식 개선",
       "phase": "후속 개선",
-      "owner": "착수 시 확정",
-      "status": "TODO",
-      "goal": "엑셀·근무표 양식 개선",
-      "doneWhen": "다크 모드 다음; 이전 화면 개선 중 알고리즘 검토 기록",
+      "owner": "Sol",
+      "status": "WAITING_USER_REVIEW",
+      "goal": "7종/9개 실제 양식의 화면·저장·출력 일치와 사용성 최종 점검, 확인된 결함의 최소 보완",
+      "doneWhen": "실제 결과물 내용·전체행/금액·인쇄/시각 확인과 설정 반영 검문, 불변 source 및 실제 사용자 확인물 제공",
       "dependsOn": [
         "UI-DARK-MODE"
       ],
-      "productChangesAuthorizedByThisPlan": false,
-      "allowedPaths": [],
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "src/main/services/document-layout-excel-render-service.ts",
+        "src/main/services/document-layout-excel-render-service.test.ts",
+        "src/main/services/allowance-document-export-service.ts",
+        "src/main/services/allowance-document-export-service.test.ts",
+        "src/main/services/document-layout-preview-service.ts",
+        "src/main/services/document-layout-preview-service.test.ts",
+        "src/main/services/document-layout-print-service.ts",
+        "src/main/services/document-layout-print-service.test.ts",
+        "src/main/services/schedule-plan-adapter.ts",
+        "docs/codebase-map.md",
+        "src/main/services/dashboard-chart-export-service.ts",
+        "src/main/services/dashboard-chart-export-service.test.ts"
+      ],
       "gemini": {
         "initial": 0,
         "retry": 0,
         "total": 0
       },
-      "authorization": "2026-11-02 사용자 요청"
+      "authorization": "사용자 2026-11-06 FIX-03 확인 및 안내된 다음 양식 작업 진행 승인; Sol 연속 진행",
+      "stage": "TECHNICALLY_ACCEPTED_USER_REVIEW_PENDING",
+      "implementationWriter": "Sol",
+      "orchestratorAndVerifier": "Sol",
+      "baselineSource": {
+        "path": ".ai/reports/template-final-20261106/source-baseline.json",
+        "bytes": 81220,
+        "sha256": "862D6753253A3AE4A8F15FA19E1EE2252ECB15A4FB1FAC6DA410BC65BD3241E8"
+      },
+      "implementationPacket": {
+        "path": ".ai/reports/template-final-20261106/attachment2-header/IMPLEMENT.md",
+        "bytes": 2161,
+        "sha256": "CD29981EF4826E39F41DAAD1176CC54C3901BD25F624CDFB746DEED71884FDA6"
+      },
+      "startedAt": "2026-11-06T05:28:09.024Z",
+      "findings": [
+        {
+          "id": "T01",
+          "status": "TECHNICALLY_FIXED",
+          "productChanges": 6
+        },
+        {
+          "id": "T02",
+          "status": "TECHNICALLY_FIXED",
+          "description": "Only proposal/attachment1/attachment2 are A4 print targets; schedule Excel widths and original generation path restored",
+          "productPrintSettingsChanged": true
+        },
+        {
+          "id": "T03_ATTACHMENT2_HEADER_OVERLAP",
+          "status": "TECHNICALLY_FIXED",
+          "description": "Default attachment2 complete header wraps inside A1:E1; custom title preserved, Office overlaps1 to0, body unchanged"
+        }
+      ],
+      "technicalAccepted": true,
+      "userApproved": false,
+      "assessment": {
+        "path": ".ai/reports/template-final-20261106/attachment2-header/assessment.json",
+        "bytes": 6080,
+        "sha256": "106EEB03342C6196C6798BDC8533A5E91C07FCD2BA3661BC72464E07A18470D1"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/template-final-20261106/source-B3C1D54C5A.json",
+        "bytes": 81551,
+        "sha256": "7D87058B28E256FE1ED856B562ADC0CAEF84488EDA59A8282F7D968110B895AB"
+      },
+      "userDecision": {
+        "status": "USER_DECIDED",
+        "answer": "PRINT_PROPOSAL_ATTACHMENT1_ATTACHMENT2_ONLY",
+        "message": "출력할 일은 품의서, 별첨1, 별첨2 밖에없어. 근무표 샘플은 엑셀 파일로 만드는거고",
+        "at": "2026-11-06T11:14:45.764Z"
+      },
+      "allowedRootPaths": [
+        "06-excel-io.md"
+      ],
+      "printPaper": "A4",
+      "printBaselineSource": {
+        "path": ".ai/reports/template-final-20261106/a4/source-before-a4.json",
+        "bytes": 81220,
+        "sha256": "64E35BD8F014B833FC2EDC88DC007280EF3CE067B9351BE79774F7049D09E0A9"
+      },
+      "knownIssue": {
+        "id": "DASHBOARD-SMALL-WINDOW",
+        "scenario": "S02",
+        "status": "TECHNICALLY_FIXED",
+        "evidence": {
+          "path": ".ai/reports/template-final-20261106/a4-dashboard-final-E0AA679481/results.json",
+          "bytes": 3930,
+          "sha256": "38B0425DE78A17DEB856B95BD8E6C5D95DC671A42A4D6173EA34FC23ACE3621E"
+        },
+        "command": {
+          "path": ".ai/reports/template-final-20261106/a4-dashboard-final-E0AA679481.command.json",
+          "bytes": 693,
+          "sha256": "FA719E14EE090256C950A46B2B64050AA5E8928FB3608B950EAC8CCCC8D7D7ED"
+        },
+        "nextExistingTask": "UI-NAV-LAYOUT-REFINE",
+        "resolution": {
+          "path": ".ai/reports/dashboard-small-20261107/assessment.json",
+          "bytes": 4539,
+          "sha256": "6DA5DC25544D84BD88D4341A72B57A818FE471BE7714E45B82698237E25C1389"
+        }
+      },
+      "completedTechnicalAt": "2026-11-06T14:08:52.162Z",
+      "printTargets": [
+        "proposal-xlsx",
+        "attachment1-xlsx",
+        "attachment2-xlsx",
+        "proposal-pdf"
+      ],
+      "activeDefect": "T03_ATTACHMENT2_HEADER_OVERLAP",
+      "deltaPaths": [
+        "src/main/services/allowance-document-export-service.ts",
+        "src/main/services/allowance-document-export-service.test.ts"
+      ]
     },
     {
       "id": "UI-ADMIN-01-SETTINGS",
@@ -4006,7 +4264,7 @@
       "parent": "UI-ADMIN-REFINE",
       "title": "근무·수당 판정 정책의 적용 기간·버전 이력",
       "status": "DONE",
-      "stage": "TECHNICALLY_ACCEPTED_AWAITING_USER_REVIEW",
+      "stage": "USER_APPROVED",
       "goal": "두 판정 정책의 기간별 기준 보존, 새 정책/예약정정 구분, 이력/실적 버전 조회",
       "dependsOn": [
         "UI-ADMIN-01-SETTINGS"
@@ -4145,9 +4403,9 @@
           "sha256": "FB6079F7D20425FBA25D53C9D5691C20A811B9A81C568424DF40598E5C14E897"
         }
       },
-      "codingStatus": "Sol product correction and technical acceptance complete; user visual review pending. Gemini initial1/retry1/total2 preserved.",
+      "codingStatus": "Sol product correction and technical acceptance complete; user visual review approved on 2026-11-04. Gemini initial1/retry1/total2 preserved.",
       "technicalAccepted": true,
-      "userApproved": false,
+      "userApproved": true,
       "initialReview": {
         "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-initial-20261103_165252\\assessment.json",
         "bytes": 9814,
@@ -4190,6 +4448,700 @@
         "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\reports\\policy-history-20261103\\review-retry1-20261104_110746\\sol-final-source.json",
         "bytes": 81762,
         "sha256": "2242E38900E040BB48500E84E022B2D98B4E133EC305B2356D5BAB318DD3838C"
+      },
+      "userApprovedAt": "2026-11-04T08:45:22.025Z",
+      "userApproval": "사용자: 오케이 다음 작업 진행하자 — 직전 정책 이력 화면 제시 후 다음 작업 진행 승인"
+    },
+    {
+      "id": "UI-ADMIN-02-HOLIDAYS",
+      "parent": "UI-ADMIN-REFINE",
+      "title": "공휴일 및 운영 관리7탭 화면 일관성 보완",
+      "status": "DONE",
+      "stage": "USER_ACCEPTED",
+      "owner": "Sol technical acceptance / User visual review",
+      "authorization": "2026-11-04 사용자: 오케이 다음 작업 진행하자",
+      "goal": "운영관리7탭 공통 카테고리/제목/도구/본문·Dense·버튼·사용안내 통일",
+      "dependsOn": [
+        "POLICY-HISTORY-01"
+      ],
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "ShiftMgmt_V4/src/web/screens/operations-holidays.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-holidays-model.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-holidays-model.test.ts",
+        "ShiftMgmt_V4/src/web/operations.css",
+        "ShiftMgmt_V4/scripts/ui-checks/operations.mjs",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/src/web/screens/operations-ui.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-settings-view.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-rates.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-users.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-layout.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-site-names.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-releases.ts",
+        "ShiftMgmt_V4/src/web/data-table.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-layout-canvas.ts"
+      ],
+      "baselineCommit": "de58fe9fe8043f5ef43819e4d2950797532501d5",
+      "baselineProductFiles": 510,
+      "protectedFiles": 497,
+      "baselineManifest": {
+        "path": ".ai/reports/holidays-20261104/baseline-source.json",
+        "sha256": "733655766D4D98E98F097FC017AAF4FB2FA9B5D81216534A65962A41583B9176"
+      },
+      "currentHandoff": "HANDOFF.md",
+      "preparationEvidence": ".ai/reports/holidays-20261104/preflight.json",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "doneWhen": "H01-H09 implementation, required related and full operations UI checks, protected hashes, independent Sol review and user screen review",
+      "technicalAccepted": true,
+      "userApproved": true,
+      "productImplementationStarted": true,
+      "stableDefects": [
+        "HOL-D01",
+        "HOL-D02",
+        "HOL-D03",
+        "HOL-D04",
+        "HOL-D05",
+        "HOL-D06",
+        "HOL-D07"
+      ],
+      "initialReview": {
+        "path": ".ai/reports/holidays-20261104/review-initial-20261104_181935/assessment.json",
+        "bytes": 9164,
+        "sha256": "6331EBFE36755539FB256B30061476DF9894A39AE93A697E515D4D24B709E283",
+        "decision": "INITIAL_NOT_ACCEPTED_CORRECT_RETRY1_READY"
+      },
+      "correctionPacket": {
+        "path": "HANDOFF.md",
+        "sha256": "AD2092EA0B1ADE9B2ED119B776235B5FF5D078C9A958A5F2ED654A906DA7E871"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/operations-uniform-20261104/editor-usability-followup/final-source.json",
+        "bytes": 79751,
+        "sha256": "E42D569C51F1BA6C039B52F13AD53FAB57BA082B5ECC05D2B478C7A458BF5963"
+      },
+      "retryReview": {
+        "path": ".ai/reports/holidays-20261104/review-retry1-20261104_195159/retry-assessment.json",
+        "bytes": 3239,
+        "sha256": "FB667AE9E3201373599A60936B7CBF1565747276152388B19D8BA92D37BBB97E"
+      },
+      "takeoverAuthorization": "AGENTS.md / PROTOCOL.md: one initial plus one retry both fail => Sol direct implementation inside same task and allowlist; no new Gemini request",
+      "technicalAcceptedAt": "2026-11-04T13:45:10.902Z",
+      "solAssessment": {
+        "path": ".ai/reports/holidays-20261104/review-retry1-20261104_195159/sol-assessment.json",
+        "bytes": 13641,
+        "sha256": "FEB8958D49631CB578CA0EC804FE908FD542F8D4A386BECEDF4B34DB4446C29B"
+      },
+      "correctionPacketHistorical": true,
+      "preview": {
+        "url": "http://127.0.0.1:19251/?developmentPreview=1",
+        "runnerPid": 32876,
+        "serverPid": 29648,
+        "metadata": {
+          "path": ".ai/reports/operations-uniform-20261104/editor-usability-followup/native/preview.json",
+          "bytes": 1330,
+          "sha256": "CEE2767CE485640FBDA636F1D39C16230C8D72BA5E0367EF63F115015DEEBC97"
+        }
+      },
+      "functionalTechnicalAccepted": true,
+      "designRevision": {
+        "at": "2026-11-04T11:46:52.146Z",
+        "userRequest": "운영 관리의 다른 탭도 설정처럼 세부 카테고리로 구성; 구식 버튼 디자인 확인",
+        "review": {
+          "path": ".ai/reports/operations-design-review-20261104/review.json",
+          "bytes": 6742,
+          "sha256": "451340DCA671B1604445B71414D6B627747D1A10C7DDD27E304C66C3D3375C5B"
+        },
+        "productImplementation": "NOT_RUN",
+        "sameTaskAndAllowlist": true,
+        "previousFunctionalAssessment": {
+          "path": ".ai/reports/holidays-20261104/review-retry1-20261104_195159/sol-assessment.json",
+          "bytes": 13641,
+          "sha256": "FEB8958D49631CB578CA0EC804FE908FD542F8D4A386BECEDF4B34DB4446C29B"
+        }
+      },
+      "designApproval": {
+        "at": "2026-11-04T11:55:48.958Z",
+        "source": "User: 오케이 확인했어. 작업 진행하자. 각 메뉴별로 이해/편하게 구성",
+        "prototypeApproved": true,
+        "productVisualApproved": false
+      },
+      "visualRefinementReport": ".ai/reports/holidays-20261104/visual-refinement-20261104",
+      "visualAssessment": {
+        "path": ".ai/reports/holidays-20261104/visual-refinement-20261104/assessment.json",
+        "bytes": 9780,
+        "sha256": "F2DB7C570AE060BA06415A7E7E9CC0AB38C7DD6CA20D02D583F6D01B8D4DD7C5"
+      },
+      "previewLoginFollowup": {
+        "path": ".ai/reports/holidays-20261104/visual-refinement-20261104/preview-login-followup/assessment.json",
+        "bytes": 6322,
+        "sha256": "435B55E8567E213CBA490B4AF924DC774D416860A23A34036FCE99A946B4840B"
+      },
+      "scopeExpansion": {
+        "at": "2026-11-04T12:30:24.102Z",
+        "userRequest": "해당 메뉴의 레이아웃, 구조, Dens 비율등이 일관되게 적용안되어있으니 모두 같은 화면으로 보이도록 해줘",
+        "reason": "Same unresolved operations menu visual consistency feedback; all7 tabs explicitly authorized",
+        "previousAllowedPaths": [
+          "ShiftMgmt_V4/src/web/screens/operations-holidays.ts",
+          "ShiftMgmt_V4/src/web/operations.css",
+          "ShiftMgmt_V4/scripts/ui-checks/operations.mjs",
+          "ShiftMgmt_V4/docs/codebase-map.md",
+          "ShiftMgmt_V4/src/web/screens/operations-holidays-model.ts",
+          "ShiftMgmt_V4/src/web/screens/operations-holidays-model.test.ts"
+        ],
+        "previousProtectedFiles": 506,
+        "newAllowedCount": 14,
+        "newProtectedCount": 498,
+        "attemptsNotReset": true
+      },
+      "uniformReport": ".ai/reports/operations-uniform-20261104",
+      "uniformAssessment": {
+        "path": ".ai/reports/operations-uniform-20261104/assessment.json",
+        "bytes": 27877,
+        "sha256": "320386BBBBBEA0C90A436F47BD1B2B838472CACAE7B722B4AEC9548DF7CF628A"
+      },
+      "editorUsabilityFollowup": {
+        "at": "2026-11-04T13:31:18.986Z",
+        "userRequest": "요율 변경일시 잘림 및 양식 편집을 실제화면처럼 더 편하게 조정",
+        "report": ".ai/reports/operations-uniform-20261104/editor-usability-followup",
+        "addedAllowedPath": "ShiftMgmt_V4/src/web/screens/operations-layout-canvas.ts",
+        "previousTechnicalAssessment": {
+          "path": ".ai/reports/operations-uniform-20261104/assessment.json",
+          "bytes": 27877,
+          "sha256": "320386BBBBBEA0C90A436F47BD1B2B838472CACAE7B722B4AEC9548DF7CF628A"
+        },
+        "assessment": {
+          "path": ".ai/reports/operations-uniform-20261104/editor-usability-followup/assessment.json",
+          "bytes": 30535,
+          "sha256": "46738FD247BC2256618101FBC8BC5F6999949380C66FDB086FB0FFD4DDEA0E8C"
+        },
+        "completedAt": "2026-11-04T13:45:10.902Z"
+      },
+      "userApprovedAt": "2026-11-04T14:07:23.462Z",
+      "completedAt": "2026-11-04T14:07:23.462Z",
+      "userApprovalEvidence": {
+        "path": ".ai/reports/dark-mode-20261104/previous-user-acceptance.json",
+        "bytes": 823,
+        "sha256": "4A2CE6F6B413206B79B3EBC921A67AD709CEF7C2150B4C0C2ADDFB735BD85602"
+      }
+    },
+    {
+      "id": "UI-NAV-LAYOUT-REFINE",
+      "title": "메뉴 정렬·열폭 및 작은 창 대시보드 보완",
+      "phase": "화면 후속",
+      "status": "AWAITING_USER_REVIEW",
+      "owner": "Sol",
+      "goal": "실적 시작좌표 통일, 미구현2메뉴 숨김, 활동이력 값 잘림 해소",
+      "allowedPaths": [
+        "ShiftMgmt_V4/src/web/performance.css",
+        "ShiftMgmt_V4/src/web/access-history.css",
+        "ShiftMgmt_V4/src/web/screens/shell.ts",
+        "ShiftMgmt_V4/scripts/ui-checks/shell.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/theme.mjs",
+        "ShiftMgmt_V4/src/web/index.html",
+        "ShiftMgmt_V4/src/web/workspace.css",
+        "ShiftMgmt_V4/src/web/screens/sites-list.ts",
+        "ShiftMgmt_V4/src/web/screens/schedule-view.ts",
+        "ShiftMgmt_V4/src/web/screens/allowance-view.ts",
+        "ShiftMgmt_V4/scripts/copy-web-assets.mjs",
+        "ShiftMgmt_V4/src/web/screens/workforce.ts",
+        "ShiftMgmt_V4/src/web/screens/workforce-list.ts",
+        "ShiftMgmt_V4/src/web/app.ts",
+        "ShiftMgmt_V4/src/web/table-layout.ts",
+        "ShiftMgmt_V4/src/web/dashboard.css",
+        "ShiftMgmt_V4/scripts/ui-checks/dashboard.mjs"
+      ],
+      "productChangesAuthorizedByThisPlan": true,
+      "implementationStarted": true,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "authorization": "User asks fix small-window dashboard chart compression after attachment2 header completion",
+      "review": {
+        "path": ".ai/reports/menu-layout-20261105/review.json",
+        "bytes": 3476,
+        "sha256": "268C176293D02FA86815282240D8D5278DDD42AAB1BFB46ED261AA8323DF3A9E"
+      },
+      "dependsOn": [
+        "UI-DARK-MODE"
+      ],
+      "stage": "DASHBOARD_SMALL_WINDOW_TECHNICALLY_ACCEPTED",
+      "implementationWriter": "Sol",
+      "directAuthorization": {
+        "path": ".ai/reports/menu-layout-20261105/authorization.json",
+        "bytes": 647,
+        "sha256": "3323028D615FB9978053F8867431CD6A456082CABF3D0FA27AD4F653DD7AD269"
+      },
+      "protectedFiles": 522,
+      "technicalAccepted": true,
+      "userApproved": false,
+      "technicalAcceptedAt": "2026-11-05T00:50:09.077Z",
+      "assessment": {
+        "path": ".ai/reports/dashboard-small-20261107/assessment.json",
+        "bytes": 4539,
+        "sha256": "6DA5DC25544D84BD88D4341A72B57A818FE471BE7714E45B82698237E25C1389"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/dashboard-small-20261107/source-2BF608CAA6.json",
+        "bytes": 81551,
+        "sha256": "542F5E300D217CE52C6E012893405999A66F44AC814D07FE478A59BFC64896C2"
+      },
+      "preview": {
+        "url": "http://127.0.0.1:19277/?developmentPreview=1",
+        "runnerPid": 20072,
+        "serverPid": 36524,
+        "data": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-theme-data-ANjFqu",
+        "resources": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-theme-res-UajKnc",
+        "metadata": {
+          "path": ".ai/reports/menu-layout-20261105/native-v2/preview.json",
+          "bytes": 1097,
+          "sha256": "7F5385B3B69E50B109DD528B90A99DAB86AB58531360D1232D629C23F17900B2"
+        }
+      },
+      "layoutFollowup": {
+        "path": ".ai/reports/menu-layout-20261105/uniform/authorization.json",
+        "bytes": 1456,
+        "sha256": "2D8E08D5E6020CD6AFEC6A2E50FB970F66F5CF8DE2E2AB9C0B71D2C9E647BE19"
+      },
+      "previousAssessment": {
+        "path": ".ai/reports/menu-layout-20261105/workforce-fit/assessment.json",
+        "bytes": 6070,
+        "sha256": "49E4B03B5FC2357A1461805C88475B95D1B1AF2F9F8B23D9571A75CBAE06C602"
+      },
+      "productFiles": 524,
+      "uniformFollowup": {
+        "changed": 7,
+        "unchanged": 510,
+        "states": 228,
+        "theme": 12
+      },
+      "workforceFitAuthorization": {
+        "path": ".ai/reports/menu-layout-20261105/workforce-fit/authorization.json",
+        "bytes": 1044,
+        "sha256": "B55A75072070B8F8262003EBF835944CF24B79F938E1BB9543BDDAC9EADD96C5"
+      },
+      "workforceFit": {
+        "changed": 3,
+        "protected": 514,
+        "states": 32,
+        "longText": 4,
+        "focused": 5,
+        "theme": 12
+      },
+      "tableColumnsAuthorization": {
+        "path": ".ai/reports/menu-layout-20261105/table-columns/authorization.json",
+        "bytes": 1709,
+        "sha256": "F65234B70FC3E64EFEFBB47F10456707028E4C4B17C491557F576A1ABC59C022"
+      },
+      "tableColumns": {
+        "changed": 5,
+        "protected": 513,
+        "matrix": 228,
+        "auditStates": 90,
+        "longValues": 12,
+        "focused": 5,
+        "theme": 12
+      },
+      "dashboardPreviousAssessment": {
+        "path": ".ai/reports/menu-layout-20261105/table-columns/assessment.json",
+        "bytes": 6513,
+        "sha256": "DEC2B44F72931477C3BB2D2B5B5F55C4C406D17D075D3662C2703FBCCC3D547A"
+      },
+      "deltaPaths": [
+        "src/web/dashboard.css",
+        "scripts/ui-checks/dashboard.mjs"
+      ],
+      "implementationPacket": {
+        "path": ".ai/reports/dashboard-small-20261107/IMPLEMENT.md",
+        "bytes": 2638,
+        "sha256": "44A200F7BC171E7EC812ADCBDFBCDC4E5FE843BDEBF564CA67E1358303611899"
+      },
+      "activeDefect": "DASHBOARD-SMALL-WINDOW",
+      "dashboardBaseline": {
+        "path": ".ai/reports/dashboard-small-20261107/source-before.json",
+        "bytes": 81551,
+        "sha256": "7D87058B28E256FE1ED856B562ADC0CAEF84488EDA59A8282F7D968110B895AB"
+      },
+      "dashboardSmallWindow": {
+        "status": "TECHNICALLY_FIXED",
+        "source": "2BF608CAA62BC1BE30761A306357EDF7326A613FE76CB0245E62304EBF4C9C72",
+        "viewportCases": 12,
+        "themes": 2,
+        "scenarios": 20,
+        "negative": 12,
+        "plotsBefore": 13,
+        "plotsAfter": 70
+      }
+    },
+    {
+      "id": "FINAL-QUALITY-REVIEW-01",
+      "title": "최종 종합 품질 점검 및 Grill 결정사항",
+      "status": "DONE",
+      "stage": "USER_AUTHORIZED_FOLLOWUP",
+      "owner": "Sol",
+      "implementationWriter": null,
+      "orchestratorAndVerifier": "Sol",
+      "productChangesAuthorizedByThisPlan": false,
+      "authorization": "2026-11-05 사용자: 메뉴 적합성·추가 메뉴·로직·전체 품질 최종 점검, 개선사항은 사용자와 Grill",
+      "goal": "소스·실제 실행·검증 증거로 메뉴와 업무 로직/운영 준비를 평가하고 결함과 의사결정을 분리",
+      "allowedPaths": [
+        "TODO.md",
+        "HANDOFF.md",
+        ".ai/task-plan.json",
+        ".ai/reports/final-quality-20261105/**"
+      ],
+      "protectedProductSource": {
+        "path": ".ai/reports/final-quality-20261105/source-baseline.json",
+        "files": 518,
+        "hash": "3714B435AE5A4653153F167984F153E1CA8D7FD206CC2B676FB1511F99EF5714"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "doneWhen": "근거 있는 품질 판정과 심각도·필요한 사용자 결정·다음 우선순위를 문서와 대화로 제공, 제품 무변경 검증",
+      "assessment": {
+        "path": ".ai/reports/final-quality-20261105/assessment.json",
+        "bytes": 4717,
+        "sha256": "25D9C37B8FEA98F51F293651786F2D4DFF92BFF69FE82A919A51652B93CDEBE4"
+      },
+      "report": {
+        "path": ".ai/reports/final-quality-20261105/REVIEW.md",
+        "bytes": 13316,
+        "sha256": "4CAF28853385F3BC8D214F1ED87695D99E7AB0000F9AB4A7B5FB8EF63AFAA514"
+      },
+      "findings": [
+        {
+          "id": "Q01",
+          "priority": "HIGH",
+          "status": "REPRODUCED",
+          "topic": "USER_STATUS_ENUM_MISMATCH"
+        },
+        {
+          "id": "Q02",
+          "priority": "HIGH",
+          "status": "REPRODUCED",
+          "topic": "STALE_SESSION_AUTHORIZATION"
+        },
+        {
+          "id": "Q03",
+          "priority": "HIGH",
+          "status": "REPRODUCED",
+          "topic": "LAST_ACTIVE_ADMIN_LOCKOUT"
+        },
+        {
+          "id": "Q04",
+          "priority": "MEDIUM",
+          "status": "REPRODUCED_POLICY_DECIDED_FIX_PENDING",
+          "topic": "UNSUPPORTED_PERFORMANCE_REJECT_UI"
+        },
+        {
+          "id": "Q05",
+          "priority": "MEDIUM",
+          "status": "UNCHANGED_EXISTING_EVIDENCE",
+          "topic": "SITES_INLINE_STYLE_CSP"
+        },
+        {
+          "id": "Q06",
+          "priority": "IMPROVEMENT",
+          "status": "SOURCE_CONFIRMED",
+          "topic": "SELF_PASSWORD_CHANGE_ENTRY_MISSING"
+        },
+        {
+          "id": "Q07",
+          "priority": "POLICY",
+          "status": "AWAITING_USER_DECISION",
+          "topic": "CANCELLED_APPROVAL_HISTORY"
+        }
+      ],
+      "decisions": {
+        "performanceCorrection": {
+          "status": "USER_DECIDED",
+          "answer": "원본 엑셀을 수정해 다시 가져오기 — 현재 구조 유지 권장",
+          "implementation": "미승인/승인 두 단계 유지. 성공할 수 없는 실적 반려 버튼·설명 정리와 원본 수정/재가져오기 안내 제안. 수당 검토 반려 기능과 구분. 아직 제품 수정 없음."
+        },
+        "cancelledApprovalHistory": {
+          "status": "AWAITING_USER_DECISION",
+          "question": "승인대기로 되돌릴 때 취소 전 승인·계산 결과를 취소된 이력으로 보존할지",
+          "recommendation": "취소 전 승인·금액을 취소된 이력으로 보존",
+          "implementation": "기존 삭제 예외는 이번 점검에서 변경하지 않음. 업무 정책 확정 및 별도 구현 범위 필요."
+        }
+      },
+      "productChanges": 0,
+      "userReview": {
+        "at": "2026-11-05T08:39:12.546Z",
+        "message": "오케이 진행하자",
+        "scope": "품질 점검 후 우선 계정 안전성3건/실적 안내 보완 진행. 세부 후속 정책/구현은 작업별 범위 확정"
+      }
+    },
+    {
+      "id": "FINAL-QUALITY-FIX-01",
+      "title": "계정 안전성·실적 수정 안내",
+      "status": "DONE",
+      "stage": "USER_APPROVED_FOLLOWUP",
+      "owner": "Sol",
+      "orchestratorAndVerifier": "Sol",
+      "authorization": "2026-11-05 사용자: 오케이 진행하자 — 최종 품질 점검 후 우선 개선 진행",
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "src/main/services/auth-service.ts",
+        "src/main/services/auth-service.test.ts",
+        "src/main/services/operations-storage-service.ts",
+        "src/main/services/operations-storage-service.test.ts",
+        "src/main/http/session.ts",
+        "src/main/http/session.test.ts",
+        "src/main/http/routes/operations-routes.ts",
+        "src/main/http/routes/operations-routes.test.ts",
+        "src/web/screens/operations-users.ts",
+        "src/web/screens/operations-model.ts",
+        "src/web/screens/operations-model.test.ts",
+        "src/web/screens/operations-ui.ts",
+        "src/web/operations.css",
+        "src/web/screens/performance-detail.ts",
+        "src/web/screens/performance.ts",
+        "src/web/screens/performance-actions.ts",
+        "src/web/performance.css",
+        "scripts/ui-checks/performance.mjs",
+        "scripts/ui-checks/operations.mjs",
+        "docs/codebase-map.md",
+        "src/main/http/account-lifecycle.integration.test.ts"
+      ],
+      "goal": "Q01~Q04 실제 결함 수정과 서비스/HTTP/Chrome 회귀",
+      "doneWhen": "F01~08 및 원 전체회귀·운영/실적 UI 검문·보호 source 보존 후 실제 화면 제공",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "baselineSource": {
+        "path": ".ai/reports/final-quality-fix-20261105/source-baseline.json",
+        "bytes": 80566,
+        "sha256": "4A4558F3CB2F72B82869D2044B84BD4C36C43192A1945C455E8B59AD40C19A2C"
+      },
+      "implementationPacket": {
+        "path": ".ai/reports/final-quality-fix-20261105/IMPLEMENT.md",
+        "bytes": 14853,
+        "sha256": "694E85DB2BA332A048D47BD0C3E887382E364E4AF44A0C26ACDD245FDCB8FE11"
+      },
+      "sourceFiles": 518,
+      "existingAllowed": 20,
+      "newAllowed": 1,
+      "productChanges": 0,
+      "independentPlanReview": {
+        "actor": "Terra read-only",
+        "addressed": [
+          "read-only identity lookup without seed",
+          "session bound to live SQLite connection; post-replacement failure invalidates"
+        ],
+        "sourceEdits": 0
+      },
+      "implementationWriter": "Sol",
+      "directImplementationAuthorization": {
+        "at": "2026-11-05T08:46:42.550Z",
+        "userMessage": "응 진행하자",
+        "context": "구현담당 선택 질문(첫 선택 Sol 직접 수정) 뒤 사용자 진행 지시. 이번 FINAL-QUALITY-FIX-01에 Sol 직접 구현으로 해석·안내 후 진행",
+        "scope": "This task and existing 21-path allowlist only; future default workflow unchanged"
+      },
+      "previousImplementationPacket": {
+        "path": "Log/20261105_092821_before-quality-fix-packet-result.md",
+        "bytes": 13358,
+        "sha256": "3A6555121029D36D68301304E3859BA6EEED2C788A481CC4103B90B42744D2D0"
+      },
+      "technicalAccepted": true,
+      "userApproved": true,
+      "assessment": {
+        "path": ".ai/reports/final-quality-fix-20261105/assessment.json",
+        "bytes": 6917,
+        "sha256": "D06B68CC2D9B49AD6888954AE8385586AED57B6FF0922A29B3F4437131413B02"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/final-quality-fix-20261105/source-final.json",
+        "bytes": 80731,
+        "sha256": "686D8F4EC12B88D7E13C1CDDCA40C0CF6197EFCC96E5C9EBAF19B0853D41C2FA"
+      },
+      "resolvedFindings": [
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q04"
+      ],
+      "productFiles": 519,
+      "productChanged": 19,
+      "protectedFiles": 500,
+      "previewUrl": "http://127.0.0.1:19304/?developmentPreview=1",
+      "userApproval": {
+        "at": "2026-11-05T23:19:03.346Z",
+        "message": "응 다음 작업 진행해줘",
+        "scope": "결과 전달 후 다음 단계 진행 승인; 사용자가 모든 시나리오를 직접 재실행했다고 주장하지 않음"
+      }
+    },
+    {
+      "id": "FINAL-QUALITY-FOLLOWUP",
+      "title": "최종 품질 후속 개선 범위 확정",
+      "status": "PLANNED",
+      "owner": "Sol",
+      "productChangesAuthorizedByThisPlan": false,
+      "dependsOn": [
+        "FINAL-QUALITY-FIX-01"
+      ],
+      "goal": "Q05~Q07/메뉴·양식·운영 준비 순서에 따라 leaf별 범위와 검문 확정",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "stage": "LEAF_USER_REVIEW_PENDING",
+      "currentLeaf": "UI-TEMPLATE-REFINE"
+    },
+    {
+      "id": "FINAL-QUALITY-FIX-02",
+      "parent": "FINAL-QUALITY-FOLLOWUP",
+      "title": "메뉴 구성·내 계정·근무지 CSP 정리",
+      "status": "DONE",
+      "stage": "USER_APPROVED_FOLLOWUP",
+      "owner": "Sol",
+      "implementationWriter": "Sol",
+      "authorization": "2026-11-06 다음 작업 진행 요청: 이전 Sol 직접 품질 개선을 같은 방식으로 연속 진행",
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "src/web/screens/shell.ts",
+        "src/web/shell.css",
+        "src/web/screens/self-account.ts",
+        "src/web/screens/operations.ts",
+        "src/web/operations.css",
+        "src/web/screens/schedule.ts",
+        "src/web/screens/allowance.ts",
+        "src/web/screens/sites.ts",
+        "src/web/screens/sites-list.ts",
+        "src/web/screens/sites-detail.ts",
+        "src/web/screens/sites-wizard.ts",
+        "src/web/screens/sites-wizard-basics.ts",
+        "src/web/screens/sites-commit.ts",
+        "src/web/sites.css",
+        "src/web/workspace.css",
+        "scripts/ui-checks/theme.mjs",
+        "scripts/ui-checks/operations.mjs",
+        "scripts/ui-checks/shell.mjs",
+        "scripts/ui-checks/sites.mjs",
+        "scripts/ui-checks/home.mjs",
+        "docs/codebase-map.md",
+        "src/web/screens/operations-users.ts",
+        "scripts/ui-checks/sites-fixtures.mjs"
+      ],
+      "baselineSource": {
+        "path": ".ai/reports/final-quality-fix-20261106/source-baseline.json",
+        "bytes": 80731,
+        "sha256": "686D8F4EC12B88D7E13C1CDDCA40C0CF6197EFCC96E5C9EBAF19B0853D41C2FA"
+      },
+      "implementationPacket": {
+        "path": ".ai/reports/final-quality-fix-20261106/IMPLEMENT.md",
+        "bytes": 3818,
+        "sha256": "7AC8B6C7A02C1653A61D0558B1E73FBB4A37F74AAB19710602CD97C9B97A9A8E"
+      },
+      "goal": "업무순서 메뉴/단일사용자관리·탭제목 동기화, 초안보존 내계정, 근무지 CSP0",
+      "doneWhen": "타입/lint/build 및 실제 역할·모드·원7운영기능/근무지26/N12·프로필/원테마/관련전체 회귀 후 실제Chrome 제공",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "scopeNote": "기존 사용자 관리의 내계정보안 카테고리는 복구키 관리로 구체화. 이번 상단 내계정 비밀번호 기능과 역할을 구분하며 area ID/기능은 유지.",
+      "technicalAccepted": true,
+      "userApproved": true,
+      "assessment": {
+        "path": ".ai/reports/final-quality-fix-20261106/assessment.json",
+        "bytes": 6431,
+        "sha256": "5DB1E225F869F09FFD1976E40D148E59768B585090464757CB0FA9171B807589"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/final-quality-fix-20261106/source-final.json",
+        "bytes": 80876,
+        "sha256": "850E8BF7546997253F89E33193A5BB174B26E5F709626465CE7F603559770CEF"
+      },
+      "completedAt": "2026-11-05T23:56:39.417Z",
+      "userApproval": {
+        "at": "2026-11-06T00:35:22.190Z",
+        "message": "오케이 승인했어. 다음 작업 이어서 진행하자",
+        "scope": "FIX-02 결과 수용 및 다음 취소 이력 작업 승인"
+      }
+    },
+    {
+      "id": "FINAL-QUALITY-FIX-03",
+      "parent": "FINAL-QUALITY-FOLLOWUP",
+      "title": "승인 취소 전 이력 보존",
+      "status": "DONE",
+      "stage": "USER_APPROVED_FOLLOWUP",
+      "owner": "Sol",
+      "implementationWriter": "Sol",
+      "authorization": "사용자 FIX-02 명시 승인과 안내된 다음 취소 이력 작업 연속 진행 지시",
+      "productChangesAuthorizedByThisPlan": true,
+      "allowedPaths": [
+        "src/main/services/performance-return-history-service.ts",
+        "src/main/services/performance-return-history-service.test.ts",
+        "src/main/services/performance-approval-flow-service.ts",
+        "src/main/services/performance-approval-flow-service.test.ts",
+        "src/main/services/approved-allowance-calculation-service.ts",
+        "src/main/services/approved-allowance-calculation-service.test.ts",
+        "src/main/services/sqlite-storage-service.ts",
+        "src/main/services/database-backup-service.ts",
+        "src/main/services/database-backup-service.test.ts",
+        "src/main/services/database-migration-service.ts",
+        "src/main/services/database-migration-service.test.ts",
+        "src/main/services/policy-history-integration.test.ts",
+        "src/main/http/routes/performance-routes.ts",
+        "src/main/http/routes/performance-routes.test.ts",
+        "src/shared/domain/performance-file.ts",
+        "src/web/screens/performance-actions.ts",
+        "src/web/screens/performance-detail.ts",
+        "src/web/screens/performance-history.ts",
+        "src/web/screens/performance.ts",
+        "src/web/performance.css",
+        "scripts/ui-checks/performance.mjs",
+        "scripts/ui-checks/operations.mjs",
+        "docs/codebase-map.md",
+        "scripts/ui-checks/allowance.mjs"
+      ],
+      "baselineSource": {
+        "path": ".ai/reports/final-quality-cancellation-20261106/source-baseline.json",
+        "bytes": 80876,
+        "sha256": "850E8BF7546997253F89E33193A5BB174B26E5F709626465CE7F603559770CEF"
+      },
+      "implementationPacket": {
+        "path": ".ai/reports/final-quality-cancellation-20261106/IMPLEMENT.md",
+        "bytes": 5279,
+        "sha256": "2F822942BBE1C617AE27B1077BD4D1BAA398FF4F5296C4A68515B0020B974B98"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "goal": "Q07: 취소 전 상태/사유·행위자 원자 보관·읽기전용 조회·백업 왕복",
+      "doneWhen": "원자성·권한·품의잠금·JSON 호환·재승인 합계/이력·실제 UI 및 관련 필수전체 PASS",
+      "technicalAccepted": true,
+      "userApproved": true,
+      "assessment": {
+        "path": ".ai/reports/final-quality-cancellation-20261106/assessment.json",
+        "bytes": 8046,
+        "sha256": "5AF5FAC1727856349964FE2AE4826725891958759EFD74D28C8196A71B148856"
+      },
+      "currentCandidate": {
+        "path": ".ai/reports/final-quality-cancellation-20261106/source-final.json",
+        "bytes": 81220,
+        "sha256": "862D6753253A3AE4A8F15FA19E1EE2252ECB15A4FB1FAC6DA410BC65BD3241E8"
+      },
+      "completedAt": "2026-11-06T04:36:03.694Z",
+      "userApproval": {
+        "at": "2026-11-06T05:28:09.024Z",
+        "message": "응 오케이 확인했어 다음 작업 진행해줘",
+        "scope": "정상 사유로 정리한 처리 이력 확인 후 다음 양식 단계 진행 승인; 모든 검문을 사용자가 재실행했다고 주장하지 않음"
       }
     }
   ],
@@ -4289,7 +5241,7 @@
   "bufferFraction": 0.25,
   "bufferedHours": [
     312.5,
-    555.0
+    555
   ],
   "previousTodo": {
     "path": "C:\\Projects\\Active\\교대근무관리 시스템\\Log\\20261101_233459_W11-final-before-TODO.md",
@@ -4312,9 +5264,9 @@
     "sha256": "780DFD8D7E3BE6C05FE43A55A912C7A491FFC8A036E6B804CEF84768B8B8CE55"
   },
   "todo": {
-    "path": "C:\\Projects\\Active\\교대근무관리 시스템\\TODO.md",
-    "bytes": 81438,
-    "sha256": "9739A96432BD3923646379E6C0A51E07C6A4618C9B6B72DA980E5147E2320D71"
+    "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
+    "bytes": 93931,
+    "sha256": "19E5A085ABA12DF7EF6DE2E6F4039B6D5669EF020F0AA1492BF636C0E1E1374E"
   },
   "statusHistory": [
     {
@@ -5892,13 +6844,634 @@
       },
       "userFinalVisualReview": "pending",
       "nextTaskStarted": false
+    },
+    {
+      "at": "2026-11-04T08:45:22.025Z",
+      "taskId": "POLICY-HISTORY-01",
+      "status": "USER_APPROVED",
+      "authorization": "사용자: 오케이 다음 작업 진행하자 — 직전 정책 이력 화면 제시 후 다음 작업 진행 승인"
+    },
+    {
+      "at": "2026-11-04T08:45:22.025Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "IMPLEMENT_PACKET_READY_AWAITING_USER_RELAY",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "productChanges": 0,
+      "nextTaskStarted": false
+    },
+    {
+      "at": "2026-11-04T09:36:09.195Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "INITIAL_NOT_ACCEPTED_CORRECT_RETRY1_READY",
+      "gemini": {
+        "initial": 1,
+        "retry": 0,
+        "total": 1
+      },
+      "defects": [
+        "HOL-D01",
+        "HOL-D02",
+        "HOL-D03",
+        "HOL-D04",
+        "HOL-D05",
+        "HOL-D06",
+        "HOL-D07"
+      ],
+      "assessment": {
+        "path": ".ai/reports/holidays-20261104/review-initial-20261104_181935/assessment.json",
+        "bytes": 9164,
+        "sha256": "6331EBFE36755539FB256B30061476DF9894A39AE93A697E515D4D24B709E283",
+        "decision": "INITIAL_NOT_ACCEPTED_CORRECT_RETRY1_READY"
+      },
+      "solProductChanges": 0
+    },
+    {
+      "at": "2026-11-04T11:09:47.484Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "RETRY1_NOT_ACCEPTED_SOL_TAKEOVER",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/holidays-20261104/review-retry1-20261104_195159/retry-assessment.json",
+        "bytes": 3239,
+        "sha256": "FB667AE9E3201373599A60936B7CBF1565747276152388B19D8BA92D37BBB97E"
+      }
+    },
+    {
+      "at": "2026-11-04T11:27:56.154Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "TECHNICAL_ACCEPTED_AFTER_SOL_TAKEOVER",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/holidays-20261104/review-retry1-20261104_195159/sol-assessment.json",
+        "bytes": 13641,
+        "sha256": "FEB8958D49631CB578CA0EC804FE908FD542F8D4A386BECEDF4B34DB4446C29B"
+      },
+      "userApproved": false,
+      "next": "User holiday screen review"
+    },
+    {
+      "at": "2026-11-04T11:46:52.146Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "DESIGN_REVIEW_COMPLETE_REVISION_REQUESTED",
+      "userApproved": false,
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "review": {
+        "path": ".ai/reports/operations-design-review-20261104/review.json",
+        "bytes": 6742,
+        "sha256": "451340DCA671B1604445B71414D6B627747D1A10C7DDD27E304C66C3D3375C5B"
+      }
+    },
+    {
+      "at": "2026-11-04T11:55:48.958Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "APPROVED_VISUAL_IMPLEMENTATION",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "prototypeApproved": true
+    },
+    {
+      "at": "2026-11-04T12:05:49.461Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "TECHNICAL_ACCEPTED_VISUAL_REFINEMENT",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/holidays-20261104/visual-refinement-20261104/assessment.json",
+        "bytes": 9780,
+        "sha256": "F2DB7C570AE060BA06415A7E7E9CC0AB38C7DD6CA20D02D583F6D01B8D4DD7C5"
+      },
+      "userApproved": false
+    },
+    {
+      "at": "2026-11-04T12:20:55.406Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "ACCEPTED_PREVIEW_LOGIN_RESTORED",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/holidays-20261104/visual-refinement-20261104/preview-login-followup/assessment.json",
+        "bytes": 6322,
+        "sha256": "435B55E8567E213CBA490B4AF924DC774D416860A23A34036FCE99A946B4840B"
+      }
+    },
+    {
+      "at": "2026-11-04T12:30:24.102Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "ALL_SEVEN_TAB_UNIFORM_IMPLEMENTATION",
+      "scope": "User explicitly expands visual consistency to7tabs",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      }
+    },
+    {
+      "at": "2026-11-04T13:08:13.076Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "TECHNICAL_ACCEPTED_ALL_SEVEN_TABS_UNIFORM",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/operations-uniform-20261104/assessment.json",
+        "bytes": 27877,
+        "sha256": "320386BBBBBEA0C90A436F47BD1B2B838472CACAE7B722B4AEC9548DF7CF628A"
+      },
+      "userApproved": false
+    },
+    {
+      "at": "2026-11-04T13:31:18.986Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "RATE_HISTORY_AND_EDITOR_USABILITY",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      }
+    },
+    {
+      "at": "2026-11-04T13:45:10.902Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "EDITOR_USABILITY_USER_REVIEW_PENDING",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "assessment": {
+        "path": ".ai/reports/operations-uniform-20261104/editor-usability-followup/assessment.json",
+        "bytes": 30535,
+        "sha256": "46738FD247BC2256618101FBC8BC5F6999949380C66FDB086FB0FFD4DDEA0E8C"
+      }
+    },
+    {
+      "at": "2026-11-04T14:07:23.462Z",
+      "taskId": "UI-ADMIN-02-HOLIDAYS",
+      "status": "USER_ACCEPTED",
+      "gemini": {
+        "initial": 1,
+        "retry": 1,
+        "total": 2
+      },
+      "evidence": {
+        "path": ".ai/reports/dark-mode-20261104/previous-user-acceptance.json",
+        "bytes": 823,
+        "sha256": "4A2CE6F6B413206B79B3EBC921A67AD709CEF7C2150B4C0C2ADDFB735BD85602"
+      }
+    },
+    {
+      "at": "2026-11-04T14:07:23.462Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "READY_TO_CODE_USER_RELAY",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "handoff": {
+        "path": ".ai/reports/dark-mode-20261104/IMPLEMENT.md",
+        "bytes": 19633,
+        "sha256": "5717E35FED0765312A50D3B5EA0EC5E82B8F3C628C7108A621E6DE87FC9F05EC"
+      },
+      "productImplementationStarted": false
+    },
+    {
+      "at": "2026-11-04T14:13:02.213Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "SOL_DIRECT_IMPLEMENTATION",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "authorization": {
+        "path": ".ai/reports/dark-mode-20261104/sol-direct/authorization.json",
+        "bytes": 461,
+        "sha256": "6A3CE30CF764156D9290F6D1192A63714E94992BF74A77B20D6AC12006C203D0"
+      }
+    },
+    {
+      "at": "2026-11-04T18:46:23.503Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "DARK_MODE_USER_REVIEW_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "assessment": {
+        "path": ".ai/reports/dark-mode-20261104/sol-direct/assessment.json",
+        "bytes": 8807,
+        "sha256": "A40D88D2E3AA7B2BF99D247B16A54AC4268C55D9C40F6F90996E351A57240C08"
+      }
+    },
+    {
+      "at": "2026-11-04T18:56:26.790Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "SURFACE_AUDIT_AND_ICON_CONTROL",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-04T19:36:50.980Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "SURFACE_AND_ICON_USER_REVIEW_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "assessment": {
+        "path": ".ai/reports/dark-mode-20261105/surface-followup/assessment.json",
+        "bytes": 9606,
+        "sha256": "1D209B9BCD92D54BD0AA3BEA1B98EE1132A1FE85E6EE51841EE4A11344FC61C5"
+      }
+    },
+    {
+      "at": "2026-11-04T23:42:00.154Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "TWO_MODE_USER_REVIEW_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "assessment": {
+        "path": ".ai/reports/dark-mode-20261105/two-mode/assessment.json",
+        "bytes": 3494,
+        "sha256": "6DEC8E1CEDB436C4F9BFF7B9CF7196DE0E5B9EDAD4926B5601036E6969F4C904"
+      }
+    },
+    {
+      "at": "2026-11-04T23:45:08.790Z",
+      "taskId": "UI-DARK-MODE",
+      "status": "USER_APPROVED",
+      "nextTaskId": "UI-TEMPLATE-REFINE",
+      "implementationStarted": false,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-04T23:54:17.184Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "REVIEW_COMPLETE_IMPLEMENTATION_OWNER_PENDING",
+      "productChanges": 0,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T00:33:02.677Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "SOL_DIRECT_IMPLEMENTATION",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T00:50:09.077Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "LAYOUT_USER_REVIEW_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "assessment": {
+        "path": ".ai/reports/menu-layout-20261105/assessment.json",
+        "bytes": 6112,
+        "sha256": "F51EBCC2C284EA8CFB4679670EEC3E205D6764C48D80A23FBC041319139A90A4"
+      }
+    },
+    {
+      "at": "2026-11-05T01:24:01.594Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "SOL_DIRECT_UNIFORM_LAYOUT",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T01:43:12.660Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "SOL_UNIFORM_LAYOUT_TECHNICALLY_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T02:02:43.115Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "SOL_WORKFORCE_NO_HORIZONTAL_SCROLL",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T02:17:01.817Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "WORKFORCE_NO_HORIZONTAL_SCROLL_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T03:00:23.229Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "SOL_TABLE_ALIGNMENT_AND_WIDTH",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T05:49:01.229Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "TABLE_ALIGNMENT_WIDTH_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T07:14:07.000Z",
+      "taskId": "FINAL-QUALITY-REVIEW-01",
+      "status": "ANALYSIS",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T07:30:09.024Z",
+      "taskId": "FINAL-QUALITY-REVIEW-01",
+      "status": "REVIEW_COMPLETE_FINDINGS_OPEN",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T08:39:12.546Z",
+      "taskId": "FINAL-QUALITY-FIX-01",
+      "status": "IMPLEMENTATION_OWNER_CONFIRMATION",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T08:46:42.550Z",
+      "taskId": "FINAL-QUALITY-FIX-01",
+      "status": "IMPLEMENTING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T09:28:21.569Z",
+      "taskId": "FINAL-QUALITY-FIX-01",
+      "status": "TECHNICALLY_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T23:19:03.346Z",
+      "taskId": "FINAL-QUALITY-FIX-02",
+      "status": "IMPLEMENTING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-05T23:56:39.417Z",
+      "taskId": "FINAL-QUALITY-FIX-02",
+      "status": "TECHNICALLY_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T00:35:22.190Z",
+      "taskId": "FINAL-QUALITY-FIX-03",
+      "status": "IMPLEMENTING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T04:36:03.694Z",
+      "taskId": "FINAL-QUALITY-FIX-03",
+      "status": "TECHNICALLY_ACCEPTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T05:28:09.024Z",
+      "taskId": "FINAL-QUALITY-FIX-03",
+      "status": "DONE",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T05:28:09.024Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "IN_PROGRESS",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T05:57:05.840Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "PARTIAL_FIX_VERIFIED_PRINT_DECISION_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T07:34:31.743Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "USER_DECIDED_A4_IMPLEMENT",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T11:02:24.918Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "TECHNICALLY_ACCEPTED_USER_REVIEW_PENDING",
+      "assessment": {
+        "path": ".ai/reports/template-final-20261106/a4/final-checked/assessment.json",
+        "bytes": 7930,
+        "sha256": "42114F6EE89568A2D3477092E9D2DF06F9A9E00FC56B43CC923B8C1C5CA24381"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T11:14:45.764Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "PRINT_SCOPE_CORRECTED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T11:30:39.533Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "TECHNICALLY_ACCEPTED_USER_REVIEW_PENDING",
+      "assessment": {
+        "path": ".ai/reports/template-final-20261106/print-scope-correction/assessment.json",
+        "bytes": 7631,
+        "sha256": "534338B8C99F9DABD21CDA7225B532FAD45E14707B03D12BB8A38115E028C93F"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T14:02:07.150Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "T03_ATTACHMENT2_HEADER_OVERLAP",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T14:08:52.162Z",
+      "taskId": "UI-TEMPLATE-REFINE",
+      "status": "T03_TECHNICALLY_FIXED_USER_REVIEW_PENDING",
+      "assessment": {
+        "path": ".ai/reports/template-final-20261106/attachment2-header/assessment.json",
+        "bytes": 6080,
+        "sha256": "106EEB03342C6196C6798BDC8533A5E91C07FCD2BA3661BC72464E07A18470D1"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T15:23:46.544Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "DASHBOARD_SMALL_IMPLEMENT",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-06T15:39:33.092Z",
+      "taskId": "UI-NAV-LAYOUT-REFINE",
+      "status": "DASHBOARD_SMALL_WINDOW_TECHNICALLY_ACCEPTED",
+      "assessment": {
+        "path": ".ai/reports/dashboard-small-20261107/assessment.json",
+        "bytes": 4539,
+        "sha256": "6DA5DC25544D84BD88D4341A72B57A818FE471BE7714E45B82698237E25C1389"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-07T03:40:12.335Z",
+      "taskId": "REL-02",
+      "status": "IN_PROGRESS",
+      "note": "2026-11-07 user: git push and prepare formal release; installation target: fresh PC"
     }
   ],
   "remainingEstimatedHours": [
     232,
     408
   ],
-  "lastUpdatedAt": "2026-11-04T12:11:45.899076+09:00",
+  "lastUpdatedAt": "2026-11-05T00:50:09.077Z",
   "tableMenuLayoutStandard": {
     "path": "C:\\Projects\\Active\\교대근무관리 시스템\\.ai\\UI_ACCEPTANCE_STANDARD.md",
     "userApprovedAt": "2026-10-28",
@@ -5928,9 +7501,14 @@
       "Recommendation rationale",
       "Next user action"
     ],
-    "scopeRule": "Current authorized leaf first; apply to other menus when their Task is authorized"
+    "scopeRule": "Current authorized leaf first; apply to other menus when their Task is authorized",
+    "operationsMenuRequest": {
+      "at": "2026-11-04T11:55:48.958Z",
+      "request": "각 메뉴별로 잘 이해하고 사용할 수 있도록 최대한 편하게 구성",
+      "application": "Current holiday leaf first, other management menus sequential"
+    }
   },
-  "updatedAt": "2026-11-04T12:11:45.899076+09:00",
+  "updatedAt": "2026-11-07T03:40:12.335Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -5941,8 +7519,9 @@
     "exception": "Existing one initial plus one retry then standing Sol takeover rule remains"
   },
   "operatingPc": {
-    "status": "UNKNOWN",
-    "releaseDeferred": true
+    "installationTarget": "FRESH_PC",
+    "source": "User answer: 새 PC에 처음 설치",
+    "realPcApplied": false
   },
   "lastGitSyncRequest": {
     "authorizedBy": "User explicit commit/push/sync request 2026-11-04",
@@ -5952,5 +7531,86 @@
     "productBranch": "source/shiftmgmt-v4",
     "productFilesUnchangedSinceAcceptance": 510,
     "deployment": false
+  },
+  "operationsMenuDesignStandard": {
+    "source": "2026-11-04 user feedback",
+    "categories": [
+      {
+        "tab": "공휴일",
+        "areas": [
+          "등록 공휴일",
+          "외부 공휴일 연동"
+        ],
+        "purpose": "직접 관리와 전체교체 비교 흐름 분리"
+      },
+      {
+        "tab": "요율",
+        "areas": [
+          "요율 버전",
+          "영향도 비교",
+          "변경 이력"
+        ],
+        "purpose": "긴 단일 본문 분리; 선택 버전·초안·입력 기간 유지"
+      },
+      {
+        "tab": "사용자",
+        "areas": [
+          "사용자 관리",
+          "내 계정 보안"
+        ],
+        "purpose": "계정 CRUD와 자기 복구키 재발급 분리"
+      },
+      {
+        "tab": "양식 편집",
+        "areas": [
+          "양식 편집",
+          "출력 미리보기",
+          "변경 이력"
+        ],
+        "purpose": "편집·산출물 확인·저장판 조회 분리; 초안·선택 유지"
+      },
+      {
+        "tab": "근무지 이름",
+        "areas": [
+          "이름 관리"
+        ],
+        "purpose": "동일 카테고리 골격의 단일 영역; 이름 목록·기존 사용 건수 유지"
+      },
+      {
+        "tab": "릴리즈 이력",
+        "areas": [
+          "업데이트 내역"
+        ],
+        "purpose": "동일 카테고리 골격의 단일 영역; 읽기 전용 버전 목록·선택 상세 유지"
+      }
+    ],
+    "buttons": {
+      "mainHeight": 34,
+      "rowHeight": 28,
+      "rowTargets": "Visible text and icon, same font, no native outset; clear focus/disabled/busy",
+      "primary": "Single dominant action per local region; indigo solid",
+      "secondary": "Light neutral surface and subtle border",
+      "edit": "Neutral ghost with text and optional icon",
+      "destructive": "Red text and light hover in rows; final confirmation retains destructive emphasis",
+      "radius": {
+        "main": 8,
+        "row": 6
+      },
+      "scope": "Operations root and owned operations dialogs only; no global app button rewrite"
+    },
+    "review": {
+      "path": ".ai/reports/operations-design-review-20261104/review.json",
+      "bytes": 6742,
+      "sha256": "451340DCA671B1604445B71414D6B627747D1A10C7DDD27E304C66C3D3375C5B"
+    },
+    "implementation": "All7 tabs implemented and technically verified; actual user screen review pending",
+    "userGuidance": [
+      "메뉴 용도와 할 수 있는 일",
+      "처음 할 일과 다음 행동",
+      "저장/적용 시 바뀌는 자료와 범위",
+      "취소/오류 시 유지되는 자료",
+      "쉬운 한국어·단계별 짧은 설명·작업별 버튼 위계"
+    ],
+    "previewLogin": "Every local development preview must enable existing autofill flag, use matching test credentials and verify fresh-context + logout login"
   }
 }

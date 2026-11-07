@@ -59,6 +59,7 @@ import {
   resolveDocumentLayoutOutputFilePath
 } from "./document-layout-excel-render-service";
 import { getDocumentLayout } from "./document-layout-storage-service";
+import { applyDocumentLayoutPrintSetup, writeDocumentWorkbook } from "./document-layout-print-service";
 
 interface ResolvedAllowanceExportRow {
   calculation: AllowanceCalculationResultRecord;
@@ -2159,7 +2160,8 @@ export const writeUpdatedProposalWorkbook = async (input: {
     });
   }
 
-  await workbook.xlsx.writeFile(input.outputPath);
+  applyDocumentLayoutPrintSetup({ worksheet, key: { documentKind: "proposal-xlsx" }, definition: input.definition });
+  await writeDocumentWorkbook(workbook, input.outputPath);
 };
 
 
@@ -2421,7 +2423,8 @@ const writeCompactAttachmentOneWorkbook = async (input: {
     });
   }
 
-  await input.workbook.xlsx.writeFile(input.outputPath);
+  applyDocumentLayoutPrintSetup({ worksheet: input.worksheet, key: { documentKind: "attachment1-xlsx" }, definition: input.definition });
+  await writeDocumentWorkbook(input.workbook, input.outputPath);
 };
 
 export const writeAttachmentOneWorkbook = async (input: {
@@ -2469,7 +2472,10 @@ export const writeAttachmentTwoWorkbook = async (input: {
     return accumulator;
   }, new Map<string, ResolvedAllowanceExportRow[]>()).entries()];
 
-  worksheet.getCell("B1").value = buildAllowanceAttachmentTwoTitle(input.workMonth);
+  const titleCell = worksheet.getCell("A1");
+  titleCell.value = `${titleCell.text.trim()} ${buildAllowanceAttachmentTwoTitle(input.workMonth)}`;
+  titleCell.alignment = { ...titleCell.alignment, wrapText: true };
+  worksheet.getRow(1).height = Math.max(worksheet.getRow(1).height ?? 0, 32);
   worksheet.getCell("G2").value = formatProposalDateRange(input.workMonth);
   clearCellRange(worksheet, {
     startRow: dataStartRow,
@@ -2556,7 +2562,16 @@ export const writeAttachmentTwoWorkbook = async (input: {
     });
   }
 
-  await workbook.xlsx.writeFile(input.outputPath);
+  const titleBlock = input.definition?.outputs[0]?.blocks.find(block => block.id === "attachment2.title");
+  const usesDefaultTitleBounds = !titleBlock ||
+    (titleBlock.visible && titleBlock.x === 0 && titleBlock.y === 0 && titleBlock.width === 5 && titleBlock.height === 1);
+  if (usesDefaultTitleBounds && !titleCell.isMerged) {
+    // Keep text inside the title area; the adjacent F1:G1 range belongs to the logo.
+    worksheet.mergeCells("A1:E1");
+  }
+
+  applyDocumentLayoutPrintSetup({ worksheet, key: { documentKind: "attachment2-xlsx" }, definition: input.definition });
+  await writeDocumentWorkbook(workbook, input.outputPath);
 };
 
 export const writeAttachmentTwoWorkbookForTest = writeAttachmentTwoWorkbook;
@@ -2711,6 +2726,7 @@ export const exportAllowanceDocuments = async (
     let proposalPath: string;
     let attachment1Path: string;
     let attachment2Path: string;
+    const reservedOutputPaths = new Set<string>();
 
     if (outputFormat === "pdf") {
       const proposalPdfSnapshot = getDocumentLayout({ documentKind: "proposal-pdf" });
@@ -2733,17 +2749,20 @@ export const exportAllowanceDocuments = async (
       proposalPath = resolveDocumentLayoutOutputFilePath(
         proposalOutputDir,
         outputs[0].outputFileNamePattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
       attachment1Path = resolveDocumentLayoutOutputFilePath(
         attachment1OutputDir,
         outputs[1].outputFileNamePattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
       attachment2Path = resolveDocumentLayoutOutputFilePath(
         attachment2OutputDir,
         outputs[2].outputFileNamePattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
 
       attemptedOutputPaths = [proposalPath, attachment1Path, attachment2Path];
@@ -2796,17 +2815,20 @@ export const exportAllowanceDocuments = async (
       proposalPath = resolveDocumentLayoutOutputFilePath(
         proposalOutputDir,
         proposalPattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
       attachment1Path = resolveDocumentLayoutOutputFilePath(
         attachment1OutputDir,
         attachment1Pattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
       attachment2Path = resolveDocumentLayoutOutputFilePath(
         attachment2OutputDir,
         attachment2Pattern,
-        { year, month2 }
+        { year, month2 },
+        reservedOutputPaths
       );
 
       attemptedOutputPaths = [proposalPath, attachment1Path, attachment2Path];

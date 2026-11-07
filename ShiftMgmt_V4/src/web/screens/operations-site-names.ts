@@ -1,6 +1,7 @@
 // 근무지 이름 관리 탭 (R08)
 import type { SiteNameOptionRecord } from "../../shared/domain/model";
 import {
+  OperationsWorkspace,
   el,
   createButton,
   createFormGroup,
@@ -13,6 +14,7 @@ import { validateSiteNameOption } from "./operations-model";
 import { DataTable } from "../data-table";
 
 export class OperationsSiteNamesTab {
+  private workspace?: OperationsWorkspace;
   private container: HTMLElement;
   private onSessionExpired?: () => void;
   private isDestroyed = false;
@@ -71,12 +73,14 @@ export class OperationsSiteNamesTab {
   }
 
   public destroy(): void {
+    this.workspace?.destroy();
     this.isDestroyed = true;
     this.loadRequestId++;
     this.container.innerHTML = "";
   }
 
   private render(): void {
+    this.workspace?.destroy();
     this.container.innerHTML = "";
     const wrap = el("div", "operations-site-names-wrap");
 
@@ -133,7 +137,14 @@ export class OperationsSiteNamesTab {
     this.table.setData(this.siteNames);
     wrap.appendChild(tableWrap);
 
+    const list = el("div", "ops-list-panel");
+    const toolbar = el("div", "ops-panel-toolbar"); toolbar.appendChild(btnAdd);
+    list.append(toolbar, tableWrap);
+    this.workspace = new OperationsWorkspace(wrap, { id: "site-names",
+      areas: [{ id: "names", label: "이름 관리", hint: "이름 목록과 사용 건수", icon: "location_on", description: "근무지에서 선택할 이름을 관리합니다. 사용 건수를 확인한 뒤 수정·삭제하세요. 실제 근무지 설정은 ‘근무지 관리’에서 변경합니다.", content: list }],
+      footerText: "사용 중인 이름은 삭제가 제한될 수 있습니다. 삭제 확인창에서 결과를 확인하세요." });
     this.container.appendChild(wrap);
+    this.workspace.observeTable(this.table, tableWrap);
   }
 
   private openModal(item?: SiteNameOptionRecord): void {
