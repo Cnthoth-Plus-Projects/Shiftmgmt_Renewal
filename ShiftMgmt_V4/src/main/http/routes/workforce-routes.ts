@@ -31,7 +31,7 @@ import {
 } from "../../services/monthly-schedule-storage-service";
 import { exportMonthlySchedulePlan } from "../../services/schedule-plan-export-service";
 import { listStoredSchedulePlanExports } from "../../services/schedule-plan-export-history-service";
-import { publishSchedulePlanExport } from "../../services/schedule-plan-publish-service";
+import { publishSchedulePlanExport, resolveSchedulePlanPublishDirectory } from "../../services/schedule-plan-publish-service";
 import { previewMonthlySchedulePlan } from "../../services/schedule-plan-preview-service";
 import {
   deactivateStoredShiftPattern,
@@ -492,7 +492,7 @@ export const registerWorkforceRoutes = (
           publicHolidayDates,
           warningSettings,
           exportDirectory: appSettings.scheduleExportDir,
-          publishDirectory: appSettings.approvedDir,
+          publishDirectory: resolveSchedulePlanPublishDirectory({ userDataPath: context.dataDir }),
         };
 
         return result;

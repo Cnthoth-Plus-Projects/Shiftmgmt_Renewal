@@ -88,6 +88,47 @@ const calculateTestAllowanceAmount = (entry: PerformanceEntryRecord) => {
 };
 
 describe("schedule-return-performance-parser", () => {
+  it.each(["sample1", "sample2"] as const)("FLOW-01: %s rejects missing hours but preserves midnight and omitted whole-hour minutes", async variant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot, templateVariant: variant});
+    const original = await new ExcelJS.Workbook().xlsx.readFile(fixture.filePath);
+    const bytes = await original.xlsx.writeBuffer();
+    const columns = variant === "sample1" ? ["BC", "BD", "BE", "BF"] : ["BK", "BL", "BM", "BN"];
+    for (const missing of [[0, 1, 2, 3], [0], [2]]) {
+      const workbook = new ExcelJS.Workbook(); await workbook.xlsx.load(bytes);
+      for (const index of missing) workbook.worksheets[0].getCell(`${columns[index]}34`).value = null;
+      await workbook.xlsx.writeFile(fixture.filePath);
+      const parsed = await parseReturnedSchedulePerformanceFile({filePath: fixture.filePath, fileId: "missing-clock"});
+      const overtime = parsed.entries.find(entry => entry.section === "overtime")!;
+      expect(overtime.totalWorkMinutes).toBe(0);
+      expect(overtime.startTime === undefined || overtime.endTime === undefined).toBe(true);
+      expect(overtime.alerts.some(alert => alert.severity === "error")).toBe(true);
+    }
+    for (const values of [[0, 0, 4, 0], [20, null, 1, null]]) {
+      const workbook = new ExcelJS.Workbook(); await workbook.xlsx.load(bytes);
+      values.forEach((value, index) => { workbook.worksheets[0].getCell(`${columns[index]}34`).value = value; });
+      await workbook.xlsx.writeFile(fixture.filePath);
+      const parsed = await parseReturnedSchedulePerformanceFile({filePath: fixture.filePath, fileId: "valid-clock"});
+      const overtime = parsed.entries.find(entry => entry.section === "overtime")!;
+      expect(overtime.startTime).toBe(values[0] === 0 ? "00:00" : "20:00");
+      expect(overtime.endTime).toBe(values[2] === 4 ? "04:00" : "01:00");
+      expect(overtime.totalWorkMinutes).toBeGreaterThan(0);
+      expect(overtime.alerts).toEqual([]);
+    }
+  });
+
+  it.each(["sample1", "sample2"] as const)("FLOW-03: %s rejects a renamed file whose month differs from its worksheet", async variant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot, templateVariant: variant});
+    const renamed = path.join(fixture.pendingDir, `2026_04_${fixture.siteName}.xlsx`);
+    await copyFile(fixture.filePath, renamed);
+    await expect(parseReturnedSchedulePerformanceFile({filePath: renamed, fileId: "wrong-file-month"})).rejects.toThrow(/파일명 근무월.*엑셀 본문 근무월/);
+  });
+
+  it.each(["sample1", "sample2"] as const)("FLOW-03: %s rejects an out-of-month actual overtime date", async variant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot, templateVariant: variant});
+    await updateReturnedWorkbook(fixture.filePath, sheet => { sheet.getCell(variant === "sample1" ? "BA34" : "BI34").value = "2026-04-03"; });
+    await expect(parseReturnedSchedulePerformanceFile({filePath: fixture.filePath, fileId: "wrong-work-month"})).rejects.toThrow(/근무월.*다른 근무일/);
+  });
+
   afterEach(() => {
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();
@@ -189,7 +230,7 @@ describe("schedule-return-performance-parser", () => {
 
     await copyFile(fixture.filePath, duplicatePath);
     await updateReturnedWorkbook(duplicatePath, (worksheet) => {
-      worksheet.getCell("W6").value = new Date(2023, 11, 1);
+      worksheet.getCell("W6").value = new Date(2026, 2, 1);
     });
 
     const parsed = await parseReturnedSchedulePerformanceFile({
@@ -214,7 +255,7 @@ describe("schedule-return-performance-parser", () => {
 
     await copyFile(fixture.filePath, returnedPath);
     await updateReturnedWorkbook(returnedPath, (worksheet) => {
-      worksheet.getCell("W6").value = new Date(2023, 11, 1);
+      worksheet.getCell("W6").value = new Date(2026, 2, 1);
     });
 
     const parsed = await parseReturnedSchedulePerformanceFile({

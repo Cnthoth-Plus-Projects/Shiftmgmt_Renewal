@@ -330,6 +330,9 @@ const resolveFileIdentityFromWorksheet = (
   const worksheetScheduleMonth = resolveScheduleMonthFromCell(
     worksheet.getCell(layout.monthTitleCell).value
   );
+  if (fileIdentity?.scheduleMonth && worksheetScheduleMonth && fileIdentity.scheduleMonth !== worksheetScheduleMonth) {
+    throw new Error(`파일명 근무월(${fileIdentity.scheduleMonth})과 엑셀 본문 근무월(${worksheetScheduleMonth})이 다릅니다. 원본 엑셀과 파일명을 확인한 뒤 다시 가져와 주세요.`);
+  }
   const scheduleMonth = fileIdentity?.scheduleMonth ?? worksheetScheduleMonth;
   const siteName = stripFileDuplicateSuffix(fileIdentity?.siteName || worksheetSiteName || "");
 
@@ -1659,6 +1662,8 @@ const buildSubstituteEntries = (
 };
 
 const toTimeText = (hourText: string, minuteText: string) => {
+  // 정시의 분 생략은 허용하되, 비어 있는 '시'를 자정으로 바꾸면 안 된다.
+  if (!hourText.trim()) return null;
   const hour = Number(hourText);
   const minute = Number(minuteText);
 
@@ -1727,8 +1732,8 @@ const buildOvertimeEntries = (
 
     if (!startTime || !endTime) {
       alerts.push({
-        severity: "warning",
-        message: `${employeeName}의 연장근무 시작/종료 시각이 올바르지 않습니다.`
+        severity: "error",
+        message: `${employeeName}의 연장근무 시작/종료 시각이 올바르지 않습니다. 원본 엑셀의 시각을 확인한 뒤 다시 가져와 주세요.`
       });
     }
 
@@ -2053,6 +2058,11 @@ export const parseReturnedSchedulePerformanceFile = async (input: {
         left.workDate.localeCompare(right.workDate) ||
         left.employeeName.localeCompare(right.employeeName, "ko")
   );
+
+  const outsideMonth = parsedEntries.find(entry => entry.workDate.slice(0, 7) !== identity.scheduleMonth);
+  if (outsideMonth) {
+    throw new Error(`근무월(${identity.scheduleMonth})과 다른 근무일(${outsideMonth.workDate})이 있습니다. 원본 엑셀의 날짜를 확인한 뒤 다시 가져와 주세요.`);
+  }
 
   const filteredEntries: PerformanceEntryRecord[] = [];
   let unassignedCodeCount = 0;

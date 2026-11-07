@@ -231,6 +231,13 @@ describe("performance-model", () => {
   });
 
   describe("matchPerformanceRow (필터링)", () => {
+    it("FLOW-03: follows the server file month so an invalid historic work date cannot silently hide its row", () => {
+      const row = createMockRow({canApprove: false, entry: {...createMockRow().entry, scheduleMonth: "2026-04", workDate: "2026-03-04"}});
+      const filter: PerformanceFilterState = {scheduleMonth: "2026-04", siteName: "all", section: "all", approvalScope: "pending", statusFilter: "all", searchQuery: "", density: "normal"};
+      expect(matchPerformanceRow(row, filter)).toBe(true);
+      expect(matchPerformanceRow(row, {...filter, scheduleMonth: "2026-03"})).toBe(false);
+      expect(row.canApprove).toBe(false);
+    });
     const baseFilter: PerformanceFilterState = {
       scheduleMonth: "2026-05",
       siteName: "all",
@@ -415,7 +422,7 @@ describe("performance-model", () => {
 
     it("filter.scheduleMonth가 일치하는 행만 매칭한다", () => {
       const rowMay = createMockRow({ entry: { ...createMockRow().entry, workDate: "2026-05-15" } });
-      const rowJune = createMockRow({ entry: { ...createMockRow().entry, workDate: "2026-06-01" } });
+      const rowJune = createMockRow({ entry: { ...createMockRow().entry, scheduleMonth: "2026-06", workDate: "2026-06-01" } });
 
       const baseFilter: PerformanceFilterState = {
         scheduleMonth: "2026-05",

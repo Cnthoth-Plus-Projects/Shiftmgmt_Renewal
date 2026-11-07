@@ -24,7 +24,8 @@ import {
 import {
   getStoredPerformanceFileDetail,
   listStoredPerformanceFileDetails,
-  resetPerformanceFileStorageForTest
+  resetPerformanceFileStorageForTest,
+  upsertPerformanceFileDetail
 } from "./performance-file-storage-service";
 import {
   prepareReturnedScheduleFixture,
@@ -36,7 +37,7 @@ import {
 import { listPendingPerformanceFiles } from "./performance-queue-service";
 import { closeSqliteStorage, initializeSqliteStorage, getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-service";
 import { listStoredEmployees, saveStoredEmployee } from "./employee-storage-service";
-import { closeStoredEmployeeWageRate, listStoredEmployeeWageRates, saveStoredEmployeeWageRate } from "./employee-history-service";
+import { closeStoredEmployeeWageRate, listStoredEmployeeWageRates, saveStoredEmployeeWageRate, saveStoredEmployeeAssignment } from "./employee-history-service";
 
 import * as intake from "./performance-file-intake-service";
 import { refreshPendingPerformanceForWageChanges } from "./workforce-wage-performance-service";
@@ -68,6 +69,91 @@ const returnFinancial = () => ["performance_approvals", "allowance_calculations"
 const previousDay = (date: string) => new Date(Date.parse(`${date}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
 
 describe("performance-approval-flow-service", () => {
+  it("FLOW-03: failed reread preserves a previously approved row and its calculation snapshot", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot()});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(row => row.section === "overtime")!;
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: entry.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    const beforeApprovals = listPerformanceApprovalHistory();
+    const beforeCalculations = listApprovedAllowanceCalculationResults();
+    const workbook = new ExcelJS.Workbook(); await workbook.xlsx.readFile(fixture.filePath);
+    workbook.worksheets[0].getCell("W6").value = new Date(2026, 3, 1);
+    await workbook.xlsx.writeFile(fixture.filePath);
+    const issues = await intake.syncPendingPerformanceFilesToStorage({settings: {pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir}, forceReparse: true, scheduleMonth: "2026-03"});
+    expect(issues.some(issue => issue.message.includes("파일명 근무월"))).toBe(true);
+    expect(getStoredPerformanceFileDetail(detail.id)?.entries.some(row => row.id === entry.id)).toBe(true);
+    expect(listPerformanceApprovalHistory()).toEqual(beforeApprovals);
+    expect(listApprovedAllowanceCalculationResults()).toEqual(beforeCalculations);
+  });
+
+  it("FLOW-01: rejects approval if session is revoked while awaiting the original source", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot()});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(row => row.section === "overtime")!;
+    let current = true;
+    const original = intake.buildPerformanceFileDetailFromPath;
+    vi.spyOn(intake, "buildPerformanceFileDetailFromPath").mockImplementation(async input => {
+      const result = await original(input);
+      current = false;
+      return result;
+    });
+    const result = await approvePerformanceFile({fileId: detail.id, entryId: entry.id}, testAdminSession, {userDataPath: fixture.userDataPath, isSessionCurrent: () => current});
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errorCode).toBe("AUTH_SESSION_REQUIRED");
+    expect(listPerformanceApprovalHistory()).toEqual([]);
+    expect(listApprovedAllowanceCalculationResults()).toEqual([]);
+  });
+
+  it("FLOW-01: current source validation rechecks Pool eligibility after the workday assignment changes", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot()});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(row => row.section === "overtime")!;
+    const employee = listStoredEmployees().find(row => row.employeeCode === entry.employeeCode)!;
+    saveStoredEmployeeAssignment({employeeId: employee.id, siteId: employee.currentSiteId!, shiftGroup: "Pool", startDate: "2026-03-01"});
+    const result = await approvePerformanceFile({fileId: detail.id, entryId: entry.id, manualHourlyRate: 20000}, testAdminSession, {userDataPath: fixture.userDataPath});
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+    expect(listPerformanceApprovalHistory()).toEqual([]);
+    expect(listApprovedAllowanceCalculationResults()).toEqual([]);
+  });
+
+  it("FLOW-03: rejects an old cached entry in a different file month without changing the existing paid snapshot", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot()});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(row => row.section === "overtime")!;
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: entry.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    const beforeApprovals = listPerformanceApprovalHistory();
+    const beforeCalculations = listApprovedAllowanceCalculationResults();
+    const cachedId = detail.id + ":wrong-month-cache";
+    const cachedEntry = {...entry, id: cachedId + ":overtime:34", performanceFileId: cachedId, scheduleMonth: "2026-04", scheduleKey: entry.scheduleKey.replace("2026-03", "2026-04"), logicalKey: entry.logicalKey.replace("2026-03", "2026-04")};
+    upsertPerformanceFileDetail({...detail, id: cachedId, scheduleMonth: "2026-04", scheduleKey: cachedEntry.scheduleKey, entries: [cachedEntry], entryCount: 1, approvedEntryCount: 0, status: "parsed"});
+    for (const manualHourlyRate of [undefined, 20000]) {
+      const result = await approvePerformanceFile({fileId: cachedId, entryId: cachedEntry.id, manualHourlyRate}, testAdminSession, {userDataPath: fixture.userDataPath});
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+      expect(listPerformanceApprovalHistory()).toEqual(beforeApprovals);
+      expect(listApprovedAllowanceCalculationResults()).toEqual(beforeCalculations);
+    }
+  });
+
+  it.each(["sample1", "sample2"] as const)("FLOW-01: %s blocks an old valid cached row after its original clock fields are cleared", async variant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot(), templateVariant: variant});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(row => row.section === "overtime")!;
+    const workbook = new ExcelJS.Workbook(); await workbook.xlsx.readFile(fixture.filePath);
+    for (const column of variant === "sample1" ? ["BC", "BD", "BE", "BF"] : ["BK", "BL", "BM", "BN"]) workbook.worksheets[0].getCell(`${column}34`).value = null;
+    await workbook.xlsx.writeFile(fixture.filePath);
+    const beforeApprovals = listPerformanceApprovalHistory();
+    const beforeCalculations = listApprovedAllowanceCalculationResults();
+    for (const manualHourlyRate of [undefined, 20000]) {
+      const result = await approvePerformanceFile({fileId: detail.id, entryId: entry.id, manualHourlyRate}, testAdminSession, {userDataPath: fixture.userDataPath});
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.errorCode).toBe("PERFORMANCE_APPROVAL_BLOCKED");
+      expect(listPerformanceApprovalHistory()).toEqual(beforeApprovals);
+      expect(listApprovedAllowanceCalculationResults()).toEqual(beforeCalculations);
+    }
+  });
+
   it("W-08: an explicit invalidation marker blocks the wage of a real newly parsed workbook", async () => {
     const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
     const detail = await syncPreparedReturnedSchedule(fixture);
@@ -1054,17 +1140,30 @@ describe("performance-approval-flow-service", () => {
 
     expect(getStoredPerformanceFileDetail(firstDetail.id)?.isEffective).toBe(true);
 
-    // Stage a second pending file for the SAME 근무지·월. Removing the first file's approval records
-    // makes the second file a genuine first-time file (its rows have no prior approval) that merely
-    // shares the schedule_key — the disjoint-sibling shape.
+    // A disjoint real return in the same month must not supersede the legitimately approved file.
+    // Keep its approval/calculation records intact, and submit a different workday in the workbook.
     await restageReturnedScheduleFixture(fixture);
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(fixture.filePath);
+    const worksheet = workbook.worksheets[0];
+    worksheet.getCell("BA11").value = null;
+    for (const column of ["BC", "BD", "BE", "BF", "BG", "BH", "BJ"]) {
+      worksheet.getCell(`${column}35`).value = worksheet.getCell(`${column}34`).value;
+    }
+    worksheet.getCell("BA35").value = "2026-03-04";
+    worksheet.getCell("BA34").value = null;
+    worksheet.eachRow(row => row.eachCell(cell => {
+      if (cell.fill?.type === "pattern" && cell.fill.fgColor?.argb === "FFFFD1D1") {
+        cell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "FFFFFFFF"}};
+      }
+    }));
+    await workbook.xlsx.writeFile(fixture.filePath);
     const secondDetail = await syncPreparedReturnedSchedule(fixture);
 
     expect(secondDetail.id).not.toBe(firstDetail.id);
-
-    getSqliteDatabase()!
-      .prepare("DELETE FROM performance_approvals WHERE file_id = ?")
-      .run(firstDetail.id);
+    expect(secondDetail.entries).toHaveLength(1);
+    expect(secondDetail.entries[0]?.workDate).toBe("2026-03-04");
+    expect(listPerformanceApprovalHistory().filter(record => record.fileId === firstDetail.id)).toHaveLength(firstDetail.entries.length);
 
     for (const entry of secondDetail.entries) {
       const result = await approvePerformanceFile(

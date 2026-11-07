@@ -44,6 +44,7 @@ const mocks = vi.hoisted(() => ({
   exportMonthlySchedulePlan: vi.fn(async (input: unknown) => input),
   listStoredSchedulePlanExports: vi.fn(() => []),
   publishSchedulePlanExport: vi.fn(async (input: unknown) => input),
+  resolveSchedulePlanPublishDirectory: vi.fn((_input: unknown) => "C:/export/배포"),
   previewMonthlySchedulePlan: vi.fn(async (scheduleId: string) => ({ scheduleId })),
   deactivateStoredShiftPattern: vi.fn((patternId: string) => ({ patternId })),
   listStoredShiftPatterns: vi.fn(() => []),
@@ -91,6 +92,7 @@ vi.mock("../../services/schedule-plan-export-history-service", () => ({
 }));
 vi.mock("../../services/schedule-plan-publish-service", () => ({
   publishSchedulePlanExport: mocks.publishSchedulePlanExport,
+  resolveSchedulePlanPublishDirectory: mocks.resolveSchedulePlanPublishDirectory,
 }));
 vi.mock("../../services/schedule-plan-preview-service", () => ({
   previewMonthlySchedulePlan: mocks.previewMonthlySchedulePlan,
@@ -398,6 +400,7 @@ describe("workforce-routes", () => {
       data: {
         year: 2026,
         publicHolidayDates: ["2026-01-01", "2026-05-05"],
+        publishDirectory: "C:/export/배포",
       },
     });
 

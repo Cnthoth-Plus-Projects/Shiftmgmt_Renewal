@@ -141,6 +141,12 @@ export const registerPerformanceRoutes = (
     const result = await approvePerformanceFile(input, context.session!, {
       userDataPath: context.dataDir,
       requireExpectedPolicyFingerprint: true,
+      isSessionCurrent: () => {
+        const current = sessionManager.handleGetSession(context.cookie);
+        return current.ok && Boolean(current.data && current.data.userId === context.session?.userId &&
+          current.data.sessionToken === context.session?.sessionToken && !current.data.passwordChangeRequired &&
+          canPerformAction(current.data.role, "performance-approval"));
+      },
     });
     return sessionManager.recordSuccessfulActivity(result, {
       actionType: "performance-approve",

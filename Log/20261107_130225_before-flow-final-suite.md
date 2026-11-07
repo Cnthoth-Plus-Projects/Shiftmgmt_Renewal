@@ -1,0 +1,9 @@
+# HANDOFF — FLOW-SCHEDULE-PERFORMANCE-FIX-01 구현 승인
+
+사용자 “응 수정하자”. frontier / Sol 직접 / Gemini 최초0·재시도0·누적0. TODO/장부동일Task가정본. 직전검토의FLOW-01/02/03 재현을그대로회귀기준으로사용.
+
+목표/허용파일/보호/검문은장부Task필드참조. 필수시누락거절·분생략0보존, 배포폴더scheduleExportDir/배포와확인창일치, 승인상태는실제승인+계산, 파일/본문/실제일자월충돌접수및캐시승인차단. 기존정상/승인원문은보존.
+
+증거 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-flow-fix-t6N7z4. 단위/실제UI/HTTP는TEMP격리, 소스변경후새빌드필수. 전체단위고정후1회8~10분, 기존원실패/추가재실행사유보존. 수동이관/실DB접근/스키마/의존성/공개배포/실PC적용없음. Git/새1.0.1패키지는기존릴리즈준비승인범위, 최종검증후진행.
+
+이전HANDOFF Log/20261107_044055_before-flow-fix.md / 2991bytes / SHA256 3C275E547F0925D662A415BE8F8C407E44AC74FB28758ADDECAFDFBE9C5B9382, 바이트동일보존.

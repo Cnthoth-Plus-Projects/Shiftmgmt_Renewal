@@ -28,6 +28,7 @@ import {
   getStoredPerformanceFileDetail,
   getStoredPerformanceFileDetailByPath,
   listStoredPerformanceFileDetails,
+  countApprovalBackedPerformanceEntries,
   upsertPerformanceFileDetail
 } from "./performance-file-storage-service";
 import { buildApprovedPerformanceArchiveDirectory } from "./performance-file-archive-service";
@@ -36,6 +37,7 @@ import { computeMonthPolicyFingerprint } from "../../shared/domain/policy-histor
 import { getActivePolicyTimeline, isPolicyHistoryInitialized } from "./policy-history-service";
 import { isSqliteStorageReady } from "./sqlite-storage-service";
 import { getLatestAllowanceCalculationByApprovalId } from "./approved-allowance-calculation-service";
+import { listStoredSchedulePlanExports } from "./schedule-plan-export-history-service";
 
 const supportedFileExtensions = new Set([".xlsx", ".xlsm", ".xls"]);
 const fullPendingSyncParseLimit = 20;
@@ -139,15 +141,23 @@ const createDetail = (
     entries: PerformanceFileDetail["entries"];
     alerts: PerformanceFileDetail["alerts"];
   }
-): PerformanceFileDetail => ({
-  ...input.metadata,
-  id: input.fileId,
-  previewRows: input.previewRows,
-  entries: input.entries,
-  alerts: input.alerts,
-  approvalHistory: getPerformanceApprovalHistoryByFileId(input.fileId),
-  latestApproval: getLatestPerformanceApprovalByFileId(input.fileId)
-});
+): PerformanceFileDetail => {
+  const approvedEntryCount = input.metadata.directoryType === "approved"
+    ? countApprovalBackedPerformanceEntries(input.entries) : input.metadata.approvedEntryCount;
+  const hasCompleteApproval = Number(approvedEntryCount) > 0 && approvedEntryCount === input.metadata.entryCount;
+  return {
+    ...input.metadata,
+    approvedEntryCount,
+    status: input.metadata.directoryType === "approved" && input.metadata.status !== "error"
+      ? hasCompleteApproval ? "approved" : "parsed" : input.metadata.status,
+    id: input.fileId,
+    previewRows: input.previewRows,
+    entries: input.entries,
+    alerts: input.alerts,
+    approvalHistory: getPerformanceApprovalHistoryByFileId(input.fileId),
+    latestApproval: getLatestPerformanceApprovalByFileId(input.fileId)
+  };
+};
 
 const resolvePendingDetailStatus = (input: {
   existingDetail: PerformanceFileDetail | null;
@@ -279,6 +289,8 @@ const canReuseStoredDetail = (detail: PerformanceFileDetail, fileStats: Stats) =
     return false;
   }
   if (detail.directoryType === "pending") {
+    if (detail.entries.some(entry => entry.workDate.slice(0, 7) !== detail.scheduleMonth ||
+      (entry.section === "overtime" && entry.startTime === entry.endTime))) return false;
     if (!detail.scheduleMonth || !detail.policyContextFingerprint) {
       return false;
     }
@@ -430,6 +442,15 @@ export const buildPerformanceFileDetailFromPath = async (input: {
   const existingPathDetail = isSqliteStorageReady()
     ? getStoredPerformanceFileDetailByPath(input.filePath, watchEvent.directoryType)
     : null;
+  // 기존 배포 위치가 승인 폴더였던 판도 실제 승인 없는 게시 원본은 실적에서 제외한다.
+  if (isApprovedDirectory && !existingPathDetail?.latestApproval && listStoredSchedulePlanExports().some(record => {
+    if (!record.publishedPath) return false;
+    const candidate = path.resolve(input.filePath).toLowerCase();
+    const published = path.resolve(record.publishedPath).toLowerCase();
+    const originalName = record.outputFileName.toLowerCase();
+    const candidateName = path.basename(candidate).replace(/_dup\d+(?=\.[^.]+$)/i, "");
+    return candidate === published || (path.dirname(candidate) === path.dirname(published) && candidateName === originalName);
+  })) return null;
 
   if (
     !input.forceReparse && wageRevision === performanceWageRevision &&
@@ -582,6 +603,10 @@ export const buildPerformanceFileDetailFromPath = async (input: {
       alerts: []
     });
   } catch (error) {
+    if (existingDetail && getLatestPerformanceApprovalByFileId(existingDetail.id)) {
+      const message = getErrorMessage(error);
+      return {...existingDetail, status: "error", errorMessage: message, alerts: [{severity: "error", message}]};
+    }
     const metadata = updatePerformanceFileMetadataStatus(
       createPerformanceFileMetadataRecord({
         watchEvent,
@@ -1023,11 +1048,12 @@ export const syncApprovedPerformanceFilesToStorage = async (input: {
           backfillPerformanceApprovalSnapshotSourceSignatures(sourceBackfillDetail);
         }
 
-        upsertPerformanceFileDetail({
-          ...detail,
-          status: detail.status === "error" ? "error" : "approved",
-          approvedEntryCount: detail.entryCount ?? detail.entries.length
-        }, {
+        if (detail.status === "error" && existingPathDetail && getLatestPerformanceApprovalByFileId(existingPathDetail.id)) {
+          issues.push(createSyncIssue({detail, filePath, message: detail.errorMessage ?? "승인 원본을 읽지 못했습니다. 기존 승인·계산 이력은 보존했습니다."}));
+          processedCount += 1;
+          continue;
+        }
+        upsertPerformanceFileDetail(detail, {
           allowApprovedSourceRebaseline: Boolean(input.forceReparse)
         });
         rebaselinePerformanceApprovalSnapshotScheduleEntries(sourceBackfillDetail);

@@ -228,7 +228,7 @@ export function matchPerformanceRow(
 ): boolean {
   // 0. 근무월 필터 (D08)
   if (filter.scheduleMonth) {
-    const rowMonth = row.entry.workDate ? row.entry.workDate.slice(0, 7) : "";
+    const rowMonth = row.entry.scheduleMonth || (row.entry.workDate ? row.entry.workDate.slice(0, 7) : "");
     if (rowMonth && rowMonth !== filter.scheduleMonth) {
       return false;
     }

@@ -156,7 +156,7 @@ const descriptors: Record<string, Descriptor> = {
   "performance:get-comparison": { args: [{ fileId: "file-1", rowId: "row-1" }], spy: mocks.getPerformanceComparison, expectedArgs: (_e, a) => [a[0]] },
   "performance:list-pending-files": { args: [], spy: mocks.listPendingPerformanceFiles, expectedArgs: () => [] },
   "performance:get-pending-file-detail": { args: ["file-1"], spy: mocks.getPendingPerformanceFileDetail, expectedArgs: (_e, a) => [a[0]] },
-  "performance:approve": { args: [{ fileId: "file-1" }], spy: mocks.approvePerformanceFile, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir, requireExpectedPolicyFingerprint: true }] },
+  "performance:approve": { args: [{ fileId: "file-1" }], spy: mocks.approvePerformanceFile, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir, requireExpectedPolicyFingerprint: true, isSessionCurrent: expect.any(Function) }] },
   "performance:finalize-reapproved-file": { args: [{ fileId: "file-1" }], spy: mocks.finalizeReapprovedPerformanceFile, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir }] },
   "performance:return-to-pending": { args: [{ fileId: "file-1", reason: "원본 수정" }], spy: mocks.returnApprovedPerformanceFileToPending, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir, isSessionCurrent: expect.any(Function) }] },
   "performance:reject": { args: [{ fileId: "file-1", reason: "오류" }], spy: mocks.rejectPerformanceFile, expectedArgs: (_e, a) => [a[0], adminSession] },
@@ -212,6 +212,15 @@ describe("performance-routes", () => {
     expect(context.isSessionCurrent()).toBe(true);
     env.sessionManager.clear();
     expect(context.isSessionCurrent()).toBe(false);
+  });
+
+  it("FLOW-01: approval commit guard rechecks the authenticated cookie after source I/O", async () => {
+    const env = setup();
+    await dispatch(env, "performance:approve", [{fileId: "file-1", entryId: "entry-1"}]);
+    const call = mocks.approvePerformanceFile.mock.calls.at(-1) as unknown as [unknown, unknown, {isSessionCurrent: () => boolean}];
+    expect(call[2].isSessionCurrent()).toBe(true);
+    env.sessionManager.clear();
+    expect(call[2].isSessionCurrent()).toBe(false);
   });
 
   it("dispatches all 16 channels with exact service effects, dataDir, openPath, and activities", async () => {

@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-03",
-  "executingTaskId": null,
+  "nextTaskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+  "executingTaskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
   "tasks": [
     {
       "id": "PLAN-00",
@@ -3565,7 +3565,12 @@
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": false,
       "installationTarget": "FRESH_PC",
-      "authorizationRequired": "Explicit user approval for actual target PC install; draft public publication also pending"
+      "authorizationRequired": "Actual target PC install/public publication not authorized; current review recommends hold until three confirmed defects fixed.",
+      "prerequisiteReviewFindings": [
+        "FLOW-01",
+        "FLOW-02",
+        "FLOW-03"
+      ]
     },
     {
       "id": "UI-03-DEV-LOGIN",
@@ -5303,6 +5308,218 @@
         "message": "응 오케이 확인했어 다음 작업 진행해줘",
         "scope": "정상 사유로 정리한 처리 이력 확인 후 다음 양식 단계 진행 승인; 모든 검문을 사용자가 재실행했다고 주장하지 않음"
       }
+    },
+    {
+      "id": "FLOW-SCHEDULE-PERFORMANCE-REVIEW-01",
+      "title": "근무표 생성·배포에서 실적 근무지 불러오기까지 기본 로직 점검",
+      "phase": "최종 업무흐름 검토",
+      "status": "DONE",
+      "owner": "Sol",
+      "implementationOwner": "none (review only)",
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "authorization": "User 2026-11-07: 근무표를 생성 및 배포 -> 실적관리로 근무지를 불러왔을때 기본 로직 확인",
+      "dependsOn": [
+        "REL-02"
+      ],
+      "goal": "Trace UI -> real HTTP/Excel services -> site/month/employee/schedule identity -> intake/dedupe/approval and calculation; reproduce representative actual path and negatives in private TEMP",
+      "doneWhen": "Current-source review plus focused existing tests and actual local Excel/UI path evidence; explain confirmed gaps, impact and remaining decisions. No product/release changes in review.",
+      "productChangesAuthorizedByThisPlan": false,
+      "allowedWrites": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "Log/new-immutable-archives",
+        ".jh-artifacts/flow-review-*",
+        "private TEMP evidence only"
+      ],
+      "protected": [
+        "ShiftMgmt_V4 product code/tests/config",
+        "release ZIP/draft assets",
+        "existing operational data",
+        "C:/Projects/Active/ShiftMgmt_V3.4",
+        "existing Log files"
+      ],
+      "checks": [
+        "Preflight actual command/fixture identities, source fingerprint and build reuse comparison",
+        "Focused existing publish/parser/intake/management/approval tests with actual exit code and counts",
+        "Private TEMP real schedule Excel generation/publishing -> return-file intake -> overview/site load -> approval/calculation + representative negative paths",
+        "Actual Chrome loading/navigation/clicks with screenshot; no source-only UI acceptance",
+        "Review findings tied to file/line, exact trigger and runtime evidence; distinguish hypotheses/not-run"
+      ],
+      "startedAt": "2026-11-07T04:16:32.787Z",
+      "estimate": "45-90min initial estimate; narrow first with existing test/driver coverage",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-review-CEVfOi",
+      "stage": "REVIEW_COMPLETE_WITH_BLOCKING_FINDINGS",
+      "completedAt": "2026-11-07T04:32:44.988Z",
+      "safeToPublish": false,
+      "productAcceptance": false,
+      "productChanges": 0,
+      "findings": [
+        {
+          "id": "FLOW-01",
+          "severity": "P1",
+          "title": "연장 시각 전체/일부 누락을 0시로 해석해 승인·과다 계산"
+        },
+        {
+          "id": "FLOW-02",
+          "severity": "P1",
+          "title": "배포본이 실적 승인 폴더로 들어가 실제 승인 없는 행이 승인완료 표시"
+        },
+        {
+          "id": "FLOW-03",
+          "severity": "P1",
+          "title": "파일명 근무월 불일치가 화면 누락 및 서버 중복 승인·계산을 허용"
+        }
+      ],
+      "assessment": {
+        "path": ".ai/reports/schedule-performance-review-20261107/assessment.json",
+        "bytes": 8099,
+        "sha256": "35C263B2AE8328BE1A1D0271015971D2521CB98D4890160E14DD9886B4BB824E"
+      },
+      "report": ".ai/reports/schedule-performance-review-20261107/REVIEW.md",
+      "verification": {
+        "freshRelatedUnit": 164,
+        "unitFiles": 10,
+        "focusedUi": [
+          "S01",
+          "S05",
+          "S09"
+        ],
+        "defectObservations": 4,
+        "pageErrors": 0,
+        "fullProjectSuite": "NOT_RERUN_UNCHANGED_PRODUCT"
+      },
+      "proposedNextWork": {
+        "authorized": false,
+        "scope": "Fix FLOW-01/02/03 with explicit narrow source allowlist, meaningful negative regressions and real UI/HTTP coverage; then rebuild release at higher version. Do not silently alter existing approvals/calculations."
+      }
+    },
+    {
+      "id": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+      "title": "근무표·실적 FLOW-01/02/03 수정 및1.0.1 배포 준비",
+      "status": "IN_PROGRESS",
+      "stage": "VERIFYING_FROZEN_CANDIDATE",
+      "owner": "Sol",
+      "implementationOwner": "Sol (standing direct implementation exception + user 응 수정하자)",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "dependsOn": [
+        "FLOW-SCHEDULE-PERFORMANCE-REVIEW-01"
+      ],
+      "productChangesAuthorizedByThisPlan": true,
+      "authorization": "User: 응 수정하자 — confirms preceding three defect fixes and release revalidation recommendation. Earlier Git push/release preparation authorization remains; no public publication or operational installation.",
+      "goal": "Fix missing clock values, published-plan vs approved archive separation and approval-backed status, file/work month integrity including cached/server approval; preserve historical approvals/calculations and normal import workflow; build/test new1.0.1 package.",
+      "defects": [
+        "FLOW-01",
+        "FLOW-02",
+        "FLOW-03"
+      ],
+      "allowlist": [
+        "ShiftMgmt_V4/src/main/services/schedule-return-performance-parser.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-return-performance-parser.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-intake-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-intake-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-storage-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-storage-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-management-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-management-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-plan-publish-service.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-plan-publish-service.test.ts",
+        "ShiftMgmt_V4/src/main/http/routes/workforce-routes.ts",
+        "ShiftMgmt_V4/src/main/http/routes/workforce-routes.test.ts",
+        "ShiftMgmt_V4/src/web/screens/performance-model.ts",
+        "ShiftMgmt_V4/src/web/screens/performance-model.test.ts",
+        "ShiftMgmt_V4/src/web/screens/schedule-view.ts",
+        "ShiftMgmt_V4/scripts/ui-checks/schedule-fixtures.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/schedule.mjs",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/src/shared/config/app-brand.ts",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/docs/release-1.0.1.md",
+        "ShiftMgmt_V4/src/main/http/routes/performance-routes.ts",
+        "ShiftMgmt_V4/src/main/http/routes/performance-routes.test.ts"
+      ],
+      "controlAllowlist": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "Log/new-immutable-archives",
+        ".jh-artifacts/flow-fix-*",
+        "private TEMP evidence and release outputs"
+      ],
+      "protected": [
+        "Existing Log bytes",
+        "V3 and real operational DB/files",
+        "Existing approval/calculation records and policy effective dates",
+        "Original1.0.0 ZIP",
+        "Dependencies and DB schema",
+        "All product files outside allowlist"
+      ],
+      "decisions": [
+        "Hour field required; absent minutes with supplied valid hour remain00 for legacy whole-hour convenience; explicit midnight preserved",
+        "Default publish directory = scheduleExportDir/배포, reuse same resolver for route/UI confirmation; no new persisted setting/schema",
+        "Unapproved archives may be read for diagnosis but folder location never proves approval; count/status derive from actual approval+calculation pairs",
+        "Filename remains authoritative for site-name legacy compatibility; reject conflicting filename/sheet month and every payable workDate outside selected file month",
+        "Before new approval validate current original source and cached/file/entry month identity; do not rewrite prior approved snapshots"
+      ],
+      "checks": [
+        "Preflight fresh repro evidence revalidation + actual runner/result contract, baseline/fixed allowlist hashes",
+        "Meaningful regression cases for both templates: missing/all/partial hour, valid midnight, absent minute, out-of-range time, tampered filename and out-of-month row, stale cached invalid entry, duplicate API attempt rejection and no new approval/calculation",
+        "Default publish path/confirmation parity, repeated publish no overwrite, old approved-folder unsigned source not approved, legitimate approved snapshots preserved",
+        "Affected existing suites in TEMP, then single required full unit/typecheck/lint/map/smoke with frozen candidate",
+        "Fresh build after source change and actual Chrome/HTTP corrected FLOW-01/02/03 plus existing schedule/performance focused UI checks",
+        "1.0.1 clean-commit Windows ZIP, hash/runtime/license and isolated installer smoke; source Git sync/draft prep allowed, no publication/install"
+      ],
+      "doneWhen": "All three reproduced defects blocked, normal paths/history preserved, required checks and new1.0.1 install smoke pass; report exact evidence and remaining manual/publication boundary.",
+      "estimate": "Initial2-4h estimate for coupled backend fixes/full tests/package; long full unit estimate8-10min based last452s.",
+      "startedAt": "2026-11-07T04:40:55.875Z",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4",
+      "oldHandoff": {
+        "archive": "Log/20261107_044055_before-flow-fix.md",
+        "bytes": 2991,
+        "sha256": "3C275E547F0925D662A415BE8F8C407E44AC74FB28758ADDECAFDFBE9C5B9382"
+      },
+      "scopeClarification": "New original-source await requires existing session/permission revalidation pattern before approval writes; add only matching performance route and route test. Necessary preservation inside FLOW-01, not new auth feature.",
+      "runtimeOutputs": [
+        "ShiftMgmt_V4/dist (ignored fresh build)",
+        "ShiftMgmt_V4/artifacts/tests (existing isolated test runtime, ignored)",
+        "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4 (private UI/unit/package evidence)"
+      ],
+      "verificationPlanNote": "Focused tests use existing scripts with isolated TEMP fixtures. Required final release:check runs normal product cwd and existing ignored artifacts/tests; no new test-root framework, real operational data or dependency changes.",
+      "preflightEvidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4/candidate-preflight.json",
+        "sha256": "142335139567BF843B673949D8F43F8CEA7D9A7DC73C111317E7263FAEAAC1A1"
+      },
+      "partialEvidence": {
+        "related": "affected-02.json:241 pass,1 failed fixture corrected; model-final.json:29 pass",
+        "browser": "browser-fixed.json:7 PASS; original failed fixture preserved",
+        "schedule": "schedule-ui/summary.json:S01/S08/S09 PASS",
+        "performance": "performance-ui/results.json:S01/S05/S09 PASS"
+      },
+      "retryNotes": [
+        "Missing new mock/header fixtures and manual-rate compatibility fixed before final suite; original result JSON retained",
+        "Affected-02 sole model fixture used June workDate with May scheduleMonth; fixture corrected to June identity; focused29 PASS",
+        "Chrome original probe overlap blocked correctly; midnight fixture moved March5; original failure retained"
+      ]
     }
   ],
   "policy": {
@@ -5425,8 +5642,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 95082,
-    "sha256": "871D8F469A8D8978C262AFE583B4AEAFCA8AE3E5F008762800267B1F63F4F62C"
+    "bytes": 97631,
+    "sha256": "80803E6C9FDEE7CA0B6AF512452DAFC9E6336E447DEA13F6A4E391DA075D597A"
   },
   "statusHistory": [
     {
@@ -7640,6 +7857,36 @@
         "retry": 0,
         "total": 0
       }
+    },
+    {
+      "at": "2026-11-07T04:16:32.787Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-REVIEW-01",
+      "status": "IN_PROGRESS",
+      "note": "User prioritizes workflow review before actual release publication/install"
+    },
+    {
+      "at": "2026-11-07T04:32:44.988Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-REVIEW-01",
+      "status": "REVIEW_COMPLETE_WITH_BLOCKING_FINDINGS",
+      "productChanges": 0,
+      "findings": 3,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-07T04:40:55.878Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+      "status": "IMPLEMENTATION_AUTHORIZED",
+      "note": "User: 응 수정하자 — confirms preceding three defect fixes and release revalidation recommendation. Earlier Git push/release preparation authorization remains; no public publication or operational installation."
+    },
+    {
+      "at": "2026-11-07T13:02:25.155Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+      "status": "VERIFYING_FROZEN_CANDIDATE",
+      "note": "Partial regressions and real Chrome/HTTP passed; freeze candidate for one required full run."
     }
   ],
   "remainingEstimatedHours": [
@@ -7683,7 +7930,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-07T04:07:32.752Z",
+  "updatedAt": "2026-11-07T13:02:25.155Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",

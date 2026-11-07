@@ -29,7 +29,8 @@ import {
 import {
   prepareReturnedScheduleFixture,
   resetPreparedReturnedScheduleRoot,
-  syncPreparedReturnedSchedule
+  syncPreparedReturnedSchedule,
+  testAdminSession
 } from "./performance-test-helpers";
 import { resetPerformanceApprovalStateForTest } from "./performance-approval-service";
 import {
@@ -41,6 +42,9 @@ import { getSqliteDatabase, resetSqliteStorageForTest } from "./sqlite-storage-s
 import { resolvePerformanceEntryApprovalState } from "./performance-approval-resolution-service";
 import { deleteStoredEmployee, listStoredEmployees } from "./employee-storage-service";
 import { attachScheduleLayoutMetadataToWorkbook } from "./schedule-plan-adapter";
+import { publishSchedulePlanExport } from "./schedule-plan-publish-service";
+import { listStoredSchedulePlanExports } from "./schedule-plan-export-history-service";
+import { approvePerformanceFile } from "./performance-approval-flow-service";
 
 const testRoot = path.resolve(
   process.cwd(),
@@ -69,6 +73,54 @@ const writeUnsupportedWorkbook = async (filePath: string) => {
 };
 
 describe("performance-file-intake-service", () => {
+  it("FLOW-02: repeated legacy publications cannot borrow an approval from the returned file", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot});
+    const exported = listStoredSchedulePlanExports()[0]!;
+    const first = publishSchedulePlanExport({exportId: exported.id, userDataPath: fixture.userDataPath, outputDir: fixture.approvedDir})!;
+    const second = publishSchedulePlanExport({exportId: exported.id, userDataPath: fixture.userDataPath, outputDir: fixture.approvedDir})!;
+    expect(first.publishedPath).not.toBe(second.publishedPath);
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const holiday = detail.entries.find(entry => entry.section === "legal-holiday")!;
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: holiday.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    const db = getSqliteDatabase()!;
+    const before = db.prepare("SELECT * FROM allowance_calculations").all();
+    const settings = {pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir};
+    expect(await syncApprovedPerformanceFilesToStorage({settings, forceReparse: true})).toEqual([]);
+    expect(db.prepare("SELECT COUNT(*) AS n FROM performance_files WHERE directory_type = 'approved'").get()?.n).toBe(0);
+    expect(db.prepare("SELECT * FROM allowance_calculations").all()).toEqual(before);
+    expect(db.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()?.n).toBe(1);
+    expect(existsSync(first.publishedPath!)).toBe(true);
+    expect(existsSync(second.publishedPath!)).toBe(true);
+  });
+
+  it("FLOW-02: default published plans and known legacy approved-folder publications are not received as approved work", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot});
+    rmSync(fixture.filePath);
+    const exported = listStoredSchedulePlanExports()[0]!;
+    const current = publishSchedulePlanExport({exportId: exported.id, userDataPath: fixture.userDataPath})!;
+    expect(path.dirname(current.publishedPath!)).toBe(path.join(fixture.exportDir, "배포"));
+    const settings = {pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir};
+    expect(await syncApprovedPerformanceFilesToStorage({settings})).toEqual([]);
+    expect(getStoredPerformanceFileDetail(exported.id)).toBeNull();
+    const legacy = publishSchedulePlanExport({exportId: exported.id, userDataPath: fixture.userDataPath, outputDir: fixture.approvedDir})!;
+    expect(await buildPerformanceFileDetailFromPath({filePath: legacy.publishedPath!, settings, forceReparse: true})).toBeNull();
+    expect(await syncApprovedPerformanceFilesToStorage({settings, forceReparse: true})).toEqual([]);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM performance_entries").get()?.n).toBe(0);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()?.n).toBe(0);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM allowance_calculations").get()?.n).toBe(0);
+  });
+
+  it("FLOW-03: a renamed month is reported as an intake error with zero stored work", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot});
+    const renamed = path.join(fixture.pendingDir, `2026_04_${fixture.siteName}.xlsx`);
+    renameSync(fixture.filePath, renamed);
+    const issues = await syncPendingPerformanceFilesToStorage({settings: {pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir}, scheduleMonth: "2026-04"});
+    expect(issues.some(issue => issue.message.includes("파일명 근무월"))).toBe(true);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM performance_entries").get()?.n).toBe(0);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()?.n).toBe(0);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM allowance_calculations").get()?.n).toBe(0);
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
     resetPerformanceApprovalStateForTest();

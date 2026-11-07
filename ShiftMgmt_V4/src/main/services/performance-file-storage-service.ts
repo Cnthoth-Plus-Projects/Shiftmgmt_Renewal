@@ -11,12 +11,24 @@ import type {
 import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
 import { isPayablePerformanceEntry } from "../../shared/domain/performance-file";
 import {
-  getApprovedEntryIdsByFileId,
   getLatestPerformanceApprovalByFileId,
   getLatestPerformanceApprovalByEntryId,
   getPerformanceApprovalHistoryByFileId
 } from "./performance-approval-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
+
+const hasSavedCalculation = (approvalId: string) => Boolean(
+  getSqliteDatabase()?.prepare(
+    "SELECT 1 FROM allowance_calculations WHERE performance_approval_id = ? LIMIT 1"
+  ).get(approvalId)
+);
+
+export const countApprovalBackedPerformanceEntries = (entries: readonly PerformanceEntryRecord[]) =>
+  entries.filter(entry => {
+    if (!isPayablePerformanceEntry(entry)) return false;
+    const approval = getLatestPerformanceApprovalByEntryId(entry.id);
+    return approval?.decision === "approved" && approval.fileId === entry.performanceFileId && hasSavedCalculation(approval.id);
+  }).length;
 
 export type StoredPerformanceFileReference = Pick<
   PerformanceFileDetail,
@@ -170,14 +182,13 @@ const resolveDuplicateAlerts = (
 
 const toEntryRecord = (
   entryRow: Record<string, unknown>,
-  fallbackFileStatus?: PerformanceFileMetadataRecord["status"],
+  _fallbackFileStatus?: PerformanceFileMetadataRecord["status"],
   options?: { resolveApprovalStatus?: boolean }
 ): PerformanceEntryRecord => {
   const latestApproval =
     options?.resolveApprovalStatus === false
       ? null
       : getLatestPerformanceApprovalByEntryId(String(entryRow.id));
-  const fallbackApproved = fallbackFileStatus === "approved";
 
   return {
     id: String(entryRow.id),
@@ -209,7 +220,7 @@ const toEntryRecord = (
     teamLabel: entryRow.team_label ? String(entryRow.team_label) : undefined,
     alerts: parseAlerts(entryRow.alert_json),
     status:
-      latestApproval?.decision === "approved" || (!latestApproval && fallbackApproved)
+      latestApproval?.decision === "approved" && hasSavedCalculation(latestApproval.id)
         ? "approved"
         : "pending",
     latestApprovalAt: latestApproval?.processedAt,
@@ -278,24 +289,14 @@ const toDetail = (
   const approvalHistory = resolveApprovalFields
     ? getPerformanceApprovalHistoryByFileId(stableFileId)
     : [];
-  const hasApprovalHistory = approvalHistory.length > 0;
-  const approvedEntryIds = resolveApprovalFields
-    ? getApprovedEntryIdsByFileId(stableFileId)
-    : new Set<string>();
   const payableEntryIds = new Set(
     entries.filter((entry) => isPayablePerformanceEntry(entry)).map((entry) => entry.id)
   );
-  const payableApprovedCount = [...approvedEntryIds].filter((id) =>
-    payableEntryIds.has(id)
-  ).length;
   const resolvedApprovedEntryCount =
-    resolveApprovalFields && (hasApprovalHistory || fileStatus !== "approved")
-      ? payableApprovedCount
-      : Number(
-          row.approved_entry_count ??
-            row.entry_count ??
-            payableEntryIds.size
-        );
+    resolveApprovalFields ? countApprovalBackedPerformanceEntries(entries) : Number(row.approved_entry_count ?? 0);
+  const resolvedFileStatus = resolveApprovalFields && fileStatus === "approved" &&
+    (resolvedApprovedEntryCount === 0 || resolvedApprovedEntryCount < payableEntryIds.size)
+    ? "parsed" : fileStatus;
   const metadata: PerformanceFileMetadataRecord = {
     id: stableFileId,
     fileName: String(row.file_name),
@@ -321,7 +322,7 @@ const toDetail = (
     approvedEntryCount: resolvedApprovedEntryCount,
     warningCount: 0,
     isEffective: Number(row.is_effective ?? 0) === 1,
-    status: fileStatus,
+    status: resolvedFileStatus,
     errorMessage: row.error_message ? String(row.error_message) : undefined,
     policyContextFingerprint: row.policy_context_fingerprint ? String(row.policy_context_fingerprint) : undefined
   };

@@ -221,7 +221,7 @@ export async function seedScheduleFixtures({ page, resourcesDir }) {
     const finalEmps = take(await b.listEmployees(), "final listEmployees");
 
     return {
-      expectedContext: { exportDirectory: settings.scheduleExportDir, publishDirectory: settings.approvedDir, warningSettings: { consecutiveNightLimit: 1, minimumRestMinutes: 900, requireWeeklyHoliday: true, weeklyMaxMinutes: 1800 } },
+      expectedContext: { exportDirectory: settings.scheduleExportDir, publishDirectory: settings.scheduleExportDir + '\\배포', warningSettings: { consecutiveNightLimit: 1, minimumRestMinutes: 900, requireWeeklyHoliday: true, weeklyMaxMinutes: 1800 } },
       mainPatternId: mainPattern.id,
       mainEmployeeIds: targetEmployees.map(e => e.id),
       mainEmployeeCodes: targetEmployees.map(e => e.employeeCode),

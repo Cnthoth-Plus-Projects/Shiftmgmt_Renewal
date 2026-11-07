@@ -34,6 +34,7 @@ import { listHiddenApprovedPerformanceRows } from "./performance-approved-row-vi
 import { resolvePerformanceEntryApprovalState } from "./performance-approval-resolution-service";
 import {
   getLatestPerformanceApprovalByLogicalKey,
+  getLatestPerformanceApprovalByEntryId,
   listPerformanceApprovalHistory,
   listLatestPerformanceApprovalsByLogicalKey
 } from "./performance-approval-service";
@@ -468,8 +469,8 @@ const buildOverviewRow = (
       : latestAllowanceCalculation?.status === "rejected"
       ? "rejected"
       : detail.directoryType === "approved"
-      ? "approved"
-      : resolvedApproval.approvalStatus;
+      ? latestApproval?.decision === "approved" && latestApproval.fileId === detail.id && latestAllowanceCalculation ? "approved" : "pending"
+      : resolvedApproval.approvalStatus === "approved" && !latestAllowanceCalculation ? "pending" : resolvedApproval.approvalStatus;
   const displayEntry =
     (detail.directoryType === "approved" || latestApprovalUsedManualRate) && resolvedApproval.approvedEntry
       ? {
@@ -488,6 +489,13 @@ const buildOverviewRow = (
           latestApprovalByName: resolvedApproval.latestApprovalByName
         };
 
+  const displayAlerts = [...displayEntry.alerts];
+  if (detail.scheduleMonth !== entry.scheduleMonth || entry.workDate.slice(0, 7) !== entry.scheduleMonth) {
+    displayAlerts.push({severity: "error", message: "파일 근무월과 실제 근무일이 다릅니다. 기존 승인 이력은 보존되므로 원본과 이력을 확인해 주세요."});
+  }
+  if (outsideEmployment && detail.directoryType === "pending" && approvalStatus !== "approved") {
+    displayAlerts.push({severity: "error", message: "근무일이 재직기간 밖입니다. 퇴사 공백·취소한 예약에는 승인할 수 없습니다. 인력 관리에서 재입사일을 확인해 주세요."});
+  }
   return {
     rowId: `${detail.id}:${entry.id}`,
     fileId: detail.id,
@@ -497,13 +505,14 @@ const buildOverviewRow = (
     sourceFileExists: options?.sourceFileExists ?? existsSync(detail.filePath),
     sourceDirectoryType: detail.directoryType,
     sourceReceivedAt: detail.receivedAt,
-    entry: outsideEmployment && detail.directoryType === "pending" && approvalStatus !== "approved" ? {...displayEntry, alerts:[...displayEntry.alerts,{severity:"error" as const,message:"근무일이 재직기간 밖입니다. 퇴사 공백·취소한 예약에는 승인할 수 없습니다. 인력 관리에서 재입사일을 확인해 주세요."}]} : displayEntry,
+    entry: {...displayEntry, alerts: displayAlerts},
     approvalStatus,
     canApprove:
       !isNonPayable &&
       !outsideEmployment &&
       !isChangeLocked &&
       detail.directoryType === "pending" &&
+      detail.scheduleMonth === entry.scheduleMonth && entry.workDate.slice(0, 7) === entry.scheduleMonth &&
       resolvedApproval.approvalStatus === "pending" &&
       !resolvedApproval.needsReapproval &&
       !hasBlockingApprovalIssue(entry),
@@ -748,7 +757,9 @@ export const listPerformanceOverview = async (
         return;
       }
 
-      const latestApproval = latestApprovals.get(toLogicalKey(entry.logicalKey)) ?? null;
+      const latestApproval = approvalScope === "approved"
+        ? getLatestPerformanceApprovalByEntryId(entry.id)
+        : latestApprovals.get(toLogicalKey(entry.logicalKey)) ?? null;
       const resolvedTeamLabel = resolveTeamLabel(entry);
       const row = buildOverviewRow(
         detail,
@@ -771,6 +782,13 @@ export const listPerformanceOverview = async (
         row.approvalStatus !== "rejected" &&
         row.approvalStatus !== "non-payable"
       ) {
+        if (!syncIssues.some(issue => issue.filePath === detail.filePath)) {
+          syncIssues.push(emptyOverviewSyncIssue({
+            filePath: detail.filePath,
+            directoryType: "approved",
+            message: "실제 승인·수당 계산 기록이 없는 원본이 승인완료 폴더에 있습니다. 배포본은 실적에 포함되지 않습니다. 회수한 실적이라면 원본을 승인대기 폴더에 다시 접수해 주세요."
+          }));
+        }
         return;
       }
 
