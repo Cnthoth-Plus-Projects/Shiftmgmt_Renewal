@@ -1,20 +1,23 @@
-// 복사해 온 서비스 72개 + 내장 Excel 레이아웃 서비스 1개 + 레이아웃 정의·저장 서비스 2개 + 렌더·미리보기 서비스 3개 + 설치 Chrome PDF 및 대시보드 내보내기 서비스 2개 - 폐기 Access 진단 서비스 1개(총 79개)가 빌드 결과에서 실제로 불러와지는지 확인한다.
+// 정식 1.0.0 서비스 89개가 소스/빌드에서 일치하며 실제로 불러와지는지 확인한다.
 //
 //   npm run smoke
 //
 // dist/server/main/services 의 .js 를 전부 불러와 본다.
-// 실패 조건은 두 가지 — (가) 파일 개수가 79개가 아니다 (나) 하나라도 불러오지 못한다.
+// 파일 수·소스와 빌드 이름이 다르거나 하나라도 불러오지 못하면 실패한다.
 // node:sqlite 가 내는 실험 기능 경고(ExperimentalWarning)는 오류가 아니므로 그대로 둔다.
 import { existsSync, readdirSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** 내장 Excel/PDF 및 레이아웃 서비스들을 포함한 총 서비스 수 (Access 진단 서비스 폐기 반영: 79). */
-const EXPECTED_COUNT = 79;
+/** 기존79개와 이후 승인된 정책·복구·이력·출력 서비스10개. */
+const EXPECTED_COUNT = 89;
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const servicesDir = path.join(root, "dist", "server", "main", "services");
+const sourceNames = readdirSync(path.join(root, "src/main/services"))
+  .filter(name => name.endsWith(".ts") && !name.endsWith(".test.ts"))
+  .map(name => name.replace(/\.ts$/, ".js")).sort();
 const servicesLabel = path.relative(root, servicesDir).split(path.sep).join("/");
 
 /** 한국어 안내를 내보내고 실패로 끝낸다. */
@@ -60,6 +63,10 @@ for (const name of fileNames) {
 
 const countWrong = fileNames.length !== EXPECTED_COUNT;
 const problems = [];
+
+if (sourceNames.length !== EXPECTED_COUNT || JSON.stringify(sourceNames) !== JSON.stringify(fileNames)) {
+  problems.push("소스 서비스 목록과 빌드 파일 목록이 일치하지 않습니다");
+}
 
 if (countWrong) {
   problems.push(`파일 개수가 ${EXPECTED_COUNT}개가 아닙니다(실제 ${fileNames.length}개)`);

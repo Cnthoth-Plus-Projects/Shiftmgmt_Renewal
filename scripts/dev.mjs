@@ -157,7 +157,7 @@ async function shutdown(code, reason, childAlreadySignalled = false) {
 // 1) 빌드
 process.stdout.write("빌드 중…\n");
 
-const build = runNpmScript("build", { stdio: "inherit" });
+const build = runNpmScript("build", { stdio: "inherit", env: { ...process.env, SHIFTMGMT_DEVELOPMENT_PREVIEW: "1" } });
 
 if (build.status !== 0) {
   process.stderr.write("빌드에 실패했습니다. 위 오류를 먼저 고쳐 주세요.\n");

@@ -5,6 +5,8 @@
 
 ## 뿌리
 
+정식 Windows 배포: `scripts/package-windows.mjs`는 Node24·프로덕션 의존성·라이선스·해시 ZIP을 생성한다. `scripts/verify-windows-package.mjs`는 모든 파일을 대조하고 `build/fresh-install.ps1`는 새 PC 설치/바로가기를 담당한다. `scripts/start-installed.mjs`는 설치본 서버·첫 관리자 안내·정상 종료를 담당한다. `scripts/release-install-smoke.mjs`는 TEMP 설치와 실제 Chrome 첫 로그인/거절 검문이다. 사용 안내는 `docs/fresh-install.md`, 버전별 설명은 `docs/release-1.0.0.md`다. `scripts/build-browser.mjs`는 개발 전용 자동입력을 정식 빌드에서 제외한다.
+
 | 파일 | 하는 일 |
 |---|---|
 | `package.json` | 실행·빌드·검사 명령(스크립트)과 도구 목록. 실행 의존성은 3개뿐이다 — 엑셀 읽기·쓰기(exceljs), 폴더 감시(chokidar), 브라우저 자동화(playwright) |

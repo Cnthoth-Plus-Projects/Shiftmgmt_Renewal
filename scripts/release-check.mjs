@@ -6,12 +6,14 @@
 //       타입검사/규칙검사/테스트 통과 · 빌드 산출물(브라우저 번들) 상태.
 // 이 스크립트는 태그를 만들거나 무언가를 올리지 않는다 — 확인만 한다.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const results = [];
+const evidenceDir = process.env.SHIFTMGMT_RELEASE_EVIDENCE_DIR;
+if (evidenceDir) mkdirSync(evidenceDir, { recursive: true });
 
 function record(name, ok, detail) {
   results.push({ name, ok, detail });
@@ -72,10 +74,15 @@ record("같은 판 태그 없음", tagOk, tagDetail);
 
 // 4) 타입검사 · 규칙검사 · 테스트
 for (const script of ["typecheck", "lint", "test"]) {
+  const startedAt = Date.now();
   const { ok, output } = runNpmScript(script);
+  if (evidenceDir) writeFileSync(path.join(evidenceDir, `${script}.log`), output + "\n");
+  if (!ok) process.stderr.write(`${output}\n`);
   const lastLine = output.split("\n").filter((line) => line.trim().length > 0).slice(-1)[0] ?? "";
 
   record(`npm run ${script}`, ok, ok ? "통과" : lastLine.slice(0, 160));
+  results[results.length - 1].durationMs = Date.now() - startedAt;
+  if (script === "test" && ok) process.stdout.write(output.split("\n").filter(line => /^\s*(Test Files|Tests|Duration)\s/.test(line)).join("\n") + "\n");
 }
 
 // 5) 빌드 산출물
@@ -112,6 +119,7 @@ const lines = results.map(
 process.stdout.write(`${lines.join("\n")}\n`);
 
 const failed = results.filter((item) => !item.ok);
+if (evidenceDir) writeFileSync(path.join(evidenceDir, "release-check.json"), JSON.stringify({ ok: failed.length === 0, version: versionFile, results, checkedAt: new Date().toISOString() }, null, 2) + "\n");
 
 if (failed.length > 0) {
   process.stderr.write(`RELEASE_CHECK_FAILED — ${failed.length}건이 통과하지 못했습니다.\n`);

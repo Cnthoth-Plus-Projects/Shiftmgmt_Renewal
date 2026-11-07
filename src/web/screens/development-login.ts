@@ -1,4 +1,7 @@
+declare const SHIFTMGMT_DEVELOPMENT_PREVIEW: boolean;
+
 export function appendDevelopmentLoginBanner(form: HTMLFormElement, submitBtn: HTMLButtonElement): void {
+    if (typeof SHIFTMGMT_DEVELOPMENT_PREVIEW !== "undefined" && !SHIFTMGMT_DEVELOPMENT_PREVIEW) return;
     let developmentPreview=false;
     if(["localhost","127.0.0.1","[::1]"].includes(window.location.hostname)){
       const enabled=new URLSearchParams(window.location.search).get("developmentPreview");
