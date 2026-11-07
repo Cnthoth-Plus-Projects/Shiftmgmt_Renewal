@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
-  "executingTaskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "PLAN-00",
@@ -3565,8 +3565,14 @@
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": false,
       "installationTarget": "FRESH_PC",
-      "authorizationRequired": "Actual target PC install/public publication not authorized; current review recommends hold until three confirmed defects fixed.",
+      "authorizationRequired": "Actual target PC installation and public release publication each require explicit user authorization; draft prepared only.",
       "prerequisiteReviewFindings": [
+        "FLOW-01",
+        "FLOW-02",
+        "FLOW-03"
+      ],
+      "version": "1.0.1",
+      "prerequisiteDefectsResolved": [
         "FLOW-01",
         "FLOW-02",
         "FLOW-03"
@@ -5404,8 +5410,8 @@
     {
       "id": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
       "title": "근무표·실적 FLOW-01/02/03 수정 및1.0.1 배포 준비",
-      "status": "IN_PROGRESS",
-      "stage": "VERIFYING_FROZEN_CANDIDATE_RUN2",
+      "status": "DONE",
+      "stage": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
       "owner": "Sol",
       "implementationOwner": "Sol (standing direct implementation exception + user 응 수정하자)",
       "gemini": {
@@ -5508,7 +5514,8 @@
       "verificationPlanNote": "Focused tests use existing scripts with isolated TEMP fixtures. Required final release:check runs normal product cwd and existing ignored artifacts/tests; no new test-root framework, real operational data or dependency changes.",
       "preflightEvidence": {
         "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4/candidate-preflight.json",
-        "sha256": "142335139567BF843B673949D8F43F8CEA7D9A7DC73C111317E7263FAEAAC1A1"
+        "bytes": 104391,
+        "sha256": "50BB25DFE87F043BDA9EBC39BE7925480C7E0E68AF438CE02E0924F13959AF7F"
       },
       "partialEvidence": {
         "related": "affected-02.json:241 pass,1 failed fixture corrected; model-final.json:29 pass",
@@ -5522,12 +5529,84 @@
         "Affected-02 sole model fixture used June workDate with May scheduleMonth; fixture corrected to June identity; focused29 PASS",
         "Chrome original probe overlap blocked correctly; midnight fixture moved March5; original failure retained",
         "Final full run1:1553 pass/1 fail (queue test deletes approvals before expecting approved). Correct only that required regression fixture, retain real approval/calculation positive checks and add missing-approval rejection. No product runtime changes. Full run2 required because frozen test source changes."
-      ]
+      ],
+      "technicalAccepted": true,
+      "completedAt": "2026-11-07T13:27:27.284Z",
+      "implementation": {
+        "sourceCommit": "82996d9413d66bd795ba08d3aef73340ff7652e9",
+        "productTree": "028ae4d127d80d53785fc42a1faea7f0bc0eee5e",
+        "changedProductFiles": 29,
+        "protectedProductFiles": 507,
+        "version": "1.0.1"
+      },
+      "verification": {
+        "ok": true,
+        "version": "1.0.1",
+        "sourceCommit": "82996d9413d66bd795ba08d3aef73340ff7652e9",
+        "productTree": "028ae4d127d80d53785fc42a1faea7f0bc0eee5e",
+        "zipSha256": "2bc2d6c2b09548fca6d7e6400a104b2db813c14926738596574108c937739d9e",
+        "unit": {
+          "files": 160,
+          "tests": 1554
+        },
+        "source": {
+          "files": 536,
+          "changed": 29,
+          "protectedUnchanged": 507
+        },
+        "fullRunCount": 2,
+        "lint": {
+          "errors": 0,
+          "existingWarnings": 3
+        },
+        "typecheck": "PASS",
+        "mapPaths": 259,
+        "serviceModules": 89,
+        "browserHttpChecks": 7,
+        "scheduleScenarios": 3,
+        "performanceScenarios": 3,
+        "installChecks": 16,
+        "publicReleasePublished": false,
+        "targetPcInstalled": false,
+        "verifiedAt": "2026-11-07T13:25:42.267Z"
+      },
+      "evidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4/assessment.json",
+        "bytes": 6606,
+        "sha256": "CC0CA0C44DE9CFE4EB0DABF7D82DF69A281F9D3C72B7213082363E3B7DC08482"
+      },
+      "artifacts": {
+        "directory": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-flow-fix-t6N7z4/release/v1.0.1",
+        "zip": "ShiftMgmt-1.0.1-win-x64.zip",
+        "bytes": 58771281,
+        "sha256": "2bc2d6c2b09548fca6d7e6400a104b2db813c14926738596574108c937739d9e"
+      },
+      "gitPush": {
+        "main": "82996d9413d66bd795ba08d3aef73340ff7652e9",
+        "source": "57a4763f34fcb9214146ccef7e224f916f61da03",
+        "tree": "028ae4d127d80d53785fc42a1faea7f0bc0eee5e",
+        "parent": "d2e8ec567de95b00e72c9c75cbf1ae5503e645e9",
+        "force": false,
+        "pushedAt": "2026-11-07T13:25:48.422Z"
+      },
+      "draft": {
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-32120817ed671aa98f02",
+        "isDraft": true,
+        "tagName": "v1.0.1",
+        "targetCommitish": "82996d9413d66bd795ba08d3aef73340ff7652e9",
+        "assets": 6,
+        "downloadVerification": {
+          "sha256": "2bc2d6c2b09548fca6d7e6400a104b2db813c14926738596574108c937739d9e",
+          "ok": true
+        }
+      },
+      "publicReleasePublished": false,
+      "productionPcInstalled": false
     }
   ],
   "policy": {
     "oneActiveLeaf": true,
-    "nextTaskId": "REL-02",
+    "nextTaskId": "REL-03",
     "sourceOfTruth": "TODO.md",
     "unlistedWork": "Do not execute. Record minimal proposal only if active Task cannot finish within its authorized scope. New scope/task needs explicit user authorization; do not silently append work.",
     "necessaryFixes": "Required defect fixes and checks within active Task/allowlist use same Task ID and stable defect ID; do not create new workstreams or reset Gemini attempts.",
@@ -5645,8 +5724,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 97631,
-    "sha256": "80803E6C9FDEE7CA0B6AF512452DAFC9E6336E447DEA13F6A4E391DA075D597A"
+    "bytes": 98868,
+    "sha256": "5C468CB27269CB843E647CA61056492241356E642413893E179BEA9BE0AA5FF8"
   },
   "statusHistory": [
     {
@@ -7896,6 +7975,18 @@
       "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
       "status": "FINAL_REGRESSION_FIXTURE_CORRECTION",
       "note": "Final full run1:1553 pass/1 fail (queue test deletes approvals before expecting approved). Correct only that required regression fixture, retain real approval/calculation positive checks and add missing-approval rejection. No product runtime changes. Full run2 required because frozen test source changes."
+    },
+    {
+      "at": "2026-11-07T13:27:27.286Z",
+      "taskId": "FLOW-SCHEDULE-PERFORMANCE-FIX-01",
+      "status": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
+      "unit": {
+        "files": 160,
+        "tests": 1554
+      },
+      "install": 16,
+      "browserHttp": 7,
+      "publication": "DRAFT_ONLY"
     }
   ],
   "remainingEstimatedHours": [
@@ -7939,7 +8030,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-07T13:14:44.900Z",
+  "updatedAt": "2026-11-07T13:27:27.286Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
