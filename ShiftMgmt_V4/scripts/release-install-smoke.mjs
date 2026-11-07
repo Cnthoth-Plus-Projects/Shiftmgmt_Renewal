@@ -47,7 +47,7 @@ async function start(root, port) {
     try {
       const response = await fetch(`http://127.0.0.1:${port}/api/health`, { signal: AbortSignal.timeout(1000) });
       const health = await response.json();
-      if (response.ok && health.ok) return health.data;
+      if (response.ok && health.ok && captured.includes("프로그램을 끝내려면")) return health.data;
     } catch { /* 시작 대기 */ }
     await new Promise(resolve => setTimeout(resolve, 200));
   }
@@ -126,7 +126,8 @@ try {
   passed("새 DB 업무 자료 0·SQLite 무결성");
   const bootstrapPath = path.join(data, "data/bootstrap-credentials.json");
   const credentials = JSON.parse(readFileSync(bootstrapPath, "utf8")).credentials["user-admin"];
-  assert.ok(credentials.password.length >= 20 && credentials.password !== "1234");
+  assert.equal(credentials.loginId, "admin");
+  assert.equal(credentials.password, "1234", "기존 최초 관리자 비밀번호 정책 유지");
   const duplicate = spawnSync(path.join(target, "runtime/node.exe"), [path.join(target, "scripts/start-installed.mjs"), "--no-browser"], { env: { ...process.env, SHIFTMGMT_PORT: String(port), SHIFTMGMT_CHROME_PATH: chrome.path }, encoding: "utf8", windowsHide: true, timeout: 15_000 });
   assert.equal(duplicate.status, 1);
   passed("중복 실행 거절");

@@ -1,4 +1,3 @@
-import { randomBytes } from "node:crypto";
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, openSync, closeSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { createServer as createNetServer } from "node:net";
@@ -48,11 +47,14 @@ try {
   for (const key of ["DATA_DIR", "DATABASE_PATH", "WATCH_PENDING_DIR", "WATCH_APPROVED_DIR", "SCHEDULE_EXPORT_DIR", "ALLOWANCE_PROPOSAL_EXPORT_DIR", "ALLOWANCE_ATTACHMENT1_EXPORT_DIR", "ALLOWANCE_ATTACHMENT2_EXPORT_DIR", "DATABASE_BACKUP_DIR", "MIGRATION_FILE_PATH"]) delete process.env[key];
   process.env.APP_NAME = "교대근무관리 시스템";
   process.env.SHIFTMGMT_USER_DATA_DIR = dataRoot;
-  process.env.AUTH_BOOTSTRAP_ADMIN_PASSWORD = `Sm!${randomBytes(15).toString("base64url")}7a`;
+  delete process.env.AUTH_BOOTSTRAP_ADMIN_PASSWORD;
   delete process.env.AUTH_BOOTSTRAP_OPERATOR_PASSWORD;
   delete process.env.AUTH_BOOTSTRAP_REVIEWER_PASSWORD;
   const { startServer } = await import(pathToFileURL(path.join(root, "dist/server/main/server.js")).href);
+  const { listStoredOperationUsers } = await import(pathToFileURL(path.join(root, "dist/server/main/services/operations-storage-service.js")).href);
   const server = startServer({ dataDir: dataRoot, port, version: manifest.version, log: () => {} });
+  // 초기 계정은 기존 서비스가 첫 조회에 준비한다. Chrome을 열기 전에 준비/안내한다.
+  listStoredOperationUsers();
   await new Promise((resolve, reject) => { server.once("listening", resolve); server.once("error", reject); });
   const url = `http://127.0.0.1:${port}/`;
   const health = await (await fetch(`${url}api/health`)).json();
