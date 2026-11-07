@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-02",
-  "executingTaskId": "REL-02",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "PLAN-00",
@@ -3328,7 +3328,7 @@
       "doneWhen": "main/source branch pushed without force; 1.0.0 ZIP built, hashes/license inventory verified, isolated fresh install/start/login/stop and rejection checks pass, release:check passes; no operational PC or existing DB changed",
       "whyRequired": "운영 데이터 보호",
       "owner": "Sol",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": true,
       "triageDecisionIds": [
@@ -3339,11 +3339,11 @@
         "bytes": 29542,
         "sha256": "B2304D8FE2B193223B6AD669A40FE95BFA16AD83DE5AC7224DC5B4617D1380C6"
       },
-      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "stage": "PREPARED_VERIFIED_DRAFT_ONLY",
       "initialSubmissions": 0,
       "retrySubmissions": 0,
       "cumulativeSubmissions": 0,
-      "implementationOwner": "Sol (standing direct implementation exception; user Git push/release preparation request)",
+      "implementationOwner": "Sol",
       "authorization": "2026-11-07 user: git push and prepare formal release; installation target: fresh PC",
       "installationTarget": "FRESH_PC",
       "version": "1.0.0",
@@ -3398,7 +3398,153 @@
         "source": "60520375570fec66dc332f245f312ad09ddc6e25",
         "tree": "0fd98feed40122bf24a29dc9a2c99ff3d0097f1c"
       },
-      "preflightFinding": "Legacy smoke count79 vs current89; all current source/build names matched independently. Keep fixed89 plus exact source/build name comparison, require every module. Record original failure; no product service changed."
+      "preflightFinding": "Legacy smoke count79 vs current89; all current source/build names matched independently. Keep fixed89 plus exact source/build name comparison, require every module. Record original failure; no product service changed.",
+      "technicalAccepted": true,
+      "completedAt": "2026-11-07T04:07:32.752Z",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "implementation": {
+        "version": "1.0.0",
+        "sourceCommit": "d6adc70d90afc996f9947f7606a70c96004bbfaa",
+        "productTree": "80f12dde7e7ee1bc984be687471377af8c189578"
+      },
+      "verification": {
+        "unit": {
+          "files": 160,
+          "tests": 1535
+        },
+        "installChecks": 16,
+        "services": 89,
+        "mapPaths": 259,
+        "fullRuns": 1,
+        "lintWarnings": 3,
+        "releaseSummary": {
+          "path": "ShiftMgmt_V4/artifacts/releases/v1.0.0/VERIFICATION_RELEASE.json",
+          "bytes": 1746,
+          "sha256": "14C4D95308CF2DFFB4628BD82D98C1B407002CD9A229D983FD143AC1BCDEDAFC"
+        }
+      },
+      "artifacts": {
+        "zip": "ShiftMgmt-1.0.0-win-x64.zip",
+        "zipBytes": 58769281,
+        "sha256": "6f7c37538c2c39ff9d6cac73625583e190308637d398ce64c8b4da12956bcbf7",
+        "directory": "ShiftMgmt_V4/artifacts/releases/v1.0.0"
+      },
+      "gitPush": {
+        "main": "d6adc70d90afc996f9947f7606a70c96004bbfaa",
+        "source": "d2e8ec567de95b00e72c9c75cbf1ae5503e645e9",
+        "tree": "80f12dde7e7ee1bc984be687471377af8c189578",
+        "parent": "60520375570fec66dc332f245f312ad09ddc6e25",
+        "force": false
+      },
+      "draft": {
+        "assets": [
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553440",
+            "contentType": "application/json",
+            "createdAt": "2026-11-07T04:06:35Z",
+            "digest": "sha256:80db0eb8486ac3f190446dbf3c560aeabf4fea8cf9794b2890e15701af8ed444",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44Og",
+            "label": "",
+            "name": "BUILD_RECEIPT.json",
+            "size": 550,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:36Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/BUILD_RECEIPT.json"
+          },
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553441",
+            "contentType": "application/json",
+            "createdAt": "2026-11-07T04:06:35Z",
+            "digest": "sha256:daae3ca721a51ae539e4b9d48173bd82b6299a5921e9bb930b270241d0a4ea13",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44Oh",
+            "label": "",
+            "name": "RELEASE_MANIFEST.json",
+            "size": 629,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:36Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/RELEASE_MANIFEST.json"
+          },
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553439",
+            "contentType": "text/plain; charset=utf-8",
+            "createdAt": "2026-11-07T04:06:35Z",
+            "digest": "sha256:5c1f8b2567a7f7dd26b4089c5d5d5b41a85361c93db5f25b04ee147c13ac230a",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44Of",
+            "label": "",
+            "name": "SHA256SUMS.txt",
+            "size": 94,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:36Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/SHA256SUMS.txt"
+          },
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553438",
+            "contentType": "application/zip",
+            "createdAt": "2026-11-07T04:06:35Z",
+            "digest": "sha256:6f7c37538c2c39ff9d6cac73625583e190308637d398ce64c8b4da12956bcbf7",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44Oe",
+            "label": "",
+            "name": "ShiftMgmt-1.0.0-win-x64.zip",
+            "size": 58769281,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:51Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/ShiftMgmt-1.0.0-win-x64.zip"
+          },
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553444",
+            "contentType": "application/json",
+            "createdAt": "2026-11-07T04:06:35Z",
+            "digest": "sha256:7579d997e25b6d85c1e1413063c6c566a5743c1c299348d616e5fb1a319c08b9",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44Ok",
+            "label": "",
+            "name": "VERIFICATION_INSTALL.json",
+            "size": 1810,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:36Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/VERIFICATION_INSTALL.json"
+          },
+          {
+            "apiUrl": "https://api.github.com/repos/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/assets/719553464",
+            "contentType": "application/json",
+            "createdAt": "2026-11-07T04:06:37Z",
+            "digest": "sha256:14c4d95308cf2dffb4628bd82d98c1b407002cd9a229d983fd143ac1bcdedafc",
+            "downloadCount": 0,
+            "id": "RA_kwDOVLu4iM4q44O4",
+            "label": "",
+            "name": "VERIFICATION_RELEASE.json",
+            "size": 1746,
+            "state": "uploaded",
+            "updatedAt": "2026-11-07T04:06:37Z",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/untagged-a29d4df7c427fa2644b0/VERIFICATION_RELEASE.json"
+          }
+        ],
+        "isDraft": true,
+        "tagName": "v1.0.0",
+        "targetCommitish": "d6adc70d90afc996f9947f7606a70c96004bbfaa",
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-a29d4df7c427fa2644b0",
+        "downloadVerification": {
+          "sha256": "6f7c37538c2c39ff9d6cac73625583e190308637d398ce64c8b4da12956bcbf7",
+          "ok": true
+        }
+      },
+      "productionPcInstalled": false,
+      "publicReleasePublished": false,
+      "backupMigration": "Not performed: fresh PC installation; no existing operational DB read or copied. Backup guidance included.",
+      "priorAttempt": {
+        "result": "PRODUCT_ENTRYPOINT_ACCOUNT_GUIDANCE_DELAY",
+        "candidate": "v1.0.0-rejected-bootstrap",
+        "privateEvidence": "C:/Users/hacke/AppData/Local/Temp/shiftmgmt-release-smoke-T91GPW",
+        "resolution": "Existing account initialization service called before Chrome/guidance; original admin bootstrap policy preserved; rebuilt from d6adc70 and fresh install16 passed."
+      }
     },
     {
       "id": "REL-03",
@@ -3418,7 +3564,8 @@
       "status": "TODO",
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": false,
-      "deferredBy": "2026-11-02 user UI review priorities; operating PC unknown"
+      "installationTarget": "FRESH_PC",
+      "authorizationRequired": "Explicit user approval for actual target PC install; draft public publication also pending"
     },
     {
       "id": "UI-03-DEV-LOGIN",
@@ -5278,8 +5425,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 93931,
-    "sha256": "19E5A085ABA12DF7EF6DE2E6F4039B6D5669EF020F0AA1492BF636C0E1E1374E"
+    "bytes": 95082,
+    "sha256": "871D8F469A8D8978C262AFE583B4AEAFCA8AE3E5F008762800267B1F63F4F62C"
   },
   "statusHistory": [
     {
@@ -7478,6 +7625,21 @@
       "taskId": "REL-02",
       "status": "IN_PROGRESS",
       "note": "2026-11-07 user: git push and prepare formal release; installation target: fresh PC"
+    },
+    {
+      "at": "2026-11-07T04:07:32.752Z",
+      "taskId": "REL-02",
+      "status": "PREPARED_VERIFIED_DRAFT_ONLY",
+      "unit": {
+        "files": 160,
+        "tests": 1535
+      },
+      "install": 16,
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
     }
   ],
   "remainingEstimatedHours": [
@@ -7521,7 +7683,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-07T03:40:12.335Z",
+  "updatedAt": "2026-11-07T04:07:32.752Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -7537,13 +7699,11 @@
     "realPcApplied": false
   },
   "lastGitSyncRequest": {
-    "authorizedBy": "User explicit commit/push/sync request 2026-11-04",
-    "productCommit": "995b92a85e8a006c3489b2ad171d2c5366dda8c8",
-    "remote": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal.git",
-    "integrationBranch": "main",
-    "productBranch": "source/shiftmgmt-v4",
-    "productFilesUnchangedSinceAcceptance": 510,
-    "deployment": false
+    "authorization": "2026-11-07 user: git push and prepare formal release; installation target: fresh PC",
+    "sourceCommit": "d6adc70d90afc996f9947f7606a70c96004bbfaa",
+    "sourceBranch": "d2e8ec567de95b00e72c9c75cbf1ae5503e645e9",
+    "sourceTree": "80f12dde7e7ee1bc984be687471377af8c189578",
+    "draft": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-a29d4df7c427fa2644b0"
   },
   "operationsMenuDesignStandard": {
     "source": "2026-11-04 user feedback",
