@@ -5601,7 +5601,16 @@
         }
       },
       "publicReleasePublished": false,
-      "productionPcInstalled": false
+      "productionPcInstalled": false,
+      "documentTotalsCorrection": {
+        "fullRuns": 2,
+        "changedFiles": 29,
+        "protectedFiles": 507,
+        "archive": "Log/20261107_132900_before-flow-document-totals.md",
+        "archiveBytes": 2847,
+        "archiveSha256": "B276969C96E05787014CAA35A7DBA1877CA27AFFB3BC0683D075D8A04BAE4B62",
+        "productChanged": false
+      }
     }
   ],
   "policy": {
@@ -5724,8 +5733,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 98868,
-    "sha256": "5C468CB27269CB843E647CA61056492241356E642413893E179BEA9BE0AA5FF8"
+    "bytes": 98939,
+    "sha256": "B8190F7342C2DD6AC2D6FCF2B54EE36D100A6A194658989524E8E6176761AB90"
   },
   "statusHistory": [
     {

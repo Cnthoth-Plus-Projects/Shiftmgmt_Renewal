@@ -12,7 +12,7 @@
 ## FLOW 수정·1.0.1 실제 결과
 
 - FLOW-01/02/03 수정 완료. 시간누락·월불일치 승인 차단, 배포 전용 폴더와 실제 승인·계산 근거를 적용. 정상/자정/수동시급·Pool 제외·세션만료·기존 승인/계산 이력 보존 검증. 기존 산식·요율·정책일·스키마·의존성·V3/실자료 무변경.
-- 새 전체 단위 1554/160·설치/Chrome16·업무흐름HTTP/Chrome7·근무표3·실적3·타입/규칙(기존경고3)·지도259/서비스89 통과. 최종 전체1회. 기존 집중실패와 fixture정정 원문 보존.
+- 새 전체 단위 1554/160·설치/Chrome16·업무흐름HTTP/Chrome7·근무표3·실적3·타입/규칙(기존경고3)·지도259/서비스89 통과. 전체2회 실행: 1차1553통과/fixture1실패 보존, 시험 보완 후2차1554통과. 기존 집중실패와 fixture정정 원문 보존.
 - 소스 82996d9413d66bd795ba08d3aef73340ff7652e9, 제품tree 028ae4d127d80d53785fc42a1faea7f0bc0eee5e. ZIP 58771281bytes / SHA256 2bc2d6c2b09548fca6d7e6400a104b2db813c14926738596574108c937739d9e. 로컬 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-flow-fix-t6N7z4/release/v1.0.1.
 - GitHub draft https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-32120817ed671aa98f02. 원격 ZIP 재다운로드 해시 일치. 이전1.0.0 ZIP·초안 첨부 보존/이전판 표시. 실제 대상PC 설치·공개게시 미실행. Gemini 최초0/재시도0/누적0·Sol직접.
 
