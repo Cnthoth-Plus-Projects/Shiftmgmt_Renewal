@@ -12,9 +12,10 @@ import { approvePerformanceFile } from "./performance-approval-flow-service";
 import { resetPerformanceApprovalStateForTest } from "./performance-approval-service";
 import {
   getStoredPerformanceFileDetail,
+  getStoredPerformanceFileDetailByPath,
   resetPerformanceFileStorageForTest
 } from "./performance-file-storage-service";
-import { syncPendingPerformanceFilesToStorage } from "./performance-file-intake-service";
+import { syncApprovedPerformanceFilesToStorage, syncPendingPerformanceFilesToStorage } from "./performance-file-intake-service";
 import {
   prepareReturnedScheduleFixture,
   resetPreparedReturnedScheduleRoot,
@@ -81,7 +82,7 @@ describe("performance-queue-service", () => {
     const detail = await syncPreparedReturnedSchedule(fixture);
 
     for (const entry of detail.entries) {
-      await approvePerformanceFile(
+      const result = await approvePerformanceFile(
         {
           fileId: detail.id,
           entryId: entry.id
@@ -91,10 +92,18 @@ describe("performance-queue-service", () => {
           userDataPath: fixture.userDataPath
         }
       );
+      expect(result.ok).toBe(true);
     }
 
-    resetPerformanceApprovalStateForTest();
-    resetPerformanceFileStorageForTest();
+    const database = getSqliteDatabase()!;
+    const savedCalculations = database.prepare("SELECT * FROM allowance_calculations ORDER BY id").all();
+    expect(savedCalculations).toHaveLength(3);
+    // Reparse the archive while retaining its file/entry identities and financial evidence.
+    expect(await syncApprovedPerformanceFilesToStorage({
+      settings: { pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir },
+      scheduleMonth: "2026-03",
+      forceReparse: true
+    })).toHaveLength(0);
 
     const approvedItems = await listPerformanceFiles(
       {
@@ -133,6 +142,22 @@ describe("performance-queue-service", () => {
     expect(approvedDetail?.directoryType).toBe("approved");
     expect(approvedDetail?.entries).toHaveLength(3);
     expect(approvedDetail?.entries.every((entry) => entry.status === "approved")).toBe(true);
+    expect(database.prepare("SELECT * FROM allowance_calculations ORDER BY id").all()).toEqual(savedCalculations);
+
+    // FLOW-02: archive location alone must not replace a missing approval record.
+    resetPerformanceApprovalStateForTest();
+    resetPerformanceFileStorageForTest();
+    const unsignedItems = await listPerformanceFiles(
+      { status: "approved", scheduleMonth: "2026-03" },
+      { pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir }
+    );
+    expect(unsignedItems).toHaveLength(0);
+    const unsignedDetail = getStoredPerformanceFileDetailByPath(approvedDetail!.filePath, "approved");
+    expect(unsignedDetail).not.toBeNull();
+    expect(unsignedDetail?.status).toBe("parsed");
+    expect(unsignedDetail?.approvedEntryCount).toBe(0);
+    expect(unsignedDetail?.entries.every(entry => entry.status === "pending")).toBe(true);
+    expect(database.prepare("SELECT * FROM allowance_calculations ORDER BY id").all()).toEqual(savedCalculations);
   });
 
   it("should recover a stale pending row even when a legacy approved status was left behind", async () => {

@@ -1,4 +1,4 @@
-import { existsSync, renameSync } from "node:fs";
+import { existsSync, renameSync, copyFileSync, unlinkSync } from "node:fs";
 import path from "node:path";
 
 import ExcelJS from "exceljs";
@@ -13,7 +13,8 @@ import {
   approvePerformanceFile,
   finalizeReapprovedPerformanceFile
 } from "./performance-approval-flow-service";
-import { getStoredPerformanceFileDetail } from "./performance-file-storage-service";
+import { getStoredPerformanceFileDetail, upsertPerformanceFileDetail } from "./performance-file-storage-service";
+import { buildPerformanceFileDetailFromPath } from "./performance-file-intake-service";
 import { resetPerformanceApprovalStateForTest } from "./performance-approval-service";
 import { resetPerformanceFileStorageForTest } from "./performance-file-storage-service";
 import {
@@ -41,6 +42,28 @@ const createTestRoot = () => {
 };
 
 describe("performance-management-service", () => {
+  it("FLOW-02: legacy folder-only approval flags cannot produce approved rows or counts", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot()});
+    const approvedPath = path.join(fixture.approvedDir, fixture.fileName);
+    copyFileSync(fixture.filePath, approvedPath);
+    unlinkSync(fixture.filePath);
+    const settings = {pendingDir: fixture.pendingDir, approvedDir: fixture.approvedDir};
+    const detail = (await buildPerformanceFileDetailFromPath({filePath: approvedPath, settings}))!;
+    expect(detail.status).toBe("parsed");
+    expect(detail.approvedEntryCount).toBe(0);
+    // Recreate only the old cache flags from this real intake; no approval/calculation is invented.
+    upsertPerformanceFileDetail({...detail, status: "approved", approvedEntryCount: detail.entryCount});
+    const cached = getStoredPerformanceFileDetail(detail.id)!;
+    expect(cached.status).toBe("parsed");
+    expect(cached.approvedEntryCount).toBe(0);
+    expect(cached.entries.every(entry => entry.status === "pending")).toBe(true);
+    const overview = await listPerformanceOverview({scheduleMonth: "2026-03", approvalScope: "approved"}, settings);
+    expect(overview.groups.flatMap(group => group.rows)).toEqual([]);
+    expect(overview.syncIssues.some(issue => issue.message.includes("실제 승인·수당 계산 기록"))).toBe(true);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()?.n).toBe(0);
+    expect(listApprovedAllowanceCalculationResults()).toEqual([]);
+  });
+
   it("W-05: wage-only real XLSX reread preserves historic approvals, displayed rate and calculations", async () => {
     const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot() });
     const first = await syncPreparedReturnedSchedule(fixture);

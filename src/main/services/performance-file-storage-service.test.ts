@@ -17,6 +17,10 @@ import {
   createPerformanceApprovalRecord,
   resetPerformanceApprovalStateForTest
 } from "./performance-approval-service";
+import { prepareReturnedScheduleFixture, syncPreparedReturnedSchedule, resetPreparedReturnedScheduleRoot, testAdminSession } from "./performance-test-helpers";
+import { approvePerformanceFile } from "./performance-approval-flow-service";
+
+const flowRoot = path.resolve(process.cwd(), "artifacts", "tests", "performance-file-storage-flow");
 
 const sampleDetail: PerformanceFileDetail = {
   id: "별첨1_샘플.xlsx",
@@ -78,6 +82,7 @@ describe("performance-file-storage-service", () => {
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();
     resetSqliteStorageForTest();
+    resetPreparedReturnedScheduleRoot(flowRoot);
   });
 
   it("should upsert runtime performance file metadata into sqlite", () => {
@@ -196,7 +201,7 @@ describe("performance-file-storage-service", () => {
     ]);
   });
 
-  it("should not count approved pool entries in approvedEntryCount while preserving entries and approval history", () => {
+  it("should preserve legacy approval-only history without counting it or Pool as paid approval", () => {
     initializeSqliteStorage({
       dbPath: path.resolve(process.cwd(), "artifacts", "tests", "performance-files.test.sqlite")
     });
@@ -261,6 +266,22 @@ describe("performance-file-storage-service", () => {
     expect(stored).toBeDefined();
     expect(stored?.entries).toHaveLength(2);
     expect(stored?.approvalHistory).toHaveLength(2);
-    expect(stored?.approvedEntryCount).toBe(1);
+    expect(stored?.approvedEntryCount).toBe(0);
+    expect(stored?.status).toBe("parsed");
+  });
+
+  it("FLOW-02: real Excel approval/calculation is counted while Pool remains excluded", async () => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: flowRoot, substituteReplacementShiftGroup: "Pool"});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const payable = detail.entries.find(entry => entry.section === "overtime")!;
+    const pool = detail.entries.find(entry => entry.isPoolWorker)!;
+    expect(pool).toBeDefined();
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: payable.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: pool.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(false);
+    const stored = getStoredPerformanceFileDetail(detail.id)!;
+    expect(stored.entries).toHaveLength(detail.entries.length);
+    expect(stored.approvalHistory).toHaveLength(1);
+    expect(stored.approvedEntryCount).toBe(1);
+    expect(stored.entries.find(entry => entry.id === pool.id)?.status).toBe("pending");
   });
 });

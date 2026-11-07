@@ -33,7 +33,7 @@ describe("schedule-plan-publish-service", () => {
     });
   });
 
-  it("should copy an exported schedule file into the approved directory", async () => {
+  it("should copy an exported schedule file into a separate publish directory", async () => {
     initializeSqliteStorage({
       dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-publish.test.sqlite")
     });
@@ -121,7 +121,8 @@ describe("schedule-plan-publish-service", () => {
     expect(existsSync(published!.publishedPath!)).toBe(true);
     expect(listStoredSchedulePlanExports()[0]?.publishStatus).toBe("published");
     expect(path.dirname(exported!.outputPath)).toBe(path.resolve(exportDir, "2024년", "10월"));
-    expect(path.dirname(published!.publishedPath!)).toBe(publishDir);
+    expect(path.dirname(published!.publishedPath!)).toBe(path.resolve(exportDir, "배포"));
+    expect(existsSync(path.join(publishDir, exported!.outputFileName))).toBe(false);
   });
 
   it("should avoid overwriting an existing file in the approved directory", async () => {

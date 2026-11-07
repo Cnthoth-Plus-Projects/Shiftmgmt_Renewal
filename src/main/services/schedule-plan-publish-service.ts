@@ -8,6 +8,11 @@ import {
   markStoredSchedulePlanExportPublished
 } from "./schedule-plan-export-history-service";
 
+export const resolveSchedulePlanPublishDirectory = (input: {
+  userDataPath: string;
+  env?: NodeJS.ProcessEnv;
+}) => path.join(getStoredAppSettingsSnapshot(input).scheduleExportDir, "배포");
+
 export const publishSchedulePlanExport = (input: {
   exportId: string;
   userDataPath: string;
@@ -22,10 +27,10 @@ export const publishSchedulePlanExport = (input: {
 
   const outputDir =
     input.outputDir ??
-    getStoredAppSettingsSnapshot({
+    resolveSchedulePlanPublishDirectory({
       userDataPath: input.userDataPath,
       env: input.env
-    }).approvedDir;
+    });
   mkdirSync(outputDir, { recursive: true });
 
   const extension = path.extname(exportRecord.outputFileName);

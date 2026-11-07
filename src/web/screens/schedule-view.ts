@@ -113,7 +113,7 @@ export class ScheduleView {
         <div class="schedule-kpi-card" id="kpi-history-published">
           <div class="schedule-kpi-text">
             <div class="schedule-kpi-lbl">배포 폴더 게시 완료</div>
-            <div class="schedule-kpi-sub">승인 폴더 전송 완료</div>
+            <div class="schedule-kpi-sub">배포 전용 폴더 전송 완료</div>
           </div>
           <div class="schedule-kpi-val text-success">${publishedCount}건</div>
         </div>

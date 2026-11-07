@@ -47,6 +47,7 @@ import {
 import { getPendingPerformanceFileDetail } from "./performance-queue-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
 import { getStoredAppSettingsSnapshot } from "./app-settings-storage-service";
+import { buildPerformanceFileDetailFromPath } from "./performance-file-intake-service";
 import { listStoredEmployees } from "./employee-storage-service";
 import { listStoredEmployeeWageRates } from "./employee-history-service";
 import {
@@ -410,6 +411,7 @@ export const approvePerformanceFile = async (
     userDataPath?: string;
     env?: NodeJS.ProcessEnv;
     requireExpectedPolicyFingerprint?: boolean;
+    isSessionCurrent?: () => boolean;
   }
 ): Promise<BridgeResult<PerformanceApprovalRecord>> => {
   const detail = await getPendingPerformanceFileDetail(input.fileId);
@@ -424,8 +426,38 @@ export const approvePerformanceFile = async (
     return buildMissingEntryResult();
   }
 
+  if (detail.scheduleMonth !== entry.scheduleMonth || entry.workDate.slice(0, 7) !== entry.scheduleMonth) {
+    return buildApprovalBlockedResult("파일 근무월과 실제 근무일이 다릅니다. 원본 엑셀과 파일명을 확인한 뒤 다시 가져와 주세요.");
+  }
   if (isNonPayablePerformanceEntry(entry)) {
     return buildApprovalBlockedResult(buildNonPayablePerformanceMessage(entry));
+  }
+
+  // 저장된 분석 결과만 믿으면 구판 캐시나 파일 변경으로 시간 누락을 승인할 수 있다.
+  // 원본 검문은 읽기만 하며 기존 승인·계산 스냅샷을 갱신하지 않는다.
+  if (context?.userDataPath) {
+    const settings = getStoredAppSettingsSnapshot({userDataPath: context.userDataPath, env: context.env});
+    const current = await buildPerformanceFileDetailFromPath({filePath: detail.filePath, settings, forceReparse: true});
+    if (!current || current.status === "error") {
+      return buildApprovalBlockedResult(current?.errorMessage ?? "원본 엑셀을 확인할 수 없습니다. 원본을 다시 가져온 뒤 승인해 주세요.");
+    }
+    const freshEntry = current.entries.find(candidate => candidate.id === entry.id);
+    if (freshEntry && isNonPayablePerformanceEntry(freshEntry)) {
+      return buildApprovalBlockedResult(buildNonPayablePerformanceMessage(freshEntry));
+    }
+    if (freshEntry && context.requireExpectedPolicyFingerprint && freshEntry.appliedPolicies?.fingerprint !== input.expectedPolicyFingerprint) {
+      return {ok: false, errorCode: "POLICY_CONFLICT", message: "실적의 정책 기준이 변경되었습니다. 다시 읽은 뒤 승인해 주세요."};
+    }
+    if (!freshEntry || freshEntry.scheduleMonth !== entry.scheduleMonth || freshEntry.workDate !== entry.workDate ||
+      freshEntry.employeeCode !== entry.employeeCode || freshEntry.startTime !== entry.startTime ||
+      freshEntry.endTime !== entry.endTime || freshEntry.totalWorkMinutes !== entry.totalWorkMinutes ||
+      freshEntry.sourceSignature !== entry.sourceSignature) {
+      return buildApprovalBlockedResult("원본 엑셀의 내용 또는 근무 시각을 다시 확인해야 합니다. 실적 화면에서 다시 읽은 뒤 승인해 주세요.");
+    }
+  }
+
+  if (context?.isSessionCurrent && !context.isSessionCurrent()) {
+    return {ok: false, errorCode: "AUTH_SESSION_REQUIRED", message: "로그인 상태 또는 승인 권한이 변경되었습니다. 다시 로그인한 뒤 실적을 확인해 주세요."};
   }
 
   const latestApproval = getLatestPerformanceApprovalByLogicalKey(entry.logicalKey);
