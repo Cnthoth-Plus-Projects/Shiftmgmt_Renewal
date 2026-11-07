@@ -443,10 +443,10 @@ describe("operations-storage-service", () => {
         role: "operator",
         status: "active"
       })
-    ).toThrowError("최소 1명의 관리자 계정은 유지해야 합니다.");
+    ).toThrowError("최소 1명의 활성 관리자 계정은 유지해야 합니다.");
 
     expect(() => deleteStoredOperationUser("user-admin")).toThrowError(
-      "최소 1명의 관리자 계정은 유지해야 합니다."
+      "최소 1명의 활성 관리자 계정은 유지해야 합니다."
     );
 
     deleteStoredOperationUser("user-pending-review");

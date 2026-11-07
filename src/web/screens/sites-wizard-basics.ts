@@ -134,12 +134,12 @@ export class SitesWizardBasics {
 
       <div class="sites-form-group">
         <label class="sites-form-label">상태</label>
-        <div style="display:flex; gap:16px; margin-top:4px;">
-          <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer;">
+        <div class="sites-status-options">
+          <label class="sites-status-option">
             <input type="radio" name="site-status" value="active" ${this.siteStatus === "active" ? "checked" : ""} />
             <span>사용 (활성)</span>
           </label>
-          <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer;">
+          <label class="sites-status-option">
             <input type="radio" name="site-status" value="inactive" ${this.siteStatus === "inactive" ? "checked" : ""} />
             <span>사용 안 함 (비활성)</span>
           </label>
@@ -148,7 +148,7 @@ export class SitesWizardBasics {
 
       <div class="sites-form-group">
         <label class="sites-form-label" for="inp-site-code">근무지 코드</label>
-        <input type="text" id="inp-site-code" class="sites-form-input" value="${this.siteCode ? this.escape(this.siteCode) : "저장 시 자동 생성"}" readonly style="background:#F4F5F7; color:var(--text-sub, #4B5563);" />
+        <input type="text" id="inp-site-code" class="sites-form-input sites-readonly" value="${this.siteCode ? this.escape(this.siteCode) : "저장 시 자동 생성"}" readonly />
         <span class="sites-form-help">신규 등록 시 시스템 표준 규칙에 따라 코드가 자동 채번됩니다.</span>
       </div>
     `;
@@ -176,21 +176,21 @@ export class SitesWizardBasics {
         <label class="sites-form-label" for="wizard-team-count">조 수 (2 ~ 8개 조) <span class="sites-required" aria-hidden="true">*</span></label>
         <input type="number" id="wizard-team-count" class="sites-form-input" min="2" max="8" value="${this.draft.teamCount}" />
         <span class="sites-form-help">운영할 조의 수입니다. 이름·정원은 조직 구성에서 정합니다.</span>
-        <div id="team-count-error" style="color:#C0392B; font-size:11px; margin-top:2px; display:${this.teamCountError ? "block" : "none"};">${this.escape(this.teamCountError)}</div>
+        <div class="sites-team-error" id="team-count-error" ${this.teamCountError ? "" : "hidden"}>${this.escape(this.teamCountError)}</div>
       </div>
 
-      <div class="sites-form-group" style="border:1px solid var(--line, #E2E5EA); border-radius:6px; padding:10px 12px; margin-top:8px;">
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; cursor:pointer;">
+      <div class="sites-form-group sites-pool-box">
+        <label class="sites-pool-label">
           <input type="checkbox" id="chk-pool-enabled" ${this.draft.poolEnabled ? "checked" : ""} />
           <span>Pool(대기/지원) 조 사용</span>
         </label>
-        <div id="pool-time-fields" style="display:${this.draft.poolEnabled ? "flex" : "none"}; gap:10px; margin-top:8px; align-items:center; font-size:12px;">
+        <div class="sites-pool-fields" id="pool-time-fields" ${this.draft.poolEnabled ? "" : "hidden"}>
           <span>근무시간:</span>
-          <input type="time" id="inp-pool-start" class="sites-form-input" style="width:90px;" value="${this.draft.poolStartTime || "09:00"}" />
+          <input type="time" id="inp-pool-start" class="sites-form-input sites-pool-time" value="${this.draft.poolStartTime || "09:00"}" />
           <span>~</span>
-          <input type="time" id="inp-pool-end" class="sites-form-input" style="width:90px;" value="${this.draft.poolEndTime || "18:00"}" />
+          <input type="time" id="inp-pool-end" class="sites-form-input sites-pool-time" value="${this.draft.poolEndTime || "18:00"}" />
           <span>휴게:</span>
-          <input type="number" id="inp-pool-break" class="sites-form-input" style="width:60px;" min="0" step="30" value="${this.draft.poolBreakMinutes ?? 60}" />
+          <input type="number" id="inp-pool-break" class="sites-form-input sites-pool-break" min="0" step="30" value="${this.draft.poolBreakMinutes ?? 60}" />
           <span>분</span>
         </div>
       </div>
@@ -233,13 +233,13 @@ export class SitesWizardBasics {
         this.teamCountError = "조 수는 2개 이상 8개 이하여야 합니다.";
         if (errEl) {
           errEl.textContent = this.teamCountError;
-          errEl.style.display = "block";
+          errEl.hidden = false;
         }
       } else {
         this.teamCountError = "";
         if (errEl) {
           errEl.textContent = "";
-          errEl.style.display = "none";
+          errEl.hidden = true;
         }
       }
 
@@ -275,7 +275,7 @@ export class SitesWizardBasics {
 
     poolChk?.addEventListener("change", () => {
       if (poolFields) {
-        poolFields.style.display = poolChk.checked ? "flex" : "none";
+        poolFields.hidden = !poolChk.checked;
       }
       notifyChange();
     });
@@ -305,6 +305,6 @@ export class SitesWizardBasics {
   private escape(str: string): string {
     const div = document.createElement("div");
     div.textContent = str;
-    return div.innerHTML;
+    return div.innerHTML.replace(/"/g, "&quot;");
   }
 }

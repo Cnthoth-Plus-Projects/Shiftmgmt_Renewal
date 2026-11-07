@@ -1826,15 +1826,16 @@ export const saveStoredOperationUser = (input: {
     throw new Error("수정할 사용자를 찾을 수 없습니다.");
   }
 
-  if (String(existing.role) === "admin" && role !== "admin") {
+  if (existing.role === "admin" && existing.status === "active" &&
+      (role !== "admin" || status !== "active")) {
     const adminCount = database.prepare(`
       SELECT COUNT(*) as count
       FROM app_users
-      WHERE role = 'admin'
+      WHERE role = 'admin' AND status = 'active'
     `).get() as { count: number };
 
     if (adminCount.count <= 1) {
-      throw new Error("최소 1명의 관리자 계정은 유지해야 합니다.");
+      throw new Error("최소 1명의 활성 관리자 계정은 유지해야 합니다.");
     }
   }
 
@@ -1889,25 +1890,25 @@ export const deleteStoredOperationUser = (userId: string) => {
   ensureOperationsSeed();
 
   const target = database.prepare(`
-    SELECT id, role
+    SELECT id, role, status
     FROM app_users
     WHERE id = ?
     LIMIT 1
-  `).get(userId) as { id: string; role: UserRecord["role"] } | undefined;
+  `).get(userId) as { id: string; role: UserRecord["role"]; status: UserRecord["status"] } | undefined;
 
   if (!target) {
     throw new Error("삭제할 사용자를 찾을 수 없습니다.");
   }
 
-  if (target.role === "admin") {
+  if (target.role === "admin" && target.status === "active") {
     const adminCount = database.prepare(`
       SELECT COUNT(*) as count
       FROM app_users
-      WHERE role = 'admin'
+      WHERE role = 'admin' AND status = 'active'
     `).get() as { count: number };
 
     if (adminCount.count <= 1) {
-      throw new Error("최소 1명의 관리자 계정은 유지해야 합니다.");
+      throw new Error("최소 1명의 활성 관리자 계정은 유지해야 합니다.");
     }
   }
 
@@ -1947,13 +1948,19 @@ export const findStoredOperationAuthByLoginId = (
 export const findStoredOperationAuthByUserId = (
   userId: string
 ): StoredOperationAuthRecord | null => {
+  ensureOperationsSeed();
+  return readStoredOperationAuthByUserId(userId);
+};
+
+// Session validation must never seed or repair data while checking an existing identity.
+export const readStoredOperationAuthByUserId = (
+  userId: string
+): StoredOperationAuthRecord | null => {
   const database = getSqliteDatabase();
 
   if (!database || !isSqliteStorageReady()) {
     return null;
   }
-
-  ensureOperationsSeed();
 
   const row = database.prepare(`
     SELECT *

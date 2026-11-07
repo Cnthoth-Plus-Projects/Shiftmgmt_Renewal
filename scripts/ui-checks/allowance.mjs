@@ -1277,9 +1277,16 @@ async function run() {
       const afterExports = take(await api("listAllowanceDocumentExports"));
       assert.equal(afterExports.length, beforeExports + 2);
 
-      // 출력 이력 탭에서 직급 미확인 배너 확인
+      // 출력 이력은 요약 행에서 문서 상세를 열어 직급 미확인 안내를 확인한다.
       await page.locator(".allowance-tab-btn[data-tab='exports']").click();
-      assert.ok(await page.locator(".export-rank-warning").first().isVisible());
+      const latestRankExport = afterExports.filter(item => item.calculationIds.includes(rankTarget.id)).sort((a,b) => b.exportedAt.localeCompare(a.exportedAt))[0];
+      assert.ok(latestRankExport, "Actual re-export of the missing-rank target must exist");
+      await page.locator(`[data-history-detail="export:${latestRankExport.id}"]`).click();
+      await page.locator("#allowance-history-detail-modal").waitFor();
+      const rankWarning = page.locator("#allowance-history-detail-modal .export-rank-warning");
+      assert.ok(await rankWarning.isVisible());
+      assert.ok((await rankWarning.innerText()).includes(fixtureResult.rankMissingEmployeeName));
+      await page.locator("#btn-history-detail-close").click();
       await resetFilters("2026-05");
       return {
         reExportedCount: 2,
@@ -1332,12 +1339,14 @@ async function run() {
         };
       });
 
-      const firstCopyBtn = page.locator("#export-history-section .btn-copy-path").first();
+      await page.locator("#export-history-section [data-history-detail]").first().click();
+      await page.locator("#allowance-history-detail-modal").waitFor();
+      const firstCopyBtn = page.locator("#allowance-history-detail-modal .btn-copy-path").first();
       assert.ok((await firstCopyBtn.count()) > 0);
       await firstCopyBtn.click();
       await sleep(150);
       const feedbackSuccess = await page
-        .locator("#export-history-section .allowance-copy-feedback")
+        .locator("#allowance-history-detail-modal .allowance-copy-feedback")
         .first()
         .innerText();
       assert.equal(feedbackSuccess, "복사됨");
@@ -1352,7 +1361,7 @@ async function run() {
       await firstCopyBtn.click();
       await sleep(150);
       const feedbackErr = await page
-        .locator("#export-history-section .allowance-copy-feedback.error")
+        .locator("#allowance-history-detail-modal .allowance-copy-feedback.error")
         .first()
         .innerText();
       const selectedPathText = await page.evaluate(() => window.getSelection()?.toString() || "");
@@ -1368,6 +1377,7 @@ async function run() {
           });
         }
       });
+      await page.locator("#btn-history-detail-close").click();
       await resetFilters("2026-05");
       return { pastBadgeCount, totalReviews, copySuccessAndInlineFailureVerified: true };
     });

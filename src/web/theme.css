@@ -1,0 +1,258 @@
+/* Theme changes colors only; each screen keeps its existing geometry and density. */
+:root[data-theme="light"] { color-scheme:light; }
+.theme-control { display:inline-flex; align-items:center; flex-shrink:0; }
+.theme-control .theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; padding:0; border:1px solid var(--line); border-radius:9px; background:var(--surface); color:var(--text-sub); cursor:pointer; }
+.theme-control .theme-toggle .material-symbols-outlined { font-size:21px; line-height:1; }
+.theme-control .theme-toggle:hover { background:var(--accent-subtle); color:var(--accent); border-color:var(--accent); }
+.theme-control .theme-toggle:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.login-container > .theme-control { position:fixed; top:20px; right:24px; z-index:10; }
+
+:root[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#151b25; --surface:#1d2633; --line:#3b4b64; --line-strong:#718096;
+  --text:#e5ecf5; --text-sub:#abb9cd; --text-primary:#e5ecf5;
+  --accent:#aabcff; --accent-hover:#c4d1ff; --accent-subtle:#293d62;
+  --danger:#ffb5bb; --danger-bg:#452835; --danger-border:#b56e7b;
+  --success:#a5dfbd; --success-bg:#1e4138;
+  --control-border:#718096; --control-ring:0 0 0 3px #aabcff40;
+  --theme-raised:#253246; --theme-input:#172130; --theme-hover:#2c3b51;
+  --theme-warning:#f3d39a; --theme-warning-bg:#493c25;
+  --theme-info:#c2d9ff; --theme-info-bg:#263f5a;
+  background:var(--bg);
+}
+/* #app supplies specificity for screen rules. body also covers portalled dialogs. */
+:root[data-theme="dark"] :is(#app,body) :is(
+  .login-container,.page-content,.operations-screen-root,.performance-screen,.perf-container,
+  .allowance-screen,.dashboard-screen,.sites-screen,.sites-screen-root,.schedule-screen
+) { background-color:var(--bg); color:var(--text); }
+
+:root[data-theme="dark"] :is(#app,body) :is(
+  .login-card,.sidebar,.header-bar,.footer-statusbar,.dt-container,.dt-toolbar,.dt-pagination,
+  .operations-tab-list,.operations-tab-content,.ops-settings-section .form-group,
+  .schedule-tab-group,.perf-tabs-group,.allowance-tabs-group,.allowance-history-wrapper,
+  .detail-header,.skeleton,.ops-system-tag,.ops-holiday-import-steps li,
+  .tabs-nav,.tabs-content,.ops-category-nav,.ops-menu-panels,.ops-menu-footer,.ops-menu-context,
+  .ops-settings-section,.ops-settings-footer,.ops-settings-panel-header,.ops-settings-card,
+  .editor-section,.filename-section,.layout-section,.history-section,.preview-section,
+  .canvas-layout-grid,.release-detail-card,.rate-matrix,.impact-result-card,
+  .workforce-detail-panel,.workforce-table-card,.workforce-modal-box,.workforce-modal-body,
+  .workforce-modal-header,.workforce-modal-footer,.workforce-preview-table-container,
+  .access-history-detail-panel,.access-history-filter-card,.access-history-table-card,
+  .ui-control-popup,.ui-time-picker,.ui-calendar,.modal-box,.modal-content,.modal-header,.modal-footer,
+  .dashboard-kpi,.dashboard-card,.dashboard-filters,.dashboard-export-menu,.dashboard-rank-footer,
+  .dashboard-result,
+  .perf-kpi-card,.perf-filter-bar,.perf-table-container,.perf-detail-panel,
+  .allowance-kpi-card,.allowance-filter-bar,.allowance-detail-panel,.allowance-table-container,
+  .allowance-left-col,.allowance-right-col,.allowance-table-footer,
+  .sites-card,.sites-panel,.sites-detail-panel,.sites-wizard,.sites-pattern-workspace,
+  .sites-version-item,.sites-version-note,.sites-action-note,.sites-detail-note,.sites-wizard-top,
+  .dashboard-data-details>summary,.dashboard-data-details[open],
+  .schedule-panel,.schedule-month-pane,.schedule-day,.schedule-filter-bar,
+  .schedule-staff-pane,.schedule-month-day,
+  .schedule-staff-heading,.schedule-month-cell.is-other-month,.hire-date-guide,
+  .perf-detail-header,.allowance-detail-header,
+  [class*="-card"],[class*="-panel"],[class*="-toolbar"],[class*="-pagination"],
+  .wf-retirement-metric,.wf-retirement-dates,.wf-retirement-details,.wf-rehire-section
+) { background-color:var(--surface); background-image:none; color:var(--text); border-color:var(--line); box-shadow:none; }
+
+:root[data-theme="dark"] :is(#app,body) :is(h1,h2,h3,h4,h5,h6,label,legend,summary,
+  .header-title,.brand-text,.brand-title,.user-name-text,.nav-item,.nav-label,
+  .ops-menu-workspace,.ops-settings-workspace,.ops-category-title,.section-title,.section-sub,
+  .tab-title,.form-label,.col-title,.dashboard-kpi strong,.dashboard-chart-title,
+  .workforce-detail-title,.perf-kpi-card-value,.allowance-kpi-value,.stat-num-hero,
+  .canvas-selected-label,.dashboard-result strong,
+  .schedule-kpi-val,.schedule-empty-title,.perf-state-title,.ops-holidays-kpi-val,.ops-detail-field-value,.dt-count-badge strong,
+  .wf-retirement-date-value,.wf-retirement-metric-value,.wf-retirement-heading
+) { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) :is(
+  p,small,.text-muted,.form-help,.form-hint,.field-hint,.field-description,.help-text,
+  .ops-menu-description,.ops-category-hint,.ops-menu-footer-text,.layout-meta-bar,.meta-badge,
+  .ops-settings-tab-hint,.ops-settings-panel-desc,.ops-settings-caption,.dashboard-source,
+  .schedule-kpi-lbl,.perf-state-desc,.allowance-footer-summary,.watch-details,.ops-holidays-kpi-label,.ops-detail-field-label,.release-published-date,
+  .nav-group-header,.login-subtitle,.login-version,.pagination-info,.dt-count-badge,
+  .access-history-desc,.workforce-form-hint,.workforce-detail-sub,.wf-text-muted,
+  .dashboard-kpi-body>span,.dashboard-kpi small,.dashboard-card-period,.dashboard-filter>span,
+  .perf-kpi-card-label,.allowance-kpi-label,.info-card-desc,.stat-unit,
+  .wf-retirement-copy,.wf-retirement-caption,.wf-retirement-date-label,.wf-retirement-metric-label
+) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) :is(a,.text-primary,.info-card-title,.theme-control) { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .dashboard-rank-person { color:var(--text); }
+:root[data-theme="dark"] #app #dashboard-export-result { background-color:var(--surface); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] #app :is(#schedule-table-pane,#schedule-detail-pane,#schedule-message,#perf-table-footer) { background-color:var(--surface); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] #app :is(#perf-sync-text,#kpi-selection-sub) { color:var(--text-sub); }
+:root[data-theme="dark"] #app #dashboard-rank-count { color:var(--text-sub); background-color:var(--theme-raised); }
+:root[data-theme="dark"] #app .dashboard-rank-position { color:var(--text-sub); background-color:var(--theme-raised); }
+:root[data-theme="dark"] #app tr:nth-child(1) .dashboard-rank-position { color:#f3d39a; background-color:#493c25; }
+:root[data-theme="dark"] #app tr:nth-child(2) .dashboard-rank-position { color:#d6e0ee; background-color:#344355; }
+:root[data-theme="dark"] #app tr:nth-child(3) .dashboard-rank-position { color:#e8c4ac; background-color:#47352f; }
+:root[data-theme="dark"] #app .ops-holiday-import-warning { color:var(--theme-warning); background-color:var(--theme-warning-bg); border-color:#9b7e46; }
+:root[data-theme="dark"] #app .ops-holiday-import-steps li span { color:var(--text-sub); }
+:root[data-theme="dark"] #app :is(tr.workforce-row.selected,tr.sites-row-item.selected,tr.schedule-history-row.selected) { background-color:var(--accent-subtle); }
+:root[data-theme="dark"] :is(#app,body) :is(.ops-menu-workspace,.ops-settings-workspace) {
+  --ops-line:var(--line); --ops-muted:var(--text-sub); --ops-ink:var(--text); --ops-accent:var(--accent);
+}
+
+:root[data-theme="dark"] :is(#app,body) :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea,
+  .form-control,.dt-search-input,.workforce-input,.workforce-select,.matrix-cell-input,
+  .ui-time-hour,.ui-time-minute) {
+  color:var(--text); background-color:var(--theme-input); border-color:var(--line-strong); box-shadow:none;
+}
+:root[data-theme="dark"] :is(#app,body) :is(input,textarea)::placeholder { color:var(--text-sub); opacity:1; }
+:root[data-theme="dark"] :is(#app,body) :is(input,select,textarea):disabled,
+:root[data-theme="dark"] :is(#app,body) :is(input,textarea):read-only { background-color:var(--theme-raised); color:var(--text-sub); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(button,.btn,.workforce-btn,.dashboard-action,.dt-btn-page,.nav-item) {
+  color:var(--text); border-color:var(--line-strong); background-color:var(--theme-raised);
+}
+:root[data-theme="dark"] :is(#app,body) :is(button,.btn,.workforce-btn,.dashboard-action,.dt-btn-page):hover:not(:disabled) { background-color:var(--theme-hover); border-color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) :is(.btn-primary,.workforce-btn-primary,.dashboard-primary,.ui-time-apply) {
+  background-color:#5066c4; color:#fff; border-color:#879bfa;
+}
+:root[data-theme="dark"] :is(#app,body) :is(.btn-primary,.workforce-btn-primary,.dashboard-primary,.ui-time-apply):hover:not(:disabled) { background-color:#4359b3; color:#fff; }
+:root[data-theme="dark"] :is(#app,body) :is(.btn-danger,.workforce-btn-danger) { color:var(--danger); background-color:var(--danger-bg); border-color:var(--danger-border); }
+:root[data-theme="dark"] :is(#app,body) :is(.btn-ghost,.workforce-btn-ghost,.btn-sidebar-toggle,.nav-item) { background-color:transparent; }
+:root[data-theme="dark"] :is(#app,body) :is(button,input,select,textarea,[tabindex],summary,a):focus-visible { outline-color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) :is(button,select,input):disabled { color:var(--text-sub); }
+
+:root[data-theme="dark"] :is(#app,body) :is(table,.dt-table,.workforce-table) { color:var(--text); background-color:var(--surface); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(th,thead td,.group-header,.workforce-group-row td,.matrix-corner,.matrix-col-header) { color:var(--text); background-color:var(--theme-raised); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(td,.table-row,.holidays-table-row) { color:var(--text); background-color:var(--surface); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) tbody tr:hover>td { background-color:var(--theme-hover); }
+:root[data-theme="dark"] :is(#app,body) :is(tr.selected,tr.is-selected,tr.dashboard-selected,tr[aria-selected="true"])>td,
+:root[data-theme="dark"] :is(#app,body) :is(.nav-item.active,.ops-category-button.active,.ops-category-button[aria-selected="true"],
+  .ops-settings-tab.active,.ops-settings-tab[aria-selected="true"],.tab-btn.active,.tab-btn[aria-selected="true"],
+  .operations-tab-btn.active,.ops-settings-tab-btn[aria-selected="true"],
+  .dt-btn-page.active,.dt-btn-page[aria-current="page"],.block-item-btn.selected,.ui-select-option[aria-selected="true"],
+  .ui-select-option.is-active,.ui-calendar-day.is-selected,.ui-time-grid button[aria-pressed="true"])
+{ background-color:var(--accent-subtle); color:#c4d1ff; border-color:#8096e6; }
+:root[data-theme="dark"] :is(#app,body) :is(.ui-select-option:hover,.ui-select-option.is-focused,.ui-calendar-day:hover) { background-color:var(--theme-hover); color:var(--text); }
+
+:root[data-theme="dark"] :is(#app,body) :is(.error-banner,.alert-danger,.alert-error,.section-error-banner,
+  .workforce-error-card,.workforce-warning-banner.is-danger,.dashboard-alert-error,.perf-error,.form-error,
+  .wf-text-danger,.text-danger,.status-error,.badge-error,.workforce-status-retired) { color:var(--danger); background-color:var(--danger-bg); border-color:var(--danger-border); }
+:root[data-theme="dark"] :is(#app,body) :is(.alert-warning,.warning-banner,.workforce-warning-banner,.field-protected-reason,
+  .text-warning,.wf-text-warning,.workforce-status-leave,.badge-warning,.wf-retirement-callout--warning) { color:var(--theme-warning); background-color:var(--theme-warning-bg); border-color:#9b7e46; }
+:root[data-theme="dark"] :is(#app,body) :is(.alert-success,.success-banner,.text-success,.workforce-status-active,
+  .badge-success,.wf-icon-success,.icon-circle-green,.wf-retirement-callout--success) { color:var(--success); background-color:var(--success-bg); border-color:#659c80; }
+:root[data-theme="dark"] :is(#app,body) :is(.alert-info,.info-card-blue,.workforce-info-banner,.icon-circle-blue,
+  .role-badge,.dashboard-alert,.ops-settings-tip,.wf-retirement-guide,.wf-retirement-next,.wf-rehire-steps) { color:var(--theme-info); background-color:var(--theme-info-bg); border-color:#7395bd; }
+:root[data-theme="dark"] :is(#app,body) :is(.icon-circle-orange,.icon-circle-yellow) { color:var(--theme-warning); background-color:var(--theme-warning-bg); }
+:root[data-theme="dark"] :is(#app,body) :is(.dashboard-kpi-icon,.dashboard-kpi small b,.dashboard-period-group select,
+  .canvas-viewport,.workforce-action-guide,.workforce-rate-box,.ops-settings-hint,.wf-disabled-input) { background-color:var(--theme-raised); color:var(--text-sub); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(.dashboard-tooltip,.tooltip,[role="tooltip"]) { background-color:var(--theme-raised); color:var(--text); border-color:var(--line-strong); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-pane [data-duty="D"] { background-color:#21483b; color:#b8e5cd; }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-pane [data-duty="E"] { background-color:#50402b; color:#ffe1b2; }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-pane [data-duty="N"] { background-color:#3d3254; color:#dcc4ff; }
+/* The editor and actual generated output remain light paper inside the dark workbench. */
+:root[data-theme="dark"] :is(#app,body) .actual-canvas-board { background:#fff; color:#263c58; color-scheme:light; }
+:root[data-theme="dark"] :is(#app,body) .canvas-block-node { color:#475569; }
+:root[data-theme="dark"] :is(#app,body) .canvas-block-node.active { color:#344bb5; }
+/* The protected sites view sets these two legacy backgrounds inline. */
+:root[data-theme="dark"] #app .sites-version-item { background-color:var(--surface) !important; color:var(--text); }
+:root[data-theme="dark"] #app .sites-version-item.selected { background-color:var(--accent-subtle) !important; }
+:root[data-theme="dark"] #app .sites-detail-card > div:last-child > div:first-child { background-color:var(--theme-raised) !important; }
+:root[data-theme="dark"] #app .sites-detail-card > div:last-child > div:first-child span { color:var(--text-sub) !important; }
+@media print { :root[data-theme="dark"] { color-scheme:light; } .theme-control { display:none; } }
+
+/* Surface audit corrections — explicit component colors, original geometry retained. */
+:root[data-theme="dark"] :is(#app,body) :is(
+  .kpi-box,.schedule-tab-group,.perf-tabs-group,.allowance-tabs-group,.allowance-history-wrapper,
+  .detail-header,.skeleton,.ops-system-tag,.ops-holiday-import-steps li,
+  .sites-wizard-summary,.sites-basics-section,.sites-basics-quick,.sites-editor-column,
+  .sites-holiday-access,.sites-team-drop-slot,.sites-team-header,.sites-form-group,
+  .schedule-team-heading,.schedule-month-scope,.schedule-month-weekdays,
+  .perf-detail-actions,.perf-modal-footer,.perf-th-sub,.allowance-detail-actions
+) { background-color:var(--surface); background-image:none; color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(
+  .schedule-kpi-val,.schedule-empty-title,.perf-state-title,.ops-holidays-kpi-val,.ops-detail-field-value,
+  .dt-count-badge strong,.perf-detail-value,.perf-detail-value strong,.allowance-detail-val,.schedule-day-number
+) { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) :is(
+  .schedule-kpi-lbl,.perf-state-desc,.allowance-footer-summary,.watch-details,.ops-holidays-kpi-label,
+  .ops-detail-field-label,.release-published-date,.sites-form-help,.sites-summary-help,.sites-gui-help,
+  .sites-review-list dt,.sites-calendar-day-detail,.perf-detail-label,.perf-cell-muted,.allowance-detail-key,
+  .perf-detail-section-title,.schedule-calendar-hint,.policy-page-info,.policy-current-summary
+) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) :is(#schedule-table-pane,#schedule-detail-pane,#schedule-message,#perf-table-footer,#sites-simulation-section) { background-color:var(--surface); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(#perf-sync-text,#kpi-selection-sub,#allowance-footer-summary,#calc-history-summary,#review-history-summary) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) #dashboard-rank-count { color:var(--text-sub); background-color:var(--theme-raised); }
+:root[data-theme="dark"] :is(#app,body) .dashboard-rank-position { color:var(--text-sub); background-color:var(--theme-raised); }
+:root[data-theme="dark"] :is(#app,body) tr:nth-child(1) .dashboard-rank-position { color:#f3d39a; background-color:#493c25; }
+:root[data-theme="dark"] :is(#app,body) tr:nth-child(2) .dashboard-rank-position { color:#d6e0ee; background-color:#344355; }
+:root[data-theme="dark"] :is(#app,body) tr:nth-child(3) .dashboard-rank-position { color:#e8c4ac; background-color:#47352f; }
+:root[data-theme="dark"] :is(#app,body) .ops-holiday-import-warning { color:var(--theme-warning); background-color:var(--theme-warning-bg); border-color:#9b7e46; }
+:root[data-theme="dark"] :is(#app,body) .ops-holiday-import-steps li span { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .ops-holiday-import-steps li strong { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) .ops-holiday-import-steps li strong::before { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .wf-bg-highlight { background-color:var(--accent-subtle) !important; }
+:root[data-theme="dark"] :is(#app,body) .sites-step-circle { background-color:var(--theme-raised); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .sites-step-item.active .sites-step-circle { background-color:#5066c4; color:#fff; }
+:root[data-theme="dark"] :is(#app,body) .sites-step-item.completed { color:var(--success); }
+:root[data-theme="dark"] :is(#app,body) .sites-step-item.completed .sites-step-circle { background-color:var(--success-bg); color:var(--success); }
+:root[data-theme="dark"] :is(#app,body) .sites-review-banner.valid { background-color:var(--success-bg); color:var(--success); border-color:#659c80; }
+:root[data-theme="dark"] :is(#app,body) .sites-team-header :is(span,small) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .sites-team-drop-slot { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .sites-basics-section label:has(input[type="radio"]) { background:var(--theme-raised); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) .sites-basics-section label:has(input[type="radio"]:checked) { background:var(--success-bg); color:var(--success); border-color:#659c80; }
+:root[data-theme="dark"] :is(#app,body) :is(.team-color-0,.summary-team-0) { --team-color:#b7c7ff; --team-tint:#293d62; --summary-team:#b7c7ff; --summary-tint:#293d62; }
+:root[data-theme="dark"] :is(#app,body) :is(.team-color-1,.summary-team-1) { --team-color:#b8e5cd; --team-tint:#21483b; --summary-team:#b8e5cd; --summary-tint:#21483b; }
+:root[data-theme="dark"] :is(#app,body) :is(.team-color-2,.summary-team-2) { --team-color:#ffe1b2; --team-tint:#50402b; --summary-team:#ffe1b2; --summary-tint:#50402b; }
+:root[data-theme="dark"] :is(#app,body) :is(.team-color-3,.summary-team-3) { --team-color:#dcc4ff; --team-tint:#3d3254; --summary-team:#dcc4ff; --summary-tint:#3d3254; }
+:root[data-theme="dark"] :is(#app,body) :is(.perf-detail-value.highlight,.allowance-detail-val.text-blue,.allowance-group-continued,.schedule-team-heading b) { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .policy-status-badge { background-color:var(--theme-raised); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .policy-status-active { background-color:var(--success-bg); color:var(--success); }
+:root[data-theme="dark"] :is(#app,body) .policy-status-scheduled { background-color:var(--theme-info-bg); color:var(--theme-info); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-day.is-sunday .schedule-day-number { color:var(--danger); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-day.is-saturday .schedule-day-number { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) :is(.schedule-day-team-name,.schedule-day-names) { color:inherit; }
+:root[data-theme="dark"] :is(#app,body) :is(tr.workforce-row.selected,tr.sites-row-item.selected,tr.schedule-history-row.selected,tr.schedule-roster-row.selected,tr.perf-data-row.selected,tr.allowance-data-row.selected) { background-color:var(--accent-subtle); }
+:root[data-theme="dark"] :is(#app,body) :is(tr.perf-group-row,tr.allowance-group-row) { background-color:var(--theme-raised); }
+:root[data-theme="dark"] :is(#app,body) :is(.schedule-tab-btn.active,.perf-tab-btn.active,.allowance-tab-btn.active) { background-color:var(--accent-subtle); color:#c4d1ff; border-color:#8096e6; }
+/* Legacy inline and important declarations need scoped overrides. */
+:root[data-theme="dark"] :is(#app,body) :is(.sites-basics-quick,.sites-calendar-day-detail) { background-color:var(--theme-raised) !important; }
+:root[data-theme="dark"] :is(#app,body) .sites-basics-intro { background:var(--theme-raised); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) .sites-basics-step { background:var(--accent-subtle); color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-palette-count,.sites-gui-team-head,.sites-gui-team-head b,.sites-gui-team-head span,.sites-review-facts dt,.sites-team-capacity,.sites-team-capacity span,.sites-org-pool-pages span,.perf-footer-info,.detail-sub,.history-detail-lbl,.detail-section-title) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) :is(.detail-title,.history-detail-val) { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-sim-day-head.sun,.schedule-month-weekdays > .is-sunday) { color:var(--danger); }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-sim-day-head.sat,.schedule-month-weekdays > .is-saturday) { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-weekdays > div { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-weekdays > .is-sunday { color:var(--danger); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-weekdays > .is-saturday { color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .schedule-day-team.duty-off { background-color:var(--theme-raised); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .allowance-detail-val.text-blue { color:var(--accent) !important; }
+:root[data-theme="dark"] :is(#app,body) .allowance-group-continued { background-color:var(--accent-subtle); }
+:root[data-theme="dark"] :is(#app,body) :is(tr.perf-data-row.selected,tr.allowance-data-row.selected) { background-color:var(--accent-subtle) !important; }
+:root[data-theme="dark"] :is(#app,body) :is(
+  .sites-detail-brush,.sites-detail-string,.sites-palette-bar,.sites-exception-intro,
+  .sites-exception-list,.sites-exception-empty,.sites-exception-form,.sites-exception-footnote,
+  .sites-guide-intro,.sites-guide-note,.sites-holiday-guide,.sites-holiday-steps,.sites-holiday-tabs > div,
+  .sites-holiday-modes label,.schedule-day-summary,.schedule-reading-dialog
+) { background:var(--theme-raised); border-color:var(--line); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) :is(
+  .sites-basics-quick strong,.sites-detail-brush b,.sites-guide-columns b,.sites-guide-columns dt,
+  .sites-guide-columns h3,.sites-exception-intro strong,.schedule-day-summary b
+) { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) :is(
+  .sites-detail-canvas-heading > span,.sites-detail-range,.sites-detail-range span,.sites-detail-transfer,
+  .sites-detail-day > span,.sites-detail-day-pages > span,.sites-guide-columns dd,.sites-holiday-modes small
+) { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-holiday-tabs > div.active,.sites-holiday-modes label:has(:checked)) { background:var(--accent-subtle); border-color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .schedule-month-pane :is([data-duty="O"],[data-duty="OFF"],[data-duty="X"]) { background:var(--theme-raised); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) #schedule-reading-dialog { background:var(--surface); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) .allowance-subtext { color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .notice-banner { background:var(--theme-warning-bg); color:var(--theme-warning); border-color:#9b7e46; }
+
+/* Final visual review: inline labels, paths and the exceptions banner. */
+:root[data-theme="dark"] :is(#app,body) :is(.login-version,.allowance-path-code) { background:var(--theme-raised); color:var(--text-sub); }
+:root[data-theme="dark"] :is(#app,body) .sites-exception-banner { background:var(--theme-raised); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) .sites-exception-banner b { color:var(--text); }
+:root[data-theme="dark"] :is(#app,body) :is(.schedule-modal-warn,.badge-reapproval-pending,.badge-early-payout) { background:var(--theme-warning-bg); color:var(--theme-warning); border-color:#9b7e46; }
+:root[data-theme="dark"] :is(#app,body) .badge-approved { background:var(--success-bg); color:var(--success); border-color:#659c80; }
+:root[data-theme="dark"] :is(#app,body) .badge-rejected { background:var(--danger-bg); color:var(--danger); border-color:var(--danger-border); }
+:root[data-theme="dark"] :is(#app,body) :is(.badge-pending,.badge-reapproval-completed) { background:var(--theme-info-bg); color:var(--theme-info); border-color:#7395bd; }
+:root[data-theme="dark"] :is(#app,body) :is(.badge-locked,.badge-proposal-approved,.badge-non-payable) { background:var(--theme-raised); color:var(--text-sub); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) .badge-legal-holiday { background:#3d3254; color:#dcc4ff; border-color:#8e78ba; }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-exception-item,.sites-exception-preview td:last-child) { background:var(--theme-raised); color:var(--text); border-color:var(--line); }
+:root[data-theme="dark"] :is(#app,body) :is(.sites-exception-item.is-selected,.sites-exception-scope) { background:var(--accent-subtle); color:var(--accent); border-color:var(--accent); }
+:root[data-theme="dark"] :is(#app,body) .sites-exception-scope.scope-team { background:var(--success-bg); color:var(--success); }
+:root[data-theme="dark"] :is(#app,body) .sites-exception-scope.scope-employee { background:var(--theme-warning-bg); color:var(--theme-warning); }

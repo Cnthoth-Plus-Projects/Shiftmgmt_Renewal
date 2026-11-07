@@ -73,7 +73,7 @@ export function renderAllowanceKpis(
       <div class="allowance-kpi-card kpi-count">
         <span class="allowance-kpi-label">대상 인원 · 건수</span>
         <span class="allowance-kpi-value" id="kpi-count-value">${kpi.employeeCount}명 · ${kpi.totalCount}건</span>
-        <span class="allowance-kpi-sub" id="kpi-selection-sub">${escapeHtml(selectionNote)}</span>
+        <span class="allowance-kpi-sub" id="kpi-selection-sub" title="${escapeHtml(selectionNote)}">${escapeHtml(selectionNote)}</span>
       </div>
     </div>
   `;

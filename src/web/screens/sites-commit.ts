@@ -75,37 +75,37 @@ export class SitesCommit {
 
     if (this.isRunning) {
       card.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
-          <span class="material-symbols-outlined" style="font-size:48px; color:var(--accent, #3E56B6); animation:spin 1.5s linear infinite;">sync</span>
-          <div style="font-size:16px; font-weight:bold;">근무지 및 교대 패턴 저장 중...</div>
-          <div style="font-size:13px; color:var(--text-sub, #4B5563);" id="commit-progress-text">
+        <div class="sites-commit-state">
+          <span class="material-symbols-outlined sites-commit-spinner">sync</span>
+          <div class="sites-commit-title">근무지 및 교대 패턴 저장 중...</div>
+          <div class="sites-commit-copy" id="commit-progress-text">
             단계 ${this.currentStepIndex + 1} / 3 진행 중...
           </div>
-          <div style="width:360px; max-width:100%; background:#F8FAFC; border:1px solid var(--line, #E2E5EA); border-radius:6px; padding:12px; font-size:11px; text-align:left; max-height:120px; overflow-y:auto;">
+          <div class="sites-commit-log">
             ${this.stepLogs.map((l) => `<div>${this.escape(l)}</div>`).join("")}
           </div>
         </div>
       `;
     } else if (this.errorMessage) {
       card.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
-          <span class="material-symbols-outlined" style="font-size:48px; color:#C0392B;">error</span>
-          <div style="font-size:16px; font-weight:bold; color:#C0392B;">저장 중 오류가 발생했습니다.</div>
-          <div style="font-size:13px; color:var(--text, #1F2430);">${this.escape(this.errorMessage)}</div>
+        <div class="sites-commit-state">
+          <span class="material-symbols-outlined sites-commit-error-icon">error</span>
+          <div class="sites-commit-error-title">저장 중 오류가 발생했습니다.</div>
+          <div class="sites-commit-error-copy">${this.escape(this.errorMessage)}</div>
           ${
             this.failedMovesList.length > 0
-              ? `<div style="font-size:12px; color:#C0392B; text-align:left; background:#FEE2E2; padding:8px 12px; border-radius:4px; width:360px;">
+              ? `<div class="sites-commit-errors">
                   <strong>실패한 배정 대상:</strong>
-                  <ul style="margin:4px 0 0 16px; padding:0;">
+                  <ul class="sites-commit-error-list">
                     ${this.failedMovesList.map((f) => `<li>직원 ID: ${this.escape(f.employeeId)} (${this.escape(f.reason)})</li>`).join("")}
                   </ul>
                 </div>`
               : ""
           }
-          <div style="font-size:12px; color:var(--text-sub, #4B5563); max-width:400px; line-height:1.5;">
+          <div class="sites-commit-help">
             완료된 단계(근무지 및 성공한 배정)는 보존되었습니다. 정원 및 네트워크 상태를 확인한 후 다시 시도해 주세요.
           </div>
-          <div style="display:flex; gap:10px; margin-top:8px;">
+          <div class="sites-commit-actions">
             <button type="button" class="btn-secondary" id="btn-commit-back">저장된 내용 확인</button>
             <button type="button" class="btn-primary" id="btn-commit-retry">다시 시도</button>
           </div>
@@ -115,19 +115,19 @@ export class SitesCommit {
       card.querySelector("#btn-commit-retry")?.addEventListener("click", () => this.startCommit());
     } else if (this.isCompleted) {
       card.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
-          <span class="material-symbols-outlined" style="font-size:52px; color:#1E7A46;">check_circle</span>
-          <div style="font-size:18px; font-weight:bold; color:#1E7A46;">근무지 및 교대 패턴 저장 완료!</div>
-          <div style="font-size:13px; color:var(--text-sub, #4B5563); max-width:420px; line-height:1.5;">
+        <div class="sites-commit-state">
+          <span class="material-symbols-outlined sites-commit-success-icon">check_circle</span>
+          <div class="sites-commit-success-title">근무지 및 교대 패턴 저장 완료!</div>
+          <div class="sites-commit-success-copy">
             '${this.escape(this.savedSiteResult?.name || this.siteName)}' 근무지와 교대 패턴 설정, 조별 인력 배정이 성공적으로 등록되었습니다.
           </div>
-          <div style="border:1px solid var(--line, #E2E5EA); border-radius:6px; padding:12px 20px; background:#F8FAFC; font-size:12px; text-align:left; width:340px; margin:8px 0;">
+          <div class="sites-commit-summary">
             <div>• 근무지 코드: <strong>${this.escape(this.savedSiteResult?.siteCode || this.siteCode)}</strong></div>
             <div>• 적용 시작일: <strong>${this.escape(this.draft.effectiveFrom || "미지정")}</strong></div>
             <div>• 조 구성: <strong>${this.draft.teamCount}개 조</strong></div>
             <div>• 배정 변동: <strong>${this.stagedMoves.length}건</strong> 반영 완료</div>
           </div>
-          <button type="button" class="btn-primary" id="btn-commit-done" data-id="btn-commit-finish" style="padding:8px 24px;">
+          <button type="button" class="btn-primary sites-commit-done" id="btn-commit-done" data-id="btn-commit-finish">
             근무지 목록으로 이동
           </button>
         </div>

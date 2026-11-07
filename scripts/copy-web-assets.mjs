@@ -56,6 +56,9 @@ copyInto(path.join(root, "src", "web", "allowance.css"), webOut, "수당 화면 
 copyInto(path.join(root, "src", "web", "dashboard.css"), webOut, "대시보드 CSS");
 copyInto(path.join(root, "src", "web", "common-controls.css"), webOut, "공통 입력 CSS");
 copyInto(path.join(root, "src", "web", "policy-history.css"), webOut, "정책 이력 CSS");
+copyInto(path.join(root, "src", "web", "theme.css"), webOut, "테마 CSS");
+copyInto(path.join(root, "src", "web", "workspace.css"), webOut, "공통 화면 배치 CSS");
+copyInto(path.join(root, "src", "web", "theme-init.js"), webOut, "테마 초기화 스크립트");
 
 // 2) Pretendard — woff 항목을 뺀 생성본 + woff2 9개
 const pretendardDir = path.join(root, "node_modules", "pretendard", "dist", "web", "static");

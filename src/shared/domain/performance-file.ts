@@ -131,6 +131,26 @@ export interface PerformanceApprovalActionInput {
 
 export interface PerformanceReapprovalFinalizeInput {
   fileId: string;
+  /** Required for return-to-pending; finalize-reapproval keeps its existing input. */
+  reason?: string;
+}
+
+export interface PerformanceCancellationHistoryRecord {
+  id: string;
+  fileId: string;
+  fileName: string;
+  occurredAt: string;
+  actorName: string;
+  reason: string;
+  entries: Array<{
+    approvalId: string; logicalKey: string; entryId: string; employeeCode: string; employeeName: string; workDate: string;
+    approvedAt: string; approvedBy: string; approvalSnapshotJson?: string;
+    calculations: Array<{
+      id: string; hourlyRate: number; rateVersionId: string; rateVersionLabel: string; totalAmount: number; status: string; snapshotJson: string;
+      items: Array<{ allowanceCode: string; workMinutes: number; multiplier: number; amount: number }>;
+      reviews: Array<{ decision: string; processedAt: string; processedBy: string; comment?: string }>;
+    }>;
+  }>;
 }
 
 export interface PerformanceRejectionInput extends PerformanceApprovalActionInput {
@@ -418,6 +438,7 @@ export const isHourlyRateUnappliedPerformanceEntry = (
   );
 
 export interface PerformanceFileDetail extends PerformanceFileMetadataRecord {
+  cancellationHistory?: PerformanceCancellationHistoryRecord[];
   alerts: PerformanceAlert[];
   previewRows: Array<Record<string, string | number>>;
   entries: PerformanceEntryRecord[];

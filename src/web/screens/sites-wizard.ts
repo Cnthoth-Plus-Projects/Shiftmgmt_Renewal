@@ -305,7 +305,7 @@ export class SitesWizard {
       excelImportBtn.className = "btn-secondary";
       excelImportBtn.id = "btn-open-import-modal";
       excelImportBtn.innerHTML = `
-        <span class="material-symbols-outlined" style="font-size:16px;">upload_file</span>
+        <span class="material-symbols-outlined sites-icon-small">upload_file</span>
         <span>엑셀에서 패턴 가져오기</span>
       `;
       excelImportBtn.addEventListener("click", () => {

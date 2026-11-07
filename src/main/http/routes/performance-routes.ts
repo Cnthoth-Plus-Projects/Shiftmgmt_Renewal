@@ -1,4 +1,6 @@
 import { existsSync } from "node:fs";
+import { listPerformanceReturnHistoryForFile } from "../../services/performance-return-history-service";
+import { canPerformAction } from "../../../shared/domain/authorization";
 import type {
   PerformanceComparisonQuery,
   PerformanceFileDetailQuery,
@@ -108,14 +110,13 @@ export const registerPerformanceRoutes = (
   // 6. performance:get-file-detail
   registry.register("performance:get-file-detail", async (args, context) => {
     const query = args[0] as PerformanceFileDetailQuery;
-    return createIpcSuccess(
-      await getPerformanceFileDetail(
+    const detail = await getPerformanceFileDetail(
         query,
         getStoredAppSettingsSnapshot({
           userDataPath: context.dataDir,
         }),
-      ),
-    );
+      );
+    return createIpcSuccess(detail ? { ...detail, cancellationHistory: listPerformanceReturnHistoryForFile(detail.id) } : null);
   });
 
   // 7. performance:get-comparison
@@ -170,6 +171,10 @@ export const registerPerformanceRoutes = (
     const input = args[0] as PerformanceReapprovalFinalizeInput;
     const result = await returnApprovedPerformanceFileToPending(input, context.session!, {
       userDataPath: context.dataDir,
+      isSessionCurrent: () => {
+        const current = sessionManager.handleGetSession(context.cookie);
+        return current.ok && Boolean(current.data && current.data.userId === context.session?.userId && current.data.sessionToken === context.session?.sessionToken && !current.data.passwordChangeRequired && canPerformAction(current.data.role, "performance-approval"));
+      },
     });
     return sessionManager.recordSuccessfulActivity(result, {
       actionType: "performance-return-to-pending",

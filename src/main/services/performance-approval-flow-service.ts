@@ -1,4 +1,6 @@
 import { parsePolicyApplicationSnapshot, computePolicyApplicationFingerprint } from "../../shared/domain/policy-history";
+import { canPerformAction } from "../../shared/domain/authorization";
+import { archivePerformanceReturn, normalizeReturnReason } from "./performance-return-history-service";
 import { isManagedEmployeeEmployedOnDate } from "../../shared/domain/employee-employment";
 import { getWageTimelineRowForDate, resolveWageRateForDate } from "../../shared/domain/wage-rate";
 import { existsSync } from "node:fs";
@@ -689,7 +691,13 @@ const buildReturnToPendingBlockedResult = (message: string): BridgeResult<Perfor
   message
 });
 
-// This explicit whole-file action retains the existing narrow approval/calculation deletion exception.
+interface PerformanceReturnContext {
+  userDataPath?: string;
+  env?: NodeJS.ProcessEnv;
+  isSessionCurrent?: () => boolean;
+}
+
+// Explicit whole-file return archives the exact prior state before removing active results.
 // Cached source/time values stay intact; only their work-date wage is reapplied in that transaction.
 const reapplyReturnedEntryWages = (detail: PerformanceFileDetail) => {
   const employees = new Map(listStoredEmployees({ includeDeleted: true, includeHistoricalAssignments: true }).map(e => [e.employeeCode, e]));
@@ -726,11 +734,15 @@ const reapplyReturnedEntryWages = (detail: PerformanceFileDetail) => {
   return { status: unresolvedEntryCount ? "needs-review" as const : "completed" as const, appliedEntryCount, unresolvedEntryCount };
 };
 
-export const returnApprovedPerformanceFileToPending = async (
+const returnApprovedPerformanceFileToPendingUnlocked = async (
   input: PerformanceReapprovalFinalizeInput,
-  _session: AuthSession,
-  context?: { userDataPath?: string; env?: NodeJS.ProcessEnv }
+  session: AuthSession,
+  context?: PerformanceReturnContext
 ): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
+  if (!session || !canPerformAction(session.role, "performance-approval")) return buildReturnToPendingBlockedResult("승인 담당자 또는 관리자만 승인대기로 되돌릴 수 있습니다.");
+  let reason: string;
+  try { reason = normalizeReturnReason(input.reason); }
+  catch (error) { return buildReturnToPendingBlockedResult(error instanceof Error ? error.message : "복귀 사유를 입력해 주세요."); }
   const detail = getStoredPerformanceFileDetail(input.fileId);
   if (!detail) return buildReturnToPendingMissingResult();
   if (detail.directoryType !== "approved") return buildReturnToPendingBlockedResult("승인완료 상태의 실적 파일만 승인대기로 되돌릴 수 있습니다.");
@@ -738,8 +750,9 @@ export const returnApprovedPerformanceFileToPending = async (
   const database = getSqliteDatabase();
   if (!database || !isSqliteStorageReady()) return buildReturnToPendingBlockedResult("실적 저장소가 연결되지 않았습니다.");
   const ownApprovals = () => listPerformanceApprovalHistory().filter(a => a.fileId === detail.id);
+  const hasLockedCalculation = () => Boolean(database.prepare(`SELECT c.id FROM allowance_calculations c JOIN performance_approvals a ON a.id = c.performance_approval_id WHERE a.file_id = ? AND c.status = 'proposal-approved' LIMIT 1`).get(detail.id));
   const fileApprovals = ownApprovals();
-  if (fileApprovals.some(isChangeLockedApproval)) return buildReturnToPendingBlockedResult("수당 품의가 승인된 실적은 되돌릴 수 없습니다. 먼저 수당 관리에서 품의 승인을 취소한 뒤 다시 시도하세요.");
+  if (fileApprovals.some(isChangeLockedApproval) || hasLockedCalculation()) return buildReturnToPendingBlockedResult("수당 품의가 승인된 실적은 되돌릴 수 없습니다. 먼저 수당 관리에서 품의 승인을 취소한 뒤 다시 시도하세요.");
   const settingsInput = { userDataPath: context.userDataPath, env: context.env };
   const folders = () => { const s = getStoredAppSettingsSnapshot(settingsInput); return JSON.stringify([s.pendingDir, s.approvedDir]); };
   const originalFolders = folders(), fileBinding = JSON.stringify(detail), approvalBinding = JSON.stringify(fileApprovals);
@@ -749,15 +762,16 @@ export const returnApprovedPerformanceFileToPending = async (
   } catch (error) {
     return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message: error instanceof Error ? error.message : "원본 파일을 옮기지 못했습니다." };
   }
-  const failAndRestore = async (message: string): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
+  const failAndRestore = async (message: string, errorCode = "PERFORMANCE_RETURN_TO_PENDING_FAILED"): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
     try { await rollbackPerformanceReturnSource({ originalPath: detail.filePath, pendingPath: movedSource.pendingFilePath, sourceFileMissing: movedSource.sourceFileMissing }); }
     catch (error) { message += ` 원본 파일 위치 복원을 완료하지 못했습니다. 승인완료·승인대기 폴더를 확인해 주세요. (${error instanceof Error ? error.message : "파일 복원 실패"})`; }
-    return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message };
+    return { ok: false, errorCode, message };
   };
   if (getSqliteDatabase() !== database || !isSqliteStorageReady()) return failAndRestore("읽는 동안 데이터 연결이 변경되었습니다. 다시 확인해 주세요.");
   try {
+    if (context.isSessionCurrent && !context.isSessionCurrent()) return failAndRestore("파일을 옮기는 동안 로그인 권한이 변경되었습니다. 다시 로그인해 주세요.", "AUTH_SESSION_REQUIRED");
     const currentApprovals = ownApprovals();
-    if (currentApprovals.some(isChangeLockedApproval)) return failAndRestore("파일을 옮기는 동안 품의가 승인되어 되돌릴 수 없습니다.");
+    if (currentApprovals.some(isChangeLockedApproval) || hasLockedCalculation()) return failAndRestore("파일을 옮기는 동안 품의가 승인되어 되돌릴 수 없습니다.");
     if (folders() !== originalFolders || JSON.stringify(getStoredPerformanceFileDetail(detail.id)) !== fileBinding || JSON.stringify(currentApprovals) !== approvalBinding) return failAndRestore("파일을 옮기는 동안 실적·승인 또는 폴더 설정이 변경되었습니다. 다시 확인해 주세요.");
   } catch (error) {
     return failAndRestore(error instanceof Error ? error.message : "복귀 전 승인 상태를 확인하지 못했습니다.");
@@ -766,6 +780,7 @@ export const returnApprovedPerformanceFileToPending = async (
   let wageReapplication: PerformanceReturnToPendingResult["wageReapplication"];
   try {
     database.exec("BEGIN"); transactionOpen = true;
+    archivePerformanceReturn(database, detail.id, session, reason);
     if (!moveStoredPerformanceFileToPending({ fileId: detail.id, pendingFilePath: movedSource.pendingFilePath, receivedAt: new Date().toISOString(), status: "pending" })) throw new Error("승인대기로 되돌리는 중 상태 갱신에 실패했습니다.");
     for (const approval of fileApprovals) { deleteAllowanceCalculationByApprovalId(approval.id); deletePerformanceApprovalRecord(approval.id); }
     const pending = getStoredPerformanceFileDetail(detail.id);
@@ -783,6 +798,22 @@ export const returnApprovedPerformanceFileToPending = async (
   const refreshed = getStoredPerformanceFileDetail(detail.id);
   if (!refreshed) return { ok: false, errorCode: "PERFORMANCE_RETURN_TO_PENDING_FAILED", message: "되돌린 후 실적 파일 상태를 다시 불러오지 못했습니다." };
   return { ok: true, data: { ...refreshed, wageReapplication } };
+};
+
+const activeFileReturns = new Set<string>();
+export const returnApprovedPerformanceFileToPending = async (
+  input: PerformanceReapprovalFinalizeInput,
+  session: AuthSession,
+  context?: PerformanceReturnContext
+): Promise<BridgeResult<PerformanceReturnToPendingResult>> => {
+  const database = getSqliteDatabase();
+  if (!database) return returnApprovedPerformanceFileToPendingUnlocked(input, session, context);
+  const detail = getStoredPerformanceFileDetail(input.fileId);
+  const key = path.resolve(detail?.filePath || path.join(context?.userDataPath || ".", input.fileId)).toLocaleLowerCase("en-US");
+  if (activeFileReturns.has(key)) return buildReturnToPendingBlockedResult("이 파일은 이미 승인대기로 되돌리는 중입니다. 완료 후 다시 확인해 주세요.");
+  activeFileReturns.add(key);
+  try { return await returnApprovedPerformanceFileToPendingUnlocked(input, session, context); }
+  finally { activeFileReturns.delete(key); }
 };
 
 export const rejectPerformanceFile = async (

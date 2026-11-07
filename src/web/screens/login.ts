@@ -1,4 +1,5 @@
 import { appendDevelopmentLoginBanner } from "./development-login";
+import { createThemeControl } from "../theme-controls";
 import type { AuthSession } from "../../shared/domain/model";
 import { getPasswordPolicyChecks, isStrongPasswordSatisfied } from "../../shared/config/auth-password-policy";
 
@@ -13,6 +14,7 @@ export interface LoginScreenOptions {
 }
 
 export class LoginScreen {
+  private destroyThemeControl?: () => void;
   private container: HTMLElement;
   private mode: LoginViewMode = "L1";
   private currentSession: AuthSession | null = null;
@@ -88,6 +90,7 @@ export class LoginScreen {
   }
 
   private render(): void {
+    this.destroyThemeControl?.();
     this.container.innerHTML = "";
 
     const wrapper = document.createElement("div");
@@ -112,11 +115,19 @@ export class LoginScreen {
         break;
     }
 
+    const theme = createThemeControl("login");
+    this.destroyThemeControl = theme.destroy;
+    wrapper.appendChild(theme.element);
     wrapper.appendChild(card);
     this.container.appendChild(wrapper);
   }
 
   /** L1 (초기 폼) 및 L2 (인증 실패) 렌더링 */
+  public destroy(): void {
+    this.destroyThemeControl?.();
+    this.destroyThemeControl = undefined;
+  }
+
   private renderL1OrL2(card: HTMLElement): void {
     const header = document.createElement("div");
     header.className = "login-header";

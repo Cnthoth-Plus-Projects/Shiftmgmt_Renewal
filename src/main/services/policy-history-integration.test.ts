@@ -341,7 +341,7 @@ describe("policy-history-integration (PH08 ~ PH12)", () => {
     const review = previewPolicyChange({action: "add", kind: "substitute-eligibility", ruleKey: "substitute-team-type-v1", effectiveFrom: "2026-03-01", reason: "related approval state"}, adminActor, database);
     database.prepare("UPDATE performance_approvals SET comment = 'changed after preview' WHERE id = (SELECT id FROM performance_approvals LIMIT 1)").run();
     expect(() => applyPolicyChange({previewToken: review.previewToken}, adminActor, database)).toThrowError(expect.objectContaining({code: "POLICY_CONFLICT"}));
-    const returned = await returnApprovedPerformanceFileToPending({fileId: detail.id}, testAdminSession, {userDataPath: fixture.userDataPath});
+    const returned = await returnApprovedPerformanceFileToPending({ reason: "원본 수정 후 재승인 검증", fileId: detail.id}, testAdminSession, {userDataPath: fixture.userDataPath});
     expect(returned.ok).toBe(true);
     expect(database.prepare("SELECT * FROM performance_approvals").all()).toHaveLength(0);
     const used = database.prepare("SELECT * FROM policy_events WHERE event_type = 'used' ORDER BY id").all();
@@ -353,7 +353,7 @@ describe("policy-history-integration (PH08 ~ PH12)", () => {
     expect(JSON.parse(String(database.prepare("SELECT after_json FROM policy_events WHERE event_type = 'cancelled'").get()!.after_json))).toEqual({cancelReason: "cancellation reason preserved"});
     const backup = await runDatabaseBackupNow({userDataPath: fixture.userDataPath});
     const original = JSON.parse(readFileSync(backup.jsonBackupPath, "utf8"));
-    expect(original.schemaVersion).toBe(2);
+    expect(original.schemaVersion).toBe(3);
     expect(checkDatabaseMigrationRequirements({backupFilePath: backup.jsonBackupPath}).isReady).toBe(true);
     const before = computeDatabaseContentFingerprint(database);
     const badPath = path.join(fixture.userDataPath, "bad-policy.json");

@@ -304,145 +304,6 @@ export class PerformanceActionManager {
     });
   }
 
-  /** 행 단위 반려 모달 (D07: 흰 보조 버튼 스타일 적용) */
-  public async promptReject(
-    row: PerformanceOverviewRow,
-    onSuccess: () => Promise<void>
-  ): Promise<void> {
-    if (this.isBusy || this.isDestroyed) return;
-
-    return new Promise(resolve => {
-      const backdrop = document.createElement("div");
-      backdrop.className = "perf-modal-backdrop";
-      backdrop.setAttribute("role", "dialog");
-      backdrop.setAttribute("aria-modal", "true");
-
-      const entry = row.entry;
-
-      backdrop.innerHTML = `
-        <div class="perf-modal-dialog">
-          <div class="perf-modal-header">
-            <h3 class="perf-modal-title">실적 반려 확인</h3>
-            <button type="button" class="perf-modal-close-btn" id="btn-reject-close">
-              <span class="material-symbols-outlined" aria-hidden="true">close</span>
-            </button>
-          </div>
-
-          <div class="perf-modal-body">
-            <div class="perf-modal-desc">
-              다음 실적을 반려하시겠습니까? 반려 사유는 필수 입력입니다.<br><br>
-              - <strong>대상자:</strong> ${escapeHtml(entry.employeeName)} (${escapeHtml(
-        entry.employeeCode
-      )})<br>
-              - <strong>근무일자:</strong> ${escapeHtml(entry.workDate)} (${escapeHtml(
-        entry.workType
-      )})
-            </div>
-
-            <div class="perf-modal-field-group">
-              <label for="perf-reject-reason" class="perf-modal-label">
-                반려 사유 (필수)
-              </label>
-              <textarea id="perf-reject-reason" class="perf-input perf-modal-textarea" placeholder="반려 사유를 상세히 입력해 주십시오."></textarea>
-            </div>
-
-            <div id="perf-reject-error" class="perf-modal-error" hidden></div>
-          </div>
-
-          <div class="perf-modal-footer">
-            <button type="button" class="perf-btn-secondary" id="btn-reject-cancel">취소</button>
-            <button type="button" class="perf-btn-secondary" id="btn-reject-confirm">반려 확정</button>
-          </div>
-        </div>
-      `;
-
-      let cleaned = false;
-      let removeTrap: (() => void) | null = null;
-
-      const cleanup = () => {
-        if (cleaned) return;
-        cleaned = true;
-        removeTrap?.();
-        backdrop.remove();
-        const idx = this.activeModals.findIndex(m => m.backdrop === backdrop);
-        if (idx !== -1) this.activeModals.splice(idx, 1);
-        resolve();
-      };
-
-      removeTrap = this.setupModalTrap(backdrop, cleanup);
-      this.activeModals.push({ backdrop, cleanup });
-
-
-      const closeBtn = backdrop.querySelector<HTMLButtonElement>("#btn-reject-close");
-      const cancelBtn = backdrop.querySelector<HTMLButtonElement>("#btn-reject-cancel");
-      const confirmBtn = backdrop.querySelector<HTMLButtonElement>("#btn-reject-confirm");
-      const reasonText = backdrop.querySelector<HTMLTextAreaElement>("#perf-reject-reason");
-      const errorDiv = backdrop.querySelector<HTMLElement>("#perf-reject-error");
-
-      closeBtn?.addEventListener("click", cleanup);
-      cancelBtn?.addEventListener("click", cleanup);
-
-      confirmBtn?.addEventListener("click", async () => {
-        if (this.isDestroyed) {
-          cleanup();
-          return;
-        }
-
-        const reason = reasonText?.value.trim();
-        if (!reason) {
-          if (errorDiv) {
-            errorDiv.textContent = "반려 사유를 반드시 입력해 주십시오.";
-            errorDiv.hidden = false;
-          }
-          reasonText?.focus();
-          return;
-        }
-
-        this.isBusy = true;
-        this.dialog.setProcessing(true);
-        if (confirmBtn) confirmBtn.disabled = true;
-        if (errorDiv) errorDiv.hidden = true;
-
-        try {
-          const res = await this.bridge.rejectPendingFile({
-            fileId: row.fileId,
-            entryId: row.entryId,
-            rejectionReason: reason
-          });
-
-          if (this.isDestroyed) {
-            cleanup();
-            return;
-          }
-
-          if (!res.ok) {
-            if (errorDiv) {
-              errorDiv.textContent = res.message || "반려 처리 중 오류가 발생했습니다.";
-              errorDiv.hidden = false;
-            }
-            if (confirmBtn) confirmBtn.disabled = false;
-            this.isBusy = false;
-    this.dialog.setProcessing(false);
-            return;
-          }
-
-          cleanup();
-          await onSuccess();
-        } catch (err: unknown) {
-          if (errorDiv) {
-            errorDiv.textContent =
-              err instanceof Error ? err.message : "서버 통신 오류가 발생했습니다.";
-            errorDiv.hidden = false;
-          }
-          if (confirmBtn) confirmBtn.disabled = false;
-        } finally {
-          this.isBusy = false;
-    this.dialog.setProcessing(false);
-        }
-      });
-    });
-  }
-
   /** 파일 단위 승인대기로 되돌리기 모달 (D02, D04, D05) */
   public async promptReturnToPending(
     fileId: string,
@@ -470,12 +331,15 @@ export class PerformanceActionManager {
             <div class="perf-modal-desc">
               대상 파일: <strong>${escapeHtml(fileName)}</strong><br><br>
               <div class="perf-modal-danger-box">
-                승인 기록과 수당 계산이 함께 지워지며 되살릴 수 없습니다.
+                취소 전 승인·계산 금액·판정·검토 기록을 처리 이력에 보관하고 현재 승인을 해제합니다.
               </div>
               <br>
               복귀 시 근무일 기준 시급을 적용합니다. 시급이 없으면 과거 시급을 제거하고 승인을 차단합니다.<br><br>
               정말로 이 파일의 모든 승인 내역을 취소하고 대기 상태로 되돌리시겠습니까?
             </div>
+
+            <label class="perf-return-reason-label" for="perf-return-reason">복귀 사유 <span aria-hidden="true">*</span></label>
+            <textarea id="perf-return-reason" class="workforce-input perf-return-reason" rows="3" maxlength="500" required placeholder="예: 원본 엑셀 수정 후 다시 승인하기 위해 복귀" aria-describedby="perf-return-error"></textarea>
 
             <div id="perf-return-error" class="perf-modal-error" hidden></div>
           </div>
@@ -508,6 +372,7 @@ export class PerformanceActionManager {
       const cancelBtn = backdrop.querySelector<HTMLButtonElement>("#btn-return-cancel");
       const confirmBtn = backdrop.querySelector<HTMLButtonElement>("#btn-return-confirm");
       const errorDiv = backdrop.querySelector<HTMLElement>("#perf-return-error");
+      const reasonInput = backdrop.querySelector<HTMLTextAreaElement>("#perf-return-reason");
 
       closeBtn?.addEventListener("click", cleanup);
       cancelBtn?.addEventListener("click", cleanup);
@@ -518,12 +383,22 @@ export class PerformanceActionManager {
           return;
         }
 
+        if (this.isBusy) return;
+        const reason = reasonInput?.value.trim() || "";
+        if (!reason || reason.length > 500) {
+          if (errorDiv) { errorDiv.textContent = "복귀 사유를 1~500자로 입력해 주세요."; errorDiv.hidden = false; }
+          reasonInput?.focus();
+          return;
+        }
+        if (errorDiv) errorDiv.hidden = true;
+        if (reasonInput) reasonInput.disabled = true;
+
         this.isBusy = true;
         this.dialog.setProcessing(true);
           if (confirmBtn) confirmBtn.disabled = true;
 
         try {
-          const res = await this.bridge.returnApprovedFileToPending({ fileId });
+          const res = await this.bridge.returnApprovedFileToPending({ fileId, reason });
 
           if (this.isDestroyed) {
             cleanup();
@@ -547,7 +422,7 @@ export class PerformanceActionManager {
           this.isBusy = false;
           this.dialog.setProcessing(false);
           await this.promptNotice("승인대기 복귀 완료", applied
-            ? `시급 ${applied.appliedEntryCount}건 적용 · 확인 필요 ${applied.unresolvedEntryCount}건. 시급 확인 후 승인해 주세요.${applied.sourceFileMissing ? " 원본이 없어 저장된 실적으로 처리했습니다. 원본을 복원해 주세요." : ""}`
+            ? `취소 전 기록을 처리 이력에 보관했습니다. 시급 ${applied.appliedEntryCount}건 적용 · 확인 필요 ${applied.unresolvedEntryCount}건. 시급 확인 후 승인해 주세요.${applied.sourceFileMissing ? " 원본이 없어 저장된 실적으로 처리했습니다. 원본을 복원해 주세요." : ""}`
             : "시급 확인 후 승인해 주세요.");
         } catch (err: unknown) {
           if (errorDiv) {
@@ -557,6 +432,7 @@ export class PerformanceActionManager {
           }
           if (confirmBtn) confirmBtn.disabled = false;
         } finally {
+          if (reasonInput) reasonInput.disabled = false;
           this.isBusy = false;
     this.dialog.setProcessing(false);
         }

@@ -196,6 +196,14 @@ describe("operations-model", () => {
   });
 
   describe("사용자 검증 (R07, N06)", () => {
+    it.each(["active", "inactive", "pending"])("서버에서 사용하는 %s 상태를 허용한다", status => {
+      expect(validateOperationUser({ loginId: "operator1", displayName: "운영자", role: "operator", status, isNew: false }).isValid).toBe(true);
+    });
+
+    it.each(["suspended", "retired", ""])("서버에서 사용할 수 없는 %s 상태를 거절한다", status => {
+      expect(validateOperationUser({ loginId: "operator1", displayName: "운영자", role: "operator", status, isNew: false }).errors.status).toBeDefined();
+    });
+
     it("신규 사용자 등록 시 비밀번호가 8자 미만이면 거절한다 (N06)", () => {
       const res = validateOperationUser({
         loginId: "operator1",

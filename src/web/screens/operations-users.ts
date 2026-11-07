@@ -2,6 +2,7 @@
 import type { UserRecord } from "../../shared/domain/model";
 import type { OperationUserSaveInput } from "../../shared/bridge/contracts";
 import {
+  OperationsWorkspace,
   el,
   createButton,
   createFormGroup,
@@ -11,10 +12,12 @@ import {
   renderStatusBadge,
   sharedDialog
 } from "./operations-ui";
-import { validateOperationUser } from "./operations-model";
+import { OPERATION_USER_STATUS_OPTIONS, validateOperationUser } from "./operations-model";
 import { DataTable } from "../data-table";
 
 export class OperationsUsersTab {
+  private workspace?: OperationsWorkspace;
+  private activeArea = "users";
   private container: HTMLElement;
   private onSessionExpired?: () => void;
   private isDestroyed = false;
@@ -73,12 +76,15 @@ export class OperationsUsersTab {
   }
 
   public destroy(): void {
+    this.workspace?.destroy();
     this.isDestroyed = true;
     this.loadRequestId++;
     this.container.innerHTML = "";
   }
 
   private render(): void {
+    this.activeArea = this.workspace?.activeArea || this.activeArea;
+    this.workspace?.destroy();
     this.container.innerHTML = "";
     const wrap = el("div", "operations-users-wrap");
 
@@ -152,7 +158,22 @@ export class OperationsUsersTab {
     this.table.setData(this.users);
     wrap.appendChild(tableWrap);
 
+    const list = el("div", "ops-list-panel");
+    const toolbar = el("div", "ops-panel-toolbar"); toolbar.appendChild(btnAdd);
+    list.append(toolbar, tableWrap);
+    const security = el("section", "ops-info-card");
+    security.append(el("h4", "", "내 계정의 복구키를 관리합니다"),
+      el("p", "", "복구키는 비밀번호를 잊었을 때 계정을 되찾는 데 사용합니다. 새로 발급하면 이전 복구키는 사용할 수 없습니다. 확인창에서 발급 여부를 결정하고 새 키를 안전한 곳에 보관하세요."), btnRotateMyKey);
+    this.workspace = new OperationsWorkspace(wrap, {
+      id: "users", initialArea: this.activeArea,
+      areas: [
+        { id: "users", label: "사용자 관리", hint: "계정·역할·상태 관리", icon: "group", description: "사용자를 검색하고 등록·수정합니다. 역할은 사용할 수 있는 기능을, 상태는 로그인 가능 여부를 결정합니다.", content: list },
+        { id: "security", label: "복구키 관리", hint: "복구키 확인과 재발급", icon: "key", description: "현재 로그인한 내 계정의 복구키를 재발급합니다. 비밀번호는 상단 ‘내 계정’에서 변경할 수 있습니다.", content: security }
+      ], footerText: "등록·수정은 저장 후 적용됩니다. 삭제와 복구키 재발급은 확인창에서 다시 확인합니다.",
+      canChange: () => !this.isDestroyed
+    });
     this.container.appendChild(wrap);
+    this.workspace.observeTable(this.table, tableWrap);
   }
 
   private openUserModal(user?: UserRecord): void {
@@ -185,14 +206,17 @@ export class OperationsUsersTab {
     content.appendChild(createFormGroup("권한 역할", roleSelect));
 
     const statusSelect = el("select", "form-control") as HTMLSelectElement;
-    [
-      { val: "active", label: "활성 (Active)" },
-      { val: "suspended", label: "정지 (Suspended)" },
-      { val: "retired", label: "만료 (Retired)" }
-    ].forEach((s) => {
+    if (user && !OPERATION_USER_STATUS_OPTIONS.some(option => option.value === user.status)) {
+      const unknown = el("option", "", "계정 상태를 확인해 주세요") as HTMLOptionElement;
+      unknown.value = "";
+      unknown.disabled = true;
+      unknown.selected = true;
+      statusSelect.appendChild(unknown);
+    }
+    OPERATION_USER_STATUS_OPTIONS.forEach((s) => {
       const opt = el("option", "", s.label) as HTMLOptionElement;
-      opt.value = s.val;
-      if (user && user.status === s.val) opt.selected = true;
+      opt.value = s.value;
+      if (user && user.status === s.value) opt.selected = true;
       statusSelect.appendChild(opt);
     });
     content.appendChild(createFormGroup("계정 상태", statusSelect));

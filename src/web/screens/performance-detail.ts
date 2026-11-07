@@ -12,7 +12,6 @@ import { escapeHtml } from "./performance-view";
 
 export interface PerformanceDetailCallbacks {
   onApprove: (row: PerformanceOverviewRow) => void;
-  onReject: (row: PerformanceOverviewRow) => void;
   onCompare: (row: PerformanceOverviewRow) => void;
   onHistory: (row: PerformanceOverviewRow) => void;
   onHideRow: (row: PerformanceOverviewRow) => void;
@@ -67,7 +66,7 @@ export class PerformanceDetailPanel {
           <div class="perf-state-box">
             <span class="material-symbols-outlined" aria-hidden="true">touch_app</span>
             <div class="perf-state-title">선택된 실적이 없습니다</div>
-            <div class="perf-state-desc">좌측 표에서 실적 행을 선택하면 상세 내용과 승인/반려 동작을 확인하실 수 있습니다.</div>
+            <div class="perf-state-desc">좌측 표에서 실적 행을 선택하면 상세 내용과 승인 동작을 확인하실 수 있습니다.</div>
           </div>
         </div>
       `;
@@ -259,7 +258,7 @@ export class PerformanceDetailPanel {
 
       <!-- 액션 버튼 영역 -->
       <div class="perf-detail-actions">
-        <!-- 승인 및 반려 (D07: 반려는 흰 보조버튼 스타일) -->
+        <!-- 실적은 원본 엑셀에서 수정하고 다시 읽은 뒤 승인한다. -->
         <div class="perf-action-btn-row">
           <button type="button" class="perf-btn-primary" id="btn-perf-approve" ${
             !(row.canApprove || row.reapprovalStatus === "pending") || !this.canPerformAction || row.isChangeLocked ? "disabled" : ""
@@ -268,15 +267,11 @@ export class PerformanceDetailPanel {
             <span>${row.needsReapproval ? "재승인" : "승인"}</span>
           </button>
 
-          <button type="button" class="perf-btn-secondary" id="btn-perf-reject" ${
-            !this.canPerformAction || row.isChangeLocked || row.approvalStatus === "approved"
-              ? "disabled"
-              : ""
-          } title="${escapeHtml(actionDisabledReason || "실적을 반려합니다")}">
-            <span class="material-symbols-outlined icon-18" aria-hidden="true">cancel</span>
-            <span>반려</span>
-          </button>
         </div>
+
+        ${(row.canApprove || row.approvalStatus === "pending" || row.reapprovalStatus === "pending") && !row.isChangeLocked ? `
+          <p class="perf-correction-help" id="perf-correction-help">실적에 오류가 있으면 원본 엑셀을 수정해 저장한 뒤, 상단의 ‘다시 읽기’를 눌러 주세요. 변경된 시간과 금액을 확인한 후 승인합니다.</p>
+        ` : ""}
 
         <!-- 차이 비교 및 이력 -->
         <div class="perf-action-btn-row">
@@ -285,7 +280,7 @@ export class PerformanceDetailPanel {
             <span>차이 비교</span>
           </button>
 
-          <button type="button" class="perf-btn-secondary perf-btn-flex" id="btn-perf-history" title="승인 및 반려 이력 확인">
+          <button type="button" class="perf-btn-secondary perf-btn-flex" id="btn-perf-history" title="승인 이력 확인">
             <span class="material-symbols-outlined icon-18" aria-hidden="true">history</span>
             <span>승인 이력</span>
           </button>
@@ -339,7 +334,7 @@ export class PerformanceDetailPanel {
             } title="${escapeHtml(
                   row.isChangeLocked
                     ? "품의 완료 잠금으로 되돌릴 수 없습니다"
-                    : "파일 전체의 승인 기록과 계산을 지우고 승인대기로 되돌립니다"
+                    : "취소 전 기록을 이력에 보관하고 파일 전체를 승인대기로 되돌립니다"
                 )}">
               <span class="material-symbols-outlined icon-18" aria-hidden="true">undo</span>
               <span>승인대기 복귀</span>
@@ -354,10 +349,6 @@ export class PerformanceDetailPanel {
     // 이벤트 리스너 연결
     this.container.querySelector("#btn-perf-approve")?.addEventListener("click", () => {
       this.callbacks.onApprove(row);
-    });
-
-    this.container.querySelector("#btn-perf-reject")?.addEventListener("click", () => {
-      this.callbacks.onReject(row);
     });
 
     this.container.querySelector("#btn-perf-compare")?.addEventListener("click", () => {

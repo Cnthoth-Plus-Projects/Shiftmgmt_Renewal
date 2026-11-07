@@ -85,6 +85,18 @@ export class DataTable<T> {
     this.renderBodyAndPagination();
   }
 
+  /** 화면이 정한 높이에 맞춰 페이지 크기만 조절한다. 검색·정렬·선택은 유지한다. */
+  public setPageSize(pageSize: number): void {
+    const size = Math.max(1, Math.floor(pageSize));
+    if (!Number.isFinite(pageSize) || size === this.pageSize) return;
+    const selected = this.filteredRows.findIndex(row => this.getRowId(row) === this.selectedRowId);
+    const anchor = selected >= 0 ? selected : (this.currentPage - 1) * this.pageSize;
+    this.pageSize = size;
+    this.totalPages = Math.max(1, Math.ceil(this.filteredRows.length / size));
+    this.currentPage = Math.max(1, Math.min(this.totalPages, Math.floor(anchor / size) + 1));
+    this.renderBodyAndPagination();
+  }
+
   public setSearch(query: string): void {
     this.searchQuery = query;
     this.currentPage = 1;
@@ -349,6 +361,7 @@ export class DataTable<T> {
 
       // 키보드 엔터/스페이스 선택
       tr.addEventListener("keydown", (e) => {
+        if (e.target !== tr) return;
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           this.setSelectedId(rowId);

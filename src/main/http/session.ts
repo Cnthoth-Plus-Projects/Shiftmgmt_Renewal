@@ -105,6 +105,7 @@ export class SessionManager {
 
   public clear(): void {
     this.sessionMap.clear();
+    this.authService.signOut();
     if (this.authService.resetAuthStateForTest) {
       this.authService.resetAuthStateForTest();
     }
@@ -117,12 +118,14 @@ export class SessionManager {
     }
 
     const renewalResult = this.authService.getSessionWithRenewal();
-    if (!renewalResult.ok || !renewalResult.data) {
+    const entry = this.sessionMap.get(cookieId)!;
+    if (!renewalResult.ok || !renewalResult.data ||
+        renewalResult.data.userId !== entry.session.userId ||
+        renewalResult.data.sessionToken !== entry.session.sessionToken) {
       this.sessionMap.delete(cookieId);
       return null;
     }
 
-    const entry = this.sessionMap.get(cookieId)!;
     entry.session = renewalResult.data;
     entry.lastSeenAt = this.now();
     return entry.session;

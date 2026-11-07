@@ -7,6 +7,7 @@ import type {
   DocumentLayoutOutputMember
 } from "../../shared/domain/document-layout";
 import {
+  OperationsWorkspace,
   el,
   createButton,
   createFormGroup,
@@ -36,6 +37,8 @@ const SUPPORTED_KEYS: DocumentLayoutKey[] = [
 ];
 
 export class OperationsLayoutTab {
+  private workspace?: OperationsWorkspace;
+  private activeArea = "editor";
   private container: HTMLElement;
   private currentKey: DocumentLayoutKey = SUPPORTED_KEYS[0];
   private snapshot: DocumentLayoutSnapshot | null = null;
@@ -70,6 +73,8 @@ export class OperationsLayoutTab {
   }
 
   public destroy(): void {
+    this.workspace?.destroy();
+    this.canvasComponent?.destroy();
     this.isDestroyed = true;
     this.loadRequestId++;
     if (this.previewViewer) {
@@ -90,6 +95,7 @@ export class OperationsLayoutTab {
   private async loadLayout(key: DocumentLayoutKey): Promise<void> {
     if (this.isDestroyed) return;
     const reqId = ++this.loadRequestId;
+    this.canvasComponent?.destroy();
     this.previewViewer?.destroy();
     this.previewViewer = undefined;
     this.currentKey = key;
@@ -140,6 +146,9 @@ export class OperationsLayoutTab {
   }
 
   private render(): void {
+    this.activeArea = this.workspace?.activeArea || this.activeArea;
+    this.workspace?.destroy();
+    this.canvasComponent?.destroy();
     if (!this.snapshot || !this.draftDefinition) return;
     this.container.innerHTML = "";
 
@@ -196,19 +205,17 @@ export class OperationsLayoutTab {
 
     // 버전 메타 배지
     const metaBar = el("div", "layout-meta-bar");
-    const rev = this.snapshot.activeRevisionId || "기본값 (내장)";
-    metaBar.appendChild(el("span", "meta-badge", `현재 활성판: ${rev}`));
-    metaBar.appendChild(
-      el("span", "meta-badge", this.snapshot.usingBuiltInDefault ? "내장 기본값 사용 중" : "사용자 저장판 사용 중")
-    );
+    const revision = el("span", "meta-badge", this.snapshot.usingBuiltInDefault ? "기본 양식" : "저장된 양식");
+    revision.title = `활성판: ${this.snapshot.activeRevisionId || "기본값 (내장)"}`;
+    metaBar.appendChild(revision);
     if (this.snapshot.updatedAt) {
-      metaBar.appendChild(el("span", "meta-badge", `최종 수정: ${this.snapshot.updatedAt}`));
+      metaBar.appendChild(el("span", "meta-badge", `최근 저장 ${new Date(this.snapshot.updatedAt).toLocaleString("ko-KR")}`));
     }
     wrap.appendChild(metaBar);
 
     // 2. 파일명 패턴 설정 영역
-    const filenameSec = el("div", "layout-section filename-section");
-    filenameSec.appendChild(el("h5", "section-sub", "출력 파일명 패턴 설정"));
+    const filenameSec = el("details", "layout-section filename-section");
+    filenameSec.appendChild(el("summary", "section-sub", "출력 파일 이름 설정"));
     const fnGrid = el("div", "form-grid");
     this.filenameInputs = [];
 
@@ -249,7 +256,7 @@ export class OperationsLayoutTab {
 
     // 4. 실제 생성물 미리보기 영역 (R12)
     const previewSec = el("div", "layout-section preview-section");
-    previewSec.appendChild(el("h4", "section-title", "실제 문서 산출물 미리보기 (PDF / XLSX 바이너리)"));
+    previewSec.appendChild(el("h4", "section-title", "출력될 문서 미리보기"));
     const previewContainer = el("div", "preview-host-container");
     this.previewViewer = new OperationsLayoutPreviewViewer(previewContainer, this.onSessionExpired);
     previewSec.appendChild(previewContainer);
@@ -257,7 +264,7 @@ export class OperationsLayoutTab {
 
     // 5. 이력 목록 테이블 (DataTable)
     const histSec = el("div", "layout-section history-section");
-    histSec.appendChild(el("h4", "section-title", "양식 변경 이력 (Revision History)"));
+    histSec.appendChild(el("h4", "section-title", "저장된 양식 이력"));
     const histTableWrap = el("div", "history-table-wrap");
     this.historyTable = new DataTable<DocumentLayoutHistoryRecord>({
       container: histTableWrap,
@@ -279,7 +286,18 @@ export class OperationsLayoutTab {
     histSec.appendChild(histTableWrap);
     wrap.appendChild(histSec);
 
+    const editor = el("div", "ops-layout-editor-panel"); editor.append(filenameSec, canvasSec);
+    const context = el("div", "ops-layout-context");
+    keySelect.setAttribute("aria-label", "편집할 양식 선택"); context.append(keySelect, metaBar);
+    this.workspace = new OperationsWorkspace(wrap, { id: "layout", initialArea: this.activeArea, context,
+      areas: [
+        { id: "editor", label: "양식 편집", hint: "문서 배치와 출력 이름", icon: "edit_document", description: "문서에서 편집할 부분을 선택하고 오른쪽 속성을 조정하세요. 실제 출력 결과는 ‘미리보기 갱신’에서 확인합니다.", content: editor },
+        { id: "preview", label: "출력 미리보기", hint: "실제 문서 결과 확인", icon: "preview", description: "‘미리보기 갱신’을 눌러 현재 초안의 출력 결과를 확인하세요. 미리보기만으로 양식이 저장되거나 기존 이력이 바뀌지 않습니다.", content: previewSec },
+        { id: "history", label: "변경 이력", hint: "저장된 양식 판 조회", icon: "history", description: "저장 일시와 변경 사유를 확인합니다. 과거 이력은 조회 전용이며 기본값 복원도 새로운 저장 이력으로 남습니다.", content: histSec }
+      ], footerText: "편집 → 미리보기 확인 → 변경 사유를 적어 저장하세요. 기본값 복원은 확인 후 적용됩니다.", canChange: () => !this.isSaving && !this.isDestroyed });
+    this.workspace.actions.appendChild(btnGroup);
     this.container.appendChild(wrap);
+    this.workspace.observeTable(this.historyTable, histTableWrap);
   }
 
   private async applySavedSnapshot(snapshot: DocumentLayoutSnapshot): Promise<void> {
@@ -321,6 +339,7 @@ export class OperationsLayoutTab {
 
   private handleRefreshPreview(): void {
     if (!this.draftDefinition || !this.previewViewer) return;
+    this.workspace?.select("preview");
     this.previewViewer.loadPreview(
       this.draftDefinition,
       this.snapshot?.activeRevisionId || null

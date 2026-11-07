@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { initializePolicyHistory } from "./policy-history-service";
 import { listStoredShiftPatterns } from "./shift-pattern-storage-service";
 import { prepareReturnedScheduleFixture, syncPreparedReturnedSchedule, testAdminSession } from "./performance-test-helpers";
@@ -301,6 +302,7 @@ describe("database-migration-service", () => {
     const {filePath}=await createBaselineBackupFile("holiday-policy.json",(tables, parsed)=>{
       if (parsed) {
         parsed.schemaVersion = 1;
+        delete tables.performance_return_history;
         delete tables.policy_revisions;
         delete tables.policy_events;
         parsed.tableCount = Object.keys(tables).length;
@@ -343,7 +345,7 @@ describe("database-migration-service", () => {
     });
 
     expect(preview.sourceType).toBe("json");
-    expect(preview.tableImpacts).toHaveLength(42);
+    expect(preview.tableImpacts).toHaveLength(43);
     expect(preview.previewToken).toBeDefined();
 
     const summary = await runDatabaseMigrationUpdate({
@@ -356,7 +358,7 @@ describe("database-migration-service", () => {
     });
 
     expect(summary.sourceType).toBe("json");
-    expect(summary.tableResults).toHaveLength(42);
+    expect(summary.tableResults).toHaveLength(43);
     expect(summary.databasePath).toBe(dbPath);
     expect(existsSync(summary.backupBeforeRestore.jsonBackupPath)).toBe(true);
 
@@ -637,7 +639,7 @@ describe("database-migration-service", () => {
       env
     });
 
-    expect(summary.tableResults).toHaveLength(42);
+    expect(summary.tableResults).toHaveLength(43);
 
     const restoredDatabase = getSqliteDatabase()!;
     const hasId = (tableName: string, id: string) =>
@@ -697,7 +699,7 @@ describe("database-migration-service", () => {
     });
 
     expect(preview.sourceType).toBe("json");
-    expect(preview.tableImpacts).toHaveLength(42);
+    expect(preview.tableImpacts).toHaveLength(43);
     expect(preview.previewToken).toBeDefined();
 
     const siteImpact = preview.tableImpacts.find((t) => t.tableName === "sites");
@@ -837,7 +839,7 @@ describe("database-migration-service", () => {
     const wrongVersionPath = path.resolve(testRoot, "wrong-version.json");
     writeFileSync(wrongVersionPath, JSON.stringify({ schemaVersion: 99, tables: {} }));
     expect(() => previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: wrongVersionPath, env })).toThrow(
-      "지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 백업 파일 버전: 99)"
+      "지원하지 않는 백업 버전입니다. (지원 버전: 1, 2, 3, 백업 파일 버전: 99)"
     );
 
     const missingTablesPath = path.resolve(testRoot, "missing-tables.json");
@@ -950,7 +952,7 @@ describe("database-migration-service", () => {
       env
     });
 
-    expect(result.tableResults).toHaveLength(42);
+    expect(result.tableResults).toHaveLength(43);
   });
 
   // N7 (DEC-001): 사번 없는 실적에 승인/숨김/수당 계산 이력이 있으면 롤백 및 거절
@@ -1404,8 +1406,21 @@ describe("database-migration-service", () => {
   });
 
 
-  // --- C02: 40표 457열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
-  it("C02: should verify 40 tables / 458 columns contract against isolated DB PRAGMA table_info", async () => {
+  it.each([1, 2])("restores legacy JSON version %i with an empty cancellation archive", async version => {
+    const { filePath } = await createBaselineBackupFile(`legacy-cancellation-${version}.json`, (tables, parsed) => {
+      parsed!.schemaVersion = version;
+      delete tables.performance_return_history;
+      if (version === 1) { delete tables.policy_revisions; delete tables.policy_events; }
+    });
+    expect(checkDatabaseMigrationRequirements({ userDataPath, backupFilePath: filePath, env }).isReady).toBe(true);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: filePath, env });
+    const result = await runDatabaseMigrationUpdate({ userDataPath, backupFilePath: filePath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체", env });
+    expect(result.tableResults).toHaveLength(43);
+    expect(getSqliteDatabase()!.prepare("SELECT * FROM performance_return_history").all()).toEqual([]);
+  });
+
+  // --- C02: 43표 495열 전체 계약 정합성 및 타입/NULL 엄격 검증 (§4.2, §4.5) ---
+  it("C02: should verify 43 tables / 495 columns contract against isolated DB PRAGMA table_info", async () => {
     const inspectDbDir = path.resolve(testRoot, "pragma-inspect");
     mkdirSync(inspectDbDir, { recursive: true });
     const inspectDbPath = path.resolve(inspectDbDir, "inspect.sqlite");
@@ -1419,7 +1434,7 @@ describe("database-migration-service", () => {
     const inspectDb = inspectStorage.database;
 
     const tables = (inspectDb.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").all() as Array<{ name: string }>).map((r) => r.name);
-    expect(tables.length).toBe(42);
+    expect(tables.length).toBe(43);
 
     const schemaInfo: Record<string, Array<{ name: string; type: string; notnull: number }>> = {};
     let totalCols = 0;
@@ -1442,11 +1457,11 @@ describe("database-migration-service", () => {
     }
 
     // 42표 487열, TEXT 408, INTEGER 73, REAL 6, 명시적 NOT NULL 289 실측 일치 단언
-    expect(totalCols).toBe(487);
-    expect(textCols).toBe(408);
+    expect(totalCols).toBe(495);
+    expect(textCols).toBe(416);
     expect(intCols).toBe(73);
     expect(realCols).toBe(6);
-    expect(notNullCols).toBe(289);
+    expect(notNullCols).toBe(297);
 
     initializePolicyHistory(inspectDb);
     const policyTables = Object.fromEntries(["policy_revisions", "policy_events"].map(table => [table, inspectDb.prepare(`SELECT * FROM ${table}`).all()]));
@@ -1478,7 +1493,7 @@ describe("database-migration-service", () => {
     const tmpFixturePath = path.resolve(testRoot, "contract-check-fixture.json");
     const writeFixture = (obj: Record<string, unknown[]>) => {
       writeFileSync(tmpFixturePath, JSON.stringify({
-        schemaVersion: 2,
+        schemaVersion: 3,
         sourceType: "sqlite-json",
         createdAt: new Date().toISOString(),
         tables: obj
@@ -1500,6 +1515,12 @@ describe("database-migration-service", () => {
         }
       }
       if (t === "policy_revisions" || t === "policy_events") Object.assign(validRow, baseTables[t][0]);
+      if (t === "performance_return_history") {
+        const originalFile = Object.fromEntries(schemaInfo.performance_files.map(column => [column.name, column.type.includes("INT") || column.type.includes("REAL") ? 1 : column.notnull ? "valid_str" : null]));
+        originalFile.id = "valid_str"; originalFile.directory_type = "approved";
+        const snapshot = JSON.stringify({version:1, actor:{userId:"valid_str",loginId:"admin",displayName:"valid_str",role:"admin"}, tables:{performance_files:[originalFile],performance_entries:[],performance_approvals:[],allowance_calculations:[],allowance_calculation_items:[],allowance_approvals:[]}});
+        Object.assign(validRow, {occurred_at:new Date().toISOString(), snapshot_json:snapshot, snapshot_sha256:createHash("sha256").update(snapshot).digest("hex")});
+      }
       const withRow = (row: Record<string, unknown>) => ({ ...baseTables, [t]: [row, ...baseTables[t].slice(1)] });
 
       // 1. 해당 표에 완전한 합성 1행을 넣었을 때 check 통과
@@ -2106,6 +2127,7 @@ describe("database-migration-service", () => {
     const { filePath } = await createBaselineBackupFile(`employee-email-${hasEmail}.json`, (tables, parsed) => {
       if (!hasEmail && parsed) {
         parsed.schemaVersion = 1;
+        delete tables.performance_return_history;
         delete tables.policy_revisions;
         delete tables.policy_events;
         parsed.tableCount = Object.keys(tables).length;

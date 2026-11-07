@@ -235,8 +235,13 @@ await runScreenCheck({
     }
 
     // 관리 그룹 노출 확인 (admin 전용)
-    const orgMgmtBtn = page.getByRole("button", { name: "조직 관리" });
-    await orgMgmtBtn.waitFor({ state: "visible", timeout: 10_000 });
+    const operationsBtn = page.getByRole("button", { name: "운영 관리", exact: true });
+    await operationsBtn.waitFor({ state: "visible", timeout: 10_000 });
+    for (const id of ["schedule-adjust", "org-mgmt"]) {
+      if (await page.locator(`.nav-item[data-id="${id}"]`).count()) {
+        throw new Error(`미구현 메뉴가 사이드바에 표시되었습니다: ${id}`);
+      }
+    }
 
     // 역할 배지 확인
     const roleBadge = page.locator(".role-badge");
@@ -357,11 +362,14 @@ await runScreenCheck({
       throw new Error(`상태줄 업데이트 상태 표시 불일치: UI='${updateCellText}', 기대='수동 적용'`);
     }
 
-    // 5. 미구현 메뉴 차단 알림 확인
-    const scheduleCreateBtn = page.getByRole("button", { name: "근무표 생성" });
+    // 5. 구현된 근무표 화면으로 이동하고 준비 안내가 없는지 확인
+    const scheduleCreateBtn = page.getByRole("button", { name: "근무표 생성·배포" });
     await scheduleCreateBtn.click();
     const noticeBanner = page.locator(".notice-banner");
-    await noticeBanner.waitFor({ state: "visible", timeout: 10_000 });
+    await page.locator("#schedule-screen").waitFor({ state: "visible", timeout: 10_000 });
+    if (await noticeBanner.isVisible()) {
+      throw new Error("구현된 근무표 생성 화면에 준비 안내가 표시되었습니다.");
+    }
 
     // 6. 감시 중단 및 회복 확인
     await page.evaluate(async () => {
@@ -473,9 +481,14 @@ await runScreenCheck({
     await waitForFontsReady(15_000);
 
     // 일반 운영자는 관리 그룹이 없어야 함
-    const hasOrgMgmt = await orgMgmtBtn.isVisible().catch(() => false);
-    if (hasOrgMgmt) {
-      throw new Error("일반 운영자 셸에 관리자 전용 '조직 관리' 메뉴가 표시되었습니다.");
+    const hasOperations = await operationsBtn.isVisible().catch(() => false);
+    if (hasOperations) {
+      throw new Error("일반 운영자 셸에 관리자 전용 '운영 관리' 메뉴가 표시되었습니다.");
+    }
+    for (const id of ["schedule-adjust", "org-mgmt"]) {
+      if (await page.locator(`.nav-item[data-id="${id}"]`).count()) {
+        throw new Error(`일반 운영자 셸에 미구현 메뉴가 표시되었습니다: ${id}`);
+      }
     }
 
     // 운영자 셸 상태줄에 sb-watch가 없어야 함

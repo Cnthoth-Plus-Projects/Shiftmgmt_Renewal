@@ -670,6 +670,18 @@ export const migrateDatabase = (database: DatabaseSync) => {
       created_at TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS performance_return_history (
+      id TEXT PRIMARY KEY NOT NULL,
+      file_id TEXT NOT NULL,
+      occurred_at TEXT NOT NULL,
+      actor_user_id TEXT NOT NULL,
+      actor_name TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      snapshot_json TEXT NOT NULL,
+      snapshot_sha256 TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_performance_return_history_file ON performance_return_history(file_id, occurred_at DESC);
+
     CREATE INDEX IF NOT EXISTS idx_allowance_calculations_file_id
       ON allowance_calculations (file_id, created_at DESC);
 

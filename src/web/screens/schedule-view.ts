@@ -207,6 +207,7 @@ export class ScheduleView {
         </div>
       `;
 
+      this.arrangeToolbar(toolbar);
       this.bindCalendarEvents();
     } else {
       // 이력 탭 툴바
@@ -247,8 +248,19 @@ export class ScheduleView {
         </div>
       `;
 
+      this.arrangeToolbar(toolbar);
       this.bindHistoryEvents();
     }
+  }
+
+  private arrangeToolbar(toolbar: HTMLElement): void {
+    const tabs = toolbar.querySelector(".schedule-tab-group");
+    const actions = toolbar.querySelector(".schedule-toolbar-right");
+    if (!tabs || !actions) return;
+    const top = document.createElement("div");
+    top.className = "schedule-toolbar-top";
+    top.append(tabs, actions);
+    toolbar.prepend(top);
   }
 
   private bindCalendarEvents(): void {

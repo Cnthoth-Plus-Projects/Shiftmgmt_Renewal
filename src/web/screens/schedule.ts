@@ -13,12 +13,14 @@ export interface ScheduleScreenOptions {
   onSessionExpired?: () => void;
   initialTab?: "calendar" | "history";
   onNavigate?: (menuId: string) => void;
+  onTabChange?: (tab: "calendar" | "history") => void;
 }
 
 export class ScheduleScreen {
   private container: HTMLElement;
   private session: AuthSession | null;
   private onSessionExpired?: () => void;
+  private onTabChange?: ScheduleScreenOptions["onTabChange"];
   private currentTab: "calendar" | "history";
   private isDestroyed = false;
   private sessionEnded = false;
@@ -56,6 +58,7 @@ export class ScheduleScreen {
   constructor(options: ScheduleScreenOptions) {
     this.container = options.container; this.session = options.session;
     this.onSessionExpired = options.onSessionExpired; this.currentTab = options.initialTab || "calendar";
+    this.onTabChange = options.onTabChange;
   }
   public isBusy(): boolean { return this.busy; }
   public isDirty(): boolean { return this.busy; }
@@ -198,6 +201,7 @@ export class ScheduleScreen {
   private switchTab(tab: "calendar" | "history"): void {
     if (this.busy || this.currentTab === tab) return;
     this.currentTab = tab;
+    this.onTabChange?.(tab);
     if (!this.initialDataLoaded) { this.updateView(); if (!this.loading) void this.loadData(); return; }
     this.generationId++; this.loading = false;
     if (tab === "calendar") void this.loadScheduleData(); else this.updateView();

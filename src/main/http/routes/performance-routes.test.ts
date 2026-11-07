@@ -118,6 +118,7 @@ const setup = (session: AuthSession | null = adminSession) => {
     cookie: `sm_session=${cookieId}`,
     dataDir: "C:/sentinel/data",
     registry,
+    sessionManager,
   };
 };
 
@@ -157,7 +158,7 @@ const descriptors: Record<string, Descriptor> = {
   "performance:get-pending-file-detail": { args: ["file-1"], spy: mocks.getPendingPerformanceFileDetail, expectedArgs: (_e, a) => [a[0]] },
   "performance:approve": { args: [{ fileId: "file-1" }], spy: mocks.approvePerformanceFile, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir, requireExpectedPolicyFingerprint: true }] },
   "performance:finalize-reapproved-file": { args: [{ fileId: "file-1" }], spy: mocks.finalizeReapprovedPerformanceFile, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir }] },
-  "performance:return-to-pending": { args: [{ fileId: "file-1" }], spy: mocks.returnApprovedPerformanceFileToPending, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir }] },
+  "performance:return-to-pending": { args: [{ fileId: "file-1", reason: "원본 수정" }], spy: mocks.returnApprovedPerformanceFileToPending, expectedArgs: (e, a) => [a[0], adminSession, { userDataPath: e.dataDir, isSessionCurrent: expect.any(Function) }] },
   "performance:reject": { args: [{ fileId: "file-1", reason: "오류" }], spy: mocks.rejectPerformanceFile, expectedArgs: (_e, a) => [a[0], adminSession] },
   "performance:hide-approved-row": { args: [{ rowId: "row-1" }], spy: mocks.hideApprovedPerformanceOverviewRow, expectedArgs: (_e, a) => [a[0], adminSession] },
   "performance:list-approval-history": { args: [], spy: mocks.getPerformanceApprovalHistory, expectedArgs: () => [] },
@@ -201,6 +202,16 @@ describe("performance-routes", () => {
       "performance:retry-startup-recovery",
       "performance:return-to-pending",
     ]);
+  });
+
+  it("return commit guard remains tied to the original authenticated cookie", async () => {
+    const env = setup();
+    await dispatch(env, "performance:return-to-pending", [{ fileId: "file-1", reason: "수정" }], createDialogBridge());
+    const call = mocks.returnApprovedPerformanceFileToPending.mock.calls.at(-1) as unknown as [unknown, unknown, { isSessionCurrent: () => boolean }];
+    const context = call[2];
+    expect(context.isSessionCurrent()).toBe(true);
+    env.sessionManager.clear();
+    expect(context.isSessionCurrent()).toBe(false);
   });
 
   it("dispatches all 16 channels with exact service effects, dataDir, openPath, and activities", async () => {

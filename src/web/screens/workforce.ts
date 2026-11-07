@@ -66,6 +66,9 @@ export class WorkforceScreen {
   private lifetime = 0;
   private isDestroyed = false;
   private isSessionExpiredTriggered = false; // UI01-D07: 만료 콜백 단 1회 보장
+  private detailDialog: HTMLDialogElement | null = null;
+  private readonly compactDetail = window.matchMedia("(max-width: 1800px)");
+  private readonly onDetailBreakpointChange = () => this.closeEmployeeDetail();
 
   constructor(options: WorkforceScreenOptions) {
     this.container = options.container;
@@ -76,6 +79,8 @@ export class WorkforceScreen {
   }
 
   public async render(): Promise<void> {
+    this.closeEmployeeDetail();
+    this.compactDetail.addEventListener("change", this.onDetailBreakpointChange);
     this.isDestroyed = false;
     this.isSessionExpiredTriggered = false;
     this.lifetime++;
@@ -193,6 +198,7 @@ export class WorkforceScreen {
     const root = this.container.querySelector<HTMLElement>("#workforce-root");
     if (!root) return;
 
+    this.closeEmployeeDetail();
     root.innerHTML = "";
     const summary = document.createElement("section");
     summary.className = "workforce-kpis";
@@ -223,13 +229,28 @@ export class WorkforceScreen {
 
     root.appendChild(contentGrid);
 
+    const detailDialog = document.createElement("dialog");
+    detailDialog.id = "workforce-detail-dialog";
+    detailDialog.setAttribute("aria-label", "인력 상세 정보");
+    detailDialog.addEventListener("close", () => {
+      if (contentGrid.isConnected && detailContainer.parentElement === detailDialog) {
+        contentGrid.appendChild(detailContainer);
+      }
+    });
+    root.appendChild(detailDialog);
+    this.detailDialog = detailDialog;
+
     // WorkforceList 렌더링
     this.workforceList = new WorkforceList({
       container: listWrapper,
       tableContainer,
       canWrite,
       isAdmin,
-      onSelectEmployee: (empId) => void this.selectEmployee(empId),
+      onSelectEmployee: (empId, openDetail) => {
+        void this.selectEmployee(empId).then(() => {
+          if (openDetail && !this.isDestroyed && this.selectedEmployeeId === empId) this.openEmployeeDetail();
+        });
+      },
       onOpenNewEmployeeModal: () => this.employeeForm?.openNewModal(),
       onOpenBulkModal: () => this.bulkManager?.openBulkModal(),
       onFilterChange: () => this.applyListFilter()
@@ -245,15 +266,16 @@ export class WorkforceScreen {
       container: detailContainer,
       canWrite,
       isAdmin,
-      onOpenEditModal: (emp) => this.employeeForm?.openEditModal(emp),
-      onOpenRehire: (emp,mode) => this.rehireManager?.open(emp,mode),
-      onOpenWageModal: (emp, rates) => this.wageManager?.openWageModal(emp, rates),
-      onOpenWageRevision: (emp, rate) => this.wageManager?.openRevisionModal(emp, rate),
-      onOpenCloseWageModal: (emp, rate) => this.wageManager?.openCloseWageModal(emp, rate),
-      onOpenAssignmentModal: (emp) => this.assignmentManager?.openAssignmentModal(emp),
-      onOpenReorderModal: (emp, assigns) => this.assignmentManager?.openReorderModal(emp, assigns),
-      onCloseAssignment: (assign) => this.assignmentManager?.openCloseAssignmentModal(assign),
-      onDeleteEmployee: (emp) => this.employeeForm?.openDeleteModal(emp)
+      onOpenEditModal: (emp) => this.fromEmployeeDetail(() => this.employeeForm?.openEditModal(emp)),
+      onOpenRehire: (emp,mode) => this.fromEmployeeDetail(() => this.rehireManager?.open(emp,mode)),
+      onOpenWageModal: (emp, rates) => this.fromEmployeeDetail(() => this.wageManager?.openWageModal(emp, rates)),
+      onOpenWageRevision: (emp, rate) => this.fromEmployeeDetail(() => this.wageManager?.openRevisionModal(emp, rate)),
+      onOpenCloseWageModal: (emp, rate) => this.fromEmployeeDetail(() => this.wageManager?.openCloseWageModal(emp, rate)),
+      onOpenAssignmentModal: (emp) => this.fromEmployeeDetail(() => this.assignmentManager?.openAssignmentModal(emp)),
+      onOpenReorderModal: (emp, assigns) => this.fromEmployeeDetail(() => this.assignmentManager?.openReorderModal(emp, assigns)),
+      onCloseAssignment: (assign) => this.fromEmployeeDetail(() => this.assignmentManager?.openCloseAssignmentModal(assign)),
+      onDeleteEmployee: (emp) => this.fromEmployeeDetail(() => this.employeeForm?.openDeleteModal(emp)),
+      onClosePanel: () => this.closeEmployeeDetail()
     });
 
     this.workforceDetail.render();
@@ -261,6 +283,27 @@ export class WorkforceScreen {
     if (this.selectedEmployeeId) {
       void this.selectEmployee(this.selectedEmployeeId);
     }
+  }
+
+  private openEmployeeDetail(): void {
+    if (!this.compactDetail.matches || !this.detailDialog?.isConnected) return;
+    const detail = this.container.querySelector<HTMLElement>("#workforce-detail-area");
+    if (!detail) return;
+    this.detailDialog.appendChild(detail);
+    if (!this.detailDialog.open) this.detailDialog.showModal();
+  }
+
+  private closeEmployeeDetail(): void {
+    if (!this.detailDialog?.open) return;
+    this.detailDialog.close();
+    const detail = this.detailDialog.querySelector("#workforce-detail-area");
+    const grid = this.container.querySelector(".workforce-content-grid");
+    if (detail && grid) grid.appendChild(detail);
+  }
+
+  private fromEmployeeDetail(action: () => void): void {
+    this.closeEmployeeDetail();
+    action();
   }
 
   private applyListFilter(): void {
@@ -664,6 +707,9 @@ export class WorkforceScreen {
   }
 
   public destroy(): void {
+    this.closeEmployeeDetail();
+    this.compactDetail.removeEventListener("change", this.onDetailBreakpointChange);
+    this.detailDialog = null;
     this.lifetime++;
     this.isDestroyed = true;
     this.generation++;

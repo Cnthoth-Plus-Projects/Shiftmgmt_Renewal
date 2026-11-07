@@ -31,6 +31,11 @@ export class OperationsLayoutCanvas {
   private canvasWrapEl?: HTMLElement;
   private propPanelEl?: HTMLElement;
   private blockListEl?: HTMLElement;
+  private blockSelectEl?: HTMLSelectElement;
+  private zoomLabelEl?: HTMLElement;
+  private resizeObserver?: ResizeObserver;
+  private resizeFrame = 0;
+  private zoom = 1;
 
   // 드래그 상태 관리
   private isDragging = false;
@@ -63,6 +68,7 @@ export class OperationsLayoutCanvas {
   }
 
   public render(): void {
+    this.destroy();
     this.container.innerHTML = "";
     const wrap = el("div", "layout-editor-canvas-wrap");
 
@@ -71,7 +77,7 @@ export class OperationsLayoutCanvas {
       const memberTabs = el("div", "member-tabs-bar");
       this.definition.outputs.forEach((m: DocumentLayoutOutputMember, idx: number) => {
         const btn = createButton(
-          m.memberId,
+          this.memberLabel(m.memberId),
           idx === this.currentMemberIndex ? "primary" : "secondary",
           () => {
             this.currentMemberIndex = idx;
@@ -86,6 +92,26 @@ export class OperationsLayoutCanvas {
       wrap.appendChild(memberTabs);
     }
 
+    const toolbar = el("div", "canvas-toolbar");
+    const blockSelect = el("select", "form-control canvas-block-select") as HTMLSelectElement;
+    blockSelect.setAttribute("aria-label", "편집할 문서 블록");
+    this.blockSelectEl = blockSelect;
+    blockSelect.addEventListener("change", () => this.selectBlock(blockSelect.value));
+    const zoomControls = el("div", "canvas-zoom-controls");
+    const fit = createButton("전체 맞춤", "secondary", () => { this.zoom = 1; this.renderCanvas(); });
+    fit.id = "btn-canvas-fit";
+    const less = createButton("−", "secondary", () => this.changeZoom(-0.25));
+    less.id = "btn-canvas-zoom-out";
+    less.setAttribute("aria-label", "문서 축소");
+    const more = createButton("+", "secondary", () => this.changeZoom(0.25));
+    more.id = "btn-canvas-zoom-in";
+    more.setAttribute("aria-label", "문서 확대");
+    this.zoomLabelEl = el("span", "canvas-zoom-label", "맞춤");
+    this.zoomLabelEl.setAttribute("aria-live", "polite");
+    zoomControls.append(fit, less, this.zoomLabelEl, more);
+    toolbar.append(blockSelect, zoomControls);
+    wrap.appendChild(toolbar);
+
     // 2. 3단 구성 레이아웃: [좌측 블록 목록] | [중앙 캔버스] | [우측 블록 속성]
     const mainGrid = el("div", "canvas-layout-grid");
 
@@ -99,7 +125,7 @@ export class OperationsLayoutCanvas {
 
     // 중앙: 캔버스 뷰
     const centerCol = el("div", "canvas-col-center");
-    centerCol.appendChild(el("h5", "col-title", "배치 캔버스 (동일 종횡비 비율)"));
+    centerCol.appendChild(el("h5", "col-title", "문서 배치 · 선택하거나 끌어서 조정"));
     const canvasWrap = el("div", "canvas-viewport");
     this.canvasWrapEl = canvasWrap;
     centerCol.appendChild(canvasWrap);
@@ -107,7 +133,7 @@ export class OperationsLayoutCanvas {
 
     // 우측: 속성 패널
     const rightCol = el("div", "canvas-col-right");
-    rightCol.appendChild(el("h5", "col-title", "블록 상세 속성"));
+    rightCol.appendChild(el("h5", "col-title", "선택한 부분의 속성"));
     const propPanel = el("div", "property-panel-content");
     this.propPanelEl = propPanel;
     rightCol.appendChild(propPanel);
@@ -119,6 +145,41 @@ export class OperationsLayoutCanvas {
     this.renderBlockList();
     this.renderCanvas();
     this.renderProperties();
+    let lastWidth = 0, lastHeight = 0;
+    this.resizeObserver = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (!width || !height || (width === lastWidth && height === lastHeight)) return;
+      lastWidth = width; lastHeight = height;
+      cancelAnimationFrame(this.resizeFrame);
+      this.resizeFrame = requestAnimationFrame(() => { if (!this.isDragging) this.renderCanvas(); });
+    });
+    this.resizeObserver.observe(canvasWrap);
+  }
+
+  public destroy(): void {
+    this.resizeObserver?.disconnect();
+    cancelAnimationFrame(this.resizeFrame);
+  }
+
+  private memberLabel(id: string): string {
+    return ({ main: "본문", proposal: "품의서", attachment1: "별첨 1", attachment2: "별첨 2" } as Record<string, string>)[id] || id;
+  }
+
+  private blockLabel(block: DocumentLayoutBlock): string {
+    const kinds: Record<string, string> = { title: "제목", header: "머리글", field: "입력 항목", summary: "요약", table: "표", signature: "결재란", week: "요일", note: "안내문", logo: "로고", footer: "바닥글" };
+    return block.text || `${kinds[block.kind] || block.kind} ${this.getCurrentMember().blocks.filter(b => b.kind === block.kind).indexOf(block) + 1}`;
+  }
+
+  private selectBlock(id: string): void {
+    this.selectedBlockId = id;
+    this.renderBlockList();
+    this.renderCanvas();
+    this.renderProperties();
+  }
+
+  private changeZoom(delta: number): void {
+    this.zoom = Math.min(3, Math.max(0.5, this.zoom + delta));
+    this.renderCanvas();
   }
 
   private getCurrentMember(): DocumentLayoutOutputMember {
@@ -139,22 +200,25 @@ export class OperationsLayoutCanvas {
   private renderBlockList(): void {
     if (!this.blockListEl) return;
     this.blockListEl.innerHTML = "";
+    if (this.blockSelectEl) this.blockSelectEl.innerHTML = "";
 
     const member = this.getCurrentMember();
     member.blocks.forEach((block: DocumentLayoutBlock) => {
       const item = el(
-        "div",
+        "button",
         `block-item-btn ${block.id === this.selectedBlockId ? "selected" : ""}`
       );
       item.id = `block-item-${block.id}`;
-      item.textContent = `${block.kind} (${block.id})`;
-      item.addEventListener("click", () => {
-        this.selectedBlockId = block.id;
-        this.renderBlockList();
-        this.renderCanvas();
-        this.renderProperties();
-      });
+      item.setAttribute("type", "button");
+      item.setAttribute("aria-pressed", String(block.id === this.selectedBlockId));
+      item.textContent = this.blockLabel(block);
+      item.title = `${this.blockLabel(block)} (${block.id})`;
+      item.addEventListener("click", () => this.selectBlock(block.id));
       this.blockListEl?.appendChild(item);
+      const option = el("option", "", this.blockLabel(block)) as HTMLOptionElement;
+      option.value = block.id;
+      option.selected = block.id === this.selectedBlockId;
+      this.blockSelectEl?.appendChild(option);
     });
   }
 
@@ -175,16 +239,21 @@ export class OperationsLayoutCanvas {
     // UI02-D07: 종횡비 균일 scale (Uniform Scale) 적용
     const canvasWidth = canvasDef.width || 100;
     const canvasHeight = canvasDef.height || 100;
-    const maxViewportW = 420;
-    const maxViewportH = 560;
+    const maxViewportW = Math.max(80, (this.canvasWrapEl.clientWidth || 452) - 32);
+    const maxViewportH = Math.max(80, (this.canvasWrapEl.clientHeight || 592) - 32);
 
-    const scale = Math.min(maxViewportW / canvasWidth, maxViewportH / canvasHeight);
+    const scale = Math.min(maxViewportW / canvasWidth, maxViewportH / canvasHeight) * this.zoom;
     this.currentScale = scale;
+    if (this.zoomLabelEl) this.zoomLabelEl.textContent = this.zoom === 1 ? "맞춤" : `${Math.round(this.zoom * 100)}%`;
 
     const renderedW = Math.round(canvasWidth * scale);
     const renderedH = Math.round(canvasHeight * scale);
     canvasDom.style.width = `${renderedW}px`;
     canvasDom.style.height = `${renderedH}px`;
+    canvasDom.dataset.canvasWidth = String(canvasWidth);
+    canvasDom.dataset.canvasHeight = String(canvasHeight);
+    canvasDom.dataset.viewZoom = String(this.zoom);
+    canvasDom.style.flexShrink = "0";
 
     let activeBlockElement: HTMLElement | null = null;
 
@@ -212,7 +281,8 @@ export class OperationsLayoutCanvas {
         if (block.font.family) blockEl.style.fontFamily = block.font.family;
       }
 
-      blockEl.textContent = block.text || block.kind;
+      blockEl.textContent = this.blockLabel(block);
+      blockEl.title = this.blockLabel(block);
 
       if (isSelected) {
         activeBlockElement = blockEl;
@@ -221,10 +291,7 @@ export class OperationsLayoutCanvas {
       // 클릭 시 선택
       blockEl.addEventListener("click", (e) => {
         e.stopPropagation();
-        this.selectedBlockId = block.id;
-        this.renderBlockList();
-        this.renderCanvas();
-        this.renderProperties();
+        this.selectBlock(block.id);
       });
 
       // UI02-D07: 포인터 드래그 이벤트 (pointerdown, pointermove, pointerup, setPointerCapture)
@@ -331,24 +398,27 @@ export class OperationsLayoutCanvas {
     const editables = cap?.editableProperties || [];
 
     const form = el("div", "prop-form");
+    form.appendChild(el("strong", "canvas-selected-label", this.blockLabel(block)));
 
-    // 기본 정보 (읽기 전용)
+    // 기술 정보는 필요할 때 펼쳐 읽고, 편집 속성을 먼저 표시한다.
+    const advanced = el("details", "canvas-advanced-properties");
+    advanced.appendChild(el("summary", "", "블록 정보 및 보호 규칙"));
     const idInput = el("input", "form-control") as HTMLInputElement;
     idInput.value = block.id;
     idInput.readOnly = true;
-    form.appendChild(createFormGroup("블록 ID", idInput));
+    advanced.appendChild(createFormGroup("블록 ID", idInput));
 
     const kindInput = el("input", "form-control") as HTMLInputElement;
     kindInput.value = block.kind;
     kindInput.readOnly = true;
-    form.appendChild(createFormGroup("블록 종류", kindInput));
+    advanced.appendChild(createFormGroup("블록 종류", kindInput));
 
     // 바인딩 키 (보호 속성)
     if (block.bindingKey) {
       const bindInput = el("input", "form-control") as HTMLInputElement;
       bindInput.value = block.bindingKey;
       bindInput.readOnly = true;
-      form.appendChild(createFormGroup("데이터 바인딩 키", bindInput));
+      advanced.appendChild(createFormGroup("데이터 바인딩 키", bindInput));
     }
 
     // 1. 위치 (X, Y)
@@ -395,7 +465,7 @@ export class OperationsLayoutCanvas {
       this.onDraftChange();
       this.renderCanvas();
     });
-    sizeRow.appendChild(createFormGroup("너비 (Width)", wInput));
+    sizeRow.appendChild(createFormGroup("너비", wInput));
 
     const hInput = el("input", "form-control") as HTMLInputElement;
     hInput.type = "number";
@@ -407,7 +477,7 @@ export class OperationsLayoutCanvas {
       this.onDraftChange();
       this.renderCanvas();
     });
-    sizeRow.appendChild(createFormGroup("높이 (Height)", hInput));
+    sizeRow.appendChild(createFormGroup("높이", hInput));
     form.appendChild(sizeRow);
     if (!sizeEditable) {
       form.appendChild(el("div", "field-protected-reason", "🔒 크기 속성은 서식 규칙에 따라 고정되어 있습니다."));
@@ -427,12 +497,15 @@ export class OperationsLayoutCanvas {
       this.renderCanvas();
     });
     visWrap.appendChild(visCheck);
-    visWrap.appendChild(el("label", "checkbox-label", "화면에 표시 (Visible)"));
+    const visLabel = el("label", "checkbox-label", "문서에 표시");
+    visLabel.setAttribute("for", visCheck.id);
+    visWrap.appendChild(visLabel);
     form.appendChild(createFormGroup("노출 상태", visWrap));
 
     // 4. 텍스트 (Text)
     const textEditable = editables.includes("text");
-    const textInput = el("input", "form-control") as HTMLInputElement;
+    const textInput = el("textarea", "form-control") as HTMLTextAreaElement;
+    textInput.rows = 2;
     textInput.id = "input-prop-text";
     textInput.value = block.text || "";
     textInput.disabled = !textEditable;
@@ -472,7 +545,7 @@ export class OperationsLayoutCanvas {
     const fontEditable = editables.includes("font");
     if (fontEditable || block.font) {
       const fontBox = el("div", "font-properties-box");
-      fontBox.appendChild(el("strong", "box-subtitle", "글꼴 서식 (Font)"));
+      fontBox.appendChild(el("strong", "box-subtitle", "글꼴 서식"));
 
       const fontRow = el("div", "form-row-2");
       const famInput = el("input", "form-control") as HTMLInputElement;
@@ -485,7 +558,7 @@ export class OperationsLayoutCanvas {
         this.onDraftChange();
         this.renderCanvas();
       });
-      fontRow.appendChild(createFormGroup("글꼴 패밀리", famInput));
+      fontRow.appendChild(createFormGroup("글꼴", famInput));
 
       const sizeInput = el("input", "form-control") as HTMLInputElement;
       sizeInput.type = "number";
@@ -571,7 +644,8 @@ export class OperationsLayoutCanvas {
         "🔒 행 순서(row-order), 행 높이(row-height), 셀 병합(merge), 데이터 바인딩 구조는 문서 정본 서식 규칙에 따라 읽기 전용으로 보호됩니다."
       )
     );
-    form.appendChild(protectedSec);
+    advanced.appendChild(protectedSec);
+    form.appendChild(advanced);
 
     this.propPanelEl.appendChild(form);
   }

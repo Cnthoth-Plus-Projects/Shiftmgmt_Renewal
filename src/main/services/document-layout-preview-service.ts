@@ -385,20 +385,24 @@ export const generateDocumentLayoutPreview = async (
       throw new Error("수당 PDF 레이아웃 정의의 출력 멤버 구성이 올바르지 않습니다.");
     }
 
+    const reservedOutputPaths = new Set<string>();
     const proposalPath = resolveDocumentLayoutOutputFilePath(
       input.outputDir,
       outputs[0].outputFileNamePattern,
-      { year: 2026, month2: "05" }
+      { year: 2026, month2: "05" },
+      reservedOutputPaths
     );
     const attachment1Path = resolveDocumentLayoutOutputFilePath(
       input.outputDir,
       outputs[1].outputFileNamePattern,
-      { year: 2026, month2: "05" }
+      { year: 2026, month2: "05" },
+      reservedOutputPaths
     );
     const attachment2Path = resolveDocumentLayoutOutputFilePath(
       input.outputDir,
       outputs[2].outputFileNamePattern,
-      { year: 2026, month2: "05" }
+      { year: 2026, month2: "05" },
+      reservedOutputPaths
     );
 
     const rows = buildPreviewAllowanceRows();
