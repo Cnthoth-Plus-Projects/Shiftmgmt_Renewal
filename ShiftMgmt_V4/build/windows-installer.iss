@@ -143,8 +143,6 @@ function GetExitCodeProcess(Process: THandle; var ExitCode: Cardinal): Boolean;
   external 'GetExitCodeProcess@kernel32.dll stdcall';
 function CloseHandle(Handle: THandle): Boolean;
   external 'CloseHandle@kernel32.dll stdcall';
-function ProcessQueryError(): Cardinal;
-  external 'GetLastError@kernel32.dll stdcall';
 
 function ProcessStillRunning(Pid: Integer): Boolean;
 var Handle: THandle; ExitCode: Cardinal;
@@ -153,7 +151,7 @@ begin
   Handle := OpenProcess($1000, False, Pid);
   if Handle = 0 then begin
     // Only a nonexistent PID is safe. Access denied/unknown errors block removal.
-    Result := ProcessQueryError() <> 87;
+    Result := DLLGetLastError <> 87;
   end else begin
     if GetExitCodeProcess(Handle, ExitCode) then Result := ExitCode = 259
     else Result := True;
