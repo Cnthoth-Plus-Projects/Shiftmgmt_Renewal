@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "CALC-LOGIC-FIX-01",
-  "executingTaskId": "CALC-LOGIC-FIX-01",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "PLAN-00",
@@ -5831,8 +5831,8 @@
     {
       "id": "CALC-LOGIC-FIX-01",
       "title": "승인된 계산 패치·회귀 및1.0.2 준비",
-      "status": "IN_PROGRESS",
-      "stage": "IMPLEMENTATION_AUTHORIZED_SCOPE_EXTENSION",
+      "status": "DONE",
+      "stage": "TECHNICAL_ACCEPTANCE_COMPLETE_DRAFT_ONLY",
       "owner": "Sol",
       "implementationOwner": "Sol direct implementation under standing exception and current user approval",
       "gemini": {
@@ -5951,80 +5951,173 @@
       "doneWhen": "Approved17 verification groups satisfied; fixed money/rate behavior and immutable old approval proofs; new1.0.2 clean source package/install/draft prepared, report deferred weekend choice and no public/realPC deployment.",
       "estimate": "Initial2-4h implementation/integration estimate; focused checks first, frozen full unit8min measured baseline, one final suite target.",
       "startedAt": "2026-11-08T00:25:40.808Z",
-      "technicalAccepted": false,
-      "result": "IMPLEMENTED_NOT_FORMALLY_ACCEPTED_SCOPE_APPROVAL_PENDING",
+      "technicalAccepted": true,
+      "result": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
       "verification": {
         "taskId": "CALC-LOGIC-FIX-01",
-        "result": "IMPLEMENTED_NOT_FORMALLY_ACCEPTED_SCOPE_APPROVAL_PENDING",
-        "candidateCommit": "ead161cfdafcba840ef7274153f327b361972f11",
-        "productTree": "55c78aafdaa4c8b917b22af73a4a1b198e9af956",
-        "sourceHash": "EE82776B8B8714AE0B453D7B32C76D9741735C29825B2EDDD587193834D072B5",
-        "sourceFiles": 537,
-        "changedProductFiles": 24,
-        "unchangedBaselineFiles": 513,
-        "protectedOutsideAllowlist": 509,
-        "focused": [
+        "result": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
+        "sourceCommit": "34c513d5ab68c06fd83fa06cac2a1641280dfb77",
+        "productTree": "be6fe6383eca01cf0458815c9c44a3f6b80bfd9e",
+        "sourceHash": "A37FD844707BCAEEA0E19855A3CBFEDE352901C413B03BA17EE774B06908B2AA",
+        "unit": {
+          "files": 160,
+          "tests": 1574
+        },
+        "source": {
+          "files": 537,
+          "changed": 27,
+          "unchangedBaseline": 510,
+          "protectedOutsideAllowlist": 506
+        },
+        "fullRuns": [
           {
-            "files": 5,
-            "tests": 35
+            "number": 1,
+            "sourceCommit": "ead161cfdafcba840ef7274153f327b361972f11",
+            "productTree": "55c78aafdaa4c8b917b22af73a4a1b198e9af956",
+            "sourceHash": "EE82776B8B8714AE0B453D7B32C76D9741735C29825B2EDDD587193834D072B5",
+            "evidenceDir": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/full-final",
+            "startedAt": "2026-11-08T00:56:09.244Z",
+            "result": {
+              "passed": 1573,
+              "failed": 1,
+              "total": 1574,
+              "files": 160,
+              "errorTest": "src/main/services/boramae-holiday-weekday-diagnosis.test.ts",
+              "cause": "Obsolete diagnostic expects new holiday overtime to succeed with zero amount; contradicts approved zero-pay block."
+            }
           },
           {
-            "files": 5,
-            "tests": 101
+            "number": 2,
+            "sourceCommit": "34c513d5ab68c06fd83fa06cac2a1641280dfb77",
+            "productTree": "be6fe6383eca01cf0458815c9c44a3f6b80bfd9e",
+            "sourceHash": "A37FD844707BCAEEA0E19855A3CBFEDE352901C413B03BA17EE774B06908B2AA",
+            "evidenceDir": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/full-final-02",
+            "startedAt": "2026-11-08T05:42:45.037Z",
+            "finishedAt": "2026-11-08T05:51:27.224Z",
+            "result": {
+              "ok": true,
+              "passed": 1574,
+              "failed": 0,
+              "total": 1574,
+              "files": 160,
+              "testDurationSeconds": 500.79
+            }
           }
         ],
         "actualExcelChecks": 19,
         "browserChecks": 5,
         "operationsScenarios": 2,
         "performanceScenarios": 3,
-        "unit": {
-          "files": 160,
-          "passedFiles": 159,
-          "failedFiles": 1,
-          "total": 1574,
-          "passed": 1573,
-          "failed": 1,
-          "durationSeconds": 508.83
+        "installChecks": 17,
+        "installedCalculationChecks": 19,
+        "zip": {
+          "name": "ShiftMgmt-1.0.2-win-x64.zip",
+          "bytes": 58936384,
+          "sha256": "217b74fc7c21c605d786d5b91ac7982370993416e9f0b6fd4af6f45f3c8e37e5"
         },
-        "typecheck": "PASS",
-        "lint": {
-          "errors": 0,
-          "existingWarnings": 3
-        },
-        "build": "PASS",
-        "mapPaths": 259,
-        "serviceModules": 89,
-        "fullRunCount": 1,
+        "draftUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-7c4a1860c135785a5731",
         "publicReleasePublished": false,
         "productionPcInstalled": false,
-        "newPackageCreated": false,
-        "gitPushedForThisTask": false,
-        "pendingScopeFiles": [
-          "ShiftMgmt_V4/scripts/package-windows.mjs",
-          "ShiftMgmt_V4/scripts/release-install-smoke.mjs",
-          "ShiftMgmt_V4/src/main/services/boramae-holiday-weekday-diagnosis.test.ts"
-        ],
-        "failuresPreserved": true,
-        "decisions": [
-          "No weakening of zero-pay rejection to satisfy obsolete diagnostic",
-          "Keep ordinary weekend classification unchanged pending user answer",
-          "Do not amend explicit allowlist before user approval"
-        ],
-        "verificationAdjustments": [
+        "weekendClassification": "UNCHANGED_PUBLIC_CALENDAR_RULE",
+        "operationalHolidayMultipliers": "NOT_INVENTED_CONFIGURE_BEFORE_APPROVAL",
+        "gemini": {
+          "initial": 0,
+          "retry": 0,
+          "total": 0
+        },
+        "implementationOwner": "Sol",
+        "coverage": {
+          "V00": "소스537·변경27/허용31·기존510바이트 보존, 의존성 lock의 버전표기 외 동일·스키마 불변",
+          "R01": "근무일 기간 양끝·종료 이력·invalid 날짜,6/30→7/1 경계",
+          "R02": "두 양식 실제3월 승인에2027 미래요율 대신2026.1·112800원",
+          "R03": "공백/초안/기간미상/동일시작 중복 거부, 과거 중복도 UI편집 가능",
+          "R04": "앞뒤 기간·2030 연도경계·2028 윤일·잘못된 중첩 저장 보존/이력",
+          "M01": "14100×60분×1.1÷60=15510, DB와 실제문서3종×2양식 일치",
+          "M02": "소수시급17457.07·분수584/274949·미세양수·잔여동점·안전정수 경계",
+          "M03": "실적별251+251=502, 월 원금액을 합쳐 한번 올리는501과 구별",
+          "H01": "공휴일 추가연장270분을 시험용2/2.5배로144525원 지급",
+          "H02": "0원 새승인 거절·승인/계산/항목/정책사용 기록 롤백, UI안내",
+          "P01": "저장된 해당기간 요율·업무구분의 미리보기와 승인계산 일치",
+          "I01": "요율수정·재읽기·DB재개방·실제서버 재시작 후 과거0/15511원/승인원문 보존",
+          "I02": "기존 중복/보관실패/대기복귀/재승인·품의잠금·Pool/BP·재직/무효시급 차단 전체회귀",
+          "X01": "두 근무표 양식 생성→회수Excel→접수→승인→수당검토→XLSX3종, A4",
+          "UI01": "실제Chrome5검문·두테마7캡처, 운영S07/S08·실적S01/S05/S09",
+          "F01": "전체2회차1574/160·타입/규칙(기존경고3)/빌드/지도259/module89",
+          "REL01": "1.0.2 ZIP2683파일·포함Node/라이선스/무결성·TEMP설치17·설치본 계산19·draft6첨부 재다운로드해시"
+        },
+        "evidence": [
           {
-            "reason": "Stored calculation lines are ordered by code, preview uses domain order; compare lines after canonical code ordering while preserving exact minutes, multiplier and amounts.",
-            "retained": "First fixed-probes failure JSON retained."
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\candidate-preflight-A37FD84470.json",
+            "bytes": 104956,
+            "sha256": "DC6B52A0D38F0F01D691524289EC01B17C9EB9876638A3C9695A4884E80CBDA3"
           },
           {
-            "reason": "Run actual XLSX probes with isolated product cwd so normal source logo resolution is tested; missing logo in old installed package separately reproduced and not hidden.",
-            "retained": "Second fixed-probes failure JSON plus installed-document-export-gap.json retained."
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/full-final-02/release-check.json",
+            "bytes": 1098,
+            "sha256": "C0B66106D011FD029422201B58B175C5FC9FD9540A625F7E01C9C7F6FD552460"
           },
           {
-            "reason": "Theme screenshots captured after CSS transitions settle; original captures retained.",
-            "retained": "All browser run JSON/captures retained."
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/full-final-02/test.log",
+            "bytes": 77972,
+            "sha256": "6DAF8505D24BAB7796FFCD293FF5D716D154CC872732B36505FC50BA6B8CD0B5"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/full-final-02/lint.log",
+            "bytes": 710,
+            "sha256": "C1FC25E62005C3D2F72E77B8E05BA3E7F14FA344DB92FB5B7EEAB3B079153053"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\fixed-probes-1794116648593\\results.json",
+            "bytes": 9098,
+            "sha256": "5B99BA6C7A283459A589489DF72C7C7186D0A434A056C2DD544395BB4EABC284"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\browser-fixed-1794116677692.json",
+            "bytes": 1965,
+            "sha256": "6AF7CA4910D1CA3A5ABFF5D1929F8F770728C59FF819BB2E5CCE69647DEE7B62"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\installed-probes-1794117391162\\results.json",
+            "bytes": 9145,
+            "sha256": "C720AA58223915D9CB7038C47CA2E4D841271C33974CB8DB8AD15368B06ABA29"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\release\\v1.0.2/BUILD_RECEIPT.json",
+            "bytes": 550,
+            "sha256": "663A632FE6A73D1C6D2C3F18FBD276D2C4168DC96336A227195D96103D018C45"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\release\\v1.0.2/VERIFICATION_INSTALL.json",
+            "bytes": 1920,
+            "sha256": "BCD5CF6722ED1FB0F410E1A4574CB23DFC3C4113117CE38CF5F542FCECFF6E11"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\release\\v1.0.2/VERIFICATION_RELEASE.json",
+            "bytes": 992,
+            "sha256": "120191973DF10B0EFBC21E4B25F0CE392CC71060768482368B9308A8A8933641"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/draft.json",
+            "bytes": 5337,
+            "sha256": "F7604A87D27610E6617BA5610C122A4491C9FD119B7B6FC5CE9C349F4E26DE16"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/source-push.json",
+            "bytes": 282,
+            "sha256": "93B7B933DFAEC1E87316B6CBABED6F2DC0C99DBBB96E653EAFD53CEE29837FC2"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/retained-suite-1.json",
+            "bytes": 597,
+            "sha256": "432DA4C51C4CD4AAD59CED8EDDAA5817DA2FF64CD4A59B343FFCFE572482C97F"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2/retained-suite-2.json",
+            "bytes": 596,
+            "sha256": "5AE821FECBBF588C0C9752322D697BEB99F526D6D405FEE8EFCF2B07F016513F"
           }
         ],
-        "recordedAt": "2026-11-08T01:09:11.592Z"
+        "acceptedAt": "2026-11-08T05:58:43.689Z"
       },
       "pendingScopeApproval": {
         "files": [
@@ -6043,7 +6136,33 @@
         "approvedAt": "2026-11-08T05:40:32.223Z"
       },
       "publicReleasePublished": false,
-      "productionPcInstalled": false
+      "productionPcInstalled": false,
+      "checkResults": {
+        "V00": "PASS",
+        "R01": "PASS",
+        "R02": "PASS",
+        "R03": "PASS",
+        "R04": "PASS",
+        "M01": "PASS",
+        "M02": "PASS",
+        "M03": "PASS",
+        "H01": "PASS",
+        "H02": "PASS",
+        "P01": "PASS",
+        "I01": "PASS",
+        "I02": "PASS",
+        "X01": "PASS",
+        "UI01": "PASS",
+        "F01": "PASS",
+        "REL01": "PASS"
+      },
+      "completedAt": "2026-11-08T05:58:43.689Z",
+      "gitPushedForThisTask": true,
+      "preflightEvidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\candidate-preflight-A37FD84470.json",
+        "bytes": 104956,
+        "sha256": "DC6B52A0D38F0F01D691524289EC01B17C9EB9876638A3C9695A4884E80CBDA3"
+      }
     }
   ],
   "policy": {
@@ -6166,8 +6285,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 103064,
-    "sha256": "76328B85BE3C28235336029BEED67B3A00B1DE320B2EAF4CB108AF595C9DE9C7"
+    "bytes": 103323,
+    "sha256": "C9450445942FF00ADB33B0065EE6FC126EEF6AE81809E2DCEC328BAB7A6BD00A"
   },
   "statusHistory": [
     {
