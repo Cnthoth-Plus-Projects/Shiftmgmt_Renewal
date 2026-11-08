@@ -31,9 +31,10 @@ function legacyInstaller(root, target, data, desktop) {
 }
 let installAttempt = 0;
 const metadataDir = path.join(work, "EXE 제거 정보");
+const startMenuDir = path.join(work, "테스트 시작 메뉴");
 function installer(root, target, data, desktop) {
   if (!setupExe) return legacyInstaller(root, target, data, desktop);
-  const result = spawnSync(setupExe, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/DIR=" + target, "/DATAROOT=" + data, "/DESKTOPDIR=" + desktop, "/METADIR=" + metadataDir, "/LOG=" + path.join(work, `exe-install-${++installAttempt}.log`)], { encoding: "utf8", windowsHide: true, timeout: 180_000 });
+  const result = spawnSync(setupExe, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/DIR=" + target, "/DATAROOT=" + data, "/DESKTOPDIR=" + desktop, "/STARTMENUDIR=" + startMenuDir, "/METADIR=" + metadataDir, "/LOG=" + path.join(work, `exe-install-${++installAttempt}.log`)], { encoding: "utf8", windowsHide: true, timeout: 180_000 });
   // Inno's PrepareToInstall rejection is 7; keep the existing wrapper's explicit
   // rejection contract while preserving the native result for diagnosis.
   return result.status === 7 ? { ...result, actualStatus: 7, status: 1 } : result;
@@ -191,7 +192,7 @@ try {
   passed("재실행·변경된 비밀번호 로그인·임시 비밀번호 재노출 없음");
   await context.close();
   await stop();
-  const report = { ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zip, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, work, recordedAt: new Date().toISOString(), ...(setupExe ? { setupExe, installerSha256: sha256(readFileSync(setupExe)), installedRoot: target, dataRoot: data, desktop, metadataDir, setupAttempts: installAttempt } : {}) };
+  const report = { ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zip, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, work, recordedAt: new Date().toISOString(), ...(setupExe ? { setupExe, installerSha256: sha256(readFileSync(setupExe)), installedRoot: target, dataRoot: data, desktop, startMenuDir, metadataDir, setupAttempts: installAttempt } : {}) };
   writeFileSync(path.join(work, "assessment.json"), JSON.stringify(report, null, 2) + "\n");
   // 공개 검증 요약에는 로컬 경로·비밀번호·화면 캡처를 넣지 않는다.
   writeFileSync(path.join(setupExe ? path.dirname(setupExe) : path.dirname(zip), setupExe ? "VERIFICATION_EXE_INSTALL.json" : "VERIFICATION_INSTALL.json"), JSON.stringify({ ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, recordedAt: report.recordedAt, ...(setupExe ? { installerSha256: report.installerSha256 } : {}) }, null, 2) + "\n");

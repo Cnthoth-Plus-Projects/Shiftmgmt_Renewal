@@ -30,6 +30,7 @@ UninstallDisplayIcon={app}\runtime\node.exe
 CloseApplications=no
 RestartApplications=no
 SetupLogging=yes
+SetupMutex=ShiftMgmt_V4_Setup_9C321097_0511_4AF6_9E41_AE16F519C703
 Compression=lzma2/fast
 SolidCompression=yes
 OutputBaseFilename=ShiftMgmt-{#AppVersion}-Setup-x64
@@ -45,7 +46,7 @@ Source: "{tmp}\installation.json"; DestDir: "{app}"; Flags: external
 
 [Icons]
 Name: "{code:GetDesktopDir}\교대근무관리 시스템"; Filename: "{app}\START.cmd"; WorkingDir: "{app}"
-Name: "{userprograms}\교대근무관리 시스템\교대근무관리 시스템"; Filename: "{app}\START.cmd"; WorkingDir: "{app}"
+Name: "{code:GetStartMenuDir}\교대근무관리 시스템"; Filename: "{app}\START.cmd"; WorkingDir: "{app}"
 
 [Registry]
 Root: HKCU64; Subkey: "Software\ShiftMgmt\Installer\9C321097-0511-4AF6-9E41-AE16F519C703"; ValueType: string; ValueName: "DataRoot"; ValueData: "{code:GetDataRoot}"; Flags: uninsdeletevalue uninsdeletekeyifempty
@@ -73,6 +74,11 @@ end;
 function GetMetadataDir(Param: String): String;
 begin
   Result := RemoveBackslashUnlessRoot(ExpandFileName(ExpandConstant('{param:METADIR|{localappdata}\Programs\ShiftMgmt_V4-Setup}')));
+end;
+
+function GetStartMenuDir(Param: String): String;
+begin
+  Result := ExpandFileName(ExpandConstant('{param:STARTMENUDIR|{userprograms}\교대근무관리 시스템}'));
 end;
 
 function Overlaps(const A, B: String): Boolean;
@@ -105,20 +111,27 @@ begin
 end;
 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
-var AppDir, DataDir, MetaDir, DesktopDir: String;
+var AppDir, DataDir, MetaDir, DesktopDir, StartMenuDir: String;
 begin
   Result := '';
   AppDir := RemoveBackslashUnlessRoot(ExpandFileName(ExpandConstant('{app}')));
   DataDir := GetDataRoot(''); MetaDir := GetMetadataDir(''); DesktopDir := GetDesktopDir('');
+  StartMenuDir := GetStartMenuDir('');
   if DirExists(AppDir) or FileExists(AppDir) or DirExists(DataDir) or FileExists(DataDir) then
     Result := '기존 설치 또는 자료 폴더가 있습니다. 덮어쓰지 않았습니다. 기존 프로그램과 자료를 확인해 주세요.'
   else if DirExists(MetaDir) or FileExists(MetaDir) or RegKeyExists(HKCU64, OwnerKey) then
     Result := '기존 EXE 설치 정보가 있습니다. Windows 프로그램 제거에서 기존 설치를 먼저 확인해 주세요.'
   else if Overlaps(AppDir, DataDir) or Overlaps(AppDir, MetaDir) or Overlaps(DataDir, MetaDir) then
     Result := '프로그램·자료·제거 정보 폴더는 서로 다른 위치여야 합니다.'
+  else if Overlaps(StartMenuDir, AppDir) or Overlaps(StartMenuDir, DataDir) or Overlaps(StartMenuDir, MetaDir) or
+    Overlaps(DesktopDir, AppDir) or Overlaps(DesktopDir, DataDir) or Overlaps(DesktopDir, MetaDir) then
+    Result := '바로가기 폴더는 프로그램·자료·제거 정보 폴더와 분리해 주세요.'
   else if not DirExists(DesktopDir) then Result := '바로가기를 만들 바탕 화면 폴더가 없습니다.'
   else if FileExists(AddBackslash(DesktopDir) + '교대근무관리 시스템.lnk') then
     Result := '같은 이름의 바로가기가 있습니다. 기존 바로가기를 먼저 확인해 주세요.'
+  else if FileExists(StartMenuDir) or FileExists(AddBackslash(StartMenuDir) + '교대근무관리 시스템.lnk') or
+    DirExists(AddBackslash(StartMenuDir) + '교대근무관리 시스템.lnk') then
+    Result := '같은 이름의 시작 메뉴 항목이 있습니다. 기존 항목을 먼저 확인해 주세요.'
   else if not SaveStringToFile(ExpandConstant('{tmp}\installation.json'),
     '{"version":"{#AppVersion}","dataRoot":' + JsonString(DataDir) + '}', False) then
     Result := '설치 정보를 준비하지 못했습니다. 설치를 취소하고 다시 실행해 주세요.';
@@ -130,13 +143,18 @@ function GetExitCodeProcess(Process: THandle; var ExitCode: Cardinal): Boolean;
   external 'GetExitCodeProcess@kernel32.dll stdcall';
 function CloseHandle(Handle: THandle): Boolean;
   external 'CloseHandle@kernel32.dll stdcall';
+function ProcessQueryError(): Cardinal;
+  external 'GetLastError@kernel32.dll stdcall';
 
 function ProcessStillRunning(Pid: Integer): Boolean;
 var Handle: THandle; ExitCode: Cardinal;
 begin
-  Result := False;
+  Result := True;
   Handle := OpenProcess($1000, False, Pid);
-  if Handle <> 0 then begin
+  if Handle = 0 then begin
+    // Only a nonexistent PID is safe. Access denied/unknown errors block removal.
+    Result := ProcessQueryError() <> 87;
+  end else begin
     if GetExitCodeProcess(Handle, ExitCode) then Result := ExitCode = 259
     else Result := True;
     CloseHandle(Handle);
