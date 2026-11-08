@@ -5832,7 +5832,7 @@
       "id": "CALC-LOGIC-FIX-01",
       "title": "승인된 계산 패치·회귀 및1.0.2 준비",
       "status": "IN_PROGRESS",
-      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "stage": "CORE_IMPLEMENTED_FULL_CHECK_FAILED_SCOPE_APPROVAL_PENDING",
       "owner": "Sol",
       "implementationOwner": "Sol direct implementation under standing exception and current user approval",
       "gemini": {
@@ -5947,7 +5947,98 @@
       ],
       "doneWhen": "Approved17 verification groups satisfied; fixed money/rate behavior and immutable old approval proofs; new1.0.2 clean source package/install/draft prepared, report deferred weekend choice and no public/realPC deployment.",
       "estimate": "Initial2-4h implementation/integration estimate; focused checks first, frozen full unit8min measured baseline, one final suite target.",
-      "startedAt": "2026-11-08T00:25:40.808Z"
+      "startedAt": "2026-11-08T00:25:40.808Z",
+      "technicalAccepted": false,
+      "result": "IMPLEMENTED_NOT_FORMALLY_ACCEPTED_SCOPE_APPROVAL_PENDING",
+      "verification": {
+        "taskId": "CALC-LOGIC-FIX-01",
+        "result": "IMPLEMENTED_NOT_FORMALLY_ACCEPTED_SCOPE_APPROVAL_PENDING",
+        "candidateCommit": "ead161cfdafcba840ef7274153f327b361972f11",
+        "productTree": "55c78aafdaa4c8b917b22af73a4a1b198e9af956",
+        "sourceHash": "EE82776B8B8714AE0B453D7B32C76D9741735C29825B2EDDD587193834D072B5",
+        "sourceFiles": 537,
+        "changedProductFiles": 24,
+        "unchangedBaselineFiles": 513,
+        "protectedOutsideAllowlist": 509,
+        "focused": [
+          {
+            "files": 5,
+            "tests": 35
+          },
+          {
+            "files": 5,
+            "tests": 101
+          }
+        ],
+        "actualExcelChecks": 19,
+        "browserChecks": 5,
+        "operationsScenarios": 2,
+        "performanceScenarios": 3,
+        "unit": {
+          "files": 160,
+          "passedFiles": 159,
+          "failedFiles": 1,
+          "total": 1574,
+          "passed": 1573,
+          "failed": 1,
+          "durationSeconds": 508.83
+        },
+        "typecheck": "PASS",
+        "lint": {
+          "errors": 0,
+          "existingWarnings": 3
+        },
+        "build": "PASS",
+        "mapPaths": 259,
+        "serviceModules": 89,
+        "fullRunCount": 1,
+        "publicReleasePublished": false,
+        "productionPcInstalled": false,
+        "newPackageCreated": false,
+        "gitPushedForThisTask": false,
+        "pendingScopeFiles": [
+          "ShiftMgmt_V4/scripts/package-windows.mjs",
+          "ShiftMgmt_V4/scripts/release-install-smoke.mjs",
+          "ShiftMgmt_V4/src/main/services/boramae-holiday-weekday-diagnosis.test.ts"
+        ],
+        "failuresPreserved": true,
+        "decisions": [
+          "No weakening of zero-pay rejection to satisfy obsolete diagnostic",
+          "Keep ordinary weekend classification unchanged pending user answer",
+          "Do not amend explicit allowlist before user approval"
+        ],
+        "verificationAdjustments": [
+          {
+            "reason": "Stored calculation lines are ordered by code, preview uses domain order; compare lines after canonical code ordering while preserving exact minutes, multiplier and amounts.",
+            "retained": "First fixed-probes failure JSON retained."
+          },
+          {
+            "reason": "Run actual XLSX probes with isolated product cwd so normal source logo resolution is tested; missing logo in old installed package separately reproduced and not hidden.",
+            "retained": "Second fixed-probes failure JSON plus installed-document-export-gap.json retained."
+          },
+          {
+            "reason": "Theme screenshots captured after CSS transitions settle; original captures retained.",
+            "retained": "All browser run JSON/captures retained."
+          }
+        ],
+        "recordedAt": "2026-11-08T01:09:11.592Z"
+      },
+      "pendingScopeApproval": {
+        "files": [
+          "ShiftMgmt_V4/scripts/package-windows.mjs",
+          "ShiftMgmt_V4/scripts/release-install-smoke.mjs",
+          "ShiftMgmt_V4/src/main/services/boramae-holiday-weekday-diagnosis.test.ts"
+        ],
+        "status": "PENDING_USER",
+        "reason": "Existing zero-pay diagnostic contradicts approved new behavior; installed release lacks source-only document logo.",
+        "proposal": {
+          "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\proposed-three-file-scope.patch",
+          "bytes": 2964,
+          "sha256": "86046D33A8A54AFF8D13A9492F6E3C94C43AC18C8E8EC4B38E90B1553995A2EF"
+        }
+      },
+      "publicReleasePublished": false,
+      "productionPcInstalled": false
     }
   ],
   "policy": {
@@ -6070,8 +6161,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 102307,
-    "sha256": "126B8EADBF0E043E934491DBF0D535756DDFE8F78DFBA48E269E8B40486D034D"
+    "bytes": 102953,
+    "sha256": "8AF4BE3AAE7CBCFA1AF261112B3CB2D588527E7FFEFD769DF21F9594C9E9749E"
   },
   "statusHistory": [
     {
