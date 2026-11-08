@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "HOLIDAY-FOLLOWUP-IMPL-01",
-  "executingTaskId": "HOLIDAY-FOLLOWUP-IMPL-01",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "HOLIDAY-FOLLOWUP-PLAN-01",
@@ -48,8 +48,8 @@
     {
       "id": "HOLIDAY-FOLLOWUP-IMPL-01",
       "title": "부분0배 지급차단·한국공휴일 동기화·공휴일주말시간·규칙문서 정합성",
-      "status": "IN_PROGRESS",
-      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "status": "DONE",
+      "stage": "TECHNICAL_ACCEPTANCE_COMPLETE_DRAFT_ONLY",
       "owner": "Sol",
       "gemini": {
         "initial": 0,
@@ -65,7 +65,7 @@
         "HOLIDAY-FOLLOWUP-PLAN-01"
       ],
       "productChangesAuthorized": true,
-      "implementationOwner": "Sol direct implementation under standing exception once plan review is confirmed",
+      "implementationOwner": "Sol",
       "allowlist": [
         "ShiftMgmt_V4/src/shared/domain/allowance-service.ts",
         "ShiftMgmt_V4/src/shared/domain/allowance-service.test.ts",
@@ -162,7 +162,164 @@
       "baseline": {
         "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\product-baseline.json",
         "files": 537
-      }
+      },
+      "technicalAccepted": true,
+      "result": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
+      "verification": {
+        "task": "HOLIDAY-FOLLOWUP-IMPL-01",
+        "result": "TECHNICALLY_ACCEPTED_DRAFT_ONLY",
+        "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+        "productTree": "5990bbc2c44a777a0ed677b71fe598d950dc7e9f",
+        "sourceHash": "6DD75BA206BCD6672C4DB03546A2C84CC5D95EFA1D51957D047F1004B9291805",
+        "unit": {
+          "files": 160,
+          "tests": 1598
+        },
+        "coverage": {
+          "Z01": "기본/연장/야간 실제분별 배율 누락을 공통 판정; 0분 축 허용. 도메인·승인·미리보기 회귀와 전체 통과",
+          "Z02": "두 양식 연장120분0배+야간150분2.5배 승인/미리보기 거절; 승인·계산·항목·정책사용 기록 불변 확인",
+          "Z03": "순수 0배 what-if/영향도 비교·정상양수와 기존 승인0원/15511원 원문 보존",
+          "H01": "실제Chrome S06 동기화→우측목록, 좌측목록/DB 불변; 취소 쓰기0",
+          "H02": "선택연도 날짜추가/동일날짜갱신·기존전용날짜유지·다른연도불변, 트랜잭션 지문검사",
+          "H03": "잘못된연도/날짜/빈자료·HTTP/JSON오류·실제15초timeout·이중클릭/늦은응답/화면이탈/세션만료/변경된DB 거절",
+          "W01": "두 양식 일반 토·일 정규편성으로 공휴일 실적 생성 안 함",
+          "W02": "두 양식 평일공휴일480분/158400원·토공휴일330분/108900원·일공휴일240분/79200원",
+          "W03": "날짜당 법정공휴일행1건·기존편성/사이클·명시적예외·휴무/0분·미설정 fallback 보존",
+          "X01": "실제Excel 생성→접수→승인→DB→품의서/별첨1/별첨2 A4, 개발본35/포함Node 설치본35검문",
+          "D01": "07 A-4/02 현행시급규칙 정합화, W06/W08 자동갱신·동일일정정이력·승인원문보존 설명, 설치/코드지도/릴리즈 안내",
+          "UI01": "Chrome 시스템/다크·1440/1024 네 조합에서 좌우목록/적용버튼 및 페이지/표 가로넘침0, 부분0배 상세오류",
+          "F01": "고정소스 전체 1598/160 통과; 타입·규칙0오류/기존경고3·빌드·지도259·서비스89",
+          "REL01": "기존1.0.2 ZIP/SHA/첨부6개 보존; 새1.0.3 ZIP·포함Node/무결성·TEMP 설치17·설치본35·원격draft6첨부 재다운로드SHA 확인"
+        },
+        "fullRuns": 2,
+        "completedFullRuns": 1,
+        "interruptedRuns": 1,
+        "fullInterruption": "First run stopped after independent review reproduced Nager 2025 Observance inclusion; source/test corrected and second run completed.",
+        "failureHistory": [
+          "New roundtrip fixture initially lacked current assignment fields; fixed fixture, two variants passed.",
+          "1024 preview initially pushed Apply below the viewport; compact header and fixed actions verified.",
+          "Shared semantic table optimizer overrode fixed layout; scoped override and measured widths reduced horizontal overflow to zero.",
+          "Version helper initially changed dependency version strings too broadly; preflight restored every dependency entry from baseline and confirmed only two app version fields differ.",
+          "Interrupted-run artifact retention refused fewer than five files; moved zero files. Completed final-run generated artifacts retained with exact hashes."
+        ],
+        "gemini": {
+          "initial": 0,
+          "retry": 0,
+          "total": 0
+        },
+        "implementationOwner": "Sol",
+        "publicReleasePublished": false,
+        "targetPcInstalled": false,
+        "zip": {
+          "file": "ShiftMgmt-1.0.3-win-x64.zip",
+          "bytes": 58939806,
+          "sha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03"
+        },
+        "draft": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-adc960da1de85ec36107",
+        "evidence": [
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\candidate-preflight-6DD75BA206.json",
+            "bytes": 97297,
+            "sha256": "D33D8D3E81804B125B5E680FEECE241AE2790A3883C09CFD613052FF5F770C1D"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\full-final-02/release-check.json",
+            "bytes": 1098,
+            "sha256": "8926E89DFA49E25410962DB4CCCC125C598098CAA336DF811592B62EDBD219AF"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\full-final-02/command.json",
+            "bytes": 471,
+            "sha256": "488E9BBE6000C526F0E605774154F6F0304F07D9C00563716E2318F198CEE514"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/full-final/interrupted.json",
+            "bytes": 582,
+            "sha256": "ED9B8261BAFBA86553E24EAC6A1D0CC025173B1B4B53B9D59AD28CC6297C69FF"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/fixed-probes-1794136323196/results.json",
+            "bytes": 23256,
+            "sha256": "E4BA7F93CA3AE2BCF1E0EC101C32532137A4FF3FA30C06F21D0DBEF6F30E1671"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\browser-fixed-1794136936460.json",
+            "bytes": 1995,
+            "sha256": "399EC8647B08E8182F976A205D8871897E6404374E4419B1A2EDEC1883B77146"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\installed-probes-1794137977729\\results.json",
+            "bytes": 23372,
+            "sha256": "A9BF9F613C39A2B6F02C08297AA4319D0A32F434F0FE3CEAFA4F5514665DE855"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/live-api-1794137318591.json",
+            "bytes": 8570,
+            "sha256": "FCEFBAD6520FC5C26CAEA6190650E081908F17142608301FA6152BC5FA46F63D"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/timeout-api.json",
+            "bytes": 334,
+            "sha256": "760553B31A10DF7FA700E5575856CB89066C0FC094DCCBA19BB6A10399E18DF0"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/operations-ui-final-03/summary.json",
+            "bytes": 6769,
+            "sha256": "2B059615436DA126BD9D01A273CD1A6F00D7E242DC2D1727E62E54F71CF13982"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/operations-ui-final/summary.json",
+            "bytes": 3759,
+            "sha256": "CF380A3AC0669E7A362A1EB94A1BBE0C9FD57224E6E716F4A89FB5712217D158"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/draft.json",
+            "bytes": 5339,
+            "sha256": "A27C2A88E80F77F739DDA5927B87DD12EE7F75DAE5E5CE6E3DD9A971A81654E8"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD/source-push.json",
+            "bytes": 282,
+            "sha256": "5B753FD4AE27429C5C79747E36CDE129994717004668F157254CF3A63CA84A52"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\release\\v1.0.3/BUILD_RECEIPT.json",
+            "bytes": 550,
+            "sha256": "1767574B36D60B18131CA7FB346C8D085CF8C0417E5FBCC46E2376AAEF852B91"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\release\\v1.0.3/VERIFICATION_INSTALL.json",
+            "bytes": 1920,
+            "sha256": "DF301F75A025B7FD379495E802AD20D916E9C80493B52398010AFE250AC15F54"
+          },
+          {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\release\\v1.0.3/VERIFICATION_RELEASE.json",
+            "bytes": 1308,
+            "sha256": "CBD7569A1C37509C1BB83C6F9B94A3D4702D887CA5F064B1CF414C2D8F7F6617"
+          }
+        ],
+        "acceptedAt": "2026-11-08T11:41:23.665Z"
+      },
+      "checkResults": {
+        "Z01": "PASS",
+        "Z02": "PASS",
+        "Z03": "PASS",
+        "H01": "PASS",
+        "H02": "PASS",
+        "H03": "PASS",
+        "W01": "PASS",
+        "W02": "PASS",
+        "W03": "PASS",
+        "X01": "PASS",
+        "D01": "PASS",
+        "UI01": "PASS",
+        "F01": "PASS",
+        "REL01": "PASS"
+      },
+      "completedAt": "2026-11-08T11:41:23.665Z",
+      "gitPushedForThisTask": true,
+      "publicReleasePublished": false,
+      "productionPcInstalled": false
     },
     {
       "id": "PLAN-00",
@@ -6433,8 +6590,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 104568,
-    "sha256": "21B85CA88F40450F1DFACF7581DAD76D20B8F89F49F882CA002A2D3FD40DEE8E"
+    "bytes": 105042,
+    "sha256": "395113F62A0E2A12D56EAE7031B0059E56815BAE371B1C68042108410E75582B"
   },
   "statusHistory": [
     {
@@ -8770,7 +8927,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T10:43:42.019Z",
+  "updatedAt": "2026-11-08T11:41:23.665Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -8801,7 +8958,7 @@
           "등록 공휴일",
           "외부 공휴일 연동"
         ],
-        "purpose": "직접 관리와 전체교체 비교 흐름 분리"
+        "purpose": "등록 목록 유지·우측 동기화 미리보기·적용하기에서 날짜 병합 및 수동 날짜 보존"
       },
       {
         "tab": "요율",
