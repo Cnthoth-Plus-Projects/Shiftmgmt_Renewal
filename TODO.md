@@ -8,7 +8,7 @@
 
 
 - 현재 결과: 제품24개 수정·기존513개 바이트 보존. 집중35/101, 실제Excel19·Chrome5·운영2·실적3 통과. 최종전체1회는1573/1574 통과·기존 휴일0원 성공 진단1실패. 기술 수용/새ZIP/원격push/공개/실제PC설치 완료 아님.
-- 최소 추가 범위 승인 대기: package-windows.mjs(문서로고 누락), release-install-smoke.mjs(설치본 로고 검문), boramae-holiday-weekday-diagnosis.test.ts(0원성공 기대를 차단→설정후지급으로). 구체안은 현재 HANDOFF·TEMP proposed-three-file-scope.patch. 승인 전 세 파일 미수정.
+- 추가 범위 승인(사용자 “오케이 작업 이어서 진행해줘”): package-windows.mjs(문서로고 누락), release-install-smoke.mjs(설치본 로고 검문), boramae-holiday-weekday-diagnosis.test.ts(0원성공 기대를 차단→설정후지급으로). 구체안은 현재 HANDOFF·TEMP proposed-three-file-scope.patch. 세 파일을 동일Task allowlist에 추가하고 수정·전체2회차·설치판 검증을 이어간다.
 
 ## 2026-11-08 사용자 요청 — 패치·검증 계획
 
@@ -71,7 +71,7 @@
 
 - Plan: **PLAN-20261026-01** / 사용자 요청 반영: 2026-10-26T10:39:35.851991+09:00
 
-- **현재: CALC-LOGIC-FIX-01 — 계산 패치 구현·집중검증, 전체1실패 및 설치본 보강3파일 범위 승인 대기.**
+- **현재: CALC-LOGIC-FIX-01 — 추가3파일 승인 반영, 진단 회귀·설치본 보강과 전체2회차 검증 진행.**
 
 - **사용자 안내 기준:** 대화의 승인·선택 요청과 프로그램 안내 모두 필요한 이유, 선택별 결과, 실제 데이터 영향, 권장 이유와 다음 행동을 쉬운 말로 설명한다. 현재 W09에 반영하고 다른 메뉴는 해당 Task 범위에서 적용한다.
 
