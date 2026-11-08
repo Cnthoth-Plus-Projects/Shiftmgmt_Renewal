@@ -20,6 +20,7 @@
     "capture": "node scripts/capture-screen.mjs",
     "smoke": "node scripts/smoke-require.mjs",
     "release:package": "node scripts/package-windows.mjs",
+    "release:exe": "node scripts/package-installer.mjs",
     "release:smoke": "node scripts/release-install-smoke.mjs"
   },
   "devDependencies": {

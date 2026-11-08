@@ -13,9 +13,48 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-03",
-  "executingTaskId": null,
+  "nextTaskId": "REL-EXE-01",
+  "executingTaskId": "REL-EXE-01",
   "tasks": [
+    {
+      "id": "REL-EXE-01",
+      "title": "Windows EXE 설치 파일 생성·검증·추가 배포",
+      "status": "IN_PROGRESS",
+      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "authorization": "아 오케이 무슨말인지 이해했어. 그럼 설치 파일로 만드는건? exe파일로",
+      "allowlist": [
+        "ShiftMgmt_V4/build/windows-installer.iss",
+        "ShiftMgmt_V4/scripts/package-installer.mjs",
+        "ShiftMgmt_V4/scripts/release-install-smoke.mjs",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/package.json"
+      ],
+      "checks": [
+        "EXE01",
+        "EXE02",
+        "EXE03",
+        "EXE04",
+        "EXE05",
+        "EXE06"
+      ],
+      "protected": [
+        "immutable1.0.3 ZIP/tag/assets",
+        "runtime/schema/dependencies/financial data",
+        "V3 read-only"
+      ],
+      "startedAt": "2026-11-08T16:26:28.253Z",
+      "estimate": "1~2h initial estimate; immutable runtime evidence reused, installer paths freshly verified",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP",
+      "actualPcInstalled": false
+    },
     {
       "id": "HOLIDAY-FOLLOWUP-PLAN-01",
       "title": "공휴일·부분 요율 후속 요구 해석과 실행 계획",
@@ -6638,8 +6677,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 105843,
-    "sha256": "8BC930789E06EAEE3B082E1AD6E25FFD94620CC96179E808944CEAFFAE401AFF"
+    "bytes": 106950,
+    "sha256": "9437A0BD635573ECED13B49555966C0F1296F1F2480BABE7FEEB735913591230"
   },
   "statusHistory": [
     {
@@ -8975,7 +9014,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T12:02:36.556Z",
+  "updatedAt": "2026-11-08T16:26:28.253Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",

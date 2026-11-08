@@ -12,6 +12,9 @@ import { findChrome } from "./lib/find-chrome.mjs";
 import { sha256, verifyPackage } from "./verify-windows-package.mjs";
 
 const zip = path.resolve(process.argv[2] ?? "missing-zip");
+const setupOption = process.argv.find(arg => arg.startsWith("--setup-exe="));
+const setupExe = setupOption ? path.resolve(setupOption.slice("--setup-exe=".length)) : undefined;
+if (setupExe) assert.ok(existsSync(setupExe), "검증할 Setup.exe 절대 경로를 지정해 주세요.");
 assert.ok(existsSync(zip), "ZIP 절대 경로를 지정해 주세요.");
 const work = mkdtempSync(path.join(os.tmpdir(), "shiftmgmt-release-smoke-"));
 const checks = [];
@@ -23,8 +26,17 @@ function passed(name) { checks.push({ name, ok: true }); console.log(`PASS ${nam
 function ps(script, env = {}) {
   return spawnSync("powershell.exe", ["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", script], { env: { ...process.env, ...env }, encoding: "utf8", windowsHide: true, timeout: 180_000, maxBuffer: 1024 * 1024 });
 }
-function installer(root, target, data, desktop) {
+function legacyInstaller(root, target, data, desktop) {
   return ps("& (Join-Path $env:SM_PACKAGE 'scripts\\fresh-install.ps1') -InstallRoot $env:SM_TARGET -DataRoot $env:SM_DATA -DesktopDirectory $env:SM_DESKTOP; exit $LASTEXITCODE", { SM_PACKAGE: root, SM_TARGET: target, SM_DATA: data, SM_DESKTOP: desktop });
+}
+let installAttempt = 0;
+const metadataDir = path.join(work, "EXE 제거 정보");
+function installer(root, target, data, desktop) {
+  if (!setupExe) return legacyInstaller(root, target, data, desktop);
+  const result = spawnSync(setupExe, ["/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/SP-", "/DIR=" + target, "/DATAROOT=" + data, "/DESKTOPDIR=" + desktop, "/METADIR=" + metadataDir, "/LOG=" + path.join(work, `exe-install-${++installAttempt}.log`)], { encoding: "utf8", windowsHide: true, timeout: 180_000 });
+  // Inno's PrepareToInstall rejection is 7; keep the existing wrapper's explicit
+  // rejection contract while preserving the native result for diagnosis.
+  return result.status === 7 ? { ...result, actualStatus: 7, status: 1 } : result;
 }
 async function freePort() {
   const server = createServer();
@@ -82,7 +94,7 @@ try {
   const startFile = path.join(packageRoot, "START.cmd");
   const original = readFileSync(startFile);
   writeFileSync(startFile, "tampered");
-  assert.equal(installer(packageRoot, target, data, desktop).status, 1);
+  assert.equal(legacyInstaller(packageRoot, target, data, desktop).status, 1);
   assert.ok(!existsSync(target) && !existsSync(data));
   writeFileSync(startFile, original);
   passed("변조된 설치 파일 거절·쓰기 없음");
@@ -179,10 +191,10 @@ try {
   passed("재실행·변경된 비밀번호 로그인·임시 비밀번호 재노출 없음");
   await context.close();
   await stop();
-  const report = { ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zip, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, work, recordedAt: new Date().toISOString() };
+  const report = { ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zip, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, work, recordedAt: new Date().toISOString(), ...(setupExe ? { setupExe, installerSha256: sha256(readFileSync(setupExe)), installedRoot: target, dataRoot: data, desktop, metadataDir, setupAttempts: installAttempt } : {}) };
   writeFileSync(path.join(work, "assessment.json"), JSON.stringify(report, null, 2) + "\n");
   // 공개 검증 요약에는 로컬 경로·비밀번호·화면 캡처를 넣지 않는다.
-  writeFileSync(path.join(path.dirname(zip), "VERIFICATION_INSTALL.json"), JSON.stringify({ ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, recordedAt: report.recordedAt }, null, 2) + "\n");
+  writeFileSync(path.join(setupExe ? path.dirname(setupExe) : path.dirname(zip), setupExe ? "VERIFICATION_EXE_INSTALL.json" : "VERIFICATION_INSTALL.json"), JSON.stringify({ ok: true, version: manifest.version, sourceCommit: manifest.sourceCommit, zipSha256: expectedZipHash, checks, chromeVersion: chrome.version, recordedAt: report.recordedAt, ...(setupExe ? { installerSha256: report.installerSha256 } : {}) }, null, 2) + "\n");
   console.log(`INSTALL_SMOKE_OK ${checks.length} checks\nPrivate evidence: ${work}`);
 } catch (error) {
   writeFileSync(path.join(work, "failure.json"), JSON.stringify({ ok: false, checks, message: error.message }, null, 2));
