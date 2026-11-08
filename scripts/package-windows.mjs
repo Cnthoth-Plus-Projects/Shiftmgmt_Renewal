@@ -41,6 +41,7 @@ try {
   run(process.execPath, [npmCli, "run", "build"], root, { ...process.env, SHIFTMGMT_DEVELOPMENT_PREVIEW: "0" });
   for (const file of ["VERSION", "package.json", "package-lock.json", "dist/server", "dist/browser", "scripts/start-installed.mjs", "scripts/verify-windows-package.mjs", "scripts/lib/find-chrome.mjs", "scripts/windows-dialog.ps1"]) copy(file);
   copy("build/install.cmd", "INSTALL.cmd");
+  copy("src/renderer/assets/brand-logo-clean.png", "dist/assets/brand-logo-clean.png");
   copy("build/start.cmd", "START.cmd");
   copy("build/fresh-install.ps1", "scripts/fresh-install.ps1");
   // Windows PowerShell 5.1에서 한글이 깨지지 않게 한다.

@@ -1,5 +1,7 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
+import { getSeoulTodayDateString } from "../../shared/lib/local-date";
+import { getPreviousDayString } from "../../shared/domain/policy-history";
 
 import { allowanceRateVersionFixtures } from "../../shared/domain/allowance-rate-fixtures";
 import {
@@ -1482,11 +1484,11 @@ export const saveStoredAllowanceRateVersion = (input: {
   const versionLabel = normalizeRequiredText(input.versionLabel, "버전명");
   const status = normalizeAllowanceRateStatus(input.status);
   const effectiveFrom = normalizeIsoDate(input.effectiveFrom, "적용 시작일");
-  const effectiveTo = normalizeOptionalIsoDate(input.effectiveTo, "적용 종료일");
+  let effectiveTo = normalizeOptionalIsoDate(input.effectiveTo, "적용 종료일");
   const changeReason = existing
     ? normalizeRequiredText(input.changeReason ?? "", "변경 사유")
     : normalizeOptionalText(input.changeReason);
-  const todayIso = new Date().toISOString().slice(0, 10);
+  const todayIso = getSeoulTodayDateString();
 
   if (effectiveTo && effectiveTo < effectiveFrom) {
     throw new Error("적용 종료일은 시작일보다 빠를 수 없습니다.");
@@ -1522,6 +1524,29 @@ export const saveStoredAllowanceRateVersion = (input: {
     throw new Error("같은 연도에 동일한 버전명이 이미 등록되어 있습니다.");
   }
 
+  const published = listStoredAllowanceRateVersions().filter(version => version.id !== input.id && version.status !== "draft");
+  let predecessor: AllowanceRateVersion | undefined;
+  if (status !== "draft") {
+    if (published.some(version => version.effectiveFrom === effectiveFrom)) {
+      throw new Error("같은 적용 시작일의 요율이 이미 있습니다. 기존 버전을 확인하거나 다른 시작일을 선택해 주세요.");
+    }
+    const successor = published.filter(version => version.effectiveFrom > effectiveFrom)
+      .sort((left,right) => left.effectiveFrom.localeCompare(right.effectiveFrom))[0];
+    if (successor) {
+      const boundary = getPreviousDayString(successor.effectiveFrom);
+      if (effectiveTo && effectiveTo > boundary) {
+        throw new Error(`다음 요율이 ${successor.effectiveFrom}부터 적용됩니다. 종료일은 ${boundary}까지로 설정해 주세요.`);
+      }
+      effectiveTo ??= boundary;
+    }
+    if (status === "retired" && !effectiveTo) {
+      throw new Error("종료된 요율은 적용 종료일을 입력해 주세요. 과거 적용 기간을 확인할 수 있어야 합니다.");
+    }
+    predecessor = published.filter(version => (version.status === "active" || version.effectiveTo) && version.effectiveFrom < effectiveFrom &&
+      (!version.effectiveTo || version.effectiveTo >= effectiveFrom))
+      .sort((left,right) => right.effectiveFrom.localeCompare(left.effectiveFrom))[0];
+  }
+
   const id = existing ? String(existing.id) : `rate-${year}-${randomUUID()}`;
   const itemByCode = new Map(input.items.map((item) => [item.allowanceCode, item]));
   const normalizedItems = createAllowanceRateItems(id).map((defaultItem) => {
@@ -1541,7 +1566,6 @@ export const saveStoredAllowanceRateVersion = (input: {
   });
   const createdAt = existing ? String(existing.created_at) : new Date().toISOString();
   const updatedAt = new Date().toISOString();
-  const retiredEffectiveTo = updatedAt.slice(0, 10);
   const historyActionType: AllowanceRateHistoryAction =
     status === "active" && (!existing || existing.status !== "active")
       ? "applied"
@@ -1585,18 +1609,22 @@ export const saveStoredAllowanceRateVersion = (input: {
       updatedAt
     );
 
-    if (status === "active") {
+    if (predecessor) {
+      const boundary = getPreviousDayString(effectiveFrom);
       database.prepare(`
         UPDATE allowance_rate_versions
-        SET status = 'retired',
-            effective_to = CASE
-              WHEN effective_to IS NULL OR effective_to = '' THEN ?
-              ELSE effective_to
-            END,
-            updated_at = ?
-        WHERE id <> ?
-          AND status = 'active'
-      `).run(retiredEffectiveTo, updatedAt, id);
+        SET effective_to = ?, updated_at = ?
+        WHERE id = ?
+      `).run(boundary, updatedAt, predecessor.id);
+      appendAllowanceRateHistory({
+        rateVersionId: predecessor.id,
+        year: predecessor.year,
+        versionLabel: predecessor.versionLabel,
+        actionType: "updated",
+        reason: historyReason,
+        detail: `${versionLabel} 적용에 따라 종료일을 ${predecessor.effectiveTo ?? "미지정"}에서 ${boundary}(으)로 정리했습니다. 기존 승인 금액은 유지됩니다.`,
+        occurredAt: updatedAt
+      });
     }
 
     database.prepare(`

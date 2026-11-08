@@ -1006,7 +1006,7 @@ describe("allowance-document-export-service", () => {
         year: Number(overtimeTarget!.workDate.slice(0, 4)),
         versionLabel: "2026.3-테스트",
         status: "active",
-        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 4)}-12-31`,
+        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 7)}-01`,
         items: createCustomRateItems()
       });
 
@@ -1274,7 +1274,7 @@ describe("allowance-document-export-service", () => {
         year: Number(overtimeTarget!.workDate.slice(0, 4)),
         versionLabel: "2026.3-테스트",
         status: "active",
-        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 4)}-12-31`,
+        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 7)}-01`,
         items: createCustomRateItems()
       });
 
@@ -1366,7 +1366,7 @@ describe("allowance-document-export-service", () => {
         year: Number(overtimeTarget!.workDate.slice(0, 4)),
         versionLabel: "2026.3-테스트",
         status: "active",
-        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 4)}-12-31`,
+        effectiveFrom: `${overtimeTarget!.workDate.slice(0, 7)}-01`,
         items: createCustomRateItems()
       });
 

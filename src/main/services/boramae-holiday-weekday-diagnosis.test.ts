@@ -3,9 +3,11 @@ import path from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { runApprovedAllowanceCalculationForApproval } from "./approved-allowance-calculation-service";
+import { listApprovedAllowanceCalculationResults, runApprovedAllowanceCalculationForApproval } from "./approved-allowance-calculation-service";
 import {
   listStoredHolidayCalendars,
+  listStoredAllowanceRateVersions,
+  saveStoredAllowanceRateVersion,
   saveStoredHolidayItem
 } from "./operations-storage-service";
 import {
@@ -215,6 +217,14 @@ describe("보라매DC 휴일→평일 추출 진단", () => {
       name: "추석"
     });
 
+    const storedBefore = listApprovedAllowanceCalculationResults();
+    const blocked = await runApprovedAllowanceCalculationForApproval(
+      createApproval("approval-with-calendar", WEEKDAY_PUBLIC_HOLIDAY)
+    );
+    expect(blocked).toMatchObject({ok:false,errorCode:"ALLOWANCE_RATE_ZERO_AMOUNT"});
+    expect(listApprovedAllowanceCalculationResults()).toEqual(storedBefore);
+    const rate = listStoredAllowanceRateVersions().find(rate => rate.id === before.data.rateVersionId)!;
+    saveStoredAllowanceRateVersion({...rate,changeReason:"CALC-02 시험용 휴일 연장 배율",items:rate.items.map(item => ({...item,multiplier:item.allowanceCode === "holiday-overtime:overtime" ? 1.5 : item.allowanceCode === "holiday-overtime:night" ? 2 : item.multiplier}))});
     const after = await runApprovedAllowanceCalculationForApproval(
       createApproval("approval-with-calendar", WEEKDAY_PUBLIC_HOLIDAY)
     );
@@ -240,12 +250,10 @@ describe("보라매DC 휴일→평일 추출 진단", () => {
     expect(after.data.snapshot.businessCategoryCode).toBe("holiday-overtime");
     expect(before.data.snapshot.breakdown.holidayMinutes).toBe(0);
     expect(after.data.snapshot.breakdown.holidayMinutes).toBe(480);
-    // 평일 판정 = 156,000원(480분 × 1.5배). 휴일 판정 = 0원 —
-    // 기본 요율표의 '휴_연장근로수당'(holiday-overtime) 배율이 base/overtime/night 모두 0이라
-    // 달력을 고치면 오히려 금액이 사라진다(요율 설정 공백).
+    // 휴일 연장도 지급한다. 초기 0배는 저장을 차단하고 시험용 1.5배 설정 후 156,000원이다.
     expect(before.data.snapshot.totalAllowanceAmount).toBe(156000);
-    expect(after.data.snapshot.totalAllowanceAmount).toBe(0);
-    expect(after.data.snapshot.lines).toHaveLength(0);
+    expect(after.data.snapshot.totalAllowanceAmount).toBe(156000);
+    expect(after.data.snapshot.lines).toHaveLength(1);
 
     // B-3) 이미 계산된 승인 건은 달력을 고쳐도 그대로 평일로 남는다(재계산 없음)
     const reRun = await runApprovedAllowanceCalculationForApproval(

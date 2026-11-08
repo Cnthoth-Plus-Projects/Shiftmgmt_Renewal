@@ -103,6 +103,9 @@ try {
   if (install.status !== 0) throw new Error(`새 설치 실패: ${install.stdout} ${install.stderr}`);
   assert.ok(!existsSync(data));
   verifyPackage(target, { installed: true });
+  const logoProbe = spawnSync(path.join(target, "runtime/node.exe"), ["-e", "const assert=require('node:assert/strict'); const path=require('node:path'); const m=require(path.join(process.cwd(),'dist/server/main/services/document-brand-logo-service.js')); const b=m.resolveBrandLogoBuffer(); assert(b && b.length>0);"], {cwd:target,encoding:"utf8",windowsHide:true});
+  assert.equal(logoProbe.status, 0, "Installed document logo must resolve without source files");
+  passed("설치본 문서 로고 해석·개발 소스 경로 불필요");
   const shortcut = path.join(desktop, "교대근무관리 시스템.lnk");
   assert.ok(existsSync(shortcut));
   const link = ps("$s = (New-Object -ComObject WScript.Shell).CreateShortcut($env:SM_SHORTCUT); [Console]::OutputEncoding = New-Object Text.UTF8Encoding; @{target=$s.TargetPath; working=$s.WorkingDirectory} | ConvertTo-Json -Compress", { SM_SHORTCUT: shortcut });

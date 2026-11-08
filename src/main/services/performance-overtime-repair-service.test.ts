@@ -44,7 +44,7 @@ describe("performance-overtime-repair-service", () => {
     });
   });
 
-  it("repairs stored overtime approvals and allowance calculations that were saved with base minutes", async () => {
+  it("preserves approved snapshots and historical zero amounts even when their minute analysis is obsolete", async () => {
     const fixture = await prepareReturnedScheduleFixture({
       rootDir: createTestRoot(),
       templateVariant: "sample1"
@@ -152,75 +152,34 @@ describe("performance-overtime-repair-service", () => {
       WHERE calculation_id = ?
     `).run(allowanceRow!.id);
 
-    const summary = repairStoredOvertimePerformanceData();
-
-    expect(summary).toEqual({
-      repairedEntryCount: 1,
-      repairedApprovalCount: 1,
-      repairedCalculationCount: 1
+    const readHistory = () => ({
+      entries: database!.prepare("SELECT * FROM performance_entries ORDER BY id").all(),
+      approvals: database!.prepare("SELECT * FROM performance_approvals ORDER BY id").all(),
+      calculations: database!.prepare("SELECT * FROM allowance_calculations ORDER BY id").all(),
+      items: database!.prepare("SELECT * FROM allowance_calculation_items ORDER BY id").all()
     });
+    const before = readHistory();
+    for (let restart = 0; restart < 2; restart++) {
+      expect(repairStoredOvertimePerformanceData()).toEqual({
+        repairedEntryCount: 0, repairedApprovalCount: 0, repairedCalculationCount: 0
+      });
+      expect(readHistory()).toEqual(before);
+    }
+  });
 
-    const repairedEntryRow = database!.prepare(`
-      SELECT break_minutes, base_work_minutes, overtime_minutes, night_minutes
-      FROM performance_entries
-      WHERE id = ?
-    `).get(overtimeEntry!.id) as {
-      break_minutes: number;
-      base_work_minutes: number;
-      overtime_minutes: number;
-      night_minutes: number;
-    };
-    const repairedApprovalSnapshot = database!.prepare(`
-      SELECT snapshot_json
-      FROM performance_approvals
-      WHERE id = ?
-    `).get(approvalRow!.id) as { snapshot_json: string };
-    const repairedCalculationRow = database!.prepare(`
-      SELECT total_allowance_amount, base_work_minutes, overtime_minutes, night_minutes
-      FROM allowance_calculations
-      WHERE id = ?
-    `).get(allowanceRow!.id) as {
-      total_allowance_amount: number;
-      base_work_minutes: number;
-      overtime_minutes: number;
-      night_minutes: number;
-    };
-    const repairedCalculationItems = database!.prepare(`
-      SELECT allowance_code, amount
-      FROM allowance_calculation_items
-      WHERE calculation_id = ?
-      ORDER BY allowance_code ASC
-    `).all(allowanceRow!.id) as Array<{
-      allowance_code: string;
-      amount: number;
-    }>;
-
-    const parsedApprovalSnapshot = JSON.parse(repairedApprovalSnapshot.snapshot_json) as {
-      entry: {
-        breakMinutes: number;
-        baseWorkMinutes: number;
-        overtimeMinutes: number;
-        nightMinutes: number;
-      };
-    };
-
-    expect(repairedEntryRow).toEqual({
-      break_minutes: 30,
-      base_work_minutes: 0,
-      overtime_minutes: 120,
-      night_minutes: 150
+  it("still repairs minute analysis for an unapproved entry without financial history", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot(), templateVariant: "sample1" });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    const database = getSqliteDatabase()!;
+    database.prepare("UPDATE performance_entries SET total_work_minutes=240, work_hours=4, break_minutes=60, base_work_minutes=240, overtime_minutes=0, night_minutes=0 WHERE id=?").run(entry.id);
+    expect(repairStoredOvertimePerformanceData()).toEqual({
+      repairedEntryCount: 1, repairedApprovalCount: 0, repairedCalculationCount: 0
     });
-    expect(parsedApprovalSnapshot.entry).toMatchObject({
-      breakMinutes: 30,
-      baseWorkMinutes: 0,
-      overtimeMinutes: 120,
-      nightMinutes: 150
+    expect(database.prepare("SELECT break_minutes, base_work_minutes, overtime_minutes, night_minutes FROM performance_entries WHERE id=?").get(entry.id)).toEqual({
+      break_minutes: 30, base_work_minutes: 0, overtime_minutes: 120, night_minutes: 150
     });
-    expect(repairedCalculationRow.base_work_minutes).toBe(0);
-    expect(repairedCalculationRow.overtime_minutes).toBe(120);
-    expect(repairedCalculationRow.night_minutes).toBe(150);
-    expect(repairedCalculationRow.total_allowance_amount).toBeGreaterThan(0);
-    expect(repairedCalculationItems.length).toBeGreaterThan(0);
-    expect(repairedCalculationItems.some((item) => item.amount > 0)).toBe(true);
+    expect(repairStoredOvertimePerformanceData().repairedEntryCount).toBe(0);
+    expect(database.prepare("SELECT COUNT(*) AS n FROM allowance_calculations").get()).toEqual({n: 0});
   });
 });

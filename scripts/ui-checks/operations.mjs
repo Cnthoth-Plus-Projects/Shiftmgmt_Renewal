@@ -1640,13 +1640,16 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
   }
   if(id==='S08') {
     await freshTab(page,'rates');const calcBefore=await data('listCalculationResults');
+    const versionsBefore=await data('listAllowanceRateVersions');
     const row=page.locator(`.rates-table-wrap tr[data-id="${scenarioState.rate.id}"]`);
     await page.locator('.rates-table-wrap .dt-search-input').fill('검수_미래요율');await row.click();
     await page.locator('#select-rate-status').selectOption('active');const writes=await count('saveAllowanceRateVersion');
     await page.locator('#btn-save-rate-version').click();await page.locator('#btn-confirm-cancel').click();assert.equal(await count('saveAllowanceRateVersion'),writes);
+    const cancelledVersions=await data('listAllowanceRateVersions');
+    negative('N02','active-rate-confirm-cancel',()=>assert.deepEqual(cancelledVersions,versionsBefore));
     await page.locator('#btn-save-rate-version').click();await page.locator('#btn-confirm-ok').click();await notice(page);
-    const versions=await data('listAllowanceRateVersions');assert.equal(versions.filter(v=>v.status==='active').length,1);assert.equal(versions.find(v=>v.id===scenarioState.rate.id).status,'active');
-    negative('N02','active-rate-confirm-cancel',()=>assert.equal(versions.filter(v=>v.status==='active').length,1));
+    const versions=await data('listAllowanceRateVersions');assert.equal(versions.filter(v=>v.status==='active').length,versionsBefore.filter(v=>v.status==='active').length+1);assert.equal(versions.find(v=>v.id===scenarioState.rate.id).status,'active');
+    for(const old of versionsBefore.filter(v=>v.status==='active')) assert.equal(versions.find(v=>v.id===old.id).status,'active');
     const cells=page.locator('.matrix-cell-input'),invalidWrites=[];
     for(const value of ['', '-1']) {
       const old=await cells.first().inputValue(),n=await count('saveAllowanceRateVersion');await cells.first().fill(value);
@@ -1657,7 +1660,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     const invalidPeriod=await api('saveAllowanceRateVersion',{year:2027,versionLabel:'검수_역전기간',status:'draft',effectiveFrom:'2027-12-01',effectiveTo:'2027-01-01',items:scenarioState.rate.items});
     const duplicate=await api('saveAllowanceRateVersion',{year:2027,versionLabel:scenarioState.rate.versionLabel,status:'draft',effectiveFrom:'2027-01-01',items:scenarioState.rate.items});assert.equal(duplicate.ok,false);
     assert(!invalidDate.ok&&!invalidPeriod.ok);assert.deepEqual(await data('listCalculationResults'),calcBefore);
-    negative('N04','missing-negative-started-date-period',()=>assert.deepEqual(invalidWrites,[0,0]));record('Active transition confirmed once, prior active retired; rejected invalid edits preserve calculations');
+    negative('N04','missing-negative-started-date-period',()=>assert.deepEqual(invalidWrites,[0,0]));record('Future rate confirmed once; current active remains available within its period; rejected invalid edits preserve calculations');
   }
   if(id==='S09') {
     await freshTab(page,'users');const password=`Sol!${randomUUID()}7a`;artifactRegistry.register(password);

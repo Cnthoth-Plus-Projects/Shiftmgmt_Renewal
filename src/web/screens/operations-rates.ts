@@ -29,6 +29,8 @@ import {
   isValidDateFormat
 } from "./operations-model";
 import { DataTable } from "../data-table";
+import { getSeoulTodayDateString } from "../../shared/lib/local-date";
+import { selectApplicableAllowanceRateVersion } from "../../shared/domain/allowance-rate-service";
 
 export class OperationsRatesTab {
   private workspace?: OperationsWorkspace;
@@ -43,6 +45,7 @@ export class OperationsRatesTab {
   private versions: AllowanceRateVersion[] = [];
   private history: AllowanceRateHistoryRecord[] = [];
   private historyError = "";
+  private periodError = "";
   private selectedVersion: AllowanceRateVersion | null = null;
   private currentMatrix: AllowanceRateMatrix = buildAllowanceRateTable(null);
   private versionTable?: DataTable<AllowanceRateVersion>;
@@ -109,9 +112,16 @@ export class OperationsRatesTab {
       if (!historyRes.ok && historyRes.errorCode === "AUTH_SESSION_REQUIRED") { this.onSessionExpired?.(); return; }
       this.history = historyRes.ok ? historyRes.data || [] : [];
       this.historyError = historyRes.ok ? "" : formatErrorMessage(historyRes, "변경 이력을 불러오지 못했습니다.");
-      // 기본적으로 최신 활성(active) 버전 선택 또는 첫 버전 선택
-      this.selectedVersion =
-        this.versions.find((v) => v.status === "active") || this.versions[0] || null;
+      // 오늘 적용되는 기간을 우선 표시한다. 미래 예약 요율은 현재 요율을 대신하지 않는다.
+      this.periodError = "";
+      try {
+        this.selectedVersion = selectApplicableAllowanceRateVersion({ targetDate: getSeoulTodayDateString(), versions: this.versions });
+      } catch (error) {
+        // 과거 중복 자료가 있어도 운영자가 목록을 열어 초안/기간을 정리할 수 있어야 한다.
+        this.periodError = error instanceof Error ? error.message : "요율 적용 기간을 확인해 주세요.";
+        this.selectedVersion = null;
+      }
+      this.selectedVersion ??= this.versions[0] || null;
       if (this.selectedVersion) {
         this.currentMatrix = buildAllowanceRateTable(this.selectedVersion);
       }
@@ -142,6 +152,7 @@ export class OperationsRatesTab {
 
     // 1. 상단: 버전 목록 테이블 (DataTable)
     const listSec = el("div", "rates-section list-section");
+    if (this.periodError) listSec.appendChild(el("div", "alert-danger", this.periodError));
     const listHeader = el("div", "section-header");
     listHeader.appendChild(el("h3", "tab-title", "수당 요율 버전 관리"));
 
@@ -189,7 +200,14 @@ export class OperationsRatesTab {
           key: "status",
           label: "상태",
           align: "center",
-          render: (r) => renderStatusBadge(r.status)
+          render: (r) => {
+            const today = getSeoulTodayDateString();
+            if (r.status === "draft") return renderStatusBadge("draft");
+            if (r.status === "retired" && !r.effectiveTo) return renderStatusBadge("retired", "기간 확인 필요");
+            if (r.effectiveTo && r.effectiveTo < today) return renderStatusBadge("retired", "기간 종료");
+            if (r.effectiveFrom > today) return renderStatusBadge("draft", "적용 예정");
+            return renderStatusBadge("active", "현재 적용");
+          }
         },
         { key: "effectiveFrom", label: "적용 시작일", sortable: true },
         { key: "effectiveTo", label: "적용 종료일", render: (r) => r.effectiveTo || "미지정" },
@@ -549,7 +567,7 @@ export class OperationsRatesTab {
       showConfirm({
         title: "활성 버전 설정 확인",
         message: `이 버전(${meta.label})을 '활성(Active)' 상태로 저장하시겠습니까?`,
-        subMessage: "새 활성 버전이 저장되면 기존에 활성화되어 있던 다른 요율 버전은 자동으로 '만료(Retired)' 상태로 전환됩니다.",
+        subMessage: "근무일이 적용 기간에 포함되는 요율로 계산합니다. 앞 요율의 종료일은 새 시작일 전날까지로 정리되며, 미래 요율은 시작일 전까지 적용되지 않습니다. 기존 승인 금액은 유지됩니다.",
         confirmLabel: "활성화 및 저장",
         variant: "primary",
         onConfirm: doSave
