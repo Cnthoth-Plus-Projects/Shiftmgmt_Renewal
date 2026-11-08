@@ -58,6 +58,7 @@ korean.ConfirmUninstall=교대근무관리 시스템 프로그램을 제거하�
 [Code]
 const
   OwnerKey = 'Software\ShiftMgmt\Installer\9C321097-0511-4AF6-9E41-AE16F519C703';
+  HexDigits = '0123456789abcdef';
 
 function GetDataRoot(Param: String): String;
 begin
@@ -81,13 +82,22 @@ begin
     (Pos(Lowercase(AddBackslash(B)), Lowercase(AddBackslash(A))) = 1);
 end;
 
+function Hex4(Value: Integer): AnsiString;
+begin
+  Result := '';
+  Result := Result + HexDigits[(Value div 4096) mod 16 + 1];
+  Result := Result + HexDigits[(Value div 256) mod 16 + 1];
+  Result := Result + HexDigits[(Value div 16) mod 16 + 1];
+  Result := Result + HexDigits[Value mod 16 + 1];
+end;
+
 function JsonString(const Value: String): AnsiString;
 var I: Integer; C: Integer;
 begin
   Result := '"';
   for I := 1 to Length(Value) do begin
     C := Ord(Value[I]);
-    if (C < 32) or (C > 126) then Result := Result + '\u' + IntToHex(C, 4)
+    if (C < 32) or (C > 126) then Result := Result + '\u' + Hex4(C)
     else if (Value[I] = '\') or (Value[I] = '"') then Result := Result + '\' + Value[I]
     else Result := Result + Value[I];
   end;
