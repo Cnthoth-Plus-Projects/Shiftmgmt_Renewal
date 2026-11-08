@@ -1,5 +1,6 @@
 // 공휴일 순수 도메인/비교 모델 (H02, H03, H05, H07)
-import type { HolidayCalendar, HolidayItem } from "../../shared/domain/model";
+import type { HolidayItem } from "../../shared/domain/model";
+export { holidayCalendarFingerprint } from "../../shared/domain/holiday-pattern";
 import { isValidDateFormat } from "./operations-model";
 
 export type HolidayTypeFilter = "all" | "regular" | "substitute";
@@ -255,18 +256,11 @@ export function buildHolidayComparison(
  * 캘린더 안정적 지문 직렬화 (H07 최신성 점검용 / HOL-D03)
  * JSON 구조화 튜플 직렬화로 구분자(|, ;, 줄바꿈 등) 삽입 공격 및 충돌 완전 방지
  */
-export function holidayCalendarFingerprint(calendar: HolidayCalendar | null | undefined): string {
-  if (!calendar) return "empty";
-  const sortedItems = [...(calendar.items || [])].sort((a, b) => {
-    const dateCmp = a.holidayDate.localeCompare(b.holidayDate);
-    if (dateCmp !== 0) return dateCmp;
-    return a.id.localeCompare(b.id);
-  });
-  const payload = [
-    calendar.id,
-    calendar.year,
-    calendar.sourceName || "",
-    sortedItems.map((i) => [i.id, i.holidayDate, i.name, i.isSubstitute ? 1 : 0])
-  ];
-  return JSON.stringify(payload);
+export function buildHolidaySyncComparison(currentItems: readonly HolidayItem[], fetchedItems: readonly HolidayItem[], targetYear: number): HolidayComparisonResult {
+  const result = buildHolidayComparison(currentItems, fetchedItems, targetYear);
+  result.rows = result.rows.map(row => row.changeType === "removed" ? { ...row, changeType: "unchanged", after: row.before } : row);
+  result.unchangedCount += result.removedCount;
+  result.removedCount = 0;
+  result.hasChanges = !result.validationErrors.length && result.addedCount + result.modifiedCount > 0;
+  return result;
 }

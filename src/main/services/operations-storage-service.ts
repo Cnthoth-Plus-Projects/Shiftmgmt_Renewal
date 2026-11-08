@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { getSeoulTodayDateString } from "../../shared/lib/local-date";
 import { getPreviousDayString } from "../../shared/domain/policy-history";
+import { holidayCalendarFingerprint } from "../../shared/domain/holiday-pattern";
 
 import { allowanceRateVersionFixtures } from "../../shared/domain/allowance-rate-fixtures";
 import {
@@ -1315,6 +1316,8 @@ export const deleteStoredHolidayItem = (input: {
 };
 
 export const replaceStoredHolidayCalendar = (input: {
+  preserveExisting?: boolean;
+  expectedFingerprint?: string;
   year: number;
   sourceName?: string;
   sourceVersion?: string;
@@ -1348,10 +1351,19 @@ export const replaceStoredHolidayCalendar = (input: {
   const sourceName = input.sourceName?.trim() || "holiday-api";
   const sourceVersion = input.sourceVersion?.trim() || `${input.year}.api`;
 
+  if (input.preserveExisting && normalizedItems.length === 0) throw new Error("가져온 공휴일 목록이 비어 있습니다. 기존 목록은 유지됩니다.");
+
   database.exec("BEGIN");
 
   try {
     const calendarRows = getHolidayCalendarRowsByYear(input.year);
+    const current = listStoredHolidayCalendars(input.year)[0] ?? null;
+    if (input.expectedFingerprint !== undefined && holidayCalendarFingerprint(current) !== input.expectedFingerprint) {
+      throw new Error("공휴일 목록이 변경되었습니다. 새로고침 후 다시 동기화해 주세요.");
+    }
+    const itemsToSave = input.preserveExisting
+      ? [...new Map([...(current?.items ?? []), ...normalizedItems].map(item => [item.holidayDate, item])).values()]
+      : normalizedItems;
 
     calendarRows.forEach((calendarRow) => {
       database.prepare(`
@@ -1378,7 +1390,7 @@ export const replaceStoredHolidayCalendar = (input: {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    normalizedItems.forEach((item) => {
+    itemsToSave.forEach((item) => {
       insertItem.run(
         `holiday-item-${randomUUID()}`,
         calendarId,

@@ -2,7 +2,16 @@ import { calculateRotationIndex } from "./rotation-index";
 import { calculateDurationMinutes } from "./calculation";
 import { parseScheduleTiming, parseDateScheduleExceptions, validateDateScheduleExceptions } from "./schedule-exceptions";
 import type { DateScheduleException } from "./schedule-exceptions";
-import type { ShiftPatternStep } from "./model";
+import type { HolidayCalendar, ShiftPatternStep } from "./model";
+
+/** Stable structured identity used by preview and the transactional writer. */
+export function holidayCalendarFingerprint(calendar: HolidayCalendar | null | undefined): string {
+  if (!calendar) return "empty";
+  const sortedItems = [...(calendar.items || [])].sort((a, b) =>
+    a.holidayDate.localeCompare(b.holidayDate) || a.id.localeCompare(b.id));
+  return JSON.stringify([calendar.id, calendar.year, calendar.sourceName || "",
+    sortedItems.map(i => [i.id, i.holidayDate, i.name, i.isSubstitute ? 1 : 0])]);
+}
 
 export function getPatternDutyCodes(types: Array<{id:string;kind:string;sortOrder?:number}>, previous: Record<string,string> = {}): Record<string,string> {
   const result: Record<string,string> = {}, used = new Set<string>();
@@ -114,6 +123,15 @@ export function resolveHolidayStep(policy: HolidayPatternPolicy, date: string, p
   if (code === "O") return { step: { id: base.id, stepIndex: base.stepIndex, dutyCode: "O", breakMinutes: 0 }, holiday: true };
   const source = code === base.dutyCode ? base : catalog.find(s => s.dutyCode === code);
   if (!source) throw Error(`${code} 휴일 근무 유형의 시간을 찾을 수 없습니다.`);
-  const timing = rule.teamTimes?.[team]?.[code] ?? rule.times?.[code];
+  const selectedTiming = rule.teamTimes?.[team]?.[code] ?? rule.times?.[code];
+  // 편성 규칙은 그대로 두고, 공휴일과 겹친 토·일의 시간만 해당 요일 설정을 우선한다.
+  const day = new Date(`${date}T12:00:00`).getDay();
+  const weekendRule = publicDates.has(date)
+    ? day === 6 ? policy.rules.saturday : day === 0 ? policy.rules.sunday : undefined
+    : undefined;
+  const weekendTiming = weekendRule?.mode !== "off"
+    ? weekendRule?.teamTimes?.[team]?.[code] ?? weekendRule?.times?.[code]
+    : undefined;
+  const timing = weekendTiming ?? selectedTiming;
   return { step: timing ? { ...source, ...timing, holidayStartTime: timing.startTime, holidayEndTime: timing.endTime, holidayBreakMinutes: timing.breakMinutes } : source, holiday: true };
 }

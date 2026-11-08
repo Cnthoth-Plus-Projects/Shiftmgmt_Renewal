@@ -5,7 +5,7 @@
 
 ## 뿌리
 
-정식 Windows 배포: `scripts/package-windows.mjs`는 Node24·프로덕션 의존성·라이선스·해시 ZIP을 생성한다. `scripts/verify-windows-package.mjs`는 모든 파일을 대조하고 `build/fresh-install.ps1`는 새 PC 설치/바로가기를 담당한다. `scripts/start-installed.mjs`는 설치본 서버·첫 관리자 안내·정상 종료를 담당한다. `scripts/release-install-smoke.mjs`는 TEMP 설치와 실제 Chrome 첫 로그인/거절 검문이다. 사용 안내는 `docs/fresh-install.md`, 버전별 설명은 `docs/release-1.0.2.md`다. `scripts/build-browser.mjs`는 개발 전용 자동입력을 정식 빌드에서 제외한다.
+정식 Windows 배포: `scripts/package-windows.mjs`는 Node24·프로덕션 의존성·라이선스·해시 ZIP을 생성한다. `scripts/verify-windows-package.mjs`는 모든 파일을 대조하고 `build/fresh-install.ps1`는 새 PC 설치/바로가기를 담당한다. `scripts/start-installed.mjs`는 설치본 서버·첫 관리자 안내·정상 종료를 담당한다. `scripts/release-install-smoke.mjs`는 TEMP 설치와 실제 Chrome 첫 로그인/거절 검문이다. 사용 안내는 `docs/fresh-install.md`, 버전별 설명은 `docs/release-1.0.3.md`다. `scripts/build-browser.mjs`는 개발 전용 자동입력을 정식 빌드에서 제외한다.
 
 | 파일 | 하는 일 |
 |---|---|
@@ -164,8 +164,8 @@
 | `src/web/screens/operations-settings.ts` | 환경 및 운영 설정 탭 조율 (4개 영역 폼, 변경 상태 계산, 저장/되돌리기/감시) |
 | `src/web/screens/operations-settings-view.ts` | 운영 설정 4개 영역 UI 헬퍼 (영역 탭 내비게이션, Dense 패널, 고정 액션 바, 6개 기준 상세 설명, 시스템 서비스 카드, 접근성) |
 | `src/web/screens/operations-backup.ts` | DB 백업 및 JSON 마이그레이션 교체 흐름 모듈 |
-| `src/web/screens/operations-holidays.ts` | 공휴일 관리 탭 (운영 관리 공통 화면 규격, 등록/외부 연동·비교/교체 안내·조회/CRUD/수명 보호) |
-| `src/web/screens/operations-holidays-model.ts` | 공휴일 순수 도메인/비교/필터 모델 (요약 통계, 검색/정렬, API 비교 및 지문 직렬화) |
+| `src/web/screens/operations-holidays.ts` | 공휴일 관리 탭 (운영 관리 공통 화면 규격, 등록 목록·우측 동기화 미리보기/기존 날짜 보존 적용·조회/CRUD/수명 보호) |
+| `src/web/screens/operations-holidays-model.ts` | 공휴일 순수 도메인/비교/필터 모델 (요약 통계, 검색/정렬, API 비교·보존 동기화 비교 및 공유 지문 재노출) |
 | `src/web/screens/operations-holidays-model.test.ts` | 공휴일 순수 모델 단위 검증 시험 (불변성, 비교 매칭, 유효성 검증, 대량 스트레스) |
 | `src/web/screens/operations-rates.ts` | 수당 요율 버전 관리 탭 (5x3 매트릭스, 영향도 읽기전용 분석, 활성화 확인) |
 | `src/web/screens/operations-users.ts` | 운영 사용자 관리 탭 (계정 등록/수정/삭제, 내 복구키 재발급) |

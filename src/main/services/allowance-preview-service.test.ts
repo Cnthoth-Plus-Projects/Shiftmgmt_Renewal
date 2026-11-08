@@ -56,6 +56,14 @@ describe("previewAllowanceCalculation", () => {
     expect(result.ok).toBe(true);
     if(result.ok){expect(result.data.businessCategoryCode).toBe("holiday-overtime");expect(result.data.totalAllowanceAmount).toBe(144525);}
   });
+  it("Z01: preview reports the same missing overtime rate as real approval", () => {
+    const rate=listStoredAllowanceRateVersions().find(rate=>rate.id==="rate-2026-1")!;
+    saveStoredHolidayItem({year:2026,holidayDate:"2026-03-03",name:"시험 공휴일"});
+    saveStoredAllowanceRateVersion({...rate,changeReason:"미리보기 부분0배",items:createAllowanceRateItems(rate.id,{...allowanceRateDefaultMatrix,"holiday-overtime":{base:0,overtime:0,night:2.5}})});
+    const result=previewAllowanceCalculation({workDate:"2026-03-03",startTime:"20:00",endTime:"01:00",breakMinutes:30,hourlyRate:14100,workType:"overtime"});
+    expect(result).toMatchObject({ok:false,errorCode:"ALLOWANCE_RATE_INCOMPLETE"});
+    if(!result.ok)expect(result.message).toContain("연장 120분");
+  });
   it("CALC-03: fails when the work date has no published rate",()=>{
     expect(previewAllowanceCalculation({workDate:"2025-03-03",startTime:"20:00",endTime:"21:00",breakMinutes:0,hourlyRate:14100,workType:"overtime"})).toMatchObject({ok:false,errorCode:"ALLOWANCE_RATE_NOT_FOUND"});
   });

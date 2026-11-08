@@ -104,6 +104,28 @@ describe("approved-allowance-calculation-service", () => {
     }
   });
 
+  it.each(["sample1", "sample2"] as const)("Z02: %s mixed zero rates cannot save a partial payment", async templateVariant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir:createTestRoot(),templateVariant});
+    saveStoredHolidayItem({year:2026,holidayDate:"2026-03-03",name:"시험 공휴일"});
+    const rate = listStoredAllowanceRateVersions().find(rate => rate.id === "rate-2026-1")!;
+    const matrix = {...allowanceRateDefaultMatrix,"holiday-overtime":{base:0,overtime:0,night:2.5}};
+    saveStoredAllowanceRateVersion({...rate,changeReason:"부분0배 재현",items:createAllowanceRateItems(rate.id,matrix)});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    const input = {fileId:detail.id,entryId:entry.id};
+    const result = await approvePerformanceFile(input,testAdminSession,{userDataPath:fixture.userDataPath});
+    expect(result).toMatchObject({ok:false,errorCode:"ALLOWANCE_RATE_INCOMPLETE"});
+    if (!result.ok) expect(result.message).toContain("연장 120분");
+    for (const table of ["performance_approvals","allowance_calculations","allowance_calculation_items"]) {
+      expect(getSqliteDatabase()!.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get()).toEqual({n:0});
+    }
+    saveStoredAllowanceRateVersion({...rate,changeReason:"연장배율 설정",items:createAllowanceRateItems(rate.id,{...matrix,"holiday-overtime":{base:0,overtime:2,night:2.5}})});
+    expect((await approvePerformanceFile(input,testAdminSession,{userDataPath:fixture.userDataPath})).ok).toBe(true);
+    const calculation = await runApprovedAllowanceCalculation({entryId:entry.id});
+    expect(calculation.ok).toBe(true);
+    if (calculation.ok) expect(calculation.data.snapshot.totalAllowanceAmount).toBe(144525);
+  });
+
   it.each(["sample1", "sample2"] as const)("CALC-04: %s saves exactly 15,510 won for a one-hour 1.1 multiplier", async templateVariant => {
     const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot(), templateVariant});
     const workbook = new ExcelJS.Workbook();

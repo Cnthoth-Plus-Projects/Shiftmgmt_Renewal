@@ -12,14 +12,13 @@ import {
 import { validateHolidayItem } from "./operations-model";
 import {
   filterHolidayItems,
-  buildHolidayComparison,
+  buildHolidaySyncComparison,
   holidayCalendarFingerprint,
   computeHolidaySummary,
   formatHolidayDateWithDay,
   type HolidayTypeFilter,
   type HolidaySortField,
-  type HolidaySortOrder,
-  type HolidayComparisonResult
+  type HolidaySortOrder
 } from "./operations-holidays-model";
 import {
   renderPagination,
@@ -75,6 +74,9 @@ export class OperationsHolidaysTab {
   private readonly controlStates = new WeakMap<HTMLButtonElement | HTMLInputElement | HTMLSelectElement, boolean>();
   private selectedYear: number;
   private currentCalendar: HolidayCalendar | null = null;
+  private holidayPreview: { year: number; items: HolidayItem[]; initialFingerprint: string; applied?: boolean; stale?: boolean } | null = null;
+  private previewPage = 1;
+  private syncError = "";
 
   // 상태 관리
   private selectedId: string | null = null;
@@ -131,6 +133,9 @@ export class OperationsHolidaysTab {
     this.operationGeneration++;
     const reqId = ++this.loadRequestId;
     this.selectedYear = year;
+    this.holidayPreview = null;
+    this.syncError = "";
+    this.previewPage = 1;
     this.activeOperation = "loading";
     this.container.innerHTML = "";
 
@@ -353,7 +358,7 @@ export class OperationsHolidaysTab {
     const area = HOLIDAY_AREAS.find(item => item.id === this.activeArea)!;
     for (const item of HOLIDAY_AREAS) {
       const button = this.container.querySelector<HTMLButtonElement>(`#holiday-area-${item.id}`);
-      const panel = this.container.querySelector<HTMLElement>(`#holiday-panel-${item.id}`);
+      const panel = this.container.querySelector<HTMLElement>(item.id === "calendar" ? "#holidays-detail-container" : "#holiday-panel-import");
       button?.setAttribute("aria-selected", String(item.id === area.id));
       if (button) button.tabIndex = item.id === area.id ? 0 : -1;
       if (panel) panel.hidden = item.id !== area.id;
@@ -379,7 +384,7 @@ export class OperationsHolidaysTab {
       button.id = `holiday-area-${area.id}`;
       button.className = "ops-holiday-category ops-category-button";
       button.setAttribute("role", "tab");
-      button.setAttribute("aria-controls", `holiday-panel-${area.id}`);
+      button.setAttribute("aria-controls", area.id === "calendar" ? "holidays-detail-container" : "holiday-panel-import");
       const copy = el("span", "ops-holiday-category-copy");
       copy.append(el("strong", "", area.label), el("small", "", area.hint));
       button.append(holidayIcon(area.icon), copy);
@@ -406,8 +411,8 @@ export class OperationsHolidaysTab {
     heading.append(intro, yearField);
     const calendarPanel = el("div", "ops-holiday-calendar-panel");
     calendarPanel.id = "holiday-panel-calendar";
-    calendarPanel.setAttribute("role", "tabpanel");
-    calendarPanel.setAttribute("aria-labelledby", "holiday-area-calendar");
+    calendarPanel.setAttribute("role", "region");
+    calendarPanel.setAttribute("aria-label", "등록 공휴일 목록과 공휴일 관리");
 
     // 1. 전체 폭 요약 KPI 카드 (등록 공휴일 / 일반 공휴일 / 대체공휴일)
     const summary = computeHolidaySummary(this.currentCalendar?.items || []);
@@ -509,6 +514,10 @@ export class OperationsHolidaysTab {
     btnAdd.id = "btn-add-holiday";
     btnAdd.prepend(holidayIcon("add"));
     toolRight.appendChild(btnAdd);
+    const fetchButton = createButton("한국 공휴일 동기화", "secondary", () => { this.selectArea("import"); void this.handleFetchApi(); });
+    fetchButton.id = "btn-fetch-holiday-api";
+    fetchButton.prepend(holidayIcon("sync"));
+    toolRight.appendChild(fetchButton);
 
     toolbar.appendChild(toolRight);
     calendarPanel.appendChild(toolbar);
@@ -578,16 +587,19 @@ export class OperationsHolidaysTab {
     // --- 우측: 상세 카드 (380px) ---
     const detailPanel = el("div", "ops-holidays-detail-panel");
     detailPanel.id = "holidays-detail-container";
+    detailPanel.setAttribute("role", "tabpanel");
+    detailPanel.setAttribute("aria-labelledby", "holiday-area-calendar");
     body.appendChild(detailPanel);
 
     calendarPanel.appendChild(body);
     const importPanel = this.renderImportPanel(summary.totalCount);
+    body.appendChild(importPanel);
     const status = el("p", "ops-holiday-operation-status");
     status.id = "holiday-operation-status";
     status.setAttribute("role", "status");
     const footer = el("div", "ops-menu-footer");
-    footer.appendChild(el("p", "ops-menu-footnote", "직접 추가·수정은 저장 후 적용됩니다. 외부 연동은 변경 내용을 비교한 뒤 전체 교체 여부를 결정하세요."));
-    content.append(heading, calendarPanel, importPanel, status, footer);
+    footer.appendChild(el("p", "ops-menu-footnote", "동기화는 오른쪽 미리보기만 불러옵니다. ‘적용하기’를 누르면 선택 연도에 추가·변경하며, 기존 목록에만 있는 날짜는 유지합니다."));
+    content.append(heading, calendarPanel, status, footer);
     wrap.append(nav, content);
     this.container.appendChild(wrap);
     this.rebuildPagesAndRender(true);
@@ -604,32 +616,64 @@ export class OperationsHolidaysTab {
     panel.id = "holiday-panel-import";
     panel.setAttribute("role", "tabpanel");
     panel.setAttribute("aria-labelledby", "holiday-area-import");
-    const steps = el("ol", "ops-holiday-import-steps");
-    for (const [title, description] of [
-      ["대상 연도 확인", "위의 연도를 선택하세요."],
-      ["불러와서 비교", "추가·제외·변경 내용을 확인하세요."],
-      ["확인 후 교체", "비교창에서 적용할 때만 저장됩니다."]
-    ]) {
-      const step = el("li");
-      step.append(el("strong", "", title), el("span", "", description));
-      steps.appendChild(step);
+    const previewTitle = el("h4", "", this.selectedYear + "년 한국 공휴일 미리보기");
+    previewTitle.title = "기본 연동은 Nager와 Google 대한민국 공휴일을 대조합니다. 기념일은 제외합니다. 사용자 지정 API는 해당 자료를 사용합니다. 임시공휴일 등 최신 지정 내용을 확인한 뒤 적용하세요.";
+    panel.appendChild(previewTitle);
+    if (this.syncError) {
+      const error = el("div", "alert-danger", this.syncError);
+      error.setAttribute("role", "alert");
+      panel.appendChild(error);
     }
-    const card = el("div", "ops-holiday-import-card");
-    card.append(steps, el("h4", "", "등록된 목록과 비교한 뒤 적용하세요"));
-    const current = el("p", "ops-holiday-import-context", `${this.selectedYear}년 등록 공휴일은 ${totalCount}건입니다. 불러오기와 비교는 저장된 공휴일을 변경하지 않습니다.`);
-    current.id = "holiday-import-context";
-    card.appendChild(current);
-    const warning = el("p", "ops-holiday-import-warning", "교체하면 선택한 연도의 공휴일 전체가 바뀝니다. 직접 추가한 공휴일도 외부 목록에 없으면 제외되므로 비교창의 ‘제외’ 항목을 꼭 확인하세요. 취소하면 기존 목록을 유지합니다.");
-    card.appendChild(warning);
+    const preview = this.holidayPreview;
+    if (!preview) {
+      panel.appendChild(el("p", "ops-holiday-import-help", "한국 공휴일 동기화 → 목록 확인 → 적용하기 순서로 진행하세요. 기존 목록에만 있는 날짜는 유지됩니다."));
+      panel.appendChild(el("p", "ops-holiday-import-context", this.selectedYear + "년 · 등록 " + totalCount + "건"));
+      panel.appendChild(el("p", "ops-holidays-preview-empty", "‘한국 공휴일 동기화’를 누르면 이곳에 목록이 표시됩니다. 불러오기만으로 저장되지는 않습니다."));
+      return panel;
+    }
+    const comparison = buildHolidaySyncComparison(this.currentCalendar?.items ?? [], preview.items, preview.year);
+    const fetchedDates = new Set(preview.items.map(item => item.holidayDate));
+    const retained = (this.currentCalendar?.items ?? []).filter(item => !fetchedDates.has(item.holidayDate)).length;
+    const summary = el("p", "ops-holiday-import-context", "불러온 " + preview.items.length + "건 · 추가 " + comparison.addedCount + "건 · 변경 " + comparison.modifiedCount + "건 · 기존 전용 날짜 유지 " + retained + "건");
+    summary.id = "holiday-import-context";
+    panel.appendChild(summary);
+    const previewHeading = el("div", "ops-holiday-preview-heading");
+    previewHeading.append(...Array.from(panel.childNodes));
+    panel.appendChild(previewHeading);
+    const viewport = el("div", "ops-holiday-preview-viewport compare-table-wrap");
+    const table = el("table", "compare-diff-table");
+    const thead = el("thead");
+    const header = el("tr");
+    for (const label of ["날짜·요일", "공휴일 명칭", "구분", "변경"]) header.appendChild(el("th", "", label));
+    thead.appendChild(header); table.appendChild(thead);
+    const tbody = el("tbody");
+    const totalPages = Math.max(1, Math.ceil(preview.items.length / 10));
+    this.previewPage = Math.min(this.previewPage, totalPages);
+    for (const item of preview.items.slice((this.previewPage - 1) * 10, this.previewPage * 10)) {
+      const change = comparison.rows.find(row => row.holidayDate === item.holidayDate)?.changeType ?? "unchanged";
+      const row = el("tr", "diff-row diff-" + change);
+      row.append(el("td", "", formatHolidayDateWithDay(item.holidayDate)), el("td", "", item.name), el("td", "th-center", item.isSubstitute ? "대체" : "일반"), el("td", "th-center", change === "added" ? "추가" : change === "modified" ? "변경" : "동일"));
+      tbody.appendChild(row);
+    }
+    table.appendChild(tbody); viewport.appendChild(table); panel.appendChild(viewport);
+    const pager = el("div", "compare-pagination-bar");
+    pager.appendChild(el("span", "compare-pagination-info", `전체 ${preview.items.length}건 · ${this.previewPage}/${totalPages}페이지`));
+    pager.appendChild(renderPagination({ currentPage: this.previewPage, totalPages, totalCount: preview.items.length, idPrefix: "compare-holidays", label: "불러온 공휴일 목록 페이지 이동", onPageChange: page => {
+      if (this.activeOperation !== "idle") return;
+      this.previewPage = page; this.render();
+    } }));
+    panel.appendChild(pager);
     const actions = el("div", "ops-holiday-import-actions");
-    const fetch = createButton("연동 공휴일 불러오기", "primary", () => this.handleFetchApi());
-    fetch.id = "btn-fetch-holiday-api";
-    fetch.prepend(holidayIcon("sync"));
-    const back = createButton("등록 공휴일 보기", "secondary", () => this.selectArea("calendar", true));
-    back.id = "btn-view-registered-holidays";
-    actions.append(fetch, back);
-    card.append(actions, el("p", "ops-holiday-import-help", "불러오지 못하면 기존 목록은 유지됩니다. 인터넷 연결과 ‘설정 → 시스템·감시’의 공휴일 연동 주소를 확인한 뒤 다시 시도하세요."));
-    panel.appendChild(card);
+    const apply = createButton(preview.applied ? "적용 완료" : "적용하기", "primary", () => this.handleApplyPreview());
+    apply.id = "btn-apply-holiday-preview";
+    apply.disabled = !!preview.applied || !!preview.stale || !comparison.hasChanges || !!comparison.validationErrors.length;
+    const cancel = createButton("미리보기 닫기", "secondary", () => {
+      if (this.activeOperation !== "idle") return;
+      this.holidayPreview = null; this.syncError = ""; this.render();
+    });
+    cancel.id = "btn-cancel-holiday-preview";
+    actions.append(apply, cancel); panel.appendChild(actions);
+    if (preview.applied || !comparison.hasChanges) panel.appendChild(el("p", "ops-holiday-import-help", preview.applied ? "선택 연도의 공휴일에 적용했습니다." : "추가하거나 변경할 내용이 없습니다."));
     return panel;
   }
 
@@ -1106,190 +1150,67 @@ export class OperationsHolidaysTab {
   private async handleFetchApi(): Promise<void> {
     const bridge = window.appBridge;
     if (this.isDestroyed || this.activeOperation !== "idle" || sharedDialog.isOpen() || !bridge) return;
+    this.holidayPreview = null; this.syncError = ""; this.previewPage = 1;
+    this.render();
+    const initialFingerprint = holidayCalendarFingerprint(this.currentCalendar);
     const context = this.beginOperation("fetching");
-    const current = this.currentCalendar ? { ...this.currentCalendar, items: this.currentCalendar.items.map(item => ({ ...item })) } : null;
-    const initialFingerprint = holidayCalendarFingerprint(current);
     try {
       const result = await bridge.fetchHolidayApiItems(context.year);
       if (!this.isCurrentOperation(context)) { this.finishOperation(context); return; }
       if (!result.ok && (result.errorCode === "AUTH_SESSION_REQUIRED" || result.errorCode === "SESSION_EXPIRED")) {
-        this.finishOperation(context);
-        this.onSessionExpired?.();
-        return;
+        this.finishOperation(context); this.onSessionExpired?.(); return;
       }
-      if (!result.ok || !result.data) {
-        this.finishOperation(context);
-        showNotice("공휴일 불러오기 실패", result.ok ? "가져온 공휴일 목록을 확인하지 못했습니다. 기존 공휴일은 유지됩니다." : formatErrorMessage(result, "공휴일 목록을 불러오지 못했습니다. 기존 공휴일은 유지됩니다."), "error");
-        return;
-      }
-      const fetched = result.data.map(item => ({ ...item }));
-      const comparison = buildHolidayComparison(current?.items || [], fetched, context.year);
-      if (comparison.validationErrors.length) {
-        this.finishOperation(context);
-        showNotice("공휴일 목록 확인", `가져온 자료를 반영할 수 없습니다. 기존 공휴일은 유지됩니다.\n${comparison.validationErrors.join("\n")}`, "error");
-        return;
-      }
-      if (!comparison.hasChanges) {
-        this.finishOperation(context);
-        showNotice("변경 사항 없음", `${context.year}년 등록된 공휴일과 가져온 목록이 같습니다. 교체할 내용이 없습니다.`, "info");
-        return;
-      }
-      this.openComparisonModal(context.year, comparison, fetched, initialFingerprint);
+      if (!result.ok || !result.data) throw new Error(result.ok ? "공휴일 목록을 확인하지 못했습니다." : formatErrorMessage(result, "공휴일을 불러오지 못했습니다."));
+      const items = result.data.map(item => ({ ...item }));
+      const comparison = buildHolidaySyncComparison(this.currentCalendar?.items ?? [], items, context.year);
+      if (comparison.validationErrors.length) throw new Error(comparison.validationErrors.join("\n"));
+      this.holidayPreview = { year: context.year, items, initialFingerprint };
+      this.finishOperation(context); this.render();
     } catch (error) {
       if (!this.isCurrentOperation(context)) { this.finishOperation(context); return; }
-      this.finishOperation(context);
-      showNotice("공휴일 불러오기 실패", `기존 공휴일은 유지됩니다. ${String(error)}`, "error");
+      this.syncError = "기존 공휴일은 유지됩니다. " + String(error);
+      this.finishOperation(context); this.render();
     }
   }
 
-  private openComparisonModal(
-    targetYear: number,
-    comp: HolidayComparisonResult,
-    fetchedItems: HolidayItem[],
-    initialFingerprint: string
-  ): void {
-    const content = el("div", "ops-holidays-compare-modal modal-form");
-
-    // 1. 요약 카드
-    const summaryCard = el("div", "compare-summary-grid");
-    const addItem = (label: string, count: number, colorClass?: string) => {
-      const box = el("div", "compare-summary-item");
-      box.appendChild(el("div", "compare-summary-lbl", label));
-      const val = el("div", `compare-summary-num ${colorClass || ""}`, `${count}건`);
-      box.appendChild(val);
-      summaryCard.appendChild(box);
-    };
-
-    addItem("기존 건수", comp.currentCount);
-    addItem("신규 추가", comp.addedCount, "text-success");
-    addItem("내용 변경", comp.modifiedCount, "text-warning");
-    addItem("기존 제외", comp.removedCount, "text-danger");
-    addItem("동일 유지", comp.unchangedCount);
-    addItem("가져온 건수", comp.fetchedCount, "text-primary");
-
-    content.appendChild(summaryCard);
-
-    // 경고 및 교체 범위 안내
-    const warnBox = el("div", "alert-warning compare-warn-notice");
-    warnBox.textContent = `주의: ${targetYear}년에 현재 등록된 공휴일(수동 추가 포함)이 연동 목록 전체(${fetchedItems.length}건)로 완전히 대체됩니다.`;
-    content.appendChild(warnBox);
-
-    // 2. 날짜별 변경 내역 표 + HOL-D04: 공통 renderPagination 페이징 적용
-    const tableWrap = el("div", "compare-table-wrap");
-    const table = el("table", "compare-diff-table");
-    const thead = el("thead");
-    const htr = el("tr");
-    htr.appendChild(el("th", "", "날짜·요일"));
-    htr.appendChild(el("th", "th-center", "구분"));
-    htr.appendChild(el("th", "", "기존 등록"));
-    htr.appendChild(el("th", "", "가져올 목록"));
-    thead.appendChild(htr);
-    table.appendChild(thead);
-
-    const tbody = el("tbody");
-    table.appendChild(tbody);
-    tableWrap.appendChild(table);
-    content.appendChild(tableWrap);
-
-    // 비교 모달 페이징 바 컨테이너
-    const comparePager = el("div", "compare-pagination-bar");
-    content.appendChild(comparePager);
-
-    const comparePageSize = 10;
-    const totalDiffRows = comp.rows.length;
-    const totalDiffPages = Math.max(1, Math.ceil(totalDiffRows / comparePageSize));
-    let currentComparePage = 1;
-
-    const renderCompareRows = (page: number) => {
-      currentComparePage = page;
-      tbody.innerHTML = "";
-
-      const start = (page - 1) * comparePageSize;
-      const end = Math.min(start + comparePageSize, totalDiffRows);
-      const pageSlice = comp.rows.slice(start, end);
-
-      for (const r of pageSlice) {
-        const tr = el("tr", `diff-row diff-${r.changeType}`);
-        tr.appendChild(el("td", "diff-cell-date", formatHolidayDateWithDay(r.holidayDate)));
-
-        const tdType = el("td", "diff-cell-badge th-center");
-        if (r.changeType === "added") {
-          tdType.appendChild(el("span", "badge-diff-add", "추가"));
-        } else if (r.changeType === "removed") {
-          tdType.appendChild(el("span", "badge-diff-del", "제외"));
-        } else if (r.changeType === "modified") {
-          tdType.appendChild(el("span", "badge-diff-mod", "변경"));
-        } else {
-          tdType.appendChild(el("span", "badge-diff-same", "동일"));
-        }
-        tr.appendChild(tdType);
-
-        const tdBefore = el("td", "diff-cell-before");
-        tdBefore.textContent = r.before
-          ? `${r.before.name} (${r.before.isSubstitute ? "대체" : "일반"})`
-          : "-";
-        tr.appendChild(tdBefore);
-
-        const tdAfter = el("td", "diff-cell-after");
-        tdAfter.textContent = r.after
-          ? `${r.after.name} (${r.after.isSubstitute ? "대체" : "일반"})`
-          : "-";
-        tr.appendChild(tdAfter);
-
-        tbody.appendChild(tr);
+  private async handleApplyPreview(): Promise<void> {
+    const bridge = window.appBridge, preview = this.holidayPreview;
+    if (!bridge || !preview || preview.applied || preview.stale || preview.year !== this.selectedYear || this.isDestroyed || this.activeOperation !== "idle" || sharedDialog.isOpen()) return;
+    const comparison = buildHolidaySyncComparison(this.currentCalendar?.items ?? [], preview.items, preview.year);
+    if (!comparison.hasChanges || comparison.validationErrors.length) return;
+    const selectedDate = this.currentCalendar?.items.find(item => item.id === this.selectedId)?.holidayDate;
+    const context = this.beginOperation("saving");
+    this.syncError = "";
+    try {
+      const latest = await bridge.listHolidayCalendars(preview.year);
+      if (!this.isCurrentOperation(context)) { this.finishOperation(context); return; }
+      if (!latest.ok) {
+        if (latest.errorCode === "AUTH_SESSION_REQUIRED" || latest.errorCode === "SESSION_EXPIRED") { this.finishOperation(context); this.onSessionExpired?.(); return; }
+        throw new Error(formatErrorMessage(latest, "최신 공휴일을 조회하지 못했습니다."));
       }
-
-      // 페이징 컨트롤 갱신
-      comparePager.replaceChildren();
-      const infoSpan = el("span", "compare-pagination-info");
-      infoSpan.setAttribute("role", "status");
-      infoSpan.textContent = `전체 ${totalDiffRows}건 · ${start + 1}–${end}건 · ${currentComparePage}/${totalDiffPages}페이지`;
-      comparePager.appendChild(infoSpan);
-
-      if (totalDiffRows > 0) {
-        comparePager.appendChild(
-          renderPagination({
-            currentPage: currentComparePage,
-            totalPages: totalDiffPages,
-            totalCount: totalDiffRows,
-            idPrefix: "compare-holidays",
-            label: "공휴일 교체 비교 목록 페이지 이동",
-            onPageChange: (newPage) => { if (content.isConnected && this.ownedModalToken !== null && sharedDialog.isCurrent(this.ownedModalToken)) renderCompareRows(newPage); }
-          })
-        );
+      if (!latest.data) throw new Error("최신 공휴일 목록을 확인하지 못했습니다.");
+      if (holidayCalendarFingerprint(latest.data.find(item => item.year === preview.year) ?? null) !== preview.initialFingerprint) {
+        preview.stale = true;
+        throw new Error("공휴일 목록이 변경되었습니다. 새로고침한 뒤 다시 동기화해 주세요.");
       }
-    };
-
-    renderCompareRows(1);
-
-    const errBox = el("div", "alert-danger");
-    errBox.style.display = "none";
-    content.appendChild(errBox);
-
-    this.openOwnedDialog({
-      id: "modal-compare-holidays",
-      title: `${targetYear}년 공휴일 변경 내용 비교`,
-      width: "760px",
-      content,
-      buttons: [
-        { id: "btn-confirm-cancel", label: "취소", variant: "secondary", onClick: () => this.closeOwnedDialog() },
-        { id: "btn-confirm-ok", label: "이 목록으로 교체", variant: "primary", onClick: async () => {
-          const bridge = window.appBridge;
-          if (!bridge || !content.isConnected) return;
-          const frozenItems = fetchedItems.map(item => ({ holidayDate: item.holidayDate, name: item.name, isSubstitute: item.isSubstitute }));
-          await this.saveDialog(async context => {
-            const latest = await bridge.listHolidayCalendars(targetYear);
-            if (!this.isCurrentOperation(context)) return null;
-            if (!latest.ok) return latest;
-            if (!latest.data) throw new Error("최신 공휴일 목록을 확인하지 못했습니다.");
-            const calendar = latest.data.find(item => item.year === targetYear) || null;
-            if (holidayCalendarFingerprint(calendar) !== initialFingerprint) {
-              return { ok: false, errorCode: "STALE_REVISION", message: "공휴일 목록이 변경되었습니다. 취소하고 새로고침한 뒤 변경 내역을 다시 확인해 주세요." };
-            }
-            return bridge.replaceHolidayCalendar({ year: targetYear, sourceName: "외부 공휴일 연동", items: frozenItems });
-          }, [], errBox, `${targetYear}년 공휴일 목록을 교체했습니다.`, undefined, "comparing");
-        } }
-      ]
-    }, "comparing");
+      const result = await bridge.replaceHolidayCalendar({ year: preview.year, sourceName: "한국 공휴일 동기화", preserveExisting: true, expectedFingerprint: preview.initialFingerprint, items: preview.items.map(({ holidayDate, name, isSubstitute }) => ({ holidayDate, name, isSubstitute })) });
+      if (!this.isCurrentOperation(context)) { this.finishOperation(context); return; }
+      if (!result.ok) {
+        if (result.errorCode === "AUTH_SESSION_REQUIRED" || result.errorCode === "SESSION_EXPIRED") { this.finishOperation(context); this.onSessionExpired?.(); return; }
+        // A server-side fingerprint rejection requires a new preview as well.
+        if (result.message?.includes("목록이 변경")) preview.stale = true;
+        throw new Error(formatErrorMessage(result, "공휴일을 저장하지 못했습니다."));
+      }
+      if (!result.data) throw new Error("저장 결과를 확인하지 못했습니다. 새로고침해 주세요.");
+      this.currentCalendar = result.data;
+      this.selectedId = result.data.items.find(item => item.holidayDate === selectedDate)?.id ?? null;
+      preview.applied = true;
+      this.finishOperation(context); this.render();
+      showNotice("저장 완료", preview.year + "년 공휴일을 적용했습니다. 기존 목록에만 있는 날짜는 유지했습니다.", "info");
+    } catch (error) {
+      if (!this.isCurrentOperation(context)) { this.finishOperation(context); return; }
+      this.syncError = "적용하지 못했습니다. " + String(error);
+      this.finishOperation(context); this.render();
+    }
   }
 }

@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { buildAllowanceRateTable } from "./allowance-rate-matrix";
+import { allowanceRateDefaultMatrix, buildAllowanceRateTable } from "./allowance-rate-matrix";
 import {
   calculateRoundedAllowanceLineAmounts,
   createAllowanceCalculationSignature,
-  createAllowanceCalculationSnapshot
+  createAllowanceCalculationSnapshot,
+  getAllowanceRateCoverageError
 } from "./allowance-service";
 
 describe("createAllowanceCalculationSnapshot", () => {
@@ -44,6 +45,29 @@ describe("createAllowanceCalculationSnapshot", () => {
     hourlyRate: 10000,
     rateTable: buildAllowanceRateTable()
   };
+
+  it.each(["base", "overtime", "night"] as const)("Z01: occupied %s at zero is rejected while pure what-if remains calculable", axis => {
+    const category = axis === "base" ? "weekday-substitute" : "holiday-overtime";
+    const row = {...allowanceRateDefaultMatrix[category], overtime: 2, night: 2.5, [axis]: 0};
+    const rateTable = {...allowanceRateDefaultMatrix, [category]: row};
+    const snapshot = createAllowanceCalculationSnapshot({
+      ...baseInput, rateTable, allowanceCategoryCode: category,
+      workType: axis === "base" ? "substitute" : "overtime",
+      timeRange: axis === "base" ? baseInput.timeRange : {startTime:"20:00",endTime:"01:00",breakMinutes:30}
+    });
+    expect(snapshot.totalAllowanceAmount).toBeGreaterThan(0);
+    const issue = getAllowanceRateCoverageError(snapshot, rateTable);
+    expect(issue?.errorCode).toBe("ALLOWANCE_RATE_INCOMPLETE");
+    expect(issue?.message).toContain(axis === "base" ? "기본 480분" : axis === "overtime" ? "연장 120분" : "야간 150분");
+  });
+
+  it("Z01: zero-minute axes permit zero rates; completely zero pay retains its error", () => {
+    const rateTable = {...allowanceRateDefaultMatrix,"holiday-overtime":{base:0,overtime:2,night:0}};
+    const input = {...baseInput,workType:"overtime" as const,allowanceCategoryCode:"holiday-overtime" as const,timeRange:{startTime:"20:00",endTime:"21:00",breakMinutes:0}};
+    expect(getAllowanceRateCoverageError(createAllowanceCalculationSnapshot({...input,rateTable}),rateTable)).toBeNull();
+    expect(getAllowanceRateCoverageError(createAllowanceCalculationSnapshot({...input,rateTable:allowanceRateDefaultMatrix}),allowanceRateDefaultMatrix)?.errorCode).toBe("ALLOWANCE_RATE_ZERO_AMOUNT");
+    expect(getAllowanceRateCoverageError(createAllowanceCalculationSnapshot({...input,rateTable,timeRange:{...input.timeRange,breakMinutes:60}}),rateTable)).toBeNull();
+  });
 
   it("should apply weekday overtime rates to overtime and night lines", () => {
     const snapshot = createAllowanceCalculationSnapshot({

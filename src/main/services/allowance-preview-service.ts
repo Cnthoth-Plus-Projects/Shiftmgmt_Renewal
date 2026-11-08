@@ -1,4 +1,4 @@
-import { createAllowanceCalculationSnapshot } from "../../shared/domain/allowance-service";
+import { createAllowanceCalculationSnapshot, getAllowanceRateCoverageError } from "../../shared/domain/allowance-service";
 import { buildAllowanceRateTable, resolveAllowanceRateCategoryCode } from "../../shared/domain/allowance-rate-matrix";
 import { selectApplicableAllowanceRateVersion } from "../../shared/domain/allowance-rate-service";
 import { listStoredAllowanceRateVersions, listStoredHolidayCalendars } from "./operations-storage-service";
@@ -16,6 +16,7 @@ export const previewAllowanceCalculation = (
     const isHoliday = input.isHoliday ?? listStoredHolidayCalendars(Number(input.workDate.slice(0,4)))
       .some(calendar => calendar.items.some(item => item.holidayDate === input.workDate));
     const workType = input.workType ?? "overtime";
+    const rateTable = buildAllowanceRateTable(rateVersion);
     const result = createAllowanceCalculationSnapshot({
       calculationId: "preview-calculation",
       performanceApprovalId: "preview-approval",
@@ -44,8 +45,10 @@ export const previewAllowanceCalculation = (
         isHoliday,
         workType
       }),
-      rateTable: buildAllowanceRateTable(rateVersion)
+      rateTable
     });
+    const coverageError = getAllowanceRateCoverageError(result, rateTable);
+    if (coverageError) return { ok: false, ...coverageError };
 
     return {
       ok: true,

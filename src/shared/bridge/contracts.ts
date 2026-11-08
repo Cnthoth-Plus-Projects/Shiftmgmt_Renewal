@@ -173,6 +173,8 @@ export interface HolidayItemDeleteInput {
 }
 
 export interface HolidayCalendarReplaceInput {
+  preserveExisting?: boolean;
+  expectedFingerprint?: string;
   year: number;
   sourceName?: string;
   sourceVersion?: string;

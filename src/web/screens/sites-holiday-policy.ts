@@ -58,12 +58,13 @@ export class SitesHolidayPolicyEditor {
       const button = el("button", "", labels[c]); button.type = "button"; button.setAttribute("aria-pressed", String(c === this.category)); button.addEventListener("click", () => { this.category = c; this.render(); }); box.append(check, button); tabs.append(box);
     }
     this.mount.append(tabs, el("p", "sites-form-help", "체크한 날짜 종류에만 별도 규칙을 사용합니다. 체크하지 않은 날은 기존 기본 패턴·시간 설정을 따릅니다."));
-    const priorityLabel = el("label", "sites-holiday-priority", "공휴일이 주말과 겹칠 때 "), priority = el("select", "sites-form-input");
+    const priorityLabel = el("label", "sites-holiday-priority", "공휴일이 주말과 겹칠 때 근무편성 "), priority = el("select", "sites-form-input");
     priority.setAttribute("aria-label", "공휴일과 주말 우선순위");
-    for (const [value, text] of [["public", "공휴일 규칙 우선 (기본)"], ["weekend", "토·일요일 규칙 우선"]]) { const option = el("option", "", text); option.value = value; priority.append(option); }
+    for (const [value, text] of [["public", "공휴일 근무편성 우선 (기본)"], ["weekend", "토·일요일 근무편성 우선"]]) { const option = el("option", "", text); option.value = value; priority.append(option); }
     priority.value = this.policy.overlapPriority ?? "public";
     priority.addEventListener("change", () => { this.policy.overlapPriority = priority.value as "public" | "weekend"; });
     priorityLabel.append(priority); this.mount.append(priorityLabel, el("p", "sites-form-help", "두 규칙을 모두 켠 날짜에만 우선순위를 적용합니다. 한쪽만 켜면 그 규칙을 사용합니다."));
+    this.mount.append(el("p", "sites-form-help", "수당의 공휴일 여부는 공휴일 DB로 판단합니다. 일반 토·일 근무표만으로 휴일수당이 생기지 않습니다. 공휴일이 토·일과 겹치면 근무편성은 위 선택을 따르고, 시간은 해당 토·일의 조별·공통 설정을 우선합니다. 별도 시간이 없으면 기존 시간을 유지하며 휴무를 근무로 바꾸지 않습니다."));
     this.mount.append(el("p","sites-holiday-steps","① 적용할 날짜 종류 체크 → ② 근무 방식 선택 → ③ 시간·조별 사이클 지정 → ④ 초안에 적용"));
     if(this.category==="public")this.mount.append(el("p","sites-form-help","법정·대체공휴일을 포함해 ‘운영 관리 → 공휴일’에 등록된 날짜에 적용합니다. 여기서는 그날의 근무 방식만 설정합니다."));
     const rule = this.policy.rules[this.category];

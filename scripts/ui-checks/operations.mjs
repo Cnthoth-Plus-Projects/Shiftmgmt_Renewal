@@ -1071,10 +1071,11 @@ async function verifyHolidayCategories(page) {
   const prior=await page.evaluate(()=>({selected:document.querySelector('.holidays-table-row.selected')?.dataset.id,page:document.querySelector('.ops-holidays-pagination-info')?.textContent,year:document.querySelector('#holiday-year-select').value}));
   await page.locator('#holiday-area-calendar').focus();await page.keyboard.press('End');
   assert.equal(await page.locator('#holiday-area-import').getAttribute('aria-selected'),'true');
-  assert.equal(await page.locator('#holiday-panel-calendar').isVisible(),false);
-  assert.equal(await page.locator('.ops-holiday-import-steps li').count(),3);
+  assert.equal(await page.locator('#holiday-panel-calendar').isVisible(),true);
+  assert.equal(await page.locator('#holidays-detail-container').isVisible(),false);
+  assert.equal(await page.locator('#holidays-table').isVisible(),true);
   const copy=await page.locator('#holiday-panel-import').innerText();
-  for(const phrase of ['불러오기와 비교는 저장된 공휴일을 변경하지 않습니다','직접 추가한 공휴일','취소하면 기존 목록을 유지','설정 → 시스템·감시'])assert(copy.includes(phrase),phrase);
+  for(const phrase of ['동기화 → 목록 확인 → 적용하기','기존 목록에만 있는 날짜는 유지','불러오기만으로 저장되지는 않습니다'])assert(copy.includes(phrase),phrase);
   assert.equal(await callCount(page,'replaceHolidayCalendar'),writes);assert.equal(await callCount(page,'fetchHolidayApiItems'),fetches);
   await page.keyboard.press('Home');
   assert.equal(await page.locator('#holiday-search-input').inputValue(),'시험공휴일');
@@ -1093,16 +1094,21 @@ async function verifyHolidayBoundaries(page, adminCreds) {
   await freshTab(page,'holidays');
   evidence.categories=await verifyHolidayCategories(page);
   const writesBeforeCancel=await count('replaceHolidayCalendar');
-  for(const close of ['Escape','header']) {
+  for(const close of ['cancel','year']) {
     await fetchHolidayPreview(page);
-    await page.locator('#modal-compare-holidays').waitFor();
-    assert.equal(await page.locator('#holiday-year-select').isDisabled(),true);
-    assert.equal(await page.locator('#btn-add-holiday').isDisabled(),true);
-    if(close==='Escape') await page.keyboard.press('Escape');
-    else await page.locator('#modal-compare-holidays .workforce-modal-header button').click();
-    assert.equal(await page.locator('#modal-compare-holidays').count(),0);
+    await page.locator('#btn-apply-holiday-preview').waitFor();
     assert.equal(await page.locator('#holiday-year-select').isDisabled(),false);
     assert.equal(await page.locator('#btn-add-holiday').isDisabled(),false);
+    assert.equal(await page.locator('#holidays-table').isVisible(),true);
+    if(close==='cancel') await page.locator('#btn-cancel-holiday-preview').click();
+    else {
+      await page.locator('#holiday-year-select').selectOption('2027');
+      await page.waitForFunction(()=>document.querySelector('#holiday-year-select')?.value==='2027' && !!document.querySelector('#holidays-table'));
+      assert.equal(await page.locator('#btn-apply-holiday-preview').count(),0);
+      await page.locator('#holiday-year-select').selectOption('2026');
+      await page.waitForFunction(()=>document.querySelector('#holiday-year-select')?.value==='2026' && !!document.querySelector('#holidays-table'));
+    }
+    assert.equal(await page.locator('#btn-apply-holiday-preview').count(),0);
   }
   assert.equal(await count('replaceHolidayCalendar'),writesBeforeCancel);
   evidence.closePathsUnlockWithoutWrites=true;
@@ -1135,17 +1141,17 @@ async function verifyHolidayBoundaries(page, adminCreds) {
   await page.locator('#holiday-year-select').selectOption('2028');
   await page.waitForFunction(()=>document.querySelector('.cell-date')?.textContent.includes('2028'));
   await fetchHolidayPreview(page);
-  await page.locator('#modal-compare-holidays').waitFor();
+  await page.locator('#btn-apply-holiday-preview').waitFor();
   const a=collision.items[0],b=collision.items[1];
   await data('renameHolidayItem',{holidayItemId:a.id,name:`${a.name}|0;${b.id}|${b.holidayDate}|${b.name}`});
   await data('deleteHolidayItem',{holidayItemId:b.id});
   const writes=await count('replaceHolidayCalendar');
-  await page.locator('#btn-confirm-ok').click();
-  await page.locator('#modal-compare-holidays .alert-danger').waitFor({state:'visible'});
-  assert((await page.locator('#modal-compare-holidays .alert-danger').innerText()).includes('변경'));
+  await page.locator('#btn-apply-holiday-preview').click();
+  await page.locator('#holiday-panel-import .alert-danger').waitFor({state:'visible'});
+  assert((await page.locator('#holiday-panel-import .alert-danger').innerText()).includes('변경'));
   assert.equal(await count('replaceHolidayCalendar'),writes);
-  assert.equal(await page.locator('#btn-confirm-ok').isDisabled(),true);
-  await page.locator('#btn-confirm-cancel').click();
+  assert.equal(await page.locator('#btn-apply-holiday-preview').isDisabled(),true);
+  await page.locator('#btn-cancel-holiday-preview').click();
   await data('replaceHolidayCalendar',{year:2028,items:[]});
   await page.locator('#holiday-year-select').selectOption('2026');
   await page.waitForFunction(()=>document.querySelector('.cell-date')?.textContent.includes('2026'));
@@ -1192,12 +1198,12 @@ async function verifyHolidayBoundaries(page, adminCreds) {
 
   for(const errorCode of ['AUTH_SESSION_REQUIRED','SESSION_EXPIRED']) {
     await fetchHolidayPreview(page);
-    await page.locator('#modal-compare-holidays').waitFor();
+    await page.locator('#btn-apply-holiday-preview').waitFor();
     await bridgeData(page,'signOut');
     await overrideBridge(page,'listHolidayCalendars',`async()=>({ok:false,errorCode:${JSON.stringify(errorCode)},message:'통제된 세션 만료'})`);
-    await page.locator('#btn-confirm-ok').click();
+    await page.locator('#btn-apply-holiday-preview').click();
     await page.locator('#login-id').waitFor({state:'visible'});
-    assert.equal(await page.locator('#modal-compare-holidays').count(),0);
+    assert.equal(await page.locator('#btn-apply-holiday-preview').count(),0);
     await restoreBridge(page,'listHolidayCalendars');
     await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));
     await installCalls(page);
@@ -1565,13 +1571,40 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     const settings=await data('getAppSettings');await data('saveAppSettings',{...settings,holidayApiBaseUrl:`http://127.0.0.1:${holidayServer.address().port}/holidays`});
     await freshTab(page,'holidays');const before=await data('getHolidayCalendar',2026),writes=await count('replaceHolidayCalendar');
     await fetchHolidayPreview(page);
-    await page.locator('#modal-compare-holidays').waitFor();
-    assert.equal(await page.locator('#modal-compare-holidays').count(), 1);
+    await page.locator('#btn-apply-holiday-preview').waitFor();
+    assert.equal(await page.locator('#btn-apply-holiday-preview').count(), 1);
     assert((await page.locator('.compare-diff-table .diff-row').count()) >= 2);
-    await page.locator('#btn-confirm-cancel').click();assert.equal(await count('replaceHolidayCalendar'),writes);
-    await fetchHolidayPreview(page);await page.locator('#btn-confirm-ok').click();await notice(page);
-    assert.equal(await count('replaceHolidayCalendar'),writes+1);const imported=await data('getHolidayCalendar',2026);assert.equal(imported.items.length,2);
-    for(const mode of ['error','parse']) {holidayMode=mode;await fetchHolidayPreview(page);await notice(page);assert.deepEqual(await data('getHolidayCalendar',2026),imported);}
+    const previewLayout=[];
+    for(const size of [{width:1440,height:900},{width:1024,height:768}]) for(const mode of ['system','dark']) {
+      await page.setViewportSize(size);
+      await page.evaluate(mode=>window.shiftmgmtTheme.setPreference(mode),mode);
+      await page.evaluate(()=>document.fonts.ready);await sleep(350);
+      const layout=await page.evaluate(()=>{
+        const left=document.querySelector('.ops-holidays-table-panel').getBoundingClientRect(),right=document.querySelector('#holiday-panel-import').getBoundingClientRect(),apply=document.querySelector('#btn-apply-holiday-preview').getBoundingClientRect();
+        const viewport=document.querySelector('#holidays-table-viewport');
+        return {leftRight:left.right,rightLeft:right.left,topDelta:Math.abs(left.top-right.top),bottomDelta:Math.abs(left.bottom-right.bottom),applyBottom:apply.bottom,overflow:document.documentElement.scrollWidth-innerWidth,tableOverflow:viewport.scrollWidth-viewport.clientWidth,registeredVisible:!!document.querySelector('#holidays-table').getClientRects().length};
+      });
+      assert(layout.registeredVisible&&layout.rightLeft>=layout.leftRight,'Registered and fetched lists remain side by side');
+      assert(layout.topDelta<=2&&layout.bottomDelta<=2&&layout.overflow<=1&&layout.applyBottom<=size.height,'Preview alignment and apply button fit the screen: '+JSON.stringify({...size,mode,...layout}));
+      if(layout.tableOverflow>1) {
+        const geometry=await page.evaluate(()=>{
+          const viewport=document.querySelector('#holidays-table-viewport'),edge=viewport.getBoundingClientRect().right;
+          return {viewport:{client:viewport.clientWidth,scroll:viewport.scrollWidth,edge},cells:[...viewport.querySelectorAll('th')].map(e=>({text:e.textContent,width:e.getBoundingClientRect().width,min:getComputedStyle(e).minWidth})),overflowing:[...viewport.querySelectorAll('tbody tr:first-child *')].filter(e=>e.getBoundingClientRect().right>edge).map(e=>({tag:e.tagName,className:e.className,right:e.getBoundingClientRect().right,width:e.getBoundingClientRect().width}))};
+        });
+        fs.writeFileSync(path.join(resolvedOut,'holiday-table-geometry.json'),JSON.stringify(geometry,null,2));
+      }
+      assert(layout.tableOverflow<=1,'Registered table fits beside the preview: '+JSON.stringify(layout));
+      await page.screenshot({path:path.join(capturesDir,`holiday-preview-${size.width}-${mode}.png`)});
+      previewLayout.push({...size,mode,...layout});
+    }
+    extraEvidence[id].previewLayout=previewLayout;
+    await page.setViewportSize({width:1440,height:900});await page.evaluate(()=>window.shiftmgmtTheme.setPreference('system'));
+    await page.locator('#btn-cancel-holiday-preview').click();assert.equal(await count('replaceHolidayCalendar'),writes);
+    assert.deepEqual(await data('getHolidayCalendar',2026),before,'Fetching and cancellation must not save');
+    await fetchHolidayPreview(page);
+    await page.locator('#btn-apply-holiday-preview').evaluate(button=>{button.click();button.click();});await notice(page);
+    assert.equal(await count('replaceHolidayCalendar'),writes+1);const imported=await data('getHolidayCalendar',2026);assert.equal(imported.items.length,before.items.length+2);assert(before.items.every(item=>imported.items.some(next=>next.holidayDate===item.holidayDate)));assert(imported.items.some(item=>item.holidayDate==='2026-11-02'&&item.isSubstitute));
+    for(const mode of ['error','parse']) {holidayMode=mode;await fetchHolidayPreview(page);await page.locator('#holiday-panel-import .alert-danger').waitFor({state:'visible'});assert.deepEqual(await data('getHolidayCalendar',2026),imported);}
     holidayMode='ok';await data('replaceHolidayCalendar',{year:2026,items:before.items});
 
     // HOL-D01 & HOL-D04: 미등록 빈 연도(2027) 첫 가져오기 및 비교 모달 페이징 검증
@@ -1579,18 +1612,18 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     await sleep(250);
     const writes2027 = await count('replaceHolidayCalendar');
     await fetchHolidayPreview(page);
-    await page.locator('#modal-compare-holidays').waitFor();
+    await page.locator('#btn-apply-holiday-preview').waitFor();
     assert.equal(await page.locator('.compare-diff-table .diff-row').count(), 10);
-    const pagerInfo = await page.locator('.compare-pagination-info').innerText();
-    assert(pagerInfo.includes('전체 15건') && pagerInfo.includes('1/2페이지'));
+    const pagerInfo = await page.locator('.compare-pagination-bar').innerText();
+    assert(pagerInfo.includes('15') && await page.locator('#btn-compare-holidays-number-2').isVisible());
     await page.locator('#btn-compare-holidays-number-2').click();
     await sleep(100);
     assert.equal(await page.locator('.compare-diff-table .diff-row').count(), 5);
-    await page.locator('#btn-confirm-cancel').click();
+    await page.locator('#btn-cancel-holiday-preview').click();
     assert.equal(await count('replaceHolidayCalendar'), writes2027);
     await fetchHolidayPreview(page);
-    await page.locator('#modal-compare-holidays').waitFor();
-    await page.locator('#btn-confirm-ok').click();
+    await page.locator('#btn-apply-holiday-preview').waitFor();
+    await page.locator('#btn-apply-holiday-preview').click();
     await notice(page);
     assert.equal(await count('replaceHolidayCalendar'), writes2027 + 1);
     const imported2027 = await data('getHolidayCalendar', 2027);
@@ -1601,7 +1634,7 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
 
     extraEvidence[id].holidayBoundaries = await verifyHolidayBoundaries(page, adminCreds);
 
-    negative('N02','holiday-import-cancel',()=>assert.equal(imported.items.length,2));record('Local API compare/cancel/write-once and HTTP/parse failure preserve calendar');
+    negative('N02','holiday-import-cancel',()=>assert.equal(imported.items.length,before.items.length+2));record('Local API compare/cancel/write-once and HTTP/parse failure preserve calendar');
   }
   if(id==='S07') {
     await freshTab(page,'rates');assert((await data('listAllowanceRateVersions')).length>=55);
