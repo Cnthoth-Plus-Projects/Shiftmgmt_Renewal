@@ -2,10 +2,10 @@
 
 ## 2026-11-09 REL-EXE-01 — Windows EXE 설치 파일
 
-- [ ] 사용자 EXE 요청으로 설치 마법사·바로가기·제거 기능과 실제 설치 검증을 진행한다. 앱은 검증된1.0.3 ZIP의 동일파일을 사용하고 기존ZIP/태그/첨부6개를 보존한다.
+- [x] **REL-EXE-01** — 설치 마법사·바로가기·Windows 제거 기능 구현·검증·추가 배포 완료. https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe 기존1.0.3 ZIP/태그/6첨부 보존, 앱동일2683파일.
 - 제품 허용7경로: build/windows-installer.iss, scripts/package-installer.mjs, scripts/release-install-smoke.mjs, docs/fresh-install.md, docs/codebase-map.md, README.md, package.json (모두 ShiftMgmt_V4 아래). 런타임/시급/요율/DB/승인원문·의존성 불변.
 - EXE01 공식compiler/SHA/서명·payload무결성, EXE02 실제빌드/실행파일버전·설치파일/소스binding, EXE03 기존17검문+EXE경로/한글/중복/취소, EXE04 실제설치마법사와제거/자료보존, EXE05 설치된실행환경/Chrome/실제계산·A4출력, EXE06 추가릴리즈첨부와익명다운로드SHA·기존6첨부보존.
-- Sol직접/Gemini 최초0·재시도0·누적0. 초기추정1~2h, 기존1598단위/설치17/실제계산35는지문일치범위에서재사용하고새EXE설치는새로검증한다. 실제대상PC설치는사용자진행.
+- Sol직접/Gemini 최초0·재시도0·누적0. 새EXE설치17·설치본계산/A4출력35·제거6·실제마법사5화면/취소 통과. 기존1598/160은동일payload근거재판독이며새전체실행0. EXE 54067890bytes/SHA256 cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c. 제품540중7변경·기존533보존. 실제대상PC설치는사용자진행.
 
 
 ## 2026-11-08 REL-03 — 정식 릴리즈 공개 완료
@@ -93,7 +93,7 @@
 
 - Plan: **PLAN-20261026-01** / 사용자 요청 반영: 2026-10-26T10:39:35.851991+09:00
 
-- **현재: REL-EXE-01 새PC용 EXE 설치 파일 구현·검증. 공개1.0.3 ZIP 보존, REL-03 실제PC확인은사용자진행대기.**
+- **현재: REL-EXE-01 EXE 구현·설치/계산/제거 검증·공개다운로드 확인 완료. 새PC에서 EXE 설치 후 REL-03 사용자 운영확인 대기.**
 
 - **사용자 안내 기준:** 대화의 승인·선택 요청과 프로그램 안내 모두 필요한 이유, 선택별 결과, 실제 데이터 영향, 권장 이유와 다음 행동을 쉬운 말로 설명한다. 현재 W09에 반영하고 다른 메뉴는 해당 Task 범위에서 적용한다.
 

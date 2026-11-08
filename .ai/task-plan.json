@@ -13,14 +13,14 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-EXE-01",
-  "executingTaskId": "REL-EXE-01",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "REL-EXE-01",
       "title": "Windows EXE 설치 파일 생성·검증·추가 배포",
-      "status": "IN_PROGRESS",
-      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "status": "DONE",
+      "stage": "TECHNICALLY_ACCEPTED_AND_PUBLIC_INSTALLER_VERIFIED",
       "owner": "Sol",
       "gemini": {
         "initial": 0,
@@ -53,7 +53,52 @@
       "startedAt": "2026-11-08T16:26:28.253Z",
       "estimate": "1~2h initial estimate; immutable runtime evidence reused, installer paths freshly verified",
       "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP",
-      "actualPcInstalled": false
+      "actualPcInstalled": false,
+      "technicalAccepted": true,
+      "completedAt": "2026-11-08T17:03:42.405Z",
+      "checkResults": {
+        "EXE01": "PASS",
+        "EXE02": "PASS",
+        "EXE03": "PASS",
+        "EXE04": "PASS",
+        "EXE05": "PASS",
+        "EXE06": "PASS"
+      },
+      "evidence": {
+        "root": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP",
+        "smoke": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-release-smoke-KJWGtr\\assessment.json",
+        "installedProbes": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP\\installed-probes-1794156591088\\results.json",
+        "uninstall": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP\\uninstall-verification.json",
+        "nativeWizard": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP\\gui-verification.json",
+        "publicDownload": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP\\public-exe-verification.json"
+      },
+      "source": {
+        "appCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+        "appProductTree": "5990bbc2c44a777a0ed677b71fe598d950dc7e9f",
+        "wrapperCommit": "8d86d02c125584cf196b093ce00113872fe5e01b",
+        "wrapperTree": "ad60e20f5542f2a8a8d0cf833f052326073bedd2",
+        "wrapperMirrorCommit": "b763695f0be9a915f6f7e1dabc3561a350668466"
+      },
+      "installer": {
+        "name": "ShiftMgmt-1.0.3-Setup-x64.exe",
+        "bytes": 54067890,
+        "sha256": "cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c",
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe",
+        "signature": "NotSigned",
+        "freshInstallOnly": true
+      },
+      "verification": {
+        "freshInstallChecks": 17,
+        "freshInstalledCalculationAndA4Checks": 35,
+        "freshUninstallChecks": 6,
+        "actualNativeWizardPages": 5,
+        "nativeCancellationWithoutWrites": true,
+        "anonymousDownloads": 4,
+        "preservedReleaseAssets": 6,
+        "priorUnitTests": 1598,
+        "priorUnitTestFiles": 160,
+        "freshFullApplicationRuns": 0
+      }
     },
     {
       "id": "HOLIDAY-FOLLOWUP-PLAN-01",
@@ -6677,8 +6722,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 106950,
-    "sha256": "9437A0BD635573ECED13B49555966C0F1296F1F2480BABE7FEEB735913591230"
+    "bytes": 107198,
+    "sha256": "F1251E2A4F37BCA7023AB505D776084255AFD4D3E6AC34525D91DA96EE55A611"
   },
   "statusHistory": [
     {
@@ -8971,6 +9016,16 @@
       "taskId": "CALC-LOGIC-FIX-01",
       "status": "IMPLEMENTATION_AUTHORIZED",
       "note": "User: 오케이 진행하자 — approves HANDOFF patch/verification plan; prior Git push/release preparation authorization persists. No actual-PC install/public publication."
+    },
+    {
+      "at": "2026-11-08T17:03:42.405Z",
+      "taskId": "REL-EXE-01",
+      "status": "EXE_PUBLISHED_AND_VERIFIED_FRESH_PC_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
     }
   ],
   "remainingEstimatedHours": [
@@ -9014,7 +9069,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T16:26:28.253Z",
+  "updatedAt": "2026-11-08T17:03:42.405Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -9124,6 +9179,10 @@
     "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
     "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
     "anonymousDownloadVerified": true,
-    "targetPcInstalled": false
+    "targetPcInstalled": false,
+    "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe",
+    "installerSha256": "cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c",
+    "installerPublishedAt": "2026-11-08T17:01:28.955Z",
+    "installerAnonymousDownloadVerified": true
   }
 }
