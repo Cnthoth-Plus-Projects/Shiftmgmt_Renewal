@@ -4,6 +4,7 @@ import type { HolidayCalendar, HolidayItem } from "../../shared/domain/model";
 import {
   filterHolidayItems,
   buildHolidayComparison,
+  buildHolidaySyncComparison,
   holidayCalendarFingerprint,
   computeHolidaySummary,
   getKoreanDayOfWeek,
@@ -11,6 +12,15 @@ import {
 } from "./operations-holidays-model";
 
 describe("operations-holidays-model", () => {
+  it("synchronization retains manual-only dates but still validates fetched rows", () => {
+    const current = [{ id: "manual", holidayDate: "2026-04-01", name: "수동", isSubstitute: false }];
+    const fetched = [{ id: "api", holidayDate: "2026-03-01", name: "삼일절", isSubstitute: false }];
+    const result = buildHolidaySyncComparison(current, fetched, 2026);
+    expect(result).toMatchObject({ removedCount: 0, addedCount: 1, unchangedCount: 1, hasChanges: true });
+    expect(result.rows.find(row => row.holidayDate === "2026-04-01")?.after).toEqual(current[0]);
+    expect(current).toHaveLength(1);
+    expect(buildHolidaySyncComparison(current, [], 2026).hasChanges).toBe(false);
+  });
   const sampleItems: HolidayItem[] = [
     { id: "h1", holidayDate: "2026-01-01", name: "신정", isSubstitute: false },
     { id: "h2", holidayDate: "2026-03-01", name: "삼일절", isSubstitute: false },

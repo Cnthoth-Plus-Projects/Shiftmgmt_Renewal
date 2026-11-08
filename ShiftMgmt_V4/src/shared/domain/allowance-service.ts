@@ -224,3 +224,28 @@ export const createAllowanceCalculationSignature = (
   })),
   totalAllowanceAmount: snapshot.totalAllowanceAmount
 });
+
+/** 실제 지급/미리보기 검문. 순수 계산과 영향도 비교는 0배 가정도 계산할 수 있다. */
+export const getAllowanceRateCoverageError = (
+  snapshot: AllowanceCalculationSnapshot,
+  rateTable: AllowanceRateTable
+): { errorCode: "ALLOWANCE_RATE_ZERO_AMOUNT" | "ALLOWANCE_RATE_INCOMPLETE"; message: string } | null => {
+  const rate = rateTable[snapshot.businessCategoryCode];
+  const axes = [
+    { label: "기본", minutes: snapshot.breakdown.baseWorkMinutes, multiplier: rate.base },
+    { label: "연장", minutes: snapshot.breakdown.overtimeMinutes, multiplier: rate.overtime },
+    { label: "야간", minutes: snapshot.breakdown.nightMinutes, multiplier: rate.night }
+  ];
+  const missing = axes.filter(axis => axis.minutes > 0 && (!Number.isFinite(axis.multiplier) || axis.multiplier <= 0));
+  if (!missing.length) return null;
+  if (snapshot.totalAllowanceAmount <= 0) {
+    return {
+      errorCode: "ALLOWANCE_RATE_ZERO_AMOUNT",
+      message: `실제 근무시간에 적용할 요율이 모두 0입니다. ${snapshot.businessCategoryLabel}: ${missing.map(axis => `${axis.label} ${axis.minutes}분`).join(", ")}. 요율 관리에서 해당 근무일의 ${missing.map(axis => axis.label).join("·")} 배율을 확인한 뒤 다시 승인해 주세요.`
+    };
+  }
+  return {
+    errorCode: "ALLOWANCE_RATE_INCOMPLETE",
+    message: `${snapshot.businessCategoryLabel}의 ${missing.map(axis => `${axis.label} ${axis.minutes}분`).join(", ")}에 적용할 배율이 0이거나 올바르지 않습니다. 일부 수당이 빠지지 않도록 요율 관리에서 해당 근무일의 ${missing.map(axis => axis.label).join("·")} 배율을 설정한 뒤 다시 확인해 주세요.`
+  };
+};

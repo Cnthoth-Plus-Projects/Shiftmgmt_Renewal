@@ -5,6 +5,28 @@ import type { ShiftPatternStep } from "./model";
 const steps: ShiftPatternStep[] = ["D","E","N"].map((dutyCode,i)=>({id:dutyCode,dutyCode,stepIndex:i,startTime:["07:00","15:00","23:00"][i],endTime:["15:00","23:00","07:00"][i],breakMinutes:30}));
 const policy = (): HolidayPatternPolicy => ({version:1,rules:{saturday:{mode:"separate",excludedDutyCodes:["E"],startDate:"2026-10-01",teamPatterns:{"A조":["D","N"],"B조":["N","D"]},times:{D:{startTime:"07:00",endTime:"20:00",breakMinutes:60},N:{startTime:"20:00",endTime:"07:00",breakMinutes:60}}}}});
 describe("calendar-based holiday policy",()=>{
+  it.each(["2026-10-03","2026-03-01"])("W02: %s public date uses weekend time while preserving the public duty", date => {
+    const weekend = date === "2026-10-03" ? "saturday" : "sunday";
+    const p: HolidayPatternPolicy = {version:1,rules:{
+      public:{mode:"separate",excludedDutyCodes:[],startDate:"2026-01-01",teamPatterns:{"A조":["N"]},times:{N:{startTime:"18:00",endTime:"06:00",breakMinutes:60}}},
+      [weekend]:{mode:"separate",excludedDutyCodes:["N"],startDate:"2026-01-01",teamPatterns:{"A조":["D"]},times:{N:{startTime:"20:00",endTime:"01:00",breakMinutes:30}},teamTimes:{"A조":{N:{startTime:"21:00",endTime:"02:00",breakMinutes:0}}}}
+    }};
+    expect(holidayCategory(p,date,new Set([date]))).toBe("public");
+    expect(resolveHolidayStep(p,date,new Set([date]),"A조",steps[0],steps).step).toMatchObject({dutyCode:"N",startTime:"21:00",endTime:"02:00",breakMinutes:0,holidayStartTime:"21:00"});
+    delete p.rules[weekend]!.teamTimes;
+    expect(resolveHolidayStep(p,date,new Set([date]),"A조",steps[0],steps).step.startTime).toBe("20:00");
+    delete p.rules[weekend]!.times;
+    expect(resolveHolidayStep(p,date,new Set([date]),"A조",steps[0],steps).step.startTime).toBe("18:00");
+    p.rules.public!.mode="off";
+    expect(resolveHolidayStep(p,date,new Set([date]),"A조",steps[0],steps).step).toMatchObject({dutyCode:"O",breakMinutes:0});
+  });
+  it("W03: preserves zero-minute timing and ignores stale times of a weekend off rule",()=>{
+    const p: HolidayPatternPolicy={version:1,rules:{public:{mode:"normal",excludedDutyCodes:[],times:{D:{startTime:"09:00",endTime:"18:00",breakMinutes:60}}},saturday:{mode:"normal",excludedDutyCodes:[],times:{D:{startTime:"08:00",endTime:"09:00",breakMinutes:60}}}}};
+    const date="2026-10-03",dates=new Set([date]);
+    expect(resolveHolidayStep(p,date,dates,"A조",steps[0],steps).step).toMatchObject({startTime:"08:00",endTime:"09:00",breakMinutes:60});
+    p.rules.saturday!.mode="off";
+    expect(resolveHolidayStep(p,date,dates,"A조",steps[0],steps).step).toMatchObject({dutyCode:"D",startTime:"09:00",endTime:"18:00",breakMinutes:60});
+  });
   it("uses calendar offsets across unselected weekdays; never counts holiday encounters",()=>{
     const p=policy();expect(resolveHolidayStep(p,"2026-10-03",new Set(),"A조",steps[1],steps).step.dutyCode).toBe("D");
     expect(resolveHolidayStep(p,"2026-10-10",new Set(),"A조",steps[1],steps).step.dutyCode).toBe("N");

@@ -8,6 +8,7 @@ import type {
 import {
   createAllowanceCalculationSignature,
   createAllowanceCalculationSnapshot,
+  getAllowanceRateCoverageError,
   type AllowanceCalculationResultRecord,
   type AllowanceRateTable
 } from "../../shared/domain/allowance-service";
@@ -362,6 +363,8 @@ export const runApprovedAllowanceCalculationForApproval = async (
     rateTable: selectedRate.rateTable
   });
   const signature = createAllowanceCalculationSignature(snapshot);
+  const coverageError = getAllowanceRateCoverageError(snapshot, selectedRate.rateTable);
+  if (coverageError) return { ok: false, ...coverageError };
   if (snapshot.breakdown.totalWorkMinutes > 0 && snapshot.totalAllowanceAmount <= 0) {
     return {
       ok: false,

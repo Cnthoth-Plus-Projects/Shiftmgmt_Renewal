@@ -13,9 +13,157 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-03",
-  "executingTaskId": null,
+  "nextTaskId": "HOLIDAY-FOLLOWUP-IMPL-01",
+  "executingTaskId": "HOLIDAY-FOLLOWUP-IMPL-01",
   "tasks": [
+    {
+      "id": "HOLIDAY-FOLLOWUP-PLAN-01",
+      "title": "공휴일·부분 요율 후속 요구 해석과 실행 계획",
+      "status": "DONE",
+      "stage": "PLAN_REPORTED_ONLY",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-plan-4wzNEj",
+      "authorization": "User requests items 1-4 and explicitly asks for understanding and plan report before implementation.",
+      "productChangesAuthorized": false,
+      "productFilesChanged": 0,
+      "baseline": {
+        "files": 537,
+        "productTree": "be6fe6383eca01cf0458815c9c44a3f6b80bfd9e"
+      },
+      "handoffArchive": {
+        "path": "Log/20261108_103710_before-holiday-followup-plan.md",
+        "bytes": 7988,
+        "sha256": "604EFBE574970B4D5ED4DFDB2EF664F3253DE796CFA8A0CE7F0639D379A993A6"
+      },
+      "completedAt": "2026-11-08T10:37:11.075Z"
+    },
+    {
+      "id": "HOLIDAY-FOLLOWUP-IMPL-01",
+      "title": "부분0배 지급차단·한국공휴일 동기화·공휴일주말시간·규칙문서 정합성",
+      "status": "IN_PROGRESS",
+      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD",
+      "authorization": "User: 응 맞아 진행하자 — approves current HANDOFF39-path/14-group plan and defaults, including persistent Git push/draft preparation; public/actualPC deployment excluded.",
+      "dependsOn": [
+        "HOLIDAY-FOLLOWUP-PLAN-01"
+      ],
+      "productChangesAuthorized": true,
+      "implementationOwner": "Sol direct implementation under standing exception once plan review is confirmed",
+      "allowlist": [
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.test.ts",
+        "ShiftMgmt_V4/src/shared/domain/holiday-pattern.ts",
+        "ShiftMgmt_V4/src/shared/domain/holiday-pattern.test.ts",
+        "ShiftMgmt_V4/src/shared/domain/monthly-schedule-draft.ts",
+        "ShiftMgmt_V4/src/shared/domain/monthly-schedule-draft.test.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-return-performance-parser.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-return-performance-parser.test.ts",
+        "ShiftMgmt_V4/src/main/services/schedule-plan-export-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/boramae-holiday-weekend-crosscheck.test.ts",
+        "ShiftMgmt_V4/src/web/screens/sites-holiday-policy.ts",
+        "ShiftMgmt_V4/src/web/screens/sites-model.test.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-holidays.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-holidays-model.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-holidays-model.test.ts",
+        "ShiftMgmt_V4/src/web/operations.css",
+        "ShiftMgmt_V4/src/main/services/holiday-api-service.ts",
+        "ShiftMgmt_V4/src/main/services/holiday-api-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.test.ts",
+        "ShiftMgmt_V4/src/shared/bridge/contracts.ts",
+        "ShiftMgmt_V4/src/main/http/routes/operations-routes.ts",
+        "ShiftMgmt_V4/src/main/http/routes/operations-routes.test.ts",
+        "ShiftMgmt_V4/scripts/ui-checks/operations.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/sites.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/performance.mjs",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/src/shared/config/app-brand.ts",
+        "ShiftMgmt_V4/docs/release-1.0.3.md"
+      ],
+      "controlAllowlist": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "02-business-rules.md",
+        "07-invariants-and-pitfalls.md",
+        "CLAUDE.md related current guidance",
+        "Log/new immutable archives",
+        ".jh-artifacts/holiday-followup-*",
+        "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-plan-4wzNEj"
+      ],
+      "checks": [
+        "Z01",
+        "Z02",
+        "Z03",
+        "H01",
+        "H02",
+        "H03",
+        "W01",
+        "W02",
+        "W03",
+        "X01",
+        "D01",
+        "UI01",
+        "F01",
+        "REL01"
+      ],
+      "requirements": [
+        "Occupied-time axes require positive configured rates; no payment omission by mixed zero",
+        "Fetch Korea holidays to right preview; apply button only saves selected year",
+        "Public-calendar membership decides holiday allowance; Sat/Sun configured time applies when public holiday overlaps weekend",
+        "Preserve staffing/cycles, separate overtime/substitute records, approved snapshots and update stale current docs"
+      ],
+      "recommendedDefaults": [
+        "Merge dates/update matches and preserve manual-only dates by default",
+        "API primary; researched official sources for data cross-check, no blind search-result import",
+        "Keep existing default-time fallback when weekend hours are unset; never fabricate time for explicit off/zero work"
+      ],
+      "protected": [
+        "V3 and real operating data",
+        "Existing logs/reports/approved snapshots/policy dates",
+        "Existing1.0.2 assets",
+        "Schema and dependency versions"
+      ],
+      "doneWhen": "All14groups passed on implemented candidate, current docs consistent and new isolated package/draft verified; public/actualPC excluded",
+      "estimate": "Initial2-4h estimate; final full suite baseline500.79s, focused checks first, one final run target.",
+      "startedAt": "2026-11-08T10:43:42.017Z",
+      "planHandoffArchive": {
+        "path": "Log/20261108_104341_before-holiday-followup-implementation.md",
+        "bytes": 13287,
+        "sha256": "2415F1A79B8F1A73645BC51BC634F74AA18D02DC27E8BA7920483706D1C01295"
+      },
+      "baseline": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-holiday-fix-8gnFvD\\product-baseline.json",
+        "files": 537
+      }
+    },
     {
       "id": "PLAN-00",
       "title": "예정 Task 정리·범위 제한 적용",
@@ -6285,8 +6433,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 103323,
-    "sha256": "C9450445942FF00ADB33B0065EE6FC126EEF6AE81809E2DCEC328BAB7A6BD00A"
+    "bytes": 104568,
+    "sha256": "21B85CA88F40450F1DFACF7581DAD76D20B8F89F49F882CA002A2D3FD40DEE8E"
   },
   "statusHistory": [
     {
@@ -8622,7 +8770,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T00:25:40.811Z",
+  "updatedAt": "2026-11-08T10:43:42.019Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",

@@ -3,6 +3,7 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { getAllowanceRateEntryCode } from "../../shared/domain/allowance-rate-matrix";
+import { holidayCalendarFingerprint } from "../../shared/domain/holiday-pattern";
 import { isPasswordHashValid } from "./auth-password-service";
 import { getSqliteDatabase, initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
 import {
@@ -43,6 +44,23 @@ const createDateOffsetValue = (offsetDays: number) => {
 };
 
 describe("operations-storage-service", () => {
+  it("merges only the selected year and atomically rejects stale or empty synchronization", () => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "holiday-sync.test.sqlite") });
+    saveStoredHolidayItem({ year: 2027, holidayDate: "2027-04-01", name: "수동 날짜" });
+    const before = listStoredHolidayCalendars(2026)[0]!;
+    const otherYear = listStoredHolidayCalendars(2027);
+    const input = { year: 2026, preserveExisting: true, expectedFingerprint: holidayCalendarFingerprint(before), items: [{ holidayDate: "2026-01-01", name: "정정 신정", isSubstitute: false }, { holidayDate: "2026-05-24", name: "부처님오신날", isSubstitute: false }] };
+    const saved = replaceStoredHolidayCalendar(input);
+    expect(saved.items.find(item => item.holidayDate === "2026-01-01")?.name).toBe("정정 신정");
+    expect(saved.items.some(item => item.holidayDate === "2026-05-24")).toBe(true);
+    expect(before.items.every(item => saved.items.some(next => next.holidayDate === item.holidayDate))).toBe(true);
+    expect(listStoredHolidayCalendars(2027)).toEqual(otherYear);
+    const snapshot = listStoredHolidayCalendars();
+    expect(() => replaceStoredHolidayCalendar(input)).toThrow("변경되었습니다");
+    expect(listStoredHolidayCalendars()).toEqual(snapshot);
+    expect(() => replaceStoredHolidayCalendar({ year: 2026, preserveExisting: true, items: [] })).toThrow("비어");
+    expect(listStoredHolidayCalendars()).toEqual(snapshot);
+  });
   afterEach(() => {
     resetOperationsStorageForTest();
     resetSqliteStorageForTest();

@@ -14,6 +14,7 @@ import {
 } from "./monthly-schedule-storage-service";
 import {
   listStoredDocumentTemplateVersions,
+  saveStoredHolidayItem,
   saveStoredDocumentTemplateVersion
 } from "./operations-storage-service";
 import { exportMonthlySchedulePlan } from "./schedule-plan-export-service";
@@ -34,6 +35,7 @@ import {
   resolveScheduleSectionLayoutsFromDefinition
 } from "./schedule-plan-adapter";
 import type { DocumentLayoutDefinition } from "../../shared/domain/document-layout";
+import { buildMonthlyScheduleDraft } from "../../shared/domain/monthly-schedule-draft";
 
 const testOutputDir = path.resolve(process.cwd(), "artifacts", "tests", "schedule-exports");
 const calendarDateFormat = 'dd"일"';
@@ -86,6 +88,41 @@ const createAssignedEmployee = (input: {
 };
 
 describe("schedule-plan-export-service", () => {
+  it.each(["sample1", "sample2"] as const)("%s round trip keeps public-weekend hours, excludes ordinary weekends and preserves explicit off/zero", async variant => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "schedule-plan-export.test.sqlite") });
+    const site = listStoredSites().find(item => item.name === "보라매DC")!;
+    const seed = listStoredShiftPatterns(site.id)[0]!;
+    const employee = createAssignedEmployee({ employeeCode: "WEEKEND-ROUNDTRIP", name: "주말검증", siteId: site.id, shiftGroup: "A조" });
+    const step = { id: "always-D", stepIndex: 0, dutyCode: "D", startTime: "08:00", endTime: "17:00", breakMinutes: 60 };
+    const pattern = { ...seed, steps: [step], cycles: [{ ...seed.cycles[0]!, cycleLength: 1, patternCode: "D", steps: [step], teamIndexes: [{ teamLabel: "A조", index: 0 }] }], teamCycleAssignments: [{ teamLabel: "A조", cycleKey: seed.cycles[0]!.cycleKey }], holidayPolicy: {
+      version: 1 as const, rules: {
+        public: { mode: "normal" as const, excludedDutyCodes: [], times: { D: { startTime: "09:00", endTime: "18:00", breakMinutes: 60 } } },
+        saturday: { mode: "normal" as const, excludedDutyCodes: [], times: { D: { startTime: "10:00", endTime: "16:00", breakMinutes: 30 } } },
+        sunday: { mode: "normal" as const, excludedDutyCodes: [], times: { D: { startTime: "11:00", endTime: "15:00", breakMinutes: 0 } } }
+      }, dateExceptions: [
+        { id: "off", from: "2026-05-16", to: "2026-05-16", scope: "site" as const, reason: "명시적 휴무", dutyCode: "O" },
+        { id: "zero", from: "2026-05-17", to: "2026-05-17", scope: "site" as const, reason: "0분 유지", dutyCode: "D", timing: { startTime: "09:00", endTime: "10:00", breakMinutes: 60 } }
+      ]
+    } };
+    const dates = new Set(["2026-05-01", "2026-05-02", "2026-05-03", "2026-05-16", "2026-05-17"]);
+    for (const holidayDate of dates) saveStoredHolidayItem({ year: 2026, holidayDate, name: "검증 공휴일" });
+    const items = buildMonthlyScheduleDraft({ pattern, employees: [{ ...employee, currentSiteId: site.id, currentShiftGroup: "A조" }], scheduleMonth: "2026-05", publicHolidayDates: dates });
+    expect(items).toHaveLength(31);
+    const template = listStoredDocumentTemplateVersions("schedule").find(item => item.id === `template-schedule-${variant}-2026-1`)!;
+    const saved = saveStoredMonthlySchedule({ siteId: site.id, scheduleMonth: "2026-05", patternId: seed.id, generatedBy: "admin", templateVersionId: template.id, items });
+    const exported = await exportMonthlySchedulePlan({ scheduleId: saved.id, userDataPath: process.cwd(), outputDir: testOutputDir });
+    expect(exported).not.toBeNull();
+    const parsed = await parseReturnedSchedulePerformanceFile({ filePath: exported!.outputPath, fileId: `weekend-${variant}` });
+    const legal = parsed.entries.filter(item => item.section === "legal-holiday" && item.employeeCode === employee.employeeCode);
+    for (const [date, startTime, endTime, totalWorkMinutes] of [["2026-05-01", "09:00", "18:00", 480], ["2026-05-02", "10:00", "16:00", 330], ["2026-05-03", "11:00", "15:00", 240]] as const) {
+      expect(legal.filter(item => item.workDate === date)).toHaveLength(1);
+      expect(legal.find(item => item.workDate === date)).toMatchObject({ startTime, endTime, totalWorkMinutes });
+    }
+    expect(legal.filter(item => ["2026-05-09", "2026-05-10"].includes(item.workDate))).toHaveLength(0);
+    expect(legal.some(item => ["2026-05-16", "2026-05-17"].includes(item.workDate) && item.totalWorkMinutes > 0)).toBe(false);
+    expect(items.find(item => item.workDate === "2026-05-16")).toMatchObject({ dutyCode: "O", breakMinutes: 0 });
+    expect(items.find(item => item.workDate === "2026-05-17")).toMatchObject({ startTime: "09:00", endTime: "10:00", breakMinutes: 60 });
+  });
   afterEach(() => {
     resetMonthlyScheduleStorageForTest();
     resetSqliteStorageForTest();

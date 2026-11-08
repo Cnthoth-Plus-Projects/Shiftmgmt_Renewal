@@ -1483,3 +1483,35 @@
   color: var(--text-sub);
   font-size: 13px;
 }
+
+.ops-holidays-workspace .ops-holidays-body > .ops-holiday-import-panel {
+  box-sizing:border-box; flex:0 0 48%; min-width:0; padding:10px; border:1px solid var(--line); border-radius:10px;
+  background:var(--surface); display:flex; flex-direction:column; gap:6px; overflow:hidden;
+}
+.ops-holidays-workspace .ops-holidays-detail-panel[hidden],
+.ops-holidays-workspace .ops-holiday-import-panel[hidden] { display:none; }
+.ops-holidays-workspace .ops-holiday-import-panel h4, .ops-holidays-workspace .ops-holiday-import-panel p { margin:0; }
+.ops-holiday-preview-heading { flex:0 1 auto; max-height:80px; overflow:auto; }
+.ops-holiday-preview-heading h4 { font-size:13px; line-height:20px; }
+.ops-holidays-workspace .ops-holiday-preview-heading .ops-holiday-import-context { font-size:11px; line-height:17px; }
+.ops-holiday-import-panel .ops-holiday-preview-viewport { min-height:0; flex:1; overflow:auto; }
+.ops-holiday-import-panel .compare-diff-table { width:100%; border-collapse:collapse; font-size:12px; }
+.ops-holiday-import-panel .compare-diff-table th,
+.ops-holiday-import-panel .compare-diff-table td { padding:8px 6px; border-bottom:1px solid var(--line); text-align:left; }
+.ops-holiday-import-panel .compare-diff-table th { position:sticky; top:0; background:var(--surface); }
+.ops-holiday-import-panel .compare-diff-table td:first-child { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.ops-holiday-import-panel .compare-diff-table th:nth-child(n+3),
+.ops-holiday-import-panel .compare-diff-table td:nth-child(n+3) { text-align:center; white-space:nowrap; }
+.ops-holiday-import-panel .compare-pagination-bar { flex-shrink:0; }
+.ops-holiday-import-panel .ops-holiday-import-actions { flex-shrink:0; display:flex; gap:8px; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table { min-width:0; table-layout:fixed; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table th,
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table td { box-sizing:border-box; min-width:0; padding-left:6px; padding-right:6px; font-size:12px; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table th:first-child { width:108px; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table th:nth-child(3) { width:44px; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table th:last-child { width:128px; }
+.ops-holidays-workspace:has(#holiday-panel-import:not([hidden])) .ops-holidays-table td.cell-actions { padding-left:4px; padding-right:4px; }
+@media (max-width:1100px) {
+  .ops-holidays-workspace .ops-holidays-body > .ops-holiday-import-panel { flex:0 0 48%; width:auto; }
+  .ops-holiday-preview-heading { max-height:56px; }
+}
