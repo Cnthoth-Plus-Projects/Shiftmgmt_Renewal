@@ -1,50 +1,30 @@
-# HANDOFF — HOLIDAY-FOLLOWUP-IMPL-01 기술수용·1.0.3 초안 준비 완료
+# HANDOFF — REL-03 정식1.0.3 공개·다운로드 검증 완료
 
-사용자 승인39경로/14검문을 완료했다. Sol 직접 구현, Gemini 최초0·재시도0·누적0. 제품538개 중28개 변경·기존510개 바이트 보존. 운영 DB/V3·스키마·의존성·정책 적용일·기존 승인/취소 전 원문과1.0.2 ZIP/첨부는 보존했다.
+사용자 “새 PC설치는 릴리즈를 해야 새로운 PC에서 해당 릴리즈 버전을 다운받아서 설치해서 사용을해야지.”에 따라 정식공개를 완료했다. Sol 직접/Gemini 최초0·재시도0·누적0. 실제 새PC는 사용자가 공개릴리즈에서 내려받아 설치한다. 이 환경에서 실제대상PC설치는미실행이며 REL-03 전체상태는 WAITING_USER_INSTALL이다.
 
-공휴일 화면은 좌측 등록 목록과 우측 미리보기를 함께 표시한다. ‘한국 공휴일 동기화’는 조회만 하고 ‘적용하기’에서 선택 연도에 날짜를 추가/갱신한다. 기존 목록에만 있는 날짜는 자동 삭제하지 않는다. 잘못된 자료/통신실패/시간초과/빈목록/화면이탈/늦은응답/세션만료/최신성불일치·중복클릭을 방어한다. 서버도 기존 트랜잭션 안에서 지문을 확인한다.
+## 새 PC에서 할 일
 
-기본 API의 원공휴일/대체일 누락은 Google 대한민국 공휴일 일정과 대조해 보완하고, Nager의 Public 유형 및 Google의 공휴일 일정만 사용한다. 실제2026 22일/2027 24일을 확인했고,2025제헌절은기념일로제외했다. 공식 대조는 우주항공청2027월력요항 발표 https://www.kasa.go.kr/prog/plcyBrf/brief/kor/sub01_01_04/view.do?plcyBrfNo=431 이다. 미래의 임시 지정까지 완전성을 보증하지 않으며 자료 미제공 연도는 저장하지 않는다. 적용 전 최신 지정내용을 확인할 수 있고 직접 추가도 유지한다.
+1. Google Chrome이 있는 Windows64비트PC에서 https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3 를 연다. GitHub 로그인은 필요 없다.
+2. ShiftMgmt-1.0.3-win-x64.zip 및 SHA256SUMS.txt를 내려받는다. 직접 ZIP https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-win-x64.zip
+3. ZIP을 모두 압축해제하고 INSTALL.cmd를 실행한다. 바탕화면에생긴 교대근무관리시스템 바로가기로실행한다. Node는포함되어있다.
+4. 실행창의초기로그인정보로첫로그인후비밀번호를변경한다. 운영관리에서공휴일/실제요율/자료폴더와계정을확인한다. 기존자료/프로그램이있으면설치를중단하는기존보호를유지한다.
 
-공휴일 수당 여부는 DB 공휴일 날짜를 따른다. 일반 토·일의 정규 편성만으로 공휴일 수당을 만들지 않는다. 공휴일과 토·일이 겹치면 기존 편성/유형/사이클을 유지하고 해당 요일의 시간을 우선한다. 날짜 예외가 마지막이며 미설정 fallback·명시적 휴무/0분은 보존한다. 별도 연장/대체 실적의 기존 규칙은 유지한다.
+## 공개 검증
 
-기본·연장·야간 중 실제분이 있는 축의 배율이0/유효하지 않으면 신규승인/수당미리보기를 중단한다. 다른 축에서 금액이 나와도 부분 지급으로 승인하지 않는다. 0분 축/순수0배 what-if/영향도 비교·과거 승인 스냅샷은 보존한다. 07 A-4를 W06/W08 미승인 시급 자동갱신과 동일일 정정 이력의 현재 구현에 맞췄다.
+- 정식페이지 https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3, 공개시각 2026-11-08T12:01:51Z, draft=false·prerelease=false·Latest.
+- 태그 v1.0.3 → ceb66933c1af03a9331e611d254384aa6452c9b4, 제품tree 5990bbc2c44a777a0ed677b71fe598d950dc7e9f. 검증했던소스/ZIP/6첨부를그대로사용했다.
+- ZIP 58939806bytes, SHA256 40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03. 첨부ID/bytes/SHA 보존. 로그인/Authorization/Cookie 없는실제다운로드6개가전부일치했다.
+- 기존전체1598/160·설치17·설치본계산/출력35는소스538파일/ZIP지문으로재확인한이전실행근거다. 이번에새전체시험/빌드/재패키징은하지않았다.
 
-## 검증
-
-| ID | 결과 | 실제 근거 |
+| 검문 | 결과 | 근거 |
 |---|---|---|
-| Z01 | PASS | 기본/연장/야간 실제분별 배율 누락을 공통 판정; 0분 축 허용. 도메인·승인·미리보기 회귀와 전체 통과 |
-| Z02 | PASS | 두 양식 연장120분0배+야간150분2.5배 승인/미리보기 거절; 승인·계산·항목·정책사용 기록 불변 확인 |
-| Z03 | PASS | 순수 0배 what-if/영향도 비교·정상양수와 기존 승인0원/15511원 원문 보존 |
-| H01 | PASS | 실제Chrome S06 동기화→우측목록, 좌측목록/DB 불변; 취소 쓰기0 |
-| H02 | PASS | 선택연도 날짜추가/동일날짜갱신·기존전용날짜유지·다른연도불변, 트랜잭션 지문검사 |
-| H03 | PASS | 잘못된연도/날짜/빈자료·HTTP/JSON오류·실제15초timeout·이중클릭/늦은응답/화면이탈/세션만료/변경된DB 거절 |
-| W01 | PASS | 두 양식 일반 토·일 정규편성으로 공휴일 실적 생성 안 함 |
-| W02 | PASS | 두 양식 평일공휴일480분/158400원·토공휴일330분/108900원·일공휴일240분/79200원 |
-| W03 | PASS | 날짜당 법정공휴일행1건·기존편성/사이클·명시적예외·휴무/0분·미설정 fallback 보존 |
-| X01 | PASS | 실제Excel 생성→접수→승인→DB→품의서/별첨1/별첨2 A4, 개발본35/포함Node 설치본35검문 |
-| D01 | PASS | 07 A-4/02 현행시급규칙 정합화, W06/W08 자동갱신·동일일정정이력·승인원문보존 설명, 설치/코드지도/릴리즈 안내 |
-| UI01 | PASS | Chrome 시스템/다크·1440/1024 네 조합에서 좌우목록/적용버튼 및 페이지/표 가로넘침0, 부분0배 상세오류 |
-| F01 | PASS | 고정소스 전체 1598/160 통과; 타입·규칙0오류/기존경고3·빌드·지도259·서비스89 |
-| REL01 | PASS | 기존1.0.2 ZIP/SHA/첨부6개 보존; 새1.0.3 ZIP·포함Node/무결성·TEMP 설치17·설치본35·원격draft6첨부 재다운로드SHA 확인 |
+| PUB01 | PASS | 제품538파일·tree/ZIP/SHA 동일, 기존1598/160·설치17·설치본35 검증근거 재판독 통과; 새 전체시험/빌드 없음 |
+| PUB02 | PASS | 공개 저장소·정확한 후보소스/태그·원격6첨부 ID/bytes/SHA 동일, 새PC 설치 순서와 직접 다운로드 문안 반영 |
+| PUB03 | PASS | 1.0.3 정식공개·prerelease=false·Latest, v1.0.3 태그가 검증후보 ceb66933c1af03a9331e611d254384aa6452c9b4 지칭 |
+| PUB04 | PASS | GitHub 로그인/Authorization/Cookie 없이 공개페이지200·API/최신/태그 확인, 첨부6개 실제다운로드 bytes/SHA 일치 |
 
-전체 1598개/160파일 통과, 타입·규칙0오류(기존경고3), 지도259·서비스89. 전체시작2회 중1차는독립검토에서2025기념일포함결함발견으로중단했다. source9908ce1의중단기록 full-final/interrupted.json과부분명령로그를보존하고 Public필터/회귀를추가한새후보에서2차완료했다. 중단을테스트성공으로세지않는다. 실제15초무응답HTTP timeout도확인했다.
+기존1.0.0~1.0.2 초안/첨부·1.0.3 첨부6개·운영DB/V3/정책/승인원문은변경하지않았다. 공개설명만새PC설치순서와정식공개표기로정리했다. 첨부 VERIFICATION_RELEASE.json의 publicReleasePublished=false는게시전검증시점기록으로그대로보존한다. 현재공개상태는위공개검증과REL-03장부가정본이다.
 
-새Excel왕복fixture의현배치필드누락은fixture만보완했고,1024버튼밀림/공통표스타일충돌은제품CSS로해결했다. 최종두테마/두해상도네조합에서표/페이지가로넘침0·좌우top/bottom오차0·적용버튼화면내를실측했다. 버전도우미의광범위문자열치환은preflight에서의존성항목을원본복구해app버전두필드외lock동일을확인했다. 기존검문을삭제/완화하지않았다.
+제품수정0. 제어문서 TODO/장부/HANDOFF와새Log만갱신·push한다. 증거 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-publish-wM2w9T, preflight.json/published.json/public-verification.json 및 익명다운로드원본6개. 현재J run7b7fa1eb-11bf-4838-831b-d680ece52a6f, 최종검문은저장된다운로드증거/현재소스·원격공개상태대조다. Guided Skill·P07을적용했고조회/Agent기록과실제원격검증을구별한다.
 
-실제Chrome5와운영S06은API의Public필터추가직전후보4C97E9167D62377A3F629481B0F9BFD153A918136E38AA9596E0561174B830B5에서실행했다. 그뒤제품차이는 holiday-api-service.ts/그test두경로뿐임을검증했다. 새API단위11/실제2025~2027응답을추가검증하고 최종설치본의포함Node/제품모듈로35개계산·출력검문을새로실행했다. 개발본35검문은그보다이전잠긴소스의증거이며 변경6파일을독립대조했다. 기존driver전체20시나리오를실행했다는뜻이아니다.
-
-## 확인할 결과물
-
-- 1.0.3 초안 https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/untagged-adc960da1de85ec36107, draft=true·6첨부 재다운로드 SHA 일치. 이전1.0.2 초안의6첨부 보존.
-- ZIP C:\Users\hacke\AppData\Local\Temp\shiftmgmt-holiday-fix-8gnFvD\release\v1.0.3\ShiftMgmt-1.0.3-win-x64.zip (58939806bytes), SHA256 40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03.
-- 후보소스 ceb66933c1af03a9331e611d254384aa6452c9b4, 제품tree 5990bbc2c44a777a0ed677b71fe598d950dc7e9f. main/source 미러 비강제push 완료, 이후결과문서commit도main에push하며제품tree는동일.
-- 화면 캡처 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-holiday-fix-8gnFvD\operations-ui-final-03\captures\holiday-preview-1024-system.png 및 holiday-preview-1440-dark.png.
-- 사용안내 ShiftMgmt_V4/docs/fresh-install.md, docs/release-1.0.3.md.
-
-공개게시·실제대상PC설치는미실행, 다음REL-03에서별도승인후진행한다. 실제사용전 공휴일목록/업무요율/폴더/계정을확인한다. 품의서/별첨1/별첨2만A4, 근무표는Excel이다.
-
-증거정본 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-holiday-fix-8gnFvD\assessment.json, full-final-02, 설치17/설치본35, draft.json/다운로드해시. raw DB/Excel/이름·급여/로컬경로·캡처는공개첨부하지않았다. J run dc556a18-1d86-4939-ae0b-14ee656e3e65의최종명령은잠긴실행증거의재판독이며새전체실행이아니다. GuidedSkill hash911bd03cd5c20091fbeaee766b3504cc3bae14c3ffcd67efb92737a9ff1a68aa 및 P18/P06/P16을실제조회했고구현/검증에적용했다. Skill적용기록은독립시험증거와구별한다.
-
-받은HANDOFF Log/20261108_114123_before-holiday-followup-acceptance.md,1379bytes/SHA256 EB862322C083C3BD613244A62248C55A4E43D0FCB35FB51D5450E1D945F227BB 바이트동일보존. TODO/장부 DONE은이번기술수용·초안준비범위이며실제운영적용완료는아니다.
+수신HANDOFF Log/20261108_120420_before-release-publication-result.md, 1408bytes/SHA256 26FDAF19E30D74F197DB43E3683A1B382686592109D8196D326D82031910BA12 바이트동일보존. 정식공개는완료, 실제새PC설치/업무운영확인은사용자진행대기다.

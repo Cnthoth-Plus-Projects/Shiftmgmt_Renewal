@@ -3862,21 +3862,21 @@
       "dependsOn": [
         "REL-02"
       ],
-      "goal": "승인된 새 판 적용과 health 확인",
-      "doneWhen": "해당 턴 사용자 명시 승인 후만 적용; 판 번호 증가·프로그램/DB 백업·적용 후 확인",
+      "goal": "정식 릴리즈 공개·다운로드 검증과 사용자 새PC 설치/health 확인",
+      "doneWhen": "정식공개·익명다운로드/해시 확인 완료; 사용자가 새PC 설치 후 버전/로그인·업무자료 확인을 마치면 전체 REL-03 완료",
       "whyRequired": "실제 전환 시 필요",
-      "owner": "사용자 명시 승인 후 담당 실행",
-      "status": "TODO",
+      "owner": "Sol",
+      "status": "WAITING_USER_INSTALL",
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": false,
       "installationTarget": "FRESH_PC",
-      "authorizationRequired": "Actual PC install/public publication remain unapproved; resolve new calculation findings and rate configuration before release acceptance.",
+      "authorizationRequired": "정식공개는 현재 사용자 지시로 완료. 새PC 설치는 사용자 다운로드 후 진행하며 이 환경에서 실제 대상PC 적용은 하지 않음.",
       "prerequisiteReviewFindings": [
         "FLOW-01",
         "FLOW-02",
         "FLOW-03"
       ],
-      "version": "1.0.1",
+      "version": "1.0.3",
       "prerequisiteDefectsResolved": [
         "FLOW-01",
         "FLOW-02",
@@ -3886,7 +3886,55 @@
       "prerequisiteCalculationFindings": [
         "CALC-01",
         "CALC-04"
-      ]
+      ],
+      "stage": "PUBLIC_RELEASE_VERIFIED_FRESH_PC_PENDING",
+      "publicationAuthorized": true,
+      "publicationAuthorization": "새 PC설치는 릴리즈를 해야 새로운 PC에서 해당 릴리즈 버전을 다운받아서 설치해서 사용을해야지.",
+      "publicationStartedAt": "2026-11-08T12:00:17.686Z",
+      "publicationScope": {
+        "productChanges": false,
+        "allowedControls": [
+          "TODO.md",
+          ".ai/task-plan.json",
+          "HANDOFF.md",
+          "Log/new immutable archives"
+        ],
+        "packageUnchanged": true,
+        "targetPcInstallationPerformedByAgent": false
+      },
+      "publicationChecks": {
+        "PUB01": "PASS",
+        "PUB02": "PASS",
+        "PUB03": "PASS",
+        "PUB04": "PASS"
+      },
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "publicationComplete": true,
+      "publicReleasePublished": true,
+      "publicationCompletedAt": "2026-11-08T12:02:36.556Z",
+      "release": {
+        "version": "1.0.3",
+        "tag": "v1.0.3",
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
+        "downloadUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-win-x64.zip",
+        "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+        "productTree": "5990bbc2c44a777a0ed677b71fe598d950dc7e9f",
+        "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+        "stable": true,
+        "latest": true,
+        "publishedAt": "2026-11-08T12:01:51Z"
+      },
+      "actualPcInstalled": false,
+      "productionPcInstalled": false,
+      "publicationEvidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-publish-wM2w9T\\public-verification.json",
+        "bytes": 3221,
+        "sha256": "C6F052CB6BC6639A81804095806CC48FD3F6C71D8103988C7C8C4D26B1269940"
+      }
     },
     {
       "id": "UI-03-DEV-LOGIN",
@@ -6590,8 +6638,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 105042,
-    "sha256": "395113F62A0E2A12D56EAE7031B0059E56815BAE371B1C68042108410E75582B"
+    "bytes": 105843,
+    "sha256": "8BC930789E06EAEE3B082E1AD6E25FFD94620CC96179E808944CEAFFAE401AFF"
   },
   "statusHistory": [
     {
@@ -8927,7 +8975,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T11:41:23.665Z",
+  "updatedAt": "2026-11-08T12:02:36.556Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -9029,5 +9077,14 @@
       "쉬운 한국어·단계별 짧은 설명·작업별 버튼 위계"
     ],
     "previewLogin": "Every local development preview must enable existing autofill flag, use matching test credentials and verify fresh-context + logout login"
+  },
+  "lastPublicRelease": {
+    "version": "1.0.3",
+    "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
+    "publishedAt": "2026-11-08T12:01:51Z",
+    "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+    "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+    "anonymousDownloadVerified": true,
+    "targetPcInstalled": false
   }
 }
