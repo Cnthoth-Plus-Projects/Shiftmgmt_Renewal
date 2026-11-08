@@ -98,6 +98,14 @@
         "priorUnitTests": 1598,
         "priorUnitTestFiles": 160,
         "freshFullApplicationRuns": 0
+      },
+      "finalRevalidationDiagnostics": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-exe-8uhrjP\\final-validator-corrections.json",
+        "bytes": 768,
+        "sha256": "5cd9f2ce1d27ad02747e0a503e4cf650310601761c7e5831c10139d828864c2d",
+        "classification": "VALIDATOR_AND_SHELL_ONLY",
+        "sourceAndInstallerChanged": false,
+        "correctedLocalRevalidation": "PASS"
       }
     },
     {
