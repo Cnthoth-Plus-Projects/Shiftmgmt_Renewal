@@ -2,6 +2,9 @@ import path from "node:path";
 
 import ExcelJS from "exceljs";
 import { afterEach, describe, expect, it } from "vitest";
+import { allowanceRateDefaultMatrix, createAllowanceRateItems } from "../../shared/domain/allowance-rate-matrix";
+import { previewAllowanceCalculation } from "./allowance-preview-service";
+import { listStoredAllowanceRateVersions, saveStoredAllowanceRateVersion, saveStoredHolidayItem } from "./operations-storage-service";
 
 import { approvePerformanceFile } from "./performance-approval-flow-service";
 import { resetPerformanceApprovalStateForTest } from "./performance-approval-service";
@@ -45,6 +48,82 @@ describe("approved-allowance-calculation-service", () => {
     allocatedTestRoots.splice(0).forEach((rootDir) => {
       resetPreparedReturnedScheduleRoot(rootDir);
     });
+  });
+
+  it.each(["sample1", "sample2"] as const)("CALC-01/03: %s approval and preview use the work-date rate despite an active future version", async templateVariant => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot(), templateVariant });
+    saveStoredAllowanceRateVersion({ year: 2030, versionLabel: "future trial", status: "active", effectiveFrom: "2030-01-01", items: createAllowanceRateItems("future", { ...allowanceRateDefaultMatrix, "weekday-overtime": {base: 0, overtime: 3, night: 4} }) });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    const approved = await approvePerformanceFile({ fileId: detail.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(approved.ok).toBe(true);
+    const result = await runApprovedAllowanceCalculation({ entryId: entry.id });
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.data.rateVersionId).toBe("rate-2026-1");
+    expect(result.data.snapshot.totalAllowanceAmount).toBe(112800);
+    const preview = previewAllowanceCalculation({ workDate: entry.workDate, startTime: entry.startTime!, endTime: entry.endTime!, breakMinutes: entry.breakMinutes, hourlyRate: entry.hourlyRate!, workType: "overtime" });
+    expect(preview.ok).toBe(true);
+    if (preview.ok) {
+      expect(preview.data.totalAllowanceAmount).toBe(result.data.snapshot.totalAllowanceAmount);
+      expect(preview.data.businessCategoryCode).toBe(result.data.snapshot.businessCategoryCode);
+    }
+  });
+
+  it("CALC-01: a rate gap rolls back approval and calculation instead of selecting a future rate", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot(), templateVariant: "sample1" });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    const database = getSqliteDatabase()!;
+    database.prepare("UPDATE allowance_rate_versions SET effective_to='2026-02-28' WHERE id='rate-2026-1'").run();
+    const result = await approvePerformanceFile({ fileId: detail.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath });
+    expect(result).toMatchObject({ ok: false, errorCode: "ALLOWANCE_RATE_NOT_FOUND" });
+    expect(database.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()).toEqual({n: 0});
+    expect(database.prepare("SELECT COUNT(*) AS n FROM allowance_calculations").get()).toEqual({n: 0});
+  });
+
+  it.each(["sample1", "sample2"] as const)("CALC-02: %s holiday overtime blocks zero pay, then pays configured rates without a companion holiday row", async templateVariant => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: createTestRoot(), templateVariant });
+    saveStoredHolidayItem({ year: 2026, holidayDate: "2026-03-03", name: "Trial public holiday" });
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    expect(detail.entries.some(other => other.section === "holiday" && other.workDate === entry.workDate)).toBe(false);
+    const input = { fileId: detail.id, entryId: entry.id };
+    expect(await approvePerformanceFile(input, testAdminSession, {userDataPath: fixture.userDataPath})).toMatchObject({ok: false, errorCode: "ALLOWANCE_RATE_ZERO_AMOUNT"});
+    const database = getSqliteDatabase()!;
+    expect(database.prepare("SELECT COUNT(*) AS n FROM performance_approvals").get()).toEqual({n: 0});
+    expect(database.prepare("SELECT COUNT(*) AS n FROM allowance_calculations").get()).toEqual({n: 0});
+    const rate = listStoredAllowanceRateVersions().find(rate => rate.id === "rate-2026-1")!;
+    saveStoredAllowanceRateVersion({ ...rate, changeReason: "Test configured holiday overtime", items: createAllowanceRateItems(rate.id, {...allowanceRateDefaultMatrix, "holiday-overtime": {base: 0, overtime: 2, night: 2.5}}) });
+    expect((await approvePerformanceFile(input, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    const result = await runApprovedAllowanceCalculation({entryId: entry.id});
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data.snapshot.businessCategoryCode).toBe("holiday-overtime");
+      expect(result.data.snapshot.totalAllowanceAmount).toBe(144525);
+    }
+  });
+
+  it.each(["sample1", "sample2"] as const)("CALC-04: %s saves exactly 15,510 won for a one-hour 1.1 multiplier", async templateVariant => {
+    const fixture = await prepareReturnedScheduleFixture({rootDir: createTestRoot(), templateVariant});
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(fixture.filePath);
+    const sheet = workbook.worksheets[0]!;
+    sheet.getCell(templateVariant === "sample1" ? "BE34" : "BM34").value = 21;
+    sheet.getCell(templateVariant === "sample1" ? "BF34" : "BN34").value = 0;
+    await workbook.xlsx.writeFile(fixture.filePath);
+    const rate = listStoredAllowanceRateVersions().find(rate => rate.id === "rate-2026-1")!;
+    saveStoredAllowanceRateVersion({...rate, changeReason: "Exact decimal trial", items: createAllowanceRateItems(rate.id, {...allowanceRateDefaultMatrix, "weekday-overtime": {base: 0, overtime: 1.1, night: 2}})});
+    const detail = await syncPreparedReturnedSchedule(fixture);
+    const entry = detail.entries.find(entry => entry.section === "overtime")!;
+    expect((await approvePerformanceFile({fileId: detail.id, entryId: entry.id}, testAdminSession, {userDataPath: fixture.userDataPath})).ok).toBe(true);
+    const result = await runApprovedAllowanceCalculation({entryId: entry.id});
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data.snapshot.breakdown.totalWorkMinutes).toBe(60);
+      expect(result.data.snapshot.totalAllowanceAmount).toBe(15510);
+      expect(result.data.snapshot.lines.map(line => line.amount)).toEqual([15510]);
+    }
   });
 
   it("should calculate an approved overtime entry from the approval snapshot", async () => {

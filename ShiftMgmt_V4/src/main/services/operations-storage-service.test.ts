@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { getAllowanceRateEntryCode } from "../../shared/domain/allowance-rate-matrix";
 import { isPasswordHashValid } from "./auth-password-service";
-import { initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { getSqliteDatabase, initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
 import {
   changeStoredOperationAuthPassword,
   approveStoredDocumentTemplateVersion,
@@ -233,7 +233,7 @@ describe("operations-storage-service", () => {
     ).toBe(2.4);
     expect(
       listStoredAllowanceRateVersions().filter((version) => version.status === "active")
-    ).toHaveLength(1);
+    ).toHaveLength(2);
     expect(
       listStoredAllowanceRateHistory()
         .filter((history) => history.rateVersionId === created.id)
@@ -246,6 +246,40 @@ describe("operations-storage-service", () => {
     deleteStoredAllowanceRateVersion(created.id);
 
     expect(listStoredAllowanceRateVersions(targetYear)).toHaveLength(0);
+  });
+
+  it("CALC-01: future and inserted versions preserve historical periods and use adjacent date boundaries", () => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "operations.test.sqlite") });
+    const seeds = listStoredAllowanceRateVersions();
+    const old = seeds.find(version => version.id === "rate-2026-1")!;
+    const future = saveStoredAllowanceRateVersion({ year: 2030, versionLabel: "future", status: "active", effectiveFrom: "2030-01-01", items: [] });
+    expect(listStoredAllowanceRateVersions().find(version => version.id === old.id)).toEqual(old);
+    expect(listStoredAllowanceRateVersions().find(version => version.id === "rate-2026-2")).toMatchObject({ status: "active", effectiveTo: "2029-12-31" });
+    const inserted = saveStoredAllowanceRateVersion({ year: 2028, versionLabel: "inserted", status: "active", effectiveFrom: "2028-03-01", items: [] });
+    expect(inserted.effectiveTo).toBe("2029-12-31");
+    expect(listStoredAllowanceRateVersions().find(version => version.id === "rate-2026-2")?.effectiveTo).toBe("2028-02-29");
+    expect(listStoredAllowanceRateVersions().find(version => version.id === future.id)).toEqual(future);
+    expect(listStoredAllowanceRateHistory().some(record => record.rateVersionId === "rate-2026-2" && record.detail.includes("2028-02-29"))).toBe(true);
+    const before = listStoredAllowanceRateVersions();
+    expect(() => saveStoredAllowanceRateVersion({ ...inserted, effectiveTo: "2030-01-01", changeReason: "invalid overlap" })).toThrow("다음 요율");
+    expect(listStoredAllowanceRateVersions()).toEqual(before);
+  });
+
+  it("CALC-01: duplicate published starts and unbounded retired periods are rejected without changing stored data", () => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "operations.test.sqlite") });
+    const before = listStoredAllowanceRateVersions();
+    expect(() => saveStoredAllowanceRateVersion({ year: 2026, versionLabel: "duplicate start", status: "active", effectiveFrom: "2026-07-01", items: [] })).toThrow("같은 적용 시작일");
+    expect(() => saveStoredAllowanceRateVersion({ year: 2035, versionLabel: "unknown end", status: "retired", effectiveFrom: "2035-01-01", items: [] })).toThrow("종료일");
+    expect(listStoredAllowanceRateVersions()).toEqual(before);
+    expect(saveStoredAllowanceRateVersion({ year: 2026, versionLabel: "same start draft", status: "draft", effectiveFrom: "2026-07-01", items: [] }).status).toBe("draft");
+  });
+
+  it("CALC-01: legacy retired dates without a known end are not guessed when a new rate is saved", () => {
+    initializeSqliteStorage({ dbPath: path.resolve(process.cwd(), "artifacts", "tests", "operations.test.sqlite") });
+    listStoredAllowanceRateVersions();
+    getSqliteDatabase()!.prepare("UPDATE allowance_rate_versions SET status = 'retired', effective_to = NULL WHERE id = 'rate-2026-2'").run();
+    saveStoredAllowanceRateVersion({ year: 2030, versionLabel: "future", status: "active", effectiveFrom: "2030-01-01", items: [] });
+    expect(listStoredAllowanceRateVersions().find(version => version.id === "rate-2026-2")).toMatchObject({ status: "retired", effectiveTo: undefined });
   });
 
   it("should block moving an existing allowance rate start date before today", () => {

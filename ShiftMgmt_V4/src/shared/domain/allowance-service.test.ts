@@ -8,6 +8,19 @@ import {
 } from "./allowance-service";
 
 describe("createAllowanceCalculationSnapshot", () => {
+  it("CALC-04: 소수 배율의 정수 결과에 1원을 더하지 않는다", () => {
+    expect(calculateRoundedAllowanceLineAmounts(14100,[{workMinutes:60,multiplier:1.1}])).toEqual({lineAmounts:[15510],totalAmount:15510});
+    expect(calculateRoundedAllowanceLineAmounts(10001,[{workMinutes:1,multiplier:1.5},{workMinutes:1,multiplier:2}])).toEqual({lineAmounts:[250,334],totalAmount:584});
+  });
+  it("CALC-04: 소수 시급·동률 배분·아주 작은 양수도 정확히 처리한다", () => {
+    expect(calculateRoundedAllowanceLineAmounts(17457.07,[{workMinutes:90,multiplier:1.5},{workMinutes:150,multiplier:1.5},{workMinutes:390,multiplier:1.5}])).toEqual({lineAmounts:[39278,65464,170207],totalAmount:274949});
+    expect(calculateRoundedAllowanceLineAmounts(1,[1,2,3].map(()=>({workMinutes:30,multiplier:1})))).toEqual({lineAmounts:[1,1,0],totalAmount:2});
+    expect(calculateRoundedAllowanceLineAmounts(Number.MIN_VALUE,[{workMinutes:60,multiplier:1}])).toEqual({lineAmounts:[1],totalAmount:1});
+    expect(calculateRoundedAllowanceLineAmounts(1e308,[{workMinutes:60,multiplier:1e-308}])).toEqual({lineAmounts:[1],totalAmount:1});
+  });
+  it("CALC-04: 최종 안전 정수 범위를 넘으면 거부한다", () => {
+    expect(()=>calculateRoundedAllowanceLineAmounts(Number.MAX_SAFE_INTEGER,[{workMinutes:60,multiplier:1},{workMinutes:Number.MIN_VALUE,multiplier:1}])).toThrow("범위");
+  });
   const baseInput = {
     calculationId: "calc-01",
     performanceApprovalId: "approval-01",

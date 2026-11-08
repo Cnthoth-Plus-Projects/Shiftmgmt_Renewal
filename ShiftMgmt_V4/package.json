@@ -1,6 +1,6 @@
 {
   "name": "shiftmgmt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "교대근무관리 시스템 — 한 대의 PC에 설치하는 작은 프로그램(로컬 서버 + 크롬 화면)",
   "engines": {

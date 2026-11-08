@@ -13,8 +13,8 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-03",
-  "executingTaskId": null,
+  "nextTaskId": "CALC-LOGIC-FIX-01",
+  "executingTaskId": "CALC-LOGIC-FIX-01",
   "tasks": [
     {
       "id": "PLAN-00",
@@ -3565,7 +3565,7 @@
       "geminiTaskId": null,
       "productChangesAuthorizedByThisPlan": false,
       "installationTarget": "FRESH_PC",
-      "authorizationRequired": "Actual target PC installation and public release publication each require explicit user authorization; draft prepared only.",
+      "authorizationRequired": "Actual PC install/public publication remain unapproved; resolve new calculation findings and rate configuration before release acceptance.",
       "prerequisiteReviewFindings": [
         "FLOW-01",
         "FLOW-02",
@@ -3576,6 +3576,11 @@
         "FLOW-01",
         "FLOW-02",
         "FLOW-03"
+      ],
+      "deferredBy": "CALC-LOGIC-CROSSCHECK-01",
+      "prerequisiteCalculationFindings": [
+        "CALC-01",
+        "CALC-04"
       ]
     },
     {
@@ -5611,11 +5616,343 @@
         "archiveSha256": "B276969C96E05787014CAA35A7DBA1877CA27AFFB3BC0683D075D8A04BAE4B62",
         "productChanged": false
       }
+    },
+    {
+      "id": "CALC-LOGIC-CROSSCHECK-01",
+      "title": "사용자 정의 계산 규칙과 실제 구현의 상세 교차 검증",
+      "status": "DONE",
+      "stage": "REVIEW_COMPLETE_WITH_MATERIAL_FINDINGS",
+      "owner": "Sol",
+      "implementationOwner": "none (review only)",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "authorization": "User 2026-11-08: 전체적으로 내가 정의한 계산 로직과 실제 적용된 로직과 교차 검증을해야하니까 상세하게 분석하고 정리해줘",
+      "goal": "Reconcile user decisions/specification with actual domain/parser/approval/policy/wage/document amounts; independent expected-value cases and isolated Excel-to-saved-calculation probes; report exact agreements, discrepancies, stale documents and material unresolved requirements.",
+      "allowedWrites": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "Log/new immutable archives",
+        ".ai/reports/calculation-crosscheck-20261108/REVIEW.md",
+        ".jh-artifacts/calc-review-*",
+        "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-review-crKWQL"
+      ],
+      "protected": [
+        "All536 product files",
+        "Existing Log bytes",
+        "V3 and real operational files/DB",
+        "Release ZIP/draft/Git remote state",
+        "Existing approved/calculation snapshots"
+      ],
+      "productChangesAuthorizedByThisPlan": false,
+      "checks": [
+        "Identify current user decisions and precedence; distinguish defaults from active settings",
+        "Trace time/break/category/eligibility/wage/rates/effective-date/rounding/dedupe/approval/snapshots/aggregation/output",
+        "Focused existing relevant tests in isolated TEMP with actual counts; no repeated full suite for unchanged product",
+        "Independent explicit expected-value probes and representative real Excel intake->approval->saved calculation cases; never SQL-insert performance rows",
+        "Verify all product hashes unchanged and source references/results/report consistency"
+      ],
+      "doneWhen": "Detailed Korean rule matrix with concrete amounts and source lines, verified findings and narrow decisions for user; no automatic fixes or publishing.",
+      "estimate": "Initial60-120min estimate for comprehensive trace, isolated focused checks and report; no unchanged whole-project rebuild/full suite.",
+      "startedAt": "2026-11-07T23:38:59.965Z",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-review-crKWQL",
+      "report": ".ai/reports/calculation-crosscheck-20261108/REVIEW.md",
+      "baseline": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-review-crKWQL\\baseline.json",
+        "files": 536
+      },
+      "oldHandoff": {
+        "archive": "Log/20261107_233859_before-calculation-crosscheck.md",
+        "bytes": 3214,
+        "sha256": "03C7C0D7057AB18CF79966DFCD2EDC80CDD2FC259159265A14F01EB1143FAF79"
+      },
+      "userClarifications": [
+        {
+          "source": "Direct current-session user reply, 2026-11-08 KST",
+          "quote": "추가 지급을 해야하는데 추가 지급 기준은 \"요율 관리\" 메뉴에서 해당 날짜의 성격에 맞춘 요율을 적용하면되. 정리하면 연장 근무 수당도 지급해야한다.",
+          "rule": "Pay additional overtime separately using the applicable work-date/category rates from rate management. Numeric multipliers are not specified by this reply."
+        }
+      ],
+      "pendingQuestion": "Ordinary weekend versus registered public-holiday classification; answer pending.",
+      "verificationProgress": {
+        "existingTests": 249,
+        "files": 21,
+        "domain": 80,
+        "integration": 169,
+        "independentChecks": 16,
+        "clarificationCases": 2,
+        "productChanged": false
+      },
+      "reviewComplete": true,
+      "productAcceptance": false,
+      "productChanges": 0,
+      "safeToPublish": false,
+      "completedAt": "2026-11-08T00:06:19.107Z",
+      "findings": [
+        {
+          "id": "CALC-01",
+          "status": "CONFIRMED_MISMATCH",
+          "priority": "P1",
+          "expected": "Use work-date-applicable rate or reject missing coverage; no future rate substitution",
+          "baselineAmount": 112800,
+          "actualFutureAmount": 225600
+        },
+        {
+          "id": "CALC-04",
+          "status": "CONFIRMED_MISMATCH",
+          "priority": "P2",
+          "expected": 15510,
+          "actual": 15511
+        },
+        {
+          "id": "CALC-02",
+          "status": "USER_RULE_CONFIRMED_CONFIGURATION_AND_DATE_CLASSIFICATION_REVIEW",
+          "defaultAmount": 0,
+          "trialConfiguredAmount": 144525
+        },
+        {
+          "id": "CALC-03",
+          "status": "AUXILIARY_API_MISMATCH_NO_CURRENT_WEB_CALLER_FOUND",
+          "preview": 112800,
+          "saved": 225600
+        },
+        {
+          "id": "DOC-01",
+          "status": "STALE_DOCUMENTATION_W06_W08"
+        }
+      ],
+      "verification": {
+        "freshRelatedTests": 249,
+        "testFiles": 21,
+        "independentChecks": 16,
+        "clarificationCases": 2,
+        "compiledFilesMatched": 193,
+        "fullSuite": "NOT_RERUN_UNCHANGED_PRODUCT",
+        "browserPdfVisual": "NOT_RUN_NO_UI_CHANGE"
+      },
+      "assessment": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-review-crKWQL\\assessment.json",
+        "bytes": 5027,
+        "sha256": "FB0D7FF6D19E10058D8EE41A5FCDD222A2A8F5CB05F2C9564D9787228C129888"
+      },
+      "proposedNextWork": {
+        "authorized": false,
+        "scope": "Fix work-date rate/history selection and decimal calculation accuracy; align holiday overtime defaults/explanation with user rule and clarify weekend category. No retroactive rewriting of saved payments."
+      }
+    },
+    {
+      "id": "CALC-LOGIC-PATCH-PLAN-01",
+      "title": "계산 결함 패치·검증 계획 구체화",
+      "status": "DONE",
+      "stage": "PLAN_READY_FOR_REVIEW_NO_PRODUCT_IMPLEMENTATION",
+      "owner": "Sol",
+      "implementationOwner": "none (planning only)",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "authorization": "User asks patch plan and verification plan; no implementation inferred",
+      "productChangesAuthorizedByThisPlan": false,
+      "dependsOn": [
+        "CALC-LOGIC-CROSSCHECK-01"
+      ],
+      "allowedWrites": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "Log/20261108_002153_before-calculation-patch-plan.md",
+        ".jh-artifacts/calc-plan-*",
+        "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-plan-BPTJvz"
+      ],
+      "protected": [
+        "All536 product files",
+        "Received/historical report and Log bytes",
+        "All approval/calculation data",
+        "V3 and operational files",
+        "1.0.0/1.0.1 release assets and remote Git state"
+      ],
+      "deliverable": "HANDOFF.md",
+      "doneWhen": "Concrete bounded patch order,proposed file boundary,independent expected-value cases,preservation/release gates and remaining business decisions recorded; verify product unchanged",
+      "sourceCommit": "9caa54e725022a72892099bb059606958f5db73d",
+      "productTree": "028ae4d127d80d53785fc42a1faea7f0bc0eee5e",
+      "proposedProductFiles": [
+        "ShiftMgmt_V4/src/shared/domain/allowance-rate-service.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-rate-service.test.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-rate-selection.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-overtime-repair-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-overtime-repair-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.test.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-rates.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-model.test.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-document-export-service.test.ts",
+        "ShiftMgmt_V4/scripts/ui-checks/operations.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/performance.mjs",
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/src/shared/config/app-brand.ts",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/docs/release-1.0.2.md"
+      ],
+      "planningOnly": true,
+      "productChanges": 0,
+      "startedAt": "2026-11-08T00:21:53.639Z",
+      "completedAt": "2026-11-08T00:21:53.639Z",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-plan-BPTJvz",
+      "oldHandoff": {
+        "archive": "Log/20261108_002153_before-calculation-patch-plan.md",
+        "bytes": 2644,
+        "sha256": "6AF6C9D49FE0656AE13C11C267721BFFE3CFBF254C17708CA9E963473D35398F"
+      },
+      "pending": [
+        "ordinary weekend category",
+        "actual configured holiday overtime multipliers"
+      ],
+      "implementationEstimate": "To be refined on implementation authorization; full unit8min is measured baseline, not total task estimate."
+    },
+    {
+      "id": "CALC-LOGIC-FIX-01",
+      "title": "승인된 계산 패치·회귀 및1.0.2 준비",
+      "status": "IN_PROGRESS",
+      "stage": "IMPLEMENTATION_AUTHORIZED",
+      "owner": "Sol",
+      "implementationOwner": "Sol direct implementation under standing exception and current user approval",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "initialSubmissions": 0,
+      "retrySubmissions": 0,
+      "cumulativeSubmissions": 0,
+      "authorization": "User: 오케이 진행하자 — approves HANDOFF patch/verification plan; prior Git push/release preparation authorization persists. No actual-PC install/public publication.",
+      "dependsOn": [
+        "CALC-LOGIC-PATCH-PLAN-01"
+      ],
+      "productChangesAuthorizedByThisPlan": true,
+      "allowlist": [
+        "ShiftMgmt_V4/src/shared/domain/allowance-rate-service.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-rate-service.test.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.ts",
+        "ShiftMgmt_V4/src/shared/domain/allowance-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.ts",
+        "ShiftMgmt_V4/src/main/services/operations-storage-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-calculation-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/approved-allowance-rate-selection.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-overtime-repair-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-overtime-repair-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-preview-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-approval-flow-service.test.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-rates.ts",
+        "ShiftMgmt_V4/src/web/screens/operations-model.test.ts",
+        "ShiftMgmt_V4/src/main/services/allowance-document-export-service.test.ts",
+        "ShiftMgmt_V4/scripts/ui-checks/operations.mjs",
+        "ShiftMgmt_V4/scripts/ui-checks/performance.mjs",
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/src/shared/config/app-brand.ts",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/docs/codebase-map.md",
+        "ShiftMgmt_V4/docs/release-1.0.2.md"
+      ],
+      "controlAllowlist": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "02-business-rules.md",
+        "Log/new immutable archives",
+        ".jh-artifacts/calc-fix-*",
+        "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2"
+      ],
+      "protected": [
+        "All product files outside allowlist",
+        "Existing Log/report bytes",
+        "Already-approved financial snapshots and policy dates",
+        "Dependencies and DB schema/contracts",
+        "V3 and real operational DB/files",
+        "1.0.0/1.0.1 ZIPs"
+      ],
+      "defects": [
+        "CALC-01",
+        "CALC-02",
+        "CALC-03",
+        "CALC-04",
+        "DOC-01"
+      ],
+      "checks": [
+        "V00",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "M01",
+        "M02",
+        "M03",
+        "H01",
+        "H02",
+        "P01",
+        "I01",
+        "I02",
+        "X01",
+        "UI01",
+        "F01",
+        "REL01"
+      ],
+      "planArchive": {
+        "path": "Log/20261108_002540_before-calculation-fix.md",
+        "bytes": 14384,
+        "sha256": "6943AF30D318538414BFAF69DD4447361AEC0FB4C405203ADB894DB748E4928C"
+      },
+      "baseline": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2\\baseline.json",
+        "files": 536
+      },
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-calc-fix-GZlvE2",
+      "decisions": [
+        "Work-date applicable published rates; retired only within explicit ended historical range; drafts/future/gaps never fallback",
+        "New active future version closes only its relevant predecessor at day before start, preserves unaffected later timeline; no inferred repair of existing closed gaps",
+        "Exact decimal fractions with BigInt; preserve decimal wages and existing per-entry ceil/largest-remainder order",
+        "Applicable configured holiday overtime rates; reject unexpected payable0 during new approval; no invented operational multipliers",
+        "Ordinary weekends retain current public-calendar classification pending user reply",
+        "Never mutate approved snapshots/calculations via startup repair/reparse/rate change; explicit return-to-pending only",
+        "Preview uses stored applicable rates and equivalent category for matching work-date/type inputs; contract unchanged"
+      ],
+      "runtimeOutputs": [
+        "Ignored dist/build outputs",
+        "Ignored artifacts/tests for existing final release suite only",
+        "Private TEMP shadows,DBs,XLSX/screenshots/releases; retain generated test fixtures with hashes outside repo if whole-repo harness file cap is exceeded"
+      ],
+      "doneWhen": "Approved17 verification groups satisfied; fixed money/rate behavior and immutable old approval proofs; new1.0.2 clean source package/install/draft prepared, report deferred weekend choice and no public/realPC deployment.",
+      "estimate": "Initial2-4h implementation/integration estimate; focused checks first, frozen full unit8min measured baseline, one final suite target.",
+      "startedAt": "2026-11-08T00:25:40.808Z"
     }
   ],
   "policy": {
     "oneActiveLeaf": true,
-    "nextTaskId": "REL-03",
+    "nextTaskId": "CALC-LOGIC-FIX-01",
     "sourceOfTruth": "TODO.md",
     "unlistedWork": "Do not execute. Record minimal proposal only if active Task cannot finish within its authorized scope. New scope/task needs explicit user authorization; do not silently append work.",
     "necessaryFixes": "Required defect fixes and checks within active Task/allowlist use same Task ID and stable defect ID; do not create new workstreams or reset Gemini attempts.",
@@ -5733,8 +6070,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 98939,
-    "sha256": "B8190F7342C2DD6AC2D6FCF2B54EE36D100A6A194658989524E8E6176761AB90"
+    "bytes": 102307,
+    "sha256": "126B8EADBF0E043E934491DBF0D535756DDFE8F78DFBA48E269E8B40486D034D"
   },
   "statusHistory": [
     {
@@ -7996,6 +8333,37 @@
       "install": 16,
       "browserHttp": 7,
       "publication": "DRAFT_ONLY"
+    },
+    {
+      "at": "2026-11-07T23:38:59.965Z",
+      "taskId": "CALC-LOGIC-CROSSCHECK-01",
+      "status": "READ_ONLY_ANALYSIS",
+      "note": "Explicit user calculation reconciliation request supersedes pending REL-03; review only."
+    },
+    {
+      "at": "2026-11-08T00:06:19.114Z",
+      "taskId": "CALC-LOGIC-CROSSCHECK-01",
+      "status": "REVIEW_COMPLETE_WITH_MATERIAL_FINDINGS",
+      "productChanges": 0,
+      "passedTests": 249,
+      "findings": [
+        "CALC-01",
+        "CALC-04",
+        "CALC-02",
+        "CALC-03"
+      ]
+    },
+    {
+      "at": "2026-11-08T00:21:53.641Z",
+      "taskId": "CALC-LOGIC-PATCH-PLAN-01",
+      "status": "PLAN_READY_FOR_REVIEW_NO_PRODUCT_IMPLEMENTATION",
+      "productChanges": 0
+    },
+    {
+      "at": "2026-11-08T00:25:40.811Z",
+      "taskId": "CALC-LOGIC-FIX-01",
+      "status": "IMPLEMENTATION_AUTHORIZED",
+      "note": "User: 오케이 진행하자 — approves HANDOFF patch/verification plan; prior Git push/release preparation authorization persists. No actual-PC install/public publication."
     }
   ],
   "remainingEstimatedHours": [
@@ -8039,7 +8407,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-07T13:27:27.286Z",
+  "updatedAt": "2026-11-08T00:25:40.811Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",

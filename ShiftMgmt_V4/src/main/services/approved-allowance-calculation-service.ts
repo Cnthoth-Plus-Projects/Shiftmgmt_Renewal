@@ -13,13 +13,12 @@ import {
 } from "../../shared/domain/allowance-service";
 import type { AllowanceCalculationStatus } from "../../shared/domain/allowance-workflow";
 import { normalizeEmployeeRank } from "../../shared/domain/employee-rank";
-import { allowanceRateVersionFixtures } from "../../shared/domain/allowance-rate-fixtures";
 import {
   buildAllowanceRateTable,
   resolveAllowanceRateCategoryCode,
   resolveAllowanceRateCategoryLabel
 } from "../../shared/domain/allowance-rate-matrix";
-import { selectActiveAllowanceRateVersion } from "../../shared/domain/allowance-rate-service";
+import { selectApplicableAllowanceRateVersion } from "../../shared/domain/allowance-rate-service";
 import type { AllowanceRateVersion, WorkType } from "../../shared/domain/model";
 import {
   getNonPayablePerformanceReasonText,
@@ -102,28 +101,12 @@ const toCalculationResultRecord = (
   };
 };
 
-// 근무 날짜에 유효한 요율 버전을 고른다.
-// 1순위는 그 날짜에 실제 적용되던 활성 버전이다(소급 정산 시 그 시점의 요율 적용).
-// 과거에는 '가장 최근에 수정된 활성 버전'을 먼저 골라, 여러 버전이 동시에 활성인 기간의
-// 소급 건이 엉뚱한(최신) 배율로 계산되었다. 올바른 형제 경로(연장근무 보강)와 동일한 순서로 맞춘다.
+// 현재 활성 표시에 끌려가지 않고 근무일에 유효했던 기간의 요율만 사용한다.
 export const selectRateVersionForWorkDate = (
   versions: AllowanceRateVersion[],
   workDate: string
 ): AllowanceRateVersion | null => {
-  const targetYear = workDate.slice(0, 4);
-  const activeVersions = versions.filter((item) => item.status === "active");
-
-  return (
-    selectActiveAllowanceRateVersion({
-      targetDate: workDate,
-      versions
-    }) ??
-    activeVersions
-      .filter((item) => String(item.year) === targetYear)
-      .sort((left, right) => right.effectiveFrom.localeCompare(left.effectiveFrom))[0] ??
-    activeVersions.sort((left, right) => right.effectiveFrom.localeCompare(left.effectiveFrom))[0] ??
-    null
-  );
+  return selectApplicableAllowanceRateVersion({targetDate: workDate, versions});
 };
 
 const toRateTable = (workDate: string): {
@@ -131,10 +114,7 @@ const toRateTable = (workDate: string): {
   versionLabel: string;
   rateTable: AllowanceRateTable;
 } | null => {
-  const storedVersions = listStoredAllowanceRateVersions();
-  const versions: AllowanceRateVersion[] =
-    storedVersions.length > 0 ? storedVersions : allowanceRateVersionFixtures;
-  const version = selectRateVersionForWorkDate(versions, workDate);
+  const version = selectRateVersionForWorkDate(listStoredAllowanceRateVersions(), workDate);
 
   if (!version) {
     return null;
@@ -382,6 +362,13 @@ export const runApprovedAllowanceCalculationForApproval = async (
     rateTable: selectedRate.rateTable
   });
   const signature = createAllowanceCalculationSignature(snapshot);
+  if (snapshot.breakdown.totalWorkMinutes > 0 && snapshot.totalAllowanceAmount <= 0) {
+    return {
+      ok: false,
+      errorCode: "ALLOWANCE_RATE_ZERO_AMOUNT",
+      message: "실제 근무시간에 적용할 요율이 모두 0입니다. 요율 관리에서 해당 근무일의 연장·야간 배율을 확인한 뒤 다시 승인해 주세요."
+    };
+  }
   const database = getSqliteDatabase();
   const record: AllowanceCalculationResultRecord = {
     id: snapshot.id,

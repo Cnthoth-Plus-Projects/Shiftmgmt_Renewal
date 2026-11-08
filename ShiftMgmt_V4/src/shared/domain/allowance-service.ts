@@ -14,7 +14,6 @@ import {
 import type { AllowanceCalculationStatus } from "./allowance-workflow";
 import type { EmployeeRank } from "./employee-rank";
 import type { WorkType } from "./model";
-import { roundUpWon } from "./rounding";
 
 export type AllowanceRateTable = AllowanceRateMatrix;
 
@@ -65,9 +64,42 @@ export interface RoundedAllowanceLineAmounts {
 
 type AllowanceCalculationLineDraft = Omit<AllowanceCalculationLine, "amount">;
 
-const toRawAllowanceAmount = (hourlyRate: number, workMinutes: number, multiplier: number) => {
-  const amount = (hourlyRate * workMinutes * multiplier) / 60;
-  return Number.isFinite(amount) && amount > 0 ? amount : 0;
+interface ExactAmount { numerator: bigint; denominator: bigint }
+const gcd = (left: bigint, right: bigint): bigint => {
+  while (right) [left, right] = [right, left % right];
+  return left;
+};
+const reduceAmount = (numerator: bigint, denominator: bigint): ExactAmount => {
+  const divisor = gcd(numerator, denominator);
+  return { numerator: numerator / divisor, denominator: denominator / divisor };
+};
+const decimalFraction = (value: number): ExactAmount => {
+  const [mantissa, exponentText] = Math.abs(value).toString().toLowerCase().split("e");
+  const [whole, fractional = ""] = mantissa!.split(".");
+  const exponent = Number(exponentText ?? 0) - fractional.length;
+  const digits = BigInt(whole! + fractional);
+  return exponent >= 0
+    ? { numerator: digits * 10n ** BigInt(exponent), denominator: 1n }
+    : { numerator: digits, denominator: 10n ** BigInt(-exponent) };
+};
+const toExactAllowanceAmount = (hourlyRate: number, workMinutes: number, multiplier: number): ExactAmount => {
+  const factors = [hourlyRate, workMinutes, multiplier];
+  if (factors.some(value => !Number.isFinite(value) || value === 0) || factors.filter(value => value < 0).length % 2) {
+    return { numerator: 0n, denominator: 1n };
+  }
+  let numerator = 1n, denominator = 60n;
+  for (const factor of factors) {
+    const part = decimalFraction(factor);
+    numerator *= part.numerator;
+    denominator *= part.denominator;
+  }
+  return reduceAmount(numerator, denominator);
+};
+const toSafeWon = (value: bigint) => {
+  if (value > BigInt(Number.MAX_SAFE_INTEGER)) {
+    throw new Error("계산 금액이 정확하게 처리할 수 있는 범위를 넘었습니다. 시급과 요율을 확인해 주세요.");
+  }
+  return Number(value);
 };
 
 export const calculateRoundedAllowanceLineAmounts = (
@@ -75,34 +107,39 @@ export const calculateRoundedAllowanceLineAmounts = (
   lines: AllowanceLineAmountInput[]
 ): RoundedAllowanceLineAmounts => {
   const rawAmounts = lines.map((line) =>
-    toRawAllowanceAmount(hourlyRate, line.workMinutes, line.multiplier)
+    toExactAllowanceAmount(hourlyRate, line.workMinutes, line.multiplier)
   );
-  const totalAmount = roundUpWon(rawAmounts.reduce((sum, amount) => sum + amount, 0));
-  const lineAmounts = rawAmounts.map((amount) => Math.floor(amount));
-  let remainingAmount = totalAmount - lineAmounts.reduce((sum, amount) => sum + amount, 0);
+  const total = rawAmounts.reduce((sum, amount) => reduceAmount(
+    sum.numerator * amount.denominator + amount.numerator * sum.denominator,
+    sum.denominator * amount.denominator
+  ), { numerator: 0n, denominator: 1n });
+  const totalWon = (total.numerator + total.denominator - 1n) / total.denominator;
+  const totalAmount = toSafeWon(totalWon);
+  const lineWon = rawAmounts.map(amount => amount.numerator / amount.denominator);
+  let remainingAmount = totalWon - lineWon.reduce((sum, amount) => sum + amount, 0n);
 
   const allocationOrder = rawAmounts
     .map((amount, index) => ({
       index,
-      fractionalAmount: amount - Math.floor(amount)
+      remainder: amount.numerator % amount.denominator,
+      denominator: amount.denominator
     }))
-    .sort(
-      (left, right) =>
-        right.fractionalAmount - left.fractionalAmount ||
-        left.index - right.index
-    );
+    .sort((left, right) => {
+      const difference = right.remainder * left.denominator - left.remainder * right.denominator;
+      return difference === 0n ? left.index - right.index : difference > 0n ? 1 : -1;
+    });
 
   for (const allocation of allocationOrder) {
-    if (remainingAmount <= 0) {
+    if (remainingAmount <= 0n) {
       break;
     }
 
-    lineAmounts[allocation.index] += 1;
-    remainingAmount -= 1;
+    lineWon[allocation.index] = lineWon[allocation.index]! + 1n;
+    remainingAmount -= 1n;
   }
 
   return {
-    lineAmounts,
+    lineAmounts: lineWon.map(toSafeWon),
     totalAmount
   };
 };

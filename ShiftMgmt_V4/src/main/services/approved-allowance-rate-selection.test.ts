@@ -42,20 +42,25 @@ describe("selectRateVersionForWorkDate", () => {
     );
   });
 
-  it("falls back to a same-year active version when no range covers the date", () => {
+  it("CALC-01: refuses a same-year future version when no range covers the work date", () => {
     const version = makeVersion({
       id: "rate-2026",
       effectiveFrom: "2026-06-01",
       effectiveTo: "2026-12-31"
     });
 
-    // 적용 시작 전 날짜라도 같은 해 활성 버전으로 폴백한다(요율을 못 찾아 0원이 되지 않게).
-    expect(selectRateVersionForWorkDate([version], "2026-02-01")?.id).toBe("rate-2026");
+    expect(selectRateVersionForWorkDate([version], "2026-02-01")).toBeNull();
   });
 
   it("returns null when there is no active version", () => {
     const retired = makeVersion({ id: "rate-retired", status: "retired" });
 
     expect(selectRateVersionForWorkDate([retired], "2026-03-15")).toBeNull();
+  });
+  it("CALC-01: uses an explicitly bounded retired period and never a different-year fallback", () => {
+    const past=makeVersion({id:"past",status:"retired",effectiveFrom:"2026-01-01",effectiveTo:"2026-06-30"});
+    const future=makeVersion({id:"future",year:2027,effectiveFrom:"2027-01-01"});
+    expect(selectRateVersionForWorkDate([past,future],"2026-03-15")?.id).toBe("past");
+    expect(selectRateVersionForWorkDate([future],"2026-03-15")).toBeNull();
   });
 });
