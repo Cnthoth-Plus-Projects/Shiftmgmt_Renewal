@@ -6,6 +6,7 @@ interface ExternalHolidayRow {
   localName?: string;
   name?: string;
   isSubstitute?: boolean;
+  types?: string[];
 }
 
 const normalizeDateText = (value: string) => {
@@ -45,6 +46,7 @@ export const fetchHolidayApiItems = async (input: {
     throw new Error("공휴일을 불러올 연도를 확인해 주세요.");
   }
   const url = resolveHolidayApiUrl(input.baseUrl, input.year);
+  const isDefaultKoreanApi = /^https:\/\/(?:date\.nager\.at|nagerholidays\.com)\/api\/v3\/PublicHolidays\/\d{4}\/KR$/i.test(url);
   const response = await fetch(url, {
     headers: {
       Accept: "application/json"
@@ -70,6 +72,8 @@ export const fetchHolidayApiItems = async (input: {
     }
 
     const row = entry as ExternalHolidayRow;
+    // Nager also returns observances (e.g. Constitution Day before 2026).
+    if (isDefaultKoreanApi && (!Array.isArray(row.types) || !row.types.includes("Public"))) return;
     const holidayDate = row.holidayDate ?? row.date;
     const holidayName = row.localName ?? row.name;
 
@@ -100,7 +104,7 @@ export const fetchHolidayApiItems = async (input: {
   // 기본 Nager 자료는 원 공휴일 또는 대체일을 누락하는 경우가 있다.
   // Google의 한국 공휴일 일정과 합쳐 원 공휴일/대체일을 함께 보존한다.
   // 사용자 지정 JSON API는 기존 계약대로 한 출처만 사용한다.
-  if (/^https:\/\/(?:date\.nager\.at|nagerholidays\.com)\/api\/v3\/PublicHolidays\/\d{4}\/KR$/i.test(url)) {
+  if (isDefaultKoreanApi) {
     const calendarResponse = await fetch(
       "https://calendar.google.com/calendar/ical/ko.south_korea%23holiday%40group.v.calendar.google.com/public/basic.ics",
       { headers: { Accept: "text/calendar" }, signal: AbortSignal.timeout(15_000) }

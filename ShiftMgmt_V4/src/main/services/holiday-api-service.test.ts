@@ -18,14 +18,17 @@ describe("holiday-api-service", () => {
         json: async () => [
           {
             date: "2026-03-01",
+            types: ["Public"],
             localName: "삼일절"
           },
           {
             date: "2026-03-01",
+            types: ["Public"],
             localName: "중복"
           },
           {
             date: "2026-05-05",
+            types: ["Public"],
             name: "어린이날"
           }
         ]
@@ -53,8 +56,8 @@ describe("holiday-api-service", () => {
     const event = (date: string, name: string, description = "공휴일") => `BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:${date}\r\nSUMMARY:${name}\r\nDESCRIPTION:${description}\r\nEND:VEVENT\r\n`;
     const calendar = `BEGIN:VCALENDAR\r\n${event("20270207", "설날")}${event("20271225", "크리스마스")}${event("20271227", "쉬는 날 크리스마스")}${event("20270508", "어버이날", "기념일")}END:VCALENDAR`;
     const fetchMock = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => [
-      { date: "2027-02-06", localName: "설날 연휴" },
-      { date: "2027-12-25", localName: "크리스마스" }
+      { date: "2027-02-06", localName: "설날 연휴", types: ["Public"] },
+      { date: "2027-12-25", localName: "크리스마스", types: ["Public"] }
     ] }).mockResolvedValueOnce({ ok: true, text: async () => calendar });
     vi.stubGlobal("fetch", fetchMock);
     const items = await fetchHolidayApiItems({ baseUrl: "https://date.nager.at/api/v3/PublicHolidays", year: 2027 });
@@ -80,7 +83,17 @@ describe("holiday-api-service", () => {
     { ok: true, text: async () => "invalid" },
     { ok: true, text: async () => "BEGIN:VCALENDAR\r\nEND:VCALENDAR" }
   ])("fails without returning a partial default calendar when supplement is unavailable", async (supplement) => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce({ ok: true, json: async () => [{ date: "2026-01-01", name: "새해" }] }).mockResolvedValueOnce(supplement));
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce({ ok: true, json: async () => [{ date: "2026-01-01", name: "새해", types: ["Public"] }] }).mockResolvedValueOnce(supplement));
     await expect(fetchHolidayApiItems({ baseUrl: "https://date.nager.at/api/v3/PublicHolidays", year: 2026 })).rejects.toThrow("공휴일");
+  });
+
+  it("excludes Nager observances and optional days before combining the public calendar", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce({ ok: true, json: async () => [
+      { date: "2025-01-01", localName: "신정", types: ["Public"] },
+      { date: "2025-07-17", localName: "제헌절", types: ["Observance"] },
+      { date: "2025-05-01", localName: "선택 휴일", types: ["Optional"] }
+    ] }).mockResolvedValueOnce({ ok: true, text: async () => "BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nDTSTART;VALUE=DATE:20250101\r\nDESCRIPTION:공휴일\r\nSUMMARY:새해첫날\r\nEND:VEVENT\r\nEND:VCALENDAR" }));
+    const items = await fetchHolidayApiItems({ baseUrl: "https://date.nager.at/api/v3/PublicHolidays", year: 2025 });
+    expect(items.map(item => item.holidayDate)).toEqual(["2025-01-01"]);
   });
 });
