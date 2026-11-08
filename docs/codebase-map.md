@@ -5,6 +5,8 @@
 
 ## 뿌리
 
+EXE 설치: `build/windows-installer.iss`는 사용자 권한 설치·바로가기·기존 자료 보호·자료를 유지하는 제거를 정의한다. `scripts/package-installer.mjs`는 고정 compiler/기존 ZIP을 검증하고 EXE·별도 해시/빌드 영수증을 생성한다. 기존 설치 검문에 `--setup-exe=`를 주면 실제 EXE의 설치 경로를 검사한다. 앱 실행 파일은 기존 ZIP과 동일하다.
+
 정식 Windows 배포: `scripts/package-windows.mjs`는 Node24·프로덕션 의존성·라이선스·해시 ZIP을 생성한다. `scripts/verify-windows-package.mjs`는 모든 파일을 대조하고 `build/fresh-install.ps1`는 새 PC 설치/바로가기를 담당한다. `scripts/start-installed.mjs`는 설치본 서버·첫 관리자 안내·정상 종료를 담당한다. `scripts/release-install-smoke.mjs`는 TEMP 설치와 실제 Chrome 첫 로그인/거절 검문이다. 사용 안내는 `docs/fresh-install.md`, 버전별 설명은 `docs/release-1.0.3.md`다. `scripts/build-browser.mjs`는 개발 전용 자동입력을 정식 빌드에서 제외한다.
 
 | 파일 | 하는 일 |

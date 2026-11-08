@@ -4,7 +4,9 @@ Windows PC 한 대에서 사용하는 교대근무·실적·수당 관리 프로
 
 인력·근무지 등록 → 근무표 Excel 생성 → 원본 Excel 실적 가져오기 → 실적 검토/승인·수당 계산 → 품의서·별첨1·별첨2 A4 출력 흐름을 제공합니다. 운영 관리에서 계정·요율·양식·폴더·백업 등을 관리하며 시스템/다크 테마를 지원합니다. 실적은 Excel로만 가져오고 승인된 계산은 저장 시점의 정책·금액을 보존합니다.
 
-일반 사용자는 릴리즈의 Windows x64 ZIP을 받아 압축을 풀고 INSTALL.cmd를 실행하면 됩니다. Node가 포함되어 있고 Chrome만 별도로 필요합니다. [새 PC 설치 안내](docs/fresh-install.md), [1.0.3 릴리즈 설명](docs/release-1.0.3.md)을 확인해 주세요. 기존 설치/자료는 덮어쓰지 않으며 자동 업데이트와 기존 PC 데이터 이관은 별도 작업입니다.
+일반 사용자는 릴리즈의 **ShiftMgmt-1.0.3-Setup-x64.exe**를 받아 설치 안내를 따르면 됩니다. Windows x64 ZIP을 풀고 INSTALL.cmd를 실행하는 방식도 계속 지원합니다. Node가 포함되어 있고 Chrome만 별도로 필요합니다. [새 PC 설치 안내](docs/fresh-install.md), [1.0.3 릴리즈 설명](docs/release-1.0.3.md)을 확인해 주세요. 기존 설치/자료는 덮어쓰지 않으며 자동 업데이트와 기존 PC 데이터 이관은 별도 작업입니다.
+
+EXE 설치 마법사는 [Inno Setup](https://jrsoftware.org/)으로 만듭니다. 고정한 공식 compiler와 검증된 기존 ZIP을 사용하며 앱 파일은 변경하지 않습니다. 설치자가 Windows 프로그램 제거를 제공하고 DB·업무 자료는 유지합니다.
 
 개발에는 Windows x64, Node24와 npm, Google Chrome이 필요합니다.
 
