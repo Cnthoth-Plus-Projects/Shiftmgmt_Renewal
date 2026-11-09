@@ -1,5 +1,5 @@
 import type { Stats } from "node:fs";
-import { readdir, stat } from "node:fs/promises";
+import { lstat, readdir, realpath, stat } from "node:fs/promises";
 import path from "node:path";
 
 import type {
@@ -29,6 +29,7 @@ import {
   getStoredPerformanceFileDetailByPath,
   listStoredPerformanceFileDetails,
   countApprovalBackedPerformanceEntries,
+  relinkStoredApprovedPerformanceFilePath,
   upsertPerformanceFileDetail
 } from "./performance-file-storage-service";
 import { buildApprovedPerformanceArchiveDirectory } from "./performance-file-archive-service";
@@ -918,6 +919,53 @@ export const syncPendingPerformanceFilesToStorage = async (input: {
   }
 };
 
+const sourceEntryKeys = (detail: PerformanceFileDetail): string[] | null => {
+  if (!detail.entries.length || detail.entries.some(entry => !entry.sourceSignature || !entry.logicalKey)) return null;
+  return detail.entries.map(entry => JSON.stringify([entry.logicalKey, entry.sourceSignature])).sort();
+};
+
+const reconnectMissingApprovedSource = async (
+  detail: PerformanceFileDetail,
+  approvedRoot: string,
+  filePaths: string[],
+  parsedStats: Stats
+): Promise<boolean> => {
+  if (detail.status === "error") return false;
+  const sourceKeys = sourceEntryKeys(detail);
+  if (!sourceKeys || filePaths.filter(file => path.basename(file).toLowerCase() === detail.fileName.toLowerCase()).length !== 1) return false;
+  try {
+    const [rootPath, sourcePath, sourceStats] = await Promise.all([
+      realpath(approvedRoot), realpath(detail.filePath), lstat(detail.filePath)
+    ]);
+    const relative = path.relative(rootPath, sourcePath);
+    if (!relative || relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative) ||
+      sourceStats.isSymbolicLink() || !sourceStats.isFile() || sourceStats.size !== parsedStats.size ||
+      sourceStats.mtimeMs !== parsedStats.mtimeMs || sourceStats.ctimeMs !== parsedStats.ctimeMs) return false;
+
+    const matches = listStoredPerformanceFileDetails({
+      directoryTypes: ["approved"], statuses: ["approved"], scheduleMonth: detail.scheduleMonth
+    }, { resolveApprovalFields: false, resolveEntryApprovalStatus: false }).filter(old => {
+      if (!old.isEffective || old.fileName.toLowerCase() !== detail.fileName.toLowerCase() ||
+        old.scheduleKey !== detail.scheduleKey || old.siteName !== detail.siteName ||
+        old.fileSize !== detail.fileSize || Math.abs(old.modifiedTimeMs - detail.modifiedTimeMs) > 1) return false;
+      const oldKeys = sourceEntryKeys(old);
+      return oldKeys?.length === sourceKeys.length && oldKeys.every((key, i) => key === sourceKeys[i]);
+    });
+    if (matches.length !== 1) return false;
+    const old = matches[0]!;
+    try {
+      await stat(old.filePath);
+      return false;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") return false;
+    }
+    return relinkStoredApprovedPerformanceFilePath({ fileId: old.id, previousPath: old.filePath, newPath: detail.filePath });
+  } catch {
+    // Unreadable or unsafe paths never qualify as a missing original with a verified replacement.
+    return false;
+  }
+};
+
 export const syncApprovedPerformanceFilesToStorage = async (input: {
   settings: Pick<AppSettings, "pendingDir" | "approvedDir">;
   scheduleMonth?: string;
@@ -944,6 +992,9 @@ export const syncApprovedPerformanceFilesToStorage = async (input: {
       })
     : input.settings.approvedDir;
   const filePaths = (await listFilesRecursive(targetDirectory)).filter(isSupportedPerformanceFile);
+  const relocationFilePaths = input.scheduleMonth
+    ? (await listFilesRecursive(input.settings.approvedDir)).filter(isSupportedPerformanceFile)
+    : filePaths;
   const issues: PerformanceFileSyncIssue[] = [];
   let processedCount = 0;
   let parsedCount = 0;
@@ -988,7 +1039,12 @@ export const syncApprovedPerformanceFilesToStorage = async (input: {
         resolveEntryApprovalStatus: false
       });
 
-      if (existingPathDetail && !input.forceReparse && canReuseStoredDetail(existingPathDetail, fileStats)) {
+      const hasRelocationCandidate = listStoredPerformanceFileDetails({
+        directoryTypes: ["approved"], statuses: ["approved"], scheduleMonth: input.scheduleMonth
+      }, { resolveApprovalFields: false, resolveEntryApprovalStatus: false }).some(old =>
+        old.isEffective && old.filePath.toLowerCase() !== filePath.toLowerCase() && old.fileName.toLowerCase() === path.basename(filePath).toLowerCase()
+      );
+      if (existingPathDetail && !hasRelocationCandidate && !input.forceReparse && canReuseStoredDetail(existingPathDetail, fileStats)) {
         backfillPerformanceApprovalSnapshotSourceSignatures(existingPathDetail);
 
         if (!hasApprovedSnapshotMissingSourceSignature(existingPathDetail.id)) {
@@ -1022,7 +1078,7 @@ export const syncApprovedPerformanceFilesToStorage = async (input: {
         filePath,
         fileStats,
         settings: input.settings,
-        forceReparse: input.forceReparse || Boolean(reusableApprovedDetailMissingSourceSignature)
+        forceReparse: input.forceReparse || hasRelocationCandidate || Boolean(reusableApprovedDetailMissingSourceSignature)
       });
 
       if (!detail) {
@@ -1037,6 +1093,12 @@ export const syncApprovedPerformanceFilesToStorage = async (input: {
       }
 
       try {
+        if (await reconnectMissingApprovedSource(detail, input.settings.approvedDir, relocationFilePaths, fileStats)) {
+          processedCount += 1;
+          parsedCount += 1;
+          updatePerformanceFileSyncState(syncId, { processedCount, parsedCount, message: `${detail.fileName} 승인 원본 연결을 복구했습니다.` });
+          continue;
+        }
         const sourceBackfillDetail = reusableApprovedDetailMissingSourceSignature
           ? {
               id: reusableApprovedDetailMissingSourceSignature.id,

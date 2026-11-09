@@ -3,9 +3,11 @@ import path from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 import type { PerformanceFileDetail } from "../../shared/domain/performance-file";
-import { initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { getSqliteDatabase, initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
 import {
   getStoredPerformanceFileDetail,
+  getStoredPerformanceFileDetailByPath,
+  relinkStoredApprovedPerformanceFilePath,
   listStoredPerformanceFileDetails,
   listStoredPerformanceFileReferences,
   listStoredPendingPerformanceFiles,
@@ -78,6 +80,25 @@ const sampleDetail: PerformanceFileDetail = {
 };
 
 describe("performance-file-storage-service", () => {
+  it("FILE02: path update is guarded by the exact previous pointer and preserves every other stored field", async () => {
+    const fixture = await prepareReturnedScheduleFixture({ rootDir: flowRoot });
+    const pending = await syncPreparedReturnedSchedule(fixture);
+    expect(relinkStoredApprovedPerformanceFilePath({ fileId: pending.id, previousPath: pending.filePath, newPath: "not-allowed" })).toBe(false);
+    for (const entry of pending.entries) expect((await approvePerformanceFile({ fileId: pending.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+    const db = getSqliteDatabase()!;
+    const before = db.prepare("SELECT * FROM performance_files WHERE id = ?").get(pending.id)!;
+    const history = JSON.stringify(["performance_entries", "performance_approvals", "allowance_calculations", "allowance_calculation_items", "allowance_approvals"].map(table => db.prepare(`SELECT * FROM ${table} ORDER BY id`).all()));
+    const input = { fileId: pending.id, previousPath: String(before.file_path), newPath: path.join(flowRoot, "new-pc", pending.fileName) };
+    expect(relinkStoredApprovedPerformanceFilePath({ ...input, previousPath: "stale-pointer" })).toBe(false);
+    expect(relinkStoredApprovedPerformanceFilePath(input)).toBe(true);
+    expect(relinkStoredApprovedPerformanceFilePath(input)).toBe(false);
+    expect(db.prepare("SELECT * FROM performance_files WHERE id = ?").get(pending.id)).toEqual({ ...before, file_path: input.newPath });
+    expect(JSON.stringify(["performance_entries", "performance_approvals", "allowance_calculations", "allowance_calculation_items", "allowance_approvals"].map(table => db.prepare(`SELECT * FROM ${table} ORDER BY id`).all()))).toBe(history);
+    upsertPerformanceFileDetail({ ...pending, id: "inactive-copy", filePath: input.newPath, duplicateKey: "new-copy", receivedAt: "2099-01-01T00:00:00Z", entries: [] });
+    db.prepare("UPDATE performance_files SET directory_type = 'approved' WHERE id = 'inactive-copy'").run();
+    expect(getStoredPerformanceFileDetailByPath(input.newPath, "approved")?.id).toBe(pending.id);
+  });
+
   afterEach(() => {
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();

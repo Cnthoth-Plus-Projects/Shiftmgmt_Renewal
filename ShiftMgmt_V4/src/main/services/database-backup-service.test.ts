@@ -31,9 +31,10 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 });
 
 import type { JsonDatabaseBackupSummary } from "../../shared/bridge/contracts";
-import { saveStoredAppSettings } from "./app-settings-storage-service";
+import { getStoredAppSettingsSnapshot, saveStoredAppSettings } from "./app-settings-storage-service";
 import { runDatabaseBackupNow } from "./database-backup-service";
-import { initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
+import { checkDatabaseMigrationRequirements, previewDatabaseMigrationUpdate, runDatabaseMigrationUpdate } from "./database-migration-service";
+import { getSqliteDatabase, initializeSqliteStorage, resetSqliteStorageForTest } from "./sqlite-storage-service";
 
 const testRoot = path.resolve(process.cwd(), "artifacts", "tests", "database-backup");
 const dataDir = path.resolve(testRoot, "data");
@@ -49,6 +50,47 @@ describe("database-backup-service", () => {
     mockWriteFailure = null;
     resetSqliteStorageForTest();
     rmSync(testRoot, { recursive: true, force: true });
+  });
+
+  it("MIG-03: fresh settings-free backup and automatic pre-restore backup can both actually restore", async () => {
+    const context = { userDataPath, env };
+    initializeSqliteStorage(context);
+    const before = getStoredAppSettingsSnapshot(context);
+    const first = await runDatabaseBackupNow(context);
+    const bytes = readFileSync(first.jsonBackupPath);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) AS n FROM app_setting_entries").get()).toMatchObject({ n: 0 });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: first.jsonBackupPath }).isReady).toBe(true);
+    const preview = previewDatabaseMigrationUpdate({ ...context, backupFilePath: first.jsonBackupPath });
+    const restored = await runDatabaseMigrationUpdate({ ...context, backupFilePath: first.jsonBackupPath, backupSha256: preview.backupSha256, previewToken: preview.previewToken, confirmationText: "교체" });
+    expect(getStoredAppSettingsSnapshot(context)).toMatchObject({
+      scheduleConsecutiveNightLimit: before.scheduleConsecutiveNightLimit,
+      scheduleMinimumRestMinutes: before.scheduleMinimumRestMinutes,
+      scheduleRequireWeeklyHoliday: before.scheduleRequireWeeklyHoliday,
+      scheduleWeeklyMaxMinutes: before.scheduleWeeklyMaxMinutes,
+      substituteAllowancePolicyEffectiveFrom: before.substituteAllowancePolicyEffectiveFrom,
+      changedSlotPriorityEffectiveFrom: before.changedSlotPriorityEffectiveFrom
+    });
+    const automatic = restored.backupBeforeRestore.jsonBackupPath;
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: automatic }).isReady).toBe(true);
+    const recovery = previewDatabaseMigrationUpdate({ ...context, backupFilePath: automatic });
+    await runDatabaseMigrationUpdate({ ...context, backupFilePath: automatic, backupSha256: recovery.backupSha256, previewToken: recovery.previewToken, confirmationText: "교체" });
+    expect(readFileSync(first.jsonBackupPath).equals(bytes)).toBe(true);
+    expect(getSqliteDatabase()!.prepare("PRAGMA integrity_check").get()).toMatchObject({ integrity_check: "ok" });
+  });
+
+  it("MIG-03: snapshot fills only missing business defaults without persisting or overwriting stored rules", async () => {
+    const context = { userDataPath, env };
+    initializeSqliteStorage(context);
+    const database = getSqliteDatabase()!;
+    database.prepare("INSERT INTO app_setting_entries (setting_key,value,updated_at) VALUES (?,?,?)").run("schedule_weekly_max_minutes", "2340", "2026-01-01T00:00:00.000Z");
+    const before = database.prepare("SELECT * FROM app_setting_entries").all();
+    const result = await runDatabaseBackupNow(context);
+    const parsed = JSON.parse(readFileSync(result.jsonBackupPath, "utf8"));
+    const rules = parsed.tables.app_setting_entries as Array<{ setting_key: string; value: string; updated_at: string }>;
+    expect(rules).toHaveLength(6);
+    expect(rules.find(row => row.setting_key === "schedule_weekly_max_minutes")).toEqual(before[0]);
+    expect(database.prepare("SELECT * FROM app_setting_entries").all()).toEqual(before);
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: result.jsonBackupPath }).isReady).toBe(true);
   });
 
   it("should write a single JSON backup file with 43 tables, row count, and verified SHA-256 (J1, N8)", async () => {

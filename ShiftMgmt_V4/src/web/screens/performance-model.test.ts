@@ -248,6 +248,24 @@ describe("performance-model", () => {
       density: "normal"
     };
 
+    it("FILE04: a selected work date shows only that date inside the selected month", () => {
+      const selected = { ...baseFilter, workDate: "2026-05-01" };
+      expect(matchPerformanceRow(createMockRow(), selected)).toBe(true);
+      const nextDay = createMockRow({ entry: { ...createMockRow().entry, workDate: "2026-05-02" } });
+      expect(matchPerformanceRow(nextDay, selected)).toBe(false);
+    });
+
+    it("FILE04: clearing the work date restores other days in the month", () => {
+      const selected = { ...baseFilter, workDate: "" };
+      const nextDay = createMockRow({ entry: { ...createMockRow().entry, workDate: "2026-05-02" } });
+      expect(matchPerformanceRow(nextDay, selected)).toBe(true);
+    });
+
+    it("FILE04: work dates are searchable without knowing an employee or filename", () => {
+      expect(matchPerformanceRow(createMockRow(), { ...baseFilter, searchQuery: "2026-05-01" })).toBe(true);
+      expect(matchPerformanceRow(createMockRow(), { ...baseFilter, searchQuery: "2026-05-02" })).toBe(false);
+    });
+
     it("근무지 필터가 동작한다", () => {
       const row = createMockRow({
         entry: { ...createMockRow().entry, siteName: "인천센터" }

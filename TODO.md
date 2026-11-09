@@ -1,5 +1,35 @@
 # TODO — 현재 실행 계획
 
+## 2026-11-09 REL-1.0.4 — 이관 패치 포함 EXE 정식 릴리즈
+
+- [ ] **REL-1.0.4** 사용자명시승인. 기존검증이관패치를포함한1.0.4 소스커밋/푸시·새태그·ZIP/EXE빌드·격리실설치/JSON39표/승인원본/Chrome검증·정식공개·익명다운로드SHA대조. Sol직접/Gemini최초0·재시도0·누적0.
+- 허용제품6경로: VERSION,package.json,package-lock.json,docs/release-1.0.4.md,docs/fresh-install.md,README.md(ShiftMgmt_V4 아래). 이전14검증제품변경은그대로포함/보존. 산식·DB스키마·의존성·실운영자료·기존1.0.3 태그/10첨부변경금지. root TODO/장부/HANDOFF/새Log와전용TEMP증거허용.
+- 사용자추가승인: 바로가기실행시공식릴리즈자동확인/다운로드/별도버전검증/정상기동후전환,실패시기존판유지. 추가허용4경로 scripts/lib/installed-update.mjs,scripts/start-installed.mjs,scripts/package-windows.mjs,src/main/services/windows-release.test.ts. 업데이트중DB변경/구판자동DB롤백없음.
+- R10401~07,신규소스정본 clean checkout에서기존release:check 전체1회약8분/빌드/지도/서비스검사,기존실설치17검문·설치본계산/A4/JSON이관을우선재사용. 총30~50분초기추정. 사용자의실제JSON/대상PC검증은배포후사용자진행.
+
+
+## 2026-11-09 MIGRATION-APPROVED-FILE-FLOW-01 — 사용자 기대 흐름 확정
+
+- [x] **MIGRATION-APPROVED-FILE-FLOW-01** 새PC승인완료원본연결·근무일필터 구현·기술검수완료. 허용9경로/FILE01~06 PASS,Sol직접/Gemini최초0·재시도0·누적0.
+- 구PC경로부재조건의실제0.5.8 시험자료로유일한보관본연결·승인3건466050원·실적/금융6표원문과ID보존·월3건/근무일1건/날짜해제/월연동/원본열기HTTP확인. OS열기요청경계캡처(실제Excel앱실행미실시). 모호/불일치/접근거부/폴더밖링크/파일변경/경합차단. 새전체1624/160 PASS1회(476266ms)·집중104/5·타입/규칙기존경고3/지도261/서비스89/빌드PASS. 제품540중9변경·531바이트보존. 기존공개EXE미반영·실제운영JSON/대상PC미검증. 증거 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-approved-file-P6egfo.
+
+
+## 2026-11-09 MIGRATION-COMPAT-FIX-01 — 사용자 승인·구현
+
+- [x] **MIGRATION-COMPAT-FIX-01** MIG-01/02/03 구현·기술검수완료. 원본39표무편집·구판표식변환·첫/자동백업실복구,Sol직접/Gemini최초0·재시도0·누적0.
+- 허용6경로: database-migration-service.ts/.test.ts, database-backup-service.ts/.test.ts(모두src/main/services), scripts/verify-v3-json-migration.mjs, docs/fresh-install.md(모두ShiftMgmt_V4). 승인/계산/감사원문·산식·시급/요율·스키마·의존성·실운영자료·공개1.0.3 보존.
+- FIX01~08: 실제39표+marker호환,첫설치/교체전백업복구,엄격음성/롤백,원본JSON/SHA/표/승인금액/계정/새JSON왕복,내장근무표양식1·2와A4문서3종,실제Chrome교체,타입/규칙/지도/빌드/전체,외부파일안내와실운영백업부재구분.
+- 결과: 제품540중허용6변경·534바이트보존,새전체1607/160 PASS(1회464.692초)·집중86/5·타입/규칙(기존경고3)/지도261/서비스89/빌드PASS. 실제구판JSON39표/승인3건466050원/새JSON왕복/자동백업실복구/기존로그인/Chrome7/내장근무표2·A4문서3·미승인시급14100→14200재읽기(자동승인0)확인. 원본Excel사본SHA·재승인3차단은통과,활성경로연결/날짜조회는사용자기대에맞춰다음leaf검증/보완. 공개EXE아직미반영,실제운영JSON/대상PC미검증. 증거 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-migration-fix-l5tPUk.
+
+
+## 2026-11-09 MIGRATION-READINESS-01 — 기존 ShiftMS JSON 이관 최종검증 준비
+
+- [x] **MIGRATION-READINESS-01** 준비·사전검증 완료, 실제이관은NOT_READY. 사용자확정0.5.8 태그 e390e4ca741b767e871cd10e397132b3eb441933 → 공개1.0.3 ceb66933c1af03a9331e611d254384aa6452c9b4. main0.4.24는초기탐색만/판정제외. Sol 직접, Gemini 최초0·재시도0·누적0.
+- 제품 변경0·실운영 DB/원본백업/기존릴리즈 변경0. 허용: TODO/장부/HANDOFF·새Log와전용TEMP source사본/시험/근거. 제품수정·릴리즈·실제PC교체는이번범위아님.
+- M01 원본버전/JSON계약, M02 표/관계/필드, M03 승인금액/월합계/이력불변, M04 새PC경로/외부파일, M05 계정/복구, M06 불량/변조/실패롤백, M07 공개설치본실행/화면, M08 실제운영백업가능여부를구분해판정.
+- 결과: 원본39표→필수신규표누락거절(MIG-01), 구판재분석표식거절(MIG-02), 새설치기본설정미저장백업의필수6정책누락(MIG-03). 진단용사본만2차이처리시38업무표·승인3건466050원·시급감사·기존계정·재시작·새JSON3왕복·A4문서3종보존. 새관련77/5통과(사전1시험중복), 실제Chrome거절2재현/사후판독보정근거별도. 제품540변경0, 새전체실행0. 정본HANDOFF, 증거 C:\Users\hacke\AppData\Local\Temp\shiftmgmt-json-migration-Hwt9HA. 실제자료/대상PC미검증. 호환패치는제안단계.
+
+
 ## 2026-11-09 REL-EXE-01 — Windows EXE 설치 파일
 
 - [x] **REL-EXE-01** — 설치 마법사·바로가기·Windows 제거 기능 구현·검증·추가 배포 완료. https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe 기존1.0.3 ZIP/태그/6첨부 보존, 앱동일2683파일.
@@ -93,7 +123,7 @@
 
 - Plan: **PLAN-20261026-01** / 사용자 요청 반영: 2026-10-26T10:39:35.851991+09:00
 
-- **현재: REL-EXE-01 EXE 구현·설치/계산/제거 검증·공개다운로드 확인 완료. 새PC에서 EXE 설치 후 REL-03 사용자 운영확인 대기.**
+- **현재: REL-1.0.4 사용자승인정식릴리즈진행. 이관패치포함설치본검증후공개,실제운영JSON과대상PC는사용자검증예정.**
 
 - **사용자 안내 기준:** 대화의 승인·선택 요청과 프로그램 안내 모두 필요한 이유, 선택별 결과, 실제 데이터 영향, 권장 이유와 다음 행동을 쉬운 말로 설명한다. 현재 W09에 반영하고 다른 메뉴는 해당 Task 범위에서 적용한다.
 

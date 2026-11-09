@@ -41,6 +41,7 @@ try {
   run(process.execPath, [npmCli, "run", "build"], root, { ...process.env, SHIFTMGMT_DEVELOPMENT_PREVIEW: "0" });
   for (const file of ["VERSION", "package.json", "package-lock.json", "dist/server", "dist/browser", "scripts/start-installed.mjs", "scripts/verify-windows-package.mjs", "scripts/lib/find-chrome.mjs", "scripts/windows-dialog.ps1"]) copy(file);
   copy("build/install.cmd", "INSTALL.cmd");
+  copy("scripts/lib/installed-update.mjs");
   copy("src/renderer/assets/brand-logo-clean.png", "dist/assets/brand-logo-clean.png");
   copy("build/start.cmd", "START.cmd");
   copy("build/fresh-install.ps1", "scripts/fresh-install.ps1");
@@ -73,7 +74,8 @@ try {
     return { path: member, bytes: bytes.length, sha256: sha256(bytes) };
   });
   const sourceCommit = git(["rev-parse", "HEAD"]);
-  const manifest = { schemaVersion: 1, version, platform: "win32", arch: "x64", nodeVersion: process.version, sourceCommit, files };
+  const autoUpdate = { protocolVersion: 1, dataCompatibility: sha256(Buffer.from(readFileSync(path.join(root, "src/main/services/sqlite-storage-service.ts"), "utf8").replace(/\r\n/g, "\n"))) };
+  const manifest = { schemaVersion: 1, version, platform: "win32", arch: "x64", nodeVersion: process.version, sourceCommit, autoUpdate, files };
   writeFileSync(path.join(stage, "PACKAGE_MANIFEST.json"), JSON.stringify(manifest, null, 2) + "\n");
   verifyPackage(stage);
   if (git(["status", "--porcelain"])) throw new Error("작업 중 소스가 변경되었습니다. 배포물을 만들지 않습니다.");
@@ -82,7 +84,7 @@ try {
   const zipPath = path.join(output, `${name}.zip`);
   run("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", "Compress-Archive -LiteralPath $env:SHIFTMGMT_ZIP_SOURCE -DestinationPath $env:SHIFTMGMT_ZIP_DEST -CompressionLevel Optimal"], work, { ...process.env, SHIFTMGMT_ZIP_SOURCE: stage, SHIFTMGMT_ZIP_DEST: zipPath });
   const zipBytes = readFileSync(zipPath);
-  const releaseManifest = { version, headline: "교대근무관리 시스템 첫 정식 릴리즈", summary: "새 PC 첫 설치용 Windows x64 배포", required: false, requiresDbBackup: true, publishedAt: new Date().toISOString(), notes: ["Node 실행 환경 포함. Google Chrome은 별도 설치가 필요합니다.", "기존 프로그램이나 데이터가 있으면 덮어쓰지 않습니다.", "품의서·별첨1·별첨2는 A4 출력, 근무표는 Excel 파일로 생성합니다.", "자동 업데이트와 기존 PC 이관은 이번 설치 패키지에서 제공하지 않습니다."] };
+  const releaseManifest = { version, headline: `교대근무관리 시스템 ${version}`, summary: "JSON 이관 및 실행 시 자동업데이트", required: false, requiresDbBackup: true, autoUpdate, publishedAt: new Date().toISOString(), notes: ["Node 실행 환경 포함. Google Chrome은 별도 설치가 필요합니다.", "기존 프로그램이나 데이터가 있으면 덮어쓰지 않습니다.", "품의서·별첨1·별첨2는 A4 출력, 근무표는 Excel 파일로 생성합니다.", "바로가기 실행 시 호환되는 새 정식 버전을 자동으로 확인·검증해 적용합니다. 구판 자료는 JSON 복원으로 이관합니다."] };
   writeFileSync(path.join(output, "RELEASE_MANIFEST.json"), JSON.stringify(releaseManifest, null, 2) + "\n");
   writeFileSync(path.join(output, "SHA256SUMS.txt"), `${sha256(zipBytes)}  ${path.basename(zipPath)}\n`);
   writeFileSync(path.join(output, "BUILD_RECEIPT.json"), JSON.stringify({ version, sourceCommit, productTree: git(["rev-parse", "HEAD:ShiftMgmt_V4"]), nodeVersion: process.version, nodeSha256: official, lockSha256: sha256(readFileSync(path.join(root, "package-lock.json"))), files: files.length, zip: path.basename(zipPath), zipBytes: zipBytes.length, zipSha256: sha256(zipBytes), builtAt: new Date().toISOString() }, null, 2) + "\n");

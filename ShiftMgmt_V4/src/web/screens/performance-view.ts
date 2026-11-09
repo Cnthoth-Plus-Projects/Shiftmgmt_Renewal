@@ -116,6 +116,11 @@ export function renderPerformanceToolbar(
       </div>
 
       <div class="perf-control-group">
+        <label for="perf-filter-date" class="perf-control-label">근무일</label>
+        <input type="date" id="perf-filter-date" class="perf-input" value="${escapeHtml(filter.workDate ?? "")}" aria-label="근무일 선택">
+      </div>
+
+      <div class="perf-control-group">
         <label for="perf-filter-site" class="perf-control-label">근무지</label>
         <select id="perf-filter-site" class="perf-select" aria-label="근무지 필터">
           ${sitesOptions}
@@ -142,7 +147,7 @@ export function renderPerformanceToolbar(
 
       <div class="perf-control-group">
         <label for="perf-filter-search" class="perf-control-label">검색</label>
-        <input type="text" id="perf-filter-search" class="perf-input perf-search-input" placeholder="사번, 이름, 파일명, 사유..." value="${escapeHtml(
+        <input type="text" id="perf-filter-search" class="perf-input perf-search-input" placeholder="사번, 이름, 근무일, 파일명, 사유..." value="${escapeHtml(
           filter.searchQuery
         )}" aria-label="실적 검색">
       </div>
@@ -181,6 +186,11 @@ export function renderPerformanceToolbar(
   const monthInput = container.querySelector<HTMLInputElement>("#perf-filter-month");
   monthInput?.addEventListener("change", () => {
     callbacks.onFilterChange({ scheduleMonth: monthInput.value });
+  });
+
+  // 근무지 변경
+  container.querySelector<HTMLInputElement>("#perf-filter-date")?.addEventListener("change", event => {
+    callbacks.onFilterChange({ workDate: (event.target as HTMLInputElement).value });
   });
 
   // 근무지 변경

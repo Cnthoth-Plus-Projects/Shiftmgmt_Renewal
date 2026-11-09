@@ -58,6 +58,7 @@ export class PerformanceScreen {
 
   // 상태 (D02: approvalScope 기본값 pending)
   private filter: PerformanceFilterState = {
+    workDate: "",
     scheduleMonth: "",
     siteName: "all",
     section: "all",
@@ -290,8 +291,13 @@ export class PerformanceScreen {
         this.voidSafeLoadData();
       },
       onFilterChange: changed => {
+        const previousMonth = this.filter.scheduleMonth;
+        if (changed.workDate) changed.scheduleMonth = changed.workDate.slice(0, 7);
+        if (changed.scheduleMonth !== undefined && (changed.workDate ?? this.filter.workDate)?.slice(0, 7) !== changed.scheduleMonth) {
+          changed.workDate = "";
+        }
         Object.assign(this.filter, changed);
-        if (changed.scheduleMonth !== undefined || changed.approvalScope !== undefined) {
+        if (this.filter.scheduleMonth !== previousMonth || changed.approvalScope !== undefined) {
           this.applyFilterAndRender(false);
           this.voidSafeLoadData();
         } else {
@@ -491,7 +497,7 @@ export class PerformanceScreen {
     if(!res.ok || !res.data) { await this.actionManager.promptNotice("원본 조회 실패",!res.ok?res.message:"파일을 찾을 수 없습니다. 다시 조회해 주세요.");return; }
     if(file.scheduleMonth)this.filter.scheduleMonth=file.scheduleMonth;
     if(file.siteName)this.filter.siteName=file.siteName;
-    this.filter.section="all";this.filter.statusFilter="all";this.filter.searchQuery="";
+    this.filter.section="all";this.filter.statusFilter="all";this.filter.searchQuery="";this.filter.workDate="";
     await this.loadData();
     if(this.isDestroyed)return;
     const row=this.filteredRows.find(r=>r.fileId===file.id);

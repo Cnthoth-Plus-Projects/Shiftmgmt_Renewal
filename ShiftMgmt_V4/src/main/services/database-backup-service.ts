@@ -108,6 +108,29 @@ const buildJsonBackupSnapshot = (input: {
   };
 };
 
+// 첫 설정 저장 전에도 복원 가능한 스냅샷을 만든다. 기본값은 JSON에만
+// 보완하므로 백업 중 운영 DB 지문이 바뀌거나 저장된 업무 규칙이 덮이지 않는다.
+const completeBusinessSettingSnapshot = (
+  snapshots: BackupTableSnapshot[],
+  settings: AppSettingsSnapshot,
+  createdAt: string
+) => {
+  const snapshot = snapshots.find(table => table.name === "app_setting_entries");
+  if (!snapshot) throw new Error("업무 설정 표를 찾을 수 없어 백업을 중단했습니다.");
+  const defaults: Record<string, string> = {
+    schedule_consecutive_night_limit: String(settings.scheduleConsecutiveNightLimit),
+    schedule_minimum_rest_minutes: String(settings.scheduleMinimumRestMinutes),
+    schedule_require_weekly_holiday: String(settings.scheduleRequireWeeklyHoliday),
+    schedule_weekly_max_minutes: String(settings.scheduleWeeklyMaxMinutes),
+    substitute_allowance_policy_effective_from: settings.substituteAllowancePolicyEffectiveFrom ?? "",
+    changed_slot_priority_effective_from: settings.changedSlotPriorityEffectiveFrom ?? ""
+  };
+  const keys = new Set(snapshot.rows.map(row => row.setting_key));
+  for (const [key, value] of Object.entries(defaults)) {
+    if (!keys.has(key)) snapshot.rows.push({ setting_key: key, value, updated_at: createdAt });
+  }
+};
+
 const reservedBackupPaths = new Set<string>();
 
 const claimAndPublishBackupFile = async (
@@ -187,6 +210,7 @@ export const runDatabaseBackupNow = async (input: {
   const timestamp = getTimestampSegment();
   const createdAt = new Date().toISOString();
   const tableSnapshots = listBackupTableSnapshots();
+  completeBusinessSettingSnapshot(tableSnapshots, settings, createdAt);
   const jsonDir = path.resolve(settings.databaseBackupDir, "json");
   const tempJsonPath = path.resolve(jsonDir, `.tmp-${Date.now()}-${randomUUID()}.json`);
 

@@ -56,6 +56,7 @@ export type DensityMode = "normal" | "compact" | "spacious";
 
 export interface PerformanceFilterState {
   scheduleMonth: string;
+  workDate?: string;
   siteName: string;
   section: PerformanceEntrySection | "all";
   approvalScope: PerformanceApprovalScope;
@@ -234,6 +235,8 @@ export function matchPerformanceRow(
     }
   }
 
+  if (filter.workDate && row.entry.workDate !== filter.workDate) return false;
+
   // 1. 근무지 필터
   if (filter.siteName && filter.siteName !== "all") {
     if (row.entry.siteName !== filter.siteName) {
@@ -290,6 +293,7 @@ export function matchPerformanceRow(
       !name.includes(q) &&
       !file.includes(q) &&
       !reason.includes(q) &&
+      !(row.entry.workDate || "").includes(q) &&
       !team.includes(q)
     ) {
       return false;

@@ -13,9 +13,251 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-03",
-  "executingTaskId": null,
+  "nextTaskId": "REL-1.0.4",
+  "executingTaskId": "REL-1.0.4",
   "tasks": [
+    {
+      "id": "REL-1.0.4",
+      "title": "1.0.4 이관 패치 EXE 정식 릴리즈",
+      "status": "IN_PROGRESS",
+      "stage": "AUTO_UPDATE_IMPLEMENTATION_BEFORE_RELEASE",
+      "authorization": "설치해서 진행하자.1.0.4 버전을 릴리즈하고 내가 그 파일을 설치 후 json 파일 제대로 불러오는지 검증해볼께",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "allowlist": [
+        "ShiftMgmt_V4/VERSION",
+        "ShiftMgmt_V4/package.json",
+        "ShiftMgmt_V4/package-lock.json",
+        "ShiftMgmt_V4/docs/release-1.0.4.md",
+        "ShiftMgmt_V4/docs/fresh-install.md",
+        "ShiftMgmt_V4/README.md",
+        "ShiftMgmt_V4/scripts/lib/installed-update.mjs",
+        "ShiftMgmt_V4/scripts/start-installed.mjs",
+        "ShiftMgmt_V4/scripts/package-windows.mjs",
+        "ShiftMgmt_V4/src/main/services/windows-release.test.ts"
+      ],
+      "checks": [
+        "R10401_SOURCE_VERSION_AND_PRIOR_PROOF",
+        "R10402_CLEAN_COMMIT_BUILD_RELEASE_CHECK",
+        "R10403_ZIP_AND_EXE_BOUND_SOURCE",
+        "R10404_ACTUAL_INSTALL_STARTUP_RESTART_GUARDS",
+        "R10405_INSTALLED_NATIVE39_JSON_APPROVED_FILES_UI",
+        "R10406_PUBLISH_SOURCE_TAG_ASSETS_ANONYMOUS_SHA",
+        "R10407_STARTUP_AUTO_UPDATE_OFFLINE_HASH_ROLLBACK"
+      ],
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-release-104-6iYE9F",
+      "startedAt": "2026-11-09T03:11:33.654Z",
+      "additionalAuthorization": "그리고 업데이트 시 마다 일일히 깃허브 연결해서 업데이트 하지 않고 해당 html 파일 실행하면 자동업데이트 내려받고 업데이트 되도록 할수있으면 해줘."
+    },
+    {
+      "id": "MIGRATION-APPROVED-FILE-FLOW-01",
+      "title": "새 PC 승인완료 원본 연결과 근무일 조회·필터",
+      "status": "DONE",
+      "stage": "TECHNICALLY_ACCEPTED_APPROVED_SOURCE_AND_DATE_FLOW",
+      "authorization": "과거 원본파일은 승인완료 폴더로 이동되어 해당 날짜를 조회 및 필터링하면 확인할 수 있어야 하는거 아니야?",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "allowlist": [
+        "ShiftMgmt_V4/src/main/services/performance-file-intake-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-intake-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-storage-service.ts",
+        "ShiftMgmt_V4/src/main/services/performance-file-storage-service.test.ts",
+        "ShiftMgmt_V4/src/web/screens/performance-model.ts",
+        "ShiftMgmt_V4/src/web/screens/performance-model.test.ts",
+        "ShiftMgmt_V4/src/web/screens/performance-view.ts",
+        "ShiftMgmt_V4/src/web/screens/performance.ts",
+        "ShiftMgmt_V4/docs/fresh-install.md"
+      ],
+      "goal": "구PC 원본경로가없는실제새PC조건에서승인완료사본을검증해기존승인기록에연결하고근무월/근무일필터와원본열기를검증한다. 승인/금액/감사원문은변경하지않고모호·불일치·읽기불가파일은자동선택하지않는다.",
+      "checks": [
+        "FILE01_NEW_PC_MISSING_OLD_PATH_REPRO",
+        "FILE02_UNIQUE_VERIFIED_SOURCE_RELINK",
+        "FILE03_MISMATCH_AMBIGUOUS_ACCESS_GUARDS",
+        "FILE04_MONTH_AND_WORK_DATE_FILTER",
+        "FILE05_ACTUAL_UI_AND_ORIGINAL_OPEN",
+        "FILE06_FULL_AFFECTED_CHECKS_AND_FINANCE_INVARIANCE"
+      ],
+      "actualPcMigrated": false,
+      "startedAt": "2026-11-09T02:38:07.370Z",
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-approved-file-P6egfo",
+      "estimate": "1~2h initial estimate; existing full1607 proof retained, changed file intake/storage/date UI requires focused and new full suite (~8min)",
+      "completedAt": "2026-11-09T03:06:43.902Z",
+      "technicalAccepted": true,
+      "checkResults": {
+        "FILE01_NEW_PC_MISSING_OLD_PATH_REPRO": "PASS",
+        "FILE02_UNIQUE_VERIFIED_SOURCE_RELINK": "PASS",
+        "FILE03_MISMATCH_AMBIGUOUS_ACCESS_GUARDS": "PASS",
+        "FILE04_MONTH_AND_WORK_DATE_FILTER": "PASS",
+        "FILE05_ACTUAL_UI_AND_ORIGINAL_OPEN": "PASS",
+        "FILE06_FULL_AFFECTED_CHECKS_AND_FINANCE_INVARIANCE": "PASS"
+      },
+      "candidateHash": "D433C71B8AA4C6418069443C66602E28FC026AA3679BC078B59BF5777F2DB74E",
+      "fullRunCount": 1,
+      "newExeBuilt": false,
+      "newReleasePublished": false,
+      "evidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-approved-file-P6egfo\\assessment.json",
+        "bytes": 2663,
+        "sha256": "B46F9F5F26D64FCCE8B1CCF1BC228B9B1E635DD425DDE71FDAEBEEF92D602D10"
+      }
+    },
+    {
+      "id": "MIGRATION-COMPAT-FIX-01",
+      "title": "0.5.8 JSON 호환·첫 백업 복구 패치와 실제 이관 검증",
+      "status": "DONE",
+      "stage": "TECHNICALLY_ACCEPTED_THREE_FIXES_FILE_FLOW_CONTINUES",
+      "authorization": "사용자 오케이 작업 진행하자",
+      "allowlist": [
+        "ShiftMgmt_V4/src/main/services/database-migration-service.ts",
+        "ShiftMgmt_V4/src/main/services/database-migration-service.test.ts",
+        "ShiftMgmt_V4/src/main/services/database-backup-service.ts",
+        "ShiftMgmt_V4/src/main/services/database-backup-service.test.ts",
+        "ShiftMgmt_V4/scripts/verify-v3-json-migration.mjs",
+        "ShiftMgmt_V4/docs/fresh-install.md"
+      ],
+      "checks": [
+        "FIX01_LEGACY39_AND_MARKER_COMPAT",
+        "FIX02_FRESH_AND_PRE_RESTORE_BACKUP_RECOVERY",
+        "FIX03_STRICT_NEGATIVE_ROLLBACK",
+        "FIX04_NATIVE_JSON_FINANCIAL_AUTH_ROUNDTRIP",
+        "FIX05_BUILTIN_SCHEDULE1_2_AND_A4",
+        "FIX06_REAL_CHROME_RESTORE",
+        "FIX07_FULL_REQUIRED_CHECKS",
+        "FIX08_EXTERNAL_FILES_GUIDE_AND_REAL_DATA_GAP"
+      ],
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-migration-fix-l5tPUk",
+      "startedAt": "2026-11-09T01:57:32.182Z",
+      "actualOperationalBackupProvided": false,
+      "actualPcMigrated": false,
+      "completedAt": "2026-11-09T02:35:38.757Z",
+      "technicalAccepted": true,
+      "checkResults": {
+        "FIX01_LEGACY39_AND_MARKER_COMPAT": "PASS",
+        "FIX02_FRESH_AND_PRE_RESTORE_BACKUP_RECOVERY": "PASS",
+        "FIX03_STRICT_NEGATIVE_ROLLBACK": "PASS",
+        "FIX04_NATIVE_JSON_FINANCIAL_AUTH_ROUNDTRIP": "PASS",
+        "FIX05_BUILTIN_SCHEDULE1_2_AND_A4": "PASS",
+        "FIX06_REAL_CHROME_RESTORE": "PASS",
+        "FIX07_FULL_REQUIRED_CHECKS": "PASS",
+        "FIX08_EXTERNAL_FILES_GUIDE_AND_REAL_DATA_GAP": "GUIDE_AND_COPY_GUARDS_VERIFIED; ACTIVE_APPROVED_PATH_RELINK_NEXT_TASK; ACTUAL_DATA_NOT_PROVIDED"
+      },
+      "evidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-migration-fix-l5tPUk\\assessment.json",
+        "bytes": 5038,
+        "sha256": "36CFACCEF8EA4F029E1718B238E8051D2D70E611ADC44169D7682B8E216C248B"
+      },
+      "fullRunCount": 1,
+      "candidateHash": "9BE644ADA0164467FF9794A745E2267B26B2EB1F202CA9E3870F14E983172524",
+      "newExeBuilt": false,
+      "newReleasePublished": false
+    },
+    {
+      "id": "MIGRATION-READINESS-01",
+      "title": "기존 ShiftMS JSON 마이그레이션 호환성 최종검증 준비",
+      "status": "DONE",
+      "stage": "PREPARATION_COMPLETE_MIGRATION_NOT_READY",
+      "owner": "Sol",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      },
+      "startedAt": "2026-11-09T00:56:19.685Z",
+      "authorization": "JSON으로 기존ShiftMS에서새교대근무시스템으로 레고처럼맞물리는마이그레이션인지최종테스트준비",
+      "allowlist": [
+        "TODO.md",
+        ".ai/task-plan.json",
+        "HANDOFF.md",
+        "new Log entry",
+        "ignored .jh-artifacts/migration-readiness-*",
+        "dedicated TEMP C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-json-migration-Hwt9HA"
+      ],
+      "checks": [
+        "M01_SOURCE_CONTRACT",
+        "M02_DATA_AND_RELATIONS",
+        "M03_APPROVAL_AMOUNT_HISTORY",
+        "M04_DEVICE_PATHS_AND_FILES",
+        "M05_AUTH_AND_RECOVERY",
+        "M06_FAILURE_ROLLBACK",
+        "M07_RELEASED_RUNTIME_UI",
+        "M08_REAL_BACKUP_READINESS"
+      ],
+      "protected": [
+        "all product source/config/tests",
+        "all published artifacts",
+        "legacy actual DB/JSON and V3 readonly",
+        "approval/calculation snapshots"
+      ],
+      "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-json-migration-Hwt9HA",
+      "actualPcMigrated": false,
+      "completedAt": "2026-11-09T01:19:40.036Z",
+      "actualUserDataTested": false,
+      "productFilesChanged": 0,
+      "checkResults": {
+        "M01_SOURCE_CONTRACT": "FAIL_MIG01_MIG02",
+        "M02_DATA_AND_RELATIONS": "DIAGNOSTIC_ONLY_PASS_38_TABLES",
+        "M03_APPROVAL_AMOUNT_HISTORY": "DIAGNOSTIC_ONLY_PASS_3_APPROVALS_466050_AND_A4_3",
+        "M04_DEVICE_PATHS_AND_FILES": "DEVICE_PATHS_PASS_EXTERNAL_FILES_REQUIRE_SEPARATE_TRANSFER",
+        "M05_AUTH_AND_RECOVERY": "DIAGNOSTIC_LEGACY_LOGIN_PASS_RECOVERY_FAIL_MIG03",
+        "M06_FAILURE_ROLLBACK": "FOCUSED77_PASS_REPLAY_GUARD_PASS_FRESH_BACKUP_GAP",
+        "M07_RELEASED_RUNTIME_UI": "ACTUAL_UI_REPRODUCED_NOT_READY_REVALIDATED_DRIVER_EVIDENCE",
+        "M08_REAL_BACKUP_READINESS": "NOT_RUN_NO_ACTUAL_OLD_INSTALL_OR_OPERATIONAL_JSON"
+      },
+      "findings": [
+        {
+          "id": "MIG-01",
+          "priority": "P1",
+          "title": "0.5.8 native39-table JSON rejected because duty-code table added in renewal is required"
+        },
+        {
+          "id": "MIG-02",
+          "priority": "P1",
+          "title": "Legacy reparse markers rejected as unknown settings"
+        },
+        {
+          "id": "MIG-03",
+          "priority": "P1",
+          "title": "Fresh application creates successful JSON backup that its own restore parser rejects"
+        },
+        {
+          "id": "MIG-04",
+          "priority": "MIGRATION_PROCEDURE_GAP",
+          "title": "JSON contains database references, not external evidence files"
+        }
+      ],
+      "evidence": {
+        "assessment": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-json-migration-Hwt9HA\\assessment.json",
+        "sha256": "C6070E2EBE7EB6FDCED3FC53F7F0C9D2D5A78E055A0854ABB3B5EAA61314E388",
+        "bytes": 5820
+      },
+      "proposedNextTask": {
+        "id": "MIGRATION-COMPAT-FIX-01",
+        "status": "PROPOSED_NOT_AUTHORIZED",
+        "allowlist": [
+          "ShiftMgmt_V4/src/main/services/database-migration-service.ts",
+          "ShiftMgmt_V4/src/main/services/database-migration-service.test.ts",
+          "ShiftMgmt_V4/src/main/services/database-backup-service.ts",
+          "ShiftMgmt_V4/src/main/services/database-backup-service.test.ts",
+          "ShiftMgmt_V4/scripts/verify-v3-json-migration.mjs",
+          "ShiftMgmt_V4/docs/fresh-install.md"
+        ],
+        "goal": "Fix the3 concrete compatibility/backup defects, then rerun unchanged native0.5.8 JSON directly; do not tell user to edit JSON or remove arbitrary keys."
+      }
+    },
     {
       "id": "REL-EXE-01",
       "title": "Windows EXE 설치 파일 생성·검증·추가 배포",
@@ -6730,8 +6972,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 107198,
-    "sha256": "F1251E2A4F37BCA7023AB505D776084255AFD4D3E6AC34525D91DA96EE55A611"
+    "bytes": 112370,
+    "sha256": "48B405730E2AA9A9D8C330289A93C448AFA60747F5DE683A9F60C7421871158B"
   },
   "statusHistory": [
     {
@@ -9034,6 +9276,46 @@
         "retry": 0,
         "total": 0
       }
+    },
+    {
+      "at": "2026-11-09T01:19:40.036Z",
+      "taskId": "MIGRATION-READINESS-01",
+      "status": "READINESS_REVIEW_COMPLETE_3_P1_COMPATIBILITY_FIXES_REQUIRED",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-09T02:35:38.757Z",
+      "taskId": "MIGRATION-COMPAT-FIX-01",
+      "status": "TECHNICALLY_ACCEPTED_THREE_FIXES_FILE_FLOW_CONTINUES",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-09T03:06:43.902Z",
+      "taskId": "MIGRATION-APPROVED-FILE-FLOW-01",
+      "status": "TECHNICALLY_ACCEPTED_APPROVED_SOURCE_AND_DATE_FLOW",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
+    },
+    {
+      "at": "2026-11-09T03:11:33.654Z",
+      "taskId": "REL-1.0.4",
+      "status": "IN_PROGRESS",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
     }
   ],
   "remainingEstimatedHours": [
@@ -9077,7 +9359,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-08T17:03:42.405Z",
+  "updatedAt": "2026-11-09T03:14:44.795Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -9192,5 +9474,6 @@
     "installerSha256": "cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c",
     "installerPublishedAt": "2026-11-08T17:01:28.955Z",
     "installerAnonymousDownloadVerified": true
-  }
+  },
+  "nextAction": "기존 사용자 승인 방향: 수정 소스를 포함하는 다음 버전 설치본·릴리즈 갱신과 실제 운영 JSON/원본 폴더 이관 리허설. 이번9경로 leaf는 여기서 기술검수를 종료하며 배포/실운영이관 완료로 표시하지 않는다."
 }

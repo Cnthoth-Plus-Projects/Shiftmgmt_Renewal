@@ -103,6 +103,16 @@ const createBaselineBackupFile = async (
   return { filePath, sha256 };
 };
 
+const createNativeLegacyV1Backup = (filename: string, modifier?: (tables: Record<string, unknown[]>) => void) =>
+  createBaselineBackupFile(filename, (tables, parsed) => {
+    parsed!.schemaVersion = 1;
+    for (const table of ["policy_revisions", "policy_events", "performance_return_history", "shift_pattern_duty_types"]) delete tables[table];
+    for (const [table, column] of [["employees", "email"], ["shift_patterns", "holiday_policy_json"], ["performance_files", "policy_context_fingerprint"], ["performance_entries", "policy_snapshot_json"]]) {
+      for (const row of tables[table] as Array<Record<string, unknown>>) delete row[column];
+    }
+    modifier?.(tables);
+  });
+
 const createValidPerformanceFile = (overrides: Record<string, unknown> = {}): Record<string, unknown> => ({
   id: "file-1",
   file_name: "test.xlsx",
@@ -200,6 +210,61 @@ const createValidPerformanceApproval = (overrides: Record<string, unknown> = {})
 });
 
 describe("database-migration-service", () => {
+  it("MIG-01: native 0.5.8 JSON39 restores unchanged source bytes without the newer duty-code table", async () => {
+    const source = await createNativeLegacyV1Backup("native-v058.json");
+    const bytes = readFileSync(source.filePath);
+    expect(Object.keys(JSON.parse(bytes.toString("utf8")).tables)).toHaveLength(39);
+    const requirement = checkDatabaseMigrationRequirements({ backupFilePath: source.filePath });
+    expect(requirement.isReady).toBe(true);
+    expect(requirement.tableCount).toBe(39);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: source.filePath, env });
+    expect(preview.warningMessages.some(message => message.includes("이전 버전"))).toBe(true);
+    const restored = await runDatabaseMigrationUpdate({ userDataPath, backupFilePath: source.filePath, backupSha256: source.sha256, previewToken: preview.previewToken, confirmationText: "교체", env });
+    expect(restored.tableResults).toHaveLength(43);
+    expect(getSqliteDatabase()!.prepare("SELECT COUNT(*) n FROM shift_pattern_duty_types").get()).toMatchObject({ n: 0 });
+    expect(readFileSync(source.filePath).equals(bytes)).toBe(true);
+  });
+
+  it("MIG-02: all five legacy marker/progress pairs become a fresh pending-only reparse request", async () => {
+    const prefixes = ["substitute_allowance_policy", "employee_master", "team_work_type", "monthly_schedule", "wage_rate"];
+    const source = await createNativeLegacyV1Backup("legacy-reparse-markers.json", tables => {
+      for (const prefix of prefixes) for (const suffix of ["marker", "progress"]) tables.app_setting_entries.push({ setting_key: `${prefix}_reparse_${suffix}`, value: suffix === "marker" ? "old-device-marker" : '{"oldDeviceProgress":true}', updated_at: "2026-01-01T00:00:00.000Z" });
+    });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: source.filePath }).isReady).toBe(true);
+    const preview = previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: source.filePath, env });
+    expect(preview.warningMessages.some(message => message.includes("미승인"))).toBe(true);
+    await runDatabaseMigrationUpdate({ userDataPath, backupFilePath: source.filePath, backupSha256: source.sha256, previewToken: preview.previewToken, confirmationText: "교체", env });
+    const rows = getSqliteDatabase()!.prepare("SELECT setting_key,value FROM app_setting_entries WHERE setting_key LIKE '%reparse%'").all();
+    expect(rows).toHaveLength(1);
+    expect(rows[0].setting_key).toBe("substitute_allowance_policy_reparse_marker");
+    expect(rows[0].value).not.toBe("old-device-marker");
+    expect(Number.isFinite(Date.parse(String(rows[0].value)))).toBe(true);
+  });
+
+  it.each(["missing", "unknown", "unknown-marker"])("MIG-01/02: legacy adaptation still rejects %s source contract corruption", async kind => {
+    const source = await createNativeLegacyV1Backup(`legacy-bad-${kind}.json`, tables => {
+      if (kind === "missing") delete tables.sites;
+      if (kind === "unknown") tables.mystery_table = [];
+      if (kind === "unknown-marker") tables.app_setting_entries.push({ setting_key: "wage_rate_reparse_marker_extra", value: "bad", updated_at: "2026-01-01" });
+    });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: source.filePath }).isReady).toBe(false);
+    expect(() => previewDatabaseMigrationUpdate({ userDataPath, backupFilePath: source.filePath, env })).toThrow();
+  });
+
+  it.each([2, 3])("MIG-01/02: schema%s retains strict duty-table and unknown legacy-marker rejection", async version => {
+    const source = await createBaselineBackupFile(`modern-${version}-bad-marker.json`, (tables, parsed) => {
+      parsed!.schemaVersion = version;
+      if (version === 2) delete tables.performance_return_history;
+      tables.app_setting_entries.push({ setting_key: "wage_rate_reparse_marker", value: "old-device-marker", updated_at: "2026-01-01" });
+    });
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: source.filePath }).isReady).toBe(false);
+    const parsed = JSON.parse(readFileSync(source.filePath, "utf8"));
+    parsed.tables.app_setting_entries = parsed.tables.app_setting_entries.filter((row: {setting_key: string}) => row.setting_key !== "wage_rate_reparse_marker");
+    delete parsed.tables.shift_pattern_duty_types;
+    writeFileSync(source.filePath, JSON.stringify(parsed));
+    expect(checkDatabaseMigrationRequirements({ backupFilePath: source.filePath }).isReady).toBe(false);
+  });
+
   afterEach(() => {
     resetPerformanceApprovalStateForTest();
     resetPerformanceFileStorageForTest();

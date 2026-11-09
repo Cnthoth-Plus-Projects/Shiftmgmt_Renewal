@@ -885,10 +885,20 @@ const BUSINESS_RULE_KEYS = [
   "changed_slot_priority_effective_from"
 ] as const;
 
+// V1 구판의 작업 재개 정보는 PC별 임시 상태다. 새 PC에서는 이어 쓰지 않고
+// 지원되는 미승인 재분석 요청으로 바꾼다. 그 밖의 미인지 설정은 계속 거절한다.
+const LEGACY_REPARSE_SETTING_KEYS = new Set(
+  ["substitute_allowance_policy", "employee_master", "team_work_type", "monthly_schedule", "wage_rate"]
+    .flatMap(prefix => [`${prefix}_reparse_marker`, `${prefix}_reparse_progress`])
+);
+
 interface NormalizedJsonBackupSnapshot {
   schemaVersion: number;
   createdAt: string;
   tables: Record<string, Array<Record<string, unknown>>>;
+  sourceTableCount: number;
+  compatibilityWarnings: string[];
+  legacyReparseRequested: boolean;
 }
 
 interface PreviewTokenEntry {
@@ -1194,6 +1204,17 @@ const parseAndValidateBackupJson = (
   const requiredTableSet = new Set<string>(allRequiredTableNames);
   const rawTableNames = Object.keys(tablesObj);
 
+  const compatibilityWarnings: string[] = [];
+  // 0.5.8의 V1에는 새로 도입된 사용자 정의 근무코드 표가 없다.
+  // 나머지 39표가 정확히 일치할 때만 새 영역을 보완한다. 입력 파일은 쓰지 않는다.
+  const legacyTableNames = allRequiredTableNames.filter(name => name !== "shift_pattern_duty_types");
+  if (schemaVersion === 1 && rawTableNames.length === legacyTableNames.length &&
+      !Object.hasOwn(tablesObj, "shift_pattern_duty_types") &&
+      legacyTableNames.every(name => Object.hasOwn(tablesObj, name))) {
+    tablesObj.shift_pattern_duty_types = [];
+    compatibilityWarnings.push("이전 버전의 39개 데이터 표를 확인해 새 사용자 정의 근무코드 영역을 준비했습니다. 원본 JSON 파일은 변경하지 않았습니다.");
+  }
+
   const missingTables = allRequiredTableNames.filter((t) => !(t in tablesObj));
   const unknownTables = rawTableNames.filter((t) => !requiredTableSet.has(t));
 
@@ -1394,6 +1415,7 @@ const parseAndValidateBackupJson = (
   // app_setting_entries의 타입 및 키 검사 (문자열 타입 강제, 중복 키, 미인지 키, 6대 업무 규칙 존재 여부)
   const settingRows = tablesObj[APP_SETTINGS_TABLE_NAME] as Array<Record<string, unknown>>;
   const seenSettingKeys = new Set<string>();
+  let legacyReparseRequested = false;
 
   for (let i = 0; i < settingRows.length; i++) {
     const row = settingRows[i];
@@ -1440,7 +1462,9 @@ const parseAndValidateBackupJson = (
     }
 
 
-    if (!KNOWN_SETTING_KEYS.has(key)) {
+    const legacyReparseSetting = schemaVersion === 1 && LEGACY_REPARSE_SETTING_KEYS.has(key);
+    if (legacyReparseSetting) legacyReparseRequested = true;
+    if (!KNOWN_SETTING_KEYS.has(key) && !legacyReparseSetting) {
       const err = new Error(`알 수 없는 설정 키가 백업에 포함되어 있습니다: ${key}`);
       (err as unknown as { code: string }).code = "CHECK_FAILED";
       throw err;
@@ -1514,11 +1538,18 @@ const parseAndValidateBackupJson = (
     }
   }
 
+  if (legacyReparseRequested) {
+    compatibilityWarnings.push("이전 PC의 재분석 진행 정보는 이어 쓰지 않습니다. 새 PC에서 미승인 실적을 다시 확인하도록 요청하며 이미 승인된 금액과 이력은 유지합니다.");
+  }
+
   return {
     snapshot: {
       schemaVersion: Number(rawObj.schemaVersion),
       createdAt: String(rawObj.createdAt ?? new Date().toISOString()),
-      tables: tablesObj as Record<string, Array<Record<string, unknown>>>
+      tables: tablesObj as Record<string, Array<Record<string, unknown>>>,
+      sourceTableCount: rawTableNames.length,
+      compatibilityWarnings,
+      legacyReparseRequested
     },
     fileSha256
   };
@@ -1550,7 +1581,7 @@ export const checkDatabaseMigrationRequirements = (input: {
 
   try {
     const { snapshot, fileSha256 } = parseAndValidateBackupJson(resolvedPath);
-    const tableCount = Object.keys(snapshot.tables).length;
+    const tableCount = snapshot.sourceTableCount;
 
     return {
       sourceType: "json",
@@ -1564,7 +1595,8 @@ export const checkDatabaseMigrationRequirements = (input: {
       details: [
         `${tableCount}개 필수 데이터 테이블이 모두 확인되었습니다.`,
         "6개 업무 정책 규칙이 확인되었습니다.",
-        "백업 원본 파일의 SHA-256이 확인되었습니다."
+        "백업 원본 파일의 SHA-256이 확인되었습니다.",
+        ...snapshot.compatibilityWarnings
       ],
       recommendedActions: [
         "미리보기를 통해 복원 후 영향도를 확인한 뒤 교체 복원을 진행하세요."
@@ -1656,6 +1688,7 @@ const buildFinalAppSettingRows = (input: {
   sourceSettingsRows: Array<Record<string, unknown>>;
   resolvedBackupFilePath: string;
   nowIso: string;
+  legacyReparseRequested: boolean;
 }): Array<{ setting_key: string; value: string; updated_at: string }> => {
   const sourceSettingMap = new Map<string, string>();
   for (const r of input.sourceSettingsRows) {
@@ -1731,7 +1764,7 @@ const buildFinalAppSettingRows = (input: {
     input.operatingSettings.targetSubstitutePolicyEffectiveFrom !== sourceSubstitutePolicy ||
     input.operatingSettings.targetChangedSlotPriorityEffectiveFrom !== sourceChangedSlotPriority;
 
-  if (policyDateChanged) {
+  if (policyDateChanged || input.legacyReparseRequested) {
     // 정책일 변경 시 marker를 새 ISO 타임스탬프로 설정
     finalRows.push({
       setting_key: "substitute_allowance_policy_reparse_marker",
@@ -1786,7 +1819,7 @@ const importJsonBackupIntoDatabase = (input: {
   removedPerformanceEntryCount: number;
 } => {
   const { database, snapshot, resolvedBackupFilePath, currentSettings, operatingSettings } = input;
-  const warningMessages: string[] = [];
+  const warningMessages: string[] = [...snapshot.compatibilityWarnings];
 
   // 경고 메시지 1 & 2: 계정 교체 및 외부 파일 미포함 경고
   warningMessages.push("계정 정보(app_users)가 백업 파일의 계정으로 교체됩니다.");
@@ -2004,6 +2037,7 @@ const importJsonBackupIntoDatabase = (input: {
       currentSettings,
       operatingSettings,
       sourceSettingsRows: snapshot.tables[APP_SETTINGS_TABLE_NAME] ?? [],
+      legacyReparseRequested: snapshot.legacyReparseRequested,
       resolvedBackupFilePath,
       nowIso: new Date().toISOString()
     });

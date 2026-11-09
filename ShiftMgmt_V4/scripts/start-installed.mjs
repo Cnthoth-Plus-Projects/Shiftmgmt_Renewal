@@ -6,11 +6,29 @@ import { createInterface } from "node:readline";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { findChrome } from "./lib/find-chrome.mjs";
 import { verifyPackage } from "./verify-windows-package.mjs";
+import { rejectInstalledUpdate, resolveInstalledUpdate, runUpdatedLauncher } from "./lib/installed-update.mjs";
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 let lockPath;
 let ownsLock = false;
-process.on("exit", () => { if (ownsLock) { try { unlinkSync(lockPath); } catch { /* 이미 종료됨 */ } } });
+const releaseLock = () => { if (ownsLock) { try { unlinkSync(lockPath); } catch { /* 이미 종료됨 */ } ownsLock = false; } };
+process.on("exit", releaseLock);
+
+function acquireLock(dataRoot) {
+  mkdirSync(dataRoot, { recursive: true });
+  lockPath = path.join(dataRoot, "launcher.lock");
+  if (existsSync(lockPath)) {
+    const lock = JSON.parse(readFileSync(lockPath, "utf8"));
+    let alive = true;
+    try { process.kill(lock.pid, 0); } catch (e) { if (e.code === "ESRCH") alive = false; }
+    if (alive) throw new Error("이 데이터 폴더를 사용하는 실행 창이 이미 열려 있습니다.");
+    unlinkSync(lockPath);
+  }
+  const handle = openSync(lockPath, "wx");
+  ownsLock = true;
+  writeFileSync(handle, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }));
+  closeSync(handle);
+}
 
 try {
   if (process.platform !== "win32" || process.arch !== "x64") throw new Error("Windows 64비트 PC에서 실행해 주세요.");
@@ -28,19 +46,19 @@ try {
     probe.once("error", () => reject(new Error("이미 실행 중이거나 실행 포트를 다른 프로그램이 사용 중입니다. 기존 실행 창을 확인해 주세요.")));
     probe.listen(port, "127.0.0.1", () => probe.close(resolve));
   });
-  mkdirSync(dataRoot, { recursive: true });
-  lockPath = path.join(dataRoot, "launcher.lock");
-  if (existsSync(lockPath)) {
-    const lock = JSON.parse(readFileSync(lockPath, "utf8"));
-    let alive = true;
-    try { process.kill(lock.pid, 0); } catch (e) { if (e.code === "ESRCH") alive = false; }
-    if (alive) throw new Error("이 데이터 폴더를 사용하는 실행 창이 이미 열려 있습니다.");
-    unlinkSync(lockPath);
+  acquireLock(dataRoot);
+  if (!process.argv.includes("--skip-update")) {
+    let update = await resolveInstalledUpdate({ root, config, manifest });
+    while (update) {
+      console.log(`${update.version} 버전으로 시작합니다.`);
+      releaseLock();
+      const outcome = await runUpdatedLauncher(update, { args: process.argv.slice(2) });
+      if (outcome.started) process.exit(outcome.exitCode);
+      try { rejectInstalledUpdate(update); } catch { /* 기존 버전 실행을 우선한다. */ }
+      update = update.fallback ?? null;
+      if (!update) { console.log("새 버전을 시작하지 못해 기존 버전으로 실행합니다."); acquireLock(dataRoot); }
+    }
   }
-  const handle = openSync(lockPath, "wx");
-  ownsLock = true;
-  writeFileSync(handle, JSON.stringify({ pid: process.pid, startedAt: new Date().toISOString() }));
-  closeSync(handle);
   process.chdir(root);
   process.env.NODE_ENV = "production";
   // 정식 실행은 설치 정보의 전용 데이터 위치만 사용한다.

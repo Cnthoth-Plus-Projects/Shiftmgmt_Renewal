@@ -1,5 +1,6 @@
-import { existsSync, mkdirSync, renameSync, rmSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, symlinkSync } from "node:fs";
 import { copyFile } from "node:fs/promises";
+import * as fsPromises from "node:fs/promises";
 import path from "node:path";
 
 import ExcelJS from "exceljs";
@@ -46,6 +47,11 @@ import { publishSchedulePlanExport } from "./schedule-plan-publish-service";
 import { listStoredSchedulePlanExports } from "./schedule-plan-export-history-service";
 import { approvePerformanceFile } from "./performance-approval-flow-service";
 
+vi.mock("node:fs/promises", async importOriginal => {
+  const actual = await importOriginal<typeof import("node:fs/promises")>();
+  return { ...actual, stat: vi.fn(actual.stat) };
+});
+
 const testRoot = path.resolve(
   process.cwd(),
   "artifacts",
@@ -72,7 +78,140 @@ const writeUnsupportedWorkbook = async (filePath: string) => {
   await workbook.xlsx.writeFile(filePath);
 };
 
+const approvedFinancialBytes = () => JSON.stringify(
+  ["performance_entries", "performance_approvals", "allowance_calculations", "allowance_calculation_items", "allowance_approvals", "wage_rate_history"]
+    .map(table => [table, getSqliteDatabase()!.prepare(`SELECT * FROM ${table}${table === "performance_entries" ? " WHERE performance_file_id IN (SELECT id FROM performance_files WHERE is_effective = 1 AND status = 'approved')" : ""} ORDER BY id`).all()])
+);
+
+const prepareApprovedRelocation = async () => {
+  const fixture = await prepareReturnedScheduleFixture({ rootDir: testRoot });
+  const pending = await syncPreparedReturnedSchedule(fixture);
+  for (const entry of pending.entries) expect((await approvePerformanceFile({ fileId: pending.id, entryId: entry.id }, testAdminSession, { userDataPath: fixture.userDataPath })).ok).toBe(true);
+  const original = getStoredPerformanceFileDetail(pending.id)!;
+  expect(original.status).toBe("approved");
+  expect(original.isEffective).toBe(true);
+  const approvedDir = path.join(testRoot, "new-pc", "approved");
+  const pendingDir = path.join(testRoot, "new-pc", "pending");
+  const copyPath = path.join(approvedDir, "2026년", "3월", original.fileName);
+  mkdirSync(path.dirname(copyPath), { recursive: true });
+  mkdirSync(pendingDir, { recursive: true });
+  await copyFile(original.filePath, copyPath);
+  return { fixture, original, copyPath, settings: { approvedDir, pendingDir } };
+};
+
 describe("performance-file-intake-service", () => {
+  it("FILE02: missing approved original reconnects the verified new-PC copy without changing history or identities", async () => {
+    const { fixture, original, copyPath, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    const originalBytes = readFileSync(original.filePath);
+    const preserved = original.filePath + ".preserved";
+    expect(path.resolve(preserved).startsWith(path.resolve(fixture.rootDir) + path.sep)).toBe(true);
+    renameSync(original.filePath, preserved);
+    expect(await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" })).toEqual([]);
+    expect(getStoredPerformanceFileDetail(original.id)).toMatchObject({ id: original.id, filePath: copyPath, status: "approved", isEffective: true });
+    expect(approvedFinancialBytes()).toBe(before);
+    expect(readFileSync(copyPath).equals(originalBytes)).toBe(true);
+    expect(readFileSync(preserved).equals(originalBytes)).toBe(true);
+  });
+
+  it("FILE03: an existing original is not replaced by an extra copy", async () => {
+    const { original, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+    expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+    expect(approvedFinancialBytes()).toBe(before);
+  });
+
+  it("FILE02: an earlier inactive scan cannot bypass rereading the replacement source", async () => {
+    const { original, copyPath, settings } = await prepareApprovedRelocation();
+    await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+    const before = approvedFinancialBytes();
+    renameSync(original.filePath, original.filePath + ".preserved");
+    const spy = vi.spyOn(returnedParser, "parseReturnedSchedulePerformanceFile");
+    try {
+      await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(copyPath);
+      expect(approvedFinancialBytes()).toBe(before);
+    } finally { spy.mockRestore(); }
+  });
+
+  it("FILE03: multiple same-name archived candidates do not select the first copy", async () => {
+    const { original, copyPath, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    renameSync(original.filePath, original.filePath + ".preserved");
+    const duplicate = path.join(path.dirname(copyPath), "extra", original.fileName);
+    mkdirSync(path.dirname(duplicate), { recursive: true });
+    await copyFile(copyPath, duplicate);
+    await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+    expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+    expect(approvedFinancialBytes()).toBe(before);
+  });
+
+  it.each(["signature", "size", "mtime", "identity", "missing-signature", "duplicate-record"])("FILE03: %s mismatches never reconnect an approved source", async guard => {
+    const { original, settings } = await prepareApprovedRelocation();
+    const db = getSqliteDatabase()!;
+    if (guard === "signature") db.prepare("UPDATE performance_entries SET source_signature = 'different' WHERE performance_file_id = ?").run(original.id);
+    if (guard === "size") db.prepare("UPDATE performance_files SET file_size = file_size + 1 WHERE id = ?").run(original.id);
+    if (guard === "mtime") db.prepare("UPDATE performance_files SET modified_time_ms = modified_time_ms - 2000 WHERE id = ?").run(original.id);
+    if (guard === "identity") db.prepare("UPDATE performance_files SET schedule_key = schedule_key || ':other' WHERE id = ?").run(original.id);
+    if (guard === "missing-signature") db.prepare("UPDATE performance_entries SET source_signature = NULL WHERE performance_file_id = ?").run(original.id);
+    if (guard === "duplicate-record") {
+      const duplicateId = "other-approved-record";
+      upsertPerformanceFileDetail({ ...original, id: duplicateId, duplicateKey: "other-source", directoryType: "pending", status: "parsed", isEffective: false, entries: original.entries.map(entry => ({ ...entry, id: entry.id + ":other", performanceFileId: duplicateId })) });
+      db.prepare("UPDATE performance_files SET directory_type = 'approved', status = 'approved', is_effective = 1 WHERE id = ?").run(duplicateId);
+    }
+    const before = approvedFinancialBytes();
+    renameSync(original.filePath, original.filePath + ".preserved");
+    await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+    expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+    expect(approvedFinancialBytes()).toBe(before);
+  });
+
+  it("FILE03: an inaccessible original is never treated as missing", async () => {
+    const { original, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    const { stat: actualStat } = await vi.importActual<typeof import("node:fs/promises")>("node:fs/promises");
+    const spy = vi.spyOn(fsPromises, "stat").mockImplementation((...args: Parameters<typeof fsPromises.stat>) => {
+      if (args[0] === original.filePath) return Promise.reject(Object.assign(new Error("access denied"), { code: "EACCES" }));
+      return actualStat(...args);
+    });
+    try {
+      await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+      expect(spy).toHaveBeenCalledWith(original.filePath);
+      expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+      expect(approvedFinancialBytes()).toBe(before);
+    } finally { spy.mockRestore(); }
+  });
+
+  it("FILE03: a month-folder junction outside the approved root never reconnects", async () => {
+    const { original, copyPath, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    renameSync(original.filePath, original.filePath + ".preserved");
+    const outside = path.join(testRoot, "outside-approved-root");
+    renameSync(path.dirname(copyPath), outside);
+    symlinkSync(outside, path.dirname(copyPath), "junction");
+    await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+    expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+    expect(approvedFinancialBytes()).toBe(before);
+  });
+
+  it("FILE03: a source changed after parsing never reconnects", async () => {
+    const { original, copyPath, settings } = await prepareApprovedRelocation();
+    const before = approvedFinancialBytes();
+    renameSync(original.filePath, original.filePath + ".preserved");
+    const parse = returnedParser.parseReturnedSchedulePerformanceFile;
+    const spy = vi.spyOn(returnedParser, "parseReturnedSchedulePerformanceFile").mockImplementation(async input => {
+      const result = await parse(input);
+      if (input.filePath === copyPath) appendFileSync(copyPath, "changed-after-parse");
+      return result;
+    });
+    try {
+      await syncApprovedPerformanceFilesToStorage({ settings, scheduleMonth: "2026-03" });
+      expect(getStoredPerformanceFileDetail(original.id)?.filePath).toBe(original.filePath);
+      expect(approvedFinancialBytes()).toBe(before);
+    } finally { spy.mockRestore(); }
+  });
   it("FLOW-02: repeated legacy publications cannot borrow an approval from the returned file", async () => {
     const fixture = await prepareReturnedScheduleFixture({rootDir: testRoot});
     const exported = listStoredSchedulePlanExports()[0]!;

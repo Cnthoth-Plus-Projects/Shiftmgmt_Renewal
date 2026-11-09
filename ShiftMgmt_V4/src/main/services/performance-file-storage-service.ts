@@ -703,6 +703,21 @@ export const getStoredPerformanceFileDetail = (fileId: string): PerformanceFileD
   return toDetail(row);
 };
 
+// Reconnect only the source pointer. Approval/entry identities and all financial snapshots stay intact.
+export const relinkStoredApprovedPerformanceFilePath = (input: {
+  fileId: string;
+  previousPath: string;
+  newPath: string;
+}): boolean => {
+  const database = getSqliteDatabase();
+  if (!database || !isSqliteStorageReady()) return false;
+  return database.prepare(`
+    UPDATE performance_files SET file_path = ?
+    WHERE id = ? AND file_path = ? AND directory_type = 'approved'
+      AND status = 'approved' AND is_effective = 1
+  `).run(input.newPath, input.fileId, input.previousPath).changes === 1;
+};
+
 export const getStoredPerformanceFileDetailByPath = (
   filePath: string,
   directoryType?: PerformanceFileDetail["directoryType"],
@@ -723,7 +738,8 @@ export const getStoredPerformanceFileDetailByPath = (
           FROM performance_files
           WHERE file_path = ? COLLATE NOCASE
             AND directory_type = ?
-          ORDER BY received_at DESC
+          ORDER BY CASE WHEN directory_type = 'approved' AND is_effective = 1 AND status = 'approved' THEN 0 ELSE 1 END,
+            received_at DESC
           LIMIT 1
         `).get(filePath, directoryType)
       : database.prepare(`
