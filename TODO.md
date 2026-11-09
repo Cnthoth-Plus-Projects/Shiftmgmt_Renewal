@@ -1,12 +1,14 @@
 # TODO — 현재 실행 계획
 
-## 2026-11-09 REL-1.0.4 — 이관 패치 포함 EXE 정식 릴리즈
+## 2026-11-09 REL-1.0.4 — 이관 패치·자동업데이트 EXE 정식 공개 완료
 
-- [ ] **REL-1.0.4** 사용자명시승인. 기존검증이관패치를포함한1.0.4 소스커밋/푸시·새태그·ZIP/EXE빌드·격리실설치/JSON39표/승인원본/Chrome검증·정식공개·익명다운로드SHA대조. Sol직접/Gemini최초0·재시도0·누적0.
+- [x] **REL-1.0.4** 사용자명시승인. 기존검증이관패치를포함한1.0.4 소스커밋/푸시·새태그·ZIP/EXE빌드·격리실설치/JSON39표/승인원본/Chrome검증·정식공개·익명다운로드SHA대조. Sol직접/Gemini최초0·재시도0·누적0.
 - 허용제품6경로: VERSION,package.json,package-lock.json,docs/release-1.0.4.md,docs/fresh-install.md,README.md(ShiftMgmt_V4 아래). 이전14검증제품변경은그대로포함/보존. 산식·DB스키마·의존성·실운영자료·기존1.0.3 태그/10첨부변경금지. root TODO/장부/HANDOFF/새Log와전용TEMP증거허용.
 - 사용자추가승인: 바로가기실행시공식릴리즈자동확인/다운로드/별도버전검증/정상기동후전환,실패시기존판유지. 추가허용4경로 scripts/lib/installed-update.mjs,scripts/start-installed.mjs,scripts/package-windows.mjs,src/main/services/windows-release.test.ts. 업데이트중DB변경/구판자동DB롤백없음.
 - R10401~07,신규소스정본 clean checkout에서기존release:check 전체1회약8분/빌드/지도/서비스검사,기존실설치17검문·설치본계산/A4/JSON이관을우선재사용. 총30~50분초기추정. 사용자의실제JSON/대상PC검증은배포후사용자진행.
 
+
+- 공개결과: https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.4, EXE https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.4/ShiftMgmt-1.0.4-Setup-x64.exe. source 6f5614bd5149f4e624527eafdf08255ee0468843, 새전체1653/160 PASS1회494191ms·집중40·정식검사9·설치17·설치본계산/A4 35·구판39표38업무표/JSON3왕복/자동백업실복구·Chrome13·수당3건466050원보존·제거6·자동업데이트7·익명11해시일치. 제품542중허용10변경/532보존,의존성불변. 기존1.0.3/10첨부보존. 실제운영JSON/대상PC는사용자검증대기. Sol/Gemini0/0/0.
 
 ## 2026-11-09 MIGRATION-APPROVED-FILE-FLOW-01 — 사용자 기대 흐름 확정
 
@@ -123,7 +125,7 @@
 
 - Plan: **PLAN-20261026-01** / 사용자 요청 반영: 2026-10-26T10:39:35.851991+09:00
 
-- **현재: REL-1.0.4 사용자승인정식릴리즈진행. 이관패치포함설치본검증후공개,실제운영JSON과대상PC는사용자검증예정.**
+- **현재: 1.0.4 EXE/ZIP 정식공개·익명다운로드11개SHA검증완료. 다음은사용자가1.0.4를설치해실제운영JSON/승인원본을대조하는REL-03.**
 
 - **사용자 안내 기준:** 대화의 승인·선택 요청과 프로그램 안내 모두 필요한 이유, 선택별 결과, 실제 데이터 영향, 권장 이유와 다음 행동을 쉬운 말로 설명한다. 현재 W09에 반영하고 다른 메뉴는 해당 Task 범위에서 적용한다.
 

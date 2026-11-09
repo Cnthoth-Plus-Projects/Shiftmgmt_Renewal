@@ -13,14 +13,14 @@
     "dirtyPaths": 0,
     "activityUiAccepted": true
   },
-  "nextTaskId": "REL-1.0.4",
-  "executingTaskId": "REL-1.0.4",
+  "nextTaskId": "REL-03",
+  "executingTaskId": null,
   "tasks": [
     {
       "id": "REL-1.0.4",
       "title": "1.0.4 이관 패치 EXE 정식 릴리즈",
-      "status": "IN_PROGRESS",
-      "stage": "AUTO_UPDATE_IMPLEMENTATION_BEFORE_RELEASE",
+      "status": "DONE",
+      "stage": "RELEASED_VERIFIED_USER_OPERATIONAL_JSON_TEST_PENDING",
       "authorization": "설치해서 진행하자.1.0.4 버전을 릴리즈하고 내가 그 파일을 설치 후 json 파일 제대로 불러오는지 검증해볼께",
       "owner": "Sol",
       "gemini": {
@@ -51,7 +51,39 @@
       ],
       "evidenceRoot": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-release-104-6iYE9F",
       "startedAt": "2026-11-09T03:11:33.654Z",
-      "additionalAuthorization": "그리고 업데이트 시 마다 일일히 깃허브 연결해서 업데이트 하지 않고 해당 html 파일 실행하면 자동업데이트 내려받고 업데이트 되도록 할수있으면 해줘."
+      "additionalAuthorization": "그리고 업데이트 시 마다 일일히 깃허브 연결해서 업데이트 하지 않고 해당 html 파일 실행하면 자동업데이트 내려받고 업데이트 되도록 할수있으면 해줘.",
+      "completedAt": "2026-11-09T04:53:46.785Z",
+      "checkResults": {
+        "R10401_SOURCE_VERSION_AND_PRIOR_PROOF": "PASS",
+        "R10402_CLEAN_COMMIT_BUILD_RELEASE_CHECK": "PASS",
+        "R10403_ZIP_AND_EXE_BOUND_SOURCE": "PASS",
+        "R10404_ACTUAL_INSTALL_STARTUP_RESTART_GUARDS": "PASS",
+        "R10405_INSTALLED_NATIVE39_JSON_APPROVED_FILES_UI": "PASS",
+        "R10406_PUBLISH_SOURCE_TAG_ASSETS_ANONYMOUS_SHA": "PASS",
+        "R10407_STARTUP_AUTO_UPDATE_OFFLINE_HASH_ROLLBACK": "PASS"
+      },
+      "candidateHash": "C1D9E9C7760FA1EE6346746033AA49181E2C9768385B1A88202135E937471B5A",
+      "sourceCommit": "6f5614bd5149f4e624527eafdf08255ee0468843",
+      "fullRunCount": 1,
+      "release": {
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.4",
+        "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.4/ShiftMgmt-1.0.4-Setup-x64.exe",
+        "releaseId": 438753581,
+        "publishedAt": "2026-11-09T04:51:50Z",
+        "stable": true,
+        "latest": true,
+        "assets": 11,
+        "installerBytes": 54077372,
+        "installerSha256": "be9bb6843b5d8f6d504ea50eb4135c73e7485f24a13b4b69dc98ad58394339cb",
+        "zipSha256": "4fd3c9a637a8035a26659e5afaa1e605b0eaa04ca9fa898173e1ecc69cc9baa4",
+        "previous1_0_3Preserved": true
+      },
+      "operationalJsonVerified": false,
+      "evidence": {
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-release-104-6iYE9F\\assessment.json",
+        "bytes": 4000,
+        "sha256": "A6FD5687ABECF324DE7981A48451CBEC2B06AC189F0EACCBDF6D2C1EAA5DA7D0"
+      }
     },
     {
       "id": "MIGRATION-APPROVED-FILE-FLOW-01",
@@ -4210,7 +4242,7 @@
         "FLOW-02",
         "FLOW-03"
       ],
-      "version": "1.0.3",
+      "version": "1.0.4",
       "prerequisiteDefectsResolved": [
         "FLOW-01",
         "FLOW-02",
@@ -4221,7 +4253,7 @@
         "CALC-01",
         "CALC-04"
       ],
-      "stage": "PUBLIC_RELEASE_VERIFIED_FRESH_PC_PENDING",
+      "stage": "V1_0_4_PUBLIC_VERIFIED_USER_JSON_MIGRATION_PENDING",
       "publicationAuthorized": true,
       "publicationAuthorization": "새 PC설치는 릴리즈를 해야 새로운 PC에서 해당 릴리즈 버전을 다운받아서 설치해서 사용을해야지.",
       "publicationStartedAt": "2026-11-08T12:00:17.686Z",
@@ -4251,24 +4283,51 @@
       "publicReleasePublished": true,
       "publicationCompletedAt": "2026-11-08T12:02:36.556Z",
       "release": {
-        "version": "1.0.3",
-        "tag": "v1.0.3",
-        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
-        "downloadUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-win-x64.zip",
-        "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
-        "productTree": "5990bbc2c44a777a0ed677b71fe598d950dc7e9f",
-        "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+        "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.4",
+        "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.4/ShiftMgmt-1.0.4-Setup-x64.exe",
+        "releaseId": 438753581,
+        "publishedAt": "2026-11-09T04:51:50Z",
         "stable": true,
         "latest": true,
-        "publishedAt": "2026-11-08T12:01:51Z"
+        "assets": 11,
+        "installerBytes": 54077372,
+        "installerSha256": "be9bb6843b5d8f6d504ea50eb4135c73e7485f24a13b4b69dc98ad58394339cb",
+        "zipSha256": "4fd3c9a637a8035a26659e5afaa1e605b0eaa04ca9fa898173e1ecc69cc9baa4",
+        "previous1_0_3Preserved": true,
+        "version": "1.0.4",
+        "sourceCommit": "6f5614bd5149f4e624527eafdf08255ee0468843",
+        "productTree": "78d6a90ae2c26cb058f1266332e3ac028a8909cf"
       },
       "actualPcInstalled": false,
       "productionPcInstalled": false,
       "publicationEvidence": {
-        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-publish-wM2w9T\\public-verification.json",
-        "bytes": 3221,
-        "sha256": "C6F052CB6BC6639A81804095806CC48FD3F6C71D8103988C7C8C4D26B1269940"
-      }
+        "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-release-104-6iYE9F\\assessment.json",
+        "bytes": 4000,
+        "sha256": "A6FD5687ABECF324DE7981A48451CBEC2B06AC189F0EACCBDF6D2C1EAA5DA7D0"
+      },
+      "previousPublication": [
+        {
+          "version": "1.0.3",
+          "release": {
+            "version": "1.0.3",
+            "tag": "v1.0.3",
+            "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
+            "downloadUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-win-x64.zip",
+            "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+            "productTree": "5990bbc2c44a777a0ed677b71fe598d950dc7e9f",
+            "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+            "stable": true,
+            "latest": true,
+            "publishedAt": "2026-11-08T12:01:51Z"
+          },
+          "publicationEvidence": {
+            "path": "C:\\Users\\hacke\\AppData\\Local\\Temp\\shiftmgmt-publish-wM2w9T\\public-verification.json",
+            "bytes": 3221,
+            "sha256": "C6F052CB6BC6639A81804095806CC48FD3F6C71D8103988C7C8C4D26B1269940"
+          }
+        }
+      ],
+      "userNextAction": "1.0.4 EXE설치→새관리자비밀번호변경→운영관리/설정/백업복원 JSON검사/미리보기/교체→기존계정재로그인→인력/근무지/승인건수·월별금액/승인완료Excel대조"
     },
     {
       "id": "UI-03-DEV-LOGIN",
@@ -6972,8 +7031,8 @@
   },
   "todo": {
     "path": "C:\\Projects\\Active\\교대근무시스템\\TODO.md",
-    "bytes": 112370,
-    "sha256": "48B405730E2AA9A9D8C330289A93C448AFA60747F5DE683A9F60C7421871158B"
+    "bytes": 113057,
+    "sha256": "E225849C8CA818A874F58240310598C912CF4F6FD0FB594EB88BCB268903C0A6"
   },
   "statusHistory": [
     {
@@ -9316,6 +9375,16 @@
         "retry": 0,
         "total": 0
       }
+    },
+    {
+      "at": "2026-11-09T04:53:46.785Z",
+      "taskId": "REL-1.0.4",
+      "status": "RELEASED_VERIFIED_USER_OPERATIONAL_JSON_TEST_PENDING",
+      "gemini": {
+        "initial": 0,
+        "retry": 0,
+        "total": 0
+      }
     }
   ],
   "remainingEstimatedHours": [
@@ -9359,7 +9428,7 @@
       "application": "Current holiday leaf first, other management menus sequential"
     }
   },
-  "updatedAt": "2026-11-09T03:14:44.795Z",
+  "updatedAt": "2026-11-09T04:53:46.785Z",
   "implementationWorkflow": {
     "at": "2026-11-01T23:57:11.191355+09:00",
     "owner": "Gemini",
@@ -9463,17 +9532,32 @@
     "previewLogin": "Every local development preview must enable existing autofill flag, use matching test credentials and verify fresh-context + logout login"
   },
   "lastPublicRelease": {
-    "version": "1.0.3",
-    "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
-    "publishedAt": "2026-11-08T12:01:51Z",
-    "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
-    "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+    "version": "1.0.4",
+    "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.4",
+    "publishedAt": "2026-11-09T04:51:50Z",
+    "sourceCommit": "6f5614bd5149f4e624527eafdf08255ee0468843",
+    "zipSha256": "4fd3c9a637a8035a26659e5afaa1e605b0eaa04ca9fa898173e1ecc69cc9baa4",
     "anonymousDownloadVerified": true,
     "targetPcInstalled": false,
-    "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe",
-    "installerSha256": "cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c",
-    "installerPublishedAt": "2026-11-08T17:01:28.955Z",
+    "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.4/ShiftMgmt-1.0.4-Setup-x64.exe",
+    "installerSha256": "be9bb6843b5d8f6d504ea50eb4135c73e7485f24a13b4b69dc98ad58394339cb",
+    "installerPublishedAt": "2026-11-09T04:51:50Z",
     "installerAnonymousDownloadVerified": true
   },
-  "nextAction": "기존 사용자 승인 방향: 수정 소스를 포함하는 다음 버전 설치본·릴리즈 갱신과 실제 운영 JSON/원본 폴더 이관 리허설. 이번9경로 leaf는 여기서 기술검수를 종료하며 배포/실운영이관 완료로 표시하지 않는다."
+  "nextAction": "사용자1.0.4 설치/실제0.5.8 JSON·원본Excel검수",
+  "lastPublicReleaseHistory": [
+    {
+      "version": "1.0.3",
+      "url": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/tag/v1.0.3",
+      "publishedAt": "2026-11-08T12:01:51Z",
+      "sourceCommit": "ceb66933c1af03a9331e611d254384aa6452c9b4",
+      "zipSha256": "40274eeacf935f9bc2e99b6bde241ff60d26073c48148a837bad41ec65295f03",
+      "anonymousDownloadVerified": true,
+      "targetPcInstalled": false,
+      "installerUrl": "https://github.com/Cnthoth-Plus-Projects/Shiftmgmt_Renewal/releases/download/v1.0.3/ShiftMgmt-1.0.3-Setup-x64.exe",
+      "installerSha256": "cbb0d4ff2f3957db64f7781cc49e980a1d0826e9bfc1edd808cc5d7a510cf52c",
+      "installerPublishedAt": "2026-11-08T17:01:28.955Z",
+      "installerAnonymousDownloadVerified": true
+    }
+  ]
 }
