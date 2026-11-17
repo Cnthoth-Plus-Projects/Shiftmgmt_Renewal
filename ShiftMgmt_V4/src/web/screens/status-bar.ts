@@ -39,6 +39,7 @@ export class StatusBar {
 
     // 기본 로딩 뼈대
     footer.innerHTML = `
+      <div class="statusbar-details" aria-label="프로그램 상태">
       <div class="status-cell" id="sb-db">
         <span class="status-dot-green"></span>
         <span class="sb-label">DB: 확인 중…</span>
@@ -61,8 +62,10 @@ export class StatusBar {
       `
           : ""
       }
+      </div>
       <div class="status-cell status-cell-right" id="sb-system">
         <span>시스템 준비됨</span>
+        <span class="status-version" id="sb-version">버전 확인 중…</span>
       </div>
     `;
 
@@ -124,6 +127,12 @@ export class StatusBar {
       const healthRes = await bridge.getAppHealth();
       if (this.isStale(gen)) return;
 
+      const version = footer.querySelector("#sb-version");
+      if (version) {
+        const appVersion = healthRes.ok ? healthRes.data?.appVersion?.trim() : "";
+        version.textContent = appVersion ? `버전 ${appVersion}` : "버전 확인 불가";
+      }
+
       const dbCell = footer.querySelector("#sb-db");
       if (dbCell) {
         if (healthRes.ok && healthRes.data) {
@@ -141,6 +150,8 @@ export class StatusBar {
       }
     } catch {
       if (this.isStale(gen)) return;
+      const version = footer.querySelector("#sb-version");
+      if (version) version.textContent = "버전 확인 불가";
       const dbCell = footer.querySelector("#sb-db");
       if (dbCell) {
         dbCell.innerHTML = `

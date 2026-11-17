@@ -39,13 +39,15 @@ try {
     $committed = $true
     $shell = New-Object -ComObject WScript.Shell
     $shortcut = $shell.CreateShortcut($shortcutPath)
-    $shortcut.TargetPath = Join-Path $InstallRoot 'START.cmd'
+    $shortcut.TargetPath = Join-Path $env:WINDIR 'System32\wscript.exe'
+    $shortcut.Arguments = '"' + (Join-Path $InstallRoot 'START.vbs') + '"'
     $shortcut.WorkingDirectory = $InstallRoot
+    $shortcut.IconLocation = (Join-Path $InstallRoot 'dist\browser\web\assets\brand-app.ico') + ',0'
     $shortcut.Description = '교대근무관리 시스템 ' + $manifest.version
     $shortcut.Save()
     Write-Host ('설치 완료: ' + $InstallRoot)
     Write-Host '바탕 화면의 교대근무관리 시스템 바로가기를 실행해 주세요.'
-    Write-Host '첫 아이디와 임시 비밀번호는 실행 창에 표시됩니다. 로그인 후 비밀번호를 변경해 주세요.'
+    Write-Host '최초 로그인 정보가 있으면 시작 창의 안내 버튼에서 확인할 수 있습니다. 로그인 후 비밀번호를 변경해 주세요.'
     Write-Host ('자료는 처음 실행할 때 생성됩니다: ' + $DataRoot)
     exit 0
 } catch {

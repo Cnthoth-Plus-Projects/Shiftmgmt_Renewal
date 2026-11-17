@@ -13,6 +13,7 @@ import { AllowanceScreen } from "./allowance";
 import { DashboardScreen } from "./dashboard";
 import { showConfirm, showNotice } from "./operations-ui";
 import { SelfAccount } from "./self-account";
+import { APP_LOGO_ALT_TEXT } from "../../shared/config/app-brand";
 
 export interface ShellScreenOptions {
   container: HTMLElement;
@@ -306,16 +307,26 @@ export class ShellScreen {
 
   private createSidebar(): HTMLElement {
     const sidebar = document.createElement("aside");
+    sidebar.id = "app-sidebar";
     sidebar.className = `sidebar ${this.isSidebarCollapsed ? "collapsed" : ""}`;
     sidebar.setAttribute("aria-label", "사이드바 네비게이션");
 
     // 사이드바 상단 로고
     const sidebarHeader = document.createElement("div");
     sidebarHeader.className = "sidebar-header";
-    sidebarHeader.innerHTML = `
-      <span class="material-symbols-outlined nav-brand-icon" aria-hidden="true">schedule</span>
-      <span class="sidebar-logo-text">교대근무관리</span>
-    `;
+    const logoFrame = document.createElement("div");
+    logoFrame.className = "sidebar-brand-image";
+    const logo = document.createElement("img");
+    logo.className = "sidebar-company-logo";
+    logo.src = "/web/assets/brand-logo-transparent.png";
+    logo.alt = APP_LOGO_ALT_TEXT;
+    logo.width = 180;
+    logo.height = 60;
+    logoFrame.appendChild(logo);
+    const brandCaption = document.createElement("span");
+    brandCaption.className = "sidebar-logo-text";
+    brandCaption.textContent = "교대근무관리 시스템";
+    sidebarHeader.append(logoFrame, brandCaption);
     sidebar.appendChild(sidebarHeader);
 
     // 네비게이션 목록
@@ -331,6 +342,8 @@ export class ShellScreen {
     homeBtn.type = "button";
     homeBtn.className = "nav-item active";
     homeBtn.setAttribute("aria-current", "page");
+    homeBtn.setAttribute("aria-label", "홈");
+    homeBtn.title = "홈";
     homeBtn.innerHTML = `
       <span class="material-symbols-outlined" aria-hidden="true">home</span>
       <span class="nav-label">홈</span>
@@ -376,6 +389,8 @@ export class ShellScreen {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "nav-item";
+        btn.setAttribute("aria-label", item.label);
+        btn.title = item.label;
         btn.innerHTML = `
           <span class="material-symbols-outlined" aria-hidden="true">${item.icon}</span>
           <span class="nav-label">${item.label}</span>
@@ -413,10 +428,13 @@ export class ShellScreen {
     toggleBtn.type = "button";
     toggleBtn.className = "btn-sidebar-toggle";
     toggleBtn.setAttribute("aria-label", "사이드바 접기/펼치기");
+    toggleBtn.setAttribute("aria-controls", sidebar.id);
+    toggleBtn.setAttribute("aria-expanded", String(!this.isSidebarCollapsed));
     toggleBtn.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">menu</span>`;
     toggleBtn.addEventListener("click", () => {
       this.isSidebarCollapsed = !this.isSidebarCollapsed;
       sidebar.classList.toggle("collapsed", this.isSidebarCollapsed);
+      toggleBtn.setAttribute("aria-expanded", String(!this.isSidebarCollapsed));
     });
 
     const divider = document.createElement("div");
@@ -426,10 +444,16 @@ export class ShellScreen {
     titleEl.className = "header-title";
     titleEl.id = "header-current-title";
     titleEl.textContent = this.currentTitle;
+    const heading = document.createElement("div");
+    heading.className = "header-heading";
+    const appName = document.createElement("span");
+    appName.className = "header-app-name";
+    appName.textContent = "교대근무관리 시스템";
+    heading.append(appName, titleEl);
 
     left.appendChild(toggleBtn);
     left.appendChild(divider);
-    left.appendChild(titleEl);
+    left.appendChild(heading);
     header.appendChild(left);
 
     const right = document.createElement("div");

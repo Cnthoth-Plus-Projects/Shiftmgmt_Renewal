@@ -13,7 +13,7 @@ describe("app-bridge", () => {
     expect(original).toEqual([1, undefined, "a", undefined, undefined]);
   });
 
-  it("exposes exactly 114 methods mapped to their contract channels (R8)", async () => {
+  it("exposes exactly 117 methods mapped to their contract channels (R8)", async () => {
     const calledUrls: string[] = [];
     const fakeFetch = vi.fn(async (url: string | URL | Request) => {
       const urlStr = String(url);
@@ -26,7 +26,9 @@ describe("app-bridge", () => {
 
     const bridge = createBrowserAppBridge(fakeFetch);
 
-    expect(Object.keys(bridge)).toHaveLength(114);
+    expect(Object.keys(bridge)).toHaveLength(117);
+    expect(typeof bridge.listLegacyIdentities).toBe("function");
+    expect(typeof bridge.resolveLegacyIdentity).toBe("function");
 
     expect(typeof bridge.getSchedulePreparationContext).toBe("function");
     expect(typeof bridge.listDocumentLayouts).toBe("function");
@@ -54,7 +56,9 @@ describe("app-bridge", () => {
       expect(calledUrls).toContain(`/api/${contract.channel}`);
     }
 
-    expect(calledUrls).toHaveLength(114);
+    expect(calledUrls).toHaveLength(117);
+    expect(calledUrls).toContain("/api/operations:list-legacy-identities");
+    expect(calledUrls).toContain("/api/operations:resolve-legacy-identity");
   });
 
   it("handles network failure and returns standard NETWORK_ERROR (N10)", async () => {

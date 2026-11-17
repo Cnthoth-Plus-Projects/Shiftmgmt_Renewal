@@ -13,6 +13,8 @@ import { registerOperationsRoutes } from "./operations-routes";
 import { SessionManager } from "../session";
 
 const mocks = vi.hoisted(() => ({
+  listLegacyIdentities: vi.fn(() => []),
+  resolveLegacyIdentity: vi.fn(() => []),
   // app-settings-storage-service
   getStoredAppSettingsSnapshot: vi.fn(() => ({
     holidayApiBaseUrl: "https://api.test/holidays",
@@ -318,7 +320,11 @@ const dispatchAsAdmin = async (
   return { result, signal, dialogBridge };
 };
 
+vi.mock("../../services/legacy-identity-service", () => ({ listLegacyIdentities: mocks.listLegacyIdentities, resolveLegacyIdentity: mocks.resolveLegacyIdentity }));
+
 const validArgsMap: Record<string, unknown[]> = {
+  "operations:list-legacy-identities": [],
+  "operations:resolve-legacy-identity": [{ identityId: "legacy-one", employeeCode: "1001", reason: "원부 확인", confirmationText: "연결" }],
   "operations:get-app-settings": [],
   "operations:save-app-settings": [{ autoBackupEnabled: true }],
   "operations:select-directory": [{ title: "폴더 선택" }],
@@ -361,6 +367,7 @@ const validArgsMap: Record<string, unknown[]> = {
 };
 
 const expectedActivities = {
+  "operations:resolve-legacy-identity": ["employee-save", "과거 인력의 실제 사번 1회 연결"],
   "operations:save-app-settings": ["app-settings-save", "앱 운영 설정 저장"],
   "operations:preview-database-migration-update": ["database-migration-preview", "DB 복원 미리보기"],
   "operations:update-database-from-migration": ["database-migration-update", "DB 복원 반영"],
@@ -396,6 +403,13 @@ type ChannelEffectDescriptor = {
 };
 
 const channelEffectDescriptors: Record<string, ChannelEffectDescriptor> = {
+  "operations:list-legacy-identities": {
+    args: [], assertEffects: () => { expect(mocks.listLegacyIdentities).toHaveBeenCalledTimes(1); }
+  },
+  "operations:resolve-legacy-identity": {
+    args: validArgsMap["operations:resolve-legacy-identity"],
+    assertEffects: (_env, args) => { expect(mocks.resolveLegacyIdentity).toHaveBeenCalledWith(args[0], expect.objectContaining({ userId: mockAdminSession.userId })); }
+  },
   "operations:get-app-settings": {
     args: [],
     assertEffects: (env) => {
@@ -768,17 +782,17 @@ describe("operations-routes", () => {
   });
 
   describe("C2 & RN1/RN2 contract counts (CN1, CN2)", () => {
-    it("verifies the final 111-contract aggregate registration accurately", () => {
+    it("verifies the final 116-contract aggregate registration accurately", () => {
       const { sessionManager } = setupTestEnv();
       const registry = assembleRoutes(sessionManager);
 
-      expect(CHANNEL_CONTRACTS).toHaveLength(114);
+      expect(CHANNEL_CONTRACTS).toHaveLength(116);
       expect(CORE_CHANNELS).toHaveLength(17);
-      expect(OPERATIONS_CHANNELS).toHaveLength(39);
+      expect(OPERATIONS_CHANNELS).toHaveLength(41);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(114);
-      expect(new Set(registered).size).toBe(114);
+      expect(registered).toHaveLength(116);
+      expect(new Set(registered).size).toBe(116);
 
       for (const channel of CORE_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
@@ -792,21 +806,21 @@ describe("operations-routes", () => {
       }
     });
 
-    it("verifies registerOperationsRoutes registers exactly 39 channels independently", () => {
+    it("verifies registerOperationsRoutes registers exactly 41 channels independently", () => {
       const { sessionManager } = setupTestEnv();
       const registry = new RouteRegistry(sessionManager);
       registerOperationsRoutes(registry, sessionManager);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(39);
-      expect(new Set(registered).size).toBe(39);
+      expect(registered).toHaveLength(41);
+      expect(new Set(registered).size).toBe(41);
       for (const channel of OPERATIONS_CHANNELS) {
         expect(registry.has(channel)).toBe(true);
       }
     });
   });
 
-  describe("R2-1 & R2-2. 39 Channel service/effect and 22 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
+  describe("R2-1 & R2-2. 41 Channel service/effect and 23 activity verification (RN1, RN2, RN3, CN5, CN6)", () => {
     it("rejects self deletion before calling storage even if other admins exist", async () => {
       const env=setupTestEnv(),registry=assembleRoutes(env.sessionManager);
       const self=env.sessionManager.resolveSession(env.cookie)!;
@@ -857,13 +871,13 @@ describe("operations-routes", () => {
       const activityContracts = CHANNEL_CONTRACTS.filter(
         (c) => c.group === "operations" && c.recordsActivity,
       );
-      expect(activityContracts).toHaveLength(22);
+      expect(activityContracts).toHaveLength(23);
       const manifestActivityKeys = activityContracts.map((c) => c.channel).sort();
       const literalActivityKeys = Object.keys(expectedActivities).sort();
       expect(literalActivityKeys).toEqual(manifestActivityKeys);
     });
 
-    it("dispatches all 39 operations channels independently, verifying exact service effects and activity logs (22 tracked, 17 untracked)", async () => {
+    it("dispatches all 41 operations channels independently, verifying exact service effects and activity logs (23 tracked, 18 untracked)", async () => {
       for (const channel of OPERATIONS_CHANNELS) {
         vi.clearAllMocks();
         const env = setupTestEnv();

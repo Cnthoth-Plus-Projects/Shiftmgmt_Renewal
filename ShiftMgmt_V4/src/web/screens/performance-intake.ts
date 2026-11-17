@@ -6,6 +6,7 @@ import type {
   PerformanceStartupRecoveryStatusSnapshot
 } from "../../shared/domain/performance-file";
 import { escapeHtml } from "./performance-view";
+import { summarizeIntakeIssues } from "./performance-intake-issues";
 
 export interface PerformanceWatchStatusInfo {
   isWatching: boolean | null;
@@ -49,6 +50,7 @@ export class PerformanceIntakeModal {
     const processed = syncState?.processedCount ?? 0;
     const total = syncState?.totalCount ?? 0;
     const currentFile = syncState?.currentFileName || "-";
+    const issues = summarizeIntakeIssues([...(recoveryStatus?.issues || []), ...(watchStatus?.issues || [])]);
 
     backdrop.innerHTML = `
       <div class="perf-modal-dialog wide">
@@ -101,23 +103,19 @@ export class PerformanceIntakeModal {
                   recoveryStatus.skippedScheduleCount
                 }건 건너뜀</span>
 
-                ${
-                  recoveryStatus.issues.length > 0
-                    ? `
-                  <span class="perf-detail-label">복구 이슈</span>
-                  <span class="perf-detail-value perf-text-danger">
-                    ${recoveryStatus.issues.map(i => escapeHtml(i)).join("<br>")}
-                  </span>
-                `
-                    : ""
-                }
               </div>
             </div>
           `
               : ""
           }
 
-          <div class="perf-intake-issues">${(watchStatus?.issues || []).map(x=>`<p>${escapeHtml(x)}</p>`).join("")}</div>
+          ${issues.missing.length ? `<section class="perf-source-notice" aria-label="원본 엑셀 확인 필요">
+            <div class="perf-source-notice-heading"><span class="material-symbols-outlined" aria-hidden="true">folder_off</span><strong>원본 엑셀 확인 필요</strong><span class="perf-source-count">${issues.missing.length}개 항목</span></div>
+            <p>실적 기록은 있지만 이 PC에서 원본 엑셀을 찾지 못했습니다. 저장된 실적·승인·수당 기록은 그대로 유지됩니다.</p>
+            <p class="perf-source-next">원본을 확인해야 한다면 이전 PC나 별도 백업에서 엑셀을 찾아 주세요. 아래 목록에서 해당 근무지와 근무월을 확인할 수 있습니다.</p>
+            <details class="perf-source-details"><summary>대상 목록 보기 (${issues.missing.length}개)</summary><div class="perf-source-list"><table class="perf-table"><thead><tr><th>근무지·근무월</th><th>확인할 내용</th></tr></thead><tbody>${issues.missing.map(issue => `<tr><td title="${escapeHtml(issue.message)}">${escapeHtml(issue.label)}</td><td>별도 보관한 원본 엑셀 확인</td></tr>`).join("")}</tbody></table></div></details>
+          </section>` : ""}
+          ${issues.other.length ? `<details class="perf-intake-other-issues"><summary>그 밖의 확인 사항 (${issues.other.length}건)</summary><ul>${issues.other.map(issue => `<li>${escapeHtml(issue)}</li>`).join("")}</ul></details>` : ""}
           <!-- 현재 범위 원본 파일 목록 -->
           <div class="perf-detail-section">
             <div class="perf-detail-section-title">현재 범위 원본 파일 목록 (${pendingFiles.length}건)</div>

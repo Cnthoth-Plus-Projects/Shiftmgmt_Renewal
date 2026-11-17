@@ -9,6 +9,7 @@ import { registerAllowanceRoutes } from "./allowance-routes";
 import { ALLOWANCE_CHANNELS } from "./index";
 
 const mocks = vi.hoisted(() => ({
+  openAllowanceDocumentFolder: vi.fn(async () => ({ ok: true, data: null })),
   listAllowanceApprovalHistory: vi.fn(() => []),
   reviewAllowanceCalculations: vi.fn(async () => ({ ok: true, data: { reviewed: true } })),
   exportAllowanceDocuments: vi.fn(async () => ({ ok: true, data: { exported: true } })),
@@ -34,6 +35,7 @@ vi.mock("../../services/allowance-document-export-service", () => ({
 vi.mock("../../services/allowance-document-export-history-service", () => ({
   listStoredAllowanceDocumentExports: mocks.listStoredAllowanceDocumentExports,
 }));
+vi.mock("../../services/allowance-document-folder-service", () => ({ openAllowanceDocumentFolder: mocks.openAllowanceDocumentFolder }));
 vi.mock("../../services/allowance-preview-service", () => ({
   previewAllowanceCalculation: mocks.previewAllowanceCalculation,
 }));
@@ -116,6 +118,7 @@ type Descriptor = {
 };
 
 const descriptors: Record<string, Descriptor> = {
+  "allowance:open-document-folder": { args: [{ exportId: "export-1", documentKind: "proposal" }], spy: mocks.openAllowanceDocumentFolder, expectedArgs: (_e, a) => [a[0], { openFolder: expect.any(Function) }] },
   "allowance:run-approved-calculation": { args: [{ performanceFileIds: ["file-1"] }], spy: mocks.runApprovedAllowanceCalculation, expectedArgs: (_e, a) => [a[0]] },
   "allowance:list-results": { args: [], spy: mocks.listApprovedAllowanceCalculationResults, expectedArgs: () => [] },
   "allowance:list-history": { args: [], spy: mocks.listAllowanceCalculationHistory, expectedArgs: () => [] },
@@ -143,10 +146,10 @@ const activities = {
 describe("allowance-routes", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("registers exactly the 13 allowance contracts and manifest flags", () => {
+  it("registers exactly the 14 allowance contracts and manifest flags", () => {
     const env = setup();
     expect(env.registry.getRegisteredChannels().sort()).toEqual([...ALLOWANCE_CHANNELS].sort());
-    expect(ALLOWANCE_CHANNELS).toHaveLength(13);
+    expect(ALLOWANCE_CHANNELS).toHaveLength(14);
     expect(Object.keys(descriptors).sort()).toEqual([...ALLOWANCE_CHANNELS].sort());
     const manifestActivities = CHANNEL_CONTRACTS.filter(
       (contract) => contract.group === "allowance" && contract.recordsActivity,
@@ -163,7 +166,7 @@ describe("allowance-routes", () => {
     ]);
   });
 
-  it("dispatches all 13 channels with exact service effects, dataDir, and activities", async () => {
+  it("dispatches all 14 channels with exact service effects, dataDir, and activities", async () => {
     for (const channel of ALLOWANCE_CHANNELS) {
       vi.clearAllMocks();
       const env = setup();

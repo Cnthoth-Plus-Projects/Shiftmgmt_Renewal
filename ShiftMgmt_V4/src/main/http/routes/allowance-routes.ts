@@ -3,6 +3,7 @@ import type {
   AllowanceDocumentExportInput,
   AllowanceEarlyPayoutInput,
   AllowancePreviewInput,
+  AllowanceDocumentFolderInput,
 } from "../../../shared/bridge/contracts";
 import type {
   AllowanceProposalApprovalInput,
@@ -14,6 +15,7 @@ import {
 } from "../../services/allowance-approval-service";
 import { exportAllowanceDocuments } from "../../services/allowance-document-export-service";
 import { listStoredAllowanceDocumentExports } from "../../services/allowance-document-export-history-service";
+import { openAllowanceDocumentFolder } from "../../services/allowance-document-folder-service";
 import { previewAllowanceCalculation } from "../../services/allowance-preview-service";
 import {
   approveAllowanceProposal,
@@ -53,6 +55,9 @@ export const registerAllowanceRoutes = (
   registry: RouteRegistry,
   sessionManager: SessionManager,
 ): void => {
+  registry.register("allowance:open-document-folder", (args, context) => openAllowanceDocumentFolder(args[0] as AllowanceDocumentFolderInput, {
+    openFolder: async folder => (await context.dialogBridge.showDialog({ operation: "openPath", path: folder }, context.signal)).ok,
+  }));
   // 1. allowance:run-approved-calculation
   registry.register("allowance:run-approved-calculation", async (args, context) => {
     const input = args[0] as AllowanceApprovedCalculationInput;

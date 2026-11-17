@@ -426,6 +426,10 @@ export const approvePerformanceFile = async (
     return buildMissingEntryResult();
   }
 
+  if (entry.employeeCode.startsWith("LEGACY-UNKNOWN-")) {
+    return buildApprovalBlockedResult("과거 기록용 미확인 번호로는 새 실적을 승인할 수 없습니다. 운영 관리의 백업·복원에서 실제 사번을 먼저 연결해 주세요.");
+  }
+
   if (detail.scheduleMonth !== entry.scheduleMonth || entry.workDate.slice(0, 7) !== entry.scheduleMonth) {
     return buildApprovalBlockedResult("파일 근무월과 실제 근무일이 다릅니다. 원본 엑셀과 파일명을 확인한 뒤 다시 가져와 주세요.");
   }

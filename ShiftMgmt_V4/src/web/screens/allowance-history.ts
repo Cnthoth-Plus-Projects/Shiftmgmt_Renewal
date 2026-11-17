@@ -512,9 +512,9 @@ export class AllowanceHistoryView {
         : expRows
             .map(e => {
               const files = [
-                { label: "품의서", name: e.proposalFileName, path: e.proposalPath },
-                { label: "별첨 1", name: e.attachment1FileName, path: e.attachment1Path },
-                { label: "별첨 2", name: e.attachment2FileName, path: e.attachment2Path },
+                { kind: "proposal", label: "품의서", name: e.proposalFileName, path: e.proposalPath },
+                { kind: "attachment1", label: "별첨 1", name: e.attachment1FileName, path: e.attachment1Path },
+                { kind: "attachment2", label: "별첨 2", name: e.attachment2FileName, path: e.attachment2Path },
               ];
               const warnings =
                 e.rankMissingEmployeeNames && e.rankMissingEmployeeNames.length > 0
@@ -532,7 +532,7 @@ export class AllowanceHistoryView {
               const filesHtml = files
                 .map(
                   f =>
-                    `<div class="allowance-file-item"><span class="allowance-badge badge-locked">${f.label}</span><strong>${esc(f.name)}</strong><code class="allowance-path-code">${esc(f.path)}</code><button type="button" class="allowance-btn secondary btn-copy-path" data-copy-path="${esc(f.path)}" title="전체 파일 경로 복사">경로 복사</button><span class="allowance-copy-feedback" hidden></span></div>`
+                    `<div class="allowance-file-item"><span class="allowance-badge badge-locked">${f.label}</span><strong>${esc(f.name)}</strong><code class="allowance-path-code">${esc(f.path)}</code><button type="button" class="allowance-btn secondary btn-open-document-folder" data-export-id="${esc(e.id)}" data-document-kind="${f.kind}" aria-label="${f.label} 저장 폴더 열기"><span class="material-symbols-outlined" aria-hidden="true">folder_open</span>폴더 열기</button><button type="button" class="allowance-btn secondary btn-copy-path" data-copy-path="${esc(f.path)}" title="전체 파일 경로 복사">경로 복사</button><span class="allowance-copy-feedback" role="status" hidden></span></div>`
                 )
                 .join("");
               details.set(`export:${e.id}`, { title: `${e.workMonth} 생성 문서 및 출력 안내`, html: warnHtml + jumpHtml + `<div class="allowance-file-list">${filesHtml}</div>` });
@@ -602,6 +602,7 @@ export class AllowanceHistoryView {
         content.className = "allowance-history-detail";
         content.innerHTML = detail.html;
         this.bindCopyButtons(content);
+        this.bindFolderButtons(content);
         this.bindJumpButtons(content);
         const overlay = this.detailDialog.open({
           id: "allowance-history-detail-modal", title: detail.title, content,
@@ -612,6 +613,23 @@ export class AllowanceHistoryView {
       });
     });
     this.fitPages(targetEl, () => this.renderExportsTab(targetEl));
+  }
+
+  private bindFolderButtons(targetEl: HTMLElement): void {
+    targetEl.querySelectorAll<HTMLButtonElement>(".btn-open-document-folder").forEach(button => {
+      button.addEventListener("click", async () => {
+        const feedback = button.closest(".allowance-file-item")?.querySelector<HTMLElement>(".allowance-copy-feedback");
+        button.disabled = true;
+        if (feedback) { feedback.hidden = false; feedback.classList.remove("error"); feedback.textContent = "폴더를 여는 중…"; }
+        try {
+          const result = await window.appBridge!.openAllowanceDocumentFolder({ exportId: button.dataset.exportId!, documentKind: button.dataset.documentKind as "proposal" | "attachment1" | "attachment2" });
+          if (!button.isConnected) return;
+          if (feedback) { feedback.textContent = result.ok ? "저장 폴더를 열었습니다." : result.message; feedback.classList.toggle("error", !result.ok); }
+        } catch {
+          if (feedback?.isConnected) { feedback.textContent = "폴더를 열지 못했습니다. 경로를 복사해 직접 확인해 주세요."; feedback.classList.add("error"); }
+        } finally { if (button.isConnected) button.disabled = false; }
+      });
+    });
   }
 
   private bindJumpButtons(targetEl: HTMLElement): void {

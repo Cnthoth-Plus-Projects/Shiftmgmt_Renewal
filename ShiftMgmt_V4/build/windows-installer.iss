@@ -26,7 +26,8 @@ WizardStyle=modern dynamic
 DisableWelcomePage=no
 UninstallFilesDir={code:GetMetadataDir}
 UninstallDisplayName=교대근무관리 시스템 {#AppVersion}
-UninstallDisplayIcon={app}\runtime\node.exe
+SetupIconFile={#PayloadDir}\dist\browser\web\assets\brand-app.ico
+UninstallDisplayIcon={app}\dist\browser\web\assets\brand-app.ico
 CloseApplications=no
 RestartApplications=no
 SetupLogging=yes
@@ -45,8 +46,8 @@ Source: "{#PayloadDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{tmp}\installation.json"; DestDir: "{app}"; Flags: external
 
 [Icons]
-Name: "{code:GetDesktopDir}\교대근무관리 시스템"; Filename: "{app}\START.cmd"; WorkingDir: "{app}"
-Name: "{code:GetStartMenuDir}\교대근무관리 시스템"; Filename: "{app}\START.cmd"; WorkingDir: "{app}"
+Name: "{code:GetDesktopDir}\교대근무관리 시스템"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\START.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\dist\browser\web\assets\brand-app.ico"; IconIndex: 0
+Name: "{code:GetStartMenuDir}\교대근무관리 시스템"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\START.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\dist\browser\web\assets\brand-app.ico"; IconIndex: 0
 
 [Registry]
 Root: HKCU64; Subkey: "Software\ShiftMgmt\Installer\9C321097-0511-4AF6-9E41-AE16F519C703"; ValueType: string; ValueName: "DataRoot"; ValueData: "{code:GetDataRoot}"; Flags: uninsdeletevalue uninsdeletekeyifempty

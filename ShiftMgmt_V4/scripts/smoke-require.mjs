@@ -1,4 +1,4 @@
-// 정식 1.0.0 서비스 89개가 소스/빌드에서 일치하며 실제로 불러와지는지 확인한다.
+// 신원 보존 이관을 포함한 서비스 90개가 소스/빌드에서 일치하고 불러와지는지 확인한다.
 //
 //   npm run smoke
 //
@@ -10,8 +10,8 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** 기존79개와 이후 승인된 정책·복구·이력·출력 서비스10개. */
-const EXPECTED_COUNT = 89;
+/** 기존79개 + 정책·복구·이력·출력10개 + 승인된 과거 신원 연결1개. */
+const EXPECTED_COUNT = 90;
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const servicesDir = path.join(root, "dist", "server", "main", "services");
@@ -63,6 +63,10 @@ for (const name of fileNames) {
 
 const countWrong = fileNames.length !== EXPECTED_COUNT;
 const problems = [];
+
+if (!sourceNames.includes("legacy-identity-service.js") || !fileNames.includes("legacy-identity-service.js")) {
+  problems.push("승인된 과거 신원 연결 서비스가 소스 또는 빌드에서 누락됐습니다");
+}
 
 if (sourceNames.length !== EXPECTED_COUNT || JSON.stringify(sourceNames) !== JSON.stringify(fileNames)) {
   problems.push("소스 서비스 목록과 빌드 파일 목록이 일치하지 않습니다");

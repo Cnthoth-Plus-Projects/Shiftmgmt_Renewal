@@ -1176,6 +1176,8 @@ export interface PolicyChangeApplyResult {
 }
 
 export interface OperationsBridge {
+  listLegacyIdentities: () => Promise<BridgeResult<import("../domain/legacy-identity").LegacyIdentitySummary[]>>;
+  resolveLegacyIdentity: (input: import("../domain/legacy-identity").LegacyIdentityResolveInput) => Promise<BridgeResult<import("../domain/legacy-identity").LegacyIdentitySummary[]>>;
   getAppSettings: () => Promise<BridgeResult<AppSettingsSnapshot>>;
   saveAppSettings: (
     input: AppSettingsUpdateInput
@@ -1311,7 +1313,10 @@ export interface OperationsBridge {
 }
 
 
+export interface AllowanceDocumentFolderInput { exportId: string; documentKind: "proposal" | "attachment1" | "attachment2" }
+
 export interface AllowanceBridge {
+  openAllowanceDocumentFolder: (input: AllowanceDocumentFolderInput) => Promise<BridgeResult<null>>;
   previewCalculation: (
     input: AllowancePreviewInput
   ) => Promise<BridgeResult<AllowanceCalculationSnapshot>>;

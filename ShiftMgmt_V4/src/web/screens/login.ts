@@ -2,6 +2,8 @@ import { appendDevelopmentLoginBanner } from "./development-login";
 import { createThemeControl } from "../theme-controls";
 import type { AuthSession } from "../../shared/domain/model";
 import { getPasswordPolicyChecks, isStrongPasswordSatisfied } from "../../shared/config/auth-password-policy";
+import { APP_LOGO_ALT_TEXT } from "../../shared/config/app-brand";
+import { clearRestoreCompletion, getRestoreCompletion } from "../restore-feedback";
 
 export type LoginViewMode = "L1" | "L2" | "L3" | "L4" | "L5";
 export type PostChangeState = "idle" | "checking" | "limited" | "loginChosen" | "accepted";
@@ -99,6 +101,31 @@ export class LoginScreen {
     const card = document.createElement("div");
     card.className = "login-card";
 
+    const logo = document.createElement("img");
+    logo.className = "login-company-logo";
+    logo.src = "/web/assets/brand-logo-transparent.png";
+    logo.alt = APP_LOGO_ALT_TEXT;
+    logo.width = 256;
+    logo.height = 64;
+    card.appendChild(logo);
+
+    const restored = getRestoreCompletion();
+    if (restored) {
+      const notice = document.createElement("section");
+      notice.id = "login-restore-completed";
+      notice.className = "login-restore-completed";
+      notice.setAttribute("role", "status");
+      notice.setAttribute("aria-live", "polite");
+      const title = document.createElement("strong");
+      title.textContent = "데이터베이스 복원이 완료되었습니다.";
+      const message = document.createElement("p");
+      message.textContent = `${restored.tableCount}개 테이블을 복원했습니다. 계정도 백업 당시의 계정으로 바뀌었으므로, 해당 백업에서 사용하던 아이디와 비밀번호로 다시 로그인해 주세요.`;
+      const help = document.createElement("p");
+      help.textContent = "새 설치 후 설정한 비밀번호나 초기 비밀번호는 적용되지 않습니다. 백업 당시의 비밀번호를 모르면 관리자에게 계정 복구를 요청해 주세요.";
+      notice.append(title, message, help);
+      card.appendChild(notice);
+    }
+
     switch (this.mode) {
       case "L1":
       case "L2":
@@ -138,7 +165,7 @@ export class LoginScreen {
       </h1>
       <p class="login-subtitle">업무를 시작하려면 로그인해 주세요</p>
     `;
-    card.appendChild(header);
+    card.insertBefore(header, card.querySelector("#login-restore-completed"));
 
     if (this.mode === "L2") {
       const banner = document.createElement("div");
@@ -258,6 +285,7 @@ export class LoginScreen {
       try {
         const result = await bridge.signIn({ loginId, password });
         if (result.ok && result.data) {
+          clearRestoreCompletion();
           if (result.data.passwordChangeRequired) {
             this.setMode("L4", result.data);
           } else {

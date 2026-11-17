@@ -16,6 +16,7 @@ import {
   getPerformanceApprovalHistoryByFileId
 } from "./performance-approval-service";
 import { getSqliteDatabase, isSqliteStorageReady } from "./sqlite-storage-service";
+import { hasPreservedLegacyIdentityFile } from "./legacy-identity-service";
 
 const hasSavedCalculation = (approvalId: string) => Boolean(
   getSqliteDatabase()?.prepare(
@@ -405,6 +406,10 @@ export const upsertPerformanceFileDetail = (
     const sourceChanged =
       createProtectedSourceSignature(existingDetail) !== createProtectedSourceSignature(detail);
 
+    if (sourceChanged && hasPreservedLegacyIdentityFile(detail.id)) {
+      throw new Error("이관한 과거 인력의 실적은 원본 재읽기로 덮어쓰지 않습니다. 실제 사번은 운영 관리의 백업·복원에서 연결해 주세요.");
+    }
+
     if (isProtectedStatus && sourceChanged && !options?.allowApprovedSourceRebaseline) {
       throw new Error("이미 승인 또는 반려된 실적 파일은 다른 원본으로 덮어쓸 수 없습니다.");
     }
@@ -764,6 +769,8 @@ export const deleteStoredPerformanceFile = (fileId: string) => {
   if (!database || !isSqliteStorageReady()) {
     return false;
   }
+
+  if (hasPreservedLegacyIdentityFile(fileId)) return false;
 
   const detail = getStoredPerformanceFileDetail(fileId);
 

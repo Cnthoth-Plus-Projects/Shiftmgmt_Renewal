@@ -11,10 +11,13 @@ import {
   createButton,
   formatErrorMessage,
   showNotice,
-  showPromptConfirm
+  showPromptConfirm,
+  sharedDialog
 } from "./operations-ui";
 import { DataTable } from "../data-table";
 import { createImportedHireDateReview } from "./employee-hire-date-review";
+import { OperationsLegacyIdentities } from "./operations-legacy-identities";
+import { rememberRestoreCompletion } from "../restore-feedback";
 
 export function mountOperationsBackup(container: HTMLElement, onSessionExpired?: () => void): OperationsBackupRunner {
   const runner = new OperationsBackupRunner(container, onSessionExpired);
@@ -47,6 +50,8 @@ export class OperationsBackupRunner {
   private flowGeneration = 0;
   private isRestoring = false;
   private expiryTimer?: ReturnType<typeof setTimeout>;
+  private legacyIdentities?: OperationsLegacyIdentities;
+  private restoreDialogToken: number | null = null;
 
   private pathInputEl?: HTMLInputElement;
   private flowContainerEl?: HTMLElement;
@@ -57,11 +62,13 @@ export class OperationsBackupRunner {
   }
 
   public isBusy(): boolean {
-    return (!this.isDestroyed && (this.isRunningBackup || this.isRestoring || this.state === "CHECKING" || this.state === "PREVIEWING"));
+    return (!this.isDestroyed && (this.isRunningBackup || this.isRestoring || this.legacyIdentities?.isBusy() || this.state === "CHECKING" || this.state === "PREVIEWING")) === true;
   }
 
   public destroy(): void {
     this.isDestroyed = true;
+    this.closeRestoreDialog();
+    this.legacyIdentities?.destroy();
     this.flowGeneration++;
     clearTimeout(this.expiryTimer);
     this.checkResult = null;
@@ -77,6 +84,7 @@ export class OperationsBackupRunner {
 
   private resetFlowToPath(): void {
     if (this.isRestoring || this.isDestroyed) return;
+    this.closeRestoreDialog();
     clearTimeout(this.expiryTimer);
     this.flowGeneration++;
     this.checkResult = null;
@@ -113,6 +121,10 @@ export class OperationsBackupRunner {
     this.backupInfoEl = backupInfo;
     backupBox.appendChild(backupInfo);
     this.container.appendChild(backupBox);
+    const legacyBox = el("div", "backup-card");
+    this.container.appendChild(legacyBox);
+    this.legacyIdentities = new OperationsLegacyIdentities(legacyBox, this.onSessionExpired);
+    void this.legacyIdentities.refresh();
 
     // 2. JSON 복원/교체 카드
     const restoreBox = el("div", "restore-card");
@@ -233,6 +245,9 @@ export class OperationsBackupRunner {
 
     const capturedPath = this.backupFilePath;
     const curGen = ++this.flowGeneration;
+    this.closeRestoreDialog();
+    this.previewResult = null;
+    clearTimeout(this.expiryTimer);
 
     this.state = "CHECKING";
     if (this.flowContainerEl) {
@@ -325,13 +340,19 @@ export class OperationsBackupRunner {
 
   private async handleGeneratePreview(): Promise<void> {
     const bridge = window.appBridge;
-    if (!this.checkResult || !this.checkResult.isReady || !bridge || this.isDestroyed || this.isRestoring) return;
+    if (!this.checkResult || !this.checkResult.isReady || !bridge || this.isDestroyed || this.isRestoring || this.state === "PREVIEWING") return;
 
     const capturedPath = this.backupFilePath;
     const curGen = ++this.flowGeneration;
+    this.closeRestoreDialog();
+    this.previewResult = null;
+    clearTimeout(this.expiryTimer);
+    this.flowContainerEl?.querySelector(".preview-result-box")?.remove();
 
     this.state = "PREVIEWING";
-    const loading = el("div", "loading-spinner", "40개 테이블 영향도를 분석하고 미리보기를 생성하는 중...");
+    const previewButton = this.flowContainerEl?.querySelector<HTMLButtonElement>("#btn-generate-db-preview");
+    if (previewButton) previewButton.disabled = true;
+    const loading = el("div", "loading-spinner", "백업 파일의 테이블 영향도를 분석하고 미리보기를 생성하는 중...");
     this.flowContainerEl?.appendChild(loading);
 
     try {
@@ -350,6 +371,7 @@ export class OperationsBackupRunner {
 
       if (!res.ok || !res.data) {
         this.previewResult = null;
+        this.state = "CHECKED";
         this.flowContainerEl?.appendChild(
           el("div", "alert-danger", formatErrorMessage(res, "미리보기 생성에 실패했습니다."))
         );
@@ -374,7 +396,11 @@ export class OperationsBackupRunner {
       }
       loading.remove();
       this.previewResult = null;
+      this.state = "CHECKED";
       this.flowContainerEl?.appendChild(el("div", "alert-danger", `미리보기 오류: ${String(e)}`));
+    } finally {
+      loading.remove();
+      if (previewButton) previewButton.disabled = false;
     }
   }
 
@@ -382,8 +408,28 @@ export class OperationsBackupRunner {
     if (!this.previewResult || !this.flowContainerEl || this.isDestroyed) return;
 
     const wrap = el("div", "step-box preview-result-box");
-    wrap.appendChild(el("h5", "step-title", "3단계: 테이블 영향도 및 교체 확인"));
-    wrap.appendChild(createImportedHireDateReview(this.previewResult.employeeHireDateReview,"preview"));
+    wrap.appendChild(el("p", "", "변경 영향도 미리보기가 준비되었습니다. 별도 창에서 내용을 확인한 뒤 교체를 진행하세요."));
+    const reopen = createButton("미리보기 다시 열기", "secondary", () => this.openPreviewDialog());
+    reopen.id = "btn-open-db-preview";
+    wrap.appendChild(reopen);
+    this.flowContainerEl.appendChild(wrap);
+    this.openPreviewDialog();
+  }
+
+  private closeRestoreDialog(): void {
+    const token = this.restoreDialogToken;
+    this.restoreDialogToken = null;
+    if (token !== null && sharedDialog.isCurrent(token)) sharedDialog.close();
+  }
+
+  private openPreviewDialog(): void {
+    if (!this.previewResult || this.isDestroyed || this.isRestoring) return;
+    if (Date.parse(this.previewResult.expiresAt) <= Date.now()) {
+      this.resetFlowToPath();
+      return;
+    }
+    const wrap = el("div", "db-restore-preview-content");
+    wrap.appendChild(el("p", "db-restore-preview-summary", `${this.previewResult.tableImpacts.length}개 테이블의 현재 자료와 교체 후 자료를 비교합니다. 아직 데이터베이스는 변경되지 않았습니다.`));
 
     if (this.previewResult.warningMessages && this.previewResult.warningMessages.length > 0) {
       const warnBox = el("div", "alert-warning");
@@ -394,7 +440,7 @@ export class OperationsBackupRunner {
       wrap.appendChild(warnBox);
     }
 
-    // 40개 테이블 영향도 테이블 (DataTable)
+    // 교체 전후 테이블 영향도 (DataTable)
     const tableWrap = el("div", "preview-table-container");
     const table = new DataTable<JsonDatabaseTableImpact>({
       container: tableWrap,
@@ -419,23 +465,29 @@ export class OperationsBackupRunner {
     });
     table.setData(this.previewResult.tableImpacts || []);
     wrap.appendChild(tableWrap);
+    wrap.appendChild(createImportedHireDateReview(this.previewResult.employeeHireDateReview,"preview"));
 
-    // 최종 실행 버튼
-    const executeBar = el("div", "execute-bar");
-    executeBar.appendChild(
-      el("p", "execute-warning", "※ 데이터베이스를 교체하면 기존 데이터는 안전 백업본으로 저장된 후 교체 파일 내용으로 완전히 대체됩니다.")
-    );
-
-    const btnExecute = createButton("최종 교체 실행 (확인 필요)", "danger", () => this.handleConfirmExecute());
-    btnExecute.id = "btn-execute-db-restore";
-    executeBar.appendChild(btnExecute);
-    wrap.appendChild(executeBar);
-
-    this.flowContainerEl.appendChild(wrap);
+    wrap.appendChild(el("p", "execute-warning", "※ 교체를 실행하면 현재 데이터는 자동 백업된 후 선택한 파일의 내용으로 대체됩니다. 다음 확인 창에서 ‘교체’를 입력해야 실행됩니다."));
+    sharedDialog.open({
+      id: "operations-db-preview-modal",
+      title: "3단계: 테이블 영향도 및 교체 확인",
+      width: "1080px",
+      content: wrap,
+      triggerElement: this.flowContainerEl?.querySelector("#btn-open-db-preview"),
+      initialFocusSelector: "#btn-close-db-preview",
+      buttons: [
+        { id: "btn-close-db-preview", label: "닫기", onClick: () => this.closeRestoreDialog() },
+        { id: "btn-execute-db-restore", label: "최종 교체 실행 (확인 필요)", variant: "danger", onClick: () => this.handleConfirmExecute() }
+      ],
+      onClose: () => { this.restoreDialogToken = null; }
+    });
+    this.restoreDialogToken = sharedDialog.captureToken();
   }
 
   private handleConfirmExecute(): void {
     if (!this.previewResult || this.isRestoring || this.isDestroyed) return;
+    const preview = this.previewResult;
+    const generation = this.flowGeneration;
 
     showPromptConfirm({
       title: "데이터베이스 교체 최종 확인",
@@ -444,9 +496,18 @@ export class OperationsBackupRunner {
       requiredText: "교체",
       confirmLabel: "교체 실행",
       onConfirm: async () => {
+        this.restoreDialogToken = null;
+        if (this.previewResult !== preview || this.flowGeneration !== generation) return;
         await this.executeRestore();
+      },
+      onCancel: () => {
+        this.restoreDialogToken = null;
+        queueMicrotask(() => {
+          if (this.previewResult === preview && this.flowGeneration === generation) this.openPreviewDialog();
+        });
       }
     });
+    this.restoreDialogToken = sharedDialog.captureToken();
   }
 
   private async executeRestore(): Promise<void> {
@@ -481,6 +542,14 @@ export class OperationsBackupRunner {
         previewToken: capturedToken,
         confirmationText: "교체"
       });
+      // 복원은 기존 세션을 무효화한다. 늦은 세션 오류가 화면을 닫아도 성공 안내는 남긴다.
+      if (res.ok && res.data) {
+        rememberRestoreCompletion(res.data);
+        if (this.onSessionExpired) {
+          this.onSessionExpired();
+          return;
+        }
+      }
       if (this.isDestroyed || this.flowGeneration !== pendingFlow5) return;
       if (!res.ok && res.errorCode === "AUTH_SESSION_REQUIRED") { this.onSessionExpired?.(); return; }
 

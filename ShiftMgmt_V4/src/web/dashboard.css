@@ -78,7 +78,7 @@ html:has(#dashboard-root),body:has(#dashboard-root) { height:100%; overflow:hidd
 .dashboard-rank-viewport { min-height:0; flex:1; overflow-x:auto; overflow-y:hidden; }
 .dashboard-rank-viewport table { min-width:560px; }
 .dashboard-rank-viewport th { position:sticky; top:0; }
-.dashboard-rank-viewport td { padding:2px 7px; height:28px; font-size:12px; }
+.dashboard-rank-viewport td { padding:2px 7px; height:26px; font-size:12px; }
 .dashboard-rank-viewport tbody tr:hover { background:#f4faf9; }
 .dashboard-rank-person { display:inline; white-space:nowrap; font-size:12px; font-weight:600; color:#475d6e; line-height:16px; }
 .dashboard-rank-viewport td.dashboard-rank-code { color:#7b8c9a; font-size:11px; line-height:16px; font-variant-numeric:tabular-nums; }

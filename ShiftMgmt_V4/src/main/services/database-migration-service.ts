@@ -1,5 +1,6 @@
 import { parsePerformanceReturnSnapshot, RETURN_SNAPSHOT_TABLES } from "./performance-return-history-service";
 import { parseHolidayPatternPolicy } from "../../shared/domain/holiday-pattern";
+import { LEGACY_IDENTITY_SETTING_KEY, parseLegacyIdentityRegistry, validateLegacyIdentityBindings } from "../../shared/domain/legacy-identity";
 import { buildImportedEmployeeHireDateReview } from "./employee-hire-date-review";
 import { PATTERN_PRESETS_SETTING_KEY, parsePatternPresetRecords } from "../../shared/bridge/pattern-presets";
 import crypto, { randomUUID } from "node:crypto";
@@ -848,6 +849,7 @@ const TABLE_COLUMN_CONTRACTS: Record<string, readonly TableColumnContract[]> = {
 const SITE_NAME_OPTIONS_SETTING_KEY = "site_name_options_json";
 
 const KNOWN_SETTING_KEYS = new Set([
+  LEGACY_IDENTITY_SETTING_KEY,
   SITE_NAME_OPTIONS_SETTING_KEY,
   PATTERN_PRESETS_SETTING_KEY,
   // 1. 설치 대상 기기의 경로 (7개)
@@ -1446,6 +1448,10 @@ const parseAndValidateBackupJson = (
     if (key === PATTERN_PRESETS_SETTING_KEY) {
       try { parsePatternPresetRecords(JSON.parse(String(row.value))); } catch { const error=Object.assign(new Error("반복 패턴 보관함 JSON이 올바르지 않습니다."),{code:"CHECK_FAILED"}); throw error; }
     }
+    if (key === LEGACY_IDENTITY_SETTING_KEY) {
+      const registry = parseLegacyIdentityRegistry(JSON.parse(String(row.value)));
+      validateLegacyIdentityBindings(registry, tablesObj as Record<string, Array<Record<string, unknown>>>);
+    }
     if (key === SITE_NAME_OPTIONS_SETTING_KEY) {
       try {
         const entries: unknown = JSON.parse(String(row.value));
@@ -1795,6 +1801,8 @@ const buildFinalAppSettingRows = (input: {
 
   const patternPresets = sourceSettingMap.get(PATTERN_PRESETS_SETTING_KEY);
   if (patternPresets !== undefined) finalRows.push({setting_key:PATTERN_PRESETS_SETTING_KEY,value:patternPresets,updated_at:input.nowIso});
+  const legacyIdentities = sourceSettingMap.get(LEGACY_IDENTITY_SETTING_KEY);
+  if (legacyIdentities !== undefined) finalRows.push({ setting_key: LEGACY_IDENTITY_SETTING_KEY, value: legacyIdentities, updated_at: input.nowIso });
 
   // 근무지 이름 사전은 설치 경로가 아닌 선택한 백업의 업무 자료다.
   const siteNameOptions = sourceSettingMap.get(SITE_NAME_OPTIONS_SETTING_KEY);

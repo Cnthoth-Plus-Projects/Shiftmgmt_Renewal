@@ -59,6 +59,10 @@ copyInto(path.join(root, "src", "web", "policy-history.css"), webOut, "정책 �
 copyInto(path.join(root, "src", "web", "theme.css"), webOut, "테마 CSS");
 copyInto(path.join(root, "src", "web", "workspace.css"), webOut, "공통 화면 배치 CSS");
 copyInto(path.join(root, "src", "web", "theme-init.js"), webOut, "테마 초기화 스크립트");
+copyInto(path.join(root, "src", "renderer", "assets", "brand-logo-clean.png"), assetsOut, "회사 로고");
+copyInto(path.join(root, "src", "web", "assets", "brand-logo-transparent.png"), assetsOut, "로그인 회사 로고 (투명 배경)");
+copyInto(path.join(root, "src", "web", "assets", "brand-app.ico"), assetsOut, "Windows 회사 아이콘");
+copyInto(path.join(root, "src", "web", "assets", "brand-app.png"), assetsOut, "브라우저 회사 아이콘");
 
 // 2) Pretendard — woff 항목을 뺀 생성본 + woff2 9개
 const pretendardDir = path.join(root, "node_modules", "pretendard", "dist", "web", "static");

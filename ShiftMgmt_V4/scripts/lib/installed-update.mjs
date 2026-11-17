@@ -185,9 +185,14 @@ export function rejectInstalledUpdate(update) {
 // Run the replacement with its bundled Node. Activation requires a healthy startup;
 // a later application failure never triggers a database rollback.
 export function runUpdatedLauncher(update, { args = [], log = console.log, timeoutMs = 25_000 } = {}) {
+  const forwarded = [];
+  for (let index = 0; index < args.length; index++) {
+    if (args[index] === "--no-browser") forwarded.push(args[index]);
+    if (["--progress-file", "--control-file"].includes(args[index]) && path.isAbsolute(args[index + 1] ?? "")) forwarded.push(args[index], args[++index]);
+  }
   return new Promise(resolve => {
     let started = false, tail = "", settled = false, killTimer;
-    const child = spawn(path.join(update.root, "runtime/node.exe"), [path.join(update.root, "scripts/start-installed.mjs"), "--skip-update", ...args.filter(arg => arg === "--no-browser")], {
+    const child = spawn(path.join(update.root, "runtime/node.exe"), [path.join(update.root, "scripts/start-installed.mjs"), "--skip-update", ...forwarded], {
       cwd: update.root, env: process.env, windowsHide: true, stdio: ["pipe", "pipe", "pipe"]
     });
     const abort = () => { if (child.exitCode === null && !child.stdin.destroyed) child.stdin.write("q\n"); };

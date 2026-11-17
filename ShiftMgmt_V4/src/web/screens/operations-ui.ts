@@ -334,6 +334,9 @@ export function showPromptConfirm(options: {
   content.appendChild(guide);
 
   const input = el("input", "form-control prompt-input") as HTMLInputElement;
+  input.id = "operations-prompt-confirmation";
+  input.setAttribute("aria-label", `확인 문구 ${options.requiredText}`);
+  input.setAttribute("autocomplete", "off");
   input.type = "text";
   input.placeholder = options.requiredText;
   content.appendChild(input);

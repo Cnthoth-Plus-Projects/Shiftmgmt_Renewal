@@ -28,6 +28,12 @@
   text-align: center;
 }
 
+.login-company-logo { display: block; width: 256px; max-width: 100%; height: auto; margin: 0 auto 2px; border-radius: 6px; }
+.login-restore-completed { padding: 12px 14px; border: 1px solid var(--success, #238554); border-radius: 8px; background: var(--success-bg, #edf8f1); color: var(--text); font-size: 13px; line-height: 1.6; }
+.login-restore-completed strong { display: block; color: var(--success, #238554); }
+.login-restore-completed p { margin: 7px 0 0; }
+.login-container:has(.login-restore-completed) { height: auto; min-height: 100vh; }
+
 .login-title {
   font-size: 20px;
   font-weight: 700;

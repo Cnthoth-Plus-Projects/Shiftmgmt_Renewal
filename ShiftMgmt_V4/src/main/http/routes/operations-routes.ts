@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { listLegacyIdentities, resolveLegacyIdentity } from "../../services/legacy-identity-service";
+import type { LegacyIdentityResolveInput } from "../../../shared/domain/legacy-identity";
 import path from "node:path";
 import type {
   AllowanceRateVersionDeleteInput,
@@ -136,6 +138,17 @@ export const registerOperationsRoutes = (
   registry: RouteRegistry,
   sessionManager: SessionManager,
 ): void => {
+  registry.register("operations:list-legacy-identities", () => runPolicyAction(listLegacyIdentities, "LEGACY_IDENTITY_LIST_FAILED"));
+  registry.register("operations:resolve-legacy-identity", async (args, context) => {
+    const activity = trackSuccess(context, sessionManager, {
+      actionType: "employee-save", routeKey: "operations", routeLabel: "운영 관리", details: "과거 인력의 실제 사번 1회 연결"
+    });
+    return runIpcAction({
+      action: () => resolveLegacyIdentity(args[0] as LegacyIdentityResolveInput, context.session),
+      errorCode: "LEGACY_IDENTITY_RESOLVE_FAILED", getErrorMessage,
+      activity
+    });
+  });
   // 1. operations:get-app-settings
   registry.register("operations:get-app-settings", (_args, context) =>
     createIpcSuccess(

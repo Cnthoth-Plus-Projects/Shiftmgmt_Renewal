@@ -1873,13 +1873,39 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     const extra=await data('saveSiteNameOption',{name:'복원 이후 제거되어야 하는 시험자료'});
     await prepareRestore(page,backup.jsonBackupPath);
     const preview=(await page.evaluate(()=>window.__lastDbPreview)).data;assert.equal(preview.tableImpacts.length,43);
+    const previewModal=page.locator('#operations-db-preview-modal');
+    assert.equal(await previewModal.getAttribute('aria-modal'),'true');
+    assert(await previewModal.locator('.alert-warning ul').evaluate(list=>parseFloat(getComputedStyle(list).paddingInlineStart)>=24),'Warning bullets have an inset');
+    assert.equal(await page.locator('.restore-flow-container .preview-table-container').count(),0,'Preview table belongs only to the modal');
+    await page.locator('#btn-close-db-preview').focus();
+    await page.keyboard.press('Escape');await previewModal.waitFor({state:'detached'});
+    assert.equal(await page.evaluate(()=>document.activeElement?.id),'btn-open-db-preview');
+    await page.locator('#btn-open-db-preview').click();
+    await page.locator('#btn-execute-db-restore').focus();await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('aria-label')),'닫기','Tab stays in the modal');
+    await page.keyboard.press('Shift+Tab');assert.equal(await page.evaluate(()=>document.activeElement?.id),'btn-execute-db-restore');
+    const originalViewport=page.viewportSize();
+    for(const size of [{width:1440,height:900},{width:1024,height:600},{width:390,height:844}]) {
+      await page.setViewportSize(size);
+      const bounds=await previewModal.locator('.workforce-modal-box').boundingBox();
+      const footer=await page.locator('#btn-execute-db-restore').boundingBox();
+      assert(bounds&&bounds.x>=0&&bounds.y>=0&&bounds.x+bounds.width<=size.width&&bounds.y+bounds.height<=size.height,'Modal fits the viewport');
+      assert(footer&&footer.y+footer.height<=size.height,'Restore button remains visible');
+      await page.screenshot({path:path.join(capturesDir,`restore-modal-${size.width}.png`)});
+    }
+    if(originalViewport)await page.setViewportSize(originalViewport);
     const shown=[];for(let n=0;n<5;n++) {
-      shown.push(...await page.locator('.restore-flow-container tr.table-row').evaluateAll(rows=>rows.map(row=>({name:row.children[0].textContent.trim(),before:Number(row.children[1].textContent.replaceAll(',','')),after:Number(row.children[2].textContent.replaceAll(',',''))}))));
-      if(n<4)await page.locator('.restore-flow-container .btn-next-page').click();
+      shown.push(...await previewModal.locator('tr.table-row').evaluateAll(rows=>rows.map(row=>({name:row.children[0].textContent.trim(),before:Number(row.children[1].textContent.replaceAll(',','')),after:Number(row.children[2].textContent.replaceAll(',',''))}))));
+      if(n<4)await previewModal.locator('.btn-next-page').click();
     }
     assert.equal(new Set(shown.map(r=>r.name)).size,43);for(const row of shown){const expected=preview.tableImpacts.find(t=>t.tableName===row.name);assert(expected);assert.equal(row.before,expected.currentRowCount);assert.equal(row.after,expected.nextRowCount);}
-    const writes=await count('updateDatabaseFromMigration');await page.locator('#btn-execute-db-restore').click();await page.locator('#btn-prompt-cancel').click();assert.equal(await count('updateDatabaseFromMigration'),writes);
-    await page.locator('#btn-execute-db-restore').click();await page.locator('.prompt-input').fill('확인');await page.locator('#btn-prompt-ok').click();assert.equal(await count('updateDatabaseFromMigration'),writes);assert(await page.locator('.form-error').isVisible());
+    const writes=await count('updateDatabaseFromMigration');await page.locator('#btn-execute-db-restore').click();await page.locator('#btn-prompt-cancel').click();await previewModal.waitFor();assert.equal(await count('updateDatabaseFromMigration'),writes);
+    await page.locator('#btn-execute-db-restore').click();
+    const promptStyle=await page.locator('.prompt-input').evaluate(input=>{const s=getComputedStyle(input);return {height:input.getBoundingClientRect().height,border:s.borderTopWidth,radius:s.borderTopLeftRadius,label:input.getAttribute('aria-label')};});
+    assert(promptStyle.height>=40&&parseFloat(promptStyle.border)>=1&&parseFloat(promptStyle.radius)>=8&&promptStyle.label.includes('교체'),'Confirmation input is styled and labelled');
+    assert.equal(await page.locator('#btn-prompt-ok').evaluate(button=>getComputedStyle(button).color),'rgb(255, 255, 255)','Danger button label has contrast');
+    await page.screenshot({path:path.join(capturesDir,'restore-confirmation.png')});
+    await page.locator('.prompt-input').fill('확인');await page.locator('#btn-prompt-ok').click();assert.equal(await count('updateDatabaseFromMigration'),writes);assert(await page.locator('.form-error').isVisible());
     await overrideBridge(page,'updateDatabaseFromMigration','async input=>new Promise(resolve=>{window.__releaseRestore=async()=>{const result=await window.__opsActual.updateDatabaseFromMigration(input);window.__lastRestore=result;resolve(result);};})');
     await page.locator('.prompt-input').fill('교체');await page.locator('#btn-prompt-ok').evaluate(button=>{button.click();button.click();});
     await page.waitForFunction(()=>!!window.__releaseRestore);assert.equal(await count('updateDatabaseFromMigration'),writes+1);
@@ -1896,9 +1922,17 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
 
     await page.evaluate(()=>window.__releaseRestore());await page.waitForFunction(()=>!!window.__lastRestore);
     const result=await page.evaluate(()=>window.__lastRestore);assert(result.ok);assert(fs.existsSync(result.data.backupBeforeRestore.jsonBackupPath));assert.equal(result.data.tableResults.length,43);
+    await page.locator('#login-restore-completed').waitFor();
+    assert.match(await page.locator('#login-restore-completed').innerText(),/복원이 완료.*43개 테이블.*백업 당시/s);
+    const logo=page.locator('.login-company-logo');assert(await logo.evaluate(img=>img.complete&&img.naturalWidth>0));
+    await page.screenshot({path:path.join(capturesDir,'restore-completed-login.png')});
     const expired=await page.evaluate(()=>window.appBridge.getSession());assert.equal(expired.ok,true);assert.equal(expired.data,null,'Successful restore revokes the old cookie');
     await page.reload();await page.locator('#login-id').waitFor({state:'visible'});
+    assert.equal(await page.locator('#login-restore-completed').count(),1,'Completion survives reload');
+    await page.locator('#login-id').fill(adminCreds.loginId);await page.locator('#login-password').fill('wrong-restored-password');await page.locator('.login-form button[type=submit]').click();await page.locator('.error-banner').waitFor();
+    assert.equal(await page.locator('#login-restore-completed').count(),1,'Completion survives a failed login');
     await performNormalLogin(page,targetUrl,adminCreds,null,value=>artifactRegistry.register(value));await installCalls(page);
+    assert.equal(await page.locator('#login-restore-completed').count(),0,'Successful login clears completion');
     await page.locator('button[data-id="operations"]').click();await page.locator('.operations-settings-wrap').waitFor();
     await selectSettingsArea(page,'backup');
     assert(!(await data('listSiteNameOptions')).some(site=>site.id===extra.id));assert.equal((await data('listEmployees')).find(e=>e.id===employee.id).email,employee.email);
@@ -1944,7 +1978,13 @@ async function verifyScenario(id,{page,browser,context,adminCreds,seeded,resourc
     const expiring=await data('previewDatabaseMigrationUpdate',{backupFilePath:file});await serverClock(11*60*1000);
     const expired=await api('updateDatabaseFromMigration',{...base,backupSha256:expiring.backupSha256,previewToken:expiring.previewToken});await serverClock(0);assert.equal(expired.ok,false);
     assert.deepEqual(await data('listSiteNameOptions'),snapshot);
-    await prepareRestore(page,file);await page.locator('#input-restore-backup-path').fill(copy);assert.equal(await page.locator('#btn-execute-db-restore').count(),0);
+    await prepareRestore(page,file);await page.locator('#btn-close-db-preview').click();await page.locator('#input-restore-backup-path').fill(copy);assert.equal(await page.locator('#btn-execute-db-restore').count(),0);
+    await overrideBridge(page,'previewDatabaseMigrationUpdate','async input=>{const result=await window.__opsActual.previewDatabaseMigrationUpdate(input);if(result.ok)result.data.expiresAt=new Date(Date.now()+1500).toISOString();return result;}');
+    await prepareRestore(page,file);await page.locator('#btn-execute-db-restore').click();
+    await page.locator('#operations-prompt-modal').waitFor({state:'detached',timeout:5000});
+    assert.equal(await page.locator('#operations-db-preview-modal').count(),0,'Expired preview and confirmation both close');
+    assert.equal(await page.locator('#btn-open-db-preview').count(),0,'Expired preview cannot reopen');
+    await restoreBridge(page,'previewDatabaseMigrationUpdate');
     await prepareRestore(page,file);
     const {DatabaseSync}=await import('node:sqlite');assert(path.resolve(scenarioState.databasePath).startsWith(path.resolve(userDataDir)+path.sep));const lock=new DatabaseSync(scenarioState.databasePath);
     try {

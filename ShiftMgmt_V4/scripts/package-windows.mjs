@@ -44,6 +44,10 @@ try {
   copy("scripts/lib/installed-update.mjs");
   copy("src/renderer/assets/brand-logo-clean.png", "dist/assets/brand-logo-clean.png");
   copy("build/start.cmd", "START.cmd");
+  copy("build/start.vbs", "START.vbs");
+  copy("scripts/start-window.ps1");
+  const windowScript = path.join(stage, "scripts/start-window.ps1");
+  writeFileSync(windowScript, "\uFEFF" + readFileSync(windowScript, "utf8").replace(/^\uFEFF/, ""));
   copy("build/fresh-install.ps1", "scripts/fresh-install.ps1");
   // Windows PowerShell 5.1에서 한글이 깨지지 않게 한다.
   const installScript = path.join(stage, "scripts/fresh-install.ps1");

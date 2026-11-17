@@ -32,6 +32,7 @@ export interface ChannelContractMeta {
 }
 
 export const CHANNEL_CONTRACTS = [
+  { method: "openAllowanceDocumentFolder", channel: "allowance:open-document-folder", group: "allowance", guard: "session", recordsActivity: false, dialog: "openPath", usesDataDir: false },
   {
     method: "listAccessLogs",
     channel: "access-logs:list",
@@ -440,6 +441,22 @@ export const CHANNEL_CONTRACTS = [
     usesDataDir: true,
   },
 
+  {
+    method: "listLegacyIdentities",
+    channel: "operations:list-legacy-identities",
+    group: "operations",
+    guard: "admin",
+    recordsActivity: false,
+    usesDataDir: false,
+  },
+  {
+    method: "resolveLegacyIdentity",
+    channel: "operations:resolve-legacy-identity",
+    group: "operations",
+    guard: "admin",
+    recordsActivity: true,
+    usesDataDir: false,
+  },
   {
     method: "addHolidayItem",
     channel: "operations:add-holiday-item",
