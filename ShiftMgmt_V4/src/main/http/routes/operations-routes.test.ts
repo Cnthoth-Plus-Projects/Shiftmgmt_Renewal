@@ -782,17 +782,18 @@ describe("operations-routes", () => {
   });
 
   describe("C2 & RN1/RN2 contract counts (CN1, CN2)", () => {
-    it("verifies the final 116-contract aggregate registration accurately", () => {
+    it("verifies the final 117-contract aggregate registration accurately", () => {
       const { sessionManager } = setupTestEnv();
       const registry = assembleRoutes(sessionManager);
 
-      expect(CHANNEL_CONTRACTS).toHaveLength(116);
+      expect(CHANNEL_CONTRACTS).toHaveLength(117);
       expect(CORE_CHANNELS).toHaveLength(17);
       expect(OPERATIONS_CHANNELS).toHaveLength(41);
 
       const registered = registry.getRegisteredChannels();
-      expect(registered).toHaveLength(116);
-      expect(new Set(registered).size).toBe(116);
+      expect(registered).toHaveLength(117);
+      expect(new Set(registered).size).toBe(117);
+      expect(registry.has("allowance:open-document-folder")).toBe(true);
 
       for (const channel of CORE_CHANNELS) {
         expect(registry.has(channel)).toBe(true);

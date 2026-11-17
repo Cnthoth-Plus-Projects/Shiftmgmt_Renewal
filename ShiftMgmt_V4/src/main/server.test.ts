@@ -375,7 +375,14 @@ describe("창구 서버", () => {
     expect(response.status).toBe(200);
     expect(response.headers["content-type"]).toBe("text/html; charset=utf-8");
     expect(response.body).toContain("교대근무관리 시스템");
-    expect(response.body).toContain('<link rel="icon" href="data:,">');
+    expect(response.body).toContain('href="/web/assets/brand-app.ico"');
+    expect(response.body).toContain('href="/web/assets/brand-app.png"');
+    for (const [extension, contentType] of [["ico", "image/x-icon"], ["png", "image/png"]]) {
+      const icon = await requestBuffer({ path: `/web/assets/brand-app.${extension}` });
+      expect(icon.status).toBe(200);
+      expect(icon.headers["content-type"]).toBe(contentType);
+      expect(icon.body.equals(readFileSync(path.join(repoRoot, `src/web/assets/brand-app.${extension}`)))).toBe(true);
+    }
 
     const scriptTags = response.body.match(/<script\b[^>]*>/g) ?? [];
 
