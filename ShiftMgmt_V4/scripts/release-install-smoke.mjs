@@ -121,9 +121,11 @@ try {
   passed("설치본 문서 로고 해석·개발 소스 경로 불필요");
   const shortcut = path.join(desktop, "교대근무관리 시스템.lnk");
   assert.ok(existsSync(shortcut));
-  const link = ps("$s = (New-Object -ComObject WScript.Shell).CreateShortcut($env:SM_SHORTCUT); [Console]::OutputEncoding = New-Object Text.UTF8Encoding; @{target=$s.TargetPath; working=$s.WorkingDirectory} | ConvertTo-Json -Compress", { SM_SHORTCUT: shortcut });
+  const link = ps("$s = (New-Object -ComObject WScript.Shell).CreateShortcut($env:SM_SHORTCUT); [Console]::OutputEncoding = New-Object Text.UTF8Encoding; @{target=$s.TargetPath; working=$s.WorkingDirectory; arguments=$s.Arguments; icon=$s.IconLocation} | ConvertTo-Json -Compress", { SM_SHORTCUT: shortcut });
   const shortcutData = JSON.parse(link.stdout.trim());
-  assert.equal(shortcutData.target.toLowerCase(), path.join(target, "START.cmd").toLowerCase());
+  assert.equal(shortcutData.target.toLowerCase(), path.join(process.env.WINDIR, "System32/wscript.exe").toLowerCase());
+  assert.equal(shortcutData.arguments, `"${path.join(target, "START.vbs")}"`);
+  assert.equal(shortcutData.icon.toLowerCase(), `${path.join(target, "dist/browser/web/assets/brand-app.ico")},0`.toLowerCase());
   assert.equal(shortcutData.working.toLowerCase(), target.toLowerCase());
   passed("한글·공백 경로 새 설치·바로가기 대상 확인");
   assert.equal(installer(packageRoot, target, data, desktop).status, 1);
