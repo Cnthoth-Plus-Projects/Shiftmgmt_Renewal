@@ -1,4 +1,4 @@
-// 신원 보존 이관을 포함한 서비스 90개가 소스/빌드에서 일치하고 불러와지는지 확인한다.
+// 신원 보존 이관·문서 폴더 열기를 포함한 서비스 91개가 소스/빌드에서 일치하고 불러와지는지 확인한다.
 //
 //   npm run smoke
 //
@@ -10,8 +10,8 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** 기존79개 + 정책·복구·이력·출력10개 + 승인된 과거 신원 연결1개. */
-const EXPECTED_COUNT = 90;
+/** 기존79개 + 정책·복구·이력·출력10개 + 과거 신원 연결1개 + 문서 폴더 열기1개. */
+const EXPECTED_COUNT = 91;
 
 const root = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const servicesDir = path.join(root, "dist", "server", "main", "services");
@@ -66,6 +66,10 @@ const problems = [];
 
 if (!sourceNames.includes("legacy-identity-service.js") || !fileNames.includes("legacy-identity-service.js")) {
   problems.push("승인된 과거 신원 연결 서비스가 소스 또는 빌드에서 누락됐습니다");
+}
+
+if (!sourceNames.includes("allowance-document-folder-service.js") || !fileNames.includes("allowance-document-folder-service.js")) {
+  problems.push("문서 폴더 열기 서비스가 소스 또는 빌드에서 누락됐습니다");
 }
 
 if (sourceNames.length !== EXPECTED_COUNT || JSON.stringify(sourceNames) !== JSON.stringify(fileNames)) {
